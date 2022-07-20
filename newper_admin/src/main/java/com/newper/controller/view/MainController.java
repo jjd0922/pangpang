@@ -1,6 +1,5 @@
 package com.newper.controller.view;
 
-import com.newper.domain.Test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,6 @@ public class MainController {
     public ModelAndView index(){
         ModelAndView mav = new ModelAndView("index");
 
-        Test t = new Test();
-
-        t.setTest("test string");
-        mav.addObject("test", t);
 
         return mav;
     }
