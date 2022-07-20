@@ -1,0 +1,101 @@
+spring:
+  profiles:
+    group:
+      iam: iaminfo,common
+      dev: devinfo,common
+      prod: prodinfo,common
+    active: iam
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: iaminfo
+
+  datasource:
+    #    jndi-name: null
+    #    jdbc-url: jdbc:mysql://58.229.240.106:7138/study
+    url: jdbc:mysql://58.229.240.106:7138/study
+    username: vktj106qmf
+    password: 106dltkddhks95!!)$
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 9200
+  tomcat:
+    file-encoding: UTF-8
+  servlet:
+    #    context-path: /context
+    session:
+      #      timeout: 10800      # 60*60*3
+      timeout: 86400      # 60*60*24
+
+logging:
+  file:
+    name: C:/logs/newper/admin.log
+  charset:
+    console: UTF-8
+    file: UTF-8
+
+#sweettracker:
+#  tier: testuser
+#  key: testuser
+#  domain: http://trace-api-dev.sweettracker.net:8102/
+#  callback: http://localhost:9080/present/tracking/add/invoice/return
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: devinfo
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prodinfo
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: common
+
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #    properties.hibernate:
+  #      default_batch_fetch_size: 100
+
+  servlet.multipart.maxFileSize: 10MB
+  servlet.multipart.maxRequestSize: 100MB
+
+  thymeleaf:
+    enabled: true
+    cache: false
+
+mybatis:
+  mapper-locations: mybatis/*.xml
+  configuration.map-underscore-to-camel-case: true
+
+#logging:
+#  level:
+#    galaxia: info
+#  logback:
+#    rollingpolicy:
+#      max-history: 999
+#      max-file-size: 999MB
+#      file-name-pattern: ${LOG_FILE}_%d{yyyy-MM-dd}.%i.log
+#
+#decorator:
+#  datasource:
+#    enabled: false
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie

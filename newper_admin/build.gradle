@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'com.newper'
+version '1.0'
+
+configurations {
+	customProvidedRuntime
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+		runtimeOnly 'mysql:mysql-connector-java'
+		customProvidedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

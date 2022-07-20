@@ -1,0 +1,53 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+subprojects{
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+
+	group = 'com.newper'
+	version = '1.0'
+	sourceCompatibility = '18'
+
+	[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+	tasks.withType(JavaCompile){
+		options.encoding = 'UTF-8'
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+}
+
+project(':newper_admin') {
+	dependencies {
+		implementation project(':newper_domain')
+	}
+}
+project(':newper_shop') {
+	dependencies {
+		implementation project(':newper_domain')
+	}
+}
