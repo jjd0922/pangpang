@@ -1,0 +1,86 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="navbar navbar-sm navbar-expand-lg navbar-light navbar-static px-0">
+  <div class="d-flex  pl-2">
+    <div class="navbar-brand wmin-0 mr-1">
+      <a th:href="@{/shopHome}" class="d-inline-block">
+        <img src="../../static/assets/img/logo/logo.png" class="d-none d-sm-block" alt="" th:src="@{/assets/img/logo/logo.png}">
+        <img src="../../static/assets/img/logo/logo.png" class="d-sm-none" alt="" th:src="@{/assets/img/logo/logo.png}">
+      </a>
+    </div>
+  </div>
+  <!-- iam Menu -->
+  <div class="d-flex w-100 w-lg-auto overflow-x overflow-lg-visible border-top border-top-light-100 border-top-lg-0 order-1 order-lg-0"><!-- scrollbar-hidden -->
+    <ul class="navbar-nav flex-row text-nowrap mx-auto">
+      <li class="nav-item dropdown nav-item-dropdown-lg">
+        <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+          <span>대분류 NAME</span>
+        </a>
+        <div class="dropdown-menu dropdown-scrollable-lg">
+            <div class="dropdown-header">중메뉴 TITLE</div>
+            <a class="dropdown-item">중메뉴 MENU</a>
+            <div class="dropdown-divider">중메뉴 DIVIDE</div>
+        </div>
+      </li>
+
+
+<!--      <li class="nav-item dropdown nav-item-dropdown-lg" th:each="menu:${T(com.newper.entity.Menu).MENUS}" th:if="(${#lists.size(menu.childMenu) > 0} or ${not #strings.isEmpty(menu.url)} ) and ${@sessionInfo.hasAuth(menu.auth)}">-->
+<!--        <a th:href="${menu.url}" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" th:classappend="${menu_idx} == ${menu.menuIdx} ? active">-->
+<!--          <i class="mr-1" th:classappend="${menu.icon}"></i>-->
+<!--          <span th:text="${menu.name}">대분류 NAME</span>-->
+<!--        </a>-->
+<!--        <div class="dropdown-menu dropdown-scrollable-lg" th:if="${#lists.size(menu.childMenu) > 0}">-->
+<!--          <th:block th:each="childMenu, i : ${menu.childMenu}" th:if="${@sessionInfo.hasAuth(childMenu.auth)}">-->
+<!--            <th:block th:switch="${childMenu.type}">-->
+<!--              <div class="dropdown-header" th:class="" th:case="${T(com.newper.entity.Menu.MenuType).TITLE}" th:text="${childMenu.name}">중메뉴 TITLE</div>-->
+<!--              <a class="dropdown-item" th:case="${T(com.newper.entity.Menu.MenuType).MENU}" th:href="@{${childMenu.url}}" th:text="${childMenu.name}" th:classappend="${submenu_idx} == ${childMenu.menuIdx} ? active">중메뉴 MENU</a>-->
+<!--              <div class="dropdown-divider" th:case="${T(com.newper.entity.Menu.MenuType).DIVIDE}">중메뉴 DIVIDE</div>-->
+<!--            </th:block>-->
+<!--          </th:block>-->
+<!--        </div>-->
+<!--      </li>-->
+
+    </ul>
+  </div>
+
+  <div class="d-flex flex-lg-1 justify-content-lg-end order-0 order-lg-1 pr-3">
+    <ul class="navbar-nav flex-row">
+
+      <!-- 고객단 바로가기 : 이 위치의 하위메뉴는 클릭해야 나타남-->
+      <li class="nav-item dropdown">
+        <a href="#" class="navbar-nav-link" data-toggle="dropdown">
+          <i class="icon-store2"></i>
+          <span class="d-xl-none ml-2">With badge</span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <a href="" target="_blank" class="dropdown-item">고객단 홈페이지 바로 가기</a>
+
+          <div class="dropdown-divider"></div>
+
+          <a href="#" class="dropdown-item">
+            <i class="icon-link"></i> 기타 바로가기 연결
+          </a>
+        </div>
+      </li>
+
+      <li class="nav-item nav-item-dropdown-lg dropdown dropdown-user h-100">
+        <a href="#" class="navbar-nav-link navbar-nav-link-toggler d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+          <span>관리자</span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <a href="#" class="dropdown-item">
+            <i class="icon-user"></i> 내 정보
+          </a><!-- 비밀번호 변경 등 -->
+
+          <div class="dropdown-divider"></div>
+
+          <a href="#" class="dropdown-item"><i class="icon-cog5"></i> 관리자 설정</a><!-- 마스터 관리자 추가관리 페이지로 이동 -->
+          <a th:href="@{/login}" class="dropdown-item"><i class="icon-switch2"></i> 로그아웃</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</html>

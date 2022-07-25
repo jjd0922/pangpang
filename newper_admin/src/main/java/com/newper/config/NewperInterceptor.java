@@ -27,8 +27,11 @@ public class NewperInterceptor implements HandlerInterceptor {
         if(handler.getClass().equals(ResourceHttpRequestHandler.class)) {
             return true;
         }
-        System.out.println("interceptor\t"+request.getRequestURI());
-        System.out.println(handler.getClass());
+
+        //error ex) 404 page
+        if(request.getRequestURI().equals("/error")){
+            return true;
+        }
 
 //        String requestURI = request.getRequestURI();
 //        requestURI=requestURI.substring(request.getContextPath().length());
