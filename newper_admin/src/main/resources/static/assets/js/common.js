@@ -3,20 +3,7 @@ $(document).ajaxStart(function(event, xhr, settings){
     //로딩창
     $(document.body).css('cursor','wait');
 }).ajaxSend(function(event, jqXHR, ajaxOptions ){
-    //조회, 엑셀다운로드시 추가해야 하는 pathname
-    try{
-        var pathNameStr = window.location.pathname;
-        if(opener != null){
-            pathNameStr = opener.location.pathname;
-        }
-        if(ajaxOptions.url.indexOf('?')==-1){
-            ajaxOptions.url+='?pathUrl='+pathNameStr;
-        }else{
-            ajaxOptions.url+='&pathUrl='+pathNameStr;
-        }
-    }catch(e){
 
-    }
     //응답전에 다시 조회하는 경우 기존 요청 취소
     var reqUrl=ajaxOptions.url;
     try{
@@ -56,8 +43,14 @@ $(document).ajaxStart(function(event, xhr, settings){
         console.log(e);
     }
 }).ajaxSuccess(function(event, xhr, settings, thrownError){
-    if(xhr.responseJSON != null && xhr.responseJSON.message!=null){
-        alert(xhr.responseJSON.message);
+    if(xhr.responseJSON != null){
+        if(xhr.responseJSON.message!=null){
+            alert(xhr.responseJSON.message);
+        }
+
+        if(xhr.responseJSON.location!=null){
+            location.href = xhr.responseJSON.location;
+        }
     }
 }).ajaxStop(function(event, xhr, settings, thrownError){
     //로딩 끝

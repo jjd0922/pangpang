@@ -9,12 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.util.Optional;
 
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableAspectJAutoProxy
+@EnableRedisHttpSession
 public class NewperAdminApplication {
 
     public static void main(String[] args) {
