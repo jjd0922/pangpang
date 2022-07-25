@@ -1,10 +1,13 @@
 package com.newper.dto;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 /** dataTable return용 class*/
 public class ReturnDatatable {
 
