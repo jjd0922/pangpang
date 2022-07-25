@@ -17,14 +17,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addArgumentResolvers(resolvers);
     }
 
-//    @Bean
-//    public NewperInterceptor newperInterceptor(){
-//        return new NewperInterceptor();
-//    }
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(newperInterceptor());
-//        WebMvcConfigurer.super.addInterceptors(registry);
-//    }
+    @Bean
+    public NewperInterceptor newperInterceptor(){
+        return new NewperInterceptor();
+    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(newperInterceptor());
+        WebMvcConfigurer.super.addInterceptors(registry);
+    }
 
 }
