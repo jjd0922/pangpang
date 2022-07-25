@@ -16,13 +16,8 @@ public class MainController {
 
     @GetMapping(value = {"","index"})
     public ModelAndView index(){
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("main/index");
 
-        Company com = Company.builder()
-                .comState(ComState.TEST2)
-                .build();
-
-        companyRepo.save(com);
 
         return mav;
     }
