@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                <th:block th:text="${subTitle}"></th:block>
+                                            </span>
+                                    </div>
+                                </h6>
+                                <div class="header-elements text-right">
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                        <div class="list-icons ml-2">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="companyForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상호법인명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent1">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">사업자번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent2">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">대표자명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent3">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">MID</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent4">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">거래처구분코드</label>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">사업자 분류</label>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상태</label>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+
+                            <table class="table" id="companyTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn(){
+
+    }
+</script>
+<script>
+    $('#companyTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/company/company.dataTable?'+$('#companyForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'class':'m-w-max', 'title':'구매사','data':'SHOP_NAME'}
+            ,{'class':'m-w-5 p-0', 'title':'썸네일','data':'P_THUMBNAIL','render':function(data,type,full,meta){
+                    if(full.P_THUMBNAIL==null){
+                        return '';
+                    }
+                    return '<img src="'+data+'" class="input-thumb" height="33">';
+                }}
+
+            ,{'class':'m-w-7', 'title':'내부 판매 상태','data':'STATE', 'render':function(data,type,full,meta){
+                    if(data != 'Y'){
+                        return '<span class="text-danger">'+data+'</span>';
+                    }
+                    return data;
+                }}
+            ,{'class':'m-w-max', 'title':'발행사 상품명','data':'P_NAME','render':function(data,type,full,meta){
+                    if(data==null){
+                        return  full.GOODSNAME;
+                    }
+                    return data;
+                }}
+            ,{'class':'m-w-13', 'title':'내부 상품코드','data':'GOODSGROUPID','defaultContent':''}
+            ,{'class':'m-w-6', 'title':'계약 시작일','data':'START_DAY','defaultContent':''}
+            ,{'class':'m-w-6', 'title':'계약 종료일','data':'END_DAY','defaultContent':''}
+
+
+            ,{'class':'m-w-8', 'title':'구매사 상품 상태','data':'SP_STATE_STR', 'render':function(data,type,full,meta){
+                    if(data != '판매'){
+                        return '<span class="text-danger">'+data+'</span>';
+                    }
+                    return data;
+                }}
+            ,{'class':'m-w-7', 'title':'대분류','data':'CF_NAME','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'브랜드','data':'B_NAME','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'선물하기 상품명','data':'SP_NAME','render':function(data,type,full,meta){
+                    if(full.SP_NAME==null){
+                        return '<span class="text-danger">미등록</span>';
+                    }else{
+                        return '<a class="btn btn-sm btn-primary" onclick="popProductShop(\''+meta.settings.sTableId+'\','+meta.row+')">'+ellipsisStr(full.SP_NAME)+'</a>';
+                    }
+                }}
+            ,{'class':'m-w-3', 'title':'재고','data':'SP_STOCK','defaultContent':'미사용'}
+            ,{'class':'m-w-8', 'title':'1인 1회 구매 제한','data':'SP_QUOTA_ONCE','defaultContent':'미사용'}
+            ,{'class':'m-w-8', 'title':'당일 1인 구매 제한','data':'SP_QUOTA_DAY','defaultContent':'미사용'}
+            ,{'class':'text-won m-w-5', 'title':'정상가','data':'P_PRICE_F','defaultContent':''}
+            ,{'class':'text-right m-w-7', 'title':'할인율_할인액','data':'FEE','defaultContent':'', 'render':function(data,type,full,meta){
+                    if(full.BUYER_ACCDIV == 10){
+                        return data+'원';
+                    }else{
+                        if(data == null){
+                            return '%';
+                        }else{
+                            return data+'%';
+                        }
+                    }
+                }}
+            ,{'class':'m-w-10', 'title':'판매대행 수수료율(%)','data':'SALEFEE_F','defaultContent':'', 'class':'text-right'}
+            ,{'class':'m-w-10', 'title':'구매사 추가 할인율(%)','data':'SP_PERCENT_F','defaultContent':'', 'class':'text-right'}
+            ,{'class':'m-w-5', 'title':'판매가','data':'SP_PRICE_F','defaultContent':'', 'class':'text-won'}
+            ,{'class':'m-w-6', 'title':'추가할인관리','data':'SP_IDX', 'render':function(data,type,full,meta){
+                    if(data != null && data != 'undefined'){
+                        return '<a class="btn btn-secondary" onclick="popManageDiscount(\''+meta.settings.sTableId+'\','+meta.row+')">관리</a>';
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'class':'m-w-8', 'title':'추가할인요청상태','data':'SPR_STATE', 'render':function(data,type,full,meta){
+                    if(data != null && data != 'undefined'){
+                        if(data == '요청'){
+                            return '<span class="text-danger">'+data+'</span>'
+                        }else{
+                            return '<span class="text-success">'+data+'</span>';
+                        }
+                    }else{
+                        return '';
+                    }
+                }}
+        ]
+    });
+
+    $('#companyForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    },false);
+</script>
+</html>
