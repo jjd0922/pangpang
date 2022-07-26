@@ -19,7 +19,7 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>거래처 신규등록</h4>
+                            <h4 class="font-weight-semibold"><i class="icon-office mr-1"></i>거래처 신규등록</h4>
                             <div class="text-white-50 ml-3">설명글영역</div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
+                                <form action="regiInfoForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">1. 등록정보</legend>
@@ -68,7 +68,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">사업자 분류</span>
                                                             </span>
-                                                        <select data-placeholder="옵션" class="form-control select" data-fouc>
+                                                        <select data-placeholder="옵션" name="comType" class="form-control select" data-fouc>
                                                             <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
                                                             <option value="1">개인</option>
                                                             <option value="2">개인사업자</option>
@@ -87,7 +87,7 @@
                                                                     MID
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="거래처 마스터 코드">
+                                                        <input type="text" name="comMid" class="form-control" placeholder="거래처 마스터 코드">
                                                     </div>
                                                 </div>
                                             </div>
@@ -99,7 +99,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">상태</span>
                                                             </span>
-                                                        <select data-placeholder="옵션" class="form-control select" data-fouc>
+                                                        <select data-placeholder="옵션" name="comState" class="form-control select" data-fouc>
                                                             <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
                                                             <option value="1">승인요청</option><!--나중에 수정-->
                                                             <option value="2">정상업체</option>
@@ -123,7 +123,7 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
+                                <form action="comInfoForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">2. 거래처정보</legend>
@@ -138,7 +138,7 @@
                                                                     상호법인명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comName" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -152,7 +152,7 @@
                                                                     대표자명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comCeo" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -166,7 +166,7 @@
                                                                     사업자번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comNum" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,7 +180,7 @@
                                                                     거래처약칭
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comNick" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,7 +194,7 @@
                                                                     전화번호<br>(회사대표번호)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comTel" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,7 +208,7 @@
                                                                     팩스번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comFax" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,7 +222,7 @@
                                                                     은행
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comBank" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
                                                                     계좌번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAccount" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -319,7 +319,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">사업자등록증</span>
                                                             </span>
-                                                        <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="file" name="comNumFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                     </div>
                                                 </div>
                                             </div>
@@ -331,7 +331,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">통장사본</span>
                                                             </span>
-                                                        <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="file" name="comAccountFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,7 +345,7 @@
                                                                     A/S 책임정보
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAs" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -359,7 +359,7 @@
                                                                     외주 제조사 AS번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAsNum" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -373,7 +373,7 @@
                                                                     메모
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comMemo" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +398,7 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
+                                <form action="comEmpForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">3. 거래처 담당자정보</legend>
@@ -521,7 +521,7 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
         <!-- /footer -->
     </div>
@@ -579,7 +579,7 @@
 
 
 <!-- 첨부이미지 hover 미리보기 -->
-<script language="JavaScript">
+<script>
     $(document).ready(function() {
         var xOffset = 150;
         var yOffset = -10;
@@ -603,7 +603,15 @@
         $(document).on("mouseout",".input-thumb",function(){
             $("#preview").remove();
         });
+
+        $("#saveBtn").on("click", function(){
+           $.ajax({
+               url: '/company/pop/regist/' + $("#regiInfoForm").serialize() + $("#com")
+               type: "post",
+           });
+        });
     });
+
 </script>
 </body>
 
