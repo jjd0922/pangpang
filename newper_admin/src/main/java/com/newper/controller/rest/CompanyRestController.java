@@ -14,6 +14,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CompanyRestController {
 
+    /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
     public ReturnDatatable company(@RequestParam Map<String, Object> map){
         ReturnDatatable rd = new ReturnDatatable();

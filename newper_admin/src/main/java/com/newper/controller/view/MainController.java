@@ -1,8 +1,6 @@
 package com.newper.controller.view;
 
 import com.newper.component.SessionInfo;
-import com.newper.constant.ComState;
-import com.newper.entity.Company;
 import com.newper.repository.CompanyRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
