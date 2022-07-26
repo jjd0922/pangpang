@@ -1,4 +1,4 @@
-package com.newper.entity;
+package com.newper.entity.common;
 
 import lombok.Getter;
 import lombok.Setter;

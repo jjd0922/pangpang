@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class CompanyController {
 
+    /** 거래처 관리 페이지*/
     @GetMapping(value = "")
     public ModelAndView company(){
         ModelAndView mav = new ModelAndView("company/company");

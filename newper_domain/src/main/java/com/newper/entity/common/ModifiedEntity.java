@@ -1,4 +1,4 @@
-package com.newper.entity;
+package com.newper.entity.common;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @MappedSuperclass
 @Getter
 @Setter
-public class ModifiedEntity {
+public class ModifiedEntity extends CreatedEntity{
 
     @LastModifiedBy
     @Column(updatable = false)
