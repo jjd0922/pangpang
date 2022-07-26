@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>거래처관리</title>
+    <title>거래처 계약관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -34,11 +34,13 @@
                                     </div>
                                 </h6>
                                 <div class="header-elements text-right">
-                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
-                                            <i class="icon-popout mr-1"></i>신규등록
-                                        </a>
 
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                        <i class="icon-popout mr-1"></i>신규등록
+                                    </a>
+
+
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
                                         <div class="list-icons ml-2">
                                             <a class="list-icons-item" data-action="collapse"></a>
                                         </div>
@@ -54,7 +56,9 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group">
@@ -79,25 +83,22 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">거래처구분코드</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">사업자 분류</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
                                                     </select>
                                                 </div>
 
@@ -139,10 +140,8 @@
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
-<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
-<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 
 <!-- 데이터테이블 -->
 <script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
@@ -153,11 +152,6 @@
 <script th:src="@{/assets/js/app.js}"></script>
 <!-- input -->
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
-<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
-
-<!-- 멀티 선택 (숫자) -->
-<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
-<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
@@ -167,7 +161,7 @@
     }
 </script>
 <script>
-    var companyTable = $('#companyTable').DataTable({
+    $('#companyTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -176,53 +170,96 @@
         },
         serverSide: true,
         ajax:{
-            url:'/company/company.dataTable?'+$('#companyForm').serialize(),
+            url:'/company/contract.dataTable?'+$('#companyForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
             orderable: false,
             targets:   [0]
         } ],
-        columns : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
             ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'class':'m-w-6', 'title':'등록일','data':''}
-            ,{'class':'m-w-6', 'title':'등록시간','data':''}
-            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'', 'render':function(data,type,full,meta){
+            ,{'class':'m-w-max', 'title':'구매사','data':'SHOP_NAME'}
+            ,{'class':'m-w-5 p-0', 'title':'썸네일','data':'P_THUMBNAIL','render':function(data,type,full,meta){
+                    if(full.P_THUMBNAIL==null){
+                        return '';
+                    }
+                    return '<img src="'+data+'" class="input-thumb" height="33">';
+                }}
+
+            ,{'class':'m-w-7', 'title':'내부 판매 상태','data':'STATE', 'render':function(data,type,full,meta){
                     if(data != 'Y'){
                         return '<span class="text-danger">'+data+'</span>';
                     }
                     return data;
                 }}
-            ,{'class':'m-w-7', 'title':'사업자 분류','data':'','render':function(data,type,full,meta){
+            ,{'class':'m-w-max', 'title':'발행사 상품명','data':'P_NAME','render':function(data,type,full,meta){
                     if(data==null){
                         return  full.GOODSNAME;
                     }
                     return data;
                 }}
-            ,{'class':'m-w-2', 'title':'상태','data':'','defaultContent':''}
-            ,{'class':'m-w-3', 'title':'MID','data':'','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'상호법인명','data':'','defaultContent':'버튼넣기'}
-            ,{'class':'m-w-4', 'title':'대표자명','data':''}
-            ,{'class':'m-w-7', 'title':'업체주소','data':'','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'우편번호','data':'','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'전화번호','data':'','render':function(data,type,full,meta){
+            ,{'class':'m-w-13', 'title':'내부 상품코드','data':'GOODSGROUPID','defaultContent':''}
+            ,{'class':'m-w-6', 'title':'계약 시작일','data':'START_DAY','defaultContent':''}
+            ,{'class':'m-w-6', 'title':'계약 종료일','data':'END_DAY','defaultContent':''}
+
+
+            ,{'class':'m-w-8', 'title':'구매사 상품 상태','data':'SP_STATE_STR', 'render':function(data,type,full,meta){
+                    if(data != '판매'){
+                        return '<span class="text-danger">'+data+'</span>';
+                    }
+                    return data;
+                }}
+            ,{'class':'m-w-7', 'title':'대분류','data':'CF_NAME','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'브랜드','data':'B_NAME','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'선물하기 상품명','data':'SP_NAME','render':function(data,type,full,meta){
                     if(full.SP_NAME==null){
                         return '<span class="text-danger">미등록</span>';
                     }else{
                         return '<a class="btn btn-sm btn-primary" onclick="popProductShop(\''+meta.settings.sTableId+'\','+meta.row+')">'+ellipsisStr(full.SP_NAME)+'</a>';
                     }
                 }}
-            ,{'class':'m-w-3', 'title':'담당자','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'담당자전화번호','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'등록자','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-5', 'title':'수정일','data':'','defaultContent':''}
-            ,{'class':'m-w-5', 'title':'수정자','data':'','defaultContent':''}
-            ,{'class':'m-w-5', 'title':'수정이력','data':'','defaultContent':'버튼넣기'}
+            ,{'class':'m-w-3', 'title':'재고','data':'SP_STOCK','defaultContent':'미사용'}
+            ,{'class':'m-w-8', 'title':'1인 1회 구매 제한','data':'SP_QUOTA_ONCE','defaultContent':'미사용'}
+            ,{'class':'m-w-8', 'title':'당일 1인 구매 제한','data':'SP_QUOTA_DAY','defaultContent':'미사용'}
+            ,{'class':'text-won m-w-5', 'title':'정상가','data':'P_PRICE_F','defaultContent':''}
+            ,{'class':'text-right m-w-7', 'title':'할인율_할인액','data':'FEE','defaultContent':'', 'render':function(data,type,full,meta){
+                    if(full.BUYER_ACCDIV == 10){
+                        return data+'원';
+                    }else{
+                        if(data == null){
+                            return '%';
+                        }else{
+                            return data+'%';
+                        }
+                    }
+                }}
+            ,{'class':'m-w-10', 'title':'판매대행 수수료율(%)','data':'SALEFEE_F','defaultContent':'', 'class':'text-right'}
+            ,{'class':'m-w-10', 'title':'구매사 추가 할인율(%)','data':'SP_PERCENT_F','defaultContent':'', 'class':'text-right'}
+            ,{'class':'m-w-5', 'title':'판매가','data':'SP_PRICE_F','defaultContent':'', 'class':'text-won'}
+            ,{'class':'m-w-6', 'title':'추가할인관리','data':'SP_IDX', 'render':function(data,type,full,meta){
+                    if(data != null && data != 'undefined'){
+                        return '<a class="btn btn-secondary" onclick="popManageDiscount(\''+meta.settings.sTableId+'\','+meta.row+')">관리</a>';
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'class':'m-w-8', 'title':'추가할인요청상태','data':'SPR_STATE', 'render':function(data,type,full,meta){
+                    if(data != null && data != 'undefined'){
+                        if(data == '요청'){
+                            return '<span class="text-danger">'+data+'</span>'
+                        }else{
+                            return '<span class="text-success">'+data+'</span>';
+                        }
+                    }else{
+                        return '';
+                    }
+                }}
         ]
     });
 
@@ -231,8 +268,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('pop/regist', 'insert_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-       focusPopup.focus();
+       alert('test');
     });
 </script>
 </html>

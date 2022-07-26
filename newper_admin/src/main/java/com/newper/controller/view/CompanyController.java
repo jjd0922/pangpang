@@ -17,4 +17,20 @@ public class CompanyController {
 
         return mav;
     }
+
+    /** 거래처 신규등록 팝업 */
+    @GetMapping(value = "pop/regist")
+    public ModelAndView popRegist(){
+        ModelAndView mav = new ModelAndView("company/pop/regist");
+
+        return mav;
+    }
+
+    /** 거래처 계약관리 조회 페이지 **/
+    @GetMapping(value = "contract")
+    public ModelAndView contract(){
+        ModelAndView mav = new ModelAndView("company/contract");
+
+        return mav;
+    }
 }
