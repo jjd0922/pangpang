@@ -17,4 +17,12 @@ public class CompanyController {
 
         return mav;
     }
+
+    /** 거래처 계약관리 조회 페이지 **/
+    @GetMapping(value = "contract")
+    public ModelAndView contract(){
+        ModelAndView mav = new ModelAndView("company/contract");
+
+        return mav;
+    }
 }
