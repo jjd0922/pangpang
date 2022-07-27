@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -47,4 +48,7 @@ public class Company extends ModifiedEntity {
     private String comMemo;
 //    private String comModifiedMemo;
 
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Schedule> scheduleList;
 }
