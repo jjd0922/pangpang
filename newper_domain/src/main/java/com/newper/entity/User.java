@@ -19,6 +19,6 @@ public class User {
     private Integer uIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "U_COM_IDX", referencedColumnName = "shopIdx")
+    @JoinColumn(name = "U_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
 }
