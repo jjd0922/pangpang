@@ -36,7 +36,7 @@ public class Category{
     private String cateIcon;
     private String cateThumbnail;
     private String cateImage;
-    private String cateOrder;
+    private byte cateOrder;
 
     @Convert(converter = ConvertList.class)
     private List<String> cateSpec_list;
