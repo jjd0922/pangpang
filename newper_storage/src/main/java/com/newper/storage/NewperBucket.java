@@ -8,6 +8,8 @@ public enum NewperBucket {
     /** 개발 비공개 폴더*/
     ,DEV_SECRET("dev-secret", false)
 
+    ,PROD_SECRET("prod-secret", false)
+
     ;
 
     private String bucketName;
