@@ -2,6 +2,7 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.entity.User;
 import com.newper.repository.UserRepo;
 import com.newper.service.UserService;
@@ -39,29 +40,11 @@ public class UserRestController {
         data.add(new HashMap<>());
 
         rd.setData(data);
-        rd.setRecordsTotal(120);
+        rd.setRecordsTotal();
 
         return rd;
     }
 
 
-    @PostMapping("/userCreate.ajax")
-    public String userCreate(ParamMap pmap) {
-        System.out.println("map. = " + pmap.getMap());
-
-        user
-        userRepo.save();
-
-        return "";
-    }
 }
 
-/*
-    @RequestMapping(value = "userCreate.ajax", method = {RequestMethod.POST})
-    public String userCreate(@RequestParam ) {
-
-
-        System.out.println("vo.entrySet() = " + vo.entrySet());
-        return "redirect:/";
-    }
-}*/
