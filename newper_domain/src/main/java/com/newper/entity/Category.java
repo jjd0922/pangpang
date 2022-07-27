@@ -21,7 +21,7 @@ public class Category{
     private Integer cateIdx;
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    @OrderBy(value = "cateSequence asc")
+    @OrderBy(value = "cateOrder asc")
     private List<Category> categoryList;
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +36,7 @@ public class Category{
     private String cateIcon;
     private String cateThumbnail;
     private String cateImage;
-    private String cateSequence;
+    private String cateOrder;
 
     @Convert(converter = ConvertList.class)
     private List<String> cateSpec_list;
