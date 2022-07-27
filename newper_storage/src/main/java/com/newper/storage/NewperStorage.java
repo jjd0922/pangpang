@@ -9,10 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.StringUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,12 +36,14 @@ public class NewperStorage {
     }
 
 
-    /** 파일 업로드. objectName은 폴더/파일명으로 . 폴더는 TABLE명 , 파일은 IDX_UUID사용. 파일명 겹치는 경우 덮어씀  */
-    public String uploadFile(NewperBucket newperBucket, String objectName){
+    /** 파일 업로드. objectName은 폴더/파일명으로 . 폴더는 TABLE명 , 파일은 IDX_UUID사용. 파일명 겹치는 경우 덮어씀. MultipartFile getInputStream, getSize 사용  */
+    public String uploadFile(NewperBucket newperBucket, String objectName, InputStream inputStream, long fileSize){
         String bucketName = newperBucket.getBucketName();
         AmazonS3 s3 = getBucket(newperBucket);
 
-        s3.putObject(bucketName, objectName, new File("K:/test123.txt"));
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(fileSize);
+        s3.putObject(bucketName, objectName, inputStream, objectMetadata);
 
         //접근 권한 설정
         if (newperBucket.isOpen()) {
