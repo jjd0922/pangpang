@@ -2,7 +2,7 @@ package com.newper.entity;
 
 import com.newper.constant.ComState;
 import com.newper.entity.common.Address;
-import com.newper.entity.common.ModifiedEntity;
+import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -15,36 +15,46 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Company extends ModifiedEntity {
+@Table(name = "COMPANY")
+public class Company extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comIdx;
 
-    private String comType;     // 사업자분류
-    private String comMid;      // MID
+    /*@Enumerated(EnumType.STRING)*/
+    private String comType;
+
+    private String comMid;
 
     @Enumerated(EnumType.STRING)
-    private ComState comState;  // 상태
+    private ComState comState;
 
-    private String comName;     // 상호법인명
-    private String comCeo;      // 대표자명
-    private String comNum;      // 사업자번호
-    private String comNick;     // 거래처약칭
-    private String comTel;      // 전화번호, 회사대표번호
-    private String comFax;      // 팩스
-    private String comBank;     // 은행코드
-    private String comAccount;  // 계좌번호
+    private String comName;
+    private String comCeo;
+    private String comNum;
+    private String comNick;
+    private String comTel;
+    private String comFax;
+    private String comBank;
+    private String comAccount;
 
-    // ? Address는 값타입 생성 ?
     @Embedded
     private Address address;
 
-    private String comNumFile;  // 사업자 등록증
-    private String comAccountFile;  //통장사본
-    private String comAs;       // AS 책임정보
-    private String comAsNum;    // 외주 제조사 AS번호
+    private String comNumFile;
+    private String comAccountFile;
+    private String comAs;
+    private String comAsNum;
     private String comMemo;
-//    private String comModifiedMemo;
+    private String comModifiedMemo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="COM_CE_IDX", referencedColumnName = "ceIdx")
+    private CompanyEmployee companyEmployee;
+
+/*    @OneToMany(mappedBy = "company")
+    private List<CompanyType> companyType;*/
+
 
 }

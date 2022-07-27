@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,9 +21,9 @@ public class CompanyController {
     }
 
     /** 거래처 신규등록 팝업 */
-    @GetMapping(value = "pop/regist")
-    public ModelAndView popRegist(){
-        ModelAndView mav = new ModelAndView("company/pop/regist");
+    @GetMapping(value = "regist")
+    public ModelAndView regist(){
+        ModelAndView mav = new ModelAndView("company/regist");
 
         return mav;
     }

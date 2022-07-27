@@ -54,50 +54,47 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상호법인명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent1">
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">사업자번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent2">
+                                                    <input type="text" name="comNum" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">대표자명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent3">
+                                                    <input type="text" name="comCeo" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">MID</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent4">
+                                                    <input type="text" name="comMid" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">거래처구분코드</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select name="ctType" data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">사업자 분류</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select name="comType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option value="1">산토끼</option>
-                                                        <option value="2">토끼야</option>
+                                                    <select name="comState" data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
@@ -176,7 +173,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/company/company.dataTable?'+$('#companyForm').serialize(),
+            url:'/company/company.dataTable',//?'+$('#companyForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -187,42 +184,24 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
-            ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'class':'m-w-6', 'title':'등록일','data':''}
-            ,{'class':'m-w-6', 'title':'등록시간','data':''}
-            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'', 'render':function(data,type,full,meta){
-                    if(data != 'Y'){
-                        return '<span class="text-danger">'+data+'</span>';
-                    }
-                    return data;
-                }}
-            ,{'class':'m-w-7', 'title':'사업자 분류','data':'','render':function(data,type,full,meta){
-                    if(data==null){
-                        return  full.GOODSNAME;
-                    }
-                    return data;
-                }}
-            ,{'class':'m-w-2', 'title':'상태','data':'','defaultContent':''}
-            ,{'class':'m-w-3', 'title':'MID','data':'','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'상호법인명','data':'','defaultContent':'버튼넣기'}
-            ,{'class':'m-w-4', 'title':'대표자명','data':''}
-            ,{'class':'m-w-7', 'title':'업체주소','data':'','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'우편번호','data':'','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'전화번호','data':'','render':function(data,type,full,meta){
-                    if(full.SP_NAME==null){
-                        return '<span class="text-danger">미등록</span>';
-                    }else{
-                        return '<a class="btn btn-sm btn-primary" onclick="popProductShop(\''+meta.settings.sTableId+'\','+meta.row+')">'+ellipsisStr(full.SP_NAME)+'</a>';
-                    }
-                }}
-            ,{'class':'m-w-3', 'title':'담당자','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'담당자전화번호','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'등록자','data':'','defaultContent':'미사용'}
-            ,{'class':'m-w-5', 'title':'수정일','data':'','defaultContent':''}
-            ,{'class':'m-w-5', 'title':'수정자','data':'','defaultContent':''}
-            ,{'class':'m-w-5', 'title':'수정이력','data':'','defaultContent':'버튼넣기'}
+            ,{'class':'m-w-2', 'title':'No','data':'COM_IDX'}
+            ,{'class':'m-w-6', 'title':'등록일','data':'CREATED_DATE'}
+            ,{'class':'m-w-6', 'title':'등록시간','data':'CREATED_TIME'}
+            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE'}
+            ,{'class':'m-w-8', 'title':'사업자 분류','data':'COM_TYPE'}
+            ,{'class':'m-w-3', 'title':'상태','data':'COM_STATE'}
+            ,{'class':'m-w-3', 'title':'MID','data':'COM_MID'}
+            ,{'class':'m-w-max', 'title':'상호법인명','data':'COM_NAME','defaultContent':'버튼넣기'}
+            ,{'class':'m-w-4', 'title':'대표자명','data':'COM_CEO'}
+            ,{'class':'m-w-7', 'title':'업체주소','data':'ADDR1 + ADDR2'}
+            ,{'class':'m-w-5', 'title':'우편번호','data':'POST'}
+            ,{'class':'m-w-6', 'title':'전화번호','data':'COM_TEL'}
+            ,{'class':'m-w-8', 'title':'담당자','data':'CE_NAME'}
+            ,{'class':'m-w-8', 'title':'담당자전화번호', 'data':'CE_PHONE'}
+            ,{'class':'m-w-8', 'title':'등록자','data':'CREATED_BY'}
+            ,{'class':'m-w-6', 'title':'수정일','data':'MODIFIED_DATE'}
+            ,{'class':'m-w-8', 'title':'수정자','data':'MODIFIED_BY'}
+            ,{'class':'m-w-8', 'title':'수정이력','data':'','defaultContent':'버튼넣기'}
         ]
     });
 
@@ -231,7 +210,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('pop/regist', 'insert_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       var focusPopup = window.open('regist', 'regist_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
        focusPopup.focus();
     });
 </script>
