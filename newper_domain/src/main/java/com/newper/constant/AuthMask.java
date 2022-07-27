@@ -6,11 +6,11 @@ import lombok.Getter;
 /** 마스킹 table column list. user.u_mask*/
 @Getter
 @AllArgsConstructor
-public enum UMask {
+public enum AuthMask {
 
-    CU_PHONE("CUSTOMER","CU_PHONE", UMask.TYPE_PHONE)
-    ,CU_NAME("CUSTOMER","CU_NAME", UMask.TYPE_NAME)
-    ,ADDRESS_ADDR4("ADDRESS","ADDR4", UMask.TYPE_ADDRESS)
+    CU_PHONE("CUSTOMER","CU_PHONE", AuthMask.TYPE_PHONE)
+    ,CU_NAME("CUSTOMER","CU_NAME", AuthMask.TYPE_NAME)
+    ,ADDRESS_ADDR4("ADDRESS","ADDR4", AuthMask.TYPE_ADDRESS)
 
     ;
 

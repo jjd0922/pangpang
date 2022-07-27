@@ -24,7 +24,7 @@ public class Menu {
     private byte menuOrder;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu", cascade = CascadeType.ALL)
-    @OrderBy(value = "subMenuOrder asc")
+    @OrderBy(value = "smOrder asc")
     private List<SubMenu> subMenuList;
 
     /** ERP menu인 경우 true*/

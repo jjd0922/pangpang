@@ -16,14 +16,14 @@ import javax.persistence.*;
 public class SubMenu {
 
     @Id
-    private String subMenuName;
+    private String smName;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SUB_MENU_MENU_NAME", referencedColumnName = "menuName")
+    @JoinColumn(name = "SM_MENU_NAME", referencedColumnName = "menuName")
     private Menu menu;
 
-    private String subMenuUrl;
-    private byte subMenuOrder;
+    private String smUrl;
+    private byte smOrder;
 
 
 
