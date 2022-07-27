@@ -33,7 +33,7 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
+                                <form id="userForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">1. 사용자정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.</span></legend>
@@ -48,7 +48,7 @@
                                                                    이름
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" name="name" placeholder="기본">
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,7 +412,7 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
         <!-- /footer -->
     </div>
@@ -498,9 +498,67 @@
             $("#preview").remove();
         });
     });
+
+
+
+
+
+
+
+
+    function userCreate(){
+        var param=$('#userForm').serialize();
+
+        console.log(param);
+
+
+        $.ajax({
+            url:'/user/userCreate.ajax',
+            data:param,
+            type:'POST',
+            success:function(data){
+                console.log(data);
+            }
+        })
+    }
+
+
+
+
+
+
 </script>
 </body>
 
 
+<!--<script>
+
+    // 'request'라는 id를 가진 버튼 클릭 시 실행.
+    $("#request").click(function(){
+
+        // json 형식으로 데이터 set
+        var params = {
+            name      : $("#name").val()
+            , sex       : $("#sex").val()
+            , age       : $("#age").val()
+            , tellPh    : $("#tellPh").val()
+        }
+
+        // ajax 통신
+        $.ajax({
+            type : "POST",            // HTTP method type(GET, POST) 형식이다.
+            url : "/test/ajax",      // 컨트롤러에서 대기중인 URL 주소이다.
+            data : params,            // Json 형식의 데이터이다.
+            success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                // 응답코드 > 0000
+                alert(res.code);
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                alert("통신 실패.")
+            }
+        });
+    });
+
+</script>-->
 
 </html>
