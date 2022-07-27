@@ -1,7 +1,12 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.ComState;
+import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
+import com.newper.entity.Company;
 import com.newper.mapper.CompanyMapper;
+import com.newper.repository.CompanyRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,29 +20,30 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CompanyRestController {
     private final CompanyMapper companyMapper;
+    private final CompanyRepo companyRepo;
 
     /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
     public ReturnDatatable company(@RequestParam Map<String, Object> map){
         ReturnDatatable rd = new ReturnDatatable();
+        System.out.println("company list: " + companyMapper.selectCompany());
 
-        List<Map<String, Object>> data = new ArrayList<>();
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-
-        rd.setData(data);
-        rd.setRecordsTotal(120);
+        rd.setData(companyMapper.selectCompany());
+        rd.setRecordsTotal(companyMapper.countCompany());
 
         return rd;
+    }
+
+    @PostMapping("regist.ajax")
+    public ReturnMap registCompany(ParamMap paramMap) {
+        System.out.println("regist param: " + paramMap.entrySet());
+
+        Company company = paramMap.mapParam(Company.class);
+        companyRepo.save(company);
+
+        System.out.println("Test");
+
+        return null;
     }
 
     @PostMapping("contract.dataTable")

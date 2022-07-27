@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.CompanyMapper">
 
+    <select id="selectCompany" resultType="Map">
+        SELECT
+            *
+        FROM
+            COMPANY
+                LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+        ORDER BY
+            COM_IDX DESC
+    </select>
+
+    <select id="countCompany" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            COMPANY
+                LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+    </select>
+
     <select id="selectCompanyContract" resultType="Map">
         SELECT
             *
