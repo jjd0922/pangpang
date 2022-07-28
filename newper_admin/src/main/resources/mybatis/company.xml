@@ -2,17 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.CompanyMapper">
 
-    <select id="selectCompany" resultType="Map">
+    <select id="selectCompanyDatatable" resultType="Map" parameterType="Map">
         SELECT
-            *
+            *,
+            CASE
+                WHEN COM_TYPE = 'INDIV' THEN '개인'
+                WHEN COM_TYPE = 'BMAN' THEN '개인사업자'
+                WHEN COM_TYPE = 'CORPO' THEN '법인'
+            END AS 'COM_TYPE_CHANGE',
+            CASE
+                WHEN COM_STATE = 'NORMAL' THEN '정상업체'
+                WHEN COM_STATE = 'STOP' THEN '거래중지'
+                WHEN COM_STATE = 'ETC' THEN '기타'
+            END AS 'COM_STATE_CHANGE'
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+                /*LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX*/
+        <where>
+            <if test='createdDate != null and createdDate != ""'>CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+            <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+            <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
+            <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
+            <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
+            <!--<if test='ctType != null'>
+                <foreach collection="ctType" open="AND CT_TYPE IN (" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>-->
+            <if test='comType != null'>
+                <foreach collection="comType" open="AND COM_TYPE IN (" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test ='comState != null'>
+                <foreach collection="comState" open="AND COM_STATE IN (" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
         ORDER BY
             COM_IDX DESC
     </select>
 
-    <select id="countCompany" resultType="Integer">
+    <select id="countCompanyDatatable" resultType="Integer">
         SELECT
             COUNT(*)
         FROM

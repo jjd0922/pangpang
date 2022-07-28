@@ -77,12 +77,12 @@
                                                     <input type="text" name="comMid" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
-                                                <div class="form-group">
+                                                <!--<div class="form-group">
                                                     <label class="d-block">거래처구분코드</label>
-                                                    <select name="ctType" data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="ctType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
                                                         <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
-                                                </div>
+                                                </div>-->
 
                                                 <div class="form-group">
                                                     <label class="d-block">사업자 분류</label>
@@ -93,7 +93,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select name="comState" data-placeholder="다중선택" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="comState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
                                                         <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
@@ -160,10 +160,10 @@
 
 <script>
     function searchBtn(){
-
+        companyTable.page('first').ajax.url('/company/company.dataTable?'+$('#companyForm').serialize()).load();
     }
 </script>
-<script>
+<script th:inline="javascript">
     var companyTable = $('#companyTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
@@ -173,7 +173,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/company/company.dataTable',//?'+$('#companyForm').serialize(),
+            url:'/company/company.dataTable',
             type:'post'
         },
         columnDefs: [ {
@@ -187,13 +187,15 @@
             ,{'class':'m-w-2', 'title':'No','data':'COM_IDX'}
             ,{'class':'m-w-6', 'title':'등록일','data':'CREATED_DATE'}
             ,{'class':'m-w-6', 'title':'등록시간','data':'CREATED_TIME'}
-            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE'}
-            ,{'class':'m-w-8', 'title':'사업자 분류','data':'COM_TYPE'}
-            ,{'class':'m-w-3', 'title':'상태','data':'COM_STATE'}
+           /* ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE_CHANGE'}*/
+            ,{'class':'m-w-8', 'title':'사업자 분류','data':'COM_TYPE_CHANGE'}
+            ,{'class':'m-w-5', 'title':'상태','data':'COM_STATE_CHANGE'}
             ,{'class':'m-w-3', 'title':'MID','data':'COM_MID'}
             ,{'class':'m-w-max', 'title':'상호법인명','data':'COM_NAME','defaultContent':'버튼넣기'}
             ,{'class':'m-w-4', 'title':'대표자명','data':'COM_CEO'}
-            ,{'class':'m-w-7', 'title':'업체주소','data':'ADDR1 + ADDR2'}
+            ,{'class':'m-w-max', 'title':'업체주소','data':null, 'render':function(data){
+                    return data['ADDR1'] + ' ' + data['ADDR2'] + ' ' + data['ADDR3'] + ' ' + data['ADDR4'];
+                }}
             ,{'class':'m-w-5', 'title':'우편번호','data':'POST'}
             ,{'class':'m-w-6', 'title':'전화번호','data':'COM_TEL'}
             ,{'class':'m-w-8', 'title':'담당자','data':'CE_NAME'}
