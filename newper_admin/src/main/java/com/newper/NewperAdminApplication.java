@@ -2,6 +2,7 @@ package com.newper;
 
 import com.newper.component.SessionInfo;
 import com.newper.exception.MsgException;
+import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,7 +34,7 @@ public class NewperAdminApplication {
             @Override
             public Optional<String> getCurrentAuditor() {
                 if(sessionInfo.getId()==null){
-                    throw new MsgException("세션이 만료되었습니다. 다시 로그인 해주세요.");
+                    throw new NoSessionException();
                 }
                 return Optional.of(sessionInfo.getId());
             }
