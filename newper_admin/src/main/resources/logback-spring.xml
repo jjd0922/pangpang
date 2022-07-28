@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
+    <springProfile name="window">
+        <property name="NEWPER_ADMIN_LOG" value="/C:/logs/newper" />
+    </springProfile>
     <springProfile name="dev">
-        <property name="PATH" value="/C:/logs/newper" />
+        <property name="NEWPER_ADMIN_LOG" value="" />
+    </springProfile>
+    <springProfile name="prod">
+        <property name="NEWPER_ADMIN_LOG" value="" />
     </springProfile>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>true</withJansi>
 
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %green(%-5level) %logger{35} %cyan(%logger{15}) - %msg %n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] %green(%-5level) %cyan(%logger{15}) - %msg %n</pattern>
         </encoder>
     </appender>
 
     <appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${PATH}/dev_ERP.log</file>
+        <file>${NEWPER_ADMIN_LOG}/ADMIN.log</file>
 
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level%logger{35} - %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] %-5level%logger{35} - %msg%n</pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${PATH}/dev_ERP.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${NEWPER_ADMIN_LOG}/ADMIN.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10GB</maxFileSize>
+                <maxFileSize>30MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
 
             <maxHistory>60</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <logger name="net.lunalabs.central" level="INFO">
-        <appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>
-    </logger>
+<!--    <logger name="net.lunalabs.central" level="INFO">-->
+<!--        <appender-ref ref="DAILY_ROLLING_FILE_APPENDER"/>-->
+<!--    </logger>-->
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

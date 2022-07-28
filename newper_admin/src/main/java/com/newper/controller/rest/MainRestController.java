@@ -3,6 +3,8 @@ package com.newper.controller.rest;
 import com.newper.component.SessionInfo;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
+import com.newper.exception.MsgException;
+import com.newper.exception.NoSessionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;

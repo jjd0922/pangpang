@@ -16,6 +16,8 @@ public class ViewAdvise {
     public ModelAndView exception(Exception e){
         ModelAndView mav = new ModelAndView("error/error");
 
+        log.error("", e);
+
 
         return mav;
     }
