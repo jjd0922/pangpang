@@ -87,4 +87,18 @@ public class NewperStorage {
 
         }
     }
+
+    /** 파일 삭제. bucket_objectName = bucketName/objectName 형식 */
+    static public void delete(String bucket_objectName){
+        int bucketIndex = bucket_objectName.indexOf("/");
+        String bucketName = bucket_objectName.substring(0, bucketIndex);
+        String objectName = bucket_objectName.substring(bucketIndex + 1);
+
+        NewperBucket newperBucket = NewperBucket.valueOf(bucketName);
+
+        AmazonS3 s3 = getBucket(newperBucket);
+
+        s3.deleteObject(bucketName, objectName);
+
+    }
 }
