@@ -1,6 +1,5 @@
 package com.newper.controller.rest;
 
-import com.newper.constant.ComState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
@@ -24,26 +23,17 @@ public class CompanyRestController {
 
     /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
-    public ReturnDatatable company(@RequestParam Map<String, Object> map){
+    public ReturnDatatable company(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
-        System.out.println("company list: " + companyMapper.selectCompany());
 
-        rd.setData(companyMapper.selectCompany());
-        rd.setRecordsTotal(companyMapper.countCompany());
+        paramMap.multiSelect("ctType");
+        paramMap.multiSelect("comType");
+        paramMap.multiSelect("comState");
+
+        rd.setData(companyMapper.selectCompanyDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
 
         return rd;
-    }
-
-    @PostMapping("regist.ajax")
-    public ReturnMap registCompany(ParamMap paramMap) {
-        System.out.println("regist param: " + paramMap.entrySet());
-
-        Company company = paramMap.mapParam(Company.class);
-        companyRepo.save(company);
-
-        System.out.println("Test");
-
-        return null;
     }
 
     @PostMapping("contract.dataTable")

@@ -37,9 +37,9 @@
 
                     <div class="col-lg-12">
 
-                        <div class="card">
-                            <div class="card-body popup-contents">
-                                <form id="regiForm">
+                        <form id="regiForm">
+                            <div class="card">
+                                <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">1. 등록정보</legend>
@@ -104,17 +104,11 @@
                                             </div>
                                         </div>
                                     </fieldset>
+                                </div>
                             </div>
 
-                            <!-- <div class="card-footer bg-light d-flex justify-content-sm-between align-items-sm-center">
-                                <button type="button" class="btn btn-sm btn-outline-dark mr-1"><i class="icon-cross2 mr-1"></i>닫기</button>
-
-                                <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
-                            </div> -->
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body popup-contents">
+                            <div class="card">
+                                <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">2. 거래처정보</legend>
@@ -238,24 +232,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    우편번호 <a href="#" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                    우편번호 <a href="javascript: daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="post" class="form-control" placeholder="다음 주소 api연동 필요">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    주소(시,도)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="addr1" class="form-control" placeholder="자동입력">
+                                                        <input type="text" name="post" class="form-control" placeholder="우편번호검색">
                                                     </div>
                                                 </div>
                                             </div>
@@ -280,10 +260,24 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
+                                                                    주소(시,도)
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr1" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
                                                                     주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr2" class="form-control" placeholder="자동입력">
+                                                        <input type="text" name="addr2" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,7 +291,7 @@
                                                                     상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr3" class="form-control" placeholder="입력">
+                                                        <input type="text" name="addr3" class="form-control" placeholder="상세주소입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -368,26 +362,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!--<script>
-                                                $(function(){
-                                                    $('#fileImage').tooltip({
-                                                        item:'[data-photo]',
-                                                        content:function(){
-                                                            var photo = $(this).data('photo');
-                                                            return '<img src="'+photo+'.jpg"/>';
-                                                        }
-                                                    });
-                                                });
-                                            </script>-->
                                         </div>
                                     </fieldset>
                                     <!-- 타이틀 구분 끝-->
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="card">
-                            <div class="card-body popup-contents">
+                            <div class="card">
+                                <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">3. 거래처 담당자정보</legend>
@@ -492,12 +474,11 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </fieldset>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+                        <!-- #regiForm end -->
                     </div>
                 </div>
 
@@ -566,6 +547,8 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
 
 <script>
     function saveAction(){
@@ -578,9 +561,55 @@
             }
         });
     }
+
+    /** 다음 주소 api사용 */
+    function daum_address() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if(extraAddr !== ''){
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=post]').val(data.zonecode).attr('readonly', true);
+                $('input[name=addr1]').val(data.sido).attr('readonly', true);
+                $('input[name=addr2]').val(data.sigungu).attr('readonly', true);
+                $('input[name=addr3]').val(addr + extraAddr);
+            }
+        }).open();
+    }
+
+    /** 담당자 검색해서 가져오기 */
+    function searchEmployee(type) {
+
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
+    $("input[name=post]").on("click", daum_address);
 </script>
 </body>
 
