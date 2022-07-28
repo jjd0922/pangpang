@@ -4,8 +4,7 @@ spring:
       window: windowinfo,common
       dev: devinfo,common
       prod: prodinfo,common
-    active: dev
-
+    active: window
 ---
 spring:
   config:
@@ -48,6 +47,11 @@ logging:
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: true
+
 ---
 spring:
   config:
@@ -90,6 +94,10 @@ logging:
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: false
 ---
 spring:
   config:
@@ -100,6 +108,10 @@ spring:
 ncloud.bucket:
   open: prod-open
   secret: prod-secret
+
+decorator:
+  datasource:
+    enabled: false
 ---
 
 spring:
@@ -115,8 +127,6 @@ spring:
     hibernate:
       use-new-id-generator-mappings: false
       #naming.physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-    show-sql: true
 
 
 
@@ -144,9 +154,6 @@ mybatis:
 #      max-file-size: 999MB
 #      file-name-pattern: ${LOG_FILE}_%d{yyyy-MM-dd}.%i.log
 #
-#decorator:
-#  datasource:
-#    enabled: false
 
 server:
   servlet:
