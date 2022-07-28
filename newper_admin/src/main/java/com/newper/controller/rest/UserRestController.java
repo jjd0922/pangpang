@@ -28,23 +28,24 @@ public class UserRestController {
         ReturnDatatable rd = new ReturnDatatable();
 
         List<Map<String, Object>> data = new ArrayList<>();
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
 
         rd.setData(data);
-        rd.setRecordsTotal();
+        rd.setRecordsTotal(List.of().size());
 
         return rd;
     }
 
+    @PostMapping("modal.dataTable")
+    public ReturnDatatable modal(@RequestParam Map<String, Object> map) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        List<Map<String, Object>> data = new ArrayList<>();
+
+        rd.setData(data);
+        rd.setRecordsTotal(List.of().size());
+
+        return rd;
+    }
 
 }
 
