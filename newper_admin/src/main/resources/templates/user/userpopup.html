@@ -30,10 +30,10 @@
 
 
                         </div>
-
+            <form id="userForm">
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
+
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">1. 사용자정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.</span></legend>
@@ -48,7 +48,7 @@
                                                                    이름
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control"  placeholder="기본" name="U_NAME">
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@
                                                                   전화번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_TEL">
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,7 +74,7 @@
                                                                    휴대폰번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_PHONE">
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,7 +88,7 @@
                                                                    생년월일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_BIRTH">
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,10 +97,12 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">우편번호</span>
-                                                                <button>검색</button>
+                                                                <span class="input-group-text requested">
+                                                                우편번호
+                                                                 <a class="badge badge-sm badge-info ml-1" onclick="">검색</a>
+                                                                </span>
                                                             </span>
-                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등">
+                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등" name="POST">
                                                         <span class="input-group-append">
                                                                 <a class="input-group-text"><i class="icon-map5"></i></a>
                                                             </span>
@@ -116,7 +118,7 @@
                                                                   주소(시,도)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -130,7 +132,7 @@
                                                                  주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR2">
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,10 +142,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-
+                                                                    주소(도로명)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR3">
                                                     </div>
                                                 </div>
                                             </div>
@@ -156,21 +158,19 @@
                                                                    상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR4">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
                                     <!-- 타이틀 구분 끝-->
-                                </form>
                             </div>
                         </div>
 
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="#">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">2. 업체정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.</span></legend>
@@ -197,13 +197,13 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">상호법인명</span>
-                                                                <button>검색</button>
+                                                                <span class="input-group-text requested">
+                                                                    상호법인명
+                                                                    <a class="badge badge-sm badge-info ml-1" onclick="searchComNameModal()">검색</a>
+                                                                </span>
                                                             </span>
-                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등">
-                                                        <span class="input-group-append">
-                                                                <a class="input-group-text"><i class="icon-map5"></i></a>
-                                                            </span>
+                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등" name="COM_NAME" readonly>
+                                                        <input type="hidden" name="U_COM_IDX" value="1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,7 +216,7 @@
                                                                  사원번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" >
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,7 +229,7 @@
                                                                 부서
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_DEPART">
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,7 +242,7 @@
                                                                  직급(직책)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_POSITION">
                                                     </div>
                                                 </div>
                                             </div>
@@ -255,7 +255,7 @@
                                                                 직무
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_JOB">
                                                     </div>
                                                 </div>
                                             </div>
@@ -268,7 +268,7 @@
                                                                  이메일(회사)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_COMPAYN_MAIL">
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,7 +281,7 @@
                                                                  이메일(개인)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_PERSON_MAIL">
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,7 +294,7 @@
                                                                 전화번호(사무실번호)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_COMPANY_TEL">
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,90 +307,88 @@
 
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본">
+                                                        <input type="text" class="form-control" placeholder="기본" >
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                             </fieldset>
                             <!-- 타이틀 구분 끝-->
-                            </form>
                         </div>
                     </div>
 
-                                            <div class="card">
-                                                <div class="card-body popup-contents">
-                                                    <form action="#">
-                                                        <!-- 타이틀 -->
-                                                        <fieldset class="mb-0">
-                                                            <legend class="">3. 계정정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.</span></legend>
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-md-6">
-                                                                    <div class="form-group">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-prepend">
-                                                                             <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
-                                                                            </span>
-                                                                            <select data-placeholder="옵션" class="form-control select" data-fouc>
-                                                                                <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
-                                                                                <option value="1">a</option>
-                                                                                <option value="2">b</option>
-                                                                                <option value="3">c</option>
-                                                                                <option value="4">d</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!--입력필드-->
-                                                                <div class="col-sm-12 col-md-6">
-                                                                    <div class="form-group">
-                                                                        <div class="input-group">
-                                                                           <span class="input-group-prepend">
-                                                                            <span class="input-group-text">
-                                                                             로그인 ID
-                                                                            </span>
-                                                                           </span>
-                                                                            <input type="text" class="form-control" placeholder="기본">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!--입력필드-->
-                                                                <div class="col-sm-12 col-md-6">
-                                                                    <div class="form-group">
-                                                                        <div class="input-group">
-                                                                               <span class="input-group-prepend">
-                                                                                   <span class="input-group-text">
-                                                                                 패스워드
-                                                                                   </span>
-                                                                               </span>
-                                                                            <input type="text" class="form-control" placeholder="기본">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!--입력필드-->
-                                                                <div class="col-sm-12 col-md-6">
-                                                                    <div class="form-group">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-prepend">
-                                                                             <span class="input-group-text requested">권한 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
-                                                                            </span>
-                                                                            <select data-placeholder="옵션" class="form-control select" data-fouc>
-                                                                                <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
-                                                                                <option value="1">a</option>
-                                                                                <option value="2">b</option>
-                                                                                <option value="3">c</option>
-                                                                                <option value="4">d</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                  </fieldset>
-                                                <!-- 타이틀 구분 끝-->
-                                                </form>
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">3. 계정정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.</span></legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                         <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
+                                                        </span>
+                                                        <select data-placeholder="옵션" class="form-control select" data-fouc>
+                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
+                                                            <option value="1">a</option>
+                                                            <option value="2">b</option>
+                                                            <option value="3">c</option>
+                                                            <option value="4">d</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--입력필드-->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                       <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                         로그인 ID
+                                                        </span>
+                                                       </span>
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_ID">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--입력필드-->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                           <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                             패스워드
+                                                               </span>
+                                                           </span>
+                                                        <input type="text" class="form-control" placeholder="기본" name="U_PASSWORD">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--입력필드-->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                         <span class="input-group-text requested">권한 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
+                                                        </span>
+                                                        <select data-placeholder="옵션" class="form-control select" data-fouc>
+                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
+                                                            <option value="1">a</option>
+                                                            <option value="2">b</option>
+                                                            <option value="3">c</option>
+                                                            <option value="4">d</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
+                              </fieldset>
+                            <!-- 타이틀 구분 끝-->
+                        </div>
+                    </div>
+            </form>
 <!--
                             <div class="card-footer bg-white d-flex justify-content-sm-between align-items-sm-center">
                                 <button type="button" class="btn btn-sm btn-light float-left"><i class="icon-cross2 mr-1"></i>닫기</button>
@@ -412,11 +410,14 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
         <!-- /footer -->
     </div>
 </div>
+
+
+<th:block th:replace="/modal/searchComNameModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
@@ -440,19 +441,6 @@
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
 
-<!-- 에디터 -->
-<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
-<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
-
-<!-- 드래그&드랍 -->
-<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
-
-<!-- 컬러픽커 -->
-<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
-
-<!-- 그래프 -->
-<script th:src="@{/assets/js/plugins/visualization/echarts/echarts.min.js}"></script>
-
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
 <!-- input -->
@@ -460,17 +448,26 @@
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 <!-- 데이터테이블 -->
 <script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
-<!-- 에디터 -->
-<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
-<!-- 드래그&드랍 -->
-<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
-<!-- 컬러픽커 -->
-<script th:src="@{/assets/js/demo_pages/picker_color.js}"></script>
-<!-- 그래프 -->
-<script th:src="@{/assets/js/demo_charts/echarts/light/lines/lines_zoom.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
+<script th:inline="javascript">
+    function searchComNameModal(){
+        $('#comNameModal').modal('show');
+    }
 
+    function userCreate(){
+        $.ajax({
+            url:[[@{/user/userCreate.ajax}]],
+            data: $('#userForm').serialize(),
+            type:'POST',
+            success:function(data){
+                console.log(data);
+            }
+            ,error: function(){
+            }
+        });
+    }
+</script>
 
 <!-- 첨부이미지 hover 미리보기 -->
 <script language="JavaScript">
@@ -498,9 +495,58 @@
             $("#preview").remove();
         });
     });
+
+
+
+</script>
+
+<script>
+    $('#modalTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/user/modal.dataTable?'+$('#modalForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'class':'m-w-max', 'title':'이름','data':'CE_NAME'}
+            ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
+            ,{'class':'m-w-max', 'title':'등록시간','data':'CREATED_TIME'}
+            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE'}
+            ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE'}
+            ,{'class':'m-w-max', 'title':'상태','data':'COM_STATE'}
+            ,{'class':'m-w-max', 'title':'MID','data':'COM_MID'}
+            ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
+            ,{'class':'m-w-max', 'title':'대표자명','data':'COM_CEO'}
+
+        ]
+    });
+
+    $('#modalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('userpopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
 </script>
 </body>
-
-
 
 </html>

@@ -20,15 +20,16 @@ public class MainController {
     @Autowired
     private SessionInfo sessionInfo;
 
-    @GetMapping(value = {"","index"})
-    public ModelAndView index(){
+    @GetMapping(value = {"", "index"})
+    public ModelAndView index() {
         ModelAndView mav = new ModelAndView("main/index");
 
 
         return mav;
     }
+
     @GetMapping(value = "home")
-    public ModelAndView home(){
+    public ModelAndView home() {
         ModelAndView mav = new ModelAndView("main/home");
 
 
@@ -37,16 +38,16 @@ public class MainController {
 
 
     @RequestMapping(value = "defaultSample")
-    public ModelAndView defaultSample(){
+    public ModelAndView defaultSample() {
         ModelAndView mav = new ModelAndView("main/default_sample");
 
         return mav;
     }
-    @RequestMapping(value = "popupSample")
-    public ModelAndView popupSample(){
+
+    @RequestMapping(value = "/popup/")
+    public ModelAndView popupSample() {
         ModelAndView mav = new ModelAndView("main/popup_sample");
 
         return mav;
     }
-
 }

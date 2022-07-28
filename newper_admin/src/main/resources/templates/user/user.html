@@ -33,7 +33,7 @@
                                             </span>
                                     </div>
                                 </h6>
-                                <div class="header-elements text-right">
+                                <!--<div class="header-elements text-right">
 
                                     <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
                                         <i class="icon-popout mr-1"></i>신규등록
@@ -45,7 +45,7 @@
                                             <a class="list-icons-item" data-action="collapse"></a>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
 
 
@@ -134,6 +134,31 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄수정</button>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item">일괄요소</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="#" class="dropdown-item">수정요소</a>
+
+                                    </div>
+                                    <div class="header-elements text-right">
+
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+
+
+                                        <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                            <div class="list-icons ml-2">
+                                                <a class="list-icons-item" data-action="collapse"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <table class="table" id="userTable"></table>
 
@@ -173,6 +198,7 @@
 
     }
 </script>
+
 <script>
     $('#userTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
@@ -221,8 +247,12 @@
         if(event.keyCode==13){searchBtn();return false;}
     });
 
-    $('#popNewBtn').on('click',function (){
+/*    $('#popNewBtn').on('click',function (){
         alert('test');
+    });*/
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('userpopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     });
 </script>
 </html>

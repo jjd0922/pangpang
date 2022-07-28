@@ -2,6 +2,7 @@ package com.newper.entity;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -10,8 +11,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+//@AllArgsConstructor
 @Builder
+@Table(name = "USER")
 public class User {
 
     @Id
@@ -21,4 +23,12 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "U_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
+
+
+    public User(Integer uIdx, Company company) {
+        this.uIdx = uIdx;
+        this.company = company;
+    }
 }
+
+
