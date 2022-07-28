@@ -8,9 +8,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+/** 주소 embedded class*/
 public class Address {
 
-    private String post;        // 우편번호, 주소
+    private String post;
     private String addr1;
     private String addr2;
     private String addr3;

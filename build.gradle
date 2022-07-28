@@ -5,7 +5,7 @@ plugins {
 }
 
 subprojects{
-	apply plugin: 'java'
+	apply plugin: 'java-library'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 
@@ -46,15 +46,16 @@ bootJar { enabled = false}
 project(':newper_admin') {
 	dependencies {
 		implementation project(':newper_domain')
+		implementation project(':newper_storage')
 	}
 }
 project(':newper_shop') {
 	dependencies {
-		implementation project(':newper_shop_domain')
+		implementation project(':newper_domain')
 	}
 }
 project(':newper_shop_admin') {
 	dependencies {
-		implementation project(':newper_shop_domain')
+		implementation project(':newper_domain')
 	}
 }

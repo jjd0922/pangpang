@@ -39,7 +39,7 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="regiInfoForm">
+                                <form name="regiForm" method="post" enctype="multipart/form-data">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">1. 등록정보</legend>
@@ -52,10 +52,9 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">거래처구분코드</span>
                                                             </span>
-                                                        <select data-placeholder="" class="form-control select" multiple="multiple" data-fouc>
+                                                        <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple">
                                                             <option></option>
-                                                            <option value="1">본사</option>
-                                                            <option value="2">매입처</option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -68,11 +67,9 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">사업자 분류</span>
                                                             </span>
-                                                        <select data-placeholder="옵션" name="comType" class="form-control select" data-fouc>
-                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
-                                                            <option value="1">개인</option>
-                                                            <option value="2">개인사업자</option>
-                                                            <option value="3">법인</option>
+                                                        <select data-placeholder="분류 선택" name="comType" class="form-control select">
+                                                            <option></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -99,19 +96,14 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">상태</span>
                                                             </span>
-                                                        <select data-placeholder="옵션" name="comState" class="form-control select" data-fouc>
-                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
-                                                            <option value="1">승인요청</option><!--나중에 수정-->
-                                                            <option value="2">정상업체</option>
-                                                            <option value="3">거래중지</option>
-                                                            <option value="4">기타</option>
+                                                        <select name="comState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
-                                </form>
                             </div>
 
                             <!-- <div class="card-footer bg-light d-flex justify-content-sm-between align-items-sm-center">
@@ -123,7 +115,6 @@
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="comInfoForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">2. 거래처정보</legend>
@@ -250,7 +241,7 @@
                                                                     우편번호 <a href="#" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="다음 주소 api연동 필요">
+                                                        <input type="text" name="post" class="form-control" placeholder="다음 주소 api연동 필요">
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,7 +255,7 @@
                                                                     주소(시,도)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="자동입력">
+                                                        <input type="text" name="addr1" class="form-control" placeholder="자동입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -292,7 +283,7 @@
                                                                     주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="자동입력">
+                                                        <input type="text" name="addr2" class="form-control" placeholder="자동입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -306,7 +297,7 @@
                                                                     상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="입력">
+                                                        <input type="text" name="addr3" class="form-control" placeholder="입력">
                                                     </div>
                                                 </div>
                                             </div>
@@ -392,13 +383,11 @@
                                         </div>
                                     </fieldset>
                                     <!-- 타이틀 구분 끝-->
-                                </form>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-body popup-contents">
-                                <form action="comEmpForm">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                         <legend class="">3. 거래처 담당자정보</legend>
@@ -578,40 +567,20 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 
-<!-- 첨부이미지 hover 미리보기 -->
 <script>
-    $(document).ready(function() {
-        var xOffset = 150;
-        var yOffset = -10;
-
-        $(document).on("mouseover",".input-thumb",function(e){
-            var image_data = $(this).data("image");
-            var add_caption = (image_data != undefined) ? "<br/>" + image_data : "" ;
-            $("body").append("<p id='preview' class='input-thumb-preview'><img src='"+ $(this).attr("src") +"' width='100%' />"+ add_caption +"</p>");
-            $("#preview")
-                .css("left",(e.clientX - xOffset) + "px")
-                .css("top",(e.clientY - yOffset) + "px")
-                .fadeIn("fast");
+    function saveAction(){
+        $.ajax({
+            url: '/company/regist.ajax',
+            data: $("#regiForm").serialize(),
+            type: "post",
+            success: function (data) {
+                alert("등록 성공");
+            }
         });
-
-        $(document).on("mousemove",".input-thumb",function(e){
-            $("#preview")
-                .css("left",(e.clientX - xOffset) + "px")
-                .css("top",(e.clientY - yOffset) + "px");
-        });
-
-        $(document).on("mouseout",".input-thumb",function(){
-            $("#preview").remove();
-        });
-
-        $("#saveBtn").on("click", function(){
-           $.ajax({
-               url: '/company/pop/regist/' + $("#regiInfoForm").serialize() + $("#com")
-               type: "post",
-           });
-        });
-    });
-
+    }
+</script>
+<script>
+    $("#saveBtn").on("click", saveAction);
 </script>
 </body>
 
