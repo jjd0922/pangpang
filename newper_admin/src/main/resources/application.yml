@@ -4,7 +4,8 @@ spring:
       window: windowinfo,common
       dev: devinfo,common
       prod: prodinfo,common
-    active: window
+    active: dev
+
 ---
 spring:
   config:
@@ -43,15 +44,11 @@ logging:
     #  key: testuser
     #  domain: http://trace-api-dev.sweettracker.net:8102/
     #  callback: http://localhost:9080/present/tracking/add/invoice/return
+  config: logback-${spring.profiles.active}.xml
 
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
-
-decorator:
-  datasource:
-    enabled: true
-
 ---
 spring:
   config:
@@ -90,14 +87,12 @@ logging:
     #  key: testuser
     #  domain: http://trace-api-dev.sweettracker.net:8102/
     #  callback: http://localhost:9080/present/tracking/add/invoice/return
+  config: newper_admin/src/main/resources/logback/logback-${spring.profiles.active}.xml
+
 
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
-
-decorator:
-  datasource:
-    enabled: false
 ---
 spring:
   config:

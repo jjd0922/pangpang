@@ -39,11 +39,8 @@ public class CompanyRestController {
     @PostMapping("contract.dataTable")
     public ReturnDatatable companyContract(@RequestParam Map<String, Object> param){
         ReturnDatatable rd = new ReturnDatatable();
-        System.out.println("contract: " + companyMapper.selectCompanyContract(param));
-
         rd.setData(companyMapper.selectCompanyContract(param));
         rd.setRecordsTotal(companyMapper.countCompanyContract(param));
-
 
         return rd;
     }

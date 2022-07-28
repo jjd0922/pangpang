@@ -55,7 +55,6 @@ public class CompanyController {
     public ModelAndView contract(){
         ModelAndView mav = new ModelAndView("company/contract");
 
-
         return mav;
     }
 }

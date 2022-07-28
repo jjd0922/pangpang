@@ -56,49 +56,61 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <input class="form-control form-control-sm daterange-basic" name="CREATED_DATE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상호법인명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent1">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">사업자번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent2">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">대표자명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent3">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NUM">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">MID</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent4">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_MID">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">거래처구분코드</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <label class="d-block">계약번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CC_CONTRACT_NUM">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">사업자 분류</label>
+                                                    <label class="d-block">계약구분</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CC_CT_TYPE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">세금계산서발행일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CC_TAX_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">정산주기</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CC_CYCLE">
+                                                </div>
+
+
+                                                <!--<div class="form-group">
+                                                    <label class="d-block">정산방식</label>
                                                     <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
-                                                </div>
+                                                </div>-->
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control form-control-sm select-search" name="CC_STATE" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="test1">test1</option>
+                                                        <option value="test2">test2</option>
+                                                        <option value="test3">test3</option>
+                                                        <option value="test4">test4</option>
+                                                        <option value="test5">test5</option>
+                                                        <option value="test6">test6</option>
                                                     </select>
                                                 </div>
 
@@ -178,87 +190,27 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'class':'m-w-2', 'title':'상호법인명','data':'COM_NAME','defaultContent':''}
+            ,{'class':'m-w-2', 'title':'MID','data':'COM_MID','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'계약구분','data':'CC_CT_TYPE'}
+            ,{'class':'m-w-5 p-0', 'title':'상태','data':'CC_STATE'}
+            ,{'class':'m-w-7', 'title':'정산주기','data':'CC_CYCLE'}
+            ,{'class':'m-w-max', 'title':'세금계산서발행일','data':'CC_TAX_DATE'}
+            /*,{'class':'m-w-13', 'title':'정산방식','data':'CC_FEE_TYPE','defaultContent':''}*/
+            ,{'class':'m-w-6', 'title':'지급예정일','data':'CC_PAYMENT_DATE','defaultContent':''}
+            ,{'class':'m-w-6', 'title':'계약시작일','data':'CC_CONTRACT_START','defaultContent':''}
+            ,{'class':'m-w-8', 'title':'계약종료일','data':'CC_CONTRACT_END'}
+            ,{'class':'m-w-7', 'title':'정액/정률','data':'CC_RATES','defaultContent':'', 'render':function(data,type,full,meta){
+                    return full.CC_COST + "/" + data
                 }}
-            ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'class':'m-w-max', 'title':'구매사','data':'SHOP_NAME'}
-            ,{'class':'m-w-5 p-0', 'title':'썸네일','data':'P_THUMBNAIL','render':function(data,type,full,meta){
-                    if(full.P_THUMBNAIL==null){
-                        return '';
-                    }
-                    return '<img src="'+data+'" class="input-thumb" height="33">';
-                }}
-
-            ,{'class':'m-w-7', 'title':'내부 판매 상태','data':'STATE', 'render':function(data,type,full,meta){
-                    if(data != 'Y'){
-                        return '<span class="text-danger">'+data+'</span>';
-                    }
-                    return data;
-                }}
-            ,{'class':'m-w-max', 'title':'발행사 상품명','data':'P_NAME','render':function(data,type,full,meta){
-                    if(data==null){
-                        return  full.GOODSNAME;
-                    }
-                    return data;
-                }}
-            ,{'class':'m-w-13', 'title':'내부 상품코드','data':'GOODSGROUPID','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'계약 시작일','data':'START_DAY','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'계약 종료일','data':'END_DAY','defaultContent':''}
-
-
-            ,{'class':'m-w-8', 'title':'구매사 상품 상태','data':'SP_STATE_STR', 'render':function(data,type,full,meta){
-                    if(data != '판매'){
-                        return '<span class="text-danger">'+data+'</span>';
-                    }
-                    return data;
-                }}
-            ,{'class':'m-w-7', 'title':'대분류','data':'CF_NAME','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'브랜드','data':'B_NAME','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'선물하기 상품명','data':'SP_NAME','render':function(data,type,full,meta){
-                    if(full.SP_NAME==null){
-                        return '<span class="text-danger">미등록</span>';
-                    }else{
-                        return '<a class="btn btn-sm btn-primary" onclick="popProductShop(\''+meta.settings.sTableId+'\','+meta.row+')">'+ellipsisStr(full.SP_NAME)+'</a>';
-                    }
-                }}
-            ,{'class':'m-w-3', 'title':'재고','data':'SP_STOCK','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'1인 1회 구매 제한','data':'SP_QUOTA_ONCE','defaultContent':'미사용'}
-            ,{'class':'m-w-8', 'title':'당일 1인 구매 제한','data':'SP_QUOTA_DAY','defaultContent':'미사용'}
-            ,{'class':'text-won m-w-5', 'title':'정상가','data':'P_PRICE_F','defaultContent':''}
-            ,{'class':'text-right m-w-7', 'title':'할인율_할인액','data':'FEE','defaultContent':'', 'render':function(data,type,full,meta){
-                    if(full.BUYER_ACCDIV == 10){
-                        return data+'원';
-                    }else{
-                        if(data == null){
-                            return '%';
-                        }else{
-                            return data+'%';
-                        }
-                    }
-                }}
-            ,{'class':'m-w-10', 'title':'판매대행 수수료율(%)','data':'SALEFEE_F','defaultContent':'', 'class':'text-right'}
-            ,{'class':'m-w-10', 'title':'구매사 추가 할인율(%)','data':'SP_PERCENT_F','defaultContent':'', 'class':'text-right'}
-            ,{'class':'m-w-5', 'title':'판매가','data':'SP_PRICE_F','defaultContent':'', 'class':'text-won'}
-            ,{'class':'m-w-6', 'title':'추가할인관리','data':'SP_IDX', 'render':function(data,type,full,meta){
-                    if(data != null && data != 'undefined'){
-                        return '<a class="btn btn-secondary" onclick="popManageDiscount(\''+meta.settings.sTableId+'\','+meta.row+')">관리</a>';
-                    }else{
-                        return '';
-                    }
-                }}
-            ,{'class':'m-w-8', 'title':'추가할인요청상태','data':'SPR_STATE', 'render':function(data,type,full,meta){
-                    if(data != null && data != 'undefined'){
-                        if(data == '요청'){
-                            return '<span class="text-danger">'+data+'</span>'
-                        }else{
-                            return '<span class="text-success">'+data+'</span>';
-                        }
-                    }else{
-                        return '';
-                    }
+            ,{'class':'m-w-max', 'title':'계약번호','data':'CC_CONTRACT_NUM','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'등록자','data':'CREATED_BY'}
+            ,{'class':'m-w-3', 'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+            ,{'class':'m-w-8', 'title':'수정자','data':'MODIFIED_BY','defaultContent':''}
+            ,{'class':'m-w-8', 'title':'수정일','data':'MODIFIED_DATE','defaultContent':''}
+            /*,{'class':'text-won m-w-5', 'title':'수정사유','data':'P_PRICE_F','defaultContent':''}*/
+            ,{'class':'text-right m-w-7', 'title':'수정이력','data':'CC_COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                    return '<button type="button">상세</button>'
                 }}
         ]
     });
@@ -268,7 +220,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       alert('test');
+        alert('test');
     });
 </script>
 </html>
