@@ -4,7 +4,7 @@ spring:
       window: windowinfo,common
       dev: devinfo,common
       prod: prodinfo,common
-    active: dev
+    active: window
 
 ---
 spring:
@@ -33,22 +33,13 @@ server:
       #      timeout: 10800      # 60*60*3
       timeout: 86400      # 60*60*24
 
-logging:
-  file:
-    name: C:/logs/newper/admin.log
-  charset:
-    console: UTF-8
-    file: UTF-8
-    #sweettracker:
-    #  tier: testuser
-    #  key: testuser
-    #  domain: http://trace-api-dev.sweettracker.net:8102/
-    #  callback: http://localhost:9080/present/tracking/add/invoice/return
-  config: logback-${spring.profiles.active}.xml
-
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: true
 ---
 spring:
   config:
@@ -87,12 +78,15 @@ logging:
     #  key: testuser
     #  domain: http://trace-api-dev.sweettracker.net:8102/
     #  callback: http://localhost:9080/present/tracking/add/invoice/return
-  config: newper_admin/src/main/resources/logback/logback-${spring.profiles.active}.xml
 
 
 ncloud.bucket:
   open: DEV_OPEN
   secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: false
 ---
 spring:
   config:
@@ -108,7 +102,6 @@ decorator:
   datasource:
     enabled: false
 ---
-
 spring:
   config:
     activate:
@@ -154,3 +147,15 @@ server:
   servlet:
     session:
       tracking-modes: cookie
+
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+
+#sweettracker:
+#  tier: testuser
+#  key: testuser
+#  domain: http://trace-api-dev.sweettracker.net:8102/
+#  callback: http://localhost:9080/present/tracking/add/invoice/return

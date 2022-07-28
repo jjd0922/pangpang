@@ -51,23 +51,20 @@ public class RestAdvise {
 
     @ExceptionHandler(MsgException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public Object msgException(MsgException e){
-        Map<String, Object> returnMap = new HashMap<>();
+    public ReturnMap msgException(MsgException e){
+        ReturnMap rm = new ReturnMap();
 
-        returnMap.put("timestamp", LocalDateTime.now());
-        returnMap.put("status", 400);
-        returnMap.put("error", e.getClass()+"");
-        returnMap.put("message", e.getMessage());
-//      returnMap.put("path", );
+        rm.setMessage(e.getMessage());
 
-        return returnMap;
+        return rm;
     }
 
     @ExceptionHandler(NoSessionException.class)
     public ReturnMap noSessionException(){
         ReturnMap rm = new ReturnMap();
 
-
+        rm.setLocation("/index");
+        rm.setPopup(true);
 
         return rm;
     }

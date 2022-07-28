@@ -36,6 +36,10 @@ public class ReturnMap {
     }
     public void setLocation(String location) { this.location=location; }
 
+    public void setPopup(boolean popup) {
+        isPopup = popup;
+    }
+
     public void put(String key, Object value) {
         data.put(key, value);
     }

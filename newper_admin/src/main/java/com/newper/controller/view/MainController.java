@@ -1,16 +1,16 @@
 package com.newper.controller.view;
 
 import com.newper.component.SessionInfo;
-import com.newper.exception.MsgException;
-import com.newper.exception.NoSessionException;
 import com.newper.repository.CompanyRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainController {
