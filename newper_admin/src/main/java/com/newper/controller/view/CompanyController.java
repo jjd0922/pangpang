@@ -54,7 +54,6 @@ public class CompanyController {
     @GetMapping(value = "contract")
     public ModelAndView contract(){
         ModelAndView mav = new ModelAndView("company/contract");
-
         return mav;
     }
 }

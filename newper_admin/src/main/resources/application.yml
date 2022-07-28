@@ -6,6 +6,7 @@ spring:
       prod: prodinfo,common
     active: dev
 
+
 ---
 spring:
   config:
@@ -39,11 +40,13 @@ logging:
   charset:
     console: UTF-8
     file: UTF-8
+
     #sweettracker:
     #  tier: testuser
     #  key: testuser
     #  domain: http://trace-api-dev.sweettracker.net:8102/
     #  callback: http://localhost:9080/present/tracking/add/invoice/return
+  config: logback-${spring.profiles.active}.xml
 
 ncloud.bucket:
   open: DEV_OPEN
@@ -86,6 +89,8 @@ logging:
     #  key: testuser
     #  domain: http://trace-api-dev.sweettracker.net:8102/
     #  callback: http://localhost:9080/present/tracking/add/invoice/return
+  config: newper_admin/src/main/resources/logback/logback-${spring.profiles.active}.xml
+
 
 ncloud.bucket:
   open: DEV_OPEN

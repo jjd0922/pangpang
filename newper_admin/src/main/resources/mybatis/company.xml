@@ -26,9 +26,15 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
+        WHERE
+            CC_IDX IS NOT NULL
+        <if test="CREATED_DATE != '' and CREATED_DATE != null">
+        AND
+            COMPANY_CONTRACT.CREATED_DATE BETWEEN DATE1 AND DATE2
+        </if>
     </select>
 
-    <select id="countCompanyContract" resultType="Integer">
+    <select id="countCompanyContract" resultType="Long">
         SELECT
             COUNT(*)
         FROM
