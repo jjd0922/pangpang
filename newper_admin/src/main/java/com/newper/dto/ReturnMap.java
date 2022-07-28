@@ -21,6 +21,9 @@ public class ReturnMap {
     @Builder.Default
     private int status=200;
     private String message;
+
+    /** location있는 경우 popup으로 열지*/
+    private boolean isPopup;
     private String location;
     @Builder.Default
     Map<String, Object> data = new HashMap<>();

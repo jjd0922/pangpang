@@ -1,6 +1,8 @@
 package com.newper.controller.view;
 
 import com.newper.component.SessionInfo;
+import com.newper.exception.MsgException;
+import com.newper.exception.NoSessionException;
 import com.newper.repository.CompanyRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,12 @@ public class MainController {
         ModelAndView mav = new ModelAndView("main/index");
 
 
-        System.out.println(sessionInfo.getId());
-
         return mav;
     }
     @GetMapping(value = "home")
     public ModelAndView home(){
         ModelAndView mav = new ModelAndView("main/home");
+
 
         return mav;
     }
