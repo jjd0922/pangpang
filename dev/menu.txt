@@ -1,7 +1,7 @@
 
-//menu query
-
+-- menu query
 SET @menu_order:=0 ;
+
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('HOME' , '' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('거래처,사용자관리' , '' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('상품관리' , '' , 'ERP' ,@menu_order:=@menu_order+1);
@@ -17,20 +17,20 @@ INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('매입정산'
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('회계관리' , '' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('통계' , '' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('ADMIN' , '' , 'ERP' ,@menu_order:=@menu_order+1);
-INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('보상닷컴 기능 ' , '' , 'ERP' ,@menu_order:=@menu_order+1);
+INSERT INTO MENU (MENU_NAME,MENU_URL,MENU_TYPE,MENU_ORDER) VALUES('보상닷컴 기능' , '' , 'ERP' ,@menu_order:=@menu_order+1);
 
 
 
-//sub_menu query
+-- sub_menu query
 
-SET @menu_order:=0 ;
+
 
 INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('대쉬보드','HOME', '' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('공지사항,요청관리','HOME', '' , @menu_order:=@menu_order+1 );
 
-INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('거래처관리','거래처,사용자관리', '' ,@menu_order:=@menu_order+1  );
-INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('거래처계약관리','거래처,사용자관리', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('사용자관리','거래처,사용자관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('거래처관리','거래처,사용자관리', '/company/' ,@menu_order:=@menu_order+1  );
+INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('거래처계약관리','거래처,사용자관리', '/company/contract/' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('사용자관리','거래처,사용자관리', '/user/' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('상품별수수료관리','거래처,사용자관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('매입처보증보험관리','거래처,사용자관리', '' , @menu_order:=@menu_order+1 );
 
@@ -126,4 +126,4 @@ INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('상담결과
 INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('기타코드관리','ADMIN', '' , @menu_order:=@menu_order+1 );
 
 
-INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('하위아이템','보상닷컴기능', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_NAME,SM_MENU_NAME,SM_URL,SM_ORDER) VALUES('하위아이템 예정','보상닷컴기능', '' , @menu_order:=@menu_order+1 );
