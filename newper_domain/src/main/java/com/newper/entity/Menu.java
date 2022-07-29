@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.MenuType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,8 +20,10 @@ public class Menu {
     @Id
     private String menuName;
     private String menuUrl;
-    /** CP or ERP*/
-    private String menuType;
+
+    @Enumerated(EnumType.STRING)
+    private MenuType menuType;
+
     private byte menuOrder;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
