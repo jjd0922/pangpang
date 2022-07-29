@@ -13,11 +13,11 @@
     <ul class="navbar-nav flex-row text-nowrap mx-auto">
 
       <li class="nav-item dropdown nav-item-dropdown-lg" th:each="menus: ${T(com.newper.component.MenuList).menus}">
-        <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+        <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" th:classappend="${menus.getActiveClass(#httpServletRequest.requestURI)}">
           <span th:text="${menus.menuName}">대메뉴명</span>
         </a>
         <div class="dropdown-menu dropdown-scrollable-lg" th:if="${menus.getSubMenuList().size() gt 0}">
-            <a class="dropdown-item" th:each="submenu: ${menus.subMenuList}" th:text="${submenu.smName}" th:href="${submenu.smUrl}">중메뉴</a>
+            <a class="dropdown-item" th:each="submenu: ${menus.subMenuList}" th:text="${submenu.smName}" th:href="${submenu.smUrl}" th:classappend="${submenu.getActiveClass(#httpServletRequest.requestURI)}">중메뉴</a>
         </div>
       </li>
 

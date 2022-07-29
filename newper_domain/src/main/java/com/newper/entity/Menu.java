@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @DynamicUpdate
@@ -33,5 +34,21 @@ public class Menu {
     /** ERP menu인 경우 true*/
     public boolean isErpMenu(){
         return getMenuType().equals("ERP");
+    }
+
+    /** param url이 menu url or submenu url 인 경우 active를 return*/
+    public String getActiveClass(String url){
+        if(menuUrl != null && menuUrl.equals(url)){
+            return "active";
+        }
+
+        Optional<SubMenu> subMenu = subMenuList.stream().filter(sm -> {
+            return sm.getSmUrl().equals(url);
+        }).findAny();
+
+        if(subMenu.isPresent()){
+            return "active";
+        }
+        return "";
     }
 }
