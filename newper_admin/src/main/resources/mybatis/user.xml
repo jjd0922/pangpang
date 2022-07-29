@@ -1,21 +1,73 @@
 
 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.UserMapper">
+
+    <select id="selectUserDatatable" resultType="Map" parameterType="Map">
+        SELECT
+        *
+        FROM
+        user
+        LEFT JOIN company
+
+        ON u_com_idx=com_idx
+        LEFT JOIN auth
+        ON u_auth_idx=auth_idx
+    </select>
+
+    <select id="countUserDatatable" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            User
+                LEFT JOIN COMPANY ON u_com_idx = Com_idx
+    </select>
+
+
+
+    <select id="selectCompanyContract" resultType="Map">
+        SELECT
+        *
+        FROM
+        COMPANY
+        LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
+        WHERE
+        CC_IDX IS NOT NULL
+        <if test="CREATED_DATE != '' and CREATED_DATE != null">
+            AND
+            COMPANY_CONTRACT.CREATED_DATE BETWEEN DATE1 AND DATE2
+        </if>
+    </select>
+
+    <select id="countCompanyContract" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            COMPANY
+                LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
+    </select>
 
 
 
 
 
-
-<select id="selectUserDatatable" resultType="Map">
-    select
-    *
-    from
-    member
-    where
-    <include refid="includeUserDatatable"></include>
-</select>
-
-<sql id="includeUserDatatable">
+</mapper>
 
 
-</sql>
+
+
+
+<!--<select id="selectUserDatatable" resultType="Map">-->
+<!--    select-->
+<!--    *-->
+<!--    from-->
+<!--    member-->
+<!--    where-->
+<!--    <include refid="includeUserDatatable"></include>-->
+<!--</select>-->
+
+<!--<sql id="includeUserDatatable">-->
+
+
+<!--</sql>-->

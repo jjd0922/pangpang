@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.User;
+import com.newper.mapper.UserMapper;
 import com.newper.repository.UserRepo;
 import com.newper.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +24,17 @@ public class UserRestController {
     @Autowired
     private final UserService userService;
 
+
+    private final UserMapper userMapper;
+
     @PostMapping("user.dataTable")
-    public ReturnDatatable user(@RequestParam Map<String, Object> map) {
+    public ReturnDatatable user(ParamMap paramMap) {
+
         ReturnDatatable rd = new ReturnDatatable();
 
-        List<Map<String, Object>> data = new ArrayList<>();
 
-        rd.setData(data);
-        rd.setRecordsTotal(List.of().size());
-
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
     }
 
