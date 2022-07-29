@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Common {
     /** 파일업로드 후 db저장할 str 반환 */
-    public String uploadFilePath(MultipartFile mf, String pathPrefix) {
+    public static String uploadFilePath(MultipartFile mf, String pathPrefix) {
         try {
             String originalFilename = mf.getOriginalFilename();
 

@@ -2,8 +2,10 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.ComState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
+import com.newper.entity.CompanyEmployee;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.repository.CompanyRepo;
@@ -24,23 +26,32 @@ public class CompanyService {
 
     /** 거래처 등록 기능 */
     @Transactional
-    public String saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+    public Boolean saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        System.out.println("paramMap = " + paramMap);
+
         Address address = paramMap.mapParam(Address.class);
         Company company = paramMap.mapParam(Company.class);
         company.setAddress(address);
 
-        Common common = new Common();
+        String comNumFilePath = "";
+        String comAccountFilePath = "";
 
-        String comNumFilePath = common.uploadFilePath(comNumFile, "company/com_num/");
-        String comAccountFilePath = common.uploadFilePath(comAccountFile, "company/com_account/");
+        if(comNumFile.getSize()!=0){
+            comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/");
+        }
+
+        if(comAccountFile.getSize()!=0){
+            comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/");
+        }
+
 
         System.out.println(comNumFilePath);
-        company.setComNum(comNumFilePath);
+        company.setComNumFile(comNumFilePath);
         company.setComAccountFile(comAccountFilePath);
         System.out.println("파일 업로드 완료");
-        companyRepo.save(company);
-        return "true";
+        companyRepo.saveAndFlush(company);
 
+        return true;
     }
 
 

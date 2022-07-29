@@ -2,24 +2,22 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
-import com.newper.dto.ReturnMap;
-import com.newper.entity.Company;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Map;
 
 @RequestMapping(value = "/company/")
 @RestController
 @RequiredArgsConstructor
 public class CompanyRestController {
     private final CompanyMapper companyMapper;
-    private final CompanyRepo companyRepo;
 
     /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
