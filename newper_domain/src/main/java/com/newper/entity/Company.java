@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "COMPANY")
-@ToString
 public class Company extends BaseEntity {
 
     @Id
@@ -57,6 +56,10 @@ public class Company extends BaseEntity {
 
 /*    @OneToMany(mappedBy = "company")
     private List<CompanyType> companyType;*/
+
+
+    @OneToMany(mappedBy = "company")
+    private List<User> users;
 
 
 

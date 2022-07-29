@@ -22,10 +22,13 @@ public class UserService {
     @Transactional
     public Integer userCreate(ParamMap paramMap) {
         User user = paramMap.mapParam(User.class);
+        System.out.println("user: " + user);
 
         userRepo.save(user);
 
         return user.getUIdx();
     }
+
+
 }
 

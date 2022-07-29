@@ -11,8 +11,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@AllArgsConstructor
+@AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "USER")
 public class User {
 
@@ -24,11 +25,6 @@ public class User {
     @JoinColumn(name = "U_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
 
-
-    public User(Integer uIdx, Company company) {
-        this.uIdx = uIdx;
-        this.company = company;
-    }
 }
 
 
