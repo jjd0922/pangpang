@@ -2,6 +2,8 @@ package com.newper.controller.view;
 
 import com.newper.component.AdminBucket;
 import com.newper.dto.ParamMap;
+import com.newper.entity.CompanyEmployee;
+import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.service.CompanyService;
 import com.newper.storage.NewperBucket;
@@ -24,7 +26,7 @@ public class CompanyController {
 
 
     private final CompanyService companyService;
-    private final CompanyRepo companyRepo;
+    private final CompanyEmployeeRepo companyEmployeeRepo;
 
     /** 거래처 관리 페이지*/
     @GetMapping(value = "")
@@ -46,7 +48,15 @@ public class CompanyController {
     @PostMapping(value = "regist")
     public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("company/regist");
+
+        // 담당자(CompanyEmployee) insert
+        CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
+        companyEmployeeRepo.save(companyEmployee);
+
+        // company insert
+        paramMap.put("companyEmployee", companyEmployee);
         companyService.saveCompany(paramMap, comNumFile, comAccountFile);
+
 
 //        try {
 //            NewperStorage.download("test", response.getOutputStream());
@@ -57,21 +67,6 @@ public class CompanyController {
 
         return mav;
     }
-
-    /*@PostMapping(value = "regist")
-    public ModelAndView registPost(MultipartFile comNumFile){
-        ModelAndView mav = new ModelAndView("company/regist");
-
-        try{
-            String s = NewperStorage.uploadFile(AdminBucket.OPEN, "company/com_num/" + comNumFile.getOriginalFilename(), comNumFile.getInputStream(), comNumFile.getSize(), comNumFile.getContentType());
-            System.out.println(s);
-            System.out.println("파일 업로드 완료");
-        }catch (IOException ioe){
-            throw new MsgException("잠시 후 시도해주세");
-        }
-
-        return mav;
-    }*/
 
     /** 거래처 계약관리 조회 페이지 **/
     @GetMapping(value = "contract")

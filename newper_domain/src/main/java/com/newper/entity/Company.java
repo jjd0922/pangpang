@@ -58,7 +58,8 @@ public class Company extends BaseEntity {
 /*    @OneToMany(mappedBy = "company")
     private List<CompanyType> companyType;*/
 
-
+    @OneToMany(mappedBy = "company")
+    private List<User> users;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
