@@ -18,7 +18,7 @@ public class SubMenu {
     @Id
     private String smName;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SM_MENU_NAME", referencedColumnName = "menuName")
     private Menu menu;
 

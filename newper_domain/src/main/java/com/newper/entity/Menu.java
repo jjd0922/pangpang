@@ -23,7 +23,7 @@ public class Menu {
     private String menuType;
     private byte menuOrder;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @OrderBy(value = "smOrder asc")
     private List<SubMenu> subMenuList;
 
