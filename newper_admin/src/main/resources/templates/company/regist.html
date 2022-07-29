@@ -37,7 +37,7 @@
 
                     <div class="col-lg-12">
 
-                        <form id="regiForm">
+                        <form id="regiForm" method="post" enctype="multipart/form-data" action="regist">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
@@ -246,7 +246,7 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    구매담당자<a href="#" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                    구매담당자<a href="javascript: searchEmployee("purchase")" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control" placeholder="search값">
@@ -288,14 +288,27 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    상세주소
+                                                                    도로명(지번)주소
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="addr3" class="form-control" placeholder="상세주소입력">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- 주소부분 다음주소 api연동 필요 -->
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    상세주소
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr4" class="form-control" placeholder="상세주소입력">
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
@@ -552,14 +565,7 @@
 
 <script>
     function saveAction(){
-        $.ajax({
-            url: '/company/regist.ajax',
-            data: $("#regiForm").serialize(),
-            type: "post",
-            success: function (data) {
-                alert("등록 성공");
-            }
-        });
+        $("#regiForm").submit();
     }
 
     /** 다음 주소 api사용 */
@@ -594,17 +600,17 @@
                     addr += addr_[i] + ' ';
                 }
 
-                $('input[name=post]').val(data.zonecode).attr('readonly', true);
-                $('input[name=addr1]').val(data.sido).attr('readonly', true);
-                $('input[name=addr2]').val(data.sigungu).attr('readonly', true);
-                $('input[name=addr3]').val(addr + extraAddr);
+                $('input[name=post]').val(data.zonecode).attr("readonly", true);
+                $('input[name=addr1]').val(data.sido).attr("readonly", true);
+                $('input[name=addr2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=addr3]').val(addr + extraAddr).attr("readonly", true);
             }
         }).open();
     }
 
-    /** 담당자 검색해서 가져오기 */
+    /** 담당자 검색 창 열기 */
     function searchEmployee(type) {
-
+        // if (type == "pu")
     }
 </script>
 <script>
