@@ -1,24 +1,30 @@
 package com.newper.controller.view;
 
 import com.newper.component.AdminBucket;
-import com.newper.exception.MsgException;
+import com.newper.dto.ParamMap;
+import com.newper.repository.CompanyRepo;
+import com.newper.service.CompanyService;
+import com.newper.storage.NewperBucket;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 @RequestMapping(value = "/company/")
 @Controller
 @RequiredArgsConstructor
 public class CompanyController {
+
+
+    private final CompanyService companyService;
+    private final CompanyRepo companyRepo;
 
     /** 거래처 관리 페이지*/
     @GetMapping(value = "")
@@ -30,12 +36,29 @@ public class CompanyController {
 
     /** 거래처 신규등록 팝업 */
     @GetMapping(value = "regist")
-    public ModelAndView regist(MultipartFile mf){
+    public ModelAndView regist(){
         ModelAndView mav = new ModelAndView("company/regist");
 
         return mav;
     }
+
+    /** 거래처 신규등록 처리 */
     @PostMapping(value = "regist")
+    public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView("company/regist");
+        companyService.saveCompany(paramMap, comNumFile, comAccountFile);
+
+//        try {
+//            NewperStorage.download("test", response.getOutputStream());
+//        } catch (IOException ioException) {
+//
+//        }
+
+
+        return mav;
+    }
+
+    /*@PostMapping(value = "regist")
     public ModelAndView registPost(MultipartFile comNumFile){
         ModelAndView mav = new ModelAndView("company/regist");
 
@@ -48,7 +71,7 @@ public class CompanyController {
         }
 
         return mav;
-    }
+    }*/
 
     /** 거래처 계약관리 조회 페이지 **/
     @GetMapping(value = "contract")

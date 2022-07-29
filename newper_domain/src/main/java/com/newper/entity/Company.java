@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "COMPANY")
+@ToString
 public class Company extends BaseEntity {
 
     @Id
@@ -41,7 +42,7 @@ public class Company extends BaseEntity {
     private String comAccount;
 
     @Embedded
-    private Address address;
+    private Address address = Address.builder().build();
 
     private String comNumFile;
     private String comAccountFile;
