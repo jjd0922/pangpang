@@ -1,6 +1,7 @@
 package com.newper.component;
 
 import com.newper.exception.MsgException;
+import com.newper.storage.NewperBucket;
 import com.newper.storage.NewperStorage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public class Common {
     /** 파일업로드 후 db저장할 str 반환 */
-    public static String uploadFilePath(MultipartFile mf, String pathPrefix) {
+    public static String uploadFilePath(MultipartFile mf, String pathPrefix, NewperBucket nb) {
         try {
             String originalFilename = mf.getOriginalFilename();
 
@@ -18,7 +19,7 @@ public class Common {
 
             String objectName = pathPrefix + UUID.randomUUID() + type;
 
-            String path = NewperStorage.uploadFile(AdminBucket.SECRET, objectName, mf.getInputStream(), mf.getSize(), mf.getContentType());
+            String path = NewperStorage.uploadFile(nb, objectName, mf.getInputStream(), mf.getSize(), mf.getContentType());
 
             return path;
         } catch (IOException ioe){

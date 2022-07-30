@@ -1,7 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.CompanyMapper">
+    <sql id="includeCompanyDataTable">
+        <if test='createdDate != null and createdDate != ""'>AND COMPANY.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
+        <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
+        <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
+        <if test='comType != null'>
+            <foreach collection="comType" open="AND COM_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test ='comState != null'>
+            <foreach collection="comState" open="AND COM_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
 
+    <sql id="includeCompanyContractDataTable">
+        <if test='ccCreatedDate != null and ccCreatedDate != ""'>AND COMPANY_CONTRACT.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test="ccTaxDate != null and ccTaxDate != ''">AND CC_TAX_DATE BETWEEN SUBSTR(#{ccTaxDate}, 1, 10) AND SUBSTR(#{ccTaxDate}, 13)</if>
+        <if test="ccContarctNum != null and ccContarctNum != ''">AND CC_CONTRACT_NUM LIKE CONCAT('%', #{ccContarctNum}, '%')</if>
+        <if test='ccCycle != null'>
+            <foreach collection="ccCycle" open="AND CC_CYCLE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='ccType != null'>
+            <foreach collection="ccType" open="AND CC_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='ccCalType != null'>
+            <foreach collection="ccCalType" open="AND CC_CAL_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='ccState != null'>
+            <foreach collection="ccState" open="AND CC_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
     <select id="selectCompanyDatatable" resultType="Map" parameterType="Map">
         SELECT
             *,
@@ -18,29 +60,9 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
-                /*LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX*/
-        <where>
-            <if test='createdDate != null and createdDate != ""'>CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
-            <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
-            <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
-            <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
-            <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
-            <!--<if test='ctType != null'>
-                <foreach collection="ctType" open="AND CT_TYPE IN (" separator="," close=")" item="item">
-                    #{item}
-                </foreach>
-            </if>-->
-            <if test='comType != null'>
-                <foreach collection="comType" open="AND COM_TYPE IN (" separator="," close=")" item="item">
-                    #{item}
-                </foreach>
-            </if>
-            <if test ='comState != null'>
-                <foreach collection="comState" open="AND COM_STATE IN (" separator="," close=")" item="item">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
+        WHERE
+            COM_IDX IS NOT NULL
+            <include refid="includeCompanyDataTable"></include>
         ORDER BY
             COM_IDX DESC
     </select>
@@ -51,20 +73,50 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+        WHERE
+            COM_IDX IS NOT NULL
+            <include refid="includeCompanyDataTable"></include>
     </select>
 
     <select id="selectCompanyContract" resultType="Map">
         SELECT
-            *
+            COM_IDX,
+            CC_IDX,
+            COM_NAME,
+            COM_MID,
+            CASE
+                WHEN CC_TYPE = 'PURCHASE' THEN '매입'
+                WHEN CC_TYPE = 'SALES' THEN '매출'
+            END AS 'CC_TYPE',
+            CASE
+                WHEN CC_STATE = 'NORMAL' THEN '정상'
+                WHEN CC_STATE = 'STOP' THEN '중지'
+            END AS 'CC_STATE',
+            CASE
+                WHEN CC_CYCLE = 'MONTH1' THEN '월1회'
+                WHEN CC_CYCLE = 'MONTH2' THEN '월2회'
+                WHEN CC_CYCLE = 'WEEK' THEN '주'
+                WHEN CC_CYCLE = 'DAY' THEN '일'
+            END AS 'CC_CYCLE',
+            CC_TAX_DATE,
+            CC_BASE_DATE,
+            CC_CONTRACT_START,
+            CC_CONTRACT_END,
+            CC_FEE_TYPE,
+            CC_COST,
+            CC_RATES,
+            CC_CONTRACT_NUM,
+            COMPANY_CONTRACT.CREATED_BY AS 'CC_CREATED_BY',
+            COMPANY_CONTRACT.CREATED_DATE AS 'CC_CREATED_DATE',
+            COMPANY_CONTRACT.MODIFIED_BY AS 'CC_MODIFIED_BY',
+            COMPANY_CONTRACT.MODIFIED_DATE AS 'CC_MODIFIED_DATE'
         FROM
             COMPANY
                 LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
         WHERE
             CC_IDX IS NOT NULL
-        <if test="CREATED_DATE != '' and CREATED_DATE != null">
-        AND
-            COMPANY_CONTRACT.CREATED_DATE BETWEEN DATE1 AND DATE2
-        </if>
+            <include refid="includeCompanyDataTable"></include>
+            <include refid="includeCompanyContractDataTable"></include>
     </select>
 
     <select id="countCompanyContract" resultType="Long">
@@ -72,11 +124,10 @@
             COUNT(*)
         FROM
             COMPANY
-                LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
+              LEFT JOIN COMPANY_CONTRACT ON COM_IDX = CC_COM_IDX
+        WHERE
+            CC_IDX IS NOT NULL
+            <include refid="includeCompanyDataTable"></include>
+            <include refid="includeCompanyContractDataTable"></include>
     </select>
-
-
-
-
-
 </mapper>
