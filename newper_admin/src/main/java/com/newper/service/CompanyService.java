@@ -6,9 +6,11 @@ import com.newper.constant.ComState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
+import com.newper.entity.Contract;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.repository.CompanyRepo;
+import com.newper.repository.ContractRepo;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -23,6 +26,7 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepo companyRepo;
+    private final ContractRepo contractRepo;
 
     /** 거래처 등록 기능 */
     @Transactional
@@ -37,11 +41,11 @@ public class CompanyService {
         String comAccountFilePath = "";
 
         if(comNumFile.getSize()!=0){
-            comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/");
+            comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/", AdminBucket.SECRET);
         }
 
         if(comAccountFile.getSize()!=0){
-            comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/");
+            comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/", AdminBucket.SECRET);
         }
 
 
@@ -55,4 +59,17 @@ public class CompanyService {
     }
 
 
+    @Transactional
+    public void saveContract(ParamMap paramMap, MultipartFile ccContractFile) {
+        Contract contract = paramMap.mapParam(Contract.class);
+
+        String ccContractFilePath = "";
+
+        if(ccContractFile.getSize()!=0){
+            ccContractFilePath = Common.uploadFilePath(ccContractFile, "company/contract/", AdminBucket.SECRET);
+        }
+
+        contract.setCcContractFile(ccContractFilePath);
+        contractRepo.save(contract);
+    }
 }

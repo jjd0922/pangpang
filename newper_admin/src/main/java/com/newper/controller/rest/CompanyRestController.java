@@ -35,11 +35,16 @@ public class CompanyRestController {
     }
 
     @PostMapping("contract.dataTable")
-    public ReturnDatatable companyContract(@RequestParam Map<String, Object> param){
+    public ReturnDatatable companyContract(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
-        rd.setData(companyMapper.selectCompanyContract(param));
-        rd.setRecordsTotal(companyMapper.countCompanyContract(param));
 
+        paramMap.multiSelect("ccState");
+        paramMap.multiSelect("ccType");
+        paramMap.multiSelect("ccCalType");
+        paramMap.multiSelect("ccCycle");
+
+        rd.setData(companyMapper.selectCompanyContract(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countCompanyContract(paramMap.getMap()));
         return rd;
     }
 
