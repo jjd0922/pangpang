@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Table(name = "USER")
+@ToString
 public class User extends BaseEntity {
 
     @Id
@@ -45,10 +46,7 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
 
-    public User(Integer uIdx, Company company) {
-        this.uIdx = uIdx;
-        this.company = company;
-    }
+
 }
 
 
