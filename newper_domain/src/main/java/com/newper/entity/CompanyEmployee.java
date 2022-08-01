@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -30,5 +31,15 @@ public class CompanyEmployee {
     private String cePhone;
     private String ceTel;
     private String ceMemo;
+
+    public void ceAllUpdate(Map<String, Object> map) {
+        setCeName(map.get("ceName").toString());
+        setCeDepart(map.get("ceDepart").toString());
+        setCePosition(map.get("cePosition").toString());
+        setCeMail(map.get("ceMail").toString());
+        setCePhone(map.get("cePhone").toString());
+        setCeTel(map.get("ceTel").toString());
+        setCeMemo(map.get("ceMemo").toString());
+    }
 
 }

@@ -191,7 +191,9 @@
             ,{'class':'m-w-8', 'title':'사업자 분류','data':'COM_TYPE_CHANGE'}
             ,{'class':'m-w-5', 'title':'상태','data':'COM_STATE_CHANGE'}
             ,{'class':'m-w-3', 'title':'MID','data':'COM_MID'}
-            ,{'class':'m-w-max', 'title':'상호법인명','data':'COM_NAME','defaultContent':'버튼넣기'}
+            ,{'class':'m-w-max', 'title':'상호법인명','data':null, 'render': function (data) {
+                    return '<a href="'+ data['COM_IDX'] +'" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+                }}
             ,{'class':'m-w-4', 'title':'대표자명','data':'COM_CEO'}
             ,{'class':'m-w-max', 'title':'업체주소','data':null, 'render':function(data){
                     return data['ADDR1'] + ' ' + data['ADDR2'] + ' ' + data['ADDR3'] + ' ' + data['ADDR4'];
