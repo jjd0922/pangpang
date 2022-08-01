@@ -1,0 +1,196 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="companyModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">거래처 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="companyModalForm" onkeypress="if(event.keyCode==13){searchCompanyModal();return false;}">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <fieldset class="mb-0">
+                                    <legend class="">거래처 검색</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">등록일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control w-datarange daterange-basic" name="createdBy" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상호법인명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="comName" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">사업자번호</span>
+                                                    </span>
+                                                   <input type="text" class="form-control" name="comNum" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">대표자명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="comCeo" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">MID</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="comMid" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">사업자 분류</span>
+                                                    </span>
+                                                    <select name="comType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상태</span>
+                                                    </span>
+                                                    <select name="comState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="card-footer bg-white d-flex justify-content-end align-items-center">
+                                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="searchCompanyModal()">
+                                    <i class="icon-search4 mr-1"></i>조회
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <table class="table" id="companyModalTable">
+                </table>
+                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-primary" onclick="companySelect()">거래처 선택</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function openCompanyModal() {
+        $('#companyModal').modal('show');
+        selectCompanyDataTable();
+    }
+
+    function companySelect(){
+        var comIdx = dataTableGetSelectedDataArray('companyModalTable', 'COM_IDX');
+        var comName = dataTableGetSelectedDataArray('companyModalTable', 'COM_NAME');
+        var comNum = dataTableGetSelectedDataArray('companyModalTable', 'COM_NUM');
+
+        if(comIdx.length != 1){
+            alert('거래처는 하나만 선택해 주세요');
+            return false;
+        }else{
+            $('input[name=comIdx]').val(comIdx);
+            $('input[name=comName]').val(comName);
+            $('input[name=comNum]').val(comNum);
+        }
+
+        $('#companyModal').modal('hide');
+    }
+
+    // 거래처 검색
+    function searchCompanyModal(){
+        $('#companyModalTable').DataTable().page('first').ajax.url('/company/company.dataTable?' + $('#companyModalForm').serialize()).load(null, false);
+    }
+</script>
+<script th:inline="javascript">
+    function selectCompanyDataTable(){
+        destroyDatatable('companyModalTable');
+        $('#companyModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            ordering: false,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax:{
+                url:'/company/company.dataTable?',
+                type:'post'
+            },
+        columnDefs: [{
+            width: '40px',
+            autoWidth: false,
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   [0]
+        },
+            {
+                width: '40px',
+                targets:    [1]
+            }],
+            "columns" : [
+            {'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'등록일','data':'CREATED_DATE'}
+            ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
+            ,{'title':'거래처 구분코드','data':'CT_TYPE', 'defaultContent':''}
+            ,{'title':'사업자 분류','data':'COM_TYPE'}
+            ,{'title':'상태','data':'COM_STATE'}
+            ,{'title':'MID','data':'COM_MID','class':'text-won','defaultContent':''}
+            ,{'title':'상호법인명','data':'COM_NAME','class':'text-won','defaultContent':''}
+            ,{'title':'대표자명','data':'COM_CEO','class':'text-won','defaultContent':''}
+        ]
+    });
+    }
+</script>
+</html>

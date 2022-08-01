@@ -79,7 +79,7 @@ if($.fn.dataTable !== undefined){
         scrollX:        true,
         deferRender:    true,
         scroller:       true,
-        autoWidth: true,
+        autoWidth: false,
         lengthMenu: [
             [ 10, 25, 50],
             [ '10행', '25행', '50행']

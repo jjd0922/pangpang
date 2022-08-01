@@ -1,14 +1,10 @@
 package com.newper.controller.view;
 
-import com.newper.component.AdminBucket;
 import com.newper.dto.ParamMap;
 import com.newper.entity.CompanyEmployee;
 import com.newper.repository.CompanyEmployeeRepo;
-import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
 import com.newper.service.CompanyService;
-import com.newper.storage.NewperBucket;
-import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RequestMapping(value = "/company/")
 @Controller
