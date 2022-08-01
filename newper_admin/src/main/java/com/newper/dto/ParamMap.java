@@ -200,7 +200,7 @@ public class ParamMap {
             return null;
         }
     }
-    /** 콤마제거 replace. value의 값 중 콤마 제거 */
+    /** 제거 replace. value의 값 중  제거 */
     public String replaceComma(String key){
         String value=getString(key).replaceAll("\\,", "");
         map.put(key, value);

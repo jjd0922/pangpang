@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.PoMapper">
+    <sql id="includeEstimateDataTable">
+        <if test='peName != null and peName != ""'>AND PE_NAME LIKE CONCAT('%',#{peName},'%')</if>
+        <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test='peCode != null and peCode != ""'>AND PE_CODE LIKE CONCAT('%',#{peCode},'%')</if>
+        <if test='createdBy != null and createdBy != ""'>AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test='createdDate != null and createdDate != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test='modifiedBy != null and modifiedBy != ""'>AND MODIFIED_BY LIKE CONCAT('%',#{modifiedBy},'%')</if>
+        <if test='modifiedDate != null and modifiedDate != ""'>AND modifiedDate BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)</if>
+        <if test="pePeriod != null and pePeriod != ''">
+            AND (PE_PERIOD_START BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13) OR
+                PE_PERIOD_END BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13))
+        </if>
+        <if test='peState != null'>
+            <foreach collection="peState" open="AND PE_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="selectEstimateDataTable" resultType="Map">
+        SELECT
+            PE_IDX,
+            PE_CODE,
+            CASE
+                WHEN PE_STATE = 'AVAILABLE' THEN '유효'
+                WHEN PE_STATE = 'DISPOSAL' THEN '폐기'
+            END AS 'PE_STATE',
+            COM_NAME,
+            PE_NAME,
+            PE_ESTIMATE_COUNT,
+            PE_ESTIMATE_COST,
+            PE_ESTIMATE_FILE,
+            PE_PERIOD_START,
+            PE_PERIOD_END,
+            PO_ESTIMATE.CREATED_BY AS 'CREATED_BY',
+            PO_ESTIMATE.CREATED_DATE AS 'CREATED_DATE',
+            PO_ESTIMATE.MODIFIED_BY AS 'MODIFIED_BY',
+            PO_ESTIMATE.MODIFIED_DATE AS 'MODIFIED_DATE'
+        FROM
+            po_estimate
+                LEFT JOIN company ON PE_COM_IDX = COM_IDX
+        WHERE
+            PE_IDX IS NOT NULL
+            <include refid="includeEstimateDataTable"></include>
+    </select>
+
+    <select id="countEstimateDataTable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            po_estimate
+                LEFT JOIN company ON PE_COM_IDX = COM_IDX
+        WHERE
+            PE_IDX IS NOT NULL
+            <include refid="includeEstimateDataTable"></include>
+    </select>
+
+    <select id="selectCategory" resultType="Map">
+        select
+            CATE_IDX,
+            CATE_NAME
+        from
+            category
+        where
+            CATE_IDX IS NOT NULL
+        <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{idx}</if>
+    </select>
+</mapper>
