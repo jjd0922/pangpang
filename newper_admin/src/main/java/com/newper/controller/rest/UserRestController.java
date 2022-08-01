@@ -60,39 +60,6 @@ public class UserRestController {
         return rd;
     }
 
-
-  /*  @PostMapping("/userCreate.ajax")
-    public ModelAndView userCreate(ParamMap paramMap) {
-        ModelAndView mav = new ModelAndView("user/userpopup");
-
-
-
-        User user = paramMap.mapParam(User.class);
-        userRepo.save(user);
-
-        Company company=paramMap.mapParam(Company.class);
-        companyRepo.save(company);
-
-
-
-
-
-
-        paramMap.put("company",company);
-        paramMap.put("user", user);
-
-        userService.saveUser(paramMap);
-
-        return mav;*/
-/*        ReturnMap rm= new ReturnMap();
-        System.out.println("paramMap= " + paramMap.getMap());
-
-        userService.saveUser(paramMap);
-
-        rm.setMessage("등록완료");
-        return rm;*/
-
-
     @PostMapping("searchCompany.ajax")
     public ReturnMap searchCompany(ParamMap paramMap){
         System.out.println("paramMap = " + paramMap);

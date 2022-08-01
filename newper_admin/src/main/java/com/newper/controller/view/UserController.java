@@ -54,6 +54,7 @@ public class UserController {
     /** 사용자 신규등록 처리 */
     @PostMapping(value = "userCreate.ajax")
     public ReturnMap userInsert(ParamMap paramMap) {
+        System.out.println("in~~~~");
         ReturnMap rm = new ReturnMap();
         int idx = userService.saveUser(paramMap);
 

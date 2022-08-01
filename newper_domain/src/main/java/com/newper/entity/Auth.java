@@ -18,7 +18,7 @@ import java.util.Map;
 @Builder
 @Table(name = "AUTH")
 @ToString
-public class Auth extends BaseEntity {
+public class Auth{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
