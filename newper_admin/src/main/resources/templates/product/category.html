@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${subTitle}"></title>
+    <th:block th:replace="/common/css.html"></th:block>
+    <style>
+        .group{
+            background:aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+
+<th:block th:replace="/common/header.html">Header</th:block>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">카테고리 대분류</h6>
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="popFirst()">
+                                    <i class="icon-popout mr-1"></i>대분류 추가
+                                </a>
+                            </div>
+                            <form id="categoryFirstTableForm">
+                                <table class="table" id="categoryFirstTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">카테고리 중분류</h6>
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="popSecond()">
+                                    <i class="icon-popout mr-1"></i>중분류 추가
+                                </a>
+
+                            </div>
+                            <form id="categorySecondTableForm">
+                                <table class="table" id="categorySecondTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">카테고리 소분류</h6>
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="popThird()">
+                                    <i class="icon-popout mr-1"></i>소분류 추가
+                                </a>
+                            </div>
+
+                            <div class="collapse show">
+                                <div class="table-responsive">
+                                    <form id="brandTableForm">
+                                        <table class="table" id="categoryThird" >
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+//카테고리 등록 팝업
+function popFirst(){
+    var focusPopup = window.open([[@{/product/category/first}]],'first_category', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+
+// 중분류 등록 팝업
+function popSecond(){
+    var focusPopup = window.open([[@{/product/category/second}]],'second_category', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+//브랜드 등록
+function popBrand(){
+    var focusPopup = window.open([[@{/product/brand}]],'brand', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+
+//대분류 상세 페이지
+function updateCf(cf_idx){
+    var focusPopup = window.open([[@{/product/category/first/}]]+cf_idx,'cf_detail', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+//대분류 삭제
+function deleteCategoryFirst(cf_idx){
+    if(window.confirm('삭제하시겠습니까? (소속된 중분류도 함께 삭제됩니다.)')){
+        $.ajax({
+            url:[[@{/product/category/first/delete}]]
+            ,type:'post'
+            ,data:'cf_idx='+cf_idx
+        }).done(function(res){
+            refreshTable('#categoryFirstTable');
+            refreshTable('#categorySecondTable');
+        });
+    }
+}
+//중분류 상세 페이지
+function updateCs(cs_idx){
+    var focusPopup = window.open([[@{/product/category/second/}]]+cs_idx,'cs_detail', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+//중분류 삭제
+function deleteCategorySecond(cs_idx){
+    if(window.confirm('삭제하시겠습니까?')){
+        $.ajax({
+            url:[[@{/product/category/second/delete}]]
+            ,type:'post'
+            ,data:'cs_idx='+cs_idx
+        }).done(function(res){
+            refreshTable('#categoryFirstTable');
+            refreshTable('#categorySecondTable');
+        });
+    }
+}
+//브랜드 상세 페이지
+function updateBrand(b_idx){
+    var focusPopup = window.open([[@{/product/brand/}]]+b_idx,'brand_detail', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+}
+//브랜드 삭제
+function deleteBrand(b_idx){
+    if(window.confirm('삭제하시겠습니까?')){
+        $.ajax({
+            url:[[@{/product/brand/delete}]]
+            ,type:'post'
+            ,data:'b_idx='+b_idx
+        }).done(function(res){
+            refreshTable('#brandTable');
+        });
+    }
+}
+</script>
+<script th:inline="javascript">
+window.onload=function(){
+    $('#categoryFirstTable').DataTable({
+        buttons: {
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-dark opacity-60',
+                    text: '<i class="icon-file-excel mr-1"></i>엑셀'
+                },
+                {
+                    text: '새로고침',
+                    className: 'btn btn-sm btn-secondary',
+                    action: function (e, dt, node, config) {
+                        dt.ajax.reload();
+                    }
+                }
+            ]
+        },
+        dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        serverSide: true,
+        ajax:{
+            url:'/product/category/parent.dataTable',
+            type:'post'
+        },
+		"columns" : [
+			{'class':'dragula-handle m-w-2', 'title':'순서','data':'CATE_ORDER', 'render':function(data,type,full,meta){
+	    		return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i><input type="hidden" name="CATE_IDX" value="'+full.CATE_IDX+'">';
+			}}
+			,{'class':'m-w-10 w-55', 'title':'대분류명','data':'CATE_NAME','render':function(data,type,full,meta){
+			    return '<a class="btn btn-sm badge-indigo" onclick="updateCategory('+full.CATE_IDX+')">'+data+'</a>';
+			}}
+			,{'class':'m-w-3 w-15', 'title':'중분류','data':'CNT'},
+			{'class':'m-w-3 w-15', 'title':'삭제','data':'CF_IDX','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-danger" onclick="deleteCategoryFirst('+full.CATE_IDX+')">삭제</a>';
+			}}
+		]
+		// ,initComplete: function( settings, json ){
+		//     var table_id=settings.sTableId;
+		//     dragula([settings.nTBody], {
+        //         mirrorContainer: settings.nTBody,
+        //         moves: function (el, container, handle) {
+        //             return handle.classList.contains('dragula-handle');
+        //         }
+        //     }).on('drop', function(el, target, source, sibling){
+        //         $.ajax({
+        //           url:'/product/category/firstOrder.ajax'
+        //           ,type:'post'
+        //           ,data:$('#'+table_id+'Form').serialize()
+        //         }).always(function(res){
+        //             $('#'+table_id).DataTable().ajax.reload();
+        //             $('#categorySecondTable').DataTable().ajax.reload();
+        //         });
+        //     });
+		// }
+
+    });
+
+    // $('#categorySecondTable').DataTable({
+    //     buttons: {
+    //         buttons: [
+    //             {
+    //                 extend: 'excelHtml5',
+    //                 className: 'btn btn-sm btn-dark opacity-60',
+    //                 text: '<i class="icon-file-excel mr-1"></i>엑셀'
+    //             },
+    //             {
+    //                 text: '새로고침',
+    //                 className: 'btn btn-sm btn-secondary',
+    //                 action: function (e, dt, node, config) {
+    //                     dt.ajax.reload();
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+    //     ordering:false,
+    //     serverSide: true,
+    //     ajax:{
+    //         url:[[@{/product/category/second.dataTable}]],
+    //         type:'post'
+    //     },
+    //     "columnDefs": [
+    //         { "visible": false, "targets": 0 }
+    //     ],
+	// 	"columns" : [
+	// 		{'title':'대분류명','data':'CF_NAME'}
+	// 		,{'class':'dragula-handle m-w-2', 'title':'순서','data':'CS_ORDER', 'render':function(data,type,full,meta){
+	//     		return '<i class="icon-menu-open">'+Math.abs(full.CS_ORDER)+'</i><input type="hidden" class="cf'+full.CS_CF_IDX+'" name="cs_idx" value="'+full.CS_IDX+'">';
+	// 		}}
+	// 		,{'class':'m-w-14 w-70', 'title':'중분류','data':'CS_NAME', 'render':function(data,type,full,meta){
+	// 		    return '<a class="btn btn-sm badge-indigo" onclick="updateCs('+full.CS_IDX+')">'+data+'</a>';
+	// 		}}
+	// 		,{'class':'m-w-3 w-15', 'title':'노출여부','data':'CS_ORDER_STR','render':function(data,type,full,meta){
+	// 		    var btnClass;
+	// 		    if(data=='미노출'){
+	// 		        btnClass='btn-secondary';
+	// 		    }else{
+	// 		        btnClass='btn-primary';
+	// 		    }
+	// 		    return '<a class="btn btn-sm '+btnClass+'" onclick="csDisplay('+full.CS_IDX+')">'+data+'</a>';
+	// 		}}
+	// 		,{'class':'m-w-3 w-15', 'title':'삭제','data':'CS_IDX','render':function(data,type,full,meta){
+    //             return '<a class="btn btn-sm badge-danger" onclick="deleteCategorySecond('+full.CS_IDX+')">삭제</a>';
+	// 		}}
+	// 	]
+	// 	,initComplete: function( settings, json ){
+	// 	    var table_id=settings.sTableId;
+	// 	    dragula([settings.nTBody], {
+    //             mirrorContainer: settings.nTBody,
+    //             moves: function (el, container, handle) {
+    //                 return handle.classList.contains('dragula-handle');
+    //             }
+    //         }).on('drop', function(el, target, source, sibling){
+    //                 var csList=$('.'+$(el).find('input[name=cs_idx]').attr('class'));
+    //                 var param='param=param';
+    //                 for(var i=0;i<csList.length;i++){
+    //                     param+='&cs_idx='+$(csList[i]).val();
+    //                 }
+    //
+    //             $.ajax({
+    //               url:[[@{/product/category/second/order.ajax}]]
+    //               ,type:'post'
+    //               ,data:param
+    //             }).always(function(res){
+    //                 $('#'+table_id).DataTable().ajax.reload();
+    //             });
+    //         });
+	// 	}
+	// 	,"drawCallback": function ( settings ) {
+    //         var api = this.api();
+    //         var rows = api.rows( {page:'current'} ).nodes();
+    //         var rowCnt=0;
+    //         var colLength=api.columns()[0].length-1;
+    //         api.ajax.json().map['cfList'].forEach(function(cfMap){
+    //             if($(rows).length>rowCnt){
+    //                 $(rows).eq( rowCnt ).before(
+    //                     '<tr class="group" id="trCf'+cfMap.CF_IDX+'"><th colspan="'+colLength+'">'+cfMap.CF_NAME+'</th></tr>'
+    //                 );
+    //             }else{
+    //                 $(rows).siblings().last().after(
+    //                     '<tr class="group" id="trCf'+cfMap.CF_IDX+'"><th colspan="'+colLength+'">'+cfMap.CF_NAME+'</th></tr>'
+    //                 );
+    //             }
+    //             rowCnt+=cfMap.CS_COUNT
+    //         });
+    //     }
+    //
+    // });
+    // $('#brandTable').DataTable({
+    //     buttons: {
+    //         buttons: [
+    //             {
+    //                 extend: 'excelHtml5',
+    //                 className: 'btn btn-sm btn-dark opacity-60',
+    //                 text: '<i class="icon-file-excel mr-1"></i>엑셀'
+    //             },
+    //             {
+    //                 text: '새로고침',
+    //                 className: 'btn btn-sm btn-secondary',
+    //                 action: function (e, dt, node, config) {
+    //                     dt.ajax.reload();
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+    //     ordering:false,
+    //     serverSide: true,
+    //     ajax:{
+    //         url:[[@{/product/brand.dataTable}]],
+    //         type:'post'
+    //     },
+	// 	"columns" : [
+	// 		{'class':'dragula-handle m-w-2', 'title':'순서','data':'B_IDX', 'render':function(data,type,full,meta){
+	//     		return '<i class="icon-menu-open">'+Math.abs(full.B_ORDER)+'</i><input type="hidden" name="b_idx" value="'+full.B_IDX+'">';
+	// 		}}
+	// 		,{'class':'m-w-3 w-70', 'title':'브랜드명','data':'B_NAME','render':function(data,type,full,meta){
+	// 		    return '<a class="btn btn-sm badge-indigo" onclick="updateBrand('+full.B_IDX+')">'+data+'</a>';
+	// 		}}
+	// 		,{'class':'m-w-3 w-15', 'title':'노출여부','data':'B_ORDER_STR','render':function(data,type,full,meta){
+	// 		    var btnClass;
+	// 		    if(data=='미노출'){
+	// 		        btnClass='btn-secondary';
+	// 		    }else{
+	// 		        btnClass='btn-primary';
+	// 		    }
+	// 		    return '<a class="btn btn-sm '+btnClass+'" onclick="bDisplay('+full.B_IDX+')">'+data+'</a>';
+	// 		}}
+	// 		,{'class':'m-w-3 w-15', 'title':'삭제','data':'CS_IDX','render':function(data,type,full,meta){
+    //             return '<a class="btn btn-sm badge-danger" onclick="deleteBrand('+full.B_IDX+')">삭제</a>';
+	// 		}}
+	// 	]
+	// 	,initComplete: function( settings, json ){
+	// 	    var table_id=settings.sTableId;
+	// 	    dragula([settings.nTBody], {
+    //             mirrorContainer: settings.nTBody,
+    //             moves: function (el, container, handle) {
+    //                 return handle.classList.contains('dragula-handle');
+    //             }
+    //         }).on('drop', function(el, target, source, sibling){
+    //             $.ajax({
+    //               url:[[@{/product/brand/order.ajax}]]
+    //               ,type:'post'
+    //               ,data:$('#'+table_id+'Form').serialize()
+    //             }).always(function(res){
+    //                 $('#'+table_id).DataTable().ajax.reload();
+    //             });
+    //         });
+	// 	}
+    // });
+}
+</script>
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+</body>
+
+
+
+</html>

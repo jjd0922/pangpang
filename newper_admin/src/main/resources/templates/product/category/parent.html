@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>대분류 신규등록</title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>대분류 신규등록</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <form id="categoryFirstForm" method="post" enctype="multipart/form-data">
+                                    <fieldset class="mb-0">
+                                        <legend class="">
+                                            1. 대분류 등록정보
+                                            <!--<span class="small ml-2">
+                                              <i class="icon-info22 text-secondary mr-1 opacity-80"></i>popup창 화면의 가로폭이 최대 767px일때 1열 / 최대 991px일때 2열 / 그 이상이면 3열이 됩니다.
+                                            </span>-->
+                                        </legend>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                              대분류명
+                                                            </span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="cfName">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">노출여부<i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
+                                                            </span>
+                                                        <select class="form-control select" name="cfOrder">
+                                                            <option value="-100">미노출</option>
+                                                            <option value="100">노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                              이미지(아이콘)
+                                                            </span>
+                                                        </span>
+                                                        <input type="file" class="form-control form-control-plaintext" name="cfIcon" accept="image/*">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6sm-12 col-md-6 col-lg-4">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                              이미지(썸네일)
+                                                            </span>
+                                                        </span>
+                                                        <input type="file" class="form-control form-control-plaintext" name="cfThumbnail" accept="image/*">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <span class="input-group-text w-100 mb--1">이미지 상세</span>
+                                        <textarea id="cf_summernote" name="cfContent"></textarea>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+    </div>
+    <!-- /main content -->
+
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class=" w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-secondary" onclick="newCategoryFirst()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+</body>
+<!--<th:block th:replace="/modal/summernoteImageModal.html"></th:block>-->
+<script th:inline="javascript">
+//대분류 등록
+function newCategoryFirst(){
+    if(window.confirm('등록하시겠습니까?')){
+        $('#categoryFirstForm').submit();
+    }
+}
+</script>
+<script th:inline="javascript">
+// window.onload=function(){
+//     smImage('#cf_summernote');
+// }
+</script>
+</html>
