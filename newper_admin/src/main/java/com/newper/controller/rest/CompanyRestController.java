@@ -2,14 +2,18 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
+import com.newper.entity.Company;
+import com.newper.entity.CompanyEmployee;
 import com.newper.mapper.CompanyMapper;
+import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
+import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -18,6 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CompanyRestController {
     private final CompanyMapper companyMapper;
+    private final CompanyRepo companyRepo;
+    private final CompanyEmployeeRepo companyEmployeeRepo;
+    private final CompanyService companyService;
 
     /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
@@ -32,6 +39,17 @@ public class CompanyRestController {
         rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
 
         return rd;
+    }
+
+    /** 거래처 수정 처리 */
+    @PostMapping("modify/{comIdx}")
+    public ReturnMap modify(@PathVariable Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        System.out.println("comIdx = " + comIdx);
+        ReturnMap rm = new ReturnMap();
+
+
+        companyService.updateCompany(comIdx, paramMap);
+        return rm;
     }
 
     @PostMapping("contract.dataTable")

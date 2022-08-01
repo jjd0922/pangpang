@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>거래처 등록</title>
+    <title th:text="${company != null} ? '거래처 상세/수정'">거래처 등록</title>
 
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -19,7 +19,8 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold"><i class="icon-office mr-1"></i>거래처 신규등록</h4>
+                            <h4 class="font-weight-semibold" th:if="${company == null}"><i class="icon-office mr-1"></i>거래처 신규등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${company == null}"><i class="icon-office mr-1"></i>거래처 상세/수정</h4>
                             <div class="text-white-50 ml-3">설명글영역</div>
                         </div>
                     </div>
@@ -33,7 +34,7 @@
 
                     <div class="col-lg-12">
 
-                        <form id="regiForm" method="post" enctype="multipart/form-data" action="regist">
+                        <form id="regiForm" method="post" enctype="multipart/form-data" th:action="${company == null} ? 'regist':'modify/' + ${company.comIdx}">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
@@ -118,7 +119,8 @@
                                                                     상호법인명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comName" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comName" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,7 +134,8 @@
                                                                     대표자명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comCeo" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comCeo" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comCeo}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,7 +149,8 @@
                                                                     사업자번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comNum" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comNum" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,7 +164,8 @@
                                                                     거래처약칭
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comNick" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comNick" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comNick}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,7 +179,8 @@
                                                                     전화번호<br>(회사대표번호)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comTel" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comTel" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,7 +194,8 @@
                                                                     팩스번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comFax" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comFax" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comFax}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,7 +209,8 @@
                                                                     은행
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comBank" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comBank" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comBank}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,7 +224,8 @@
                                                                     계좌번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comAccount" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAccount" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comAccount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,7 +239,8 @@
                                                                     우편번호 <a href="javascript: daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="post" class="form-control" placeholder="우편번호검색">
+                                                        <input type="text" name="post" class="form-control" placeholder="우편번호검색"
+                                                               th:value="${company != null} ? ${company.address.post}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,7 +268,8 @@
                                                                     주소(시,도)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr1" class="form-control">
+                                                        <input type="text" name="addr1" class="form-control"
+                                                               th:value="${company != null} ? ${company.address.addr1}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,7 +283,8 @@
                                                                     주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr2" class="form-control">
+                                                        <input type="text" name="addr2" class="form-control"
+                                                               th:value="${company != null} ? ${company.address.addr2}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,7 +298,8 @@
                                                                     도로명(지번)주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr3" class="form-control" placeholder="상세주소입력">
+                                                        <input type="text" name="addr3" class="form-control" placeholder="상세주소입력"
+                                                               th:value="${company != null} ? ${company.address.addr3}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -300,7 +313,8 @@
                                                                     상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="addr4" class="form-control" placeholder="상세주소입력">
+                                                        <input type="text" name="addr4" class="form-control" placeholder="상세주소입력"
+                                                               th:value="${company != null} ? ${company.address.addr4}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -312,7 +326,8 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">사업자등록증</span>
                                                             </span>
-                                                        <input type="file" name="comNumFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="file" name="comNumFile" class="form-control form-control-plaintext"
+                                                               th:value="${company != null} ? ${company.comNumFile}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -324,7 +339,8 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">통장사본</span>
                                                             </span>
-                                                        <input type="file" name="comAccountFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="file" name="comAccountFile" class="form-control form-control-plaintext"
+                                                               th:value="${company != null} ? ${company.comAccountFile}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,7 +354,8 @@
                                                                     A/S 책임정보
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comAs" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAs" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comAs}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,7 +369,8 @@
                                                                     외주 제조사 AS번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comAsNum" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comAsNum" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comAsNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -366,7 +384,8 @@
                                                                     메모
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comMemo" class="form-control" placeholder="입력">
+                                                        <input type="text" name="comMemo" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.comMemo}">
                                                         <input type="hidden" name="comModifiedMemo">
                                                     </div>
                                                 </div>
@@ -393,7 +412,8 @@
                                                                     성명(담당자)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ceName" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ceName" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.ceName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -407,7 +427,8 @@
                                                                     부서
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ceDepart" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ceDepart" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.ceDepart}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -421,7 +442,8 @@
                                                                     직급(직책)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cePosition" class="form-control" placeholder="입력">
+                                                        <input type="text" name="cePosition" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.cePosition}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -435,7 +457,8 @@
                                                                     이메일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ceMail" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ceMail" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.ceMail}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -449,7 +472,8 @@
                                                                     휴대폰번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cePhone" class="form-control" placeholder="입력">
+                                                        <input type="text" name="cePhone" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.cePhone}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -463,7 +487,8 @@
                                                                     전화번호(담당자)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ceTel" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ceTel" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.ceTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -477,7 +502,8 @@
                                                                     담당자 메모
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ceMemo" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ceMemo" class="form-control" placeholder="입력"
+                                                               th:value="${company != null} ? ${company.companyEmployee.ceMemo}">
                                                     </div>
                                                 </div>
                                             </div>

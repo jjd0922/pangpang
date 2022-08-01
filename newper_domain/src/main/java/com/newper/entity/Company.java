@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -63,4 +64,26 @@ public class Company extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
+
+    public void companyAllUpdate(Map<String, Object> map, Address address) {
+
+        setComType(map.get("comType").toString());
+        setComMid(map.get("comMid").toString());
+//        setComState((ComState) map.get("comState"));
+        setComName(map.get("comName").toString());
+        setComCeo(map.get("comCeo").toString());
+        setComNum(map.get("comNum").toString());
+        setComNick(map.get("comNick").toString());
+        setComTel(map.get("comTel").toString());
+        setComFax(map.get("comFax").toString());
+        setComBank(map.get("comBank").toString());
+        setComAccount(map.get("comAccount").toString());
+        setAddress(address);
+//        setComNumFile(map.get("comNumFile").toString());
+//        setComAccountFile(map.get("comAccountFile").toString());
+        setComAs(map.get("comAs").toString());
+        setComAsNum(map.get("comAsNum").toString());
+        setComModifiedMemo(map.get("comModifiedMemo").toString());
+        // companyemployee 같이?
+    }
 }

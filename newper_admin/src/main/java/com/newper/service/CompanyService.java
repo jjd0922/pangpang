@@ -54,5 +54,22 @@ public class CompanyService {
         return true;
     }
 
+    @Transactional
+    public void updateCompany(Integer comIdx, ParamMap paramMap) {
+        System.out.println("paramMap = " + paramMap);
+
+        Company company = companyRepo.findCompanyByComIdx(comIdx);
+        System.out.println("company = " + company);
+
+        // 담당자(CompanyEmployee) update
+        CompanyEmployee companyEmployee = company.getCompanyEmployee();
+        companyEmployee.ceAllUpdate(paramMap.getMap());
+
+        // company update
+        Address address = paramMap.mapParam(Address.class);
+        company.companyAllUpdate(paramMap.getMap(), address);
+        System.out.println("company2 = " + company);
+    }
+
 
 }
