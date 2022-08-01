@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.binding.MapperMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 
@@ -57,18 +58,6 @@ public class UserRestController {
         rd.setData(companyMapper.selectCompanyDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
         return rd;
-    }
-
-
-    @PostMapping("/userCreate.ajax")
-    public ReturnMap userCreate(ParamMap paramMap) {
-        ReturnMap rm= new ReturnMap();
-        System.out.println("paramMap= " + paramMap.getMap());
-
-        userService.userCreate(paramMap);
-
-        rm.setMessage("등록완료");
-        return rm;
     }
 
     @PostMapping("searchCompany.ajax")

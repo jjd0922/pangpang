@@ -99,10 +99,10 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                 우편번호
-                                                                 <a class="badge badge-sm badge-info ml-1" onclick="">검색</a>
+                                                                  <a href="javascript: daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등" name="POST">
+                                                        <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등" name="post">
                                                         <span class="input-group-append">
                                                                 <a class="input-group-text"><i class="icon-map5"></i></a>
                                                             </span>
@@ -118,7 +118,7 @@
                                                                   주소(시,도)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR1">
+                                                        <input type="text" class="form-control" placeholder="기본" name="addr1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,7 +132,7 @@
                                                                  주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR2">
+                                                        <input type="text" class="form-control" placeholder="기본" name="addr2">
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,7 +145,7 @@
                                                                     주소(도로명)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR3">
+                                                        <input type="text" class="form-control" placeholder="기본" name="addr3">
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,7 +158,7 @@
                                                                    상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" placeholder="기본" name="ADDR4">
+                                                        <input type="text" class="form-control" placeholder="기본" name="addr4">
                                                     </div>
                                                 </div>
                                             </div>
@@ -450,9 +450,59 @@
 <script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+
 <script th:inline="javascript">
+    function saveAction(){
+        $("#userForm").submit();
+    }
+
     function searchComNameModal(){
         $('#comNameModal').modal('show');
+    }
+    /** 다음 주소 api사용 */
+    function daum_address() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if(extraAddr !== ''){
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=post]').val(data.zonecode).attr("readonly", true);
+                $('input[name=addr1]').val(data.sido).attr("readonly", true);
+                $('input[name=addr2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=addr3]').val(addr + extraAddr).attr("readonly", true);
+            }
+        }).open();
     }
 
     function userCreate(){
@@ -550,9 +600,16 @@
     $('#mdSave').on('click', searchCompany);
        var value = $('input[name="U_COM_IDX"]').val();
         console.log(data);
-*/
+
+ */
+
+    $("#saveBtn").on("click", saveAction);
+    $("input[name=post]").on("click", daum_address);
+
+
 
 </script>
+
 </body>
 
 </html>
