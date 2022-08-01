@@ -203,7 +203,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control " placeholder="주소 검색창 불러오기 등" name="COM_NAME" readonly>
-                                                        <input type="hidden" name="U_COM_IDX" value="1">
+                                                        <input type="hidden" name="U_COM_IDX" value="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -467,37 +467,24 @@
             }
         });
     }
-</script>
 
-<!-- 첨부이미지 hover 미리보기 -->
-<script language="JavaScript">
-    $(document).ready(function() {
-        var xOffset = 150;
-        var yOffset = -10;
+    function searchCompany(){
+        var a = dataTableGetSelectedData('modalTable','COM_IDX')
+        $.ajax({
+            url: '/user/searchCompany.ajax',
+            data: 'COM_IDXS='+a,
+            type:'POST',
+            success:function(data){
+                console.log(data)
+             //   $('').var(.) //객체명쓰고 데이터를 불러오는것으로 리턴.. 상호법인명comidx는 히든값으로 주고 이름은 검색창에 뜨게
+                $('input[name=COM_NAME]').val(data.data.com_name);
+                $('input[name=U_COM_IDX]').val(data.data.com_idx);
+            },
+            error: function (data, err) {
 
-        $(document).on("mouseover",".input-thumb",function(e){
-            var image_data = $(this).data("image");
-            var add_caption = (image_data != undefined) ? "<br/>" + image_data : "" ;
-            $("body").append("<p id='preview' class='input-thumb-preview'><img src='"+ $(this).attr("src") +"' width='100%' />"+ add_caption +"</p>");
-            $("#preview")
-                .css("left",(e.clientX - xOffset) + "px")
-                .css("top",(e.clientY - yOffset) + "px")
-                .fadeIn("fast");
+            }
         });
-
-        $(document).on("mousemove",".input-thumb",function(e){
-            $("#preview")
-                .css("left",(e.clientX - xOffset) + "px")
-                .css("top",(e.clientY - yOffset) + "px");
-        });
-
-        $(document).on("mouseout",".input-thumb",function(){
-            $("#preview").remove();
-        });
-    });
-
-
-
+    }
 </script>
 
 <script>
@@ -518,8 +505,8 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'COM_IDX', 'render': function (data,full,meta,type) {
+                return '<input type="hidden" value="'+data + '" name="COM_IDX">';
                 }}
             ,{'class':'m-w-max', 'title':'이름','data':'CE_NAME'}
             ,{'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
@@ -527,8 +514,20 @@
                 }}
             ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
             ,{'class':'m-w-max', 'title':'등록시간','data':'CREATED_TIME'}
-            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE'}
-            ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE'}
+            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE', 'render': function (data,full,meta,type){
+                if(data==null){
+                    return '';
+                }else{
+                    return '';
+                }
+                }}
+            ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE' ,'render': function (data,full,meta,type){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
             ,{'class':'m-w-max', 'title':'상태','data':'COM_STATE'}
             ,{'class':'m-w-max', 'title':'MID','data':'COM_MID'}
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
@@ -546,6 +545,13 @@
         var focusPopup = window.open('userpopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
+
+/*
+    $('#mdSave').on('click', searchCompany);
+       var value = $('input[name="U_COM_IDX"]').val();
+        console.log(data);
+*/
+
 </script>
 </body>
 

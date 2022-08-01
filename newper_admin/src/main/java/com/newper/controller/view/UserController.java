@@ -35,16 +35,6 @@ public class UserController {
 
     }
 
-    @PostMapping("/userCreate.ajax")
-    public ReturnMap userCreate(ParamMap paramMap) {
-        ReturnMap rm= new ReturnMap();
-        System.out.println("paramMap= " + paramMap.getMap());
-
-        userService.userCreate(paramMap);
-
-        rm.setMessage("등록완료");
-        return rm;
-    }
 }
 
 
