@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RequestMapping(value = "/company/")
@@ -28,8 +29,8 @@ public class CompanyRestController {
 
     /** 거래처 관리 데이터테이블 */
     @PostMapping("company.dataTable")
-    public ReturnDatatable company(ParamMap paramMap){
-        ReturnDatatable rd = new ReturnDatatable();
+    public ReturnDatatable company(ParamMap paramMap, HttpServletResponse response){
+        ReturnDatatable rd = new ReturnDatatable("거래처 관리");
 
         paramMap.multiSelect("ctType");
         paramMap.multiSelect("comType");

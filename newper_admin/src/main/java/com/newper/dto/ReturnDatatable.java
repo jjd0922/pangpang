@@ -1,6 +1,7 @@
 package com.newper.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,14 +9,22 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
+@NoArgsConstructor
 /** dataTable return용 class*/
 public class ReturnDatatable {
 
     private long recordsFiltered;
     private long recordsTotal;
-    private List<?> data=new ArrayList<>();
+    /** 엑셀 다운로드시 사용되는 파일명*/
+    private String fileName;
+    private List<Map<String, Object>> data=new ArrayList<>();
 
     private LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+
+    /** 엑셀 다운로드시 사용되는 파일명*/
+    public ReturnDatatable(String fileName) {
+        this.fileName = fileName;
+    }
 
     public void setData(List data) {
         this.data.clear();

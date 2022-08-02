@@ -118,8 +118,7 @@ if($.fn.dataTable !== undefined){
                     extend: 'excelHtml5',
                     className: 'btn btn-sm btn-dark opacity-60',
                     action: function (e, dt, node, config) {
-                        var dtId = e.target.parentNode.getAttribute('aria-controls');
-                        downloadAllExcel(dtId);
+                        downloadAllExcel(dt.settings()[0].sTableId);
                     },
                     text: '<i class="icon-file-excel mr-1"></i>엑셀',
                     footer: true
@@ -275,7 +274,6 @@ function modalDiv(dtId){
 }
 
 function downloadAllExcel(dtId){
-// function downloadAllExcel(dt){
     var excelForm=document.createElement('form');
     var excel_cols=document.createElement('input');
     excel_cols.setAttribute('name', 'cols');

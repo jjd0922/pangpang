@@ -156,24 +156,6 @@ public class ParamMap {
             }
         }
     }
-    /**excel 전체 다운로드에서 엑셀 header, value List*/
-    public List<String[]> getExcelHeaders() {
-        String thead[]=((String)map.get("thead")).split(";");
-        String cols[]=((String)map.get("cols")).split(";");
-
-//		log.info(map.get("thead"));
-//		log.info(map.get("cols"));
-//		log.info(thead.length+"/"+cols.length);
-        List<String[]> columns=new ArrayList<String[]>();
-
-        for(int i=0;i<cols.length;i++) {
-//			log.info(thead[i].trim()+"\t"+cols[i].trim());
-            String[] column={thead[i].trim(),cols[i].trim()};
-            columns.add(column);
-        }
-        return columns;
-    }
-
     public <S> S mapParam(Class<S> classType){
 
         ModelMapper modelMapper = new ModelMapper();
