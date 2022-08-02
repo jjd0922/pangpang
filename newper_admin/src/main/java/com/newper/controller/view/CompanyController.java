@@ -5,6 +5,7 @@ import com.newper.dto.ReturnMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.repository.CompanyEmployeeRepo;
+import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
