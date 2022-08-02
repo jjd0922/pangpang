@@ -5,35 +5,49 @@
     <select id="selectCategoryListByParent" resultType="map">
         SELECT
             P.*,
-            COUNT(C.CATE_IDX) AS CNT
+            if(C.CNT IS NULL,0,C.CNT) CNT
         FROM
-            CATEGORY P
+            category P
                 LEFT JOIN
             (
                 SELECT
-                    CATE_IDX
+                    CATE_PARENT_IDX,COUNT(CATE_PARENT_IDX) CNT
                 FROM
-                    CATEGORY
+                    category
                 where
-                    CATE_PARENT_IDX IS NOT null
-                GROUP BY CATE_IDX
+                    CATE_PARENT_IDX is not null
+                GROUP BY CATE_PARENT_IDX
             ) C
-            ON P.CATE_IDX = C.CATE_IDX
+            ON P.CATE_IDX = C.CATE_PARENT_IDX
         WHERE
-            CATE_PARENT_IDX IS NULL
-
+            P.CATE_PARENT_IDX IS NULL
+        GROUP BY CATE_IDX
+        order by CATE_ORDER
     </select>
 
     <select id="selectCategoryListByChildren" resultType="map">
-        select
-            *
-        from
-            category
-        where
-            CATE_PARENT_IDX=#{CATE_PARENT_IDX}
+        SELECT
+            P.*,
+            if(C.CNT IS NULL,0,C.CNT) CNT
+        FROM
+            category P
+                LEFT JOIN
+            (
+                SELECT
+                    CATE_PARENT_IDX,COUNT(CATE_PARENT_IDX) CNT
+                FROM
+                    category
+                where
+                    CATE_PARENT_IDX is not null
+                GROUP BY CATE_PARENT_IDX
+            ) C
+            ON P.CATE_IDX = C.CATE_PARENT_IDX
+        WHERE
+            P.CATE_PARENT_IDX = #{CATE_PARENT_IDX}
+        GROUP BY CATE_IDX
+        order by CATE_ORDER
     </select>
-
-
+    
 
 
 </mapper>

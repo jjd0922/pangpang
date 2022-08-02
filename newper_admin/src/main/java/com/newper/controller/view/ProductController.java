@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.dto.ParamMap;
 import com.newper.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,13 @@ public class ProductController {
     @GetMapping("category")
     public ModelAndView category(){
         ModelAndView mav = new ModelAndView("product/category");
+
+        return mav;
+    }
+
+    @GetMapping("category/categoryCreate")
+    public ModelAndView categoryCreate(ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("product/category/category_create");
 
         return mav;
     }
