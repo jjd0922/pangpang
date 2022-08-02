@@ -46,17 +46,7 @@
     </sql>
     <select id="selectCompanyDatatable" resultType="Map" parameterType="Map">
         SELECT
-            *,
-            CASE
-                WHEN COM_TYPE = 'INDIV' THEN '개인'
-                WHEN COM_TYPE = 'BMAN' THEN '개인사업자'
-                WHEN COM_TYPE = 'CORPO' THEN '법인'
-            END AS 'COM_TYPE_CHANGE',
-            CASE
-                WHEN COM_STATE = 'NORMAL' THEN '정상업체'
-                WHEN COM_STATE = 'STOP' THEN '거래중지'
-                WHEN COM_STATE = 'ETC' THEN '기타'
-            END AS 'COM_STATE_CHANGE'
+            *
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
@@ -129,5 +119,12 @@
             CC_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
             <include refid="includeCompanyContractDataTable"></include>
+    </select>
+    <select id="test" resultType="map">
+        select
+            com_idx,com_state
+            from company
+
+        limit 5
     </select>
 </mapper>

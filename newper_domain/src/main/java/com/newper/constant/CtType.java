@@ -1,12 +1,13 @@
 package com.newper.constant;
 
+import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 /**거래처 구분코드(거래처의 유형)*/
-public enum CtType {
+public enum CtType implements EnumOption {
 
     MAIN("본사")
     ,PURCHASE("매입처")
