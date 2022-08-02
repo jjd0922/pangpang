@@ -189,18 +189,12 @@
             ,{'title':'견적서명','data':'PE_NAME','defaultContent':'','render':  function(data,type,full,meta){
                     return '<button type="button" onclick="estimateDetail(' + full.PE_IDX + ')">' + data + '</button>';
                 }}
-            ,{'title':'총 견적 수량','data':'PE_ESTIMATE_COUNT','defaultContent':'','render':  function(data,type,full,meta){
-                    return comma(data);
-                }}
-            ,{'title':'총 견적 금액','data':'PE_ESTIMATE_COST','defaultContent':'','render':  function(data,type,full,meta){
-                    return comma(data);
-                }}
-            ,{'title':'첨부파일','data':'PE_ESTIMATE_FILE','defaultContent':'','render':  function(data,type,full,meta){
+            ,{'title':'총 견적 수량','data':'PE_ESTIMATE_COUNT','defaultContent':''}
+            ,{'title':'총 견적 금액','data':'PE_ESTIMATE_COST','defaultContent':''}
+            ,{'title':'첨부파일','data':null,'defaultContent':'','render':  function(data,type,full,meta){
                     return '<button type="button" onclick="estimateDetaildown(' + full.PE_IDX + ')">다운로드</button>';
                 }}
-            ,{'title':'견적유효기간','data':'PE_PERIOD_START','defaultContent':'','render':  function(data,type,full,meta){
-                    return data + ' ~ ' + full.PE_PERIOD_END;
-                }}
+            ,{'title':'견적유효기간','data':'PE_PERIOD','defaultContent':''}
             ,{'title':'등록자','data':'CREATED_BY'}
             ,{'title':'등록일','data':'CREATED_DATE'}
             ,{'title':'수정일','data':'MODIFIED_DATE'}
@@ -213,12 +207,12 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('/po/estimateNew', 'estimateNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       var focusPopup = window.open('/po/estimatePop', 'estimateNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
        focusPopup.focus();
     });
 
     function estimateDetail(idx) {
-        var focusPopup = window.open('/po/estimateDetail/' + idx, 'regist_estimate', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/po/estimatePop/' + idx, 'estimateDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>

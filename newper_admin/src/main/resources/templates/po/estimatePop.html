@@ -27,10 +27,8 @@
                     <!-- Content area -->
                     <div class="content container-fluid">
                         <div class="row">
-
                             <div class="col-lg-12">
-
-                                <form id="createForm" method="post" enctype="multipart/form-data" action="contractNew">
+                                <form id="createForm" method="POST" enctype="multipart/form-data">
                                     <div class="card">
                                         <div class="card-body popup-contents">
                                             <!-- 타이틀 -->
@@ -68,7 +66,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">견적서 상태</span>
                                                                 </span>
-                                                                <select name="ccState" class="form-control select">
+                                                                <select name="peState" class="form-control select">
                                                                     <option th:each="opt: ${T(com.newper.constant.PeState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                                 </select>
                                                             </div>
@@ -107,7 +105,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">사업자등록번호</span>
                                                                 </span>
-                                                                <input type="text" class="form-control" placeholder="검색" readonly>
+                                                                <input type="text" class="form-control" placeholder="검색" name="comNum" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -177,14 +175,11 @@
                                                     <table class="table">
                                                         <thead>
                                                         <tr>
-                                                            <th>대표<br>썸네일</th>
                                                             <th>상품코드</th>
                                                             <th>상품명</th>
                                                             <th>모델명</th>
                                                             <th>브랜드</th>
                                                             <th>카테고리<br>대분류</th>
-                                                            <th>카테고리<br>소분류</th>
-                                                            <th>매입처</th>
                                                             <th>기준매입가</th>
                                                             <th>매입수량</th>
                                                             <th>매입총액</th>
@@ -249,6 +244,32 @@
 
         <script>
             function saveAction(){
+                var peEstimateCount = $('input[name=peEstimateCount]').val().replace(/,/gi,'');
+                var peEstimateCost = $('input[name=peEstimateCost]').val().replace(/,/gi,'');
+
+                $('input[name=peEstimateCount]').val(peEstimateCount);
+                $('input[name=peEstimateCost]').val(peEstimateCost);
+
+                if($('input[name=peName]').val() == '') {
+                    alert('견적서명을 입력해 주세요.');
+                    return false;
+                }
+
+                if($('input[name=comIdx]').val() == '') {
+                    alert('매입처를 선택해 주세요.');
+                    return false;
+                }
+
+                if($('input[name=pePurchaseCost]').val() == '') {
+                    alert('총 견적 금액을 입력해 주세요');
+                    return false;
+                }
+
+                if($('input[name=pePurchaseCount]').val() == '') {
+                    alert('총 견적 수량을 입력해 주세요');
+                    return false;
+                }
+
                 $("#createForm").submit();
             }
 

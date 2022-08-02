@@ -26,10 +26,4 @@ public class PoRestController {
         rd.setRecordsTotal(poMapper.countEstimateDataTable(paramMap.getMap()));
         return rd;
     }
-
-    /** 삭제할 소스코드 **/
-    @PostMapping("category.ajax")
-    public List<Map<String, Object>> categoryajax(ParamMap paramMap){
-        return poMapper.selectCategory(paramMap.getMap());
-    }
 }

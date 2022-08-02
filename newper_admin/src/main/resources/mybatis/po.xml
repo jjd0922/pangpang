@@ -5,10 +5,10 @@
         <if test='peName != null and peName != ""'>AND PE_NAME LIKE CONCAT('%',#{peName},'%')</if>
         <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
         <if test='peCode != null and peCode != ""'>AND PE_CODE LIKE CONCAT('%',#{peCode},'%')</if>
-        <if test='createdBy != null and createdBy != ""'>AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
-        <if test='createdDate != null and createdDate != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
-        <if test='modifiedBy != null and modifiedBy != ""'>AND MODIFIED_BY LIKE CONCAT('%',#{modifiedBy},'%')</if>
-        <if test='modifiedDate != null and modifiedDate != ""'>AND modifiedDate BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)</if>
+        <if test='createdBy != null and createdBy != ""'>AND PO_ESTIMATE.CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test='createdDate != null and createdDate != ""'>AND PO_ESTIMATE.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test='modifiedBy != null and modifiedBy != ""'>AND PO_ESTIMATE.MODIFIED_BY LIKE CONCAT('%',#{modifiedBy},'%')</if>
+        <if test='modifiedDate != null and modifiedDate != ""'>AND PO_ESTIMATE.MODIFIED_DATE BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)</if>
         <if test="pePeriod != null and pePeriod != ''">
             AND (PE_PERIOD_START BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13) OR
                 PE_PERIOD_END BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13))
@@ -30,11 +30,10 @@
             END AS 'PE_STATE',
             COM_NAME,
             PE_NAME,
-            PE_ESTIMATE_COUNT,
-            PE_ESTIMATE_COST,
+            FORMAT(PE_ESTIMATE_COUNT , 0) AS 'PE_ESTIMATE_COUNT',
+            FORMAT(PE_ESTIMATE_COST , 0) AS 'PE_ESTIMATE_COST',
             PE_ESTIMATE_FILE,
-            PE_PERIOD_START,
-            PE_PERIOD_END,
+            CONCAT(PE_PERIOD_START, ' ~ ', PE_PERIOD_END) AS 'PE_PERIOD',
             PO_ESTIMATE.CREATED_BY AS 'CREATED_BY',
             PO_ESTIMATE.CREATED_DATE AS 'CREATED_DATE',
             PO_ESTIMATE.MODIFIED_BY AS 'MODIFIED_BY',
@@ -45,6 +44,8 @@
         WHERE
             PE_IDX IS NOT NULL
             <include refid="includeEstimateDataTable"></include>
+        LIMIT
+            #{start}, #{length}
     </select>
 
     <select id="countEstimateDataTable" resultType="Long">
@@ -56,16 +57,5 @@
         WHERE
             PE_IDX IS NOT NULL
             <include refid="includeEstimateDataTable"></include>
-    </select>
-
-    <select id="selectCategory" resultType="Map">
-        select
-            CATE_IDX,
-            CATE_NAME
-        from
-            category
-        where
-            CATE_IDX IS NOT NULL
-        <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{idx}</if>
     </select>
 </mapper>

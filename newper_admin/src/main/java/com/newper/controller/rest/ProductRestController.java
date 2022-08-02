@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.CategoryMapper;
+import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class ProductRestController {
     private final CategoryRepo categoryRepo;
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
+    private final ProductMapper productMapper;
 
     /**category 대분류 dataTable*/
     @PostMapping("category/parent.dataTable")
@@ -92,4 +94,19 @@ public class ProductRestController {
         return rm;
     }
 
+
+    /** 카테고리 select **/
+    @PostMapping("category/selectCategory.ajax")
+    public List<Map<String, Object>> categorySelect(ParamMap paramMap) {
+        return categoryMapper.selectCategory(paramMap.getMap());
+    }
+
+    /** product DataTable */
+    @PostMapping("product.dataTable")
+    public ReturnDatatable productDataTable(){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        returnDatatable.setData(productMapper.selectProductDataTalbe());
+        returnDatatable.setRecordsTotal(productMapper.countProductDataTable());
+        return returnDatatable;
+    }
 }
