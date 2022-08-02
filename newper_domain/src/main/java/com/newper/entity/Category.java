@@ -36,10 +36,22 @@ public class Category{
     private String cateIcon;
     private String cateThumbnail;
     private String cateImage;
-    private byte cateOrder;
+    private int cateOrder;
 
     @Convert(converter = ConvertList.class)
     private List<String> cateSpec_list;
 
     private String cateMemo;
+
+    /** order 업데이트.*/
+    public void updateCategoryOrder(int cateOrder){
+        if(getCateOrder() < 0){
+            setCateOrder(cateOrder * -1);
+        }else{
+            setCateOrder(cateOrder);
+        }
+    }
+
 }
+
+

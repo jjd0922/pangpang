@@ -11,7 +11,8 @@ public interface CategoryMapper {
     List<Map<String, Object>> selectCategoryListByParent();
 
     /**부모 카테고리가 있는 카테고리 CATE_PARENT_IDX 로 조회 */
-    List<Map<String, Object>> selectCategoryListByChildren(int cate_parent_idx);
+    List<Map<String, Object>> selectCategoryListByChildren(Integer cate_parent_idx);
+
 
 
 }
