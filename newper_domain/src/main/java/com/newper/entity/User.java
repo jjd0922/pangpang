@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @DynamicUpdate
@@ -34,7 +35,7 @@ public class User extends BaseEntity {
     private String uName;
     private String uTel;
     private String uPhone;
-    private LocalDate uBirth;
+    private Date uBirth;
     private String uType;
     private String uDepart;
     private String uPosition;

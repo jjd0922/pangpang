@@ -17,7 +17,7 @@ public class Location {
     private Integer locIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LOC_WH_IDX", referencedColumnName = "locwhIdx")
+    @JoinColumn(name = "LOC_WH_IDX", referencedColumnName = "whIdx")
     private Warehouse warehouse;
 
     private String locState;

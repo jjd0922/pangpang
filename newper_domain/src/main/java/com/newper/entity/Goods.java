@@ -25,9 +25,9 @@ public class Goods {
     @JoinColumn(name = "G_LOC_IDX", referencedColumnName = "locIdx")
     private Location location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_GS_IDX", referencedColumnName = "gsIdx")
-    private  GoodsStock goodsStock;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "G_GS_IDX", referencedColumnName = "gsIdx")
+//    private  GoodsStock goodsStock;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_SPEC_IDX", referencedColumnName = "specIdx")

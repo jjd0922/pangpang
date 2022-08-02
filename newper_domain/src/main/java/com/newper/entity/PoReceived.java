@@ -30,10 +30,10 @@ public class PoReceived {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PR_P_IDX", referencedColumnName = "prpIdx")
+    @JoinColumn(name = "PR_P_IDX", referencedColumnName = "pIdx")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PR_PO_IDX", referencedColumnName = "prpoIdx")
+    @JoinColumn(name = "PR_PO_IDX", referencedColumnName = "poIdx")
     private Po po;
 }

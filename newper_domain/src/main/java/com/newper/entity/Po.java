@@ -21,7 +21,7 @@ public class Po extends BaseEntity {
     private Integer poIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PO_WH_IDX", referencedColumnName = "powhIdx")
+    @JoinColumn(name = "PO_WH_IDX", referencedColumnName = "whIdx")
     private Warehouse warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)

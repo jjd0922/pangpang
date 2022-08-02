@@ -65,6 +65,12 @@
             <include refid="includeCompanyDataTable"></include>
         ORDER BY
             COM_IDX DESC
+
+            <!--모든데이터테이블에 페이징처리코드-->
+
+        <if test="length!=-1">
+            limit #{start}, #{length}
+        </if>
     </select>
 
     <select id="countCompanyDatatable" resultType="Integer">

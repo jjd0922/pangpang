@@ -20,7 +20,7 @@ public class Product extends BaseEntity {
     private Integer pIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_CATE_IDX", referencedColumnName = "pcateIdx")
+    @JoinColumn(name = "P_CATE_IDX", referencedColumnName = "cateIdx")
     private  Category category;
 
     private String pCode;
