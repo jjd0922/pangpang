@@ -2,24 +2,17 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
-import com.newper.constant.ComState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Contract;
 import com.newper.entity.common.Address;
-import com.newper.exception.MsgException;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
-import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +23,7 @@ public class CompanyService {
 
     /** 거래처 등록 기능 */
     @Transactional
-    public Boolean saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+    public Integer saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
         System.out.println("paramMap = " + paramMap);
 
         Address address = paramMap.mapParam(Address.class);
@@ -53,17 +46,14 @@ public class CompanyService {
         company.setComNumFile(comNumFilePath);
         company.setComAccountFile(comAccountFilePath);
         System.out.println("파일 업로드 완료");
-        companyRepo.saveAndFlush(company);
+        Company savedCompany = companyRepo.saveAndFlush(company);
 
-        return true;
+        return savedCompany.getComIdx();
     }
 
     @Transactional
-    public void updateCompany(Integer comIdx, ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
-
+    public void updateCompany(Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
         Company company = companyRepo.findCompanyByComIdx(comIdx);
-        System.out.println("company = " + company);
 
         // 담당자(CompanyEmployee) update
         CompanyEmployee companyEmployee = company.getCompanyEmployee();
@@ -71,8 +61,9 @@ public class CompanyService {
 
         // company update
         Address address = paramMap.mapParam(Address.class);
-        company.companyAllUpdate(paramMap.getMap(), address);
-        System.out.println("company2 = " + company);
+        Company companyParam = paramMap.mapParam(Company.class);
+
+        company.companyAllUpdate(companyParam, address, companyEmployee);
     }
 
 
@@ -88,5 +79,13 @@ public class CompanyService {
 
         contract.setCcContractFile(ccContractFilePath);
         contractRepo.save(contract);
+    }
+
+    @Transactional
+    public void updateContract(int cc_idx, ParamMap paramMap, MultipartFile ccContractFile) {
+        Contract contract = contractRepo.findContractByccIdx(cc_idx);
+
+        Contract contractParam = paramMap.mapParam(Contract.class);
+        contract.updateContract(contractParam);
     }
 }

@@ -63,30 +63,30 @@ public class Company extends BaseEntity {
     @OneToMany(mappedBy = "company")
     private List<User> users;
 
+    @OneToMany(mappedBy = "company")
+    private List<Fee> feeList;
+
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
 
-    public void companyAllUpdate(Map<String, Object> map, Address address) {
-
-        setComType(map.get("comType").toString());
-        setComMid(map.get("comMid").toString());
-//        setComState((ComState) map.get("comState"));
-        setComName(map.get("comName").toString());
-        setComCeo(map.get("comCeo").toString());
-        setComNum(map.get("comNum").toString());
-        setComNick(map.get("comNick").toString());
-        setComTel(map.get("comTel").toString());
-        setComFax(map.get("comFax").toString());
-        setComBank(map.get("comBank").toString());
-        setComAccount(map.get("comAccount").toString());
+    public void companyAllUpdate(Company company, Address address, CompanyEmployee companyEmployee) {
+        setComType(company.getComType());
+        setComMid(company.getComMid());
+        setComState(company.getComState());
+        setComName(company.getComName());
+        setComCeo(company.getComCeo());
+        setComNum(company.getComNum());
+        setComNick(company.getComNick());
+        setComTel(company.getComTel());
+        setComFax(company.getComFax());
+        setComBank(company.getComBank());
+        setComAccount(company.getComAccount());
         setAddress(address);
-//        setComNumFile(map.get("comNumFile").toString());
-//        setComAccountFile(map.get("comAccountFile").toString());
-        setComAs(map.get("comAs").toString());
-        setComAsNum(map.get("comAsNum").toString());
-        setComModifiedMemo(map.get("comModifiedMemo").toString());
-        // companyemployee 같이?
+        setComAs(company.getComAs());
+        setComAsNum(company.getComAsNum());
+        setComModifiedMemo(company.getComModifiedMemo());
+        setCompanyEmployee(companyEmployee);
     }
 }

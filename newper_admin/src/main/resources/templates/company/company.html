@@ -54,7 +54,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange 거래처 계약">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange">
                                                 </div>
 
                                                 <div class="form-group">
@@ -162,6 +162,11 @@
     function searchBtn(){
         companyTable.page('first').ajax.url('/company/company.dataTable?'+$('#companyForm').serialize()).load();
     }
+
+    function companyDetailPop(comIdx) {
+        var focusPopup = window.open('companyPop/' + comIdx, 'companyDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 <script th:inline="javascript">
     var companyTable = $('#companyTable').DataTable({
@@ -181,31 +186,29 @@
             targets:   [0]
         } ],
         columns : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
-            ,{'class':'m-w-2', 'title':'No','data':'COM_IDX'}
-            ,{'class':'m-w-6', 'title':'등록일','data':'CREATED_DATE'}
-            ,{'class':'m-w-6', 'title':'등록시간','data':'CREATED_TIME'}
+            ,{'title':'No','data':'COM_IDX','defaultContent':''}
+            ,{'title':'등록일','data':'COM_CREATED_DATE','defaultContent':''}
+            ,{'title':'등록시간','data':'COM_CREATED_TIME','defaultContent':''}
            /* ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE_CHANGE'}*/
-            ,{'class':'m-w-8', 'title':'사업자 분류','data':'COM_TYPE_CHANGE'}
-            ,{'class':'m-w-5', 'title':'상태','data':'COM_STATE_CHANGE'}
-            ,{'class':'m-w-3', 'title':'MID','data':'COM_MID'}
-            ,{'class':'m-w-max', 'title':'상호법인명','data':null, 'render': function (data) {
-                    return '<a href="'+ data['COM_IDX'] +'" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+            ,{'title':'사업자 분류','data':'COM_TYPE_CHANGE','defaultContent':''}
+            ,{'title':'상태','data':'COM_STATE_CHANGE','defaultContent':''}
+            ,{'title':'MID','data':'COM_MID','defaultContent':''}
+            ,{'title':'상호법인명','data':null,'defaultContent':'','render': function (data) {
+                    return '<a href="javascript: companyDetailPop('+ data['COM_IDX'] +')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
                 }}
-            ,{'class':'m-w-4', 'title':'대표자명','data':'COM_CEO'}
-            ,{'class':'m-w-max', 'title':'업체주소','data':null, 'render':function(data){
-                    return data['ADDR1'] + ' ' + data['ADDR2'] + ' ' + data['ADDR3'] + ' ' + data['ADDR4'];
-                }}
-            ,{'class':'m-w-5', 'title':'우편번호','data':'POST'}
-            ,{'class':'m-w-6', 'title':'전화번호','data':'COM_TEL'}
-            ,{'class':'m-w-8', 'title':'담당자','data':'CE_NAME'}
-            ,{'class':'m-w-8', 'title':'담당자전화번호', 'data':'CE_PHONE'}
-            ,{'class':'m-w-8', 'title':'등록자','data':'CREATED_BY'}
-            ,{'class':'m-w-6', 'title':'수정일','data':'MODIFIED_DATE'}
-            ,{'class':'m-w-8', 'title':'수정자','data':'MODIFIED_BY'}
-            ,{'class':'m-w-8', 'title':'수정이력','data':'','defaultContent':'버튼넣기'}
+            ,{'title':'대표자명','data':'COM_CEO','defaultContent':''}
+            ,{'title':'업체주소','data':'ADDRESS','defaultContent':''}
+            ,{'title':'우편번호','data':'POST','defaultContent':''}
+            ,{'title':'전화번호','data':'COM_TEL','defaultContent':''}
+            ,{'title':'담당자','data':'CE_NAME','defaultContent':''}
+            ,{'title':'담당자전화번호', 'data':'CE_PHONE','defaultContent':''}
+            ,{'title':'등록자','data':'COM_CREATED_BY','defaultContent':''}
+            ,{'title':'수정일','data':'COM_MODIFIED_DATE','defaultContent':''}
+            ,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}
+            ,{'title':'수정이력','data':'','defaultContent':'버튼넣기'}
         ]
     });
 
@@ -214,7 +217,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('regist', 'regist_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       var focusPopup = window.open('/company/companyPop', 'regist_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
        focusPopup.focus();
     });
 </script>

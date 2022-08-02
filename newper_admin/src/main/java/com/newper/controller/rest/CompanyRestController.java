@@ -2,20 +2,14 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
-import com.newper.dto.ReturnMap;
-import com.newper.entity.Company;
-import com.newper.entity.CompanyEmployee;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(value = "/company/")
 @RestController
@@ -26,9 +20,9 @@ public class CompanyRestController {
     private final CompanyEmployeeRepo companyEmployeeRepo;
     private final CompanyService companyService;
 
-    /** 거래처 관리 데이터테이블 */
+    /**거래처 관리 데이터테이블*/
     @PostMapping("company.dataTable")
-    public ReturnDatatable company(ParamMap paramMap){
+    public ReturnDatatable company(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
         paramMap.multiSelect("ctType");
@@ -41,19 +35,8 @@ public class CompanyRestController {
         return rd;
     }
 
-    /** 거래처 수정 처리 */
-    @PostMapping("modify/{comIdx}")
-    public ReturnMap modify(@PathVariable Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
-        System.out.println("comIdx = " + comIdx);
-        ReturnMap rm = new ReturnMap();
-
-
-        companyService.updateCompany(comIdx, paramMap);
-        return rm;
-    }
-
     @PostMapping("contract.dataTable")
-    public ReturnDatatable companyContract(ParamMap paramMap){
+    public ReturnDatatable companyContract(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
         paramMap.multiSelect("ccState");
@@ -66,4 +49,31 @@ public class CompanyRestController {
         return rd;
     }
 
+    /**카테고리별 입점사 수수료관리 페이지 > 입점사 목록 가져오기*/
+    @PostMapping("store.dataTable")
+    public ReturnDatatable store(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        rd.setData(companyMapper.selectStoreDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countStoreDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+
+    /**카테고리별  입점사 수수료관리 페이지 > 카테고리별 수수료 데이터테이블*/
+    @PostMapping("fee.dataTable")
+    public ReturnDatatable fee(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        String comIdx = paramMap.get("comIdx").toString();
+        System.out.println("comIdx = " + comIdx);
+
+        paramMap.multiSelect("cfType");
+        paramMap.multiSelect("cfType");
+
+        rd.setData(companyMapper.selectFeeDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countFeeDatatable(paramMap.getMap()));
+
+        return rd;
+    }
 }

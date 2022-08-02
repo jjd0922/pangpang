@@ -86,28 +86,28 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산주기</label>
-                                                    <select name="ccCycle" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="ccCycle" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
                                                         <option th:each="opt: ${T(com.newper.constant.CcCycle).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">계약구분</label>
-                                                    <select name="ccType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="ccType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
                                                         <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산방식</label>
-                                                    <select name="ccCalType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="ccCalType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
                                                         <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select name="ccState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="ccState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
                                                         <option th:each="opt: ${T(com.newper.constant.CcState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
@@ -173,11 +173,16 @@
 
 <script>
     function searchBtn(){
+        companyTable.page('first').ajax.url('/company/contract.dataTable?'+$('#companyForm').serialize()).load();
+    }
 
+    function detailContract(ccIdx) {
+        var focusPopup = window.open('/company/contractPop/' + ccIdx, 'contractDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 <script>
-    $('#companyTable').DataTable({
+    var companyTable = $('#companyTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -194,30 +199,33 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'m-w-2', 'title':'상호법인명','data':'COM_NAME','defaultContent':''}
-            ,{'class':'m-w-2', 'title':'MID','data':'COM_MID','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'계약구분','data':'CC_TYPE','defaultContent':''}
-            ,{'class':'m-w-5 p-0', 'title':'상태','data':'CC_STATE','defaultContent':''}
-            ,{'class':'m-w-7', 'title':'정산주기','data':'CC_CYCLE','defaultContent':''}
-            ,{'class':'m-w-max', 'title':'세금계산서발행일','data':'CC_TAX_DATE','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'정산기준일','data':'CC_BASE_DATE','defaultContent':''}
-            ,{'class':'m-w-6', 'title':'계약시작일','data':'CC_CONTRACT_START','defaultContent':''}
-            ,{'class':'m-w-8', 'title':'계약종료일','data':'CC_CONTRACT_END','defaultContent':''}
-            ,{'class':'m-w-7', 'title':'정액/정률','data':'CC_FEE_TYPE','defaultContent':'', 'render':function(data,type,full,meta){
+            {'title':'상호법인명','data':'COM_NAME','defaultContent':''}
+            ,{'title':'MID','data':'COM_MID','defaultContent':''}
+            ,{'title':'계약명','data':'CC_NAME','defaultContent':'', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: detailContract('+ full.CC_IDX +')" class="badge badge-primary">' + full.CC_NAME + '</a>';
+                }}
+            ,{'title':'계약구분','data':'CC_TYPE','defaultContent':''}
+            ,{'title':'상태','data':'CC_STATE','defaultContent':''}
+            ,{'title':'정산주기','data':'CC_CYCLE','defaultContent':''}
+            ,{'title':'세금계산서발행일','data':'CC_TAX_DATE','defaultContent':''}
+            ,{'title':'정산기준일','data':'CC_BASE_DATE','defaultContent':''}
+            ,{'title':'계약시작일','data':'CC_CONTRACT_START','defaultContent':''}
+            ,{'title':'계약종료일','data':'CC_CONTRACT_END','defaultContent':''}
+            ,{'title':'정액/정률','data':'CC_FEE_TYPE','defaultContent':'', 'render':function(data,type,full,meta){
                     if (data == 'cost') {
                         return full.CC_COST;
                     } else {
                         return full.CC_RATES;
                     }
                 }}
-            ,{'class':'m-w-7', 'title':'계약번호','data':'CC_CONTRACT_NUM','defaultContent':'', 'render':function(data,type,full,meta){
+            ,{'title':'계약번호','data':'CC_CONTRACT_NUM','defaultContent':'', 'render':function(data,type,full,meta){
                     return '<button type="button" onclick="detailContract(' + full.ccIdx + ')">' + data + '</button>'
                 }}
-            ,{'class':'m-w-max', 'title':'등록자','data':'CREATED_BY','defaultContent':''}
-            ,{'class':'m-w-3', 'title':'등록일','data':'CREATED_DATE','defaultContent':''}
-            ,{'class':'m-w-8', 'title':'수정자','data':'MODIFIED_BY','defaultContent':''}
-            ,{'class':'m-w-8', 'title':'수정일','data':'MODIFIED_DATE','defaultContent':''}
-            ,{'class':'text-right m-w-7', 'title':'수정이력','data':'CC_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+            ,{'title':'등록자','data':'CC_CREATED_BY','defaultContent':''}
+            ,{'title':'등록일','data':'CC_CREATED_DATE','defaultContent':''}
+            ,{'title':'수정자','data':'CC_MODIFIED_BY','defaultContent':''}
+            ,{'title':'수정일','data':'CC_MODIFIED_DATE','defaultContent':''}
+            ,{'title':'수정이력','data':'CC_IDX','defaultContent':'', 'render':function(data,type,full,meta){
                     return '<button type="button" onclick="detailContract(' + full.ccIdx + ')">상세</button>'
                 }}
         ]
@@ -228,7 +236,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('contractNew', 'contractNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/company/contractPop', 'contractNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>

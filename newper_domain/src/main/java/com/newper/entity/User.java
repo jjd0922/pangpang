@@ -44,11 +44,6 @@ public class User extends BaseEntity {
 
     @Embedded
     private Address address;
-
-    public User(Integer uIdx, Company company) {
-        this.uIdx = uIdx;
-        this.company = company;
-    }
 }
 
 

@@ -10,15 +10,12 @@ import com.newper.repository.ContractRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping(value = "/company/")
 @Controller
@@ -40,17 +37,17 @@ public class CompanyController {
     }
 
     /** 거래처 신규등록 팝업 */
-    @GetMapping(value = "regist")
-    public ModelAndView registPop() {
-        ModelAndView mav = new ModelAndView("company/pop");
+    @GetMapping(value = "companyPop")
+    public ModelAndView companyPop() {
+        ModelAndView mav = new ModelAndView("company/companyPop");
 
         return mav;
     }
 
     /** 거래처 신규등록 처리 */
-    @PostMapping(value = "regist")
-    public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("company/pop");
+    @PostMapping(value = "companyPop")
+    public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
 
         // 담당자(CompanyEmployee) insert
         CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
@@ -58,7 +55,7 @@ public class CompanyController {
 
         // company insert
         paramMap.put("companyEmployee", companyEmployee);
-        companyService.saveCompany(paramMap, comNumFile, comAccountFile);
+        Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
 
 
 //        try {
@@ -67,19 +64,28 @@ public class CompanyController {
 //
 //        }
 
-
+        mav.addObject("msg", "등록완료");
+        mav.addObject("loc", "companyPop/" + comIdx);
         return mav;
     }
 
     /**거래처 상세조회 페이지 */
-    @GetMapping("{comIdx}")
-    @Transactional // 여기다.. 하는게 맞나?
+    @GetMapping(value = "companyPop/{comIdx}")
     public ModelAndView detail(@PathVariable Integer comIdx) {
-        ModelAndView mav = new ModelAndView("company/pop");
+        ModelAndView mav = new ModelAndView("company/companyPop");
         Company company = companyRepo.findCompanyByComIdx(comIdx);
 
         mav.addObject("company", company);
+        return mav;
+    }
 
+    /** 거래처 수정 처리 */
+    @PostMapping("companyPop/{comIdx}")
+    public ModelAndView modify(@PathVariable Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        companyService.updateCompany(comIdx, paramMap, comNumFile, comAccountFile);
+
+        mav.addObject("msg", "수정완료");
         return mav;
     }
 
@@ -92,36 +98,45 @@ public class CompanyController {
     }
 
     /** 거래처 계약관리 등록 페이지 **/
-    @GetMapping(value = "contractNew")
+    @GetMapping(value = "contractPop")
     public ModelAndView contractNew(){
-        ModelAndView mav = new ModelAndView("company/contractNew");
+        ModelAndView mav = new ModelAndView("company/contractPop");
 
         return mav;
     }
 
     /** 거래처 계약서 생성 **/
-    @PostMapping(value = "contractNew")
+    @PostMapping(value = "contractPop")
     public ModelAndView contractNewPost(ParamMap paramMap, MultipartFile ccContractFile){
-        ModelAndView mav = new ModelAndView("company/contractNew");
+        ModelAndView mav = new ModelAndView("company/contractPop");
         companyService.saveContract(paramMap, ccContractFile);
 
         return mav;
     }
 
     /** 거래처 계약관리 상세 페이지 **/
-    @GetMapping(value = "contractDetail/{cc_idx}")
+    @GetMapping(value = "contractPop/{cc_idx}")
     public ModelAndView contractDetail(@PathVariable int cc_idx){
-        ModelAndView mav = new ModelAndView("company/contractDetail");
-        mav.addObject("detail", contractRepo.findById(cc_idx));
+        ModelAndView mav = new ModelAndView("company/contractPop");
+        mav.addObject("detail", contractRepo.findContractByccIdx(cc_idx));
         return mav;
     }
 
-    /** 거래처 계약관리 상세 페이지 **/
-    @PostMapping(value = "contractDetail/{cc_idx}")
+    /** 거래처 계약관리 수정 처리 **/
+    @PostMapping(value = "contractPop/{cc_idx}")
     public ModelAndView contractDetailPost(@PathVariable int cc_idx, ParamMap paramMap, MultipartFile ccContractFile){
-        ModelAndView mav = new ModelAndView("company/contractDetail");
-        mav.addObject("detail", contractRepo.findById(cc_idx));
-        companyService.saveContract(paramMap, ccContractFile);
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        companyService.updateContract(cc_idx, paramMap, ccContractFile);
+
+        mav.addObject("msg", "수정완료");
+
+        return mav;
+    }
+
+    /** 카테고리별 입점사 수수료 조회 페이지 **/
+    @GetMapping(value = "fee")
+    public ModelAndView fee() {
+        ModelAndView mav = new ModelAndView("company/fee");
 
         return mav;
     }

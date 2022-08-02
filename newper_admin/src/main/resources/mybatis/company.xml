@@ -20,7 +20,7 @@
     </sql>
 
     <sql id="includeCompanyContractDataTable">
-        <if test='ccCreatedDate != null and ccCreatedDate != ""'>AND COMPANY_CONTRACT.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test='ccCreatedDate != null and ccCreatedDate != ""'>AND COMPANY_CONTRACT.CREATED_DATE BETWEEN SUBSTR(#{ccCreatedDate}, 1, 10) AND SUBSTR(#{ccCreatedDate}, 13)</if>
         <if test="ccTaxDate != null and ccTaxDate != ''">AND CC_TAX_DATE BETWEEN SUBSTR(#{ccTaxDate}, 1, 10) AND SUBSTR(#{ccTaxDate}, 13)</if>
         <if test="ccContarctNum != null and ccContarctNum != ''">AND CC_CONTRACT_NUM LIKE CONCAT('%', #{ccContarctNum}, '%')</if>
         <if test='ccCycle != null'>
@@ -44,9 +44,31 @@
             </foreach>
         </if>
     </sql>
+
+    <sql id="includeStoreDatatable">
+        <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test="comMid != null and comMid != ''">AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
+        <if test="ceName != null and ceName != ''">AND CE_NAME LIKE CONCAT('%',#{ceName},'%')</if>
+    </sql>
+
+    <sql id="includeFeeDatatable">
+        <if test="cateName != null">
+            <foreach collection="cateName" open="AND CATE_NAME IN(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cfType != null">
+            <foreach collection="cfType" open="AND CF_TYPE IN(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
     <select id="selectCompanyDatatable" resultType="Map" parameterType="Map">
         SELECT
-            *,
+            COM_IDX,
+            COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
+            COMPANY.CREATED_TIME AS 'COM_CREATED_TIME',
             CASE
                 WHEN COM_TYPE = 'INDIV' THEN '개인'
                 WHEN COM_TYPE = 'BMAN' THEN '개인사업자'
@@ -56,7 +78,20 @@
                 WHEN COM_STATE = 'NORMAL' THEN '정상업체'
                 WHEN COM_STATE = 'STOP' THEN '거래중지'
                 WHEN COM_STATE = 'ETC' THEN '기타'
-            END AS 'COM_STATE_CHANGE'
+            END AS 'COM_STATE_CHANGE',
+            COM_MID,
+            COM_NAME,
+            COM_CEO,
+            POST,
+            CONCAT(ADDR1,' ',ADDR2,' ',ADDR3,' ',ADDR4) AS ADDRESS,
+            COM_TEL,
+            COM_CE_IDX,
+            CE_IDX,
+            CE_NAME,
+            CE_PHONE,
+            COMPANY.CREATED_BY AS 'COM_CREATED_BY',
+            COMPANY.MODIFIED_BY AS 'COM_MODIFIED_BY',
+            COMPANY.MODIFIED_DATE AS 'COM_MODIFIED_DATE'
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
@@ -65,6 +100,9 @@
             <include refid="includeCompanyDataTable"></include>
         ORDER BY
             COM_IDX DESC
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countCompanyDatatable" resultType="Integer">
@@ -84,6 +122,7 @@
             CC_IDX,
             COM_NAME,
             COM_MID,
+            CC_NAME,
             CASE
                 WHEN CC_TYPE = 'PURCHASE' THEN '매입'
                 WHEN CC_TYPE = 'SALES' THEN '매출'
@@ -117,6 +156,9 @@
             CC_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
             <include refid="includeCompanyContractDataTable"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countCompanyContract" resultType="Long">
@@ -129,5 +171,72 @@
             CC_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
             <include refid="includeCompanyContractDataTable"></include>
+    </select>
+
+    <select id="selectStoreDatatable" resultType="Map">
+        SELECT
+            COM_IDX,
+            U_IDX,
+            COM_NAME,
+            COM_MID,
+            U_NAME,
+            COMPANY.CREATED_BY AS 'COM_CREATED_BY',
+            COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
+            COMPANY.MODIFIED_BY AS 'COM_MODIFIED_BY',
+            COMPANY.MODIFIED_DATE AS 'COM_MODIFIED_DATE'
+        FROM
+            COMPANY
+                LEFT JOIN USER ON COM_U_IDX = U_IDX
+                JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
+        WHERE
+            COM_IDX IS NOT NULL
+            AND CT_TYPE = 'STORE'
+            <include refid="includeStoreDatatable"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countStoreDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            COMPANY
+                LEFT JOIN USER ON COM_U_IDX = U_IDX
+        WHERE
+            COM_IDX IS NOT NULL
+    </select>
+
+    <select id="selectFeeDatatable" resultType="Map">
+        SELECT
+            CATE_NAME,
+            CF_TYPE,
+            CF_PERCENT,
+            CF_MONEY
+        FROM
+            COMPANY_FEE
+                LEFT JOIN CATEGORY ON CF_CATE_IDX = CATE_IDX
+                JOIN COMPANY ON CF_COM_IDX = COM_IDX
+        WHERE
+            CF_IDX IS NOT NULL
+            AND CF_COM_IDX = #{comIdx}
+            AND CATE_DEPTH = 2
+            <include refid="includeFeeDatatable"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countFeeDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            COMPANY_FEE
+                JOIN CATEGORY ON CF_CATE_IDX = CATE_IDX
+        WHERE
+            CF_IDX IS NOT NULL
+            AND CF_COM_IDX = #{comIdx}
+            AND CATE_DEPTH = 2
+            <include refid="includeFeeDatatable"></include>
     </select>
 </mapper>

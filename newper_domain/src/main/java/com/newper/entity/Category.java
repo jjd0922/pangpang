@@ -42,4 +42,7 @@ public class Category{
     private List<String> cateSpec_list;
 
     private String cateMemo;
+
+    @OneToMany(mappedBy = "category")
+    private List<Fee> feeList;
 }
