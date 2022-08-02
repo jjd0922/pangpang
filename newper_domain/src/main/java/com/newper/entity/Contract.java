@@ -1,15 +1,12 @@
 package com.newper.entity;
 
 import com.newper.constant.*;
-import com.newper.entity.common.Address;
 import com.newper.entity.common.BaseEntity;
-import com.newper.entity.common.CreatedEntity;
-import com.newper.entity.common.ModifiedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -45,8 +42,8 @@ public class Contract extends BaseEntity {
     private String ccBaseDate;
     private String ccContractStart;
     private String ccContractEnd;
-    private float ccrates;
-    private int ccCose;
+    private float ccRates;
+    private int ccCost;
     private String ccContractNum;
     private String ccContractFile;
     private String ccName;
@@ -64,5 +61,17 @@ public class Contract extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CC_CE_IDX", referencedColumnName = "ceIdx")
-    private CompanyEmployee employee;
+    private CompanyEmployee companyEmployee;
+
+    /** 상태, 내부담당자, 거래처 정산 담당자 정보만 수정 가능**/
+    public void updateContract(Contract contract) {
+        setCcState(contract.ccState);
+        setCcOutName(contract.ccOutName);
+        setCcOutDepart(contract.ccOutDepart);
+        setCcOutMail(contract.ccOutMail);
+        setCcOutPostion(contract.ccOutPostion);
+        setCcOutPhone(contract.ccOutPhone);
+        setCcOutTel(contract.ccOutTel);
+        setCcOutMemo(contract.ccOutMemo);
+    }
 }

@@ -33,7 +33,7 @@
 
                     <div class="col-lg-12">
 
-                        <form id="createForm" method="post" enctype="multipart/form-data" action="contractNew">
+                        <form id="createForm" method="post" enctype="multipart/form-data">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
@@ -47,8 +47,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">상호법인명<a class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${detail.comName}" readonly>
-                                                        <input type="hidden" name="comIdx" th:value="${detail.comIdx}">
+                                                        <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${detail?.company?.comName}" readonly>
+                                                        <input type="hidden" name="comIdx" th:value="${detail?.company?.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">MID</span>
                                                         </span>
-                                                        <input type="text" name="comMid" class="form-control" th:value="${detail.comMid}" placeholder="검색" readonly>
+                                                        <input type="text" name="comMid" class="form-control" th:value="${detail?.company?.comMid}" placeholder="검색" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -72,7 +72,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">계약명</span>
                                                         </span>
-                                                        <input type="text" name="ccName" class="form-control" placeholder="입력" th:value="${detail.ccName}">
+                                                        <input type="text" name="ccName" class="form-control" placeholder="입력" th:value="${detail?.ccName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                             <span class="input-group-text">계약구분</span>
                                                         </span>
                                                         <select name="ccType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:if="${opt.name().equals()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -99,7 +99,7 @@
                                                             <span class="input-group-text">상태</span>
                                                         </span>
                                                         <select name="ccState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -123,7 +123,7 @@
                                                             <span class="input-group-text">정산주기</span>
                                                         </span>
                                                         <select name="ccCycle" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcCycle).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcCycle).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccCycle) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -138,7 +138,7 @@
                                                                     세금계산서 발행일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccTaxDate" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccTaxDate" class="form-control" placeholder="입력" th:value="${detail?.ccTaxDate}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                                             <span class="input-group-text">정산방식</span>
                                                         </span>
                                                         <select name="ccCalType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccCalType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -166,7 +166,7 @@
                                                                     정산기준일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccPaymentDate" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccBaseDate" class="form-control" placeholder="입력" th:value="${detail?.ccBaseDate}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,7 +180,7 @@
                                                                     계약시작일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccContractStart" class="form-control daterange-single" readonly>
+                                                        <input type="text" name="ccContractStart" class="form-control daterange-single" th:value="${detail?.ccContractStart}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,7 +194,7 @@
                                                                     계약종료
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccContractEnd" class="form-control daterange-single" readonly>
+                                                        <input type="text" name="ccContractEnd" class="form-control daterange-single" th:value="${detail?.ccContractEnd}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,7 +207,7 @@
                                                             <span class="input-group-text">정액/정률</span>
                                                         </span>
                                                         <select name="ccFeeType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcFeeType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcFeeType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccFeeType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -222,7 +222,7 @@
                                                                     기준수수료율
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccRates" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccRates" class="form-control" placeholder="입력" th:value="${detail?.ccRates}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
                                                                     기준수수료액
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccCost" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccCost" class="form-control" placeholder="입력" th:value="${detail?.ccCost}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,7 +250,7 @@
                                                                     계약번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccContractNum" class="form-control" placeholder="자동">
+                                                        <input type="text" name="ccContractNum" class="form-control" placeholder="자동" th:value="${detail?.ccContractNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -302,7 +302,7 @@
                                                                     성명(담당자)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutName" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutName" class="form-control" placeholder="입력" th:value="${detail?.ccOutName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -316,7 +316,7 @@
                                                                     부서
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutDepart" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutDepart" class="form-control" placeholder="입력" th:value="${detail?.ccOutDepart}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -330,7 +330,7 @@
                                                                     직급(직책)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutPosition" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutPostion" class="form-control" placeholder="입력" th:value="${detail?.ccOutPostion}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -344,7 +344,7 @@
                                                                     이메일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutMail" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutMail" class="form-control" placeholder="입력" th:value="${detail?.ccOutMail}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -358,7 +358,7 @@
                                                                     휴대폰번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutPhone" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutPhone" class="form-control" placeholder="입력" th:value="${detail?.ccOutPhone}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -372,7 +372,7 @@
                                                                     전화번호(담당자)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutTel" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutTel" class="form-control" placeholder="입력" th:value="${detail?.ccOutTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -386,7 +386,7 @@
                                                                     담당자 메모
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutMemo" class="form-control" placeholder="입력">
+                                                        <input type="text" name="ccOutMemo" class="form-control" placeholder="입력" th:value="${detail?.ccOutMemo}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -471,61 +471,9 @@
     function saveAction(){
         $("#createForm").submit();
     }
-
-    /** 다음 주소 api사용 */
-    function daum_address() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                var addr = ''; // api에서 받아오는 기본 주소
-                var extraAddr = ''; // 도로명일때 참고주소
-
-                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                        extraAddr += data.bname;
-                    }
-
-                    if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-
-                    if(extraAddr !== ''){
-                        extraAddr = '(' + extraAddr + ')';
-                    }
-                } else {
-                    addr = data.jibunAddress;
-                }
-
-                // addr1, addr2 부분을 제외한 기본주소 만들기
-                var addr_ = addr.split(' ');
-                addr = '';
-                for (var i = 2; i < addr_.length; i++) {
-                    addr += addr_[i] + ' ';
-                }
-
-                $('input[name=post]').val(data.zonecode).attr("readonly", true);
-                $('input[name=addr1]').val(data.sido).attr("readonly", true);
-                $('input[name=addr2]').val(data.sigungu).attr("readonly", true);
-                $('input[name=addr3]').val(addr + extraAddr).attr("readonly", true);
-            }
-        }).open();
-    }
-
-    /** 거래처 계약 구분코드 매입처 선택시 구매담당자 입력칸 활성화 */
-    function activateBtnForBuyer() {
-        // var ctTypeValue = $("select[]").val();
-        // if (ctTypeValue == "buyer") {
-        //     $("input[name]")
-        // }
-    }
-
-
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
-    $("input[name=post]").on("click", daum_address);
-    // $("input[name=")
 </script>
 </body>
 

@@ -16,4 +16,12 @@ public interface CompanyMapper {
     long countCompanyContract(Map<String, Object> param);
 
     List<Map<String, Object>> test();
+
+    List<Map<String, Object>> selectStoreDatatable(Map<String, Object> param);
+
+    long countStoreDatatable(Map<String, Object> param);
+
+    List<Map<String, Object>> selectFeeDatatable(Map<String, Object> param);
+
+    long countFeeDatatable(Map<String, Object> param);
 }

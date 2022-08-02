@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리별 입점사 수수료관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card" id="collapse-button-collapsed">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                <th:block th:text="${subTitle}"></th:block>
+                                            </span>
+                                    </div>
+                                </h6>
+                                <div class="header-elements text-right">
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                        <div class="list-icons ml-2">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body pt-0">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                            <form id="searchStoreForm">
+                                                <div class="form-group">
+                                                    <label class="d-block">상호법인명</label>
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">MID</label>
+                                                    <input type="text" name="comMid" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">구매담당자</label>
+                                                    <input type="text" name="uName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" name="createdBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">승인일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">승인자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchStore()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="#">
+                                            <i class="icon-popout mr-1"></i>수수료수정
+                                        </a>
+
+                                        <div class="card">
+                                            <table class="table" id="storeTable"></table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="d-flex justify-content-center align-items-end align-content-center flex-wrap">
+                                            <form id="searchFeeForm">
+                                                <input type="hidden" name="comIdx">
+                                                <!--<div class="form-group">
+                                                    <label class="d-block">카테고리 중분류</label>
+                                                    <select name="cateName" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.Category).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>-->
+
+                                                <div class="form-group">
+                                                    <label class="d-block">정액/정률</label>
+                                                    <select name="cfType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CfType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchFee()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+                                        <div class="card">
+                                            <table class="table" id="feeTable"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchStore() {
+        storeTable.page('first').ajax.url('/company/store.dataTable?' + $('#searchStoreForm').serialize()).load();
+    }
+
+    function searchFee() {
+        feeTable.page('first').ajax.url('/company/fee.dataTable?' + $('#searchFeeForm').serialize()).load();
+    }
+
+    function initFeeTable(comIdx) {
+        $('input[name = "comIdx"]').val(comIdx);
+        destroyDatatable('feeTable');
+        if (!$.fn.DataTable.isDataTable('#feeTable')) {
+            var feeTable = $('#feeTable').DataTable({
+                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+                ordering:false,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                serverSide: true,
+                ajax:{
+                    url: '/company/fee.dataTable?' + $('#searchFeeForm').serialize(),
+                    type:'post'
+                },
+                columnDefs: [ {
+                    orderable: false,
+                    targets:   [0]
+                } ],
+                columns : [
+                    {'title':'카테고리<br>중분류','data':'CATE_NAME','defaultContent':''}
+                    ,{'title':'정액/정률','data':'CF_TYPE','defaultContent':''}
+                    ,{'title':'수수료율','data':'CF_PERCENT','defaultContent':''}
+                    ,{'title':'수수료액', 'data':'CF_MONEY', 'defaultContent':''}
+                    ,{'title':'수정이력','data':'', 'render': function (data, full, type, meta) {
+                            return '<a href="#" class="badge badge-primary">수정이력</a>';
+                    }}
+                ]
+            });
+        }
+    }
+</script>
+<script th:inline="javascript">
+    var storeTable = $('#storeTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/company/store.dataTable',
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'상호법인명','data':null, 'defaultContent':'', 'render': function (data) {
+                    return '<a href="javascript: initFeeTable(' + data['COM_IDX'] + ')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+                }}
+            ,{'title':'MID','data':'COM_MID', 'defaultContent':''}
+            ,{'title':'구매담당자', 'data':'U_NAME', 'defaultContent':''}
+            ,{'title':'등록자','data':'COM_CREATED_BY', 'defaultContent':''}
+            ,{'title':'등록일','data':'COM_CREATED_DATE', 'defaultContent':''}
+            ,{'title':'수정자','data':'COM_MODIFIED_BY', 'defaultContent':''}
+            ,{'title':'수정일','data':'COM_MODIFIED_DATE', 'defaultContent':''}
+        ]
+    });
+
+    $('#searchStoreForm').on('keyup',function(event){
+        if(event.keyCode==13){searchStore();return false;}
+    });
+
+    $('#modFeeBtn').on('click',function (){
+
+    });
+</script>
+</html>

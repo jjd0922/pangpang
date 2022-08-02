@@ -4,6 +4,7 @@ import com.newper.entity.common.Address;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -48,12 +49,6 @@ public class User extends BaseEntity {
 
     @Embedded
     private Address address;
-
-    @PrePersist
-    public void preSave(){
-        System.out.println("test~~~~~~~~~~~~~~");
-    }
-
 }
 
 

@@ -34,7 +34,7 @@
 
                     <div class="col-lg-12">
 
-                        <form id="regiForm" method="post" enctype="multipart/form-data" th:action="${company == null} ? 'regist':'modify/' + ${company.comIdx}">
+                        <form id="regiForm" method="post" enctype="multipart/form-data">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
@@ -65,7 +65,7 @@
                                                                 <span class="input-group-text">사업자 분류</span>
                                                             </span>
                                                         <select data-placeholder="분류 선택" name="comType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -80,7 +80,7 @@
                                                                     MID
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comMid" class="form-control" placeholder="거래처 마스터 코드">
+                                                        <input type="text" name="comMid" class="form-control" th:value="${company?.comMid}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +93,7 @@
                                                                 <span class="input-group-text">상태</span>
                                                             </span>
                                                         <select name="comState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -120,7 +120,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comName" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comName}">
+                                                               th:value="${company?.comName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -135,7 +135,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comCeo" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comCeo}">
+                                                               th:value="${company?.comCeo}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -150,7 +150,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comNum" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comNum}">
+                                                               th:value="${company?.comNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comNick" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comNick}">
+                                                               th:value="${company?.comNick}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,7 +180,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comTel" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comTel}">
+                                                               th:value="${company?.comTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -195,7 +195,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comFax" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comFax}">
+                                                               th:value="${company?.comFax}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,7 +210,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comBank" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comBank}">
+                                                               th:value="${company?.comBank}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,7 +225,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comAccount" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comAccount}">
+                                                               th:value="${company?.comAccount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -327,7 +327,7 @@
                                                                 <span class="input-group-text">사업자등록증</span>
                                                             </span>
                                                         <input type="file" name="comNumFile" class="form-control form-control-plaintext"
-                                                               th:value="${company != null} ? ${company.comNumFile}">
+                                                               th:value="${company?.comNumFile}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -340,7 +340,7 @@
                                                                 <span class="input-group-text">통장사본</span>
                                                             </span>
                                                         <input type="file" name="comAccountFile" class="form-control form-control-plaintext"
-                                                               th:value="${company != null} ? ${company.comAccountFile}">
+                                                               th:value="${company?.comAccountFile}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -355,7 +355,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comAs" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comAs}">
+                                                               th:value="${company?.comAs}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -370,7 +370,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comAsNum" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comAsNum}">
+                                                               th:value="${company?.comAsNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -385,7 +385,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="comMemo" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.comMemo}">
+                                                               th:value="${company?.comMemo}">
                                                         <input type="hidden" name="comModifiedMemo">
                                                     </div>
                                                 </div>
@@ -413,7 +413,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="ceName" class="form-control" placeholder="입력"
-                                                               th:value="${company != null} ? ${company.companyEmployee.ceName}">
+                                                               th:value="${company?.companyEmployee?.ceName}">
                                                     </div>
                                                 </div>
                                             </div>
