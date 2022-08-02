@@ -8,11 +8,9 @@ import java.util.Map;
 
 @Mapper
 public interface PoMapper {
+    /** 견적서 조회 쿼리문 */
     List<Map<String, Object>> selectEstimateDataTable(Map<String, Object> param);
 
+    /** 견적서 갯수 조회 쿼리문 */
     long countEstimateDataTable(Map<String, Object> param);
-
-
-    /** 나중에 삭제할 쿼리문들 **/
-    List<Map<String, Object>> selectCategory(Map<String, Object> param);
 }

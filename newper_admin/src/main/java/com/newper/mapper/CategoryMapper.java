@@ -13,6 +13,6 @@ public interface CategoryMapper {
     /**부모 카테고리가 있는 카테고리 CATE_PARENT_IDX 로 조회 */
     List<Map<String, Object>> selectCategoryListByChildren(Integer cate_parent_idx);
 
-
-
+    /** 카테고리 조회 IDX없으면 전체 조회 그 외 부모 카테고리 하위 조회 */
+    List<Map<String, Object>> selectCategory(Map<String, Object> param);
 }

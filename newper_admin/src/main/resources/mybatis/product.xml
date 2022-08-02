@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.ProductMapper">
+    <select id="selectProductDataTalbe" resultType="Map">
+        SELECT
+            *,
+            FORMAT(P_PRICE , 0) AS 'P_PRICE',
+            category1.CATE_NAME AS 'CATE_NAME1',
+            brand.CATE_NAME as 'BRAND_NAME'
+        FROM
+            product
+                LEFT JOIN category AS category1 ON P_CATE_IDX = category1.CATE_IDX
+                LEFT JOIN category AS brand ON P_CATE_IDX2 = brand.CATE_IDX
+    </select>
+
+    <select id="countProductDataTable" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            product
+    </select>
+</mapper>

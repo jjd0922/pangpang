@@ -47,7 +47,16 @@
         GROUP BY CATE_IDX
         order by CATE_ORDER
     </select>
-    
 
 
+    <select id="selectCategory" resultType="Map">
+        SELECT
+            CATE_IDX,
+            CATE_NAME
+        FROM
+            category
+        WHERE
+            CATE_IDX IS NOT NULL
+            <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{cateIdx}</if>
+    </select>
 </mapper>

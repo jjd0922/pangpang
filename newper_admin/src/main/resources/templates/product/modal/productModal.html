@@ -66,7 +66,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 대분류</span>
                                                     </span>
-                                                    <select name="category1" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="category1" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -79,7 +79,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 중분류</span>
                                                     </span>
-                                                    <select name="category2" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="category2" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -92,7 +92,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 소분류</span>
                                                     </span>
-                                                    <select name="category3" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="category3" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -119,7 +119,7 @@
                 </table>
                 <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                     <div class="btn-group">
-                        <a class="btn btn-sm btn-primary" onclick="selectAllEventProduct()">일괄추가</a>
+                        <a class="btn btn-sm btn-primary" onclick="selectProduct()">일괄추가</a>
                     </div>
                 </div>
             </div>
@@ -131,16 +131,16 @@
     function openProductModal(){
         $('#productModal').modal('show');
         selectCategoryAjax(null, '1');
-        // selectProductDataTable();
+        selectProductDataTable();
     }
 
     function selectCategoryAjax(idx, type) {
         $.ajax({
             type: "POST",
-            url:"/po/category.ajax",
+            url:"/product/category/selectCategory.ajax?cateIdx=" + idx,
             dataType:"json",
             success : function(result){
-                var text = '';
+                var text = '<option>선택</option>';
 
                 $.each(result, function (index, value) {
                     text += '<option value="' + value.CATE_IDX + '">' + value.CATE_NAME + '</option>'
@@ -151,16 +151,13 @@
                     $('select[name=category2]').empty();
                     $('select[name=category3]').empty();
                     $('select[name=category1]').append(text);
-                    $('select[name=category1]').multiselect();
                 } else if (type == '2') {
                     $('select[name=category2]').empty();
                     $('select[name=category3]').empty();
                     $('select[name=category2]').append(text);
-                    $('select[name=category2]').multiselect();
                 } else {
                     $('select[name=category3]').empty();
                     $('select[name=category3]').append(text);
-                    $('select[name=category3]').multiselect();
                 }
 
             },
@@ -172,27 +169,36 @@
 
     // 일괄추가(체크박스)
     function selectProduct(){
-        var pType = dataTableGetSelectedDataArray('productModalTable', 'P_TYPE');
-        var spName = dataTableGetSelectedDataArray('productModalTable', 'SP_NAME');
-        var goodsGroupId = dataTableGetSelectedDataArray('productModalTable', 'GOODSGROUPID');
-        var spPriceF = dataTableGetSelectedDataArray('productModalTable', 'SP_PRICE_F');
-        var spIdx = dataTableGetSelectedDataArray('productModalTable', 'SP_IDX');
+        var pIdx = dataTableGetSelectedDataArray('productModalTable', 'P_IDX');
+        var pCode = dataTableGetSelectedDataArray('productModalTable', 'P_CODE');
+        var pName = dataTableGetSelectedDataArray('productModalTable', 'P_NAME');
+        var pModel = dataTableGetSelectedDataArray('productModalTable', 'P_MODEL');
+        var brandName = dataTableGetSelectedDataArray('productModalTable', 'BRAND_NAME');
+        var cateName1 = dataTableGetSelectedDataArray('productModalTable', 'CATE_NAME1');
+        var pPrice = dataTableGetSelectedDataArray('productModalTable', 'P_PRICE');
 
-        if(pType.length == 0){
+        if(pIdx.length == 0){
             alert('선택된 구매사 상품이 없습니다.');
             return false;
         }else{
-            for(var i=0; i< pType.length; i++){
-                if($('input[name="sp_idx"][value='+spIdx[i]+']').length > 0){
+            for(var i=0; i< pIdx.length; i++){
+                if($('input[name="pIdx"][value='+pIdx[i]+']').length > 0){
                 }else{
-                    var tr='<tr>';
-                    tr+='<td>'+pType[i]+'</td>';
-                    tr+='<td><input type="hidden" name="sp_idx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
-                    tr+='<td>'+goodsGroupId[i]+'</td>';
-                    tr+='<td class="text-won">'+spPriceF[i]+'</td>';
-                    tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+spIdx[i]+')">삭제</a></td>';
-                    tr+='</tr>'
-                    $('#shopProductTbody').append(tr);
+                    var tr = '';
+                    tr += '<tr id="tr_' + pIdx[i] + '">';
+                    tr += '<td>' + pCode[i] + '</td>';
+                    tr += '<td>' + pName[i] + '</td>';
+                    tr += '<td>' + pModel[i] + '</td>';
+                    tr += '<td>' + brandName[i] + '</td>';
+                    tr += '<td>' + cateName1[i] + '</td>';
+                    tr += '<td>' + pPrice[i] + '</td>';
+                    tr += '<td><input type="text" name="purchase_count" value="0" onkeyup="addPurchaseCount();"></td>';
+                    tr += '<td><input type="text" name="purchase_cost" value="0" onkeyup="addPurchaseCost();"></td>';
+                    tr += '<td><button type="button" onclick="deleteProduct(' + pIdx[i] + ')">삭제</button></td>';
+                    tr += '<input type="hidden" name="pIdx" value="' + pIdx[i] + '">'
+                    tr += '</tr>'
+
+                    $('#productTbody').append(tr);
                 }
             }
         }
@@ -203,28 +209,56 @@
 
 
     // 추가버튼
-    function chooseShopProductEvent(id, rowIdx){
+    function chooseProduct(id, rowIdx){
         var dataMap=getDatatablemap(id, rowIdx);
 
-        if($('input[name=sp_idx][value='+dataMap.SP_IDX+']').length>0){
+        if($('input[name=pIdx][value='+dataMap.P_IDX+']').length > 0){
             alert('이미 추가된 상품 입니다');
-            return;
+            return false;
         }
+        var tr = '';
+        tr += '<tr id="tr_' + dataMap.P_IDX + '">';
+        tr += '<td>' + dataMap.P_CODE + '</td>';
+        tr += '<td>' + dataMap.P_NAME + '</td>';
+        tr += '<td>' + dataMap.P_MODEL + '</td>';
+        tr += '<td>' + dataMap.BRAND_NAME + '</td>';
+        tr += '<td>' + dataMap.CATE_NAME1 + '</td>';
+        tr += '<td>' + dataMap.P_PRICE + '</td>';
+        tr += '<td><input type="text" name="purchase_count" value="0" onkeyup="addPurchaseCount();"></td>';
+        tr += '<td><input type="text" name="purchase_cost" value="0" onkeyup="addPurchaseCost();"></td>';
+        tr += '<td><button type="button" onclick="deleteProduct(' + dataMap.P_IDX + ')">삭제</button></td>';
+        tr += '</tr>'
 
-        var tr='<tr>';
-        tr+='<td>'+dataMap.P_TYPE+'</td>';
-        tr+='<td><input type="hidden" name="sp_idx" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
-        tr+='<td>'+dataMap.GOODSGROUPID+'</td>';
-        tr+='<td class="text-won">'+dataMap.SP_PRICE_F+'</td>';
-        tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';
-        tr+='</tr>'
-        $('#shopProductTbody').append(tr);
-
+        $('#productTbody').append(tr);
         $('#productModal').modal('hide');
     }
-    <!-- 이벤트 상품 검색 -->
+    <!-- 상품 검색 -->
     function searchProductModal(){
         $('#productModalTable').dataTable().table.page("first").ajax.url("/product/product.dataTable?" + $('#productModalForm').serialize()).load(null, false);
+    }
+
+    function deleteProduct (pIdx) {
+        $('#tr_' + pIdx).remove();
+        addPurchaseCount();
+        addPurchaseCost();
+    }
+
+    function addPurchaseCount () {
+        var count_total = 0;
+        $.each($('input[name=purchase_count]'), function(index, value){
+            var count = $(value).val();
+            count_total += parseInt(count);
+        });
+        $('input[name=peEstimateCount]').val(comma(count_total));
+    }
+
+    function addPurchaseCost () {
+        var cost_total = 0;
+        $.each($('input[name=purchase_cost]'), function(index, value){
+            var cost = $(value).val();
+            cost_total += parseInt(cost);
+        });
+        $('input[name=peEstimateCost]').val(comma(cost_total));
     }
 </script>
 <script th:inline="javascript">
@@ -239,7 +273,7 @@
             },
             serverSide: true,
             ajax:{
-                url:'/product/productDataTable',
+                url:'/product/product.dataTable',
                 type:'post'
             },
             columnDefs: [ {
@@ -254,21 +288,19 @@
                 targets:    [1]
             }],
             "columns" : [
-            {'title':'선택','data':'SP_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                    return '';
-                }}
-            ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'title':'상품 구분','data':'P_TYPE_STR'}
-            ,{'title':'브랜드','data':'B_NAME', 'defaultContent':''}
-            ,{'title':'대분류','data':'CF_NAME', 'defaultContent':''}
-            ,{'title':'SHOP 노출 상품명','data':'SP_NAME'}
-            ,{'title':'내부 상품 코드','data':'GOODSGROUPID'}
-            ,{'title':'구매사 판매가','data':'SP_PRICE_F','class':'text-won','defaultContent':''}
-            ,{'title':'','render':function(data,type,full,meta){
-                    return '<a class="btn btn-primary btn-sm" onclick="chooseShopProductEvent(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
-                }}
+                {'class':'select-checkbox', 'title':'선택','data':'PE_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                        return '';
+                    }}
+                , {'title':'상품코드','data':'P_CODE', 'defaultContent':''}
+                ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+                ,{'title':'모델명','data':'P_MODEL', 'defaultContent':''}
+                ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
+                ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
+                ,{'title':'기준매입가','data':'P_PRICE', 'defaultContent':''}
+                ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '<button type="button" onclick="chooseProduct(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">선택</button>'
+                    }}
+
         ]
     });
     }
