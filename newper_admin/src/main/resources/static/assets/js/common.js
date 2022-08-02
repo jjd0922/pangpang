@@ -352,9 +352,9 @@ function downloadAllExcel(dtId){
     excelForm.method='post';
 
     var pathNameStr = window.location.pathname;
-    if(opener != null){
-        pathNameStr = opener.location.pathname;
-    }
+    // if(opener != null){
+    //     pathNameStr = opener.location.pathname;
+    // }
 
     if(dt.ajax.url().indexOf('?')==-1){
         excelForm.action=dt.ajax.url()+'?download=true&length=-1&pathUrl='+pathNameStr;

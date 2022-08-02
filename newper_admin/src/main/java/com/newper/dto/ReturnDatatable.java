@@ -26,6 +26,10 @@ public class ReturnDatatable {
         this.fileName = fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public void setData(List data) {
         this.data.clear();
         if(data!=null){
