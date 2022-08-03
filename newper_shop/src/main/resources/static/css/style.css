@@ -1,0 +1,325 @@
+/********* nav ************/
+header {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    z-index: 9999;
+    background-color: #fff;
+    border-bottom: 2px solid #ebebeb;
+}
+.header {
+    width: 100%;
+    height: 100px;
+    background-color: #fff;
+    border-bottom: 2px solid #ebebeb;
+}
+nav {
+    width:1380px;
+    height:70px;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    min-width: 1380px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+.menu-btn {
+    width: 25px;
+    height: 20px;
+    background: url('/image/menu-btn.png') no-repeat center/contain;
+}
+.menu-btn-wrap {
+    width: 280px;
+    height:100%;
+    display: flex;
+    align-items: center;
+    padding-left: 35px;
+    border-left: 2px solid #ebebeb;
+    border-right:2px solid #ebebeb;
+    cursor: pointer;
+}
+.menu-btn-wrap>p {
+    text-indent: 20px;
+}
+.swiper-gnb {
+    width: calc(100% - 410px);
+    margin-left: initial;
+    margin-right: initial;
+}
+.gnb {
+    padding: 0 15px;
+}
+.gnb > li {
+    width: auto;
+}
+.gnb > li > a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    position: relative;
+}
+.gnb > li > a:hover {
+    color:#314AD7;
+}
+.swiper-gnb-next {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 999;
+    cursor: pointer;
+    transform: translateY(-50%);
+    display: block;
+    justify-content: center;
+    pointer-events: none;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.5), rgba(255,255,255,1));
+}
+.swiper-gnb-next::after {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #fff url('/image/more-arrow.png') no-repeat center/contain;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+.gnb-disabled {
+    opacity: 0;
+}
+.snb {
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    right: 1%;
+    transform: translateY(-50%);
+}
+.snb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 15px;
+    background: #d1d1d1;
+}
+.snb a {
+    height: 100%;
+    padding: 0 18px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* new - 아이콘 */
+.new a::after {
+    content: "";
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    background: url('/image/new.png') no-repeat center/contain;
+    position: absolute;
+    top: 15%;
+    right: -1%;
+}
+
+
+
+
+/********** swiper slide **********/
+.main-slide {
+    overflow:hidden;
+    border-bottom: 2px solid #ebebeb;
+    position: relative;
+    padding-top: 170px;
+}
+.swiper-main-image {
+    overflow: initial;
+    width: 1100px;
+    height:560px;
+    transform: translateX(140px);
+}
+.swiper-slide img {
+    cursor: pointer;
+}
+.mo-img {
+    display: none;
+}
+
+/* swiper arrow */
+.swiper-prev, .swiper-next {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(17,17,17,0.5);
+    color:#fff;
+    transform:translateY(-50%) scale(1);
+    transition: all 0.3s ease;
+    margin-top:0;
+    border-radius: 50%;
+    z-index: 99;
+    cursor: pointer;
+}
+.swiper-prev:hover, .swiper-next:hover {
+    color:#999999;
+    box-shadow: 0.9px 6.9px 14.4px 1.6px rgba(0,0,0,0.1);
+    transform:translateY(-50%) scale(1.1);
+}
+.swiper-prev {
+    left:-330px;
+}
+.swiper-next {
+    right:-50px;
+}
+.swiper-prev::after, .swiper-next::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+.swiper-prev::after {
+    background: url(../image/arrow-left.png) no-repeat 45%
+}
+.swiper-next::after {
+    background: url(../image/arrow-right.png) no-repeat 55%;
+}
+
+/* 스와이퍼 우측 하단 페이지네이션 & 정지재생버턴 박스 */
+.swiper-bottom-box {
+    width: 110px;
+    height: 40px;
+    position: absolute;
+    bottom: 30px;
+    right: 135px;
+}
+
+/* pagination-custom */
+.swiper-pagination-custom {
+    width: 100%;
+    height: 100%;
+    background: rgba(17,17,17,0.4);
+    border-radius: 50px;
+    color:#fff;
+    bottom: 0;
+    z-index: 1;
+    line-height: 40px;
+    text-align: initial;
+    text-indent: 15px;
+}
+.current-num {
+    font-size: 21px;
+}
+
+/* button-player */
+.swiper-button-play, .swiper-button-pause {
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    right: 0;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.swiper-button-play {
+    background: rgba(17,17,17,0.5) url(../image/play.png) no-repeat 55%; display: none;
+}
+.swiper-button-pause {
+    background: rgba(17,17,17,0.5) url(../image/pause.png) no-repeat 53%;
+}
+
+/* swiper-progress-bar */
+.swiper-progress-bar {
+    position: relative;
+    bottom:0;
+    left:0;
+    width: 100%;
+    height: 2px;
+    z-index: 1;
+}
+.slide-progress-bar {
+    display: inline-block;
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+}
+.slide-progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #314AD7;
+}
+.swiper-progress-bar.animate .slide-progress-bar::after {
+    transition: width linear;
+    width: 100%;
+    transition-duration: 3s;
+}
+
+/* 더보기 버튼 */
+.more-view {
+    position: absolute;
+    bottom: 30px;
+    right: 60px;
+    width: 70px;
+    height: 40px;
+    z-index: 1;
+    color: #fff;
+    background: rgba(1, 1, 1, 0.4);
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* 슬라이드 이미지 내부 고정 - 좌측 nav category all */
+.ctg-all {
+    width:280px;
+    height:560px;
+    position: absolute;
+    top:0;
+    left:-280px;
+    z-index: 3;
+    background-color: #fff;
+    padding: 10px 0;
+    border-left: 2px solid #ebebeb;
+    border-right: 2px solid #ebebeb;
+}
+.ctg-all > li {
+    width: 100%;
+    height: 60px;
+}
+.ctg-all > li > a {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding-left: 35px;
+    font-weight: bold;
+}
+.ctg-all > li > a:hover {
+    background-color: #F5F5F7;
+    color:#314AD7;
+}
+.line {
+    display: inline-block;
+    width: 2px;
+    height:12px;
+    background-color: #ebebeb;
+    margin: 0 7px;
+}
+
+

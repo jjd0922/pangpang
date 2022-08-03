@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>newper-index</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="icon" href="./image/favicon/shop-favicon.png">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <th:block th:replace="/part/css.html"></th:block>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    </style>
+</head>
+<body>
+<!-- 카테고리 영역 -->
+<header>
+    <div class="header"></div>
+    <nav>
+        <!-- 상단 nav -->
+        <div class="menu-btn-wrap">
+            <div class="menu-btn">
+            </div>
+            <p>전체 카테고리</p>
+        </div>
+        <div class="swiper swiper-gnb">
+            <ul class="gnb swiper-wrapper">
+                <li class="swiper-slide new"><a href="javascript:;">단돈천원</a>
+                </li>
+                <li class="swiper-slide new"><a href="javascript:;">신상입고</a></li>
+                <li class="swiper-slide"><a href="javascript:;">균일가특판</a></li>
+                <li class="swiper-slide"><a href="javascript:;">베스트100</a></li>
+                <li class="swiper-slide new"><a href="javascript:;">타임세일</a></li>
+                <li class="swiper-slide"><a href="javascript:;">품절임박</a></li>
+                <li class="swiper-slide"><a href="javascript:;">삼성에어컨</a></li>
+                <li class="swiper-slide"><a href="javascript:;">이벤트/기획전</a></li>
+                <li class="swiper-slide"><a href="javascript:;">오늘베스트</a></li>
+                <li class="swiper-slide"><a href="javascript:;">abcd</a></li>
+            </ul>
+            <div class="swiper-gnb-next"></div>
+        </div>
+        <div class="snb new"><a href="javascript:;">주간pick</a></div>
+    </nav>
+</header>
+
+
+<!-- 메인 이미지 슬라이드 -->
+<div class="main-slide">
+    <div class="swiper swiper-main-image">
+        <ul class="swiper-wrapper">
+            <li class="swiper-slide">
+                <img class="pc-img" src="https://images.ajrepository.com/root/pages/banner/images/CBRB_1_4.jpg" alt="">
+            <li class="swiper-slide">
+                <img class="pc-img" src="https://images.ajrepository.com/root/pages/banner/images/CBRB_1_7.jpg" alt="">
+            <li class="swiper-slide">
+                <img class="pc-img" src="https://images.ajrepository.com/root/pages/banner/images/CBRB_1_5.jpg" alt="">
+        </ul>
+        <div class="swiper-prev"></div>
+        <div class="swiper-next"></div>
+        <div class="swiper-bottom-box">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-play"></div>
+            <div class="swiper-button-pause"></div>
+        </div>
+        <div class="swiper-progress-bar">
+            <span class="slide-progress-bar"></span>
+        </div>
+        <div class="more-view">더보기</div>
+        <!-- 좌측 nav category all -->
+        <ul class="ctg-all">
+            <li><a href="javascript:;">노트북<span class="line"></span>데스크탐</a></li>
+            <li><a href="javascript:;">모니터<span class="line"></span>주변기기</a></li>
+            <li><a href="javascript:;">태블릿<span class="line"></span>휴대폰<span class="line"></span>웨어러블</a></li>
+            <li><a href="javascript:;">음향<span class="line"></span>이어폰<span class="line"></span>스피커</a></li>
+            <li><a href="javascript:;">가전<span class="line"></span>TV<span class="line"></span>세탁기<span
+                    class="line"></span>냉장고</a></li>
+            <li><a href="javascript:;">주방<span class="line"></span>생활<span class="line"></span>레져</a></li>
+            <li><a href="javascript:;">차량용품<span class="line"></span>블랙박스</a></li>
+            <li><a href="javascript:;">패션<span class="line"></span>잡화<span class="line"></span>뷰티</a></li>
+            <li><a href="javascript:;">식품<span class="line"></span>헬스케어</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+    /** gnb-menu list slide [swiper] **/
+    new Swiper('.swiper-gnb', {
+        slidesPerView: 'auto',
+        navigation: {
+            nextEl: '.swiper-gnb-next',
+            disabledClass: 'gnb-disabled',
+        }
+    });
+
+    /** index page-main image slide [swiper] **/
+    const swiper = new Swiper('.swiper-main-image', {
+        slidesPerView: 1,
+        speed: 300,
+        autoplay: true,
+        loop: true,
+        loopAdditionalSlides: 1, // 슬라이드 반복 시 마지막 슬라이드에서 다음 슬라이드가 보여지지 않는 현상 해결
+        pagination: {
+            el: '.swiper-pagination', type: 'custom',
+            renderCustom: function (swiper, current, total) {
+                return '<span class="current-num">' + current + '</span> &nbsp;/&nbsp; <span class="total-num">' + total + '</span>';
+            },
+        },
+        navigation: {
+            nextEl: '.swiper-next',
+            prevEl: '.swiper-prev',
+        },
+        on: {
+            init: function () {
+                $(".swiper-progress-bar").removeClass("animate");
+                $(".swiper-progress-bar").eq(0).addClass("animate");
+            },
+            slideChangeTransitionStart: function () {
+                $(".swiper-progress-bar").removeClass("animate");
+            },
+            slideChangeTransitionEnd: function () {
+                $(".swiper-progress-bar").eq(0).addClass("animate");
+            }
+        }
+    });
+
+
+    $(".swiper-button-pause").click(function () {
+        $(this).css('display', 'none');
+        $('.swiper-button-play').css('display', 'block');
+        swiper.autoplay.stop();
+        return false
+    });
+
+    $(".swiper-button-play").click(function () {
+        $(this).css('display', 'none');
+        $('.swiper-button-pause').css('display', 'block');
+        swiper.autoplay.start();
+        return false
+    });
+
+</script>
+</body>
+</html>

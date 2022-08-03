@@ -11,7 +11,7 @@ public class MainController {
 
     @GetMapping(value = {"","index"})
     public ModelAndView index(){
-        ModelAndView mav = new ModelAndView("test");
+        ModelAndView mav = new ModelAndView("index");
 
         return mav;
     }
