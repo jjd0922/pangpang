@@ -309,6 +309,7 @@
     function childrenCategory(CATE_IDX){
         var table = $('#categorySecondTable').DataTable();
         table.ajax.url('/product/category/children.dataTable?CATE_IDX='+CATE_IDX).load(null,false);
+        $('#categoryThirdTable').DataTable().ajax.url('/product/category/youngest.dataTable').load(null,false);
     }
 
     function youngestCategory(CATE_IDX){
