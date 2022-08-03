@@ -35,16 +35,18 @@ public class UserService {
 
         Address address = paramMap.mapParam(Address.class);
         Company company = paramMap.mapParam(Company.class);
-        User user =  paramMap.mapParam(User.class);
+
+        User user = paramMap.mapParam(User.class);
         System.out.println("userIdx : " + user.getUIdx());
 
-        Auth auth = authRepo.findById(1).orElseThrow(()-> new MsgException("권한이 없습니다."));
+
+        Auth auth = authRepo.findById(1).orElseThrow(() -> new MsgException("권한이 없습니다."));
         user.setAuth(auth);
         System.out.println(auth.getAuthIdx());
 
         System.out.println("here1");
 
-         user.setAddress(address);
+        user.setAddress(address);
 
         System.out.println("here2");
         user.setCompany(company);
@@ -52,9 +54,11 @@ public class UserService {
         userRepo.save(user);
         System.out.println("here3");
 
+
+
+
+
         return user.getUIdx();
     }
-
-
 }
 

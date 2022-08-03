@@ -44,7 +44,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                    이름
                                                                 </span>
                                                             </span>
@@ -70,7 +70,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                    휴대폰번호
                                                                 </span>
                                                             </span>
@@ -182,8 +182,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">사용자 구분 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
                                                             </span>
-                                                        <select data-placeholder="선택" class="form-control select" data-fouc name="U_TYPE">
-                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
+                                                        <select data-placeholder="본사" class="form-control select" data-fouc name="U_TYPE">
                                                             <option value="1">본사</option>
                                                             <option value="2">외부</option>
                                                         </select>
@@ -370,8 +369,8 @@
                                                         <span class="input-group-prepend">
                                                          <span class="input-group-text requested">권한 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
                                                         </span>
-                                                        <select data-placeholder="옵션" class="form-control select" data-fouc name="U_AUTH_IDX">
-                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
+                                                        <select class="form-control select" data-fouc name="U_AUTH_IDX">
+                                                            <option value="">선택</option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
                                                             <option value="1">a</option>
                                                             <option value="2">b</option>
                                                             <option value="3">c</option>
@@ -459,6 +458,7 @@
 <script th:inline="javascript">
     function saveAction(){
         $("#userForm").submit();
+
     }
 
     function searchComNameModal(){

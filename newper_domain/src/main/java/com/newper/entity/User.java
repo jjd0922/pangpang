@@ -16,7 +16,9 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+
 @Table(name = "USER")
+
 public class User extends BaseEntity {
 
     @Id
@@ -36,6 +38,7 @@ public class User extends BaseEntity {
     private String uTel;
     private String uPhone;
     private Date uBirth;
+
     private String uType;
     private String uDepart;
     private String uPosition;
