@@ -1,5 +1,7 @@
 package com.newper.controller.view;
 
+import com.newper.component.AdminBucket;
+import com.newper.component.Common;
 import com.newper.component.SessionInfo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.MenuRepo;
@@ -10,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -52,6 +57,19 @@ public class MainController {
     public ModelAndView popupSample() {
         ModelAndView mav = new ModelAndView("main/popup_sample");
 
+        return mav;
+    }
+
+    @PostMapping("summernote/image")
+    public ModelAndView summernoteImage(MultipartFile[] summernoteImageFile){
+        ModelAndView mav=new ModelAndView("main/summernote_image");
+        List<String> nameList = new ArrayList<String>();
+        for (MultipartFile multipartFile : summernoteImageFile) {
+            String fileName = Common.uploadFilePath(multipartFile,"summernote/", AdminBucket.OPEN);
+            nameList.add(fileName);
+            System.out.println(fileName);
+        }
+        mav.addObject("nameList", nameList);
         return mav;
     }
 }
