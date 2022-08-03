@@ -1,9 +1,9 @@
 package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
-import com.newper.dto.ReturnMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
+import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Map;
+
 @RequestMapping(value = "/company/")
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class CompanyController {
 
 
     private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
     private final ContractRepo contractRepo;
     private final CompanyRepo companyRepo;
     private final CompanyEmployeeRepo companyEmployeeRepo;
@@ -49,6 +53,8 @@ public class CompanyController {
     public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
         ModelAndView mav = new ModelAndView("main/alertMove");
 
+        paramMap.multiSelect("ctType");
+
         // 담당자(CompanyEmployee) insert
         CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
         companyEmployeeRepo.save(companyEmployee);
@@ -57,13 +63,15 @@ public class CompanyController {
         paramMap.put("companyEmployee", companyEmployee);
         Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
 
+        // companyType insert
+        paramMap.put("comIdx", comIdx);
+        companyMapper.insertCompanyType(paramMap.getMap());
 
 //        try {
 //            NewperStorage.download("test", response.getOutputStream());
 //        } catch (IOException ioException) {
 //
 //        }
-
         mav.addObject("msg", "등록완료");
         mav.addObject("loc", "companyPop/" + comIdx);
         return mav;
@@ -73,8 +81,13 @@ public class CompanyController {
     @GetMapping(value = "companyPop/{comIdx}")
     public ModelAndView detail(@PathVariable Integer comIdx) {
         ModelAndView mav = new ModelAndView("company/companyPop");
-        Company company = companyRepo.findCompanyByComIdx(comIdx);
 
+        Company company = companyRepo.findCompanyByComIdx(comIdx);
+        List<Map<String, Object>> ctTypes = companyMapper.selectCompanyType(comIdx);
+
+        if (!ctTypes.isEmpty()) {
+            mav.addObject("ctType", ctTypes);
+        }
         mav.addObject("company", company);
         return mav;
     }

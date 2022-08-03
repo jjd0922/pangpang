@@ -51,7 +51,12 @@
                                                             </span>
                                                         <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple"><!--name="ctType"-->
                                                             <option></option>
-                                                            <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            <span th:unless="${not #strings.isEmpty(ctType)}">
+                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                            </span>
+                                                            <span th:if="${ctType != null}" th:each="ctType: ${ctType}">
+                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${ctType.CT_TYPE eq opt.name()}"></option>
+                                                            </span>
                                                         </select>
                                                     </div>
                                                 </div>

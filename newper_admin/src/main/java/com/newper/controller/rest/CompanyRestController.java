@@ -69,7 +69,6 @@ public class CompanyRestController {
         System.out.println("comIdx = " + comIdx);
 
         paramMap.multiSelect("cfType");
-        paramMap.multiSelect("cfType");
 
         rd.setData(companyMapper.selectFeeDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countFeeDatatable(paramMap.getMap()));
