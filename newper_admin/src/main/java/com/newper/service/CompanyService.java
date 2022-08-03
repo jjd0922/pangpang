@@ -7,6 +7,7 @@ import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Contract;
 import com.newper.entity.common.Address;
+import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CompanyService {
 
     private final CompanyRepo companyRepo;
+    private final CompanyMapper companyMapper;
     private final ContractRepo contractRepo;
 
     /** 거래처 등록 기능 */
@@ -62,6 +64,13 @@ public class CompanyService {
         // company update
         Address address = paramMap.mapParam(Address.class);
         Company companyParam = paramMap.mapParam(Company.class);
+
+        // company type update
+        paramMap.multiSelect("ctType");
+        paramMap.put("comIdx", comIdx);
+
+        companyMapper.deleteAllCompanyType(comIdx);
+        companyMapper.insertCompanyType(paramMap.getMap());
 
         company.companyAllUpdate(companyParam, address, companyEmployee);
     }

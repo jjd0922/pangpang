@@ -97,7 +97,7 @@
         </if>
     </select>
 
-    <select id="countCompanyDatatable" resultType="Integer">
+    <select id="countCompanyDatatable" resultType="Long">
         SELECT
             COUNT(*)
         FROM
@@ -107,6 +107,32 @@
             COM_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
     </select>
+
+    <insert id="insertCompanyType">
+        INSERT INTO
+            COMPANY_TYPE (CT_COM_IDX, CT_TYPE)
+        VALUES
+            <foreach collection="ctType" separator="," item="item">
+                (#{comIdx},#{item})
+            </foreach>
+    </insert>
+
+    <select id="selectCompanyType" resultType="Map">
+        SELECT
+            CT_TYPE
+        FROM
+            COMPANY_TYPE
+                JOIN COMPANY ON CT_COM_IDX = COM_IDX
+        WHERE
+            CT_COM_IDX = #{comIdx}
+    </select>
+
+    <delete id="deleteAllCompanyType">
+        DELETE FROM
+            COMPANY_TYPE
+        WHERE
+            CT_COM_IDX = #{comIdx}
+    </delete>
 
     <select id="selectCompanyContract" resultType="Map">
         SELECT

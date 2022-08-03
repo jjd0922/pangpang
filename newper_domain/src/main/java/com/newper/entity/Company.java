@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.ComState;
+import com.newper.constant.ComType;
 import com.newper.entity.common.Address;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
@@ -25,8 +26,8 @@ public class Company extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comIdx;
 
-    /*@Enumerated(EnumType.STRING)*/
-    private String comType;
+    @Enumerated(EnumType.STRING)
+    private ComType comType;
 
     private String comMid;
 
@@ -65,7 +66,6 @@ public class Company extends BaseEntity {
 
     @OneToMany(mappedBy = "company")
     private List<Fee> feeList;
-
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)

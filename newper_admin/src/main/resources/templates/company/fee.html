@@ -176,16 +176,17 @@
     }
 
     function searchFee() {
-        feeTable.page('first').ajax.url('/company/fee.dataTable?' + $('#searchFeeForm').serialize()).load();
+        $('#feeTable').DataTable().page('first').ajax.url('/company/fee.dataTable?' + $('#searchFeeForm').serialize()).load();
     }
 
     function initFeeTable(comIdx) {
         $('input[name = "comIdx"]').val(comIdx);
         destroyDatatable('feeTable');
         if (!$.fn.DataTable.isDataTable('#feeTable')) {
-            var feeTable = $('#feeTable').DataTable({
+            $('#feeTable').DataTable({
                 dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
                 ordering:false,
+                autoWidth: false,
                 select: {
                     style: 'multi',
                     selector: 'td:first-child'
@@ -201,9 +202,11 @@
                 } ],
                 columns : [
                     {'title':'카테고리<br>중분류','data':'CATE_NAME','defaultContent':''}
-                    ,{'title':'정액/정률','data':'CF_TYPE','defaultContent':''}
+                    ,{'title':'정액/정률','data':'CF_TYPE_STR','defaultContent':''}
                     ,{'title':'수수료율','data':'CF_PERCENT','defaultContent':''}
                     ,{'title':'수수료액', 'data':'CF_MONEY', 'defaultContent':''}
+                    // ,{'title':'시작일', 'data':'CF_MONEY', 'defaultContent':''}
+                    // ,{'title':'종료일', 'data':'CF_MONEY', 'defaultContent':''}
                     ,{'title':'수정이력','data':'', 'render': function (data, full, type, meta) {
                             return '<a href="#" class="badge badge-primary">수정이력</a>';
                     }}
@@ -216,6 +219,7 @@
     var storeTable = $('#storeTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
+        autoWidth: false,
         select: {
             style: 'multi',
             selector: 'td:first-child'

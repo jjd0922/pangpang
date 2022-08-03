@@ -9,7 +9,13 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CompanyMapper {
     List<Map<String, Object>> selectCompanyDatatable(Map<String, Object> param);
 
-    Integer countCompanyDatatable(Map<String, Object> param);
+    long countCompanyDatatable(Map<String, Object> param);
+
+    int insertCompanyType(Map<String, Object> param);
+
+    List<Map<String, Object>> selectCompanyType(Integer comIdx);
+
+    int deleteAllCompanyType(Integer comIdx);
 
     List<Map<String, Object>> selectCompanyContract(Map<String, Object> param);
 
