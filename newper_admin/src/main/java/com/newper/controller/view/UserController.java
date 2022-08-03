@@ -14,6 +14,7 @@ import com.newper.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,16 +43,21 @@ public class UserController {
         return mav;
     }
 
-    @GetMapping(value = "userpopup")
-    public ModelAndView userpopup(){
-        ModelAndView mav = new ModelAndView("user/userpopup");
+    @GetMapping(value = "userPopup")
+    public ModelAndView userPopup(){
+        ModelAndView mav = new ModelAndView("user/userPopup");
 
         return mav;
 
 
     }
 
-
+/*    @GetMapping("datailPopup/{uId}")
+    public ModelAndView popCustomerInquiry(@PathVariable int uId){
+        ModelAndView mav = new ModelAndView("user/detailPopup");
+        User user = userRepo.getReferenceById(uId);
+        return mav;
+    }*/
 }
 
 

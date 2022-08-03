@@ -120,7 +120,7 @@ public class UserRestController {
             throw new MsgException("권한을 입력해주세요.");
         }
         String uBirth = paramMap.getString("U_BIRTH");
-        if (uBirth.equals("")) {
+        if ( uBirth.equals("")) {
             uBirth=null;
             paramMap.put("U_BIRTH",uBirth);
         }
