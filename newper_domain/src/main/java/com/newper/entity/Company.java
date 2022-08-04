@@ -9,7 +9,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -71,9 +70,11 @@ public class Company extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
 
-    public void companyAllUpdate(Company company, Address address, CompanyEmployee companyEmployee) {
+    @OneToMany(mappedBy = "company")
+    private List<Insurance> insurances;
+
+    public void updateCompany(Company company, Address address, CompanyEmployee companyEmployee) {
         setComType(company.getComType());
-        setComMid(company.getComMid());
         setComState(company.getComState());
         setComName(company.getComName());
         setComCeo(company.getComCeo());

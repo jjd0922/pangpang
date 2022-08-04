@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${insurance != null} ? '보증보험 조회/수정'">보증보험 등록</title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" th:if="${insurance == null}"><i class="icon-office mr-1"></i>보증보험 등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${insurance == null}"><i class="icon-office mr-1"></i>보증보험 조회/수정</h4>
+                            <div class="text-white-50 ml-3">설명글영역</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <form id="regiForm" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 등록정보</legend>
+
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">보증보험구분</span>
+                                                            </span>
+                                                        <select data-placeholder="구분 선택" name="ciType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.CiType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(insurance?.ciType) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">보증보험 발행상태</span>
+                                                            </span>
+                                                        <select data-placeholder="상태 선택" name="ciInsuranceState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.CiInsuranceState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(insurance?.ciInsuranceState) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    거래처<a href="#" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="#" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    발행사
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciCompany" class="form-control" th:value="${insurance?.ciCompany}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    증권명
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciName" class="form-control" th:value="${insurance?.ciName}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    증권번호
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciNum" class="form-control" th:value="${insurance?.ciNum}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    보증 시작일
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciStartDate" class="form-control daterange-single" th:value="${insurance?.ciStartDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    보증 종료일
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciEndDate" class="form-control daterange-single" th:value="${insurance?.ciEndDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    보험가입금액
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciFee" class="form-control" th:value="${insurance?.ciFee}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    보험요율
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciPercent" class="form-control" th:value="${insurance?.ciPercent}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    보험가능금액
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciMoney" class="form-control" th:value="${insurance?.ciMoney}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">보험 증서 FILE</span>
+                                                            </span>
+                                                        <input type="file" name="ciFile" class="form-control form-control-plaintext"
+                                                               th:value="${insurance?.ciFile}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    보증보험 메모
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ciMemo" class="form-control" th:value="${insurance?.ciMemo}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- #regiForm end -->
+                    </div>
+                </div>
+
+                <div class="row" th:if="${insurance != null}">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <fieldset class="mb-0">
+                                    <legend class="">2. 로그정보</legend>
+
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-md-12 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    등록자
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" class="form-control" th:value="${insurance.createdBy}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-md-12 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    등록일
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" class="form-control" th:value="${insurance.createdDate}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <!--<div class="col-md-12 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    수정자
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" class="form-control" th:value="${insurance.modifiedBy}">
+                                                </div>
+                                            </div>
+                                        </div>-->
+
+                                        <!-- 입력필드 -->
+                                        <!--<div class="col-md-12 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    수정일
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" class="form-control" th:value="${insurance.modifiedDate}">
+                                                </div>
+                                            </div>
+                                        </div>-->
+
+                                        <!-- 입력필드 -->
+                                        <!--<div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    수정사유
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" class="form-control" th:value="${insurance.modifiedDate}">
+                                                </div>
+                                            </div>
+                                        </div>-->
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 그래프 -->
+<script th:src="@{/assets/js/plugins/visualization/echarts/echarts.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/demo_pages/picker_color.js}"></script>
+<!-- 그래프 -->
+<script th:src="@{/assets/js/demo_charts/echarts/light/lines/lines_zoom.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+
+<script>
+    function saveAction(){
+
+        if ($('input[name="ciCompany"]').val() == null || $('input[name="ciCompany"]').val() == "") {
+            alert("발행사는 필수입력값입니다.");
+            return false;
+        }
+        if ($('input[name="ciName"]').val() == null || $('input[name="ciName"]').val() == "") {
+            alert("증권명은 필수입력값입니다.");
+            return false;
+        }
+        if ($('input[name="ciNum"]').val() == null || $('input[name="ciNum"]').val() == "") {
+            alert("증권번호는 필수입력값입니다.");
+            return false;
+        }
+        if ($('input[name="ciFee"]').val() == null || $('input[name="ciFee"]').val() == "") {
+            alert("보험가입금액은 필수입력값입니다.");
+            return false;
+        }
+        if ($('input[name="ciPercent"]').val() == null || $('input[name="ciPercent"]').val() == "") {
+            alert("보험요율은 필수입력값입니다.");
+            return false;
+        }
+        if ($('input[name="ciMoney"]').val() == null || $('input[name="ciMoney"]').val() == "") {
+            alert("보험가능금액은 필수입력값입니다.");
+            return false;
+        }
+
+        $("#regiForm").submit();
+    }
+
+
+</script>
+<script>
+    $("#saveBtn").on("click", saveAction);
+</script>
+</body>
+
+
+
+</html>

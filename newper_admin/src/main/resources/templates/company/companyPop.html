@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${company != null} ? '거래처 상세/수정'">거래처 등록</title>
+    <title th:text="${company != null} ? '거래처 조회/수정'">거래처 등록</title>
 
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -20,7 +20,7 @@
                     <div class="d-flex">
                         <div class="page-title">
                             <h4 class="font-weight-semibold" th:if="${company == null}"><i class="icon-office mr-1"></i>거래처 신규등록</h4>
-                            <h4 class="font-weight-semibold" th:unless="${company == null}"><i class="icon-office mr-1"></i>거래처 상세/수정</h4>
+                            <h4 class="font-weight-semibold" th:unless="${company == null}"><i class="icon-office mr-1"></i>거래처 조회/수정</h4>
                             <div class="text-white-50 ml-3">설명글영역</div>
                         </div>
                     </div>
@@ -47,14 +47,14 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">거래처구분코드</span>
+                                                                <span class="input-group-text requested">거래처구분코드</span>
                                                             </span>
-                                                        <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple"><!--name="ctType"-->
+                                                        <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple" th:disabled="${company != null} ? true">
                                                             <option></option>
                                                             <span th:unless="${not #strings.isEmpty(ctType)}">
                                                                 <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                             </span>
-                                                            <span th:if="${ctType != null}" th:each="ctType: ${ctType}">
+                                                            <span th:if="${not #strings.isEmpty(ctType)}" th:each="ctType: ${ctType}">
                                                                 <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${ctType.CT_TYPE eq opt.name()}"></option>
                                                             </span>
                                                         </select>
@@ -67,7 +67,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">사업자 분류</span>
+                                                                <span class="input-group-text requested">사업자 분류</span>
                                                             </span>
                                                         <select data-placeholder="분류 선택" name="comType" class="form-control select">
                                                             <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comType) eq opt.name()}"></option>
@@ -85,7 +85,7 @@
                                                                     MID
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comMid" class="form-control" th:value="${company?.comMid}">
+                                                        <input type="text" name="comMid" class="form-control" th:value="${company?.comMid}" th:readonly="${company != null} ? 'readonly'">
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,7 +95,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">상태</span>
+                                                                <span class="input-group-text requested">상태</span>
                                                             </span>
                                                         <select name="comState" class="form-control select">
                                                             <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>
@@ -120,7 +120,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     상호법인명
                                                                 </span>
                                                             </span>
@@ -135,7 +135,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     대표자명
                                                                 </span>
                                                             </span>
@@ -150,7 +150,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     사업자번호
                                                                 </span>
                                                             </span>
@@ -413,7 +413,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     성명(담당자)
                                                                 </span>
                                                             </span>
@@ -458,7 +458,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     이메일
                                                                 </span>
                                                             </span>
@@ -473,7 +473,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     휴대폰번호
                                                                 </span>
                                                             </span>
@@ -591,6 +591,35 @@
 
 <script>
     function saveAction(){
+        if ($('select[name="ctType"]').val() == '') {
+            alert('거래처구분코드는 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="comName"]').val() == '') {
+            alert('상호법인명은 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="comCeo"]').val() == '') {
+            alert('대표자명은 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="comNum"]').val() == '') {
+            alert('사업자번호는 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="ceName"]').val() == '') {
+            alert('거래처 담당자 성명은 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="ceMail"]').val() == '') {
+            alert('거래처 담당자 이메일은 필수입력값입니다.');
+            return false;
+        }
+        if ($('input[name="cePhone"]').val() == '') {
+            alert('거래처 담당자 휴대폰번호는 필수입력값입니다.');
+            return false;
+        }
+
         $("#regiForm").submit();
     }
 

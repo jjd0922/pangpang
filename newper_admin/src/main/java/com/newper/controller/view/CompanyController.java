@@ -3,10 +3,12 @@ package com.newper.controller.view;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
+import com.newper.entity.Insurance;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
+import com.newper.repository.InsuranceRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class CompanyController {
     private final ContractRepo contractRepo;
     private final CompanyRepo companyRepo;
     private final CompanyEmployeeRepo companyEmployeeRepo;
+    private final InsuranceRepo insuranceRepo;
 
     /** 거래처 관리 페이지*/
     @GetMapping(value = "")
@@ -153,4 +156,54 @@ public class CompanyController {
 
         return mav;
     }
+
+    /**매입처 보증보험관리 페이지**/
+    @GetMapping(value="insurance")
+    public ModelAndView insurance() {
+        ModelAndView mav = new ModelAndView("company/insurance");
+
+        return mav;
+    }
+    
+    /**매입처 보증보험관리 신규등록 팝업**/
+    @GetMapping(value="insurancePop")
+    public ModelAndView insuranceNew() {
+        ModelAndView mav = new ModelAndView("company/insurancePop");
+    
+        return mav;
+    }
+    
+    /**매입처 보증보험관리 신규등록 처리**/
+    @PostMapping(value = "insurancePop")
+    public ModelAndView insuranceNewPost(ParamMap paramMap) {
+        System.out.println("paramMap = " + paramMap);
+        ModelAndView mav = new ModelAndView("main/alertMove");
+
+        Integer ciIdx = companyService.saveInsurance(paramMap);
+
+        mav.addObject("msg", "등록완료");
+        mav.addObject("loc", "insurancePop/" + ciIdx);
+
+        return mav;
+    }
+    
+
+    /**매입처 보증보험관리 상세조회**/
+    @GetMapping(value="insurancePop/{ciIdx}")
+    public ModelAndView insuranceDetail(@PathVariable Integer ciIdx) {
+        ModelAndView mav = new ModelAndView("company/insurancePop");
+        mav.addObject("insurance", insuranceRepo.findInsuranceByCiIdx(ciIdx));
+        return mav;
+    }
+
+    /**매입처 보증보험관리 수정처리**/
+    @PostMapping(value="insurancePop/{ciIdx}")
+    public ModelAndView insuranceDetailPost(@PathVariable Integer ciIdx, ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        companyService.updateInsurance(ciIdx, paramMap);
+
+        mav.addObject("msg", "수정완료");
+        return mav;
+    }
+
 }

@@ -15,8 +15,6 @@ public interface CompanyMapper {
 
     List<Map<String, Object>> selectCompanyType(Integer comIdx);
 
-    int deleteAllCompanyType(Integer comIdx);
-
     List<Map<String, Object>> selectCompanyContract(Map<String, Object> param);
 
     long countCompanyContract(Map<String, Object> param);
@@ -30,4 +28,8 @@ public interface CompanyMapper {
     List<Map<String, Object>> selectFeeDatatable(Map<String, Object> param);
 
     long countFeeDatatable(Map<String, Object> param);
+
+    List<Map<String, Object>> selectInsuranceDatatable(Map<String, Object> param);
+
+    long countInsuranceDatatable(Map<String, Object> param);
 }
