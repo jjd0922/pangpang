@@ -7,9 +7,7 @@
     <th:block th:replace="/common/css.html"></th:block>
 </head>
 <body>
-<!--
 <th:block th:replace="/common/header.html"></th:block>
--->
 
 <!-- 본문 영역 시작 -->
 <div class="page-content">
@@ -59,66 +57,66 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">이름</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent1">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">휴대폰번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent2">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상호법인명<br>(소속)</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="COM_NAME" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">사원번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent3">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">부서</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="U_DEPART" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">직급(직책)</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="U_POSITION" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">이메일(개인)</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent2">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_COMPANY_EMAIL">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="U_STATE" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">권한</label>
-                                                    <select class="form-control form-control-sm select-search" name="shop_idx" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="U_AUTH_IDX" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="searchContent">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
                                                 </div>
 
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
-                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
                                                     </button>
                                                 </div>
 
@@ -197,12 +195,36 @@
 
 <script>
     function searchBtn(){
+        var table = $('#userTable').DataTable();
+        table.page('first').ajax.url('/user/user.dataTable?'+$('#userForm').serialize()).load(null, false);
+    }
 
+
+    function userDetailPop(uIdx) {
+        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 
-<script >
-    $('#userTable').DataTable({
+
+    <script>
+        var userTable = $('#userTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+        style: 'multi',
+        selector: 'td:first-child'
+    },
+        serverSide: true,
+        ajax:{
+        url:'/user/user.dataTable?'+$('#userFormForm').serialize(),
+        type:'post'
+    },
+        columnDefs: [ {
+        orderable: false,
+        targets:   [0]
+    } ],
+  /*  $('#userTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -217,15 +239,14 @@
         columnDefs: [ {
             orderable: false,
             targets:   [0]
-        } ],
+        } ],*/
         "columns" : [
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME'}
-/*            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
-                    return '<a class="btn btn-secondary" onclick="popInquiryUser('+full.U_ID+')">'+data+'</a>';
-                }}*/
+            ,{'title':'이름','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                }}
             ,{'class':'m-w-max', 'title':'휴대폰번호','data':'U_PHONE'}
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
             ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
@@ -249,11 +270,12 @@
         ]
     });
 
-    $('#userForm').on('keyup',function(event){
-        if(event.keyCode==13){searchBtn();return false;}
-    });
+        $('#userForm').on('keyup',function(event){
+            if(event.keyCode==13){searchBtn();return false;}
+        });
 
-    $('#popNewBtn').on('click',function (){
+
+        $('#popNewBtn').on('click',function (){
         var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });

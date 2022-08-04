@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RequestMapping(value = "/user/")
@@ -39,17 +40,18 @@ public class UserRestController {
 
     private final CompanyRepo companyRepo;
 
-    @PostMapping("user.dataTable")
-    public ReturnDatatable user(ParamMap paramMap) {
 
-        ReturnDatatable rd = new ReturnDatatable();
+    /**사용자 관리페이지 조회테이블**/
+    @PostMapping("user.dataTable")
+    public ReturnDatatable user(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("사용자관리");
 
 
         rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
         rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
     }
-
+    /**사용자등록 상호법인명 검색 모달**/
     @PostMapping("modal.dataTable")
     public ReturnDatatable modal(ParamMap paramMap) {
 
@@ -60,24 +62,11 @@ public class UserRestController {
         rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
         return rd;
     }
-
+    /**모달창 상호법인명 검색처리**/
     @PostMapping("searchCompany.ajax")
     public ReturnMap searchCompany(ParamMap paramMap) {
         System.out.println("paramMap = " + paramMap);
         ReturnMap rm = new ReturnMap();
-
-//        String comIdx = paramMap.get("COM_IDXS").toString();
-//        //    Integer comIdx =(Integer) paramMap.get("COM_IDX");
-//        System.out.println("COM_IDX = " + comIdx);
-//        String comIdxss[] = paramMap.get("COM_IDXS").toString().split(",");
-//        for(int i=0; i<comIdxss.length; i++){
-//
-//            Optional<Company> company1 = companyRepo.findById(Integer.parseInt(comIdxss[i]));
-//            Company company = company1.get();
-//
-//            rm.put("com_idx",company.getComIdx());
-//            rm.put("com_name",company.getComName());
-//        }
         int COM_IDX = Integer.parseInt(paramMap.get("COM_IDX") + "");
         Optional<Company> company = companyRepo.findById(COM_IDX);
         rm.put("com_idx", company.get().getComIdx());
@@ -87,14 +76,12 @@ public class UserRestController {
         return rm;
     }
 
-    /**
-     * 사용자 신규등록 처리
-     */
+    /** 사용자 신규등록 처리 */
     @PostMapping(value = "userCreate.ajax")
     public ReturnMap userInsert(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         String uName = paramMap.getString("U_NAME");
-        System.out.println("uName = " + uName);
+        System.out.println(paramMap.getMap());
         if (uName == null || uName.equals("")) {
             throw new MsgException("이름을 입력해주세요.");
         }
@@ -123,16 +110,19 @@ public class UserRestController {
         if ( uBirth.equals("")) {
             uBirth=null;
             paramMap.put("U_BIRTH",uBirth);
-        }
-        else {
-            int idx = userService.saveUser(paramMap);
-
-            rm.setMessage(idx + "");
-
 
         }
+
+        int idx = userService.saveUser(paramMap);
+
+        rm.setMessage(idx + "");
+
+
+
 
         return rm;
     }
+
+
 }
 

@@ -17,7 +17,6 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
 @Table(name = "USER")
 
 public class User extends BaseEntity {
@@ -53,6 +52,10 @@ public class User extends BaseEntity {
 
     @Embedded
     private Address address;
+
+
+
+
 }
 
 
