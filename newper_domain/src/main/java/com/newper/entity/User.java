@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @DynamicUpdate
@@ -16,7 +17,9 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+
 @Table(name = "USER")
+
 public class User extends BaseEntity {
 
     @Id
@@ -35,7 +38,8 @@ public class User extends BaseEntity {
     private String uName;
     private String uTel;
     private String uPhone;
-    private LocalDate uBirth;
+    private Date uBirth;
+
     private String uType;
     private String uDepart;
     private String uPosition;

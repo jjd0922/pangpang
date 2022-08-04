@@ -7,7 +7,9 @@
     <th:block th:replace="/common/css.html"></th:block>
 </head>
 <body>
+<!--
 <th:block th:replace="/common/header.html"></th:block>
+-->
 
 <!-- 본문 영역 시작 -->
 <div class="page-content">
@@ -199,7 +201,7 @@
     }
 </script>
 
-<script>
+<script >
     $('#userTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
@@ -221,20 +223,24 @@
                     return '';
                 }}
             ,{'class':'m-w-max', 'title':'이름','data':'U_NAME'}
+/*            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
+                    return '<a class="btn btn-secondary" onclick="popInquiryUser('+full.U_ID+')">'+data+'</a>';
+                }}*/
             ,{'class':'m-w-max', 'title':'휴대폰번호','data':'U_PHONE'}
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
-            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'} //db명 확인필요
+            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
             ,{'class':'m-w-max', 'title':'부서','data':'U_DEPART'}
             ,{'class':'m-w-max', 'title':'직급(직책)','data':'U_POSITION'}
             ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL'}
             ,{'class':'m-w-max', 'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL'}
             ,{'class':'m-w-max', 'title':'상태','data':'U_STATE'}
-            ,{'class':'m-w-max', 'title':'권한','data':'AUTH_IDX'} //db명 확인필요
+            ,{'class':'m-w-max', 'title':'권한','data':'AUTH_IDX'}
             ,{'class':'m-w-max', 'title':'등록자','data':'CREATED_BY'}
             ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
             ,{'class':'m-w-max', 'title':'수정자','data':'MODIFIED_BY'}
             ,{'class':'m-w-max', 'title':'수정일','data':'MODIFIED_DATE'}
-           // ,{'class':'m-w-max', 'title':'수정이력','data':'CE_NAME'} //db명 확인필요
+           // ,{'class':'m-w-max', 'title':'수정이력','data':'CE_NAME'}
+
 
 
 
@@ -247,11 +253,8 @@
         if(event.keyCode==13){searchBtn();return false;}
     });
 
-/*    $('#popNewBtn').on('click',function (){
-        alert('test');
-    });*/
     $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('userpopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>
