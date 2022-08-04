@@ -4,15 +4,18 @@ package com.newper.service;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Auth;
 import com.newper.entity.Company;
+import com.newper.entity.CompanyEmployee;
 import com.newper.entity.User;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
+import com.newper.mapper.UserMapper;
 import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -28,6 +31,7 @@ public class UserService {
     private final UserRepo userRepo;
     private final AuthRepo authRepo;
     private final CompanyRepo companyRepo;
+    private UserMapper userMapper;
 
     @Transactional
     public Integer saveUser(ParamMap paramMap) {
@@ -55,10 +59,25 @@ public class UserService {
         System.out.println("here3");
 
 
+        return user.getUIdx();
+    }
 
+/*    @Transactional
+    public Integer userModify(Integer uIdx, ParamMap paramMap) {
+        User user = userRepo.findUserByuIdx(uIdx);
+        User user = paramMap.mapParam(User.class);
+        System.out.println("userIdx : " + user.getUIdx());
+
+
+        Company company = paramMap.mapParam(Company.class);
+        Address address = paramMap.mapParam(Address.class);
+
+
+        paramMap.multiSelect("ctType");
+        paramMap.put("uIdx", uIdx);
 
 
         return user.getUIdx();
-    }
+    }*/
 }
 

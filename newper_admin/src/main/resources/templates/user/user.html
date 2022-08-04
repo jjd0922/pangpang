@@ -7,9 +7,7 @@
     <th:block th:replace="/common/css.html"></th:block>
 </head>
 <body>
-<!--
 <th:block th:replace="/common/header.html"></th:block>
--->
 
 <!-- 본문 영역 시작 -->
 <div class="page-content">
@@ -199,6 +197,11 @@
     function searchBtn(){
 
     }
+
+    function userDetailPop(uIdx) {
+        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
 <script >
@@ -222,10 +225,13 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME'}
+            /*,{'class':'m-w-max', 'title':'이름','data':'U_NAME'}*/
 /*            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
                     return '<a class="btn btn-secondary" onclick="popInquiryUser('+full.U_ID+')">'+data+'</a>';
                 }}*/
+            ,{'title':'이름','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                }}
             ,{'class':'m-w-max', 'title':'휴대폰번호','data':'U_PHONE'}
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
             ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}

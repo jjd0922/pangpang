@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>사용자 등록</title>
+    <title th:text="${user != null} ? '사용자 상세/수정'">사용자 등록</title>
 
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -19,7 +19,8 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>사용자 등록</h4>
+                            <h4 class="font-weight-semibold" th:if="${user == null}"><i class="icon-office mr-1"></i>사용자 신규등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${user == null}"><i class="icon-office mr-1"></i>사용자 상세/수정</h4>
                           <!--  <div class="text-white-50 ml-3">설명글영역</div>
                         </div>-->
                     </div>
@@ -48,7 +49,7 @@
                                                                    이름
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="U_NAME">
+                                                        <input type="text" name="U_NAME" class="form-control" th:value="${user?.uName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +62,7 @@
                                                                   전화번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="U_TEL">
+                                                        <input type="text" name="U_TEL" class="form-control" th:value="${user?.uTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,7 +75,7 @@
                                                                    휴대폰번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="U_PHONE">
+                                                        <input type="text" name="U_PHONE" class="form-control" th:value="${user?.uPhone}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,7 +89,7 @@
                                                                    생년월일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="U_BIRTH" placeholder="yyyy-mm-dd">
+                                                        <input type="text" name="U_BIRTH" class="form-control" th:value="${user?.uBirth}" placeholder="yyyy-mm-dd">
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,7 +103,8 @@
                                                                   <a href="javascript: daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control "  name="POST">
+                                                        <input type="text" class="form-control "  name="POST" placeholder="우편번호검색"
+                                                               th:value="${user != null} ? ${user.address.post}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -115,7 +117,7 @@
                                                                   주소(시,도)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="ADDR1">
+                                                        <input type="text" class="form-control"  name="ADDR1" th:value="${user != null} ? ${user.address.addr1}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -129,7 +131,7 @@
                                                                  주소(시,군,구)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="ADDR2">
+                                                        <input type="text" class="form-control"  name="ADDR2" th:value="${user != null} ? ${user.address.addr2}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,7 +144,7 @@
                                                                     주소(도로명)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="ADDR3">
+                                                        <input type="text" class="form-control" name="ADDR3" th:value="${user != null} ? ${user.address.addr3}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +157,7 @@
                                                                    상세주소
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="ADDR4">
+                                                        <input type="text" class="form-control" name="ADDR4" th:value="${user != null} ? ${user.address.addr4}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,7 +198,7 @@
                                                                     <a class="badge badge-sm badge-info ml-1" onclick="searchComNameModal()">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control "  name="COM_NAME" readonly>
+                                                        <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
                                                         <input type="hidden" name="U_COM_IDX" value="">
                                                     </div>
                                                 </div>
@@ -210,7 +212,7 @@
                                                                  사원번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control uid" id="uNumber" >
+                                                        <input type="text" class="form-control uid" id="uNumber" th:value="${user?.uId}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -223,7 +225,7 @@
                                                                 부서
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="U_DEPART">
+                                                        <input type="text" name="U_DEPART" class="form-control" th:value="${user?.uDepart}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +238,7 @@
                                                                  직급(직책)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="U_POSITION">
+                                                        <input type="text" name="U_POSITION" class="form-control" th:value="${user?.uPosition}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,7 +251,7 @@
                                                                 직무
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="U_JOB">
+                                                        <input type="text" name="U_JOB" class="form-control" th:value="${user?.uJob}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,7 +264,7 @@
                                                                  이메일(회사)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control" name="U_COMPANY_MAIL">
+                                                        <input type="text" name="U_COMPANY_MAIL" class="form-control" th:value="${user?.uCompanyMail}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,7 +277,7 @@
                                                                  이메일(개인)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="U_PERSON_MAIL">
+                                                        <input type="text" name="U_PERSON_MAIL" class="form-control" th:value="${user?.uPersonMail}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -288,7 +290,7 @@
                                                                 전화번호(사무실번호)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" class="form-control"  name="U_COMPANY_TEL">
+                                                        <input type="text" name="U_COMPANY_TEL" class="form-control" th:value="${user?.uCompanyTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -311,11 +313,7 @@
                                                          <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
                                                         </span>
                                                         <select data-placeholder="선택" class="form-control select" data-fouc name="U_STATE">
-                                                            <option></option><!-- selected가 없는 경우 아무것도 선택되지 않도록 하는 더미. placeholer의 문구가 보입니다.-->
-                                                            <option value="1">정상</option>
-                                                            <option value="2">중지</option>
-                                                            <option value="3">퇴사</option>
-
+                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(user?.uState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -329,7 +327,7 @@
                                                          로그인 ID
                                                         </span>
                                                        </span>
-                                                        <input type="text" class="form-control"  name="U_ID" onkeyup="copyId()">
+                                                        <input type="text" name="U_ID" class="form-control" th:value="${user?.uId}" onkeyup="copyId()">
                                                     </div>
                                                 </div>
                                             </div>
@@ -342,7 +340,7 @@
                                                              패스워드
                                                                </span>
                                                            </span>
-                                                        <input type="text" class="form-control"  name="U_PASSWORD">
+                                                        <input type="text" name="U_PASSWORD" class="form-control" th:value="${user?.uPassword}">
                                                     </div>
                                                 </div>
                                             </div>

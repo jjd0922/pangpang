@@ -23,6 +23,4 @@ public enum AuthMask {
     public static final String TYPE_NAME = "NAME";
     public static final String TYPE_ADDRESS = "ADDRESS";
 
-
-
 }

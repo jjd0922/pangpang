@@ -87,9 +87,7 @@ public class UserRestController {
         return rm;
     }
 
-    /**
-     * 사용자 신규등록 처리
-     */
+    /** 사용자 신규등록 처리 */
     @PostMapping(value = "userCreate.ajax")
     public ReturnMap userInsert(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
