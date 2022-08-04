@@ -7,6 +7,11 @@
         <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
         <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
         <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
+        <if test="ctType != null">
+            <foreach collection="ctType" open="AND CT_TYPES IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
         <if test='comType != null'>
             <foreach collection="comType" open="AND COM_TYPE IN (" separator="," close=")" item="item">
                 #{item}
@@ -64,11 +69,33 @@
         </if>
     </sql>
 
+    <sql id="includeInsuranceDatatable">
+        <if test="ciType != null">
+            <foreach collection="ciType" open="AND CI_TYPE IN(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="ciInsuranceState != null">
+            <foreach collection="ciInsuranceState" open="AND CI_INSURANCE_STATE IN(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test="ciCompany != null and ciCompany != ''">AND CI_COMPANY LIKE CONCAT('%',#{ciCompany},'%')</if>
+        <if test="ciName != null and ciName != ''">AND CI_NAME LIKE CONCAT('%',#{ciName},'%')</if>
+        <if test="ciStartDate != null and ciStartDate != ''">AND CI_START_DATE BETWEEN SUBSTR(#{ciStartDate}, 1, 10) AND SUBSTR(#{ciStartDate}, 13)</if>
+        <if test="ciEndDate != null and ciEndDate != ''">AND CI_END_DATE BETWEEN SUBSTR(#{ciEndDate}, 1, 10) AND SUBSTR(#{ciEndDate}, 13)</if>
+        <if test="ciNum != null and ciNum != ''">AND CI_NUM LIKE CONCAT('%',#{ciNum},'%')</if>
+        <if test="createdBy != null and createdBy != ''">AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test="createdDate != null and createdDate != ''">AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+    </sql>
+
     <select id="selectCompanyDatatable" resultType="Map" parameterType="Map">
         SELECT
             COM_IDX,
             COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
             COMPANY.CREATED_TIME AS 'COM_CREATED_TIME',
+            CT_TYPES,
             COM_TYPE,
             COM_STATE,
             COM_MID,
@@ -87,6 +114,15 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+                LEFT JOIN (
+                    SELECT
+                        CT_COM_IDX,
+                        GROUP_CONCAT(CT_TYPE) AS CT_TYPES
+                    FROM
+                        COMPANY_TYPE
+                    GROUP BY
+                        CT_COM_IDX
+                ) AS CT ON CT_COM_IDX = COM_IDX
         WHERE
             COM_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
@@ -103,6 +139,15 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+            LEFT JOIN (
+                SELECT
+                    CT_COM_IDX,
+                    GROUP_CONCAT(CT_TYPE) AS CT_TYPES
+                FROM
+                    COMPANY_TYPE
+                GROUP BY
+                    CT_COM_IDX
+            ) AS CT ON CT_COM_IDX = COM_IDX
         WHERE
             COM_IDX IS NOT NULL
             <include refid="includeCompanyDataTable"></include>
@@ -126,13 +171,6 @@
         WHERE
             CT_COM_IDX = #{comIdx}
     </select>
-
-    <delete id="deleteAllCompanyType">
-        DELETE FROM
-            COMPANY_TYPE
-        WHERE
-            CT_COM_IDX = #{comIdx}
-    </delete>
 
     <select id="selectCompanyContract" resultType="Map">
         SELECT
@@ -256,5 +294,45 @@
             AND CF_COM_IDX = #{comIdx}
             AND CATE_DEPTH = 2
             <include refid="includeFeeDatatable"></include>
+    </select>
+
+    <select id="selectInsuranceDatatable" resultType="Map">
+        SELECT
+            CI_TYPE,
+            CI_INSURANCE_STATE,
+            COM_NAME,
+            CI_COMPANY,
+            CI_IDX,
+            CI_NAME,
+            CI_START_DATE,
+            CI_END_DATE,
+            CI_NUM,
+            CI_FEE,
+            CI_PERCENT,
+            CI_MONEY,
+            CI.CREATED_BY AS CI_CREATED_BY,
+            CI.CREATED_DATE AS CI_CREATED_DATE/*,
+            CI.MODIFIED_BY AS MODIFIED_BY,
+            CI.MODIFIED_DATE AS MODIFIED_DATE*/
+        FROM
+            COMPANY_INSURANCE AS CI
+                LEFT JOIN COMPANY ON CI_COM_IDX = COM_IDX
+        WHERE
+            CI_IDX IS NOT NULL
+            <include refid="includeInsuranceDatatable"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countInsuranceDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            COMPANY_INSURANCE AS CI
+                LEFT JOIN COMPANY ON CI_COM_IDX = COM_IDX
+        WHERE
+            CI_IDX IS NOT NULL
+            <include refid="includeInsuranceDatatable"></include>
     </select>
 </mapper>

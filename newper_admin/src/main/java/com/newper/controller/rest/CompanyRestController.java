@@ -75,4 +75,13 @@ public class CompanyRestController {
 
         return rd;
     }
+
+    @PostMapping("insurance.dataTable")
+    public ReturnDatatable insurance(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        rd.setData(companyMapper.selectInsuranceDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countInsuranceDatatable(paramMap.getMap()));
+        return rd;
+    }
 }

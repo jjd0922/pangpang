@@ -6,10 +6,12 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Contract;
+import com.newper.entity.Insurance;
 import com.newper.entity.common.Address;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
+import com.newper.repository.InsuranceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,7 @@ public class CompanyService {
     private final CompanyRepo companyRepo;
     private final CompanyMapper companyMapper;
     private final ContractRepo contractRepo;
+    private final InsuranceRepo insuranceRepo;
 
     /** 거래처 등록 기능 */
     @Transactional
@@ -65,14 +68,7 @@ public class CompanyService {
         Address address = paramMap.mapParam(Address.class);
         Company companyParam = paramMap.mapParam(Company.class);
 
-        // company type update
-        paramMap.multiSelect("ctType");
-        paramMap.put("comIdx", comIdx);
-
-        companyMapper.deleteAllCompanyType(comIdx);
-        companyMapper.insertCompanyType(paramMap.getMap());
-
-        company.companyAllUpdate(companyParam, address, companyEmployee);
+        company.updateCompany(companyParam, address, companyEmployee);
     }
 
 
@@ -97,4 +93,22 @@ public class CompanyService {
         Contract contractParam = paramMap.mapParam(Contract.class);
         contract.updateContract(contractParam);
     }
+
+    /**매입처보증보험 등록**/
+    @Transactional
+    public Integer saveInsurance(ParamMap paramMap) {
+        Insurance insurance = paramMap.mapParam(Insurance.class);
+        Insurance savedInsurance = insuranceRepo.save(insurance);
+
+        return savedInsurance.getCiIdx();
+    }
+
+    /**매입처보증보험 수정**/
+    @Transactional
+    public void updateInsurance(Integer ciIdx, ParamMap paramMap) {
+        Insurance insurance = insuranceRepo.findInsuranceByCiIdx(ciIdx);
+        Insurance insuranceParam = paramMap.mapParam(Insurance.class);
+        insurance.updateInsurance(insuranceParam);
+    }
+
 }

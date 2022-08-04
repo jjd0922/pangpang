@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>거래처관리</title>
+    <title>매입처 보증보험관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -48,54 +48,62 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="companyForm">
+                                    <form id="insuranceForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                                 <div class="form-group">
-                                                    <label class="d-block">등록일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <label class="d-block">보증보험구분</label>
+                                                    <select name="ciType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CiType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">상호법인명</label>
+                                                    <label class="d-block">보증보험 발행상태</label>
+                                                    <select name="ciInsuranceState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CiInsuranceState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">거래처</label>
                                                     <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">사업자번호</label>
-                                                    <input type="text" name="comNum" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    <label class="d-block">발행사</label>
+                                                    <input type="text" name="ciCompany" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">대표자명</label>
-                                                    <input type="text" name="comCeo" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    <label class="d-block">증권명</label>
+                                                    <input type="text" name="ciName" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">MID</label>
-                                                    <input type="text" name="comMid" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    <label class="d-block">보증 시작일</label>
+                                                    <input type="text" name="ciStartDate" class="form-control form-control-sm w-datarange daterange-single">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">거래처구분코드</label>
-                                                    <select name="ctType" data-placeholder="multi select" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
+                                                    <label class="d-block">보증 종료일</label>
+                                                    <input type="text" name="ciEndDate" class="form-control form-control-sm w-datarange daterange-single">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">사업자 분류</label>
-                                                    <select name="comType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
+                                                    <label class="d-block">증권번호</label>
+                                                    <input type="text" name="ciNum" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">상태</label>
-                                                    <select name="comState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" name="ciCreatedBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" name="ciCreatedDate" class="form-control form-control-sm w-datarange daterange-single">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -118,7 +126,7 @@
                     <div class="col-lg-12">
                         <div class="card">
 
-                            <table class="table" id="companyTable"></table>
+                            <table class="table" id="insuranceTable"></table>
 
 
                         </div>
@@ -160,16 +168,16 @@
 
 <script>
     function searchBtn(){
-        companyTable.page('first').ajax.url('/company/company.dataTable?'+$('#companyForm').serialize()).load();
+        $('#insuranceTable').DataTable().page('first').ajax.url('/company/insurance.dataTable?'+$('#insuranceForm').serialize()).load();
     }
 
-    function companyDetailPop(comIdx) {
-        var focusPopup = window.open('companyPop/' + comIdx, 'companyDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function insuranceDetailPop(ciIdx) {
+        var focusPopup = window.open('/company/insurancePop/' + ciIdx, 'insuranceDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
 <script th:inline="javascript">
-    var companyTable = $('#companyTable').DataTable({
+    $('#insuranceTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -178,7 +186,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/company/company.dataTable',
+            url:'/company/insurance.dataTable',
             type:'post'
         },
         columnDefs: [ {
@@ -189,28 +197,23 @@
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                return meta.settings._iDisplayStart+meta.row+1;
-            }}
-            ,{'title':'등록일','data':'COM_CREATED_DATE','defaultContent':''}
-            ,{'title':'등록시간','data':'COM_CREATED_TIME','defaultContent':''}
-            /*,{'title':'거래처구분코드','data':'CT_TYPES','defaultContent':''}*/
-            ,{'title':'사업자 분류','data':'COM_TYPE_STR','defaultContent':''}
-            ,{'title':'상태','data':'COM_STATE_STR','defaultContent':''}
-            ,{'title':'MID','data':'COM_MID','defaultContent':''}
-            ,{'title':'상호법인명','data':null, 'render': function (data) {
-                    return '<a href="javascript: companyDetailPop('+ data['COM_IDX'] +')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+            ,{'title':'보증보험구분','data':'CI_TYPE_STR','defaultContent':''}
+            ,{'title':'보증보험 발행상태','data':'CI_INSURANCE_STATE_STR','defaultContent':''}
+            ,{'title':'거래처','data':'COM_NAME','defaultContent':''}
+            ,{'title':'발행사','data':'CI_COMPANY','defaultContent':''}
+            ,{'title':'증권명','data':null ,'defaultContent':'', 'render': function (data) {
+                    return '<a href="javascript: insuranceDetailPop(' + data['CI_IDX'] + ')" class="badge badge-primary">' + data['CI_NAME'] + '</a>';
                 }}
-            ,{'title':'대표자명','data':'COM_CEO','defaultContent':''}
-            ,{'title':'업체주소','data':'ADDRESS','defaultContent':''}
-            ,{'title':'우편번호','data':'POST','defaultContent':''}
-            ,{'title':'전화번호','data':'COM_TEL','defaultContent':''}
-            ,{'title':'담당자','data':'CE_NAME','defaultContent':''}
-            ,{'title':'담당자전화번호', 'data':'CE_PHONE','defaultContent':''}
-            ,{'title':'등록자','data':'COM_CREATED_BY','defaultContent':''}
-            ,{'title':'수정일','data':'COM_MODIFIED_DATE','defaultContent':''}
-            ,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}
-            ,{'title':'수정이력','data':'','defaultContent':'버튼넣기'}
+            ,{'title':'보증 시작일','data':'CI_START_DATE','defaultContent':''}
+            ,{'title':'보증 종료일','data':'CI_END_DATE','defaultContent':''}
+            ,{'title':'증권번호','data':'CI_NUM','defaultContent':''}
+            ,{'title':'보험가입금액','data':'CI_FEE','defaultContent':''}
+            ,{'title':'보험요율','data':'CI_PERCENT','defaultContent':''}
+            ,{'title':'보험 가능 금액','data':'CI_MONEY','defaultContent':''}
+            ,{'title':'등록자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+            /*,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}
+            ,{'title':'수정일','data':'COM_MODIFIED_DATE','defaultContent':''}*/
         ]
     });
 
@@ -219,8 +222,8 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('/company/companyPop', 'regist_company', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-       focusPopup.focus();
+        var focusPopup = window.open('/company/insurancePop', 'insuranceNew', 'width=1000, height=400, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     });
 </script>
 </html>
