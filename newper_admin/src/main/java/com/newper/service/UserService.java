@@ -2,10 +2,7 @@ package com.newper.service;
 
 
 import com.newper.dto.ParamMap;
-import com.newper.entity.Auth;
-import com.newper.entity.Company;
-import com.newper.entity.CompanyEmployee;
-import com.newper.entity.User;
+import com.newper.entity.*;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.mapper.UserMapper;
@@ -15,12 +12,6 @@ import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 
 @Service
@@ -33,6 +24,8 @@ public class UserService {
     private final CompanyRepo companyRepo;
     private UserMapper userMapper;
 
+
+    /**사용자신규 등록**/
     @Transactional
     public Integer saveUser(ParamMap paramMap) {
         System.out.println("paramMap = " + paramMap);
@@ -61,23 +54,26 @@ public class UserService {
 
         return user.getUIdx();
     }
+    /**
+     * 사용자등록 수정 처리
+     */
+    @Transactional
+    public Integer updateUser(ParamMap paramMap) {
 
-/*    @Transactional
-    public Integer userModify(Integer uIdx, ParamMap paramMap) {
-        User user = userRepo.findUserByuIdx(uIdx);
-        User user = paramMap.mapParam(User.class);
+        User user=paramMap.mapParam(User.class);
+        Auth auth = paramMap.mapParam(Auth.class);
+        Address address = paramMap.mapParam(Address.class);
+        Company company = paramMap.mapParam(Company.class);
         System.out.println("userIdx : " + user.getUIdx());
 
-
-        Company company = paramMap.mapParam(Company.class);
-        Address address = paramMap.mapParam(Address.class);
-
-
-        paramMap.multiSelect("ctType");
-        paramMap.put("uIdx", uIdx);
-
-
+        user.setCompany(company);
+        user.setAuth(auth);
+        user.setAddress(address);
+//        userRepo.findUserByuIdx(user.getUIdx());
+//        userMapper.insertUser(user.getUIdx());
+        userRepo.save(user);
         return user.getUIdx();
-    }*/
-}
+    }
+    }
+
 

@@ -199,7 +199,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
-                                                        <input type="hidden" name="U_COM_IDX" value="">
+                                                        <input type="hidden" name="U_COM_IDX" th:value="${user != null} ? ${user.company.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -328,6 +328,7 @@
                                                         </span>
                                                        </span>
                                                         <input type="text" name="U_ID" class="form-control" th:value="${user?.uId}" onkeyup="copyId()">
+                                                        <input type="hidden" name="U_IDX" class="form-control" th:value="${user?.uIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -521,6 +522,8 @@
         });
     }
 
+
+
     function searchCompany(com_idx){
         $.ajax({
             url:'/user/searchCompany.ajax',
@@ -535,6 +538,8 @@
             }
         })
     }
+
+
 </script>
 
 <script>
@@ -561,8 +566,8 @@
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME','render':function (data,type,full,meta){
                     return '<a class="btn btn-secondary" onclick="searchCompany('+full.COM_IDX+')">'+data+'</a>';
                 }}
-            ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
-            ,{'class':'m-w-max', 'title':'등록시간','data':'CREATED_TIME'}
+            ,{'class':'m-w-max', 'title':'등록일','data':'COM_CREATED_DATE'}
+            ,{'class':'m-w-max', 'title':'등록시간','data':'COM_CREATED_TIME'}
             ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE', 'render': function (data,type,full,meta){
                 if(data==null){
                     return '';
@@ -599,6 +604,8 @@
 
 
     $("input[name=post]").on("click", daum_address);
+
+
 
 
 

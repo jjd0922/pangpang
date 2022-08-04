@@ -13,4 +13,7 @@ public interface UserMapper {
     List<Map<String, Object>> selectUser(Map<String, Object> param);
 
     long countUser(Map<String, Object> param);
+
+    List<Map<String, Object>> insertUser (Integer uIdx);
+
 }

@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.UserMapper">
 
+    <sql id="includeUserDatatable">
+        <if test="U_NAME != null and U_NAME != ''">AND U_NAME LIKE CONCAT('%',#{U_NAME},'%')</if>
+        <if test="U_PHONE != null and U_PHONE != ''">AND U_PHONE LIKE CONCAT('%',#{U_PHONE},'%')</if>
+        <if test="U_ID != null and U_ID != ''">AND U_ID LIKE CONCAT('%',#{U_ID},'%')</if>
+    </sql>
     <select id="selectUserDatatable" resultType="Map" parameterType="Map">
         SELECT
         *
@@ -12,6 +17,9 @@
         ON u_com_idx=com_idx
         LEFT JOIN auth
         ON u_auth_idx=auth_idx
+        <where>
+               <include refid="includeUserDatatable"></include>
+        </where>
     </select>
 
     <select id="countUserDatatable" resultType="Integer">
@@ -20,6 +28,9 @@
         FROM
             User
                 LEFT JOIN COMPANY ON u_com_idx = Com_idx
+        <where>
+             <include refid="includeUserDatatable"></include>
+        </where>
     </select>
 
 
