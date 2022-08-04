@@ -5,8 +5,6 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Company;
 import com.newper.entity.User;
-import com.newper.entity.common.Address;
-import com.newper.exception.MsgException;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import com.newper.service.CompanyService;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/user/")
@@ -33,32 +33,21 @@ public class UserController {
     private final CompanyRepo companyRepo;
 
 
-
-
-
     @GetMapping(value = "")
-    public ModelAndView user(){
+    public ModelAndView user() {
         ModelAndView mav = new ModelAndView("user/user");
 
         return mav;
     }
 
     @GetMapping(value = "userPopup")
-    public ModelAndView userPopup(){
+    public ModelAndView userPopup() {
         ModelAndView mav = new ModelAndView("user/userPopup");
 
         return mav;
 
 
     }
-
-/*    @GetMapping("datailPopup/{uId}")
-    public ModelAndView popCustomerInquiry(@PathVariable int uId){
-        ModelAndView mav = new ModelAndView("user/detailPopup");
-        User user = userRepo.getReferenceById(uId);
-        return mav;
-    }*/
 }
-
 
 

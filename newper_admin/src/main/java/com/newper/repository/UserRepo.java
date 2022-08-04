@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepo extends JpaRepository<User,Integer> {
+    @EntityGraph(attributePaths = {"company"})
+    public User findUserByuIdx(Integer uIdx);
 
 }
