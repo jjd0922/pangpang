@@ -65,7 +65,7 @@ public class MainController {
         ModelAndView mav=new ModelAndView("main/summernote_image");
         List<String> nameList = new ArrayList<String>();
         for (MultipartFile multipartFile : summernoteImageFile) {
-            String fileName = Common.uploadFilePath(multipartFile,"summernote/", AdminBucket.OPEN);
+            String fileName = Common.uploadFilePath(multipartFile,"summernote/category/", AdminBucket.OPEN);
             nameList.add(fileName);
             System.out.println(fileName);
         }

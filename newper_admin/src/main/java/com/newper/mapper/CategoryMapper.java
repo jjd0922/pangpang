@@ -15,4 +15,10 @@ public interface CategoryMapper {
 
     /** 카테고리 조회 IDX없으면 전체 조회 그 외 부모 카테고리 하위 조회 */
     List<Map<String, Object>> selectCategory(Map<String, Object> param);
+
+    /**카테고리 order 마지막 값 depth로 가져오기*/
+    Integer maxCategoryOrderByCateDepth(int CATE_DEPTH);
+
+    /**뎁스별 카테고리 조회*/
+    List<Map<String,Object>> selectCategoryListByCateDepth(int CATE_DEPTH);
 }

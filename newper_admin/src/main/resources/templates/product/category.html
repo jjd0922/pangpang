@@ -158,7 +158,7 @@
                     return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i><input type="hidden" name="CATE_IDX" value="'+full.CATE_IDX+'">';
                 }}
             ,{'class':'m-w-16 w-55', 'title':'대분류명','data':'CATE_NAME','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
                 }}
             ,{'class':'m-w-8 w-15', 'title':'중분류','data':'CNT','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm btn-outline-dark ml-1" onclick="childrenCategory('+full.CATE_IDX+')">'+data+'</a>';
@@ -217,7 +217,7 @@
                     return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i><input type="hidden" name="CATE_IDX" value="'+full.CATE_IDX+'">';
                 }}
             ,{'class':'m-w-16 w-55', 'title':'중분류명','data':'CATE_NAME','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
                 }}
             ,{'class':'m-w-8 w-15', 'title':'소분류','data':'CNT','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm btn-outline-dark ml-1" onclick="youngestCategory('+full.CATE_IDX+')">'+data+'</a>';
@@ -273,8 +273,8 @@
             {'class':'dragula-handle m-w-2', 'title':'순서','data':'CATE_ORDER', 'render':function(data,type,full,meta){
                     return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i><input type="hidden" name="CATE_IDX" value="'+full.CATE_IDX+'">';
                 }}
-            ,{'class':'m-w-16 w-55', 'title':'중분류명','data':'CATE_NAME','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+            ,{'class':'m-w-16 w-55', 'title':'소분류명','data':'CATE_NAME','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
                 }}
             ,{'class':'m-w-16 w-15', 'title':'삭제','data':'CATE_IDX','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm badge-danger" onclick="deleteCategory('+data+')">삭제</a>';
@@ -334,8 +334,13 @@
     }
 
     function popCategory(dept){
-        var focusPopup = window.open('/product/category/categoryCreate?dept='+dept,'categoryCreate', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/product/category/categoryCreate/'+dept,'categoryCreate', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
+    }
+
+    function categoryDetail(cate_idx){
+       var cd = window.open('/product/category/categoryDetail/'+cate_idx,'categoryDetail','width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        cd.focus();
     }
 </script>
 

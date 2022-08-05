@@ -59,4 +59,22 @@
             CATE_IDX IS NOT NULL
             <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{cateIdx}</if>
     </select>
+    
+    <select id="maxCategoryOrderByCateDepth" resultType="Integer">
+        SELECT
+            MAX(CATE_ORDER)
+        FROM
+            category
+        WHERE
+            CATE_DEPTH=#{CATE_DEPTH}
+    </select>
+
+    <select id="selectCategoryListByCateDepth" resultType="map">
+        select
+            CATE_IDX, CATE_NAME
+        from
+            category
+        where
+            CATE_DEPTH=#{CATE_DEPTH}
+    </select>
 </mapper>
