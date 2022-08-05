@@ -21,6 +21,7 @@
             ON P.CATE_IDX = C.CATE_PARENT_IDX
         WHERE
             P.CATE_PARENT_IDX IS NULL
+            AND CATE_TYPE='CATEGORY'
         GROUP BY CATE_IDX
         order by CATE_ORDER
     </select>
@@ -44,6 +45,7 @@
             ON P.CATE_IDX = C.CATE_PARENT_IDX
         WHERE
             P.CATE_PARENT_IDX = #{CATE_PARENT_IDX}
+            AND CATE_TYPE='CATEGORY'
         GROUP BY CATE_IDX
         order by CATE_ORDER
     </select>
@@ -58,6 +60,7 @@
         WHERE
             CATE_IDX IS NOT NULL
             <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{cateIdx}</if>
+            AND CATE_TYPE='CATEGORY'
     </select>
     
     <select id="maxCategoryOrderByCateDepth" resultType="Integer">
@@ -67,6 +70,7 @@
             category
         WHERE
             CATE_DEPTH=#{CATE_DEPTH}
+            AND CATE_TYPE='CATEGORY'
     </select>
 
     <select id="selectCategoryListByCateDepth" resultType="map">
@@ -76,5 +80,6 @@
             category
         where
             CATE_DEPTH=#{CATE_DEPTH}
+            AND CATE_TYPE='CATEGORY'
     </select>
 </mapper>
