@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface EstimateRepo extends JpaRepository<Estimate, Integer> {
     @EntityGraph(attributePaths = {"company"})
     public Estimate findEstimateByPeIdx(Integer peIdx);
-
 }

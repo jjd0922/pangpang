@@ -81,7 +81,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">계약번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="ccContarctNum">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="ccNum">
                                                 </div>
 
                                                 <div class="form-group">
@@ -204,21 +204,15 @@
             ,{'title':'계약명','data':'CC_NAME','defaultContent':'', 'render': function (data,type,full,meta) {
                     return '<a href="javascript: detailContract('+ full.CC_IDX +')" class="badge badge-primary">' + full.CC_NAME + '</a>';
                 }}
-            ,{'title':'계약구분','data':'CC_TYPE','defaultContent':''}
-            ,{'title':'상태','data':'CC_STATE','defaultContent':''}
-            ,{'title':'정산주기','data':'CC_CYCLE','defaultContent':''}
+            ,{'title':'계약구분','data':'CC_TYPE_STR','defaultContent':''}
+            ,{'title':'상태','data':'CC_STATE_STR','defaultContent':''}
+            ,{'title':'정산주기','data':'CC_CYCLE_STR','defaultContent':''}
             ,{'title':'세금계산서발행일','data':'CC_TAX_DATE','defaultContent':''}
             ,{'title':'정산기준일','data':'CC_BASE_DATE','defaultContent':''}
-            ,{'title':'계약시작일','data':'CC_CONTRACT_START','defaultContent':''}
-            ,{'title':'계약종료일','data':'CC_CONTRACT_END','defaultContent':''}
-            ,{'title':'정액/정률','data':'CC_FEE_TYPE','defaultContent':'', 'render':function(data,type,full,meta){
-                    if (data == 'cost') {
-                        return full.CC_COST;
-                    } else {
-                        return full.CC_RATES;
-                    }
-                }}
-            ,{'title':'계약번호','data':'CC_CONTRACT_NUM','defaultContent':'', 'render':function(data,type,full,meta){
+            ,{'title':'계약시작일','data':'CC_START','defaultContent':''}
+            ,{'title':'계약종료일','data':'CC_END','defaultContent':''}
+            ,{'title':'정액/정률','data':'CC_FEE_TYPE_STR','defaultContent':''}
+            ,{'title':'계약번호','data':'CC_NUM','defaultContent':'', 'render':function(data,type,full,meta){
                     return '<button type="button" onclick="detailContract(' + full.ccIdx + ')">' + data + '</button>'
                 }}
             ,{'title':'등록자','data':'CC_CREATED_BY','defaultContent':''}

@@ -1,12 +1,10 @@
 package com.newper.entity;
 
-import com.newper.converter.ConvertList;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -36,7 +34,12 @@ public class Estimate extends BaseEntity {
     private String peFile;
     private String peFileName;
     private String peMemo;
-//    private String peReason;
+
+    @Transient
+    private String peFileOri;
+    @Transient
+    private String peFileNameOri;
+
 }
 
 

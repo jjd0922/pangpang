@@ -36,7 +36,7 @@ public class PoService {
         LocalTime now = LocalTime.now();
         estimate.setPeCode(now.toString());
 
-        String period = paramMap.getMap().get("pePeriodDate").toString();
+        String period = paramMap.getMap().get("pePeriod").toString();
         String[] period_arr = period.split(" ~ ");
 
         estimate.setPeStart(period_arr[0]);
@@ -92,7 +92,7 @@ public class PoService {
         Company company = paramMap.mapParam(Company.class);
         estimate.setCompany(company);
 
-        String period = paramMap.getMap().get("pePeriodDate").toString();
+        String period = paramMap.getMap().get("pePeriod").toString();
         String[] period_arr = period.split(" ~ ");
 
         estimate.setPeStart(period_arr[0]);
@@ -103,9 +103,8 @@ public class PoService {
             estimate.setPeFile(peFilePath);
             estimate.setPeFileName(peFile.getOriginalFilename());
         } else {
-            Estimate estimate_file = estimateRepo.findEstimateByPeIdx(peIdx);
-            estimate.setPeFile(estimate_file.getPeFile());
-            estimate.setPeFileName(estimate_file.getPeFileName());
+            estimate.setPeFile(estimate.getPeFileOri());
+            estimate.setPeFileName(estimate.getPeFileNameOri());
         }
 
         estimateRepo.save(estimate);

@@ -329,26 +329,29 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">사업자등록증</span>
+                                                                <span class="input-group-text">사업자등록증<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comNumFile}', '${company.comNumFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
-                                                        <input type="file" name="comNumFile" class="form-control form-control-plaintext"
-                                                               th:value="${company?.comNumFile}">
+                                                        <input type="file" name="comNumFile" class="form-control form-control-plaintext">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <input th:if="${company != null}" th:value="${company.comNumFile}" name="comNumFileOri">
+                                            <input th:if="${company != null}" th:value="${company.comNumFileName}" name="comNumFileNameOri">
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">통장사본</span>
+                                                                <span class="input-group-text">통장사본<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comAccountFile}', '${company.comAccountFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
-                                                        <input type="file" name="comAccountFile" class="form-control form-control-plaintext"
-                                                               th:value="${company?.comAccountFile}">
+                                                        <input type="file" name="comAccountFile" class="form-control form-control-plaintext">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <input th:if="${company != null}" th:value="${company.comAccountFile}" name="comAccountFileOri">
+                                            <input th:if="${company != null}" th:value="${company.comAccountFileName}" name="comAccountFileNameOri">
+
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">

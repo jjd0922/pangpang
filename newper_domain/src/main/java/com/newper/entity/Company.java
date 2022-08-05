@@ -46,11 +46,23 @@ public class Company extends BaseEntity {
     private Address address = Address.builder().build();
 
     private String comNumFile;
+    private String comNumFileName;
     private String comAccountFile;
+    private String comAccountFileName;
     private String comAs;
     private String comAsNum;
     private String comMemo;
     private String comModifiedMemo;
+
+    @Transient
+    private String comNumFileOri;
+    @Transient
+    private String comNumFileNameOri;
+    @Transient
+    private String comAccountFileOri;
+    @Transient
+    private String comAccountFileNameOri;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="COM_CE_IDX", referencedColumnName = "ceIdx")

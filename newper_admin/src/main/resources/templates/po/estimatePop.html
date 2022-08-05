@@ -78,9 +78,9 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <span class="input-group-prepend">
-                                                                    <span class="input-group-text">견적 유효기간 시작</span>
+                                                                    <span class="input-group-text">견적 유효기간</span>
                                                                 </span>
-                                                                <input type="text" name="pePeriodDate" class="form-control w-datarange daterange-basic-form" placeholder="날짜" th:value="${estimate != null} ? |${estimate.peStart} ~ ${estimate.peEnd}|" readonly>
+                                                                <input type="text" name="pePeriod" class="form-control w-datarange daterange-basic-form" placeholder="날짜" th:value="${estimate != null} ? |${estimate.peStart} ~ ${estimate.peEnd}|" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -142,9 +142,12 @@
                                                                         <span class="input-group-text">첨부파일<a th:if="${estimate != null}" th:href="|javascript: fileDownload('${estimate.peFile}', '${estimate.peFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                                     </span>
                                                                 <input type="file" name="peFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                                <input type="hidden" name="peFileOri" th:if="${estimate != null}" th:value="${estimate.peFile}">
+                                                                <input type="hidden" name="peFileNameOri"  th:if="${estimate != null}" th:value="${estimate.peFileName}">
                                                             </div>
                                                         </div>
                                                     </div>
+
 
                                                     <!-- 입력필드 -->
                                                     <div class="col-sm-12">

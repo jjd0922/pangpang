@@ -47,8 +47,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">상호법인명<a class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${detail?.company?.comName}" readonly>
-                                                        <input type="hidden" name="comIdx" th:value="${detail?.company?.comIdx}">
+                                                        <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${contract?.company?.comName}" readonly>
+                                                        <input type="hidden" name="comIdx" th:value="${contract?.company?.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">MID</span>
                                                         </span>
-                                                        <input type="text" name="comMid" class="form-control" th:value="${detail?.company?.comMid}" placeholder="검색" readonly>
+                                                        <input type="text" name="comMid" class="form-control" th:value="${contract?.company?.comMid}" placeholder="검색" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -72,7 +72,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">계약명</span>
                                                         </span>
-                                                        <input type="text" name="ccName" class="form-control" placeholder="입력" th:value="${detail?.ccName}">
+                                                        <input type="text" name="ccName" class="form-control" placeholder="입력" th:value="${contract?.ccName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                             <span class="input-group-text">계약구분</span>
                                                         </span>
                                                         <select name="ccType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccType) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(contract?.ccType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -99,7 +99,7 @@
                                                             <span class="input-group-text">상태</span>
                                                         </span>
                                                         <select name="ccState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccState) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(contract?.ccState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -123,7 +123,7 @@
                                                             <span class="input-group-text">정산주기</span>
                                                         </span>
                                                         <select name="ccCycle" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcCycle).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccCycle) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcCycle).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(contract?.ccCycle) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -138,7 +138,7 @@
                                                                     세금계산서 발행일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccTaxDate" class="form-control" placeholder="입력" th:value="${detail?.ccTaxDate}">
+                                                        <input type="text" name="ccTaxDate" class="form-control" placeholder="입력" th:value="${contract?.ccTaxDate}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                                             <span class="input-group-text">정산방식</span>
                                                         </span>
                                                         <select name="ccCalType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccCalType) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(contract?.ccCalType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -166,7 +166,7 @@
                                                                     정산기준일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccBaseDate" class="form-control" placeholder="입력" th:value="${detail?.ccBaseDate}">
+                                                        <input type="text" name="ccBaseDate" class="form-control" placeholder="입력" th:value="${contract?.ccBaseDate}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,21 +180,7 @@
                                                                     계약시작일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccContractStart" class="form-control daterange-single" th:value="${detail?.ccContractStart}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    계약종료
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccContractEnd" class="form-control daterange-single" th:value="${detail?.ccContractEnd}" readonly>
+                                                        <input type="text" name="ccPeriod" class="form-control w-datarange daterange-basic-form" th:value="${estimate != null} ? |${contract?.ccStart} ~ ${contract?.ccEnd}|" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,7 +193,7 @@
                                                             <span class="input-group-text">정액/정률</span>
                                                         </span>
                                                         <select name="ccFeeType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CcFeeType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(detail?.ccFeeType) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.CcFeeType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(contract?.ccFeeType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -222,7 +208,7 @@
                                                                     기준수수료율
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccRates" class="form-control" placeholder="입력" th:value="${detail?.ccRates}">
+                                                        <input type="text" name="ccRates" class="form-control" placeholder="입력" th:value="${contract?.ccRates}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +222,7 @@
                                                                     기준수수료액
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccCost" class="form-control" placeholder="입력" th:value="${detail?.ccCost}">
+                                                        <input type="text" name="ccCost" class="form-control" placeholder="입력" th:value="${contract?.ccCost}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,7 +236,7 @@
                                                                     계약번호
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccContractNum" class="form-control" placeholder="자동" th:value="${detail?.ccContractNum}">
+                                                        <input type="text" name="ccNum" class="form-control" placeholder="자동" th:value="${contract?.ccNum}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -260,9 +246,11 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">계약서FILE</span>
+                                                                <span class="input-group-text">계약서 파일<a th:if="${contract != null}" th:href="|javascript: fileDownload('${contract.ccFile}', '${contract.ccFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
-                                                        <input type="file" name="ccContractFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="file" name="ccFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                        <input type="hidden" name="ccFileOri" th:value="${contract?.ccFile}"/>
+                                                        <input type="hidden" name="ccFileNameOri" th:value="${contract?.ccNameFile}"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -280,32 +268,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </fieldset>
-                                    <!-- 타이틀 구분 끝-->
-                                </div>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">3. 거래처 계약 담당자정보</legend>
-
-                                        <div class="row">
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    성명(담당자)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutName" class="form-control" placeholder="입력" th:value="${detail?.ccOutName}">
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
@@ -313,85 +275,16 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    부서
+                                                                    외부담당자 <a class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ccOutDepart" class="form-control" placeholder="입력" th:value="${detail?.ccOutDepart}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    직급(직책)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutPostion" class="form-control" placeholder="입력" th:value="${detail?.ccOutPostion}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    이메일
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutMail" class="form-control" placeholder="입력" th:value="${detail?.ccOutMail}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    휴대폰번호
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutPhone" class="form-control" placeholder="입력" th:value="${detail?.ccOutPhone}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    전화번호(담당자)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutTel" class="form-control" placeholder="입력" th:value="${detail?.ccOutTel}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    담당자 메모
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="ccOutMemo" class="form-control" placeholder="입력" th:value="${detail?.ccOutMemo}">
+                                                        <input type="text" name="uIdx" class="form-control" placeholder="검색">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
+                                    <!-- 타이틀 구분 끝-->
                                 </div>
                             </div>
                         </form>

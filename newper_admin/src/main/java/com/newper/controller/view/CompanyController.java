@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Insurance;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
@@ -63,6 +64,14 @@ public class CompanyController {
         companyEmployeeRepo.save(companyEmployee);
 
         // company insert
+        if (comNumFile.getSize() == 0) {
+            throw new MsgException("사업자등록증 파일을 첨부해 주세요");
+        }
+
+        if (comAccountFile.getSize() == 0) {
+            throw new MsgException("통장사본 파일을 첨부해 주세요");
+        }
+
         paramMap.put("companyEmployee", companyEmployee);
         Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
 
@@ -123,29 +132,32 @@ public class CompanyController {
 
     /** 거래처 계약서 생성 **/
     @PostMapping(value = "contractPop")
-    public ModelAndView contractNewPost(ParamMap paramMap, MultipartFile ccContractFile){
+    public ModelAndView contractNewPost(ParamMap paramMap, MultipartFile ccFile){
         ModelAndView mav = new ModelAndView("company/contractPop");
-        companyService.saveContract(paramMap, ccContractFile);
+
+        if (ccFile.getSize() == 0) {
+            throw new MsgException("계약서 파일을 첨부해 주세요");
+        }
+        companyService.saveContract(paramMap, ccFile);
 
         return mav;
     }
 
     /** 거래처 계약관리 상세 페이지 **/
-    @GetMapping(value = "contractPop/{cc_idx}")
-    public ModelAndView contractDetail(@PathVariable int cc_idx){
+    @GetMapping(value = "contractPop/{ccIdx}")
+    public ModelAndView contractDetail(@PathVariable int ccIdx){
         ModelAndView mav = new ModelAndView("company/contractPop");
-        mav.addObject("detail", contractRepo.findContractByccIdx(cc_idx));
+        mav.addObject("contract", contractRepo.findContractByccIdx(ccIdx));
         return mav;
     }
 
     /** 거래처 계약관리 수정 처리 **/
-    @PostMapping(value = "contractPop/{cc_idx}")
-    public ModelAndView contractDetailPost(@PathVariable int cc_idx, ParamMap paramMap, MultipartFile ccContractFile){
+    @PostMapping(value = "contractPop/{ccIdx}")
+    public ModelAndView contractDetailPost(@PathVariable Integer ccIdx, ParamMap paramMap, MultipartFile ccFile){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        companyService.updateContract(cc_idx, paramMap, ccContractFile);
+        companyService.updateContract(ccIdx, paramMap, ccFile);
 
         mav.addObject("msg", "수정완료");
-
         return mav;
     }
 

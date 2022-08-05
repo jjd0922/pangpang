@@ -40,20 +40,20 @@ public class Contract extends BaseEntity {
 
     private String ccTaxDate;
     private String ccBaseDate;
-    private String ccContractStart;
-    private String ccContractEnd;
+    private String ccStart;
+    private String ccEnd;
     private float ccRates;
     private int ccCost;
-    private String ccContractNum;
-    private String ccContractFile;
+    private String ccNum;
+    private String ccFile;
+    private String ccFileName;
     private String ccName;
-    private String ccOutName;
-    private String ccOutDepart;
-    private String ccOutPostion;
-    private String ccOutMail;
-    private String ccOutPhone;
-    private String ccOutTel;
-    private String ccOutMemo;
+
+    @Transient
+    private String ccFileOri;
+    @Transient
+    private String ccFileNameOri;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CC_COM_IDX", referencedColumnName = "comIdx")
@@ -66,12 +66,5 @@ public class Contract extends BaseEntity {
     /** 상태, 내부담당자, 거래처 정산 담당자 정보만 수정 가능**/
     public void updateContract(Contract contract) {
         setCcState(contract.ccState);
-        setCcOutName(contract.ccOutName);
-        setCcOutDepart(contract.ccOutDepart);
-        setCcOutMail(contract.ccOutMail);
-        setCcOutPostion(contract.ccOutPostion);
-        setCcOutPhone(contract.ccOutPhone);
-        setCcOutTel(contract.ccOutTel);
-        setCcOutMemo(contract.ccOutMemo);
     }
 }

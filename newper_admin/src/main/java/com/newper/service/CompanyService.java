@@ -35,22 +35,17 @@ public class CompanyService {
         Company company = paramMap.mapParam(Company.class);
         company.setAddress(address);
 
-        String comNumFilePath = "";
-        String comAccountFilePath = "";
-
-        if(comNumFile.getSize()!=0){
-            comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/", AdminBucket.SECRET);
-        }
-
-        if(comAccountFile.getSize()!=0){
-            comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/", AdminBucket.SECRET);
-        }
+        String comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/", AdminBucket.SECRET);
 
 
-        System.out.println(comNumFilePath);
+        String comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/", AdminBucket.SECRET);
+
+
         company.setComNumFile(comNumFilePath);
+        company.setComNumFileName(comNumFile.getOriginalFilename());
         company.setComAccountFile(comAccountFilePath);
-        System.out.println("파일 업로드 완료");
+        company.setComAccountFileName(comNumFile.getOriginalFilename());
+
         Company savedCompany = companyRepo.saveAndFlush(company);
 
         return savedCompany.getComIdx();
@@ -73,25 +68,37 @@ public class CompanyService {
 
 
     @Transactional
-    public void saveContract(ParamMap paramMap, MultipartFile ccContractFile) {
+    public void saveContract(ParamMap paramMap, MultipartFile ccFile) {
         Contract contract = paramMap.mapParam(Contract.class);
 
-        String ccContractFilePath = "";
+        String ccFilePath = Common.uploadFilePath(ccFile, "company/contract/", AdminBucket.SECRET);
+        contract.setCcFile(ccFilePath);
+        contract.setCcFileName(ccFile.getOriginalFilename());
 
-        if(ccContractFile.getSize()!=0){
-            ccContractFilePath = Common.uploadFilePath(ccContractFile, "company/contract/", AdminBucket.SECRET);
-        }
+        String period = paramMap.getMap().get("ccPeriod").toString();
+        String[] period_arr = period.split(" ~ ");
 
-        contract.setCcContractFile(ccContractFilePath);
+        contract.setCcStart(period_arr[0]);
+        contract.setCcEnd(period_arr[1]);
+
         contractRepo.save(contract);
     }
 
     @Transactional
-    public void updateContract(int cc_idx, ParamMap paramMap, MultipartFile ccContractFile) {
-        Contract contract = contractRepo.findContractByccIdx(cc_idx);
+    public void updateContract(int ccIdx, ParamMap paramMap, MultipartFile ccFile) {
+        Contract contract = paramMap.mapParam(Contract.class);
+        contract.setCcIdx(ccIdx);
 
-        Contract contractParam = paramMap.mapParam(Contract.class);
-        contract.updateContract(contractParam);
+        if (ccFile.getSize() != 0) {
+            String ccFilePath = Common.uploadFilePath(ccFile, "company/contract/", AdminBucket.SECRET);
+            contract.setCcFile(ccFilePath);
+            contract.setCcFileName(ccFile.getOriginalFilename());
+        } else {
+            contract.setCcFile(contract.getCcFileOri());
+            contract.setCcFileName(contract.getCcFileNameOri());
+        }
+
+        contractRepo.save(contract);
     }
 
     /**매입처보증보험 등록**/

@@ -27,7 +27,7 @@
     <sql id="includeCompanyContractDataTable">
         <if test='ccCreatedDate != null and ccCreatedDate != ""'>AND COMPANY_CONTRACT.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
         <if test="ccTaxDate != null and ccTaxDate != ''">AND CC_TAX_DATE BETWEEN SUBSTR(#{ccTaxDate}, 1, 10) AND SUBSTR(#{ccTaxDate}, 13)</if>
-        <if test="ccContarctNum != null and ccContarctNum != ''">AND CC_CONTRACT_NUM LIKE CONCAT('%', #{ccContarctNum}, '%')</if>
+        <if test="ccNum != null and ccNum != ''">AND CC_NUM LIKE CONCAT('%', #{ccNum}, '%')</if>
         <if test='ccCycle != null'>
             <foreach collection="ccCycle" open="AND CC_CYCLE IN (" separator="," close=")" item="item">
                 #{item}
@@ -179,28 +179,17 @@
             COM_NAME,
             COM_MID,
             CC_NAME,
-            CASE
-                WHEN CC_TYPE = 'PURCHASE' THEN '매입'
-                WHEN CC_TYPE = 'SALES' THEN '매출'
-            END AS 'CC_TYPE',
-            CASE
-                WHEN CC_STATE = 'NORMAL' THEN '정상'
-                WHEN CC_STATE = 'STOP' THEN '중지'
-            END AS 'CC_STATE',
-            CASE
-                WHEN CC_CYCLE = 'MONTH1' THEN '월1회'
-                WHEN CC_CYCLE = 'MONTH2' THEN '월2회'
-                WHEN CC_CYCLE = 'WEEK' THEN '주'
-                WHEN CC_CYCLE = 'DAY' THEN '일'
-            END AS 'CC_CYCLE',
+            CC_TYPE,
+            CC_STATE,
+            CC_CYCLE,
             CC_TAX_DATE,
             CC_BASE_DATE,
-            CC_CONTRACT_START,
-            CC_CONTRACT_END,
+            CC_START,
+            CC_END,
             CC_FEE_TYPE,
             CC_COST,
             CC_RATES,
-            CC_CONTRACT_NUM,
+            CC_NUM,
             COMPANY_CONTRACT.CREATED_BY AS 'CC_CREATED_BY',
             COMPANY_CONTRACT.CREATED_DATE AS 'CC_CREATED_DATE',
             COMPANY_CONTRACT.MODIFIED_BY AS 'CC_MODIFIED_BY',

@@ -24,7 +24,7 @@ import java.net.URLEncoder;
 public class DownloadController {
     private final PoService poService;
 
-    /** 견적서 관리 페이지 **/
+    /** 파일 다운로드 */
     @GetMapping(value = "")
     public void download(HttpServletResponse response, String obj, String fileName) throws IOException {
         response.setContentType("application/octet-stream");
