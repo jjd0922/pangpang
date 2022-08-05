@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.converter.ConvertList;
+import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Category{
+public class Category extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,7 @@ public class Category{
     @JoinColumn(name = "CATE_PARENT_IDX", referencedColumnName = "cateIdx")
     private Category parentCategory;
     
-    
+
     private String cateType;
     private int	cateDepth;
     private String cateName;
