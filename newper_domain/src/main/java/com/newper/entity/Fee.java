@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.CfType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,9 +20,10 @@ public class Fee extends CreatedEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cfIdx;
 
-    private char cfType;
-    private float cfPercent;
-    private int cfMoney;
+    @Enumerated(EnumType.STRING)
+    private CfType cfType;
+    private Float cfPercent;
+    private Integer cfMoney;
     private char cfState;
 
     @ManyToOne(fetch = FetchType.LAZY)

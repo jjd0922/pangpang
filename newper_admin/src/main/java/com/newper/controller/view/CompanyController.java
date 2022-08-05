@@ -157,6 +157,14 @@ public class CompanyController {
         return mav;
     }
 
+    @PostMapping(value = "fee/{cfIdx}")
+    public ModelAndView updateFee(@PathVariable Integer cfIdx, ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+
+        return mav;
+    }
+
+
     /**매입처 보증보험관리 페이지**/
     @GetMapping(value="insurance")
     public ModelAndView insurance() {

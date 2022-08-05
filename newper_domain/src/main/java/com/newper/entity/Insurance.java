@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "COMPANY_INSURANCE")
+@ToString
 public class Insurance extends CreatedEntity {
 
     @Id
