@@ -74,8 +74,8 @@
                                                               중분류명
                                                             </span>
                                                         </span>
-                                                        <select name="CATE_PARENT_IDX" data-placeholder="선택" class="form-control form-control-sm select-search" data-container-css-class="select-sm" data-fouc>
-                                                            <option></option>
+                                                        <select name="CATE_PARENT_IDX" class="form-control form-control-sm select-search" data-container-css-class="select-sm" data-fouc>
+                                                            <option value="">선택</option>
                                                             <option th:each="parent : ${parent}" th:value="${parent.CATE_IDX}" th:text="${parent.CATE_NAME}"></option>
                                                         </select>
                                                     </div>
@@ -175,7 +175,7 @@
 //대분류 등록
 function newCategoryFirst(){
     var cate_name = $('input[name=CATE_NAME]').val();
-    var CATE_PARENT_IDX = $('input[name=CATE_PARENT_IDX]').val();
+    var CATE_PARENT_IDX = $('select[name=CATE_PARENT_IDX]').val();
     if(window.confirm('등록하시겠습니까?')){
         var cate_depth = $('#cate_depth').val();
         if(cate_name==""){
