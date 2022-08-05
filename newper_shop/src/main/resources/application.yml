@@ -1,25 +1,61 @@
 spring:
   profiles:
     group:
-      iam: iaminfo,common
+      window: windowinfo,common
       dev: devinfo,common
       prod: prodinfo,common
-    active: iam
+    active: window
 
 ---
-
 spring:
   config:
     activate:
-      on-profile: iaminfo
+      on-profile: windowinfo
 
   datasource:
     #    jndi-name: null
-    #    jdbc-url: jdbc:mysql://58.229.240.106:7138/study
     url: jdbc:mysql://localhost:3306/newpermarket
     username: newpermarket
     password: votmdnjem12#$
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 9200
+  tomcat:
+    file-encoding: UTF-8
+  servlet:
+    #    context-path: /context
+    session:
+      #      timeout: 10800      # 60*60*3
+      timeout: 86400      # 60*60*24
+
+ncloud.bucket:
+  open: DEV_OPEN
+  secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: devinfo
+
+  datasource:
+    #    jndi-name: null
+    url: jdbc:mysql://localhost:3306/newpermarket
+    username: newpermarket
+    password: votmdnjem12#$
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: 9200
@@ -37,37 +73,52 @@ logging:
   charset:
     console: UTF-8
     file: UTF-8
+    #sweettracker:
+    #  tier: testuser
+    #  key: testuser
+    #  domain: http://trace-api-dev.sweettracker.net:8102/
+    #  callback: http://localhost:9080/present/tracking/add/invoice/return
 
-#sweettracker:
-#  tier: testuser
-#  key: testuser
-#  domain: http://trace-api-dev.sweettracker.net:8102/
-#  callback: http://localhost:9080/present/tracking/add/invoice/return
 
+ncloud.bucket:
+  open: DEV_OPEN
+  secret: DEV_SECRET
+
+decorator:
+  datasource:
+    enabled: false
 ---
-
-spring:
-  config:
-    activate:
-      on-profile: devinfo
-
----
-
 spring:
   config:
     activate:
       on-profile: prodinfo
 
----
 
+ncloud.bucket:
+  open: prod-open
+  secret: prod-secret
+
+decorator:
+  datasource:
+    enabled: false
+---
 spring:
   config:
     activate:
       on-profile: common
 
+  session:
+    store-type: redis
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      use-new-id-generator-mappings: false
+      #naming.physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+
+
+
   #    properties.hibernate:
   #      default_batch_fetch_size: 100
 
@@ -86,3 +137,15 @@ server:
   servlet:
     session:
       tracking-modes: cookie
+
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+
+#sweettracker:
+#  tier: testuser
+#  key: testuser
+#  domain: http://trace-api-dev.sweettracker.net:8102/
+#  callback: http://localhost:9080/present/tracking/add/invoice/return
