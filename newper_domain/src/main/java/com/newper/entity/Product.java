@@ -18,14 +18,10 @@ import java.util.List;
 public class Product extends BaseEntity {
     @Id
     private Integer pIdx;
-    private long p_sell_price;
 
-    private String p_code;
-    private String p_name;
-    private String p_model;
     private String pCode;
-    private Integer pPrice;
     private Integer pNaverPrice;
+    private long pSellPrice;
     private String pType1;
     private String pType2;
     private String pName;
