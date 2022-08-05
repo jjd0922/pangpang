@@ -31,7 +31,7 @@ public class ProductRestController {
     public ReturnDatatable categoryParent(){
         ReturnDatatable returnDatatable = new ReturnDatatable();
 
-        List<Map<String, Object>> cpList = categoryMapper.selectCategoryListByParent();
+        List<Map<String, Object>> cpList = categoryMapper.selectCategoryDatatableByParent();
         returnDatatable.setData(cpList);
         returnDatatable.setRecordsTotal(cpList.size());
         return returnDatatable;
@@ -45,7 +45,7 @@ public class ProductRestController {
         if(paramMap.get("CATE_IDX")!=null&&!paramMap.get("CATE_IDX").equals("")){
             CATE_IDX=Integer.parseInt(paramMap.get("CATE_IDX")+"");
         }
-        List<Map<String,Object>> ccList = categoryMapper.selectCategoryListByChildren(CATE_IDX);
+        List<Map<String,Object>> ccList = categoryMapper.selectCategoryDatatableByChildren(CATE_IDX);
         returnDatatable.setData(ccList);
         returnDatatable.setRecordsTotal(ccList.size());
 
@@ -61,7 +61,7 @@ public class ProductRestController {
         if(paramMap.get("CATE_IDX")!=null&&!paramMap.get("CATE_IDX").equals("")){
             CATE_IDX=Integer.parseInt(paramMap.get("CATE_IDX")+"");
         }
-        List<Map<String,Object>> ccList = categoryMapper.selectCategoryListByChildren(CATE_IDX);
+        List<Map<String,Object>> ccList = categoryMapper.selectCategoryDatatableByChildren(CATE_IDX);
         returnDatatable.setData(ccList);
         returnDatatable.setRecordsTotal(ccList.size());
 
@@ -107,6 +107,17 @@ public class ProductRestController {
         ReturnDatatable returnDatatable = new ReturnDatatable();
         returnDatatable.setData(productMapper.selectProductDataTalbe());
         returnDatatable.setRecordsTotal(productMapper.countProductDataTable());
+        return returnDatatable;
+    }
+
+    /**브랜드 dataTable*/
+    @PostMapping("brand.dataTable")
+    public ReturnDatatable CategoryDatatableByBrand(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String,Object>> bList = categoryMapper.selectCategoryDatatableByBrand(paramMap);
+        int total = categoryMapper.countCategoryDatatableByBrand(paramMap);
+        returnDatatable.setData(bList);
+        returnDatatable.setRecordsTotal(total);
         return returnDatatable;
     }
 }

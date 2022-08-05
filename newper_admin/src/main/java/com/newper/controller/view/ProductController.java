@@ -95,4 +95,11 @@ public class ProductController {
         return mav;
     }
 
+    @GetMapping("brand")
+    public ModelAndView brand(){
+        ModelAndView mav = new ModelAndView("product/brand");
+
+        return mav;
+    }
+
 }
