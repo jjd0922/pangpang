@@ -4,30 +4,30 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
+import com.newper.mapper.PoMapper;
 import com.newper.repository.EstimateProductRepo;
 import com.newper.repository.EstimateRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @Service
 public class PoService {
+    private final PoMapper poMapper;
     private final EstimateRepo estimateRepo;
     private final EstimateProductRepo estimateProductRepo;
 
-
     /** 견적서(po_estimate), 견적서-상품 관계테이블(po_estimate_product) 생성 */
     @Transactional
-    public void saveEstimate(ParamMap paramMap, MultipartFile peEstimateFile) {
-        System.out.println("param: " + paramMap.entrySet());
-
+    public Integer saveEstimate(ParamMap paramMap, MultipartFile peFile) {
         // 견적서 생성 & 수정
         Estimate estimate = paramMap.mapParam(Estimate.class);
         Company company = paramMap.mapParam(Company.class);
@@ -39,34 +39,101 @@ public class PoService {
         String period = paramMap.getMap().get("pePeriodDate").toString();
         String[] period_arr = period.split(" ~ ");
 
-        estimate.setPePeriodStart(period_arr[0]);
-        estimate.setPePeriodEnd(period_arr[1]);
+        estimate.setPeStart(period_arr[0]);
+        estimate.setPeEnd(period_arr[1]);
 
-        String peEstimateFilePath = Common.uploadFilePath(peEstimateFile, "po/estimate/", AdminBucket.SECRET);
-        estimate.setPeEstimateFile(peEstimateFilePath);
+        String peFilePath = Common.uploadFilePath(peFile, "po/estimate/", AdminBucket.SECRET);
+        estimate.setPeFile(peFilePath);
+        estimate.setPeFileName(peFile.getOriginalFilename());
 
         estimateRepo.save(estimate);
 
         // 견적서-상품 관계테이블 생성
-        EstimateProduct estimateProduct = paramMap.mapParam(EstimateProduct.class);
-        estimateProduct.setEstimate(estimate);
+        Common.changeArr(paramMap, "pIdxs");
+        Common.changeArr(paramMap, "purchase_count");
+        Common.changeArr(paramMap, "sell_price");
 
-        String pIdx = paramMap.getMap().get("pIdx").toString();
-        String[] pIdx_arr = pIdx.split(", ");
+        String[] pIdx = (String[]) paramMap.getMap().get("pIdxs");
+        String[] pepCount = (String[]) paramMap.getMap().get("purchase_count");
+        String[] pepCost = (String[]) paramMap.getMap().get("sell_price");
 
-        String purchase_count = paramMap.getMap().get("purchase_count").toString();
-        String purchase_cost = paramMap.getMap().get("purchase_cost").toString();
+        for (int i = 0; i < pIdx.length; i++) {
+            EstimateProduct estimateProduct = paramMap.mapParam(EstimateProduct.class);
+            estimateProduct.setEstimate(estimate);
 
-        String[] purchase_count_arr = purchase_count.split(", ");
-        String[] purchase_cost_arr = purchase_cost.split(", ");
-
-        for (int i = 0; i < pIdx_arr.length; i++) {
             Product product = paramMap.mapParam(Product.class);
-            product.setPIdx(Integer.getInteger(pIdx_arr[i]));
+            product.setPIdx((int) Long.parseLong(pIdx[i]));
             estimateProduct.setProduct(product);
 
-            estimateProduct.setPepCost(Integer.parseInt(purchase_cost_arr[i]));
-            estimateProduct.setPepCount(Integer.parseInt(purchase_count_arr[i]));
+            estimateProduct.setPepCost(Integer.parseInt(pepCost[i]));
+            estimateProduct.setPepCount(Integer.parseInt(pepCount[i]));
+
+            estimateProductRepo.save(estimateProduct);
+        }
+
+        return estimate.getPeIdx();
+    }
+
+    public Optional<Estimate> findById(long peIdx) {
+        Integer peIdx_integer = (int) (long) peIdx;
+        Optional<Estimate> estimate = estimateRepo.findById(peIdx_integer);
+        return estimate;
+    }
+
+    public List<Map<String, Object>> selectEstimateProduct(Integer peIdx) {
+        return poMapper.selectEstimateProduct(peIdx);
+    }
+
+    public void updateEstimate(ParamMap paramMap, MultipartFile peFile, Integer peIdx) {
+        // 견적서 생성 & 수정
+        Estimate estimate = paramMap.mapParam(Estimate.class);
+        estimate.setPeIdx(peIdx);
+
+        Company company = paramMap.mapParam(Company.class);
+        estimate.setCompany(company);
+
+        String period = paramMap.getMap().get("pePeriodDate").toString();
+        String[] period_arr = period.split(" ~ ");
+
+        estimate.setPeStart(period_arr[0]);
+        estimate.setPeEnd(period_arr[1]);
+
+        if (peFile.getSize() != 0) {
+            String peFilePath = Common.uploadFilePath(peFile, "po/estimate/", AdminBucket.SECRET);
+            estimate.setPeFile(peFilePath);
+            estimate.setPeFileName(peFile.getOriginalFilename());
+        } else {
+            Estimate estimate_file = estimateRepo.findEstimateByPeIdx(peIdx);
+            estimate.setPeFile(estimate_file.getPeFile());
+            estimate.setPeFileName(estimate_file.getPeFileName());
+        }
+
+        estimateRepo.save(estimate);
+
+        // 견적서-상품 관계테이블 생성
+        List<EstimateProduct> estimateProducts = estimateProductRepo.findEstimateProductByEstimate_PeIdx(peIdx);
+        for (int i = 0; i < estimateProducts.size(); i++) {
+            estimateProductRepo.deleteById(estimateProducts.get(i).getPepIdx());
+        }
+
+        Common.changeArr(paramMap, "pIdxs");
+        Common.changeArr(paramMap, "purchase_count");
+        Common.changeArr(paramMap, "sell_price");
+
+        String[] pIdx = (String[]) paramMap.getMap().get("pIdxs");
+        String[] pepCount = (String[]) paramMap.getMap().get("purchase_count");
+        String[] pepCost = (String[]) paramMap.getMap().get("sell_price");
+
+        for (int i = 0; i < pIdx.length; i++) {
+            EstimateProduct estimateProduct = paramMap.mapParam(EstimateProduct.class);
+            estimateProduct.setEstimate(estimate);
+
+            Product product = paramMap.mapParam(Product.class);
+            product.setPIdx((int) Long.parseLong(pIdx[i]));
+            estimateProduct.setProduct(product);
+
+            estimateProduct.setPepCost(Integer.parseInt(pepCost[i]));
+            estimateProduct.setPepCount(Integer.parseInt(pepCount[i]));
 
             estimateProductRepo.save(estimateProduct);
         }

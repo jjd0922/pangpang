@@ -472,3 +472,8 @@ function ellipsisStr(str){
     }
     return str;
 }
+
+//파일 다운로드
+function fileDownload(path, name) {
+    location.href = "/download/?obj=" + encodeURIComponent(path) + '&fileName=' + encodeURIComponent(name);
+}

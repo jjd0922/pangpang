@@ -29,13 +29,14 @@ public class Estimate extends BaseEntity {
     private String peCode;
     private String peState;
     private String peName;
-    private String pePeriodStart;
-    private String pePeriodEnd;
-    private String peEstimateCount;
-    private String peEstimateCost;
-    private String peEstimateFile;
+    private String peStart;
+    private String peEnd;
+    private String peCount;
+    private String peCost;
+    private String peFile;
+    private String peFileName;
     private String peMemo;
-    private String peReason;
+//    private String peReason;
 }
 
 

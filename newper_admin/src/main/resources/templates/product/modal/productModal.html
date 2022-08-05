@@ -38,16 +38,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">모델명</span>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="pModel" placeholder="검색">
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
@@ -172,10 +162,9 @@
         var pIdx = dataTableGetSelectedDataArray('productModalTable', 'P_IDX');
         var pCode = dataTableGetSelectedDataArray('productModalTable', 'P_CODE');
         var pName = dataTableGetSelectedDataArray('productModalTable', 'P_NAME');
-        var pModel = dataTableGetSelectedDataArray('productModalTable', 'P_MODEL');
         var brandName = dataTableGetSelectedDataArray('productModalTable', 'BRAND_NAME');
         var cateName1 = dataTableGetSelectedDataArray('productModalTable', 'CATE_NAME1');
-        var pPrice = dataTableGetSelectedDataArray('productModalTable', 'P_PRICE');
+        var pSellPrice = dataTableGetSelectedDataArray('productModalTable', 'P_SELL_PRICE');
 
         if(pIdx.length == 0){
             alert('선택된 구매사 상품이 없습니다.');
@@ -188,14 +177,14 @@
                     tr += '<tr id="tr_' + pIdx[i] + '">';
                     tr += '<td>' + pCode[i] + '</td>';
                     tr += '<td>' + pName[i] + '</td>';
-                    tr += '<td>' + pModel[i] + '</td>';
                     tr += '<td>' + brandName[i] + '</td>';
                     tr += '<td>' + cateName1[i] + '</td>';
-                    tr += '<td>' + pPrice[i] + '</td>';
+                    tr += '<input type="hidden" name="sell_price" value="' + pSellPrice[i] + '">';
+                    tr += '<td>' + pSellPrice[i] + '</td>';
                     tr += '<td><input type="text" name="purchase_count" value="0" onkeyup="addPurchaseCount();"></td>';
-                    tr += '<td><input type="text" name="purchase_cost" value="0" onkeyup="addPurchaseCost();"></td>';
+                    tr += '<td><input type="text" name="purchase_cost" value="0" readonly></td>';
                     tr += '<td><button type="button" onclick="deleteProduct(' + pIdx[i] + ')">삭제</button></td>';
-                    tr += '<input type="hidden" name="pIdx" value="' + pIdx[i] + '">'
+                    tr += '<input type="hidden" name="pIdxs" value="' + pIdx[i] + '">'
                     tr += '</tr>'
 
                     $('#productTbody').append(tr);
@@ -220,13 +209,14 @@
         tr += '<tr id="tr_' + dataMap.P_IDX + '">';
         tr += '<td>' + dataMap.P_CODE + '</td>';
         tr += '<td>' + dataMap.P_NAME + '</td>';
-        tr += '<td>' + dataMap.P_MODEL + '</td>';
         tr += '<td>' + dataMap.BRAND_NAME + '</td>';
         tr += '<td>' + dataMap.CATE_NAME1 + '</td>';
-        tr += '<td>' + dataMap.P_PRICE + '</td>';
+        tr += '<input type="hidden" name="sell_price" value="' + dataMap.P_SELL_PRICE + '">';
+        tr += '<td>' + comma(dataMap.P_SELL_PRICE) + '</td>';
         tr += '<td><input type="text" name="purchase_count" value="0" onkeyup="addPurchaseCount();"></td>';
-        tr += '<td><input type="text" name="purchase_cost" value="0" onkeyup="addPurchaseCost();"></td>';
+        tr += '<td><input type="text" name="purchase_cost" value="0" readonly></td>';
         tr += '<td><button type="button" onclick="deleteProduct(' + dataMap.P_IDX + ')">삭제</button></td>';
+        tr += '<input type="hidden" name="pIdxs" value="' + dataMap.P_IDX + '">'
         tr += '</tr>'
 
         $('#productTbody').append(tr);
@@ -247,18 +237,21 @@
         var count_total = 0;
         $.each($('input[name=purchase_count]'), function(index, value){
             var count = $(value).val();
+            var price = $(this).parent().prev().text().replace(/,/gi, '');
+            $(this).parent().next().children().val(comma(count * price));
             count_total += parseInt(count);
         });
-        $('input[name=peEstimateCount]').val(comma(count_total));
+        $('input[name=peCount]').val(comma(count_total));
+        addPurchaseCost();
     }
 
     function addPurchaseCost () {
         var cost_total = 0;
         $.each($('input[name=purchase_cost]'), function(index, value){
-            var cost = $(value).val();
+            var cost = $(value).val().replace(/,/gi, '');
             cost_total += parseInt(cost);
         });
-        $('input[name=peEstimateCost]').val(comma(cost_total));
+        $('input[name=peCost]').val(comma(cost_total));
     }
 </script>
 <script th:inline="javascript">
@@ -293,10 +286,9 @@
                     }}
                 , {'title':'상품코드','data':'P_CODE', 'defaultContent':''}
                 ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
-                ,{'title':'모델명','data':'P_MODEL', 'defaultContent':''}
                 ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
                 ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
-                ,{'title':'기준매입가','data':'P_PRICE', 'defaultContent':''}
+                ,{'title':'기준매입가','data':'P_SELL_PRICE', 'defaultContent':''}
                 ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
                         return '<button type="button" onclick="chooseProduct(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">선택</button>'
                     }}

@@ -13,4 +13,7 @@ public interface PoMapper {
 
     /** 견적서 갯수 조회 쿼리문 */
     long countEstimateDataTable(Map<String, Object> param);
+
+    /**  견적서 - 상품 -상품분류 카테고리 - 브랜드 카테고리 조회 쿼리문 **/
+    List<Map<String, Object>> selectEstimateProduct(@Param("peIdx") Integer peIdx);
 }

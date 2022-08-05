@@ -1,11 +1,10 @@
 package com.newper.entity;
 
-import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -16,12 +15,20 @@ import javax.persistence.*;
 @Builder
 public class Product extends BaseEntity {
 
+@Table (name = "product")
+public class Product {
+
     @Id
     private Integer pIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "P_CATE_IDX", referencedColumnName = "cateIdx")
     private  Category category;
+    private long p_sell_price;
+    private String p_code;
+    private String p_name;
+    private String p_model;
+
 
     private String pCode;
     private Integer pPrice;
@@ -35,6 +42,14 @@ public class Product extends BaseEntity {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String pOption;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_CATE_IDX", referencedColumnName = "cateIdx")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_CATE_IDX2", referencedColumnName = "cateIdx")
+    private Category category2;
+}
 
 
 }

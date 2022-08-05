@@ -10,8 +10,8 @@
         <if test='modifiedBy != null and modifiedBy != ""'>AND PO_ESTIMATE.MODIFIED_BY LIKE CONCAT('%',#{modifiedBy},'%')</if>
         <if test='modifiedDate != null and modifiedDate != ""'>AND PO_ESTIMATE.MODIFIED_DATE BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)</if>
         <if test="pePeriod != null and pePeriod != ''">
-            AND (PE_PERIOD_START BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13) OR
-                PE_PERIOD_END BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13))
+            AND (PE_START BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13) OR
+                PE_END BETWEEN SUBSTR(#{pePeriod}, 1, 10) AND SUBSTR(#{pePeriod}, 13))
         </if>
         <if test='peState != null'>
             <foreach collection="peState" open="AND PE_STATE IN (" separator="," close=")" item="item">
@@ -24,16 +24,14 @@
         SELECT
             PE_IDX,
             PE_CODE,
-            CASE
-                WHEN PE_STATE = 'AVAILABLE' THEN '유효'
-                WHEN PE_STATE = 'DISPOSAL' THEN '폐기'
-            END AS 'PE_STATE',
+            PE_STATE,
             COM_NAME,
             PE_NAME,
-            FORMAT(PE_ESTIMATE_COUNT , 0) AS 'PE_ESTIMATE_COUNT',
-            FORMAT(PE_ESTIMATE_COST , 0) AS 'PE_ESTIMATE_COST',
-            PE_ESTIMATE_FILE,
-            CONCAT(PE_PERIOD_START, ' ~ ', PE_PERIOD_END) AS 'PE_PERIOD',
+            FORMAT(PE_COUNT , 0) AS 'PE_COUNT',
+            FORMAT(PE_COST , 0) AS 'PE_COST',
+            PE_FILE,
+            PE_FILE_NAME,
+            CONCAT(PE_START, ' ~ ', PE_END) AS 'PE_PERIOD',
             PO_ESTIMATE.CREATED_BY AS 'CREATED_BY',
             PO_ESTIMATE.CREATED_DATE AS 'CREATED_DATE',
             PO_ESTIMATE.MODIFIED_BY AS 'MODIFIED_BY',
@@ -57,5 +55,29 @@
         WHERE
             PE_IDX IS NOT NULL
             <include refid="includeEstimateDataTable"></include>
+    </select>
+
+    <select id="selectEstimateProduct" resultType="Map">
+        SELECT
+            P_IDX,
+            P_CODE,
+            P_NAME,
+            brand.CATE_NAME AS 'BRAND',
+            category.CATE_NAME AS 'CATEGORY',
+            P_SELL_PRICE,
+            FORMAT(P_SELL_PRICE , 0) AS 'P_SELL_PRICE_COMMA',
+            PEP_COUNT,
+            PEP_COST,
+            FORMAT(PEP_COUNT * PEP_COST , 0) AS 'SUM'
+        FROM
+            po_estimate
+                LEFT JOIN po_estimate_product ON PE_IDX = PEP_PE_IDX
+                LEFT JOIN product ON PEP_P_IDX = P_IDX
+                LEFT JOIN category AS category ON P_CATE_IDX = category.CATE_IDX
+                LEFT JOIN category AS brand ON P_CATE_IDX2 = brand.CATE_IDX
+        WHERE
+            PE_IDX = #{peIdx}
+        AND
+            PEP_IDX IS NOT NULL
     </select>
 </mapper>

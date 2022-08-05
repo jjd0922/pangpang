@@ -1,8 +1,12 @@
 package com.newper.controller.view;
 
+import com.newper.component.Common;
 import com.newper.dto.ParamMap;
+import com.newper.entity.Estimate;
 import com.newper.exception.MsgException;
+import com.newper.repository.EstimateRepo;
 import com.newper.service.PoService;
+import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Optional;
+
 
 @RequestMapping(value = "/po/")
 @Controller
 @RequiredArgsConstructor
 public class PoController {
     private final PoService poService;
+    private final EstimateRepo estimateRepo;
 
     /** 견적서 관리 페이지 **/
     @GetMapping(value = "estimate")
@@ -35,19 +44,35 @@ public class PoController {
 
     /** 견적서 생성 **/
     @PostMapping(value = "estimatePop")
-    public ModelAndView estimateNewPost(ParamMap paramMap, MultipartFile peEstimateFile){
-        ModelAndView mav = new ModelAndView("po/estimatePop");
-        if (peEstimateFile.getSize() == 0) {
+    public ModelAndView estimateNewPost(ParamMap paramMap, MultipartFile peFile){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        if (peFile.getSize() == 0) {
             throw new MsgException ("파일을 첨부해 주세요");
         }
-        poService.saveEstimate(paramMap, peEstimateFile);
+        Integer peIdx = poService.saveEstimate(paramMap, peFile);
+
+        mav.addObject("loc", "/po/estimatePop/" + peIdx);
+        mav.addObject("msg", "견적서 등록 완료");
         return mav;
     }
 
-    /** 견적서 관리 페이지 **/
+    /** 견적서 상세 & 수정 페이지 **/
     @GetMapping(value = "estimatePop/{peIdx}")
-    public ModelAndView estimateDetail(@PathVariable long peIdx){
+    public ModelAndView estimateDetail(@PathVariable Integer peIdx){
         ModelAndView mav = new ModelAndView("po/estimatePop");
+        mav.addObject("estimate", estimateRepo.findEstimateByPeIdx(peIdx));
+        mav.addObject("product", poService.selectEstimateProduct(peIdx));
+        return mav;
+    }
+
+    /** 견적서 수정 */
+    @PostMapping(value = "estimatePop/{peIdx}")
+    public ModelAndView estimatePopModify(ParamMap paramMap, MultipartFile peFile, @PathVariable Integer peIdx){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        poService.updateEstimate(paramMap, peFile, peIdx);
+
+        mav.addObject("loc", "/po/estimatePop/" + peIdx);
+        mav.addObject("msg", "견적서 수정 완료");
         return mav;
     }
 }
