@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,23 +14,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Product extends BaseEntity {
-
 @Table (name = "product")
-public class Product {
-
+public class Product extends BaseEntity {
     @Id
     private Integer pIdx;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_CATE_IDX", referencedColumnName = "cateIdx")
-    private  Category category;
     private long p_sell_price;
+
     private String p_code;
     private String p_name;
     private String p_model;
-
-
     private String pCode;
     private Integer pPrice;
     private Integer pNaverPrice;
@@ -49,7 +42,4 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "P_CATE_IDX2", referencedColumnName = "cateIdx")
     private Category category2;
-}
-
-
 }
