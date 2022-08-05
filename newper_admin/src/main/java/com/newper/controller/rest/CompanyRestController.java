@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RequestMapping(value = "/company/")
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ public class CompanyRestController {
 
     /**거래처 관리 데이터테이블*/
     @PostMapping("company.dataTable")
-    public ReturnDatatable company(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+    public ReturnDatatable company(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("거래처관리");
 
         paramMap.multiSelect("ctType");
         paramMap.multiSelect("comType");

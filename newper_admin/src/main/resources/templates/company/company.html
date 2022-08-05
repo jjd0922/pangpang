@@ -194,12 +194,12 @@
             }}
             ,{'title':'등록일','data':'COM_CREATED_DATE','defaultContent':''}
             ,{'title':'등록시간','data':'COM_CREATED_TIME','defaultContent':''}
-            /*,{'title':'거래처구분코드','data':'CT_TYPES','defaultContent':''}*/
+            ,{'title':'거래처구분코드','data':'CT_TYPE_LIST_STR','defaultContent':''}
             ,{'title':'사업자 분류','data':'COM_TYPE_STR','defaultContent':''}
             ,{'title':'상태','data':'COM_STATE_STR','defaultContent':''}
             ,{'title':'MID','data':'COM_MID','defaultContent':''}
-            ,{'title':'상호법인명','data':null, 'render': function (data) {
-                    return '<a href="javascript: companyDetailPop('+ data['COM_IDX'] +')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+            ,{'title':'상호법인명','data':'COM_NAME', 'render': function (data,type,full,meta) {
+                return '<a href="javascript: companyDetailPop('+ full.COM_IDX +')" class="badge badge-primary">' + full.COM_NAME + '</a>';
                 }}
             ,{'title':'대표자명','data':'COM_CEO','defaultContent':''}
             ,{'title':'업체주소','data':'ADDRESS','defaultContent':''}
@@ -210,7 +210,9 @@
             ,{'title':'등록자','data':'COM_CREATED_BY','defaultContent':''}
             ,{'title':'수정일','data':'COM_MODIFIED_DATE','defaultContent':''}
             ,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}
-            ,{'title':'수정이력','data':'','defaultContent':'버튼넣기'}
+            ,{'title':'수정이력','data':'', 'render': function (data) {
+                    return '<a href="#"';
+                }}
         ]
     });
 

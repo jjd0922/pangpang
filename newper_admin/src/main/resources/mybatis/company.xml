@@ -7,11 +7,6 @@
         <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
         <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
         <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
-        <if test="ctType != null">
-            <foreach collection="ctType" open="AND CT_TYPES IN (" separator="," close=")" item="item">
-                #{item}
-            </foreach>
-        </if>
         <if test='comType != null'>
             <foreach collection="comType" open="AND COM_TYPE IN (" separator="," close=")" item="item">
                 #{item}
@@ -95,7 +90,7 @@
             COM_IDX,
             COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
             COMPANY.CREATED_TIME AS 'COM_CREATED_TIME',
-            CT_TYPES,
+            GROUP_CONCAT(CT_TYPE) AS CT_TYPE_LIST,
             COM_TYPE,
             COM_STATE,
             COM_MID,
@@ -114,18 +109,17 @@
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
-                LEFT JOIN (
-                    SELECT
-                        CT_COM_IDX,
-                        GROUP_CONCAT(CT_TYPE) AS CT_TYPES
-                    FROM
-                        COMPANY_TYPE
-                    GROUP BY
-                        CT_COM_IDX
-                ) AS CT ON CT_COM_IDX = COM_IDX
-        WHERE
-            COM_IDX IS NOT NULL
+                LEFT JOIN COMPANY_TYPE ON CT_COM_IDX = COM_IDX
+        <where>
             <include refid="includeCompanyDataTable"></include>
+        </where>
+        GROUP BY
+            COM_IDX
+                <if test="ctType != null">
+                    <foreach collection="ctType" open="HAVING " separator="OR" item="item">
+                        CT_TYPE_LIST LIKE CONCAT('%',#{item},'%')
+                    </foreach>
+                </if>
         ORDER BY
             COM_IDX DESC
         <if test="length!=-1">
@@ -135,22 +129,19 @@
 
     <select id="countCompanyDatatable" resultType="Long">
         SELECT
-            COUNT(*)
+            COUNT(DISTINCT(COM_IDX))
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
-            LEFT JOIN (
-                SELECT
-                    CT_COM_IDX,
-                    GROUP_CONCAT(CT_TYPE) AS CT_TYPES
-                FROM
-                    COMPANY_TYPE
-                GROUP BY
-                    CT_COM_IDX
-            ) AS CT ON CT_COM_IDX = COM_IDX
-        WHERE
-            COM_IDX IS NOT NULL
+                LEFT JOIN COMPANY_TYPE ON CT_COM_IDX = COM_IDX
+        <where>
             <include refid="includeCompanyDataTable"></include>
+            <if test="ctType != null">
+                <foreach collection="ctType" open="AND CT_TYPE IN (" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
     </select>
 
     <insert id="insertCompanyType">
@@ -255,6 +246,7 @@
     <select id="selectFeeDatatable" resultType="Map">
         SELECT
             CATE_NAME,
+            CF_IDX,
             CF_TYPE,
             CF_PERCENT,
             CF_MONEY

@@ -83,6 +83,25 @@ public class DataTableAop {
                     }).findFirst().get();
                     addMap.put(key + "_STR", enumOption.getOption());
                 }
+            }else if(key.indexOf("_LIST") != -1){
+                int indexOfList = key.lastIndexOf("_LIST");
+                String columnName = key.substring(0, indexOfList).toLowerCase();
+                if (enumClasses.containsKey(columnName)) {
+                    Object value = map.get(key);
+                    if(value instanceof String){
+                        String[] enumList = ((String) value).split(",");
+                        String dtValue = "";
+                        for (String s : enumList) {
+                            EnumOption enumOption = Arrays.stream(enumClasses.get(columnName)).filter(en -> {
+                                return en.toString().equals((String) s);
+                            }).findFirst().get();
+                            dtValue+=enumOption.getOption()+",";
+                        }
+                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-1));
+                    }
+
+                }
+
             }
         }
         map.putAll(addMap);

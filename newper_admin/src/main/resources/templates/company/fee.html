@@ -112,7 +112,8 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">정액/정률</label>
-                                                    <select name="cfType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
+                                                    <select name="cfType" data-placeholder="정액/정률" class="form-control select">
+                                                        <option></option>
                                                         <option th:each="opt: ${T(com.newper.constant.CfType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
@@ -127,7 +128,9 @@
                                         </div>
 
                                         <div class="card">
-                                            <table class="table" id="feeTable"></table>
+                                            <form id="updateForm">
+                                                <table class="table" id="feeTable"></table>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +173,7 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
+<script th:inline="javascript">
     function searchStore() {
         storeTable.page('first').ajax.url('/company/store.dataTable?' + $('#searchStoreForm').serialize()).load();
     }
@@ -181,43 +184,66 @@
 
     function initFeeTable(comIdx) {
         $('input[name = "comIdx"]').val(comIdx);
-        destroyDatatable('feeTable');
-        if (!$.fn.DataTable.isDataTable('#feeTable')) {
-            $('#feeTable').DataTable({
-                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-                ordering:false,
-                select: {
-                    style: 'multi',
-                    selector: 'td:first-child'
-                },
-                serverSide: true,
-                ajax:{
-                    url: '/company/fee.dataTable?' + $('#searchFeeForm').serialize(),
-                    type:'post'
-                },
-                columnDefs: [ {
-                    orderable: false,
-                    targets:   [0]
-                } ],
-                columns : [
-                    {'title':'카테고리<br>중분류','data':'CATE_NAME','defaultContent':''}
-                    ,{'title':'정액/정률','data':'CF_TYPE_STR','defaultContent':''}
-                    ,{'title':'수수료율','data':'CF_PERCENT','defaultContent':''}
-                    ,{'title':'수수료액', 'data':'CF_MONEY', 'defaultContent':''}
-                    // ,{'title':'시작일', 'data':'CF_MONEY', 'defaultContent':''}
-                    // ,{'title':'종료일', 'data':'CF_MONEY', 'defaultContent':''}
-                    ,{'title':'수정이력','data':'', 'render': function (data, full, type, meta) {
-                            return '<a href="#" class="badge badge-primary">수정이력</a>';
-                    }}
-                ]
-            });
+        if ($.fn.DataTable.isDataTable('#feeTable')) {
+            searchFee();
+        }else {
+            showFeeTable();
         }
+    }
+
+    function showUpdateForm(row) {
+        var targetRow = document.querySelectorAll("#feeTable tr")[row];
+        var targetCols = targetRow.childNodes;
+
+        var rowData = $('#feeTable').DataTable().rows(row-1).data()[0];
+        var cfType = rowData.CF_TYPE;
+
+        targetCols[1].innerHTML = '';
+        targetCols[2].innerHTML = '<input type="text" name="cfPercent" value="">';
+        targetCols[3].innerHTML = '<input type="text" name="cfMoney" value="">';
+        switchInput(cfType);
+        var selectBox = $('select[name="cfType"]:first').clone();
+        selectBox[0][0].remove();
+        selectBox.appendTo(targetCols[1]);
+
+        var opt = [[${T(com.newper.constant.CfType).values()}]];
+        $.each(opt, function(index, item){
+            if (item == cfType) {
+                selectBox.find('option[value="'+item+'"]').attr("selected",true);
+            }
+        });
+
+        selectBox.multiselect({
+            onChange: function (element) {
+                element.siblings().attr('selected', false);
+                element.attr('selected', true);
+                switchInput(element.val())
+            }}
+        );
+        $('#goUpdateBtn'+row).attr('href', 'javascript: saveNewFee('+rowData.CF_IDX + ')');
+    }
+
+    function switchInput(cfType) {
+        if (cfType == 'R') {
+            $('input[name="cfPercent"]').attr('disabled', false);
+            $('input[name="cfMoney"]').attr('disabled', true);
+        } else {
+            $('input[name="cfPercent"]').attr('disabled', true);
+            $('input[name="cfMoney"]').attr('disabled', false);
+        }
+    }
+
+    function saveNewFee(cfIdx) {
+        $.ajax({
+            url: '/company/fee/' + cfIdx + '?' + $('#updateForm').serialize(),
+            type: 'post'
+        });
     }
 </script>
 <script th:inline="javascript">
     var storeTable = $('#storeTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
+        ordering:true,
         select: {
             style: 'multi',
             selector: 'td:first-child'
@@ -247,12 +273,44 @@
         ]
     });
 
+    /**입점사의 카테고리별 수수료 테이블 최초 생성**/
+    function showFeeTable() {
+        $('#feeTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering:true,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax:{
+                url: '/company/fee.dataTable?' + $('#searchFeeForm').serialize(),
+                type:'post'
+            },
+            columnDefs: [ {
+                orderable: false,
+                targets:   [0]
+            } ],
+            columns : [
+                {'title':'카테고리<br>중분류','data':'CATE_NAME','defaultContent':''}
+                ,{'title':'정액/정률','data':'CF_TYPE_STR','defaultContent':''}
+                ,{'title':'수수료율','data':'CF_PERCENT','defaultContent':''}
+                ,{'title':'수수료액', 'data':'CF_MONEY','defaultContent':''}
+                // ,{'title':'시작일', 'data':'CF_MONEY', 'defaultContent':''}
+                // ,{'title':'종료일', 'data':'CF_MONEY', 'defaultContent':''}
+                ,{'title':'수정이력','data':'','render': function (data, full, type, meta) {
+                        return '<a href="#" class="badge badge-primary">수정이력</a>';
+                    }}
+                ,{'title':'수정버튼','data':'CF_IDX','render': function (data, type, full, meta) {
+                        var rowNum = (meta.row+1);
+                        return '<a href="javascript: showUpdateForm('+rowNum+')" id="goUpdateBtn'+rowNum+'" class="badge badge-primary">수정</a>';
+                    }}
+            ]
+        });
+    }
+
     $('#searchStoreForm').on('keyup',function(event){
         if(event.keyCode==13){searchStore();return false;}
-    });
-
-    $('#modFeeBtn').on('click',function (){
-
     });
 </script>
 </html>

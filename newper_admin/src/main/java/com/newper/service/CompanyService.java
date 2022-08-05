@@ -3,19 +3,20 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Company;
-import com.newper.entity.CompanyEmployee;
-import com.newper.entity.Contract;
-import com.newper.entity.Insurance;
+import com.newper.entity.*;
 import com.newper.entity.common.Address;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.ContractRepo;
+import com.newper.repository.FeeRepo;
 import com.newper.repository.InsuranceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class CompanyService {
     private final CompanyMapper companyMapper;
     private final ContractRepo contractRepo;
     private final InsuranceRepo insuranceRepo;
+    private final FeeRepo feeRepo;
 
     /** 거래처 등록 기능 */
     @Transactional
@@ -101,13 +103,26 @@ public class CompanyService {
         contractRepo.save(contract);
     }
 
+    /**카테고리별 입점사 수수료 수정**/
+    @Transactional
+    public void updateFee(Integer cfIdx, ParamMap paramMap) {
+        Fee newFee = paramMap.mapParam(Fee.class);
+        newFee.setCfState('Y');
+        feeRepo.save(newFee);
+
+        Fee oldFee = feeRepo.findById(cfIdx).orElseThrow(() -> new MsgException("존재하지 않는 수수료입니다."));
+        oldFee.setCfState('N');
+    }
+
     /**매입처보증보험 등록**/
     @Transactional
     public Integer saveInsurance(ParamMap paramMap) {
         Insurance insurance = paramMap.mapParam(Insurance.class);
-        Insurance savedInsurance = insuranceRepo.save(insurance);
+        System.out.println("insurance = " + insurance);
+//        Insurance savedInsurance = insuranceRepo.save(insurance);
 
-        return savedInsurance.getCiIdx();
+//        return savedInsurance.getCiIdx();
+        return null;
     }
 
     /**매입처보증보험 수정**/
