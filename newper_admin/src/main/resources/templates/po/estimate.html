@@ -184,15 +184,15 @@
                     return '<input type="hidden" name="peIdx" value="' + data + '">';
                 }}
             ,{'title':'견적서 코드','data':'PE_CODE'}
-            ,{'title':'견적서 상태','data':'PE_STATE'}
+            ,{'title':'견적서 상태','data':'PE_STATE_STR'}
             ,{'title':'매입처','data':'COM_NAME'}
             ,{'title':'견적서명','data':'PE_NAME','defaultContent':'','render':  function(data,type,full,meta){
                     return '<button type="button" onclick="estimateDetail(' + full.PE_IDX + ')">' + data + '</button>';
                 }}
-            ,{'title':'총 견적 수량','data':'PE_ESTIMATE_COUNT','defaultContent':''}
-            ,{'title':'총 견적 금액','data':'PE_ESTIMATE_COST','defaultContent':''}
+            ,{'title':'총 견적 수량','data':'PE_COUNT','defaultContent':''}
+            ,{'title':'총 견적 금액','data':'PE_COST','defaultContent':''}
             ,{'title':'첨부파일','data':null,'defaultContent':'','render':  function(data,type,full,meta){
-                    return '<button type="button" onclick="estimateDetaildown(' + full.PE_IDX + ')">다운로드</button>';
+                    return '<button type="button" onClick="fileDownload(\'' + full.PE_FILE + '\', \'' + full.PE_FILE_NAME + '\')">' + full.PE_FILE_NAME + '</button>';
                 }}
             ,{'title':'견적유효기간','data':'PE_PERIOD','defaultContent':''}
             ,{'title':'등록자','data':'CREATED_BY'}
@@ -214,6 +214,10 @@
     function estimateDetail(idx) {
         var focusPopup = window.open('/po/estimatePop/' + idx, 'estimateDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
+    }
+
+    function estimateDownload(peIdx) {
+
     }
 </script>
 </html>

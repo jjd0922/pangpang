@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>견적서 등록</title>
+    <title th:text="${estimate != null ? '견적서 상세/수정' : '견적서 신규 등록'}"></title>
     <th:block th:replace="/common/css.html"></th:block>
 </head>
     <body>
@@ -16,8 +16,8 @@
                         <div class="page-header-content container-fluid header-elements-md-inline px-3">
                             <div class="d-flex">
                                 <div class="page-title">
-                                    <h4 class="font-weight-semibold"><i class="icon-office mr-1"></i>견적서 신규등록</h4>
-                                    <div class="text-white-50 ml-3">견적서 신규등록</div>
+                                    <h4 class="font-weight-semibold" th:text="${estimate != null ? '견적서 상세' : '견적서 신규 등록'}"><i class="icon-office mr-1"></i></h4>
+                                    <div class="text-white-50 ml-3" th:text="${estimate != null ? '견적서 상세' : '견적서 신규 등록'}"></div>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">견적서 코드</span>
                                                                 </span>
-                                                                <input type="text" name="peCode" class="form-control" placeholder="자동입력" readonly>
+                                                                <input type="text" name="peCode" class="form-control" placeholder="자동입력" th:value="${estimate != null} ? ${estimate.peCode}" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -54,7 +54,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">견적서명</span>
                                                                 </span>
-                                                                <input type="text" name="peName" class="form-control" placeholder="입력">
+                                                                <input type="text" name="peName" class="form-control" placeholder="입력" th:value="${estimate != null} ? ${estimate.peName}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -67,7 +67,7 @@
                                                                     <span class="input-group-text">견적서 상태</span>
                                                                 </span>
                                                                 <select name="peState" class="form-control select">
-                                                                    <option th:each="opt: ${T(com.newper.constant.PeState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                                    <option th:each="opt: ${T(com.newper.constant.PeState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${estimate != null} and ${estimate.peState} == ${opt.name()}"></option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -78,9 +78,9 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                 <span class="input-group-prepend">
-                                                                    <span class="input-group-text">견적 유효기간</span>
+                                                                    <span class="input-group-text">견적 유효기간 시작</span>
                                                                 </span>
-                                                                <input type="text" name="pePeriodDate" class="form-control w-datarange daterange-basic" placeholder="날짜" readonly>
+                                                                <input type="text" name="pePeriodDate" class="form-control w-datarange daterange-basic-form" placeholder="날짜" th:value="${estimate != null} ? |${estimate.peStart} ~ ${estimate.peEnd}|" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -92,8 +92,8 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">매입처<a href="javascript: openCompanyModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                                 </span>
-                                                                <input type="text" name="comName" class="form-control" placeholder="검색" readonly>
-                                                                <input type="hidden" name="comIdx">
+                                                                <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${estimate != null} ? ${estimate.company.comName}" readonly>
+                                                                <input type="hidden" name="comIdx" th:value="${estimate != null} ? ${estimate.company.comIdx}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -105,7 +105,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">사업자등록번호</span>
                                                                 </span>
-                                                                <input type="text" class="form-control" placeholder="검색" name="comNum" readonly>
+                                                                <input type="text" class="form-control" placeholder="검색" name="comNum" th:value="${estimate != null} ? ${estimate.company.comNum}" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -117,7 +117,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">총 견적 수량</span>
                                                                 </span>
-                                                                <input type="text" name="peEstimateCount" class="form-control" placeholder="자동입력" readonly>
+                                                                <input type="text" name="peCount" class="form-control" placeholder="자동입력" th:value="${estimate != null} ? ${estimate.peCount}" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -129,7 +129,7 @@
                                                                 <span class="input-group-prepend">
                                                                     <span class="input-group-text">총 견적 금액</span>
                                                                </span>
-                                                                <input type="text" name="peEstimateCost" class="form-control" placeholder="자동입력" readonly>
+                                                                <input type="text" name="peCost" class="form-control" placeholder="자동입력" th:value="${estimate != null} ? ${estimate.peCost}" readonly>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -139,9 +139,9 @@
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                                     <span class="input-group-prepend">
-                                                                        <span class="input-group-text">첨부파일</span>
+                                                                        <span class="input-group-text">첨부파일<a th:if="${estimate != null}" th:href="|javascript: fileDownload('${estimate.peFile}', '${estimate.peFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                                     </span>
-                                                                <input type="file" name="peEstimateFile" class="form-control form-control-plaintext" placeholder="파일첨부">
+                                                                <input type="file" name="peFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -155,7 +155,7 @@
                                                                             견적 메모
                                                                         </span>
                                                                     </span>
-                                                                <input type="text" name="peMemo" class="form-control" placeholder="입력">
+                                                                <input type="text" name="peMemo" class="form-control" placeholder="입력" th:value="${estimate != null} ? ${estimate.peMemo}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -174,19 +174,31 @@
                                                 <div class="row">
                                                     <table class="table">
                                                         <thead>
-                                                        <tr>
-                                                            <th>상품코드</th>
-                                                            <th>상품명</th>
-                                                            <th>모델명</th>
-                                                            <th>브랜드</th>
-                                                            <th>카테고리<br>대분류</th>
-                                                            <th>기준매입가</th>
-                                                            <th>매입수량</th>
-                                                            <th>매입총액</th>
-                                                            <th>삭제</th>
-                                                        </tr>
+                                                            <tr>
+                                                                <th>상품코드</th>
+                                                                <th>상품명</th>
+                                                                <th>브랜드</th>
+                                                                <th>카테고리<br>대분류</th>
+                                                                <th>기준매입가</th>
+                                                                <th>매입수량</th>
+                                                                <th>매입총액</th>
+                                                                <th>삭제</th>
+                                                            </tr>
                                                         </thead>
-                                                        <tbody id="productTbody"></tbody>
+                                                        <tbody id="productTbody">
+                                                            <tr th:if="${product != null}" th:each="i : ${product}" th:id="|tr_${i.P_IDX}|">
+                                                                <td th:text="${i.P_CODE}"></td>
+                                                                <td th:text="${i.P_NAME}"></td>
+                                                                <td th:text="${i.BRAND}"></td>
+                                                                <td th:text="${i.CATEGORY}"></td>
+                                                                <input type="hidden" name="sell_price" th:value="${i.P_SELL_PRICE}">
+                                                                <td th:text="${i.P_SELL_PRICE_COMMA}"></td>
+                                                                <td><input type="text" name="purchase_count" onkeyup="addPurchaseCount();" th:value="${i.PEP_COUNT}"></td>
+                                                                <td><input type="text" name="purchase_cost"  th:value="${i.SUM}" readonly></td>
+                                                                <td><button type="button" th:onclick="|deleteProduct(${i.P_IDX})|">삭제</button></td>
+                                                                <input type="hidden" name="pIdxs" th:value="${i.P_IDX}">
+                                                            </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </fieldset>
@@ -243,12 +255,26 @@
         <th:block th:replace="@{/product/modal/productModal.html}"/>
 
         <script>
-            function saveAction(){
-                var peEstimateCount = $('input[name=peEstimateCount]').val().replace(/,/gi,'');
-                var peEstimateCost = $('input[name=peEstimateCost]').val().replace(/,/gi,'');
+            $(function(){
+                var peCount = $('input[name=peCount]').val();
+                var peCost = $('input[name=peCost]').val();
 
-                $('input[name=peEstimateCount]').val(peEstimateCount);
-                $('input[name=peEstimateCost]').val(peEstimateCost);
+                $('input[name=peCount]').val(comma(peCount));
+                $('input[name=peCost]').val(comma(peCost));
+            });
+
+
+            function saveAction(){
+                var peCount = $('input[name=peCount]').val().replace(/,/gi,'');
+                var peCost = $('input[name=peCost]').val().replace(/,/gi,'');
+
+                $('input[name=peCount]').val(peCount);
+                $('input[name=peCost]').val(peCost);
+
+                $.each($('input[name=purchase_cost]'), function(index, value){
+                    var cost = $(value).val().replace(/,/gi, '');
+                    $(this).val(cost);
+                });
 
                 if($('input[name=peName]').val() == '') {
                     alert('견적서명을 입력해 주세요.');
@@ -273,9 +299,6 @@
                 $("#createForm").submit();
             }
 
-        </script>
-
-        <script>
             $("#saveBtn").on("click", saveAction);
         </script>
     </body>

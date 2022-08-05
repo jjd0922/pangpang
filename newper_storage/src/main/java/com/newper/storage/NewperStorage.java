@@ -55,7 +55,7 @@ public class NewperStorage {
 
             return "https://kr.object.ncloudstorage.com/"+bucketName+"/"+objectName;
         }else{
-            return bucketName+"/"+objectName;
+            return newperBucket.name()+"/"+objectName;
         }
 
     }
@@ -70,7 +70,7 @@ public class NewperStorage {
         NewperBucket newperBucket = NewperBucket.valueOf(bucketName);
 
         AmazonS3 s3 = getBucket(newperBucket);
-        S3Object s3Object = s3.getObject(bucketName, objectName);
+        S3Object s3Object = s3.getObject(newperBucket.getBucketName(), objectName);
         S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
 
 //        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFilePath));

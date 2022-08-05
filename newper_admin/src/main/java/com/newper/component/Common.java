@@ -1,11 +1,13 @@
 package com.newper.component;
 
+import com.newper.dto.ParamMap;
 import com.newper.exception.MsgException;
 import com.newper.storage.NewperBucket;
 import com.newper.storage.NewperStorage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
 
 public class Common {
@@ -25,5 +27,16 @@ public class Common {
         } catch (IOException ioe){
             throw new MsgException("잠시 후 시도해주세요");
         }
+    }
+
+    /** 배열 괄호 제거 */
+    public static void changeArr(ParamMap paramMap, String key) {
+        String value = paramMap.getMap().get(key).toString();
+        value = value.replace("[", "");
+        value = value.replace("]", "");
+
+        String[] value_arr = value.split(", ");
+
+        paramMap.getMap().put(key, value_arr);
     }
 }
