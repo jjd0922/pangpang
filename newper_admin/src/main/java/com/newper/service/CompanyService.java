@@ -7,10 +7,7 @@ import com.newper.entity.*;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
-import com.newper.repository.CompanyRepo;
-import com.newper.repository.ContractRepo;
-import com.newper.repository.FeeRepo;
-import com.newper.repository.InsuranceRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +24,7 @@ public class CompanyService {
     private final ContractRepo contractRepo;
     private final InsuranceRepo insuranceRepo;
     private final FeeRepo feeRepo;
+    private final CategoryRepo categoryRepo;
 
     /** 거래처 등록 기능 */
     @Transactional
@@ -38,8 +36,6 @@ public class CompanyService {
         company.setAddress(address);
 
         String comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/", AdminBucket.SECRET);
-
-
         String comAccountFilePath = Common.uploadFilePath(comAccountFile, "company/com_account/", AdminBucket.SECRET);
 
 
@@ -106,11 +102,15 @@ public class CompanyService {
     /**카테고리별 입점사 수수료 수정**/
     @Transactional
     public void updateFee(Integer cfIdx, ParamMap paramMap) {
+
+        Fee oldFee = feeRepo.findById(cfIdx).orElseThrow(() -> new MsgException("존재하지 않는 거래처입니다."));
+
         Fee newFee = paramMap.mapParam(Fee.class);
+        newFee.setCompany(oldFee.getCompany());
+        newFee.setCategory(oldFee.getCategory());
         newFee.setCfState('Y');
         feeRepo.save(newFee);
 
-        Fee oldFee = feeRepo.findById(cfIdx).orElseThrow(() -> new MsgException("존재하지 않는 수수료입니다."));
         oldFee.setCfState('N');
     }
 

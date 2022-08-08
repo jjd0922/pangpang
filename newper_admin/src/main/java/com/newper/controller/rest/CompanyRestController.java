@@ -2,14 +2,17 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -76,6 +79,16 @@ public class CompanyRestController {
         rd.setRecordsTotal(companyMapper.countFeeDatatable(paramMap.getMap()));
 
         return rd;
+    }
+
+    @PostMapping(value = "fee.ajax/{cfIdx}")
+    public ReturnMap updateFee(@PathVariable Integer cfIdx, ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        companyService.updateFee(cfIdx, paramMap);
+
+        rm.setMessage("수정성공");
+
+        return rm;
     }
 
     @PostMapping("insurance.dataTable")

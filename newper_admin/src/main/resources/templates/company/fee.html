@@ -220,23 +220,28 @@
                 switchInput(element.val())
             }}
         );
+
         $('#goUpdateBtn'+row).attr('href', 'javascript: saveNewFee('+rowData.CF_IDX + ')');
+
     }
 
     function switchInput(cfType) {
         if (cfType == 'R') {
             $('input[name="cfPercent"]').attr('disabled', false);
-            $('input[name="cfMoney"]').attr('disabled', true);
+            $('input[name="cfMoney"]').val("").attr('disabled', true);
         } else {
-            $('input[name="cfPercent"]').attr('disabled', true);
+            $('input[name="cfPercent"]').val("").attr('disabled', true);
             $('input[name="cfMoney"]').attr('disabled', false);
         }
     }
 
     function saveNewFee(cfIdx) {
         $.ajax({
-            url: '/company/fee/' + cfIdx + '?' + $('#updateForm').serialize(),
-            type: 'post'
+            url: '/company/fee.ajax/' + cfIdx + '?' + $('#updateForm').serialize(),
+            type: 'post',
+            success: function (data) {
+                searchFee();
+            }
         });
     }
 </script>
@@ -298,7 +303,7 @@
                 ,{'title':'수수료액', 'data':'CF_MONEY','defaultContent':''}
                 // ,{'title':'시작일', 'data':'CF_MONEY', 'defaultContent':''}
                 // ,{'title':'종료일', 'data':'CF_MONEY', 'defaultContent':''}
-                ,{'title':'수정이력','data':'','render': function (data, full, type, meta) {
+                ,{'title':'수정이력','data':'CF_CATE_IDX','render': function (data, full, type, meta) {
                         return '<a href="#" class="badge badge-primary">수정이력</a>';
                     }}
                 ,{'title':'수정버튼','data':'CF_IDX','render': function (data, type, full, meta) {
