@@ -2,6 +2,8 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.CateDisplay;
+import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.entity.Company;
@@ -15,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -47,19 +51,21 @@ public class CategoryService {
         Category category = paramMap.mapParam(Category.class);
         System.out.println(category.getCateIdx());
         int cate_depth = Integer.parseInt(paramMap.get("CATE_DEPTH")+"");
-        Integer cateOrder = categoryMapper.maxCategoryOrderByCateDepth(cate_depth);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("CATE_DEPTH",cate_depth);
+        map.put("CATE_TYPE",paramMap.get("CATE_TYPE"));
+        Integer cateOrder = categoryMapper.maxCategoryOrderByCateDepth(map);
         if(cateOrder==null){
             cateOrder=0;
         }
         cateOrder=cateOrder+1;
 
         category.setCateOrder(cateOrder);
-
+        category.setCateDisplay(CateDisplay.Y.name());
         category.setCateMemo("");
         category.setCateNick("");
         List<String > list = new ArrayList<>();
         category.setCateSpec_list(list);
-        category.setCateType("");
 
         if (paramMap.get("CATE_PARENT_IDX")!=null){
             Category parentCategory = categoryRepo.findById(Integer.parseInt(paramMap.get("CATE_PARENT_IDX")+"")).get();
@@ -95,6 +101,7 @@ public class CategoryService {
         categoryParam.setCateNick(category.getCateNick());
         categoryParam.setCateOrder(category.getCateOrder());
         categoryParam.setCateDepth(category.getCateDepth());
+        categoryParam.setCateDisplay(category.getCateDisplay());
         if(paramMap.get("CATE_PARENT_IDX")!=null){
             Category parentCategory = categoryRepo.findById(paramMap.getInt("CATE_PARENT_IDX")).get();
             categoryParam.setParentCategory(parentCategory);
@@ -116,6 +123,35 @@ public class CategoryService {
 
         return categoryParam.getCateIdx();
 
+    }
+
+    /**카테고리(브랜드) 노출여부 수정*/
+    @Transactional
+    public String categoryDisplayUpdate(ParamMap paramMap){
+
+        String cateIdxs[] = paramMap.get("CATE_IDXS").toString().split(",");
+        for(int i=0; i<cateIdxs.length; i++){
+            Category category = categoryRepo.findById(Integer.parseInt(cateIdxs[i])).get();
+            category.setCateDisplay(paramMap.get("CATE_DISPLAY")+"");
+            categoryRepo.saveAndFlush(category);
+        }
+
+        return "변경되었습니다.";
+    }
+
+    /**카테고리(브랜드) 삭제*/
+    @Transactional
+    public String brandDelete(ParamMap paramMap){
+        String cateIdxs[] = paramMap.get("CATE_IDXS").toString().split(",");
+        for(int i=0; i<cateIdxs.length; i++){
+            categoryRepo.deleteById(Integer.parseInt(cateIdxs[i]));
+        }
+        List<Category> list = categoryRepo.findCategoryByCateType(CateType.BRAND.name());
+        for(int j=0; j<list.size(); j++){
+            Category category = list.get(j);
+            category.updateCategoryOrder(j+1);
+        }
+        return "삭제되었습니다.";
     }
 
 }

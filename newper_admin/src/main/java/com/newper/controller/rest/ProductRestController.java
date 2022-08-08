@@ -114,10 +114,28 @@ public class ProductRestController {
     @PostMapping("brand.dataTable")
     public ReturnDatatable CategoryDatatableByBrand(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
-        List<Map<String,Object>> bList = categoryMapper.selectCategoryDatatableByBrand(paramMap);
-        int total = categoryMapper.countCategoryDatatableByBrand(paramMap);
+        List<Map<String,Object>> bList = categoryMapper.selectCategoryDatatableByBrand(paramMap.getMap());
+        int total = categoryMapper.countCategoryDatatableByBrand(paramMap.getMap());
         returnDatatable.setData(bList);
         returnDatatable.setRecordsTotal(total);
         return returnDatatable;
     }
+
+    /**카테고리(브랜드) 노출 수정*/
+    @PostMapping("categoryDisplay.ajax")
+    public ReturnMap categoryDisplay(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        rm.setMessage(categoryService.categoryDisplayUpdate(paramMap));
+
+        return rm;
+    }
+
+    /**카테고리(브랜드) 삭제*/
+    @PostMapping("brandDelete.ajax")
+    public ReturnMap brandDelete(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        rm.setMessage(categoryService.brandDelete(paramMap));
+        return rm;
+    }
+
 }

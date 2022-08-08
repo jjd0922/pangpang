@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.exception.MsgException;
@@ -27,6 +28,8 @@ public class ProductController {
 
     private final CategoryMapper categoryMapper;
 
+
+    /**카테고리 관리*/
     @GetMapping("category")
     public ModelAndView category(){
         ModelAndView mav = new ModelAndView("product/category");
@@ -52,13 +55,13 @@ public class ProductController {
     public ModelAndView categoryCatePost(@PathVariable int cate_depth,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertClose");
         paramMap.put("CATE_DEPTH",cate_depth);
-        System.out.println(paramMap.getMap());
+        paramMap.put("CATE_TYPE", CateType.CATEGORY);
         categoryService.categoryInsert(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","등록 완료");
         return mav;
     }
 
-    /**카테고리 상세*/
+    /**카테고리 상세 팝업*/
     @GetMapping("category/categoryDetail/{cate_idx}")
     public ModelAndView categoryDetail(@PathVariable int cate_idx){
         ModelAndView mav = new ModelAndView("product/category/category_detail");
@@ -95,11 +98,63 @@ public class ProductController {
         return mav;
     }
 
+    /**브랜드관리*/
     @GetMapping("brand")
     public ModelAndView brand(){
         ModelAndView mav = new ModelAndView("product/brand");
 
         return mav;
     }
+
+    /**브랜드 등록 팝업*/
+    @GetMapping("category/brandCreate")
+    public ModelAndView brandCreate(){
+        ModelAndView mav = new ModelAndView("product/category/brand_detail");
+        return mav;
+    }
+
+    /**브랜드 등록*/
+    @PostMapping("category/brandCreate")
+    public ModelAndView brandCreatePost(ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+        ModelAndView mav = new ModelAndView("main/alertClose");
+        paramMap.put("CATE_DEPTH",1);
+        paramMap.put("CATE_TYPE", CateType.BRAND);
+        categoryService.categoryInsert(paramMap,CATE_ICON,CATE_THUMBNAIL);
+        mav.addObject("msg","등록 완료");
+        return mav;
+    }
+
+    /**브랜드 상세 팝업*/
+    @GetMapping("category/brandDetail/{cate_idx}")
+    public ModelAndView brandDetail(@PathVariable int cate_idx){
+        ModelAndView mav = new ModelAndView("product/category/brand_detail");
+
+        Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+
+        String image = category.getCateImage();
+        image = image.replaceAll("&lt;","<");
+        image=image.replaceAll("&#37;","%");
+        image=image.replaceAll("&gt;",">");
+        image=image.replaceAll("&quot;","\"");
+        image=image.replaceAll("<br>",System.getProperty("line.separator"));
+
+        mav.addObject("category",category);
+        mav.addObject("image",image);
+
+        return mav;
+    }
+
+    /**브랜드 수정*/
+    @PostMapping("category/brandDetail/{cate_idx}")
+    public ModelAndView brandDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        paramMap.put("CATE_IDX",cate_idx);
+        categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
+        mav.addObject("msg","수정 완료");
+        mav.addObject("loc","/product/category/brandDetail/"+cate_idx);
+        return mav;
+    }
+
+
 
 }

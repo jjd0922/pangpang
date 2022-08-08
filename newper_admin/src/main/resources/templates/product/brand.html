@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>사용자관리</title>
+    <title>브랜드관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -50,6 +50,7 @@
                                                     <label class="d-block">노출</label>
                                                     <select class="form-control form-control-sm select-search" name="CATE_DISPLAY" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
+                                                        <option th:each="opt: ${T(com.newper.constant.CateDisplay).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -59,7 +60,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
                                                 </div>
 
                                                 <div class="form-group">
@@ -69,7 +70,12 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">수정일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="MODIFIED_DATE">
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="MODIFIED_DATE">
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
                                                 </div>
 
                                             </div>
@@ -95,14 +101,16 @@
                                     </div>
                                     <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄수정</button>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">노출</a>
-                                        <a href="#" class="dropdown-item">미노출</a>
+                                        <a onclick="brandDisplay('Y')" class="dropdown-item">노출</a>
+                                        <a onclick="brandDisplay('N')" class="dropdown-item">미노출</a>
                                         <div class="dropdown-divider"></div>
-                                        <a href="#" class="dropdown-item">삭제</a>
+                                        <a onclick="brandDelete()" class="dropdown-item">삭제</a>
                                     </div>
                                 </div>
                             </div>
-                            <table class="table" id="brandTable"></table>
+                            <form id="brandTableForm">
+                                <table class="table" id="brandTable"></table>
+                            </form>
 
 
                         </div>
@@ -120,32 +128,98 @@
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 
 <!-- 데이터테이블 -->
 <script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
 
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
-<!-- input -->
-<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
-
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
     function searchBtn(){
         var table = $('#brandTable').DataTable();
-        table.page('first').ajax.url('/user/user.dataTable?'+$('#brandForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/product/brand.dataTable?'+$('#brandForm').serialize()).load(null, false);
     }
 
 
-    function userDetailPop(uIdx) {
-        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function categoryDetail(cateIdx) {
+        var focusPopup = window.open('/product/category/brandDetail/' + cateIdx, 'brandDetail', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function brandDisplay(cateDisplay){
+        var param = '';
+        var leng = $("#brandTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#brandTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("변경하시겠습니까?")){
+                $.ajax({
+                    url:"/product/categoryDisplay.ajax",
+                    data: "CATE_IDXS="+param+"&CATE_DISPLAY="+cateDisplay,
+                    type:"POST",
+                    success:function() {
+                        $('#brandTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
+    function brandDelete(){
+        var param = '';
+        var leng = $("#brandTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#brandTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("변경하시겠습니까?")){
+                $.ajax({
+                    url:"/product/brandDelete.ajax",
+                    data: "CATE_IDXS="+param,
+                    type:"POST",
+                    success:function() {
+                        $('#brandTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
 </script>
 
 
@@ -168,23 +242,53 @@
         } ],
             "columns" : [
                 {'class':'select-checkbox m-w-2', 'title':'선택','data':'CATE_IDX','defaultContent':'','render':function(data,type,full,meta){
-                        return '';
+                        return '<input type="hidden" name="CATE_IDX" value="'+data+'">';
                     }}
-
-                ,{'class':'m-w-max', 'title':'등록자','data':'CREATED_BY'}
-                ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
-                ,{'class':'m-w-max', 'title':'수정자','data':'MODIFIED_BY'}
-                ,{'class':'m-w-max', 'title':'수정일','data':'MODIFIED_DATE'}
+                ,{'class':'dragula-handle','title':'No','data':'CATE_ORDER','render':function(data,type,full,meta){
+                        return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i>';
+                    }}
+                ,{'class':'m-w-max','title':'브랜드명','data':'CATE_NAME','render':function(data,type,full,meta){
+                        return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
+                    }}
+                ,{'title':'브랜드약자','data':'CATE_NICK'}
+                ,{'title':'브랜드 아이콘','data':'CATE_ICON','render':function(data,type,full,meta){
+                        return '<img src="'+data+'" class="input-thumb">';
+                    }}
+                ,{'title':'등록자','data':'CREATED_BY'}
+                ,{'title':'노출','data':'CATE_DISPLAY_STR'}
+                ,{'title':'등록일','data':'CREATED_DATE'}
+                ,{'title':'수정자','data':'MODIFIED_BY'}
+                ,{'title':'수정일','data':'MODIFIED_DATE'}
+                ,{'title':'수정이력','data':'CATE_IDX','render':function (data,type,full,meta){
+                        return '<a class="btn btn-sm badge-danger" onclick="">btn</a>'
+                    }}
             ]
+            ,initComplete: function( settings, json ){
+                var table_id=settings.sTableId;
+                dragula([settings.nTBody], {
+                    mirrorContainer: settings.nTBody,
+                    moves: function (el, container, handle) {
+                        return handle.classList.contains('dragula-handle');
+                    }
+                }).on('drop', function(el, target, source, sibling){
+                    $.ajax({
+                        url:'/product/category/order.ajax'
+                        ,type:'post'
+                        ,data:$('#'+table_id+'Form').serialize()
+                    }).always(function(res){
+                        $('#brandTable').DataTable().ajax.reload();
+                    });
+                });
+            }
         });
 
-            $('#userForm').on('keyup',function(event){
+            $('#brandForm').on('keyup',function(event){
                 if(event.keyCode==13){searchBtn();return false;}
             });
 
 
             $('#popNewBtn').on('click',function (){
-            var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            var focusPopup = window.open('/product/category/brandCreate', 'brandCreate', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
             focusPopup.focus();
         });
     </script>
