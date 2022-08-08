@@ -17,7 +17,8 @@ import javax.persistence.*;
 @Table(name = "COMPANY_FEE")
 public class Fee extends CreatedEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cfIdx;
 
     @Enumerated(EnumType.STRING)

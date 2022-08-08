@@ -17,7 +17,8 @@ import java.math.BigInteger;
 public class Agreement extends BaseEntity {
 
     @Id
-    private BigInteger agmIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long agmIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AGM_SHOP_IDX", referencedColumnName = "shopIdx")

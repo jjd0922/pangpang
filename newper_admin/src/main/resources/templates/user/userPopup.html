@@ -89,6 +89,7 @@
                                                                    생년월일
                                                                 </span>
                                                             </span>
+                                                   <!--  <input type="text" name="U_BIRTH" class="form-control" th:value="${user?.getUBirthStr()}" placeholder="yyyy-mm-dd">-->
                                                         <input type="text" name="U_BIRTH" class="form-control" th:value="${user?.uBirth}" placeholder="yyyy-mm-dd">
                                                     </div>
                                                 </div>
@@ -523,20 +524,11 @@
     }
 
 
-
-    function searchCompany(com_idx){
-        $.ajax({
-            url:'/user/searchCompany.ajax',
-            data:'COM_IDX='+com_idx,
-            type:'post',
-            success:function (data){
-                $('input[name=COM_NAME]').val(data.data.com_name);
-                $('input[name=U_COM_IDX]').val(data.data.com_idx);
-                $('#comNameModal').modal('hide');
-            },error:function (data,err){
-
-            }
-        })
+    //거래처 검색 모달에서 거래처 선택
+    function selectCompany(obj, com_idx){
+        $('input[name=COM_NAME]').val(obj.innerText);
+        $('input[name=U_COM_IDX]').val(com_idx);
+        $('#comNameModal').modal('hide');
     }
 
 
@@ -564,7 +556,7 @@
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
             ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME','render':function (data,type,full,meta){
-                    return '<a class="btn btn-secondary" onclick="searchCompany('+full.COM_IDX+')">'+data+'</a>';
+                    return '<a class="btn btn-secondary" onclick="selectCompany(this, '+full.COM_IDX+')">'+data+'</a>';
                 }}
             ,{'class':'m-w-max', 'title':'등록일','data':'COM_CREATED_DATE'}
             ,{'class':'m-w-max', 'title':'등록시간','data':'COM_CREATED_TIME'}

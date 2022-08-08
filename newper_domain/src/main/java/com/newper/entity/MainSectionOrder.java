@@ -15,7 +15,8 @@ import java.math.BigInteger;
 @Builder
 public class MainSectionOrder {
     @Id
-    private BigInteger msoIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long msoIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MSO_MS_IDX", referencedColumnName = "msIdx")

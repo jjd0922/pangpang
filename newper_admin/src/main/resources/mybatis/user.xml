@@ -20,6 +20,10 @@
         <where>
                <include refid="includeUserDatatable"></include>
         </where>
+        
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countUserDatatable" resultType="Integer">

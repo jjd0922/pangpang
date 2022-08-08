@@ -14,13 +14,14 @@ import java.security.PrivateKey;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Shop extends BaseEntity {
+public class Shop extends BaseEntity{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shopIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SHOP_PI_IDX", referencedColumnName = "piIdx")
-    private  PayInfo payInfo;
+    private PayInfo payInfo;
 
     private String shopState;
 

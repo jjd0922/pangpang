@@ -17,7 +17,8 @@ import java.math.BigInteger;
 public class MainSection extends BaseEntity {
 
     @Id
-    private BigInteger msIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long msIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MS_SHOP_IDX", referencedColumnName = "shopIdx")

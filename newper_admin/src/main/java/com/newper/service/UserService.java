@@ -37,6 +37,7 @@ public class UserService {
         System.out.println("userIdx : " + user.getUIdx());
 
 
+
         Auth auth = authRepo.findById(1).orElseThrow(() -> new MsgException("권한이 없습니다."));
         user.setAuth(auth);
         System.out.println(auth.getAuthIdx());

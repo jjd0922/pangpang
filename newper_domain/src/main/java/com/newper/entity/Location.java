@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Builder
 public class Location {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer locIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)

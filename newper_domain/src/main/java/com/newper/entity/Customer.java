@@ -15,7 +15,8 @@ import java.math.BigInteger;
 @Builder
 public class Customer {
     @Id
-    private BigInteger cuIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long cuIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CU_SHOP_IDX", referencedColumnName = "shopIdx")

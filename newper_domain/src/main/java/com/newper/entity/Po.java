@@ -18,6 +18,7 @@ import java.util.Date;
 public class Po extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer poIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
