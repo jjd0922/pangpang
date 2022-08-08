@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FeeRepo extends JpaRepository<Fee, Integer> {
+
+    @EntityGraph(attributePaths = {"company", "category"})
+    public Fee findFeeBycfIdx(Integer cfIdx);
+
 }

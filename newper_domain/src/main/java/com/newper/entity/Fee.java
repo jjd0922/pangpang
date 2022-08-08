@@ -3,6 +3,7 @@ package com.newper.entity;
 import com.newper.constant.CfType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "COMPANY_FEE")
+@ToString(exclude = "company")
 public class Fee extends CreatedEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

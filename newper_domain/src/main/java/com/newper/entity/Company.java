@@ -75,7 +75,7 @@ public class Company extends BaseEntity {
     @OneToMany(mappedBy = "company")
     private List<User> users;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
     private List<Fee> feeList;
 
 
