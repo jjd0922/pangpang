@@ -19,7 +19,8 @@ import javax.persistence.*;
 @ToString(exclude = "company")
 public class Fee extends CreatedEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cfIdx;
 
     @Enumerated(EnumType.STRING)

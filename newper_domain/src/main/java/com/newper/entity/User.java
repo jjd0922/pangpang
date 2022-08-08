@@ -7,7 +7,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -23,7 +25,6 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "U_IDX")
     private Integer uIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
     private String uName;
     private String uTel;
     private String uPhone;
-    private Date uBirth;
+    private LocalDate uBirth;
 
     private String uType;
     private String uDepart;
@@ -54,7 +55,10 @@ public class User extends BaseEntity {
     private Address address;
 
 
-
+    /*생년월일*/
+    public String getUBirthStr(){
+        return getUBirth().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+    }
 
 }
 

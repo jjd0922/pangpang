@@ -4,9 +4,8 @@ import com.newper.entity.common.Address;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @Entity
 @DynamicUpdate
 @Getter
@@ -16,6 +15,8 @@ import javax.persistence.Id;
 @Builder
 public class Warehouse {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer whIdx;
 
     private String whName;

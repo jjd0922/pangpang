@@ -19,6 +19,7 @@ import java.util.Optional;
 public class Menu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String menuName;
     private String menuUrl;
 

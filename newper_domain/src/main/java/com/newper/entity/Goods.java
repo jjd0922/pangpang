@@ -15,7 +15,8 @@ import java.math.BigInteger;
 @Builder
 public class Goods {
     @Id
-    private BigInteger gidx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long gidx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_IP_IDX", referencedColumnName = "ipIdx")
@@ -25,13 +26,17 @@ public class Goods {
     @JoinColumn(name = "G_LOC_IDX", referencedColumnName = "locIdx")
     private Location location;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "G_GS_IDX", referencedColumnName = "gsIdx")
-//    private  GoodsStock goodsStock;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_GS_IDX", referencedColumnName = "gsIdx")
+    private  GoodsStock goodsStock;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_SPEC_IDX", referencedColumnName = "specIdx")
     private  Spec spec;
+
+/*    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_SPEC_IDX2", referencedColumnName = "specIdx2")
+    private  Spec spec;*/
 
     private String gBarcode;
     private String ajBarcode;

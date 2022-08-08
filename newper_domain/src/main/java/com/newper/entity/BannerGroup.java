@@ -16,7 +16,8 @@ import java.math.BigInteger;
 public class BannerGroup {
 
     @Id
-    private BigInteger bgIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bgIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BG_MSO_IDX", referencedColumnName = "msoIdx")

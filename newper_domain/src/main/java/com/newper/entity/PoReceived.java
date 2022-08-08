@@ -18,6 +18,7 @@ import java.util.Date;
 @Builder
 public class PoReceived {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer prIdx;
 
     private Integer prCount;

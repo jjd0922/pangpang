@@ -17,6 +17,7 @@ import java.util.Optional;
 public class SubMenu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String smName;
 
     @ManyToOne(fetch = FetchType.LAZY)

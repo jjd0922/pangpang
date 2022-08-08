@@ -62,20 +62,6 @@ public class UserRestController {
         rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
         return rd;
     }
-    /**모달창 상호법인명 검색처리**/
-    @PostMapping("searchCompany.ajax")
-    public ReturnMap searchCompany(ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
-        ReturnMap rm = new ReturnMap();
-        int COM_IDX = Integer.parseInt(paramMap.get("COM_IDX") + "");
-        Optional<Company> company = companyRepo.findById(COM_IDX);
-        rm.put("com_idx", company.get().getComIdx());
-        rm.put("com_name", company.get().getComName());
-
-
-        return rm;
-    }
-
     /** 사용자 신규등록 처리 */
     @PostMapping(value = "userCreate.ajax")
     public ReturnMap userInsert(ParamMap paramMap) {
@@ -106,10 +92,13 @@ public class UserRestController {
         if (authIdx == null || authIdx.equals("")) {
             throw new MsgException("권한을 입력해주세요.");
         }
+
         String uBirth = paramMap.getString("U_BIRTH");
         if ( uBirth.equals("")) {
             uBirth=null;
             paramMap.put("U_BIRTH",uBirth);
+
+
 
         }
 

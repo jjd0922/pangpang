@@ -17,7 +17,8 @@ import java.math.BigInteger;
 
 public class Banner {
     @Id
-    private BigInteger bnIdx;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bnIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BN_BG_IDX", referencedColumnName = "bgIdx")
