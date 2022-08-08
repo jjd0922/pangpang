@@ -244,11 +244,6 @@ nav {
     z-index: 99;
     cursor: pointer;
 }
-.swiper-prev:hover, .swiper-next:hover {
-    color:#999999;
-    box-shadow: 0.9px 6.9px 14.4px 1.6px rgba(0,0,0,0.1);
-    transform:translateY(-50%) scale(1.1);
-}
 .swiper-prev {
     left:-330px;
 }
@@ -389,7 +384,7 @@ nav {
     font-size: 18px;
     font-weight: 500;
 }
-.ctg-all>li>a:hover {
+.ctg-all>li.on>a {
     background-color: #314ad7;
     color:#fff;
 }
@@ -423,11 +418,21 @@ nav {
 }
 .ctg-first-area>ul>li a {
     display: inline-flex;
-    width: 100%;
+    width: auto;
     height: 100%;
+    position: relative;
 }
 .ctg-first-area>ul>li:hover>a {
     color: #314ad7;
+}
+.ctg-first-area>ul>li:hover>a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 110%;
+    width: 100%;
+    height: 2px;
+    background-color: #0c2da3;
 }
 .ctg-second-area {
     position: absolute;
@@ -491,105 +496,29 @@ nav {
     display: inline-block;
     transform: translateY(-3px);
 }
-.swiper-timeSale ul li {
-    height: 370px;
-    border-radius: 30px;
+
+.timeSale .swiper-slide {
+    padding: 30px;
 }
 
-/* 반값 이벤트 */
-.swiper-halfPrice ul li {
+.timeSale .item-img {
+    padding: 0 105px 10px;
+    position: relative;
+}
+.stock-quantity {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 500;
+}
+.timeSale .item-title {
+    font-size: 20px;
+    height: 48px;
+}
+.purchase-btn {
+    border: 1px solid #d1d1d1;
     border-radius: 30px;
-    border: 1px solid #d1d1d1;
-    padding: 20px;
+    padding: 10px 40px;
+    cursor: pointer;
 }
-.item-img {
-    padding: 10px;
-}
-.item-info>div {
-    margin-bottom: 10px;
-}
-.item-bedge-wrap {
-    display: flex;
-    justify-content: space-between;
-}
-.item-title {
-    font-size: 17px;
-    font-weight: 600;
-}
-.item-color {
-    width: 100%;
-    height: 17px;
-}
-.item-color>span {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    border: 1px solid #999;
-    margin-right: 3px;
-}
-.item-color>span>span {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1px solid #d1d1d1;
-}
-.item-color>span:nth-child(1)>span {
-    background-color: #fff;
-}
-.item-color>span:nth-child(2)>span {
-    background-color: #617a7a;
-}
-.item-color>span:nth-child(3)>span {
-    background-color: #000;
-}
-.item-price-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.discount-price {
-    font-size: 21px;
-    font-weight: 600;
-}
-.real-price {
-    font-size: 16px;
-    font-weight: 300;
-    color: #999;
-    text-decoration: line-through;
-}
-.discount-rate {
-    font-size: 26px;
-    color: #ff0000;
-    font-weight: 600;
-}
-.item-action {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.grade-wrap, .wish, .grade {
-    display: flex;
-    align-items: center;
-}
-.star {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url("../image/star.png") no-repeat center/contain;
-    margin-right: 3px;
-}
-.heart {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url("../image/heart.png") no-repeat center/contain;
-}
-.heart-blue {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url("../image/heart-blue.png") no-repeat center/contain;
-}
+/* 반값 이벤트 */
