@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+<!--                                        <span class="breadcrumb-item font-weight-bold text-secondary">-->
+<!--                                                <i class="mr-1" th:classappend="${subIcon}"></i>-->
+<!--                                                <th:block th:text="${subTitle}"></th:block>-->
+<!--                                        </span>-->
+                                    </div>
+                                </h6>
+                            </div>
+
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="productForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_CODE">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">상품명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_NAME">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">상품상태</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">모델명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">브랜드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">재고관리</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">카테고리 대분류</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">카테고리 중분류</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">카테고리 소분류</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">정산구분(품목구분1)</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">정산구분(품목구분2)</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">물류타입(품목자산구분)</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">입점사</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">제조사</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">AS업체</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_BY">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">승인자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">승인일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">수정자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="MODIFIED_BY">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="MODIFIED_DATE">
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄변경</button>
+                                    <div class="dropdown-menu">
+                                        <a onclick="" class="dropdown-item">판매중지</a>
+                                        <a onclick="" class="dropdown-item">판매</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a onclick="" class="dropdown-item">폐기</a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="approvalRequest">
+                                            <i class="icon-popout mr-1"></i>승인요청
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="productTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn(){
+        var table = $('#brandTable').DataTable();
+        table.page('first').ajax.url('/product/brand.dataTable?'+$('#brandForm').serialize()).load(null, false);
+    }
+
+
+    function categoryDetail(cateIdx) {
+        var focusPopup = window.open('/product/category/brandDetail/' + cateIdx, 'brandDetail', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function brandDisplay(cateDisplay){
+        var param = '';
+        var leng = $("#brandTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#brandTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("변경하시겠습니까?")){
+                $.ajax({
+                    url:"/product/categoryDisplay.ajax",
+                    data: "CATE_IDXS="+param+"&CATE_DISPLAY="+cateDisplay,
+                    type:"POST",
+                    success:function() {
+                        $('#brandTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
+    function brandDelete(){
+        var param = '';
+        var leng = $("#brandTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#brandTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("변경하시겠습니까?")){
+                $.ajax({
+                    url:"/product/brandDelete.ajax",
+                    data: "CATE_IDXS="+param,
+                    type:"POST",
+                    success:function() {
+                        $('#brandTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
+</script>
+
+
+    <script>
+        // var userTable = $('#productTable').DataTable({
+        //     dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        //     ordering:false,
+        //     select: {
+        //     style: 'multi',
+        //     selector: 'td:first-child'
+        // },
+        //     serverSide: true,
+        //     ajax:{
+        //     url:'/product/product.dataTable?'+$('#productForm').serialize(),
+        //     type:'post'
+        // },
+        //     columnDefs: [ {
+        //     orderable: false,
+        //     targets:   [0]
+        // } ],
+        //     "columns" : [
+        //         {'class':'select-checkbox m-w-2', 'title':'선택','data':'CATE_IDX','defaultContent':'','render':function(data,type,full,meta){
+        //                 return '<input type="hidden" name="CATE_IDX" value="'+data+'">';
+        //             }}
+        //         ,{'class':'dragula-handle','title':'No','data':'CATE_ORDER','render':function(data,type,full,meta){
+        //                 return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i>';
+        //             }}
+        //         ,{'class':'m-w-max','title':'브랜드명','data':'CATE_NAME','render':function(data,type,full,meta){
+        //                 return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
+        //             }}
+        //         ,{'title':'브랜드약자','data':'CATE_NICK'}
+        //         ,{'title':'브랜드 아이콘','data':'CATE_ICON','render':function(data,type,full,meta){
+        //                 return '<img src="'+data+'" class="input-thumb">';
+        //             }}
+        //         ,{'title':'등록자','data':'CREATED_BY'}
+        //         ,{'title':'노출','data':'CATE_DISPLAY_STR'}
+        //         ,{'title':'등록일','data':'CREATED_DATE'}
+        //         ,{'title':'수정자','data':'MODIFIED_BY'}
+        //         ,{'title':'수정일','data':'MODIFIED_DATE'}
+        //         ,{'title':'수정이력','data':'CATE_IDX','render':function (data,type,full,meta){
+        //                 return '<a class="btn btn-sm badge-danger" onclick="">btn</a>'
+        //             }}
+        //     ]
+        // });
+
+            $('#productForm').on('keyup',function(event){
+                if(event.keyCode==13){searchBtn();return false;}
+            });
+
+
+            $('#popNewBtn').on('click',function (){
+            var focusPopup = window.open('/product/productCreate', 'productCreate', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        });
+    </script>
+</html>

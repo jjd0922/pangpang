@@ -155,6 +155,13 @@ public class ProductController {
         return mav;
     }
 
+    /**상품관리*/
+    @GetMapping("")
+    public ModelAndView product(){
+        ModelAndView mav = new ModelAndView("product/product");
+        return mav;
+    }
+
 
 
 }
