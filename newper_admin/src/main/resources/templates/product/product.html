@@ -230,116 +230,81 @@
 
 <script>
     function searchBtn(){
-        var table = $('#brandTable').DataTable();
-        table.page('first').ajax.url('/product/brand.dataTable?'+$('#brandForm').serialize()).load(null, false);
+        var table = $('#productTable').DataTable();
+        table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
     }
 
 
-    function categoryDetail(cateIdx) {
-        var focusPopup = window.open('/product/category/brandDetail/' + cateIdx, 'brandDetail', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
 
-    function brandDisplay(cateDisplay){
-        var param = '';
-        var leng = $("#brandTable .selected").find("input").length;
-        if(leng == 0) {
-            alert("선택한 데이터가 없습니다.");
-            return ;
-        } else {
-            $.each($("#brandTable .selected").find("input"), function(key, val){
-                var idx = $(this).val();
-                if(leng == (key+1)){
-                    param = param + idx;
-                }else{
-                    param = param + idx + ",";
-                }
-            });
-            if(confirm("변경하시겠습니까?")){
-                $.ajax({
-                    url:"/product/categoryDisplay.ajax",
-                    data: "CATE_IDXS="+param+"&CATE_DISPLAY="+cateDisplay,
-                    type:"POST",
-                    success:function() {
-                        $('#brandTable').DataTable().ajax.reload();
-                    }
-                });
-            }
-        }
-    }
-
-    function brandDelete(){
-        var param = '';
-        var leng = $("#brandTable .selected").find("input").length;
-        if(leng == 0) {
-            alert("선택한 데이터가 없습니다.");
-            return ;
-        } else {
-            $.each($("#brandTable .selected").find("input"), function(key, val){
-                var idx = $(this).val();
-                if(leng == (key+1)){
-                    param = param + idx;
-                }else{
-                    param = param + idx + ",";
-                }
-            });
-            if(confirm("변경하시겠습니까?")){
-                $.ajax({
-                    url:"/product/brandDelete.ajax",
-                    data: "CATE_IDXS="+param,
-                    type:"POST",
-                    success:function() {
-                        $('#brandTable').DataTable().ajax.reload();
-                    }
-                });
-            }
-        }
-    }
 
 </script>
 
 
     <script>
-        // var userTable = $('#productTable').DataTable({
-        //     dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        //     ordering:false,
-        //     select: {
-        //     style: 'multi',
-        //     selector: 'td:first-child'
-        // },
-        //     serverSide: true,
-        //     ajax:{
-        //     url:'/product/product.dataTable?'+$('#productForm').serialize(),
-        //     type:'post'
-        // },
-        //     columnDefs: [ {
-        //     orderable: false,
-        //     targets:   [0]
-        // } ],
-        //     "columns" : [
-        //         {'class':'select-checkbox m-w-2', 'title':'선택','data':'CATE_IDX','defaultContent':'','render':function(data,type,full,meta){
-        //                 return '<input type="hidden" name="CATE_IDX" value="'+data+'">';
-        //             }}
-        //         ,{'class':'dragula-handle','title':'No','data':'CATE_ORDER','render':function(data,type,full,meta){
-        //                 return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i>';
-        //             }}
-        //         ,{'class':'m-w-max','title':'브랜드명','data':'CATE_NAME','render':function(data,type,full,meta){
-        //                 return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
-        //             }}
-        //         ,{'title':'브랜드약자','data':'CATE_NICK'}
-        //         ,{'title':'브랜드 아이콘','data':'CATE_ICON','render':function(data,type,full,meta){
-        //                 return '<img src="'+data+'" class="input-thumb">';
-        //             }}
-        //         ,{'title':'등록자','data':'CREATED_BY'}
-        //         ,{'title':'노출','data':'CATE_DISPLAY_STR'}
-        //         ,{'title':'등록일','data':'CREATED_DATE'}
-        //         ,{'title':'수정자','data':'MODIFIED_BY'}
-        //         ,{'title':'수정일','data':'MODIFIED_DATE'}
-        //         ,{'title':'수정이력','data':'CATE_IDX','render':function (data,type,full,meta){
-        //                 return '<a class="btn btn-sm badge-danger" onclick="">btn</a>'
-        //             }}
-        //     ]
-        // });
+        var userTable = $('#productTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering:false,
+            select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+            serverSide: true,
+            ajax:{
+            url:'/product/product.dataTable?'+$('#productForm').serialize(),
+            type:'post'
+        },
+            columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+            "columns" : [
+                {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
+                        return '<input type="hidden" name="P_IDX" value="'+data+'">';
+                    }}
+                ,{'title':'대표썸네일','data':'P_INFO','render':function(data,type,full,meta){
+                        return data;
+                    }}
+                ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
+                        return '<a class="btn btn-sm badge-indigo" onclick="productDetail('+full.P_IDX+')">'+data+'</a>';
+                    }}
+                ,{'title':'상품명','data':'P_NAME'}
+                ,{'title':'상품 상태','data':'P_INFO'}
+                ,{'title':'모델명','data':'P_INFO'}
+                ,{'title':'브랜드','data':'BRAND_NAME','defaultContent':''}
+                ,{'title':'재고관리','data':'P_INFO'}
+                ,{'title':'카테고리 대분류','data':'CATE_NAME1','defaultContent':''}
+                ,{'title':'카테고리 중분류','data':'CATE_NAME2','defaultContent':''}
+                ,{'title':'카테고리 소분류','data':'CATE_NAME3','defaultContent':''}
+                ,{'title':'정산구분(품목구분1)','data':'P_TYPE1'}
+                ,{'title':'상품분류(품목구분2)','data':'P_TYPE2'}
+                ,{'title':'물류타입(품목자산구분)','data':'P_INFO'}
+                ,{'title':'입점사','data':'STORE_NAME','defaultContent':''}
+                ,{'title':'제조사','data':'MANUFACTURE_NAME','defaultContent':''}
+                ,{'title':'AS업체','data':'AFTERSERVICE_NAME','defaultContent':''}
+                ,{'title':'기준매입원가','data':'P_COST','render':function(data, type, full, meta){
+                        return comma(data);
+                    }}
+                ,{'title':'유통가','data':'P_RETAIL_PRICE','render':function(data, type, full, meta){
+                        return comma(data);
+                    }}
+                ,{'title':'기준 판매가','data':'P_SELL_PRICE','render':function(data, type, full, meta){
+                        return comma(data);
+                    }}
+                ,{'title':'배송비','data':'P_DEL_PRICE','render':function(data, type, full, meta){
+                        return comma(data);
+                    }}
+                ,{'title':'배송주체','data':'P_INFO'}
+                ,{'title':'옵션1','data':'P_OPTION'}
+                ,{'title':'옵션2','data':'P_OPTION'}
+                ,{'title':'옵션3','data':'P_OPTION'}
+                ,{'title':'스펙구성','data':'P_OPTION'}
+                ,{'title':'등록일','data':'CREATED_DATE'}
+                ,{'title':'승인자','data':'MODIFIED_BY'}
+                ,{'title':'승인일','data':'MODIFIED_DATE'}
+                ,{'title':'수정자','data':'MODIFIED_BY'}
+                ,{'title':'수정일','data':'MODIFIED_DATE'}
+            ]
+        });
 
             $('#productForm').on('keyup',function(event){
                 if(event.keyCode==13){searchBtn();return false;}

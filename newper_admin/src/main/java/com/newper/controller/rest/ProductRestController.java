@@ -103,10 +103,10 @@ public class ProductRestController {
 
     /** product DataTable */
     @PostMapping("product.dataTable")
-    public ReturnDatatable productDataTable(){
+    public ReturnDatatable productDataTable(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
-        returnDatatable.setData(productMapper.selectProductDataTalbe());
-        returnDatatable.setRecordsTotal(productMapper.countProductDataTable());
+        returnDatatable.setData(productMapper.selectProductDataTalbe(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(productMapper.countProductDataTable(paramMap.getMap()));
         return returnDatatable;
     }
 
@@ -137,5 +137,6 @@ public class ProductRestController {
         rm.setMessage(categoryService.brandDelete(paramMap));
         return rm;
     }
+
 
 }
