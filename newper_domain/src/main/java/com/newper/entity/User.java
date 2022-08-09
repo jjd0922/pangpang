@@ -25,7 +25,6 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "U_IDX")
     private Integer uIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
