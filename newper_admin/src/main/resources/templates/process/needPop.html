@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+        <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>가공 요청</title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >가공 요청</h4>
+                            <!--  <div class="text-white-50 ml-3">설명글영역</div>
+                          </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="baordForm">
+                <div class="card">
+                    <div class="card-body popup-contents">
+                        <fieldset class="mb-0">
+                            <legend class="">1.가공 등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                  가공코드
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_NAME" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  작업지시자(내부)
+                                                                    <a href="daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    가공업체
+                                                                  <a href="daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                            <input type="text" class="form-control "  name="" placeholder="">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                  작업시작일
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_NAME" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  가공 상태
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  완료처리자(내부)
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  가공담당자(업체)
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  작업종료일
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   요청일
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  요청메모
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   작업메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   작업완료메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

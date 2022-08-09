@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공정보드</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                <th:block th:text="${subTitle}"></th:block>
+                                            </span>
+                                    </div>
+                                </h6>
+                                <!--<div class="header-elements text-right">
+
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                        <i class="icon-popout mr-1"></i>신규등록
+                                    </a>
+
+
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                        <div class="list-icons ml-2">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="boardForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산상태</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산처리<br>담당자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산처리일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="U_PHONE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="U_ID">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">판매스펙확정일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">IMEI</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="U_COMPANY_EMAIL">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">시리얼</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="U_COMPANY_EMAIL">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">발주코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="U_COMPANY_EMAIL">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고검수코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">도색코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수리코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재검수코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정항목</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정상태</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정처리<br>담당자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정처리일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <br>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">도색</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수리</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재검수</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공항목<br>(예정)</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수<br>상태</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수<br>담당자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수<br>처리일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">판매채널</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등급</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션1</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션2</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션3</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">기준판매가<br>(재고)확정여부</label>
+                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popInBtn">
+                                    <i class="icon-popout mr-1"></i>입고검수
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popNeeedBtn">
+                                    <i class="icon-popout mr-1"></i>가공요청
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popFixBtn">
+                                    <i class="icon-popout mr-1"></i>수리요청
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popPaintBtn">
+                                    <i class="icon-popout mr-1"></i>도색요청
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popRecheckBtn">
+                                    <i class="icon-popout mr-1"></i>재검수요청
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                    <i class="icon-popout mr-1"></i>망실
+                                </a>
+                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                    <i class="icon-popout mr-1"></i>재고인계
+                                </a>
+
+                                        <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                            <div class="list-icons ml-2">
+                                                <a class="list-icons-item" data-action="collapse"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <table class="table" id="boardTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+                <!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+                <!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+                <!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+                <!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+                <!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn() {
+        var table = $('#boardTable').DataTable();
+        table.page('first').ajax.url('/user/user.dataTable?' + $('#boardForm').serialize()).load(null, false);
+    }
+</script>
+
+<script>
+    var userTable = $('#boardTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/process/board.dataTable?'+$('#boardForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+
+        } ],
+
+
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'class':'m-w-max', 'title':'자산상태','data':'G_STATE'}
+            ,{'class':'m-w-max', 'title':'자산처리<br>담당자','data':''}
+            ,{'class':'m-w-max', 'title':'자산<br>처리일','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'자산<br>코드','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'상품<br>코드','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'상품명','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'입고SPEC<br>(예정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'입고SPEC<br>(확정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'판매SPEC<br>(예정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'판매SPEC<br>(확정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'가공SPEC<br>(예정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'가공SPEC<br>(확정)','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'판매스펙<br>확정일','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'IMEI','data':'U_PHONE'}
+            ,{'class':'m-w-max', 'title':'시리얼','data':'U_PHONE'}
+            ,{'title':'발주코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+            ,{'class':'m-w-max', 'title':'발주<br>INDEX','data':'U_PHONE'}
+            ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+            ,{'title':'가공<br>코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+            ,{'title':'도색<br>코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+            ,{'title':'수리<br>코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+            ,{'title':'재검수<br>코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';}}
+
+
+
+        ]
+    });
+
+
+
+    $('#boardForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+    $('#popInBtn').on('click',function (){
+        var focusPopup = window.open('incheckPop', 'in_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popNeeedBtn').on('click',function (){
+        var focusPopup = window.open('needPop', 'need_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popFixBtn').on('click',function (){
+        var focusPopup = window.open('fixPop', 'fix_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popPaintBtn').on('click',function (){
+        var focusPopup = window.open('paintPop', 'paint_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popRecheckBtn').on('click',function (){
+        var focusPopup = window.open('recheckPop', 'recheck_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+</script>
+</html>
