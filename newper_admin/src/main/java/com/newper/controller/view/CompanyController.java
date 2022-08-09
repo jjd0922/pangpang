@@ -6,10 +6,7 @@ import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Insurance;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
-import com.newper.repository.CompanyEmployeeRepo;
-import com.newper.repository.CompanyRepo;
-import com.newper.repository.ContractRepo;
-import com.newper.repository.InsuranceRepo;
+import com.newper.repository.*;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -55,37 +52,32 @@ public class CompanyController {
     /** 거래처 신규등록 처리 */
     @PostMapping(value = "companyPop")
     public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
-        ModelAndView mav = new ModelAndView("main/alertMove");
+//        ModelAndView mav = new ModelAndView("main/alertMove");
+        ModelAndView mav = new ModelAndView("main/alertClose");
 
         paramMap.multiSelect("ctType");
 
-        // 담당자(CompanyEmployee) insert
-        CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
-        companyEmployeeRepo.save(companyEmployee);
+        if (paramMap.getList("ctType").isEmpty()) {
+            throw new MsgException("거래처구분코드를 입력해주세요.");
+        }
 
-        // company insert
-        if (comNumFile.getSize() == 0) {
+        if (comNumFile.isEmpty()) {
             throw new MsgException("사업자등록증 파일을 첨부해 주세요");
         }
 
-        if (comAccountFile.getSize() == 0) {
+        if (comAccountFile.isEmpty()) {
             throw new MsgException("통장사본 파일을 첨부해 주세요");
         }
 
-        paramMap.put("companyEmployee", companyEmployee);
+        // company insert
         Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
 
         // companyType insert
         paramMap.put("comIdx", comIdx);
         companyMapper.insertCompanyType(paramMap.getMap());
 
-//        try {
-//            NewperStorage.download("test", response.getOutputStream());
-//        } catch (IOException ioException) {
-//
-//        }
         mav.addObject("msg", "등록완료");
-        mav.addObject("loc", "companyPop/" + comIdx);
+        mav.addObject("loc", "/company/companyPop/" + comIdx);
         return mav;
     }
 
@@ -188,11 +180,11 @@ public class CompanyController {
     
     /**매입처 보증보험관리 신규등록 처리**/
     @PostMapping(value = "insurancePop")
-    public ModelAndView insuranceNewPost(ParamMap paramMap) {
+    public ModelAndView insuranceNewPost(ParamMap paramMap, MultipartFile ciFile) {
         System.out.println("paramMap = " + paramMap);
         ModelAndView mav = new ModelAndView("main/alertMove");
 
-        Integer ciIdx = companyService.saveInsurance(paramMap);
+        Integer ciIdx = companyService.saveInsurance(paramMap, ciFile);
 
         mav.addObject("msg", "등록완료");
         mav.addObject("loc", "insurancePop/" + ciIdx);
