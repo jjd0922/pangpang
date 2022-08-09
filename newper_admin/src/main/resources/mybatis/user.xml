@@ -7,6 +7,16 @@
         <if test="U_PHONE != null and U_PHONE != ''">AND U_PHONE LIKE CONCAT('%',#{U_PHONE},'%')</if>
         <if test="U_ID != null and U_ID != ''">AND U_ID LIKE CONCAT('%',#{U_ID},'%')</if>
     </sql>
+
+    <sql id="includeUserForCompany">
+        <if test="uName != null and uName !=''">AND U_NAME LIKE CONCAT('%',#{uName},'%')</if>
+        <if test="uPhone != null and uPhone !=''">AND U_PHONE LIKE CONCAT('%',#{uPhone},'%')</if>
+        <if test="uId != null and uId !=''">AND U_ID LIKE CONCAT('%',#{uId},'%')</if>
+        <if test="uDepart != null and uDepart !=''">AND U_DEPART LIKE CONCAT('%',#{uDepart},'%')</if>
+        <if test="uPosition != null and uPosition !=''">AND U_POSITION LIKE CONCAT('%',#{uPosition},'%')</if>
+        <if test="uState != null and uState !=''">AND U_STATE = #{uState}</if>
+    </sql>
+
     <select id="selectUserDatatable" resultType="Map" parameterType="Map">
         SELECT
         *
@@ -33,6 +43,30 @@
         </where>
     </select>
 
+    <select id="selectUserForCompany" resultType="Map">
+        SELECT
+            U_IDX,
+            U_NAME,
+            U_PHONE,
+            U_ID,
+            U_DEPART,
+            U_POSITION,
+            U_PERSON_MAIL,
+            U_COMPANY_TEL
+        FROM
+            USER
+        WHERE
+            U_TYPE = 'INSIDE'
+            <include refid="includeUserForCompany"></include>
+    </select>
 
-
+    <select id="countUserForCompany" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            USER
+        WHERE
+            U_TYPE = 'INSIDE'
+            <include refid="includeUserForCompany"></include>
+    </select>
 </mapper>

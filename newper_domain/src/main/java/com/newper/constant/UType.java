@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UType implements EnumOption {
 
-    Inside("내부")
-    ,Outside("외부");
+    INSIDE("내부")
+    ,OUTSIDE("외부");
 
     private String option;
 

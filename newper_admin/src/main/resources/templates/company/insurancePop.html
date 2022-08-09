@@ -5,8 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${insurance != null} ? '보증보험 조회/수정'">보증보험 등록</title>
-
     <th:block th:replace="/common/css.html"></th:block>
+    <style>
+        .table-hover {
+            width: 100% !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -76,10 +80,11 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                    거래처<a href="#" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                                    거래처<a href="#" id="searchComBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="#" class="form-control" readonly>
+                                                        <input type="text" name="comName" class="form-control" th:value="${insurance?.company?.comName}" readonly>
+                                                        <input type="hidden" name="comIdx">
                                                     </div>
                                                 </div>
                                             </div>
@@ -201,7 +206,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">보험 증서 FILE</span>
+                                                                <span class="input-group-text">보험 증서 파일</span>
                                                             </span>
                                                         <input type="file" name="ciFile" class="form-control form-control-plaintext"
                                                                th:value="${insurance?.ciFile}">
@@ -248,7 +253,7 @@
                                                                     등록자
                                                                 </span>
                                                             </span>
-                                                    <input type="text" class="form-control" th:value="${insurance.createdBy}">
+                                                    <input type="text" class="form-control" th:value="${insurance?.createdBy}">
                                                 </div>
                                             </div>
                                         </div>
@@ -262,7 +267,7 @@
                                                                     등록일
                                                                 </span>
                                                             </span>
-                                                    <input type="text" class="form-control" th:value="${insurance.createdDate}">
+                                                    <input type="text" class="form-control" th:value="${insurance?.createdDate}">
                                                 </div>
                                             </div>
                                         </div>
@@ -329,6 +334,8 @@
         <!-- /footer -->
     </div>
 </div>
+<th:block th:replace="/company/modal/comModal.html"/>
+
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
@@ -378,6 +385,10 @@
 <!-- 그래프 -->
 <script th:src="@{/assets/js/demo_charts/echarts/light/lines/lines_zoom.js}"></script>
 
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
 <script th:src="@{/assets/js/common.js}"></script>
 
 <!-- 다음 주소 api -->
@@ -414,13 +425,21 @@
         $("#regiForm").submit();
     }
 
+    function selectCompany(row) {
+        debugger;
+        var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
 
+        $('#searchComModal').modal('hide');
+        $('#regiForm input[name="comName"]').val(rowData.COM_NAME);
+        $('input[name="comIdx"]').val(rowData.COM_IDX);
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
+    $("#searchComBtn").on("click", showComModal);
+    $('#comModalForm').on('keyup', function(event){
+        if(event.keyCode == 13){searchCompanyDataTable();return false;}
+    });
 </script>
 </body>
-
-
-
 </html>

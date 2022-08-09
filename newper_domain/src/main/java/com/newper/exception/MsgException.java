@@ -18,3 +18,4 @@ public class MsgException extends RuntimeException{
         super(cause);
     }
 }
+

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -18,12 +19,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Table(name = "USER")
-
+@ToString
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "U_IDX")
     private Integer uIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,8 +53,8 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
 
-
-
+    @OneToMany(mappedBy = "user")
+    private List<Company> companies;
 
 }
 

@@ -1,9 +1,11 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.CompanyMapper;
+import com.newper.mapper.UserMapper;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.service.CompanyService;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,9 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class CompanyRestController {
     private final CompanyMapper companyMapper;
-    private final CompanyRepo companyRepo;
-    private final CompanyEmployeeRepo companyEmployeeRepo;
     private final CompanyService companyService;
+    private final UserMapper userMapper;
 
     /**거래처 관리 데이터테이블*/
     @PostMapping("company.dataTable")
@@ -36,6 +36,18 @@ public class CompanyRestController {
 
         rd.setData(companyMapper.selectCompanyDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
+
+        return rd;
+    }
+
+    @PostMapping("userModal.dataTable")
+    public ReturnDatatable searchUser(ParamMap paramMap) {
+        System.out.println("paramMap = " + paramMap);
+        ReturnDatatable rd = new ReturnDatatable();
+
+        paramMap.put("U_TYPE", UType.INSIDE.name());
+        rd.setData(userMapper.selectUserForCompany(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserForCompany(paramMap.getMap()));
 
         return rd;
     }

@@ -1,8 +1,10 @@
 package com.newper.entity;
 
 import com.newper.entity.common.CreatedEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,8 +38,33 @@ public class Insurance extends CreatedEntity {
     private Float ciPercent;
     private Long ciMoney;
     private String ciFile;
+    private String ciFileName;
     private String ciMemo;
     private char ciState;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave() {
+        if (getCiType() == null) {
+            throw new MsgException("보증보험구분을 선택해주세요.");
+        } else if (getCiInsuranceState() == null) {
+            throw new MsgException("보증보험 발행상태를 선택해주세요.");
+        } else if (!StringUtils.hasText(getCiCompany())) {
+            throw new MsgException("발행사를 입력해주세요.");
+        } else if (!StringUtils.hasText(getCiName())) {
+            throw new MsgException("증권명을 입력해주세요.");
+        } else if (getCiStartDate() == null || getCiEndDate() == null) {
+            throw new MsgException("올바른 보증기간을 선택해주세요.");
+        } else if (!StringUtils.hasText(getCiNum())) {
+            throw new MsgException("증권번호를 입력해주세요.");
+        } else if (getCiFee() == null || getCiFee() < 0) {
+            throw new MsgException("올바른 보험가입금액을 입력해주세요.");
+        } else if (getCiPercent() == null || getCiPercent() < 0) {
+            throw new MsgException("올바른 보험요율을 입력해주세요.");
+        } else if (getCiMoney() == null || getCiMoney() < 0) {
+            throw new MsgException("올바른 보험 가능 금액을 입력해주세요.");
+        }
+    }
 
     public void updateInsurance(Insurance insurance) {
         setCiType(insurance.getCiType());

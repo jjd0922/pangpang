@@ -7,6 +7,15 @@
     <title th:text="${company != null} ? '거래처 조회/수정'">거래처 등록</title>
 
     <th:block th:replace="/common/css.html"></th:block>
+    <style>
+        .modal-dialog{
+            max-width: 950px;
+        }
+
+        .table-hover {
+            width: 100% !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,7 +58,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">거래처구분코드</span>
                                                             </span>
-                                                        <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple" th:disabled="${company != null} ? true">
+                                                        <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple" onchange="activateSearchUserBtn()" th:disabled="${company != null} ? true">
                                                             <option></option>
                                                             <span th:unless="${not #strings.isEmpty(ctType)}">
                                                                 <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
@@ -81,7 +90,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     MID
                                                                 </span>
                                                             </span>
@@ -180,7 +189,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     전화번호<br>(회사대표번호)
                                                                 </span>
                                                             </span>
@@ -210,7 +219,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     은행
                                                                 </span>
                                                             </span>
@@ -225,7 +234,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     계좌번호
                                                                 </span>
                                                             </span>
@@ -240,7 +249,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     우편번호 <a href="javascript: daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
@@ -251,15 +260,16 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6 hide">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    구매담당자<a href="#" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                                <span class="input-group-text requested">
+                                                                    구매담당자<a href="javascript: showUserModal();" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="users" class="form-control" readonly>
+                                                        <input type="text" name="uName" class="form-control" th:value="${company?.user?.uName}" readonly>
+                                                        <input type="hidden" name="uIdx" th:value="${company?.user?.uIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -269,7 +279,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     주소(시,도)
                                                                 </span>
                                                             </span>
@@ -284,7 +294,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     주소(시,군,구)
                                                                 </span>
                                                             </span>
@@ -295,11 +305,11 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12 change">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     도로명(지번)주소
                                                                 </span>
                                                             </span>
@@ -314,7 +324,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
+                                                                <span class="input-group-text requested">
                                                                     상세주소
                                                                 </span>
                                                             </span>
@@ -329,28 +339,28 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">사업자등록증<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comNumFile}', '${company.comNumFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                                <span class="input-group-text requested">사업자등록증<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comNumFile}', '${company.comNumFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
                                                         <input type="file" name="comNumFile" class="form-control form-control-plaintext">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input th:if="${company != null}" th:value="${company.comNumFile}" name="comNumFileOri">
-                                            <input th:if="${company != null}" th:value="${company.comNumFileName}" name="comNumFileNameOri">
+                                            <input type="hidden" th:if="${company != null}" th:value="${company.comNumFile}" name="comNumFileOri">
+                                            <input type="hidden" th:if="${company != null}" th:value="${company.comNumFileName}" name="comNumFileNameOri">
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">통장사본<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comAccountFile}', '${company.comAccountFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                                <span class="input-group-text requested">통장사본<a th:if="${company != null}" th:href="|javascript: fileDownload('${company.comAccountFile}', '${company.comAccountFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
                                                         <input type="file" name="comAccountFile" class="form-control form-control-plaintext">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input th:if="${company != null}" th:value="${company.comAccountFile}" name="comAccountFileOri">
-                                            <input th:if="${company != null}" th:value="${company.comAccountFileName}" name="comAccountFileNameOri">
+                                            <input type="hidden" th:if="${company != null}" th:value="${company.comAccountFile}" name="comAccountFileOri">
+                                            <input type="hidden" th:if="${company != null}" th:value="${company.comAccountFileName}" name="comAccountFileNameOri">
 
 
                                             <!-- 입력필드 -->
@@ -476,7 +486,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
+                                                                <span class="input-group-text">
                                                                     휴대폰번호
                                                                 </span>
                                                             </span>
@@ -539,6 +549,8 @@
     </div>
 </div>
 
+<th:block th:replace="/company/modal/userModal.html"/>
+
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -592,37 +604,8 @@
 <!-- 다음 주소 api -->
 <script th:src="@{/assets/js/daum_address.js}"></script>
 
-<script>
+<script th:inline="javascript">
     function saveAction(){
-        if ($('select[name="ctType"]').val() == '') {
-            alert('거래처구분코드는 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="comName"]').val() == '') {
-            alert('상호법인명은 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="comCeo"]').val() == '') {
-            alert('대표자명은 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="comNum"]').val() == '') {
-            alert('사업자번호는 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="ceName"]').val() == '') {
-            alert('거래처 담당자 성명은 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="ceMail"]').val() == '') {
-            alert('거래처 담당자 이메일은 필수입력값입니다.');
-            return false;
-        }
-        if ($('input[name="cePhone"]').val() == '') {
-            alert('거래처 담당자 휴대폰번호는 필수입력값입니다.');
-            return false;
-        }
-
         $("#regiForm").submit();
     }
 
@@ -658,31 +641,90 @@
                     addr += addr_[i] + ' ';
                 }
 
-                $('input[name=post]').val(data.zonecode).attr("readonly", true);
-                $('input[name=addr1]').val(data.sido).attr("readonly", true);
-                $('input[name=addr2]').val(data.sigungu).attr("readonly", true);
-                $('input[name=addr3]').val(addr + extraAddr).attr("readonly", true);
+                $('input[name=post]').val(data.zonecode);
+                $('input[name=addr1]').val(data.sido);
+                $('input[name=addr2]').val(data.sigungu);
+                $('input[name=addr3]').val(addr + extraAddr);
             }
         }).open();
     }
 
     /** 거래처 구분코드 매입처 선택시 구매담당자 입력칸 활성화 */
-    function activateBtnForBuyer() {
-        // var ctTypeValue = $("select[]").val();
-        // if (ctTypeValue == "buyer") {
-        //     $("input[name]")
-        // }
+    function activateSearchUserBtn() {
+        var ctTypes = $('select[name="ctType"]').val();
+        if (ctTypes.indexOf('PURCHASE') > -1) {
+            $('.hide').css('display', '');
+            $('.change').removeClass('col-md-6');
+        } else {
+            $('.hide').css('display', 'none');
+            $('.change').addClass('col-md-6');
+        }
+    }
+
+    function showUserModal() {
+        $('#searchUserModal').modal('show');
+        selectUserDatatable();
+    }
+
+    function searchUserForCompany() {
+        $("#userModalTable").DataTable().page('first').ajax.url('/company/userModal.dataTable?'+$('#userModalForm').serialize()).load();
+    }
+
+    function selectUserForCompany(row) {
+        var rowData = $('#userModalTable').DataTable().rows(row).data()[0];
+
+        $('#searchUserModal').modal('hide');
+        $('#regiForm input[name="uName"]').val(rowData.U_NAME);
+        $('input[name="uIdx"]').val(rowData.U_IDX);
     }
 
 
 </script>
 <script>
+    function selectUserDatatable() {
+        if ($.fn.DataTable.isDataTable('#userModalTable')) {
+            searchUserForCompany()
+        } else {
+            $("#userModalTable").DataTable({
+                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+                ordering: false,
+                autoWidth: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                serverSide: true,
+                ajax:{
+                    url:'/company/userModal.dataTable',
+                    type:'post'
+                },
+                columnDefs: [ {
+                    orderable: false,
+                    targets: [0]
+                } ],
+                columns : [
+                    {'title':'No','data':'No','render':function(data,type,full,meta){
+                            return meta.settings._iDisplayStart+meta.row+1;
+                        }}
+                    ,{'title':'이름','data':'U_NAME', 'render': function (data,type,full,meta) {
+                            return '<a href="javascript: selectUserForCompany(' + meta.row + ')" class="badge badge-primary">' + full.U_NAME + '</a>';
+                        }}
+                    ,{'title':'휴대폰번호','data':'U_PHONE','defaultContent':''}
+                    ,{'title':'사원번호','data':'U_ID','defaultContent':''}
+                    ,{'title':'부서','data':'U_DEPART','defaultContent':''}
+                    ,{'title':'직급(직책)','data':'U_POSITION','defaultContent':''}
+                    ,{'title':'이메일(개인)','data':'U_PERSON_MAIL','defaultContent':''}
+                    ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL','defaultContent':''}
+                ]
+            });
+        }
+    }
+    $(document).ready(activateSearchUserBtn());
     $("#saveBtn").on("click", saveAction);
     $("input[name=post]").on("click", daum_address);
-    // $("input[name=")
+    $('#userModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchUserForCompany();return false;}
+    });
 </script>
 </body>
-
-
-
 </html>
