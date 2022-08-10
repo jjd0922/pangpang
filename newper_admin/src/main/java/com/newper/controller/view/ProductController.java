@@ -162,6 +162,13 @@ public class ProductController {
         return mav;
     }
 
+    /**상품관리 등록 페이지*/
+    @GetMapping("product/productCreate")
+    public ModelAndView productCreate(){
+        ModelAndView mav = new ModelAndView("product/product/product_detail");
+        return mav;
+    }
+
 
 
 }
