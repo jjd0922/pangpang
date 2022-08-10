@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>발주품의 관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+<!-- 본문 영역 시작 -->
+    <div class="page-content">
+        <div class="content-wrapper">
+            <div class="content-inner">
+    
+                <!-- Content area -->
+                <div class="content container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+    
+                            <div class="card">
+                                <div class="card-header header-elements-inline">
+                                    <h6 class="card-title">
+                                        <div class="breadcrumb breadcrumb-caret">
+                                                <span class="breadcrumb-item">
+                                                    <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                    <th:block th:text="${mainTitle}"></th:block>
+                                                </span>
+                                            <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                    <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                    <th:block th:text="${subTitle}"></th:block>
+                                                </span>
+                                        </div>
+                                    </h6>
+                                    <div class="header-elements text-right">
+                                        <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                                <i class="icon-popout mr-1"></i>신규등록
+                                            </a>
+    
+                                            <div class="list-icons ml-2">
+                                                <a class="list-icons-item" data-action="collapse"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="collapse show" id="collapse-button-collapsed">
+                                    <div class="card-body pt-0">
+                                        <form id="poForm">
+                                            <div class="row">
+                                                <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                    <div class="form-group">
+                                                        <label class="d-block">발주 상태</label>
+                                                        <select name="poState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">구매담당자</label>
+                                                        <input type="text" name="uName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">발주 코드</label>
+                                                        <input type="text" name="poCode" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">매입처</label>
+                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <!--<div class="form-group">
+                                                        <label class="d-block">매입 운송비 주체</label>
+                                                        <select name="test" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>-->
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">입고예정일</label>
+                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">납기일</label>
+                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">반품기한</label>
+                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">A/S 기한</label>
+                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">재매입 여부</label>
+                                                        <select name="test" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">입고 예정 창고</label>
+                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">등록자</label>
+                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">등록일</label>
+                                                        <input type="text" name="poPeriod" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">승인자</label>
+                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">승인일</label>
+                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">수정자</label>
+                                                        <input type="text" name="modifiedBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">수정일</label>
+                                                        <input type="text" name="modifiedDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group end">
+                                                        <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                            <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- 카드 2열 레이아웃 -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <table class="table" id="poTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn(){
+        poTable.page('first').ajax.url('/po/estimate.dataTable?'+$('#poForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    var poTable = $('#poTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/po/estimate.dataTable',
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'PO_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="poIdx" value="' + data + '">';
+                }}
+            ,{'title':'품의상태','data':'PO_STATE_STR'}
+            ,{'title':'구매 담당자','data':'U_NAME'}
+            ,{'title':'발주코드','data':'PO_CODE','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<button type="button" class="badge badge-primary" onclick="poDetail(' + full.PO_IDX + ')">' + data + '</button>';
+                }}
+            ,{'title':'사업자 등록 번호','data':'COM_NUM'}
+            ,{'title':'총 발주 상품','data':'PRODUCT_COUNT'}
+            ,{'title':'총 발주 금액','data':'PO_TOTAL_PRICE'}
+            ,{'title':'생산원가(합)','data':'COM_NAME'}
+            ,{'title':'판매금액(합)','data':'COM_NAME'}
+            ,{'title':'예상총이익','data':'COM_NAME'}
+            ,{'title':'예상수익률','data':'COM_NAME'}
+            ,{'title':'매입운송비 주체','data':'COM_NAME'}
+            ,{'title':'입고예정일','data':'COM_NAME'}
+            ,{'title':'납기일','data':'COM_NAME'}
+            ,{'title':'반품기한','data':'COM_NAME'}
+            ,{'title':'A/S기한','data':'COM_NAME'}
+            ,{'title':'판매기한','data':'COM_NAME'}
+            ,{'title':'재매입 여부','data':'COM_NAME'}
+            ,{'title':'입고 예정 창고','data':'COM_NAME'}
+            ,{'title':'등록자','data':'COM_NAME'}
+            ,{'title':'등록일','data':'COM_NAME'}
+            ,{'title':'승인자','data':'COM_NAME'}
+            ,{'title':'승인일','data':'COM_NAME'}
+            ,{'title':'반려자','data':'COM_NAME'}
+            ,{'title':'반려일','data':'COM_NAME'}
+            ,{'title':'반려사유','data':'COM_NAME'}
+            ,{'title':'수정자','data':'COM_NAME'}
+            ,{'title':'수정일','data':'COM_NAME'}
+        ]
+    });
+
+    $('#poForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+    $('#popNewBtn').on('click',function (){
+       var focusPopup = window.open('/po/estimatePop', 'estimateNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       focusPopup.focus();
+    });
+
+    function estimateDetail(idx) {
+        var focusPopup = window.open('/po/estimatePop/' + idx, 'estimateDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function estimateDownload(peIdx) {
+
+    }
+</script>
+</html>

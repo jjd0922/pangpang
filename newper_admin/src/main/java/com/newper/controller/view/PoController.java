@@ -28,6 +28,19 @@ public class PoController {
     private final PoService poService;
     private final EstimateRepo estimateRepo;
 
+    /** 발주품의 페이지 **/
+    @GetMapping(value = "")
+    public ModelAndView po(){
+        ModelAndView mav = new ModelAndView("po/estimate");
+        return mav;
+    }
+
+    @GetMapping(value = "poPop")
+    public ModelAndView poPop(){
+        ModelAndView mav = new ModelAndView("po/poPop");
+        return mav;
+    }
+
     /** 견적서 관리 페이지 **/
     @GetMapping(value = "estimate")
     public ModelAndView estimate(){
