@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.MenuType;
 import com.newper.converter.ConvertList;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
@@ -24,8 +25,11 @@ public class Auth{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authIdx;
 
+    @Enumerated(EnumType.STRING)
+    private MenuType authType;
     private String authName;
-    private String authMenu;
-    private String authMask;
+
+    /** 마스킹 안보는 목록들. List안에는 AuthMask.name*/
+    private List<String> authMask;
 
 }
