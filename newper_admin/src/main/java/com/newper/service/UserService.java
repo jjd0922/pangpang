@@ -34,23 +34,18 @@ public class UserService {
         Company company = paramMap.mapParam(Company.class);
 
         User user = paramMap.mapParam(User.class);
-        System.out.println("userIdx : " + user.getUIdx());
+        Auth auth =paramMap.mapParam(Auth.class);
 
 
-
-        Auth auth = authRepo.findById(1).orElseThrow(() -> new MsgException("권한이 없습니다."));
+        // 권한 idx 가져와서 setAuth 설정
+      //  Auth auth = authRepo.findById(1).orElseThrow(() -> new MsgException("권한이 없습니다."));
         user.setAuth(auth);
-        System.out.println(auth.getAuthIdx());
-
-        System.out.println("here1");
 
         user.setAddress(address);
 
-        System.out.println("here2");
         user.setCompany(company);
 
         userRepo.save(user);
-        System.out.println("here3");
 
 
         return user.getUIdx();

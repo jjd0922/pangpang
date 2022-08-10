@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
@@ -88,6 +89,10 @@ public class UserRestController {
         if (uId == null || uId.equals("")) {
             throw new MsgException("로그인 ID를 입력해주세요.");
         }
+        String uPassword = paramMap.getString("U_PASSWORD");
+        if (uPassword == null || uPassword.equals("")) {
+            throw new MsgException("비밀번호를 입력해주세요.");
+        }
         String authIdx = paramMap.getString("U_AUTH_IDX");
         if (authIdx == null || authIdx.equals("")) {
             throw new MsgException("권한을 입력해주세요.");
@@ -112,6 +117,39 @@ public class UserRestController {
         return rm;
     }
 
+
+    @PostMapping("resetPwd.ajax")
+    public ReturnMap resetPwd(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+/*        // 비밀번호 초기화
+        String resetPwd = Common.getRandomPassword(8);
+        String encryptPwd = Common.parseSHA(resetPwd);
+
+        // cu_pw 업데이트
+        Long cuIdx = Long.parseLong(paramMap.get("CU_IDX").toString());
+        customerService.customerUpdatePwd(cuIdx, encryptPwd);
+
+        // rm
+        rm.put("resetPwd", resetPwd);*/
+
+        return rm;
+    }
+
+    /**사용자 구분 내부일경우 내부업체 defult*/
+    @PostMapping("changeGubun.ajax")
+    public ReturnMap changeGubun(String U_TYPE){
+        ReturnMap rm=new ReturnMap();
+        if(U_TYPE.equals(UType.INSIDE.name())){
+            System.out.println("here!!");
+            //company -> com_idx, com_name return 받아서
+            Optional<Company> company = companyRepo.findById(1);
+            rm.put("comIdx",company.get().getComIdx());
+            rm.put("COM_NAME",company.get().getComName());
+
+        }
+        return rm;
+    }
 
 }
 
