@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class ProcessController {
 
+
+    /**공정보드 공정관리 페이지**/
     @GetMapping(value = "")
     public ModelAndView process() {
         ModelAndView mav = new ModelAndView("process/board");
@@ -18,44 +20,44 @@ public class ProcessController {
         return mav;
     }
 
+
+    /**입고검수 팝업**/
     @GetMapping(value = "incheckPop")
     public ModelAndView incheckPopup() {
         ModelAndView mav = new ModelAndView("process/incheckPop");
 
         return mav;
-
-
     }
+
+    /**가공요청 팝업**/
     @GetMapping(value = "needPop")
     public ModelAndView needPopup() {
         ModelAndView mav = new ModelAndView("process/needPop");
 
         return mav;
-
-
     }
+
+    /**수리요청 팝업**/
     @GetMapping(value = "fixPop")
     public ModelAndView fixPopup() {
         ModelAndView mav = new ModelAndView("process/fixPop");
 
         return mav;
-
-
     }
+
+    /**도색요청 팝업**/
     @GetMapping(value = "paintPop")
     public ModelAndView paintPopup() {
         ModelAndView mav = new ModelAndView("process/paintPop");
 
         return mav;
-
-
     }
+
+    /**재검수요청 팝업**/
     @GetMapping(value = "recheckPop")
     public ModelAndView recheckPopup() {
         ModelAndView mav = new ModelAndView("process/recheckPop");
 
         return mav;
-
-
     }
 }
