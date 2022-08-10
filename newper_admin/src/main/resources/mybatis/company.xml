@@ -255,8 +255,7 @@
                 LEFT JOIN CATEGORY ON CF_CATE_IDX = CATE_IDX
                 JOIN COMPANY ON CF_COM_IDX = COM_IDX
         WHERE
-            CF_IDX IS NOT NULL
-            AND CF_COM_IDX = #{comIdx}
+            CF_COM_IDX = #{comIdx}
             AND CATE_DEPTH = 2
             AND CF_STATE = 'Y'
             <include refid="includeFeeDatatable"></include>
@@ -272,9 +271,9 @@
             COMPANY_FEE
                 JOIN CATEGORY ON CF_CATE_IDX = CATE_IDX
         WHERE
-            CF_IDX IS NOT NULL
-            AND CF_COM_IDX = #{comIdx}
+            CF_COM_IDX = #{comIdx}
             AND CATE_DEPTH = 2
+            AND CF_STATE = 'Y'
             <include refid="includeFeeDatatable"></include>
     </select>
 

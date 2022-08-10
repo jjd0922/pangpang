@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -20,7 +21,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Table(name = "USER")
-
 public class User extends BaseEntity {
 
     @Id
@@ -54,6 +54,8 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
 
+    @OneToMany(mappedBy = "user")
+    private List<Company> companies;
 
     /*생년월일*/
     public String getUBirthStr(){

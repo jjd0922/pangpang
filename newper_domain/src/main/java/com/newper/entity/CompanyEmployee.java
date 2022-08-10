@@ -1,7 +1,9 @@
 package com.newper.entity;
 
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,6 +33,16 @@ public class CompanyEmployee {
     private String cePhone;
     private String ceTel;
     private String ceMemo;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave() {
+        if (!StringUtils.hasText(getCeName())) {
+            throw new MsgException("거래처담당자 성명을 입력해주세요.");
+        } else if (!StringUtils.hasText(getCeMail())) {
+            throw new MsgException("거래처담당자 이메일을 입력해주세요.");
+        }
+    }
 
     public void ceAllUpdate(Map<String, Object> map) {
         setCeName(map.get("ceName").toString());

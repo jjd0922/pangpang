@@ -70,7 +70,7 @@
             category
         WHERE
             CATE_DEPTH=#{CATE_DEPTH}
-            AND CATE_TYPE='CATEGORY'
+            AND CATE_TYPE=#{CATE_TYPE}
     </select>
 
     <select id="selectCategoryListByCateDepth" resultType="map">
@@ -93,14 +93,14 @@
     </sql>
     <select id="selectCategoryDatatableByBrand" resultType="map">
         select
-            CATE_IDX, CATE_NAME, CATE_NICK, CATE_ICOM, CREATED_BY,
-            CATE_DISPLAY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE
+            CATE_IDX, CATE_NAME, CATE_NICK, CATE_ICON, CREATED_BY,
+            CATE_DISPLAY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE, CATE_ORDER
         from
             category
         where
             CATE_TYPE='BRAND'
             <include refid="includeCategoryDatatableByBrand"></include>
-        order by CREATED_DATE desc
+        order by CATE_ORDER asc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>

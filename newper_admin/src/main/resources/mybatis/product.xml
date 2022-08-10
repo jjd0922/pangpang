@@ -3,14 +3,56 @@
 <mapper namespace="com.newper.mapper.ProductMapper">
     <select id="selectProductDataTalbe" resultType="Map">
         SELECT
-            *,
+            product.*,
             FORMAT(P_SELL_PRICE , 0) AS 'P_SELL_PRICE',
-            category1.CATE_NAME AS 'CATE_NAME1',
-            brand.CATE_NAME as 'BRAND_NAME'
+                (case
+                     when dt.CATE_DEPTH = 1 then dt.CATE_NAME1
+                     when dt.CATE_DEPTH = 2 then dt.CATE_NAME2
+                     when dt.CATE_DEPTH = 3 then dt.CATE_NAME3
+                    end
+                    ) CATE_NAME1,
+            (case
+                 when dt.CATE_DEPTH = 3 then dt.CATE_NAME2
+                 when dt.CATE_DEPTH = 2 then dt.CATE_NAME1
+                end
+                ) CATE_NAME2,
+            if(dt.CATE_DEPTH=3,dt.CATE_NAME1,NULL) CATE_NAME3,
+            brand.CATE_NAME as 'BRAND_NAME',
+                store.COM_NAME AS 'STORE_NAME',
+                manufacture.COM_NAME AS 'MANUFACTURE_NAME',
+                afterservice.COM_NAME AS 'AFTERSERVICE_NAME'
         FROM
             product
-                LEFT JOIN category AS category1 ON P_CATE_IDX = category1.CATE_IDX
-                LEFT JOIN category AS brand ON P_CATE_IDX2 = brand.CATE_IDX
+                LEFT JOIN (SELECT
+                               category1.CATE_NAME AS CATE_NAME1,
+                               category1.CATE_IDX AS CATE_IDX1,
+                               category1.CATE_DEPTH,
+                               category2.CATE_NAME AS CATE_NAME2,
+                               category2.CATE_IDX AS CATE_IDX2,
+                               category3.CATE_NAME AS CATE_NAME3,
+                               category3.CATE_IDX AS CATE_IDX3
+                           FROM
+                               category AS category1
+                                   LEFT JOIN category AS category2
+                                             ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+                                   LEFT JOIN category AS category3
+                                             ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
+                          ON dt.CATE_IDX1=P_CATE_IDX
+
+                LEFT JOIN category AS brand
+                    ON P_CATE_IDX2 = brand.CATE_IDX
+                LEFT JOIN company AS store
+                    ON P_COM_IDX = store.COM_IDX
+                LEFT JOIN company AS manufacture
+                    ON P_COM_IDX2 = manufacture.COM_IDX
+                LEFT JOIN company AS afterservice
+                    ON P_COM_IDX3 = afterservice.COM_IDX
+        WHERE
+            P_IDX is not null
+            order by P_IDX desc
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countProductDataTable" resultType="long">
@@ -18,5 +60,29 @@
             COUNT(*)
         FROM
             product
+                LEFT JOIN (SELECT
+                               category1.CATE_NAME AS CATE_NAME1,
+                               category1.CATE_IDX AS CATE_IDX1,
+                               category1.CATE_DEPTH,
+                               category2.CATE_NAME AS CATE_NAME2,
+                               category2.CATE_IDX AS CATE_IDX2,
+                               category3.CATE_NAME AS CATE_NAME3,
+                               category3.CATE_IDX AS CATE_IDX3
+                           FROM
+                               category AS category1
+                                   LEFT JOIN category AS category2
+                                             ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+                                   LEFT JOIN category AS category3
+                                             ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
+                          ON dt.CATE_IDX1=P_CATE_IDX
+
+                LEFT JOIN category AS brand
+                          ON P_CATE_IDX2 = brand.CATE_IDX
+                LEFT JOIN company AS store
+                          ON P_COM_IDX = store.COM_IDX
+                LEFT JOIN company AS manufacture
+                          ON P_COM_IDX2 = manufacture.COM_IDX
+                LEFT JOIN company AS afterservice
+                          ON P_COM_IDX3 = afterservice.COM_IDX
     </select>
 </mapper>

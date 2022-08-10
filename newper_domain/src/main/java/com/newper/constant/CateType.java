@@ -6,13 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UType implements EnumOption {
+public enum CateType implements EnumOption {
 
-    INSIDE("내부")
-    ,OUTSIDE("외부");
+    CATEGORY("카테고리")
+    ,BRAND("브랜드");
 
     private String option;
-
 
 
 }
