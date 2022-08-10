@@ -4,9 +4,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Converter(autoApply = true)
 public class ConvertList implements AttributeConverter<List, String> {
 
         @Override
