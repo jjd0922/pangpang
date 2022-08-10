@@ -23,17 +23,41 @@
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
                                         <span class="breadcrumb-item">
-                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                            <th:block th:text="${mainTitle}"></th:block>마스킹 설정
+                                            권한
                                         </span>
                                     </div>
                                 </h6>
                                 <div class="header-elements text-right">
                                     <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popAuthBtn">
                                             <i class="icon-popout mr-1"></i>신규등록
                                         </a>
+                                        <div class="list-icons ml-2">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="collapse show">
+                                <div class="card-body text-center masking" id="authDiv">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card m-2">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            마스킹 설정
+                                        </span>
+                                        <span id="authName"></span>
+                                        <input type="hidden" id="authIdx">
+                                    </div>
+                                </h6>
+                                <div class="header-elements text-right">
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
                                         <div class="list-icons ml-2">
                                             <a class="list-icons-item" data-action="collapse"></a>
                                         </div>
@@ -43,60 +67,21 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
 
-
                                 <div class="card-body text-center masking">
-                                    <a href="#" class="badge badge-indigo">상품관리</a>
-                                    <a href="#" class="badge badge-indigo">아웃바운드</a>
-                                    <a href="#" class="badge badge-indigo">인바운드</a>
-                                    <a href="#" class="badge badge-primary">운영팀</a>
-                                    <a href="#" class="badge badge-indigo">저장팀</a>
-                                    <a href="#" class="badge badge-indigo">쇼핑몰</a>
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-xs w-auto center-col my-1">
                                             <tbody>
-                                            <tr>
-                                                <td class="bg-dark-100">신용정보</td>
-                                                <td>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check1">
-                                                        <label class="form-check-label" for="check1">신용점수</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bg-dark-100">개인정보</td>
-                                                <td>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check2-1" checked>
-                                                        <label class="form-check-label" for="check2-1">생년월일</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check2-2">
-                                                        <label class="form-check-label" for="check2-2">고객명</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check2-3" >
-                                                        <label class="form-check-label" for="check2-3">이메일</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bg-dark-100">결제정보</td>
-                                                <td>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check3-1">
-                                                        <label class="form-check-label" for="check3-1">소유주 생년월일</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check3-2">
-                                                        <label class="form-check-label" for="check3-2">유효년월</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" class="form-check-input" id="check3-3" >
-                                                        <label class="form-check-label" for="check3-3">계좌/카드번호</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                <tr th:each=" am : ${authMap}">
+                                                    <td class="bg-dark-100" th:text="${am.key}">신용정보</td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label" th:each="mask : ${am.value}">
+                                                                <input type="checkbox" class="form-check-input maskName">
+                                                                <th:block th:text="${mask.option}"></th:block>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -305,15 +290,44 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
-    function loadMenu(){
-        $('#menusTbody').load('/auth/menusTbody', function (response,status,xhr){
+    //권한 새로고침
+    function loadAuth(){
+        $.ajax({
+          url:'/auth/list.ajax'
+          ,type:'post'
+          ,data: 'authType=ERP'
+        }).done(function(res){
+            $('#authDiv').html('');
+
+            for(var i=0; i<res.data.list.length; i++) {
+                var authMap = res.data.list[i];
+                $('#authDiv').append('<a href="javascript:loadMask('+authMap.authIdx+')" class="badge badge-indigo">'+authMap.authName+'</a>');
+            }
+        });
+    }
+    //마스킹 설정 새로고침
+    function loadMask(authIdx){
+        $.ajax({
+            url:'/auth/info.ajax'
+            ,type:'post'
+            ,data: 'authIdx='+authIdx
+        }).done(function(res){
+            $('#authIdx').val(authIdx);
+            $('#authName').html(res.data.auth.authName);
+
+            $('.maskName').prop("checked", true);
+            for(var i=0; i<res.data.auth.authMask.length; i++) {
+                var maskName = res.data.auth.authMask[i];
+                $('input[value=' + maskName + ']').prop('checked', false);
+            }
 
         });
     }
+    //마스킹 하기
+</script>
+<script>
     $(document).ready(function(){
-        loadMenu();
+        loadAuth();
     });
 </script>
-
-
 </html>

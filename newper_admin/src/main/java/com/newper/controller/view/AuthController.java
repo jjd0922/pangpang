@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.constant.AuthMask;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Auth;
 import com.newper.repository.AuthRepo;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping(value = "/auth/")
-@Controller
 @RequiredArgsConstructor
+@Controller
 public class AuthController {
 
     private final AuthRepo authRepo;
@@ -23,13 +27,10 @@ public class AuthController {
     public ModelAndView auth(){
         ModelAndView mav = new ModelAndView("auth/auth");
 
-        return mav;
-    }
-    @GetMapping("menusTbody")
-    public ModelAndView menusTbody(){
-        ModelAndView mav = new ModelAndView("auth/menusTbody");
+        //masking 정보 map
+        Map<String, List<AuthMask>> amMap = Arrays.stream(AuthMask.values()).collect(Collectors.groupingBy(AuthMask::getOptionGroup));
+        mav.addObject("authMap", amMap);
 
-        mav.addObject("list", authRepo.findAll());
         return mav;
     }
 
