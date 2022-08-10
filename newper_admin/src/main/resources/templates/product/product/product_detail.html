@@ -48,19 +48,19 @@
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">상품코드</span>
-                                                            </span>
-                                                            <input type="text" name="P_CODE" class="form-control" th:value="${product?.pCode}">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">상품코드</span>
+                                                        </span>
+                                                        <input type="text" name="P_CODE" class="form-control" th:value="${product?.pCode}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">상품명</span>
-                                                            </span>
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">상품명</span>
+                                                        </span>
                                                         <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}">
                                                     </div>
                                                 </div>
@@ -68,28 +68,40 @@
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">상품 상태</span>
-                                                            </span>
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">상품 상태</span>
+                                                        </span>
                                                         <input type="text" name="P_STATE" class="form-control" th:value="${product?.pState}">
                                                     </div>
                                                 </div>
                                             </div>
-
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">상태</span>
-                                                            </span>
-                                                        <select name="comState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>
-                                                        </select>
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">모델명</span>
+                                                        </span>
+                                                        <input type="text" name="P_MODEL" class="form-control" th:value="${product?.pModel}">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xs-4">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">브랜드</span>
+                                                            <select class="form-control form-control-sm select-search" name="P_CATE_IDX2" data-placeholder="선택" data-container-css-class="select-sm">
+                                                                <option></option>
+                                                                <option th:each="brand : ${brand}" th:value="${brand.CATE_IDX}" th:text="${brand.CATE_NAME}" th:selected="${product?.category2?.cateIdx eq brand.CATE_IDX}"></option>
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
                                         </div>
                                     </fieldset>
                                 </div>

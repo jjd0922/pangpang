@@ -17,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequestMapping(value = "/product/")
 @Controller
 @RequiredArgsConstructor
@@ -166,6 +169,9 @@ public class ProductController {
     @GetMapping("product/productCreate")
     public ModelAndView productCreate(){
         ModelAndView mav = new ModelAndView("product/product/product_detail");
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("length",-1);
+        mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
         return mav;
     }
 
