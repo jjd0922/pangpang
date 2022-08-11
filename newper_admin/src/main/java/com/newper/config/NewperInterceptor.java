@@ -4,6 +4,7 @@ import com.newper.component.SessionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,6 +31,8 @@ public class NewperInterceptor implements HandlerInterceptor {
 
         //error ex) 404 page
         if(request.getRequestURI().equals("/error")){
+            return true;
+        }else if(request.getRequestURI().equals("/logout")){
             return true;
         }
 

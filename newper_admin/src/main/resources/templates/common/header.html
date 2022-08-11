@@ -20,37 +20,6 @@
             <a class="dropdown-item" th:each="submenu: ${menus.subMenuList}" th:text="${submenu.smName}" th:href="${submenu.smUrl}" th:classappend="${submenu.getActiveClass(#httpServletRequest.requestURI)}">중메뉴</a>
         </div>
       </li>
-
-
-      <li class="nav-item dropdown nav-item-dropdown-lg">
-        <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-          <span>보상닷컴 기능</span>
-        </a>
-        <div class="dropdown-menu dropdown-scrollable-lg">
-          <!--            <div class="dropdown-header">중메뉴 TITLE</div>-->
-          <a class="dropdown-item">하위 아이템</a>
-          <!--            <div class="dropdown-divider">중메뉴 DIVIDE</div>-->
-        </div>
-      </li>
-
-
-
-<!--      <li class="nav-item dropdown nav-item-dropdown-lg" th:each="menu:${T(com.newper.entity.Menu).MENUS}" th:if="(${#lists.size(menu.childMenu) > 0} or ${not #strings.isEmpty(menu.url)} ) and ${@sessionInfo.hasAuth(menu.auth)}">-->
-<!--        <a th:href="${menu.url}" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" th:classappend="${menu_idx} == ${menu.menuIdx} ? active">-->
-<!--          <i class="mr-1" th:classappend="${menu.icon}"></i>-->
-<!--          <span th:text="${menu.name}">대분류 NAME</span>-->
-<!--        </a>-->
-<!--        <div class="dropdown-menu dropdown-scrollable-lg" th:if="${#lists.size(menu.childMenu) > 0}">-->
-<!--          <th:block th:each="childMenu, i : ${menu.childMenu}" th:if="${@sessionInfo.hasAuth(childMenu.auth)}">-->
-<!--            <th:block th:switch="${childMenu.type}">-->
-<!--              <div class="dropdown-header" th:class="" th:case="${T(com.newper.entity.Menu.MenuType).TITLE}" th:text="${childMenu.name}">중메뉴 TITLE</div>-->
-<!--              <a class="dropdown-item" th:case="${T(com.newper.entity.Menu.MenuType).MENU}" th:href="@{${childMenu.url}}" th:text="${childMenu.name}" th:classappend="${submenu_idx} == ${childMenu.menuIdx} ? active">중메뉴 MENU</a>-->
-<!--              <div class="dropdown-divider" th:case="${T(com.newper.entity.Menu.MenuType).DIVIDE}">중메뉴 DIVIDE</div>-->
-<!--            </th:block>-->
-<!--          </th:block>-->
-<!--        </div>-->
-<!--      </li>-->
-
     </ul>
   </div>
 
@@ -88,7 +57,7 @@
           <div class="dropdown-divider"></div>
 
           <a href="#" class="dropdown-item"><i class="icon-cog5"></i> 관리자 설정</a><!-- 마스터 관리자 추가관리 페이지로 이동 -->
-          <a th:href="@{/login}" class="dropdown-item"><i class="icon-switch2"></i> 로그아웃</a>
+          <a th:href="@{/logout}" class="dropdown-item"><i class="icon-switch2"></i> 로그아웃</a>
         </div>
       </li>
     </ul>
