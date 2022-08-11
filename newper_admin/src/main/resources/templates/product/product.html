@@ -234,7 +234,14 @@
         table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
     }
 
-
+    //create popup(idx == null) or detail popup
+    function productDetailPop(idx){
+        if (idx == null) {
+            idx='detail';
+        }
+        var focusPopup = window.open('/product/'+idx, 'product'+idx, 'width=850, height=1000, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 
 
 </script>
@@ -265,7 +272,7 @@
                         return data;
                     }}
                 ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
-                        return '<a class="btn btn-sm badge-indigo" onclick="productDetail('+full.P_IDX+')">'+data+'</a>';
+                        return '<a class="btn btn-sm badge-indigo" onclick="productDetailPop('+full.P_IDX+')">'+data+'</a>';
                     }}
                 ,{'title':'상품명','data':'P_NAME'}
                 ,{'title':'상품 상태','data':'P_INFO'}
@@ -306,14 +313,13 @@
             ]
         });
 
-            $('#productForm').on('keyup',function(event){
-                if(event.keyCode==13){searchBtn();return false;}
-            });
+        $('#productForm').on('keyup',function(event){
+            if(event.keyCode==13){searchBtn();return false;}
+        });
 
 
-            $('#popNewBtn').on('click',function (){
-            var focusPopup = window.open('/product/product/productCreate', 'productCreate', 'width=850, height=1000, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-            focusPopup.focus();
+        $('#popNewBtn').on('click',function (){
+            productDetailPop(null);
         });
     </script>
 </html>

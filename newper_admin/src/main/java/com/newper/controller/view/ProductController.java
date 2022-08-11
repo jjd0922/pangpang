@@ -3,9 +3,11 @@ package com.newper.controller.view;
 import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
+import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.CategoryRepo;
+import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,9 +28,9 @@ import java.util.Map;
 public class ProductController {
 
     private final CategoryRepo categoryRepo;
+    private final ProductRepo productRepo;
 
     private final CategoryService categoryService;
-
     private final CategoryMapper categoryMapper;
 
 
@@ -164,12 +166,28 @@ public class ProductController {
     }
 
     /**상품관리 등록 페이지*/
-    @GetMapping("product/productCreate")
-    public ModelAndView productCreate(){
-        ModelAndView mav = new ModelAndView("product/product/product_detail");
+    @GetMapping("detail")
+    public ModelAndView detail(){
+        ModelAndView mav = new ModelAndView("product/detail");
+
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("length",-1);
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
+
+        return mav;
+    }
+    /**상품관리 수정 페이지*/
+    @GetMapping("{pIdx}")
+    public ModelAndView detail(@PathVariable Integer pIdx){
+        ModelAndView mav = new ModelAndView("product/detail");
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("length",-1);
+        mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
+
+        Product product = productRepo.findById(pIdx).get();
+        mav.addObject("product", product);
+
         return mav;
     }
 
