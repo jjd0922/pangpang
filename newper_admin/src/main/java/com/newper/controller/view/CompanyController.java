@@ -130,7 +130,9 @@ public class CompanyController {
         if (ccFile.getSize() == 0) {
             throw new MsgException("계약서 파일을 첨부해 주세요");
         }
-        companyService.saveContract(paramMap, ccFile);
+        Integer ccIdx = companyService.saveContract(paramMap, ccFile);
+        mav.addObject("msg", "등록완료");
+        mav.addObject("loc", ccIdx);
 
         return mav;
     }
@@ -147,9 +149,10 @@ public class CompanyController {
     @PostMapping(value = "contractPop/{ccIdx}")
     public ModelAndView contractDetailPost(@PathVariable Integer ccIdx, ParamMap paramMap, MultipartFile ccFile){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        companyService.updateContract(ccIdx, paramMap, ccFile);
+        Integer newCcidx = companyService.updateContract(ccIdx, paramMap, ccFile);
 
         mav.addObject("msg", "수정완료");
+        mav.addObject("loc", newCcidx);
         return mav;
     }
 
@@ -203,9 +206,9 @@ public class CompanyController {
 
     /**매입처 보증보험관리 수정처리**/
     @PostMapping(value="insurancePop/{ciIdx}")
-    public ModelAndView insuranceDetailPost(@PathVariable Integer ciIdx, ParamMap paramMap) {
+    public ModelAndView insuranceDetailPost(@PathVariable Integer ciIdx, ParamMap paramMap, MultipartFile ciFile) {
         ModelAndView mav = new ModelAndView("main/alertMove");
-        companyService.updateInsurance(ciIdx, paramMap);
+        companyService.updateInsurance(ciIdx, paramMap, ciFile);
 
         mav.addObject("msg", "수정완료");
         return mav;
