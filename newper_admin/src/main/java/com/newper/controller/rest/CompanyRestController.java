@@ -98,7 +98,7 @@ public class CompanyRestController {
         ReturnMap rm = new ReturnMap();
         companyService.updateFee(cfIdx, paramMap);
 
-        rm.setMessage("수정성공");
+        rm.setMessage("수정완료");
 
         return rm;
     }
