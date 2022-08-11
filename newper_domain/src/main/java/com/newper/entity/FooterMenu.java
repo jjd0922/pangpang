@@ -32,7 +32,6 @@ public class FooterMenu extends BaseEntity {
 
     private String agmVer;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String agmContent;
 
 

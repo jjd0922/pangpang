@@ -39,7 +39,6 @@ public class ProcessNeed {
 
     private String pnProcess;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String pnLookup;
 
 
