@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Optional;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -26,6 +26,9 @@ public class SubMenu {
 
     private String smUrl;
     private byte smOrder;
+
+    /** 중메뉴 사용 가능한 권한 리스트*/
+    private List<Long> smAuth;
 
     /** param url이 submenu url 인 경우 active를 return*/
     public String getActiveClass(String url){

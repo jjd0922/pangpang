@@ -3,9 +3,11 @@ package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Auth;
 import com.newper.entity.Company;
 import com.newper.entity.User;
 import com.newper.mapper.UserMapper;
+import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import com.newper.service.CompanyService;
@@ -20,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/user/")
@@ -33,6 +32,7 @@ public class UserController {
 
     private final UserRepo userRepo;
 
+    private final AuthRepo authRepo;
     private UserMapper userMapper;
 
     private UserService userService;
@@ -53,7 +53,9 @@ public class UserController {
     @GetMapping(value = "userPopup")
     public ModelAndView userPopup() {
         ModelAndView mav = new ModelAndView("user/userPopup");
-
+        List<Auth> list = new ArrayList<>();
+        list = authRepo.findAll();
+        mav.addObject("list", list);
         return mav;
 
 
@@ -66,6 +68,9 @@ public class UserController {
     public ModelAndView userDetail(@PathVariable Integer uIdx) {
         ModelAndView mav = new ModelAndView("user/userPopup");
         User user = userRepo.findUserByuIdx(uIdx);
+        List<Auth> list = new ArrayList<>();
+        list = authRepo.findAll();
+        mav.addObject("list", list);
 
         mav.addObject("user", user);
         return mav;

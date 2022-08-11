@@ -40,7 +40,6 @@ public class Category extends BaseEntity {
     private int cateOrder;
     private String cateDisplay;
 
-    @Convert(converter = ConvertList.class)
     private List<String> cateSpec_list;
 
     private String cateMemo;
