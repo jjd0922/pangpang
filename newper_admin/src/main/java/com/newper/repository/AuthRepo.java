@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface AuthRepo extends JpaRepository<Auth, Integer> {
 
-    List<Auth> findByauthType(MenuType authType);
 }

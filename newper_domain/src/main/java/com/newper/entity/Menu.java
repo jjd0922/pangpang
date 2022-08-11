@@ -24,7 +24,6 @@ public class Menu {
 
     private String menuName;
 
-    private String menuUrl;
 
     @Enumerated(EnumType.STRING)
     private MenuType menuType;
