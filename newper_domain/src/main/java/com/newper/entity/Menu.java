@@ -20,6 +20,8 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer menuIdx;
+
     private String menuName;
 
     private String menuUrl;
@@ -40,10 +42,6 @@ public class Menu {
 
     /** param url이 menu url or submenu url 인 경우 active를 return*/
     public String getActiveClass(String url){
-        if(menuUrl != null && menuUrl.equals(url)){
-            return "active";
-        }
-
         Optional<SubMenu> subMenu = subMenuList.stream().filter(sm -> {
             return sm.getSmUrl().equals(url);
         }).findAny();
