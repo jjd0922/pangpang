@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>입고검수 요청</title>
+    <title>매입처반품</title>
 
     <th:block th:replace="/common/css.html"></th:block>
+
     <style>
         .btn-group{
 
+            margin-left: 84%;
+        }
+
+        #uploadBtn{
             float: right;
 
         }
     </style>
+
 
 </head>
 
@@ -27,7 +33,7 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold" >입고검수 요청</h4>
+                            <h4 class="font-weight-semibold" >반품 관리</h4>
                             <!--  <div class="text-white-50 ml-3">설명글영역</div>
                           </div>-->
                         </div>
@@ -38,8 +44,24 @@
                 <div class="card">
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
-                            <legend class="">1.입고검수 등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                            <div class="row">
+                            <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" onclick="cancelBtn()">
+                                        <i class="icon-popout mr-1"></i>작업요청취소
+                                    </a>
 
+
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn">
+                                        <i class="icon-popout mr-1"></i>작업중(출고)
+                                    </a>
+
+
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="finishBtn">
+                                        <i class="icon-popout mr-1"></i>작업완료(입고)
+                                    </a>
+                                </div>
+                            </div>
                             <div class="row">
                                 <!-- 입력필드 -->
                                 <div class="col-sm-12 ">
@@ -47,22 +69,19 @@
                                         <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                  입고검수코드
+                                                                  반품코드
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_NAME" class="form-control">
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                   작업지시자(내부)
-                                                                    <a class="badge badge-sm badge-primary ml-1" onclick="inOperationModal()">검색</a>
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_TEL" class="form-control">
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                입고검수업체
-                                                                <a class="badge badge-sm badge-primary ml-1" onclick="searchComNameModal()">검색</a>
-                                                                 <!-- <a href="daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>-->
+                                                                    매입처
                                                                 </span>
                                                             </span>
                                             <input type="text" class="form-control "  name="" placeholder="">
@@ -73,17 +92,17 @@
                                                             </span>
                                             <input type="text" name="U_NAME" class="form-control">
                                         </div>
+                                    </div>
                                 </div>
-                                </div>
-                               </div>
-                                <div class="row">
+                            </div>
+                            <div class="row">
 
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                  입고검수 상태
+                                                                  반품 작업 상태
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_TEL" class="form-control">
@@ -95,7 +114,7 @@
                                             <input type="text" name="U_TEL" class="form-control">
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                  입고검수담당자(업체)
+                                                                  업체담당자
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_TEL" class="form-control">
@@ -108,9 +127,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
@@ -121,14 +140,40 @@
                                             <input type="text" name="U_TEL" class="form-control">
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                  요청메모
+                                                                  반품예정액 합계
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  반품액(확정) 합계
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  완료/요청건
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_TEL" class="form-control">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                  요청메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -161,23 +206,24 @@
                                 <div class="card-body popup-contents">
                                     <fieldset class="mb-0">
                                         <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                        <div class="btn-group" id="2btn">
+                                            <div class="btn-group2" id="2btn">
 
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="barcodeBtn">
-                                                <i class="icon-popout mr-1"></i>바코드
-                                            </a>
+                                                <a type="button" class="badge badge-sm badge-primary ml-1" id="barcodeBtn">
+                                                    반품완료
+                                                </a>
+
+                                                <a type="button" class="badge badge-sm badge-secondary ml-1" id="addBtn">
+                                                  반품불가
+                                                </a>
 
 
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="addBtn">
-                                                <i class="icon-popout mr-1"></i>추가
-                                            </a>
-
-
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="deleteBtn">
-                                                <i class="icon-popout mr-1"></i>삭제
-                                            </a>
-
-                                        </div>
+                                                <a type="button" class="badge badge-sm badge-primary ml-1" id="uploadBtn">
+                                                  반품결과 업로드
+                                                </a>
+                                            </div>
+                                    </fieldset>
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
                 </div>
@@ -185,169 +231,22 @@
         </div>
     </div>
 </div>
-
-
-
-
-<th:block th:replace="/modal/inOperationModal.html"/>
-
-<th:block th:replace="/modal/searchComNameModal.html"/>
-
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
+<th:block th:replace="/modal/cancelModal.html"/>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
-
-<!-- 메뉴 호버 -->
-<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
-
-<!-- input -->
-<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
-<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
-<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
-<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
-
-<!-- 데이터테이블 -->
-<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
-<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
-<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
-<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
-
-<!-- 맞춤 js -->
-<script th:src="@{/assets/js/app.js}"></script>
-<!-- input -->
-<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
-<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
-<!-- 데이터테이블 -->
-<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
-
-<script th:src="@{/assets/js/common.js}"></script>
-<!-- 다음 주소 api -->
-<script th:src="@{/assets/js/daum_address.js}"></script>
-<!-- 멀티 선택 (숫자) -->
-<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
-<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
-
-
 <script th:inline="javascript">
 
-
-
-    function inOperationModal(){
-        $('#operationModal').modal('show');
-    }
-
-    function searchComNameModal(){
+    function cancelBtn(){
         $('#comNameModal').modal('show');
     }
 
-
 </script>
-<script>
-    $('#modalTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
-        serverSide: true,
-        ajax:{
-            url:'/process/modal.dataTable?'+$('#modalForm').serialize(),
-            type:'post'
-        },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
-        "columns" : [
-            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
-                    return '<a class="btn btn-secondary" onclick="selectUser(this, '+full.U_IDX+')">'+data+'</a>';
-                }}
-            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
-            ,{'class':'m-w-max', 'title':'직급','data':'U_POSITION'}
-            ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL', 'render': function (data,type,full,meta){
-                    if(data==null){
-                        return '';
-                    }else{
-                        return '';
-                    }
-                }}
-            ,{'class':'m-w-max', 'title':'전화번호','data':' U_PHONE' ,'render': function (data,type,full,meta){
-                    if(data==null){
-                        return '';
-                    }else{
-                        return '';
-                    }
-                }}
-        ]
-    });
 
-
-        $('#modalTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-        style: 'multi',
-        selector: 'td:first-child'
-    },
-        serverSide: true,
-        ajax:{
-        url:'/process/modal2.dataTable?'+$('#modalForm').serialize(),
-        type:'post'
-    },
-        columnDefs: [ {
-        orderable: false,
-        targets:   [0]
-    } ],
-        "columns" : [
-    {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-        return meta.settings._iDisplayStart+meta.row+1;
-    }}
-        ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME','render':function (data,type,full,meta){
-        return '<a class="btn btn-secondary" onclick="selectCompany(this, '+full.COM_IDX+')">'+data+'</a>';
-    }}
-        ,{'class':'m-w-max', 'title':'등록일','data':'COM_CREATED_DATE'}
-        ,{'class':'m-w-max', 'title':'등록시간','data':'COM_CREATED_TIME'}
-        ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE', 'render': function (data,type,full,meta){
-        if(data==null){
-        return '';
-    }else{
-        return '';
-    }
-    }}
-        ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE' ,'render': function (data,type,full,meta){
-        if(data==null){
-        return '';
-    }else{
-        return '';
-    }
-    }}
-        ,{'class':'m-w-max', 'title':'상태','data':'COM_STATE'}
-        ,{'class':'m-w-max', 'title':'MID','data':'COM_MID'}
-        ,{'class':'m-w-max', 'title':'대표자명','data':'COM_CEO'}
-
-        ]
-    });
-
-
-        $('#modalForm').on('keyup',function(event){
-        if(event.keyCode==13){searchBtn();return false;}
-    });
-
-
-
-    function selectUser(obj, cg_u_idx){
-        $('input[name=CG_U_NAME]').val(obj.innerText);
-        $('input[name=CG_U_IDX]').val(u_idx);
-        $('#inOperationeModal').modal('hide');
-    }
-</script>
-</body>
+    </body>
 </html>
+
+
+

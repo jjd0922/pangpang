@@ -60,4 +60,36 @@ public class ProcessController {
 
         return mav;
     }
+
+    /**망실 팝업**/
+    @GetMapping(value = "lostPop")
+    public ModelAndView lostPopup() {
+        ModelAndView mav = new ModelAndView("process/lostPop");
+
+        return mav;
+    }
+    /**재고인계 팝업**/
+    @GetMapping(value = "productHandoverPop")
+    public ModelAndView productHandoverPopup() {
+        ModelAndView mav = new ModelAndView("process/productHandoverPop");
+
+        return mav;
+    }
+
+    /**매입처반품 페이지**/
+    @GetMapping(value = "purchasingReturn")
+    public ModelAndView purchasingReturn() {
+        ModelAndView mav = new ModelAndView("process/purchasingReturn");
+
+        return mav;
+    }
+
+
+    /**매입처반품 반품관리팝업**/
+    @GetMapping(value = "returnManagePop")
+    public ModelAndView returnManagePop() {
+        ModelAndView mav = new ModelAndView("process/returnManagePop");
+
+        return mav;
+    }
 }

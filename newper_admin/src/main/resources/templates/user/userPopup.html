@@ -196,7 +196,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                     상호법인명
-                                                                    <a class="badge badge-sm badge-primary ml-1" onclick="searchComNameModal()">검색</a>
+                                                                    <a id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="searchComNameModal()">검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
@@ -440,9 +440,6 @@
 
 
 <script th:inline="javascript">
-
-
-
     function resetPwd(uIdx){
         if(window.confirm("비밀번호를 초기화 하시겠습니까?")){
 
@@ -498,6 +495,8 @@
         }
 
         if(U_TYPE =='INSIDE'){
+            $('#searchCompanyBtn').css('display', 'none');
+
             $.ajax({
                 url:'/user/changeGubun.ajax',
                 type:'post',
@@ -510,11 +509,14 @@
         }else{
             $('input[name=COM_NAME]').val('');
             $('input[name=U_COM_IDX]').val('');
+            $('#searchCompanyBtn').css('display', 'block');
         }
-
-
-
     }
+
+    $(function() {
+        changeGubun();
+    });
+
     /** 다음 주소 api사용 */
     function daum_address() {
         new daum.Postcode({
