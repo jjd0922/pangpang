@@ -33,22 +33,7 @@
                                             </span>
                                     </div>
                                 </h6>
-                                <!--<div class="header-elements text-right">
-
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
-                                        <i class="icon-popout mr-1"></i>신규등록
-                                    </a>
-
-
-                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <div class="list-icons ml-2">
-                                            <a class="list-icons-item" data-action="collapse"></a>
-                                        </div>
-                                    </div>
-                                </div>-->
                             </div>
-
-
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
                                     <form id="boardForm">
@@ -307,16 +292,16 @@
                                         </a>
 
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="popLostBtn">
                                             <i class="icon-popout mr-1"></i>망실
                                         </a>
 
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="popHandoverBtn">
                                             <i class="icon-popout mr-1"></i>재고인계
                                         </a>
+                                    </div>
                                 </div>
-                            </div>
                             <table class="table" id="boardTable"></table>
                           </div>
                      </div>
@@ -436,6 +421,14 @@
     });
     $('#popRecheckBtn').on('click',function (){
         var focusPopup = window.open('recheckPop', 'recheck_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popLostBtn').on('click',function (){
+        var focusPopup = window.open('lostPop', 'lost_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#popHandoverBtn').on('click',function (){
+        var focusPopup = window.open('productHandoverPop', 'handover_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>
