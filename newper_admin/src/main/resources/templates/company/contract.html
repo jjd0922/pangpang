@@ -27,25 +27,12 @@
                                                 <i class="mr-1" th:classappend="${mainIcon}"></i>
                                                 <th:block th:text="${mainTitle}"></th:block>
                                             </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                        <!--<span class="breadcrumb-item font-weight-bold text-secondary">
                                                 <i class="mr-1" th:classappend="${subIcon}"></i>
                                                 <th:block th:text="${subTitle}"></th:block>
-                                            </span>
+                                            </span>-->
                                     </div>
                                 </h6>
-                                <div class="header-elements text-right">
-
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
-                                        <i class="icon-popout mr-1"></i>신규등록
-                                    </a>
-
-
-                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <div class="list-icons ml-2">
-                                            <a class="list-icons-item" data-action="collapse"></a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="collapse show" id="collapse-button-collapsed">
@@ -131,6 +118,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
                             <table class="table" id="companyTable"></table>
 
@@ -199,10 +195,13 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'title':'상호법인명','data':'COM_NAME','defaultContent':''}
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'상호법인명','data':'COM_NAME','defaultContent':''}
             ,{'title':'MID','data':'COM_MID','defaultContent':''}
             ,{'title':'계약명','data':'CC_NAME','defaultContent':'', 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: detailContract('+ full.CC_IDX +')" class="badge badge-primary">' + full.CC_NAME + '</a>';
+                    return '<a href="#" onclick="detailContract('+ full.CC_IDX +')" class="badge badge-primary">' + full.CC_NAME + '</a>';
                 }}
             ,{'title':'계약구분','data':'CC_TYPE_STR','defaultContent':''}
             ,{'title':'상태','data':'CC_STATE_STR','defaultContent':''}
@@ -212,15 +211,13 @@
             ,{'title':'계약시작일','data':'CC_START','defaultContent':''}
             ,{'title':'계약종료일','data':'CC_END','defaultContent':''}
             ,{'title':'정액/정률','data':'CC_FEE_TYPE_STR','defaultContent':''}
-            ,{'title':'계약번호','data':'CC_NUM','defaultContent':'', 'render':function(data,type,full,meta){
-                    return '<button type="button" onclick="detailContract(' + full.ccIdx + ')">' + data + '</button>'
-                }}
+            ,{'title':'계약번호','data':'CC_NUM','defaultContent':'','defaultContent':''}
             ,{'title':'등록자','data':'CC_CREATED_BY','defaultContent':''}
             ,{'title':'등록일','data':'CC_CREATED_DATE','defaultContent':''}
             ,{'title':'수정자','data':'CC_MODIFIED_BY','defaultContent':''}
             ,{'title':'수정일','data':'CC_MODIFIED_DATE','defaultContent':''}
             ,{'title':'수정이력','data':'CC_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                    return '<button type="button" onclick="detailContract(' + full.ccIdx + ')">상세</button>'
+                    return '<a href="#" onclick="detailContract('+ full.CC_IDX +')" class="badge badge-primary">상세</a>';
                 }}
         ]
     });
@@ -230,7 +227,7 @@
     });
 
     $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('/company/contractPop', 'contractNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/company/contractPop', 'contractNew', 'width=1030, height=850, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>

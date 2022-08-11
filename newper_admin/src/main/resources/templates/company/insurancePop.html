@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${insurance != null} ? '보증보험 조회/수정'">보증보험 등록</title>
+    <title th:text="${insurance} ? '보증보험 조회/수정'">보증보험 등록</title>
     <th:block th:replace="/common/css.html"></th:block>
     <style>
         .table-hover {
@@ -23,9 +23,8 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold" th:if="${insurance == null}"><i class="icon-office mr-1"></i>보증보험 등록</h4>
-                            <h4 class="font-weight-semibold" th:unless="${insurance == null}"><i class="icon-office mr-1"></i>보증보험 조회/수정</h4>
-                            <div class="text-white-50 ml-3">설명글영역</div>
+                            <h4 class="font-weight-semibold" th:unless="${insurance}"><i class="icon-office mr-1"></i>보증보험 등록</h4>
+                            <h4 class="font-weight-semibold" th:if="${insurance}"><i class="icon-office mr-1"></i>보증보험 조회/수정</h4>
                         </div>
                     </div>
                 </div>
@@ -53,7 +52,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">보증보험구분</span>
                                                             </span>
-                                                        <select data-placeholder="구분 선택" name="ciType" class="form-control select">
+                                                        <select data-placeholder="구분 선택" name="ciType" class="form-control select" th:disabled="${insurance} ? true">
                                                             <option th:each="opt: ${T(com.newper.constant.CiType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(insurance?.ciType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
@@ -67,7 +66,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">보증보험 발행상태</span>
                                                             </span>
-                                                        <select data-placeholder="상태 선택" name="ciInsuranceState" class="form-control select">
+                                                        <select data-placeholder="상태 선택" name="ciInsuranceState" class="form-control select" th:disabled="${insurance} ? true">
                                                             <option th:each="opt: ${T(com.newper.constant.CiInsuranceState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(insurance?.ciInsuranceState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
@@ -80,10 +79,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                    거래처<a href="#" id="searchComBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                                    거래처<a href="#" th:unless="${insurance}" id="searchComBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comName" class="form-control" th:value="${insurance?.company?.comName}" readonly>
+                                                        <input type="text" name="comName" class="form-control" th:value="${insurance?.company?.comName}" th:disabled="${insurance} ? true">
                                                         <input type="hidden" name="comIdx">
                                                     </div>
                                                 </div>
@@ -98,7 +97,7 @@
                                                                     발행사
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ciCompany" class="form-control" th:value="${insurance?.ciCompany}">
+                                                        <input type="text" name="ciCompany" class="form-control" th:value="${insurance?.ciCompany}" th:disabled="${insurance} ? true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,7 +107,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
+                                                                <span class="input-group-text">
                                                                     증권명
                                                                 </span>
                                                             </span>
@@ -140,7 +139,7 @@
                                                                     보증 시작일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="ciStartDate" class="form-control daterange-single" th:value="${insurance?.ciStartDate}">
+                                                        <input type="text" name="ciStartDate" class="form-control daterange-single" th:value="${insurance?.ciStartDate}" th:disabled="${insurance} ? true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,7 +191,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
+                                                                <span class="input-group-text">
                                                                     보험가능금액
                                                                 </span>
                                                             </span>
@@ -396,42 +395,19 @@
 
 <script>
     function saveAction(){
-
-        if ($('input[name="ciCompany"]').val() == null || $('input[name="ciCompany"]').val() == "") {
-            alert("발행사는 필수입력값입니다.");
-            return false;
-        }
-        if ($('input[name="ciName"]').val() == null || $('input[name="ciName"]').val() == "") {
-            alert("증권명은 필수입력값입니다.");
-            return false;
-        }
-        if ($('input[name="ciNum"]').val() == null || $('input[name="ciNum"]').val() == "") {
-            alert("증권번호는 필수입력값입니다.");
-            return false;
-        }
-        if ($('input[name="ciFee"]').val() == null || $('input[name="ciFee"]').val() == "") {
-            alert("보험가입금액은 필수입력값입니다.");
-            return false;
-        }
-        if ($('input[name="ciPercent"]').val() == null || $('input[name="ciPercent"]').val() == "") {
-            alert("보험요율은 필수입력값입니다.");
-            return false;
-        }
-        if ($('input[name="ciMoney"]').val() == null || $('input[name="ciMoney"]').val() == "") {
-            alert("보험가능금액은 필수입력값입니다.");
-            return false;
-        }
-
         $("#regiForm").submit();
     }
 
     function selectCompany(row) {
-        debugger;
         var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
 
         $('#searchComModal').modal('hide');
-        $('#regiForm input[name="comName"]').val(rowData.COM_NAME);
+        $('#regiForm input[name="comName"]').val(rowData.COM_NAME).attr('readonly', true);
         $('input[name="comIdx"]').val(rowData.COM_IDX);
+    }
+
+    function dontChange(name) {
+        debugger;
     }
 </script>
 <script>

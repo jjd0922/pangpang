@@ -87,7 +87,6 @@ public class Company extends BaseEntity {
     @OneToMany(mappedBy = "company")
     private List<Insurance> insurances;
 
-
     @PrePersist
     @PreUpdate
     public void preSave(){

@@ -26,6 +26,9 @@ public class CompanyEmployee {
     @OneToMany(mappedBy = "companyEmployee")
     private List<Company> company;
 
+    @OneToMany(mappedBy = "companyEmployee")
+    private List<Contract> contract;
+
     private String ceName;
     private String ceDepart;
     private String cePosition;
@@ -44,14 +47,14 @@ public class CompanyEmployee {
         }
     }
 
-    public void ceAllUpdate(Map<String, Object> map) {
-        setCeName(map.get("ceName").toString());
-        setCeDepart(map.get("ceDepart").toString());
-        setCePosition(map.get("cePosition").toString());
-        setCeMail(map.get("ceMail").toString());
-        setCePhone(map.get("cePhone").toString());
-        setCeTel(map.get("ceTel").toString());
-        setCeMemo(map.get("ceMemo").toString());
+    public void ceAllUpdate(CompanyEmployee ce) {
+        setCeName(ce.getCeName());
+        setCeDepart(ce.getCeDepart());
+        setCePosition(ce.getCePosition());
+        setCeMail(ce.getCeMail());
+        setCePhone(ce.getCePhone());
+        setCeTel(ce.getCeTel());
+        setCeMemo(ce.getCeMemo());
     }
 
 }

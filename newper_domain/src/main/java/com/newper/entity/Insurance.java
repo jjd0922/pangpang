@@ -51,8 +51,6 @@ public class Insurance extends CreatedEntity {
             throw new MsgException("보증보험 발행상태를 선택해주세요.");
         } else if (!StringUtils.hasText(getCiCompany())) {
             throw new MsgException("발행사를 입력해주세요.");
-        } else if (!StringUtils.hasText(getCiName())) {
-            throw new MsgException("증권명을 입력해주세요.");
         } else if (getCiStartDate() == null || getCiEndDate() == null) {
             throw new MsgException("올바른 보증기간을 선택해주세요.");
         } else if (!StringUtils.hasText(getCiNum())) {
@@ -61,24 +59,16 @@ public class Insurance extends CreatedEntity {
             throw new MsgException("올바른 보험가입금액을 입력해주세요.");
         } else if (getCiPercent() == null || getCiPercent() < 0) {
             throw new MsgException("올바른 보험요율을 입력해주세요.");
-        } else if (getCiMoney() == null || getCiMoney() < 0) {
-            throw new MsgException("올바른 보험 가능 금액을 입력해주세요.");
         }
     }
 
     public void updateInsurance(Insurance insurance) {
-        setCiType(insurance.getCiType());
-        setCiInsuranceState(insurance.getCiInsuranceState());
-        setCompany(insurance.getCompany());
-        setCiCompany(insurance.getCiCompany());
         setCiName(insurance.getCiName());
-        setCiNum(insurance.getCiNum());
-        setCiStartDate(insurance.getCiStartDate());
         setCiEndDate(insurance.getCiEndDate());
+        setCiNum(insurance.getCiNum());
         setCiFee(insurance.getCiFee());
         setCiPercent(insurance.getCiPercent());
         setCiMoney(insurance.getCiMoney());
-//        setCiFile(insurance.getCiFile());
         setCiMemo(insurance.getCiMemo());
     }
 }

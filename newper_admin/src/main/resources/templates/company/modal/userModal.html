@@ -69,3 +69,14 @@
         </div>
     </div>
 </div>
+
+<script th:inline="javascript">
+    function showUserModal() {
+        $('#searchUserModal').modal('show');
+        selectUserDatatable();
+    }
+
+    function searchUserForCompany() {
+        $("#userModalTable").DataTable().page('first').ajax.url('/company/userModal.dataTable?'+$('#userModalForm').serialize()).load();
+    }
+</script>

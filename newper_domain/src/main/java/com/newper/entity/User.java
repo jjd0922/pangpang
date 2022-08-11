@@ -57,6 +57,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Company> companies;
 
+    @OneToMany(mappedBy = "user")
+    private List<Contract> contracts;
+
     /*생년월일*/
     public String getUBirthStr(){
         return getUBirth().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));

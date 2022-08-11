@@ -20,6 +20,7 @@
     </sql>
 
     <sql id="includeCompanyContractDataTable">
+        AND CC_STATE = 'NORMAl'
         <if test='ccCreatedDate != null and ccCreatedDate != ""'>AND COMPANY_CONTRACT.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
         <if test="ccTaxDate != null and ccTaxDate != ''">AND CC_TAX_DATE BETWEEN SUBSTR(#{ccTaxDate}, 1, 10) AND SUBSTR(#{ccTaxDate}, 13)</if>
         <if test="ccNum != null and ccNum != ''">AND CC_NUM LIKE CONCAT('%', #{ccNum}, '%')</if>
