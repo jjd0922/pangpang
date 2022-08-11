@@ -32,7 +32,6 @@ public class EventGroup {
 
     private String egTitle;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String egContent;
 
     private Date egStartDate;

@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.*;
 
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class DataTableAop {
 
     @Autowired

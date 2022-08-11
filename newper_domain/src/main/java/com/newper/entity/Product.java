@@ -44,8 +44,64 @@ public class Product extends BaseEntity {
     private String pType2;
     private String pType3;
 
-    private String pInfo;
+    /** 입점사 idx */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_COM_IDX", referencedColumnName = "comIdx")
+    private Company storeName;
 
+    /** 제조사 idx */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx")
+    private Company manufactureName;
+
+    /** A/S업체 idx */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_COM_IDX3", referencedColumnName = "comIdx")
+    private Company afterServiceName;
+
+    private String pThumbFile1;
+    private String pThumbFileName1;
+
+    private String pThumbFile2;
+    private String pThumbFileName2;
+
+    private String pThumbFile3;
+    private String pThumbFileName3;
+
+    private String pThumbFile4;
+    private String pThumbFileName4;
+
+    private String pThumbFile5;
+    private String pThumbFileName5;
+
+    private String pThumbFile6;
+    private String pThumbFileName6;
+
+    private String pContent1;
+    private String pContent2;
+    private String pContent3;
+
+    private String pMemo;
+    private String pTag;
+    private String pBlogUrl;
+    private String pPriceUrl;
+    private String pYoutubeUrl;
+
+    private Integer pCost;
+    private Integer pRetailPrice;
+    private Integer pSellPrice;
+    private Integer pDelPrice;
+
+    private String pDelCompany;
+
+    private int pDelTogether;
+
+    private boolean pFreeInterest;
+    private boolean pDelFree;
+
+    private String pNaver;
+
+    private String pInfo;
     private String pOption;
 
 

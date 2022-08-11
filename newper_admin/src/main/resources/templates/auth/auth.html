@@ -72,7 +72,7 @@
                                         <table class="table table-bordered table-xs w-auto center-col my-1">
                                             <tbody>
                                                 <tr th:each=" am : ${authMap}">
-                                                    <td class="bg-dark-100" th:text="${am.key}">신용정보</td>
+                                                    <td class="bg-dark-100" th:text="${am.key}">마스킹 option Group</td>
                                                     <td>
                                                         <div class="form-check form-check-inline">
                                                             <label class="form-check-label" th:each="mask : ${am.value}">
@@ -95,8 +95,7 @@
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
                                         <span class="breadcrumb-item">
-                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                            <th:block th:text="${mainTitle}"></th:block> 권한 설정
+                                            권한 설정
                                         </span>
                                     </div>
                                 </h6>
@@ -112,12 +111,29 @@
                                 <table class="table table-bordered table-xs">
                                     <thead>
                                     <tr>
+                                        <th>대메뉴</th>
+                                        <th>중메뉴</th>
                                         <th>권한</th>
-                                        <th>매뉴</th>
                                         <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+
+                                    <th:block th:each="menus: ${T(com.newper.component.MenuList).menus}">
+                                        <th:block th:each="submenu, i: ${menus.subMenuList}">
+                                            <tr>
+                                                <th:block th:if="${i.index == 0}">
+                                                    <td th:rowspan="${i.size}" th:text="${menus.menuName}"></td>
+                                                </th:block>
+                                                <td th:text="${submenu.smName}"></td>
+                                                <td th:text="${submenu.smAuth}"></td>
+                                                <td>
+                                                    <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                    </th:block>
+
                                     <tr>
                                         <td>super admin</td>
                                         <td>

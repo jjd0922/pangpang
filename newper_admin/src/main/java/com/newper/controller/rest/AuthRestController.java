@@ -27,8 +27,7 @@ public class AuthRestController {
     public ReturnMap list(String authType){
         ReturnMap rm = new ReturnMap();
 
-        MenuType menuType = MenuType.valueOf(authType);
-        rm.put("list", authRepo.findByauthType(menuType));
+        rm.put("list", authRepo.findAll());
 
         return rm;
     }

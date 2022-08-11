@@ -23,24 +23,16 @@
                             <h4 class="font-weight-semibold" th:unless="${user == null}"><i class="icon-office mr-1"></i>사용자 상세/수정</h4>
                           <!--  <div class="text-white-50 ml-3">설명글영역</div>
                         </div>-->
-                    </div>
-
-
-                </div>
-            </div>
-
-
                         </div>
+                    </div>
+                 </div>
+             </div>
             <form id="userForm">
-                        <div class="card">
-                            <div class="card-body popup-contents">
-
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">1. 사용자정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-
-                                        <div class="row">
-                                            <!-- 입력필드 -->
+                <div class="card">
+                    <div class="card-body popup-contents">
+                        <fieldset class="mb-0">
+                                <legend class="">1. 사용자정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                    <div class="row">
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -163,26 +155,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </fieldset>
-                                    <!-- 타이틀 구분 끝-->
-                            </div>
-                        </div>
-
-
+                                    </div>
+                        </fieldset>
+                    </div>
+                </div>
                         <div class="card">
                             <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
                                     <fieldset class="mb-0">
                                     <legend class="">2. 업체정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-
                                         <div class="row">
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">사용자 구분 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
-                                                            </span>
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">사용자 구분 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
+                                                        </span>
                                                         <select data-placeholder="본사" class="form-control select" data-fouc name="U_TYPE" onchange="changeGubun()">
                                                             <option th:each="opt:${T(com.newper.constant.UType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
@@ -296,10 +283,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                            </fieldset>
-                            <!-- 타이틀 구분 끝-->
+                                    </fieldset>
+                            </div>
                         </div>
-                    </div>
 
                         <div class="card">
                             <div class="card-body popup-contents">
@@ -311,7 +297,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                         <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
+                                                            <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
                                                         </span>
                                                         <select data-placeholder="선택" class="form-control select" data-fouc name="U_STATE">
                                                             <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(user?.uState) eq opt.name()}"></option>
@@ -324,9 +310,9 @@
                                                 <div class="form-group ">
                                                     <div class="input-group ">
                                                        <span class="input-group-prepend ">
-                                                        <span class="input-group-text requested">
+                                                          <span class="input-group-text requested">
                                                          로그인 ID
-                                                        </span>
+                                                          </span>
                                                        </span>
                                                         <input type="text" name="U_ID" class="form-control" th:value="${user?.uId}" onkeyup="copyId()">
                                                         <input type="hidden" name="U_IDX" class="form-control" th:value="${user?.uIdx}">
@@ -340,7 +326,6 @@
                                                            <span class="input-group-prepend">
                                                                <span class="input-group-text">
                                                              패스워드
-
                                                                    <button th:if="${user!=null}" th:value="${user?.uPassword}" onclick="resetPwd()" class="badge badge-sm badge-primary ml-1">초기화</button>
                                                                </span>
                                                            </span>
@@ -364,11 +349,9 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                              </fieldset>
-                            <!-- 타이틀 구분 끝-->
+                                    </fieldset>
+                            </div>
                         </div>
-                    </div>
             </form>
 <!--
                             <div class="card-footer bg-white d-flex justify-content-sm-between align-items-sm-center">
@@ -376,27 +359,17 @@
 
                                 <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
                             </div>-->
-                        </div>
-                        <!--이미지 라디오 선택-->
 
-                    </div>
-                </div>
 
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+                <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
             </div>
-            <!-- /content area -->
-
+            <!-- /footer -->
         </div>
-        <!-- /inner content -->
-
-        <!-- Footer -->
-        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
-        </div>
-        <!-- /footer -->
     </div>
 </div>
-
 
 <th:block th:replace="/modal/searchComNameModal.html"/>
 
@@ -460,13 +433,6 @@
             $('#resetPwdModal').modal('show');
         }
     }
-
-
-
-
-
-
-
     function saveAction(){
         $("#userForm").submit();
 
@@ -512,6 +478,8 @@
             $('#searchCompanyBtn').css('display', 'block');
         }
     }
+
+
 
     $(function() {
         changeGubun();

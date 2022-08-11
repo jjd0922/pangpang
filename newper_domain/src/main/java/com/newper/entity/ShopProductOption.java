@@ -25,7 +25,6 @@ public class ShopProductOption {
     @JoinColumn(name="SPO_GS_IDX", referencedColumnName = "gsIdx")
     private GoodsStock goodsStock;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String spoName;
 
     private Integer spoMoney;
