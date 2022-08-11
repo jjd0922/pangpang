@@ -45,10 +45,8 @@ public class ProductController {
     public ModelAndView categoryCreate(ParamMap paramMap,@PathVariable int cate_depth){
         ModelAndView mav = new ModelAndView("product/category/category_create");
         mav.addObject("cate_depth",cate_depth);
-        if(cate_depth==2){
-            mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(1));
-        }else if(cate_depth==3){
-            mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(2));
+        if(cate_depth > 1){
+            mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(cate_depth-1));
         }
         return mav;
     }

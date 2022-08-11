@@ -35,13 +35,16 @@ public class DataTableAop {
 
         File enumDir = new File(ClassLoader.getSystemResource("com/newper/constant").getFile());
         for (String s : enumDir.list()) {
-            if(!s.equals("basic")){
-                s = s.replace(".class", "");
+            if(s.equals("basic")){
+                continue;
+            }else if(s.equals("etc")){
+                continue;
+            }
 
-                Object[] enumConstants = Class.forName("com.newper.constant." + s).getEnumConstants();
-                if(enumConstants instanceof EnumOption[]){
-                    enumClasses.put(s.replaceAll("([a-z])([A-Z]+)","$1_$2").toLowerCase(), (EnumOption[])enumConstants);
-                }
+            s = s.replace(".class", "");
+            Object[] enumConstants = Class.forName("com.newper.constant." + s).getEnumConstants();
+            if(enumConstants instanceof EnumOption[]){
+                enumClasses.put(s.replaceAll("([a-z])([A-Z]+)","$1_$2").toLowerCase(), (EnumOption[])enumConstants);
             }
         }
     }
