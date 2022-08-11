@@ -28,7 +28,7 @@ public class Product extends BaseEntity {
 
     /** 브랜드 */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_CATE_IDX2", referencedColumnName = "cateIdx2")
+    @JoinColumn(name = "P_CATE_IDX2", referencedColumnName = "cateIdx")
     private Category brand;
 
     private String pCode;
@@ -51,12 +51,12 @@ public class Product extends BaseEntity {
 
     /** 제조사 idx */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx2")
+    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx")
     private Company manufactureName;
 
     /** A/S업체 idx */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_COM_IDX3", referencedColumnName = "comIdx3")
+    @JoinColumn(name = "P_COM_IDX3", referencedColumnName = "comIdx")
     private Company afterServiceName;
 
     private String pThumbFile1;
