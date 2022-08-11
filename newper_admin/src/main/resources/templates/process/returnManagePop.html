@@ -231,7 +231,9 @@
         </div>
     </div>
 </div>
-<th:block th:replace="/modal/cancelModal.html"/>
+<th:block th:replace="process/modal/cancelModal.html"/>
+<!--<th:block th:replace="process/modal/ingModal.html"/>
+<th:block th:replace="process/modal/finishModal.html"/>-->
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
@@ -240,12 +242,14 @@
 <script th:inline="javascript">
 
     function cancelBtn(){
-        $('#comNameModal').modal('show');
+        $('#cancelModal').modal('show');
     }
 
+    $('#modalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
 </script>
-
-    </body>
+</body>
 </html>
 
 

@@ -92,4 +92,14 @@ public class ProcessController {
 
         return mav;
     }
+
+    /**매입처반품 반품관리팝업**/
+    @GetMapping(value = "calcelModal")
+    public ModelAndView calcelModal() {
+        ModelAndView mav = new ModelAndView("process/modal/calcelModal");
+
+        return mav;
+    }
+
+
 }
