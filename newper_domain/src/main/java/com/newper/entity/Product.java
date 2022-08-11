@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.PState;
+import com.newper.constant.PType1;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -40,7 +41,8 @@ public class Product extends BaseEntity {
     private String pModel;
     private boolean pUseStock;
 
-    private String pType1;
+    @Enumerated(EnumType.STRING)
+    private PType1 pType1;
     private String pType2;
     private String pType3;
 

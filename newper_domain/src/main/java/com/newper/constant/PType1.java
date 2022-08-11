@@ -3,16 +3,14 @@ package com.newper.constant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 상품 상태*/
+/** 정산구분(정산구분1) PRODUCT.P_TYPE1 */
 @Getter
 @AllArgsConstructor
-public enum PState {
+public enum PType1 {
 
-     PROTO("등록대기")
-    ,SELL("판매")
-    ,STOP("판매중지")
-    ,END("폐기")
+     NORMAL("정상품")
+    ,REFUR("리퍼상품")
     ;
-
     private String option;
+
 }
