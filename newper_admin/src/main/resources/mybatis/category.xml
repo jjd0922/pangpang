@@ -74,13 +74,18 @@
     </select>
 
     <select id="selectCategoryListByCateDepth" resultType="map">
-        select
-            CATE_IDX, CATE_NAME
-        from
-            category
-        where
-            CATE_DEPTH=#{CATE_DEPTH}
-            AND CATE_TYPE='CATEGORY'
+        SELECT
+             PARENT.CATE_NAME PARENT_CATE_NAME
+            ,CATEGORY.CATE_IDX
+            ,CATEGORY.CATE_NAME
+        FROM
+            CATEGORY
+                LEFT JOIN CATEGORY PARENT
+                    ON CATEGORY.CATE_PARENT_IDX=PARENT.CATE_IDX
+        WHERE
+            CATEGORY.CATE_DEPTH=#{CATE_DEPTH}
+            AND CATEGORY.CATE_TYPE='CATEGORY'
+        ORDER BY PARENT.CATE_ORDER,CATEGORY.CATE_ORDER
     </select>
 
     <sql id="includeCategoryDatatableByBrand">
