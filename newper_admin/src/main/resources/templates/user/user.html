@@ -93,7 +93,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -122,10 +122,10 @@
                                     </div>
                                     <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>계정상태변경</button>
                                     <div class="dropdown-menu">
-                                        <a onclick="brandDisplay('Y')" class="dropdown-item">노출</a>
-                                        <a onclick="brandDisplay('N')" class="dropdown-item">미노출</a>
+                                        <a onclick="brandDisplay('Y')" class="dropdown-item">정상</a>
+                                        <a onclick="brandDisplay('N')" class="dropdown-item">중지</a>
                                         <div class="dropdown-divider"></div>
-                                        <a onclick="brandDelete()" class="dropdown-item">삭제</a>
+                                        <a onclick="brandDelete()" class="dropdown-item">퇴사</a>
                                     </div>
                                 </div>
                             </div>
@@ -209,26 +209,28 @@
             targets:   [0]
         } ],*/
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+            {'class':'select-checkbox', 'title':'선택','data':'SP_IDX','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
             ,{'title':'이름','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
                 }}
-            ,{'class':'m-w-max', 'title':'휴대폰번호','data':'U_PHONE'}
-            ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME'}
-            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
-            ,{'class':'m-w-max', 'title':'부서','data':'U_DEPART'}
-            ,{'class':'m-w-max', 'title':'직급(직책)','data':'U_POSITION'}
-            ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL'}
-            ,{'class':'m-w-max', 'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL'}
-            ,{'class':'m-w-max', 'title':'상태','data':'U_STATE'}
-            ,{'class':'m-w-max', 'title':'권한','data':'AUTH_IDX'}
-            ,{'class':'m-w-max', 'title':'등록자','data':'CREATED_BY'}
-            ,{'class':'m-w-max', 'title':'등록일','data':'CREATED_DATE'}
-            ,{'class':'m-w-max', 'title':'수정자','data':'MODIFIED_BY'}
-            ,{'class':'m-w-max', 'title':'수정일','data':'MODIFIED_DATE'}
-           // ,{'class':'m-w-max', 'title':'수정이력','data':'CE_NAME'}
+            ,{'title':'휴대폰번호','data':'U_PHONE'}
+            ,{'title':'상호법인명<br>(소속)','data':'COM_NAME'}
+            ,{ 'title':'사원번호','data':'U_ID'}
+            ,{'title':'부서','data':'U_DEPART'}
+            ,{'title':'직급(직책)','data':'U_POSITION'}
+            ,{'title':'이메일(개인)','data':'U_PERSON_MAIL'}
+            ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL'}
+            ,{'title':'상태','data':'U_STATE'}
+            ,{'title':'권한','data':'AUTH_IDX'}
+            ,{'title':'등록자','data':'CREATED_BY'}
+            ,{'title':'등록일','data':'CREATED_DATE'}
+            ,{'title':'수정자','data':'MODIFIED_BY'}
+            ,{'title':'수정일','data':'MODIFIED_DATE'}
+            ,{'data':'', 'render': function (data) {
+                    return '<a href="#" class="badge badge-primary">보기</a>';
+                }}
 
 
 

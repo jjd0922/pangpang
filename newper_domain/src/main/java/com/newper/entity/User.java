@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.UType;
 import com.newper.entity.common.Address;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
@@ -42,7 +43,9 @@ public class User extends BaseEntity {
     private String uPhone;
     private LocalDate uBirth;
 
-    private String uType;
+    @Enumerated(EnumType.STRING)
+    private UType uType;
+
     private String uDepart;
     private String uPosition;
     private String uJob;

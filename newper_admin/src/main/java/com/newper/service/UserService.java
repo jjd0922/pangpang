@@ -3,6 +3,7 @@ package com.newper.service;
 
 import com.newper.constant.ComType;
 import com.newper.constant.CtType;
+import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
@@ -39,11 +40,11 @@ public class UserService {
         User user = paramMap.mapParam(User.class);
         Auth auth =paramMap.mapParam(Auth.class);
 
-        //com_idx로 내부인지 외부인지 세팅
-//        CtType.MAIN.name()
+        if(paramMap.getString("CT_TYPE_LIST").contains(CtType.MAIN.name())){
+                user.setUType(UType.INSIDE);
+        }else{ user.setUType(UType.OUTSIDE);
 
-        // 권한 idx 가져와서 setAuth 설정
-      //  Auth auth = authRepo.findById(1).orElseThrow(() -> new MsgException("권한이 없습니다."));
+        }
         user.setAuth(auth);
 
         user.setAddress(address);
@@ -70,8 +71,7 @@ public class UserService {
         user.setCompany(company);
         user.setAuth(auth);
         user.setAddress(address);
-//        userRepo.findUserByuIdx(user.getUIdx());
-//        userMapper.insertUser(user.getUIdx());
+
         userRepo.save(user);
         return user.getUIdx();
     }
