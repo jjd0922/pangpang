@@ -164,18 +164,6 @@
                                     <fieldset class="mb-0">
                                     <legend class="">2. 업체정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text requested">사용자 구분 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="팝업창 요소들은 메인화면의 작은 선택요소들과 소스 구성이 다릅니다."></i></span>
-                                                        </span>
-                                                        <select data-placeholder="본사" class="form-control select" data-fouc name="U_TYPE" onchange="changeGubun()">
-                                                            <option th:each="opt:${T(com.newper.constant.UType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <!--입력필드-->
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
@@ -183,7 +171,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                     상호법인명
-                                                                    <a id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="searchComNameModal()">검색</a>
+                                                                    <a id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
@@ -371,7 +359,7 @@
     </div>
 </div>
 
-<th:block th:replace="/modal/searchComNameModal.html"/>
+<th:block th:replace="/company/modal/comModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
@@ -449,42 +437,6 @@
 
     }
 
-
-
-    function changeGubun(){
-        var U_TYPE=$("select[name=U_TYPE]").val();
-        if(U_TYPE =='OUTSIDE'){
-            $(".ex").css('display','none');
-        }else{
-            $(".ex").css('display','');
-
-        }
-
-        if(U_TYPE =='INSIDE'){
-            $('#searchCompanyBtn').css('display', 'none');
-
-            $.ajax({
-                url:'/user/changeGubun.ajax',
-                type:'post',
-                data:'U_TYPE='+U_TYPE,
-                success:function (res){
-                    $('input[name=COM_NAME]').val(res.data.COM_NAME);
-                    $('input[name=U_COM_IDX]').val(res.data.comIdx);
-                }
-            })
-        }else{
-            $('input[name=COM_NAME]').val('');
-            $('input[name=U_COM_IDX]').val('');
-            $('#searchCompanyBtn').css('display', 'block');
-        }
-    }
-
-
-
-    $(function() {
-        changeGubun();
-    });
-
     /** 다음 주소 api사용 */
     function daum_address() {
         new daum.Postcode({
@@ -540,62 +492,19 @@
 
 
     //거래처 검색 모달에서 거래처 선택
-    function selectCompany(obj, com_idx){
-        $('input[name=COM_NAME]').val(obj.innerText);
-        $('input[name=U_COM_IDX]').val(com_idx);
-        $('#comNameModal').modal('hide');
+    function selectCompany(row) {
+        var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
+
+        $('#userForm input[name="COM_NAME"]').val(rowData.COM_NAME);
+        $('#userForm input[name="U_COM_IDX"]').val(rowData.COM_IDX);
+
+        $('#searchComModal').modal('hide');
     }
 
 
+
 </script>
-
 <script>
-    $('#modalTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
-        serverSide: true,
-        ajax:{
-            url:'/user/modal.dataTable?'+$('#modalForm').serialize(),
-            type:'post'
-        },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
-        "columns" : [
-            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME','render':function (data,type,full,meta){
-                    return '<a class="btn btn-secondary" onclick="selectCompany(this, '+full.COM_IDX+')">'+data+'</a>';
-                }}
-            ,{'class':'m-w-max', 'title':'등록일','data':'COM_CREATED_DATE'}
-            ,{'class':'m-w-max', 'title':'등록시간','data':'COM_CREATED_TIME'}
-            ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE', 'render': function (data,type,full,meta){
-                if(data==null){
-                    return '';
-                }else{
-                    return '';
-                }
-                }}
-            ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE' ,'render': function (data,type,full,meta){
-                    if(data==null){
-                        return '';
-                    }else{
-                        return '';
-                    }
-                }}
-            ,{'class':'m-w-max', 'title':'상태','data':'COM_STATE'}
-            ,{'class':'m-w-max', 'title':'MID','data':'COM_MID'}
-            ,{'class':'m-w-max', 'title':'대표자명','data':'COM_CEO'}
-
-        ]
-    });
-
     $('#modalForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });

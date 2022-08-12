@@ -52,61 +52,10 @@ public class UserRestController {
         rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
     }
-    /**사용자등록 상호법인명 검색 모달**/
-    @PostMapping("modal.dataTable")
-    public ReturnDatatable modal(ParamMap paramMap) {
-
-        ReturnDatatable rd = new ReturnDatatable();
-
-
-        rd.setData(companyMapper.selectCompanyDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
-        return rd;
-    }
     /** 사용자 신규등록 처리 */
     @PostMapping(value = "userCreate.ajax")
     public ReturnMap userInsert(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        String uName = paramMap.getString("U_NAME");
-        System.out.println(paramMap.getMap());
-        if (uName == null || uName.equals("")) {
-            throw new MsgException("이름을 입력해주세요.");
-        }
-        String uPhone = paramMap.getString("U_PHONE");
-        if (uPhone == null || uPhone.equals("")) {
-            throw new MsgException("휴대폰번호를 입력해주세요.");
-        }
-        String comName = paramMap.getString("COM_NAME");
-        if (comName == null || comName.equals("")) {
-            throw new MsgException("상호법인명을 입력해주세요.");
-        }
-
-        String uState = paramMap.getString("U_STATE");
-        if (uState == null || uState.equals("")) {
-            throw new MsgException("상태를 선택해주세요.");
-        }
-        String uId = paramMap.getString("U_ID");
-        if (uId == null || uId.equals("")) {
-            throw new MsgException("로그인 ID를 입력해주세요.");
-        }
-        String uPassword = paramMap.getString("U_PASSWORD");
-        if (uPassword == null || uPassword.equals("")) {
-            throw new MsgException("비밀번호를 입력해주세요.");
-        }
-        String authIdx = paramMap.getString("U_AUTH_IDX");
-        if (authIdx == null || authIdx.equals("")) {
-            throw new MsgException("권한을 입력해주세요.");
-        }
-
-        String uBirth = paramMap.getString("U_BIRTH");
-        if ( uBirth.equals("")) {
-            uBirth=null;
-            paramMap.put("U_BIRTH",uBirth);
-
-
-
-        }
-
         int idx = userService.saveUser(paramMap);
 
         rm.setMessage(idx + "");
@@ -133,21 +82,6 @@ public class UserRestController {
         // rm
         rm.put("resetPwd", resetPwd);*/
 
-        return rm;
-    }
-
-    /**사용자 구분 내부일경우 내부업체 defult*/
-    @PostMapping("changeGubun.ajax")
-    public ReturnMap changeGubun(String U_TYPE){
-        ReturnMap rm=new ReturnMap();
-        if(U_TYPE.equals(UType.INSIDE.name())){
-            System.out.println("here!!");
-            //company -> com_idx, com_name return 받아서
-            Optional<Company> company = companyRepo.findById(1);
-            rm.put("comIdx",company.get().getComIdx());
-            rm.put("COM_NAME",company.get().getComName());
-
-        }
         return rm;
     }
 
