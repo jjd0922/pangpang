@@ -1,6 +1,13 @@
 @media (max-width:991px) {
+    body, html {
+        min-width: 100%;
+    }
     .container {
         width: 100%;
+        padding: 0 7%;
+    }
+    section {
+        margin-top: 25px;
     }
     header {
         display: none;
@@ -97,9 +104,167 @@
         height: auto;
         transform: translateX(0);
     }
+
+    /*** 썸네일 슬라이드 ***/
+    .swiper-all {
+        width: 100%;
+        overflow: hidden;
+    }
+    .swiper-timeSale {
+        padding-right: 25%;
+    }
+    .swiper-event-item-group1 {
+        padding-right: 7%;
+    }
+    .swiper-thumbnail {
+        overflow: initial;
+    }
+    .prev-custom, .next-custom {
+        display: none;
+    }
+
+    /* 썸네일 슬라이드 [공통] */
+    .item-condition {
+        padding: 2px 12px;
+        font-size: 11px;
+        margin-right: 0;
+    }
+    .item-inner-wrap {
+        font-size: 12px;
+    }
+    .stock-quantity {
+        font-size: 13px;
+    }
+    .item-price {
+        font-size: 13px;
+        flex: 1;
+    }
+    .item-title {
+        font-size: 14px;
+        height: 32px;
+    }
+    .discount-price {
+        font-size: 14px;
+    }
+    .discount-rate {
+        font-size: 24px;
+    }
+    .purchase-btn {
+        padding: 5px 20px;
+        font-size: 13px;
+    }
+    .item-img {
+        padding: 0;
+    }
+    .item-footer {
+        font-size: 12px;
+    }
+    .star, .heart {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* 타임세일 */
+    .timeSale .swiper-slide {
+        padding: 20px;
+    }
+    .timeSale .item-img {
+        padding: 0 25% 0;
+    }
+    .timeSale .item-title {
+        font-size: 16px;
+        height: 40px;
+    }
+    .timeSale .discount-price {
+        font-size: 16px;
+    }
+
+    /* 반값 이벤트 */
+    .halfPrice .swiper-slide {
+        padding: 15px;
+    }
+
+    @media (max-width:539px) {
+        .timeSale .item-img {
+            padding: 20px 0 0 0;;
+        }
+        .grade-wrap {
+            flex-direction: column;
+        }
+        .grade {
+            margin-right: 0;
+            margin-bottom: 2px;
+        }
+        .item-inner-wrap.item-bedge-wrap {
+            flex-direction: column;
+            align-items: start;
+        }
+        .item-bedge {
+            display: flex;
+            order: 2;
+        }
+        .item-bedge span:first-child {
+            margin-right: 3px;
+        }
+        .buy-count {
+            margin-bottom: 5px;
+            order: 1;
+        }
+        .item-color>span {
+            width: 13px;
+            height: 13px;
+        }
+        .item-color>span>span {
+            width: 9px;
+            height: 9px;
+        }
+    }
+
+    /*** MD 추천 카테고리 ***/
+    .md-tab>li {
+        flex: none;
+        width: auto;
+        padding: 15px;
+    }
+    .swiper-md-tab.container {
+        padding: 0;
+    }
+
+    /*** 공지사항 ***/
+    .notice-wrap {
+        flex-direction: column;
+    }
+    .notice-wrap>div {
+        width: 100%;
+    }
+    .notice-left {
+        padding-right: 0;
+    }
+    .notice-right {
+        padding-left: 0;
+        padding-top: 20px;
+    }
+
     /*** footer ***/
+    .footer-top-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .footer-sns {
+        height: auto;
+    }
     .footer-content {
         flex-direction: column;
+        padding: 30px 0 100px;
+    }
+    .footerLeft, .footerRight {
+        width: 100%;
+    }
+    .footerLeft {
+        padding: 20px 0;
+    }
+    .footerRight {
+        padding-top: 30px;
     }
 
     /*** 모바일 하단 네비게이션 [고정] ***/
@@ -111,6 +276,9 @@
         width: 100%;
         height: 70px;
         background-color: #fff;
+        z-index: 9999;
+        font-size: 14px;
+        font-weight: 500;
     }
     .mo-bottom-nav {
         display: flex;
@@ -118,25 +286,46 @@
         height: 100%;
         justify-content: space-around;
         align-items: center;
-        border-top: 1px solid #d1d1d1;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        padding: 0 5px;
     }
-    .mo-bottom-nav li>a>i {
-        position: relative;
-        display: block;
-    }
-    .nav-ctg {
-        width: 27px;
-        height: 27px;
-        background: url("../image/star.png") no-repeat center/cover;
-    }
-
     .mo-home {
         width: 85px;
         height: 85px;
-        transform: translateY(-25px);
-        background-color: gold;
+        transform: translateY(-20px);
         border-radius: 50%;
-        border: 1px solid;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        background-color: #fff;
+    }
+    .mo-bottom-nav li>a {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+    .mo-bottom-nav li>a>i {
+        width: 27px;
+        height: 27px;
+        margin-bottom: 5px;
+    }
+    .nav-ctg {
+        background: url("../image/menu-btn.png") no-repeat center;
+    }
+    .nav-zzim {
+        background: url("../image/star.png") no-repeat center;
+    }
+    .nav-home {
+        width: 35px!important;
+        height: 35px!important;
+        background: url("../image/star.png") no-repeat center;
+    }
+    .nav-my {
+        background: url("../image/star.png") no-repeat center;
+    }
+    .nav-recent {
+        background: url("../image/star.png") no-repeat center;
     }
 }
 
