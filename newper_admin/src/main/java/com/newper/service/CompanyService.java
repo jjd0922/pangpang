@@ -157,6 +157,21 @@ public class CompanyService {
         return savedContract.getCcIdx();
     }
 
+    /**카테고리별 입점사 수수료 등록*/
+    @Transactional
+    public void saveFee(ParamMap paramMap) {
+        System.out.println("paramMap = " + paramMap);
+        Fee fee = paramMap.mapParam(Fee.class);
+        fee.setCfState('Y');
+
+        Category category = Category.builder().cateIdx(paramMap.getInt("cateIdx")).build();
+        Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
+        fee.setCategory(category);
+        fee.setCompany(company);
+
+        feeRepo.save(fee);
+    }
+
     /**카테고리별 입점사 수수료 수정**/
     @Transactional
     public void updateFee(Integer cfIdx, ParamMap paramMap) {

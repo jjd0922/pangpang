@@ -85,6 +85,7 @@ public class CompanyRestController {
         String comIdx = paramMap.get("comIdx").toString();
         System.out.println("comIdx = " + comIdx);
 
+        paramMap.multiSelect("cateIdx");
         paramMap.multiSelect("cfType");
 
         rd.setData(companyMapper.selectFeeDatatable(paramMap.getMap()));
@@ -93,6 +94,18 @@ public class CompanyRestController {
         return rd;
     }
 
+    /**카테고리별 입점처 수수료 등록**/
+    @PostMapping(value = "fee.ajax")
+    public ReturnMap saveFee(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        companyService.saveFee(paramMap);
+
+        rm.setMessage("등록완료");
+
+        return rm;
+    }
+
+    /**카테고리별 입점처 수수료 수정**/
     @PostMapping(value = "fee.ajax/{cfIdx}")
     public ReturnMap updateFee(@PathVariable Integer cfIdx, ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
@@ -103,6 +116,7 @@ public class CompanyRestController {
         return rm;
     }
 
+    /**매입처보증보험관리 데이터테이블**/
     @PostMapping("insurance.dataTable")
     public ReturnDatatable insurance(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("매입처보증보험관리");

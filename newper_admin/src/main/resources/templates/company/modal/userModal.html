@@ -80,3 +80,45 @@
         $("#userModalTable").DataTable().page('first').ajax.url('/company/userModal.dataTable?'+$('#userModalForm').serialize()).load();
     }
 </script>
+<script th:inline="javascript">
+    function selectUserDatatable() {
+        if ($.fn.DataTable.isDataTable('#userModalTable')) {
+            searchUserForCompany();
+        } else {
+            $("#userModalTable").DataTable({
+                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+                ordering: false,
+                autoWidth: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                serverSide: true,
+                ajax:{
+                    url:'/company/userModal.dataTable',
+                    type:'post'
+                },
+                columnDefs: [ {
+                    orderable: false,
+                    targets: [0]
+                } ],
+                columns : [
+                    {'title':'No','data':'No','render':function(data,type,full,meta){
+                            return meta.settings._iDisplayStart+meta.row+1;
+                        }}
+                    ,{'title':'이름','data':'U_NAME','defaultContent':''}
+                    ,{'title':'휴대폰번호','data':'U_PHONE','defaultContent':''}
+                    ,{'title':'사원번호','data':'U_ID','defaultContent':''}
+                    ,{'title':'부서','data':'U_DEPART','defaultContent':''}
+                    ,{'title':'직급(직책)','data':'U_POSITION','defaultContent':''}
+                    ,{'title':'이메일(개인)','data':'U_PERSON_MAIL','defaultContent':''}
+                    ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL','defaultContent':''}
+                    ,{'title':'상태','data':'U_STATE','defaultContent':''}
+                    ,{'title':'선택','data':'U_IDX', 'render': function (data, type, full, meta) {
+                            return '<a href="#" onclick="selectUser(' + meta.row + ')" class="badge badge-primary">선택</a>'
+                        }}
+                ]
+            });
+        }
+    }
+</script>

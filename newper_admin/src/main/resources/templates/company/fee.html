@@ -93,20 +93,21 @@
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="d-flex justify-content-center align-items-end align-content-center flex-wrap">
-                                            <form id="searchFeeForm">
+                                        <form id="searchFeeForm">
+                                            <div class="d-flex justify-content-center align-items-end align-content-end flex-wrap">
                                                 <input type="hidden" name="comIdx">
-                                                <!--<div class="form-group">
+
+                                                <div class="form-group">
                                                     <label class="d-block">카테고리 중분류</label>
-                                                    <select name="cateName" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
-                                                        <option th:each="opt: ${T(com.newper.constant.Category).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="cateIdx" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
+                                                        <option class="opt" th:each="opt: ${category}" th:text="${opt.CATE_NAME}" th:value="${opt.CATE_IDX}"></option>
                                                     </select>
-                                                </div>-->
+                                                </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정액/정률</label>
-                                                    <select name="cfType" data-placeholder="정액/정률" class="form-control select">
-                                                        <option></option>
+                                                    <select name="cfType" data-placeholder="정액/정률" class="form-control multiselect">
+                                                        <option value="">정액/정률</option>
                                                         <option th:each="opt: ${T(com.newper.constant.CfType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
@@ -116,9 +117,8 @@
                                                         <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
                                                     </button>
                                                 </div>
-
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
 
                                         <div class="card">
                                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
@@ -132,7 +132,6 @@
                                             </div>
                                             <form id="updateForm">
                                                 <table class="table" id="feeTable"></table>
-                                                <option class="opt" th:each="opt: ${category}" th:text="${opt.CATE_NAME}" th:value="${opt.CATE_IDX}" hidden></option>
                                             </form>
                                         </div>
                                     </div>
@@ -195,11 +194,15 @@
     }
 
     function showUpdateForm(row) {
-        if ($("#updateBtn").length > 0) {
-            alert("한번에 하나의 카테고리별 수수료만 수정가능합니다.");
+        if ($("#saveBtn").length > 0) {
+            alert("수수료 생성을 먼저 완료해 주세요.");
             return false;
         }
-        $('a[data-row="'+row+'"]').attr("id", "updateBtn").after('<a href="javascript: searchFee()" class="badge badge-secondary">취소</a>');
+        if ($("#updateBtn").length > 0) {
+            alert("이미 수정 중입니다.");
+            return false;
+        }
+        $('a[data-row="'+row+'"]').attr("id", "updateBtn").removeClass("badge-primary").addClass("badge-secondary").after('<a href="javascript: searchFee()" class="badge badge-light">취소</a>');
         var targetRow = document.querySelectorAll("#feeTable tr")[row];
         var targetCols = targetRow.childNodes;
         var rowData = $('#feeTable').DataTable().rows(row-1).data()[0];
@@ -243,8 +246,14 @@
     }
 
     function saveNewFee(cfIdx) {
+        var url = '/company/fee.ajax';
+        if (cfIdx != null && cfIdx != "") {
+            url += '/' + cfIdx + '?' + $('#updateForm').serialize();
+        } else {
+            url += '?' + $('#updateForm').serialize() + '&comIdx=' + $('input[name="comIdx"]').val();
+        }
         $.ajax({
-            url: '/company/fee.ajax/' + cfIdx + '?' + $('#updateForm').serialize(),
+            url:  url ,
             type: 'post',
             success: function (data) {
                 searchFee();
@@ -253,24 +262,42 @@
     }
 
     function showNewFeeForm() {
+        if (!$.fn.DataTable.isDataTable('#feeTable')) {
+            alert("거래처를 선택해주세요.");
+            return false;
+        }
+        if ($("#updateBtn").length > 0) {
+            alert("수정을 먼저 완료해 주세요.");
+            return false;
+        }
+        if ($("#saveBtn").length > 0) {
+            alert("이미 생성 중입니다.");
+            return false;
+        }
         $('#feeTable tr:last').after('<tr><td>' +
                                         '<select name="cateIdx" data-placeholder="카테고리중분류" class="form-control select"></select></td>' +
                                     '<td></td>' +
                                     '<td>' +
-                                        '<input type="text" name="cfPercent">' +
+                                        '<input type="text" name="cfPercent" disabled>' +
                                     '</td>' +
                                     '<td>' +
                                         '<input type="text" name="cfMoney">' +
                                     '</td>' +
-                                    '<td></td>' +
+                                    '<td>NEW</td>' +
                                     '<td>' +
                                         '<a href="javascript: saveNewFee()" id="saveBtn" class="badge badge-secondary">저장</a>' +
+                                        '<a href="javascript: searchFee()" class="badge badge-light">취소</a>' +
                                     '</td></tr>');
-        $('select[name="cateIdx"]').append($('option.opt').removeAttr("hidden")).multiselect();
+        $('select[name="cateIdx"]').append($('option.opt').clone()).multiselect();
         var selectBox = $('select[name="cfType"]:first').clone();
         selectBox[0][0].remove();
         $('tr:last td')[1].append(selectBox[0]);
-        selectBox.multiselect();
+        selectBox.multiselect({
+            onChange: function (element) {
+                element.siblings().attr('selected', false);
+                element.attr('selected', true);
+                switchInput(element.val())
+            }});
     }
 </script>
 <script th:inline="javascript">

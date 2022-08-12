@@ -93,7 +93,8 @@
                                                                     MID
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="comMid" class="form-control" th:value="${company?.comMid}" th:readonly="${company != null} ? 'readonly'">
+                                                        <!-- mid 날짜로 임시 자동생성 중-->
+                                                        <input type="text" name="comMid" class="form-control" th:value="${company?.comMid}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,7 +250,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="post" class="form-control" placeholder="우편번호검색"
-                                                               th:value="${company != null} ? ${company.address.post}">
+                                                               th:value="${company?.address?.post}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,7 +280,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="addr1" class="form-control"
-                                                               th:value="${company != null} ? ${company.address.addr1}">
+                                                               th:value="${company?.address?.addr1}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,7 +295,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="addr2" class="form-control"
-                                                               th:value="${company != null} ? ${company.address.addr2}">
+                                                               th:value="${company?.address?.addr2}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,7 +310,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="addr3" class="form-control"
-                                                               th:value="${company != null} ? ${company.address.addr3}">
+                                                               th:value="${company?.address?.addr3}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -324,7 +325,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="addr4" class="form-control" placeholder="상세주소입력"
-                                                               th:value="${company != null} ? ${company.address.addr4}">
+                                                               th:value="${company?.address?.addr4}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -439,7 +440,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="ceDepart" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.ceDepart}">
+                                                               th:value="${company?.companyEmployee?.ceDepart}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -454,7 +455,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="cePosition" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.cePosition}">
+                                                               th:value="${company?.companyEmployee?.cePosition}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -469,7 +470,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="ceMail" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.ceMail}">
+                                                               th:value="${company?.companyEmployee?.ceMail}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,7 +485,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="cePhone" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.cePhone}">
+                                                               th:value="${company?.companyEmployee?.cePhone}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -499,7 +500,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="ceTel" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.ceTel}">
+                                                               th:value="${company?.companyEmployee?.ceTel}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -514,7 +515,7 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="ceMemo" class="form-control"
-                                                               th:value="${company != null} ? ${company.companyEmployee.ceMemo}">
+                                                               th:value="${company?.companyEmployee?.ceMemo}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -662,46 +663,7 @@
         $('input[name="uIdx"]').val(rowData.U_IDX);
     }
 </script>
-<script>
-    function selectUserDatatable() {
-        if ($.fn.DataTable.isDataTable('#userModalTable')) {
-            searchUserForCompany()
-        } else {
-            $("#userModalTable").DataTable({
-                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-                ordering: false,
-                autoWidth: true,
-                select: {
-                    style: 'multi',
-                    selector: 'td:first-child'
-                },
-                serverSide: true,
-                ajax:{
-                    url:'/company/userModal.dataTable',
-                    type:'post'
-                },
-                columnDefs: [ {
-                    orderable: false,
-                    targets: [0]
-                } ],
-                columns : [
-                    {'title':'No','data':'No','render':function(data,type,full,meta){
-                            return meta.settings._iDisplayStart+meta.row+1;
-                        }}
-                    ,{'title':'이름','data':'U_NAME','defaultContent':''}
-                    ,{'title':'휴대폰번호','data':'U_PHONE','defaultContent':''}
-                    ,{'title':'사원번호','data':'U_ID','defaultContent':''}
-                    ,{'title':'부서','data':'U_DEPART','defaultContent':''}
-                    ,{'title':'직급(직책)','data':'U_POSITION','defaultContent':''}
-                    ,{'title':'이메일(개인)','data':'U_PERSON_MAIL','defaultContent':''}
-                    ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL','defaultContent':''}
-                    ,{'title':'선택','data':'U_IDX', 'render': function (data, type, full, meta) {
-                        return '<a href="javascript: selectUser(' + meta.row + ')" class="badge badge-primary">선택</a>'
-                        }}
-                ]
-            });
-        }
-    }
+<script th:inline="javascript">
     $(document).ready(activateSearchUserBtn());
     $("#saveBtn").on("click", saveAction);
     $("input[name=post]").on("click", daum_address);
@@ -709,6 +671,12 @@
     $('#userModalForm').on('keyup',function(event){
         if(event.keyCode==13){searchUserForCompany();return false;}
     });
+
+    // mid 임시 자동생성(날짜로)
+    var isCompany = [[${company != null}]];
+    if (!isCompany) {
+        $('input[name="comMid"]').val(Date.now());
+    }
 </script>
 </body>
 </html>
