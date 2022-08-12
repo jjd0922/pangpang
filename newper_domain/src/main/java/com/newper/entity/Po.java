@@ -22,30 +22,59 @@ public class Po extends BaseEntity {
     private Integer poIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PO_COM_IDX", referencedColumnName = "comIdx")
+    private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PO_SELL_COM_IDX", referencedColumnName = "comIdx")
+    private Company company_sell;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_WH_IDX", referencedColumnName = "whIdx")
     private Warehouse warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PO_COM_IDX", referencedColumnName = "comIdx")
-    private Company company;
+    @JoinColumn(name = "PO_CC_IDX", referencedColumnName = "ccIdx")
+    private Contract contract;
 
-    private String poString;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PO_HW_IDX", referencedColumnName = "hwIdx")
+    private Hiworks hiworks;
 
+    private String poState;
     private String poType;
-
-    private Date poRequestDate;
-
-    private Date poDate;
-
+    private String poRequestDate;
     private String poMemo;
-
     private String poRepurchase;
+    private long poTotalAmount;
+    private long poTotalCount;
+    private String poBuyChannel;
+    private long poBuyReceiveAmount;
+    private long poUnpaidAmount;
+    private String poBuyProductType;
+    private String poBuyOriUse;
+    private String poBuyProductState;
+    private String poBuySellPeriod;
+    private String poSellChannel;
+    private long poSellReceiveAmount;
+    private long poSellUnpaidAmount;
+    private String poSellPayDate;
+    private float poSellProfit;
+    private String poSellUse;
+    private String poInDate;
+    private String poDueDate;
+    private String poRefundDate;
+    private String poAsDate;
+    private String poDeliveryMain;
+    private String poDeliveryCost;
+    private String poTaxMonth;
+    private String poPayDate;
+    private String poPayAccount;
 
-    private String poWarehousingState;
 
-    private Integer poTotalAmount;
 
-    private Integer poTotalCount;
+
+
 
 
 

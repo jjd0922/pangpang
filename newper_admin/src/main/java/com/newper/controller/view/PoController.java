@@ -31,10 +31,11 @@ public class PoController {
     /** 발주품의 페이지 **/
     @GetMapping(value = "")
     public ModelAndView po(){
-        ModelAndView mav = new ModelAndView("po/estimate");
+        ModelAndView mav = new ModelAndView("po/po");
         return mav;
     }
 
+    /** 발주품의 생성 페이지 */
     @GetMapping(value = "poPop")
     public ModelAndView poPop(){
         ModelAndView mav = new ModelAndView("po/poPop");

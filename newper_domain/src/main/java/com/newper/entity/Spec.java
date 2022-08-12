@@ -22,5 +22,4 @@ public class Spec {
 
     private String specConfirm;
     private String specLookup;
-
 }

@@ -54,7 +54,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의작성자</span>
                                                         </span>
-                                                        <input type="text" name="createdBy" class="form-control w-datarange daterange-single" placeholder="자동입력" th:value="${po != null} ? ${po.createdBy}" readonly>
+                                                        <input type="text" name="createdBy" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.createdBy}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,7 +66,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의등록일</span>
                                                         </span>
-                                                        <input type="text" name="createdDate" class="form-control w-datarange daterange-single" placeholder="자동입력" th:value="${po != null} ? ${po.createdDate}" readonly>
+                                                        <input type="text" name="createdDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.createdDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -76,9 +76,9 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의승인일</span>
+                                                            <span class="input-group-text">품의 승인/반려일</span>
                                                         </span>
-                                                        <input type="text" name="approvalDate" class="form-control w-datarange daterange-single" placeholder="자동입력" th:value="${po != null} ? ${po.approvalDate}" readonly>
+                                                        <input type="text" name="hwAprvDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.hwAprvDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                                             <span class="input-group-text">품의상태</span>
                                                         </span>
                                                         <select name="poState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
+                                                            <option th:each="opt : ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -104,7 +104,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의승인자</span>
                                                         </span>
-                                                        <input type="text" name="approvalBy" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.approvalBy}" readonly>
+                                                        <input type="text" name="hwAprvId" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.hwAprvId}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,24 +116,10 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의요청일</span>
                                                         </span>
-                                                        <input type="text" name="applyBy" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.applyBy}" readonly>
+                                                        <input type="text" name="poRequestDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poRequestDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의반려일</span>
-                                                        </span>
-                                                        <input type="text" name="rejectDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.rejectDate}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
 
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
@@ -194,117 +180,6 @@
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
-                                        <legend class="">3. 판매개요</legend>
-                                        <div class="row">
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">판매처<a href="javascript: openCompanyModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
-                                                        </span>
-                                                        <input type="text" name="comName_sell" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.company2.comIdx}" readonly>
-                                                        <input type="hidden" name="comIdx_sell" th:value="${po != null} ? ${po.company2.comIdx}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">채널유형</span>
-                                                        </span>
-                                                        <select name="poBuyChannel" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.Channel).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poBuyChannel} == ${opt.name()}"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>0
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">미수대금</span>
-                                                        </span>
-                                                        <input type="text" name="poReceiveAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poReceiveAmount}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">미지급대금</span>
-                                                        </span>
-                                                        <input type="text" name="poUnpaidAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poUnpaidAmount}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">총구매액</span>
-                                                        </span>
-                                                        <input type="text" name="poTotalAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poTotalAmount}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">원사용처</span>
-                                                        </span>
-                                                        <input type="text" name="approvalDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.approvalDate}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">제품상태(품목구분1)</span>
-                                                        </span>
-                                                        <select name="poProductState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.PoProductState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">판매기한</span>
-                                                        </span>
-                                                        <input type="text" name="poSellPeriod" class="form-control w-datarange daterange-basic-form" th:value="${po != null} ? ${po.poSellPeriod}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
                                         <legend class="">2. 구매개요</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
@@ -314,7 +189,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">매입처<a href="javascript: openCompanyModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="comName_buy" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.company.comName}" readonly>
+                                                        <input type="text" name="" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.company.comName}" readonly>
                                                         <input type="hidden" name="comIdx_buy" th:value="${po != null} ? ${po.company.comIdx}">
                                                     </div>
                                                 </div>
@@ -416,36 +291,258 @@
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
-                                        <legend class="">2. 상품정보
+                                        <legend class="">3. 판매개요</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">판매처<a href="javascript: openCompanyModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                        </span>
+                                                        <input type="text" name="comName_sell" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.company2.comIdx}" readonly>
+                                                        <input type="hidden" name="comIdx_sell" th:value="${po != null} ? ${po.company2.comIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">채널유형</span>
+                                                        </span>
+                                                        <select name="poBuyChannel" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.Channel).values()}" th:if="${opt.getOption() == '승인대기' or opt.getOption() == '긴급발주'}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poBuyChannel} == ${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">미수대금</span>
+                                                        </span>
+                                                        <input type="text" name="poReceiveAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poReceiveAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">미지급대금</span>
+                                                        </span>
+                                                        <input type="text" name="poUnpaidAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poUnpaidAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">총구매액</span>
+                                                        </span>
+                                                        <input type="text" name="poTotalAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poTotalAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">원사용처</span>
+                                                        </span>
+                                                        <input type="text" name="approvalDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.approvalDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">제품상태(품목구분1)</span>
+                                                        </span>
+                                                        <select name="poProductState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PoProductState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">판매기한</span>
+                                                        </span>
+                                                        <input type="text" name="poSellPeriod" class="form-control w-datarange daterange-basic-form" th:value="${po != null} ? ${po.poSellPeriod}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">4. 계약조건</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">판매처<a href="javascript: openCompanyModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                        </span>
+                                                        <input type="text" name="comName_sell" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.company2.comIdx}" readonly>
+                                                        <input type="hidden" name="comIdx_sell" th:value="${po != null} ? ${po.company2.comIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">채널유형</span>
+                                                        </span>
+                                                        <select name="poBuyChannel" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.Channel).values()}" th:if="${opt.getOption() == '승인대기' or opt.getOption() == '긴급발주'}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poBuyChannel} == ${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">미수대금</span>
+                                                        </span>
+                                                        <input type="text" name="poReceiveAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poReceiveAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">미지급대금</span>
+                                                        </span>
+                                                        <input type="text" name="poUnpaidAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poUnpaidAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">총구매액</span>
+                                                        </span>
+                                                        <input type="text" name="poTotalAmount" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.poTotalAmount}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">원사용처</span>
+                                                        </span>
+                                                        <input type="text" name="approvalDate" class="form-control" placeholder="자동입력" th:value="${po != null} ? ${po.approvalDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">제품상태(품목구분1)</span>
+                                                        </span>
+                                                        <select name="poProductState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PoProductState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">판매기한</span>
+                                                        </span>
+                                                        <input type="text" name="poSellPeriod" class="form-control w-datarange daterange-basic-form" th:value="${po != null} ? ${po.poSellPeriod}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">5. 상품정보
                                             <a onclick="openProductModal()" class="btn btn-sm btn-primary ml-1">검색</a>
                                         </legend>
                                         <div class="row">
                                             <table class="table">
                                                 <thead>
-                                                <tr>
-                                                    <th>상품코드</th>
-                                                    <th>상품명</th>
-                                                    <th>브랜드</th>
-                                                    <th>카테고리<br>대분류</th>
-                                                    <th>기준매입가</th>
-                                                    <th>매입수량</th>
-                                                    <th>매입총액</th>
-                                                    <th>삭제</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th>상품코드</th>
+                                                        <th>상품명</th>
+                                                        <th>브랜드</th>
+                                                        <th>카테고리<br>대분류</th>
+                                                        <th>기준매입가</th>
+                                                        <th>매입수량</th>
+                                                        <th>매입총액</th>
+                                                        <th>삭제</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody id="productTbody">
-                                                <tr th:if="${product != null}" th:each="i : ${product}" th:id="|tr_${i.P_IDX}|">
-                                                    <td th:text="${i.P_CODE}"></td>
-                                                    <td th:text="${i.P_NAME}"></td>
-                                                    <td th:text="${i.BRAND}"></td>
-                                                    <td th:text="${i.CATEGORY}"></td>
-                                                    <input type="hidden" name="sell_price" th:value="${i.P_SELL_PRICE}">
-                                                    <td th:text="${i.P_SELL_PRICE_COMMA}"></td>
-                                                    <td><input type="text" name="purchase_count" onkeyup="addPurchaseCount();" th:value="${i.PEP_COUNT}"></td>
-                                                    <td><input type="text" name="purchase_cost"  th:value="${i.SUM}" readonly></td>
-                                                    <td><button type="button" th:onclick="|deleteProduct(${i.P_IDX})|">삭제</button></td>
-                                                    <input type="hidden" name="pIdxs" th:value="${i.P_IDX}">
-                                                </tr>
+                                                    <tr th:if="${product != null}" th:each="i : ${product}" th:id="|tr_${i.P_IDX}|">
+                                                        <td th:text="${i.P_CODE}"></td>
+                                                        <td th:text="${i.P_NAME}"></td>
+                                                        <td th:text="${i.BRAND}"></td>
+                                                        <td th:text="${i.CATEGORY}"></td>
+                                                        <input type="hidden" name="sell_price" th:value="${i.P_SELL_PRICE}">
+                                                        <td th:text="${i.P_SELL_PRICE_COMMA}"></td>
+                                                        <td><input type="text" name="purchase_count" onkeyup="addPurchaseCount();" th:value="${i.PEP_COUNT}"></td>
+                                                        <td><input type="text" name="purchase_cost"  th:value="${i.SUM}" readonly></td>
+                                                        <td><button type="button" th:onclick="|deleteProduct(${i.P_IDX})|">삭제</button></td>
+                                                        <input type="hidden" name="pIdxs" th:value="${i.P_IDX}">
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -453,6 +550,50 @@
                                     <!-- 타이틀 구분 끝-->
                                 </div>
                             </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">6. 수익률
+                                            <a onclick="openProductModal()" class="btn btn-sm btn-primary ml-1">검색</a>
+                                        </legend>
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>상품코드</th>
+                                                        <th>상품명</th>
+                                                        <th>브랜드</th>
+                                                        <th>카테고리<br>대분류</th>
+                                                        <th>기준매입가</th>
+                                                        <th>매입수량</th>
+                                                        <th>매입총액</th>
+                                                        <th>삭제</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="productTbody2">
+                                                    <tr th:if="${product != null}" th:each="i : ${product}" th:id="|tr_${i.P_IDX}|">
+                                                        <td th:text="${i.P_CODE}"></td>
+                                                        <td th:text="${i.P_NAME}"></td>
+                                                        <td th:text="${i.BRAND}"></td>
+                                                        <td th:text="${i.CATEGORY}"></td>
+                                                        <input type="hidden" name="sell_price" th:value="${i.P_SELL_PRICE}">
+                                                        <td th:text="${i.P_SELL_PRICE_COMMA}"></td>
+                                                        <td><input type="text" name="purchase_count" onkeyup="addPurchaseCount();" th:value="${i.PEP_COUNT}"></td>
+                                                        <td><input type="text" name="purchase_cost"  th:value="${i.SUM}" readonly></td>
+                                                        <td><button type="button" th:onclick="|deleteProduct(${i.P_IDX})|">삭제</button></td>
+                                                        <input type="hidden" name="pIdxs" th:value="${i.P_IDX}">
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <!-- 타이틀 구분 끝-->
+                                </div>
+                            </div>
+
+
                         </form>
                         <!-- #regiForm end -->
                     </div>

@@ -29,18 +29,17 @@ public class PoProduct {
     @JoinColumn(name="PP_SPEC_IDX", referencedColumnName = "specIdx")
     private Spec spec;
 
-/*    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="PP_SPEC_IDX2", referencedColumnName = "specIdx2")
-    private Spec spec;*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PP_SPEC_IDX2", referencedColumnName = "specIdx")
+    private Spec spec2;
 
-    private Integer ppCost;
-
-    private Integer ppCount;
-
-    private Integer ppFixCost;
-
-    private Integer ppPaintCost;
-
+    private String ppOption;
+    private int ppCost;
+    private int ppCount;
+    private int ppFixCost;
+    private int ppPaintCost;
+    private int ppProcessCost;
     private String ppMemo;
-
+    private int ppSellPrice;
+    private float ppProfitTarget;
 }

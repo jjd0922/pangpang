@@ -198,7 +198,7 @@
 
 <script>
     function searchBtn(){
-        poTable.page('first').ajax.url('/po/estimate.dataTable?'+$('#poForm').serialize()).load();
+        poTable.page('first').ajax.url('/po/po.dataTable?'+$('#poForm').serialize()).load();
     }
 </script>
 <script th:inline="javascript">
@@ -211,7 +211,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/po/estimate.dataTable',
+            url:'/po/po.dataTable',
             type:'post'
         },
         columnDefs: [ {
@@ -259,17 +259,13 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('/po/estimatePop', 'estimateNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       var focusPopup = window.open('/po/poPop', 'poNew', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
        focusPopup.focus();
     });
 
-    function estimateDetail(idx) {
-        var focusPopup = window.open('/po/estimatePop/' + idx, 'estimateDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function poDetail(idx) {
+        var focusPopup = window.open('/po/poPop/' + idx, 'poDetail', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
-    }
-
-    function estimateDownload(peIdx) {
-
     }
 </script>
 </html>
