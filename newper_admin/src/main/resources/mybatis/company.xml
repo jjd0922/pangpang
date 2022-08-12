@@ -53,8 +53,10 @@
     </sql>
 
     <sql id="includeFeeDatatable">
-        <if test="cateName != null">
-            <foreach collection="cateName" open="AND CATE_NAME IN(" separator="," close=")" item="item">
+        AND CATE_DEPTH = 2
+        AND CF_STATE = 'Y'
+        <if test="cateIdx != null">
+            <foreach collection="cateIdx" open="AND CATE_IDX IN(" separator="," close=")" item="item">
                 #{item}
             </foreach>
         </if>
@@ -224,10 +226,9 @@
         FROM
             COMPANY
                 LEFT JOIN USER ON COM_U_IDX = U_IDX
-                JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
+                LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
         WHERE
-            COM_IDX IS NOT NULL
-            AND CT_TYPE = 'STORE'
+            CT_TYPE = 'STORE'
             <include refid="includeStoreDatatable"></include>
         <if test="length!=-1">
             limit #{start},#{length}
@@ -236,12 +237,13 @@
 
     <select id="countStoreDatatable" resultType="Long">
         SELECT
-            COUNT(*)
+            COUNT(DISTINCT(COM_IDX))
         FROM
             COMPANY
                 LEFT JOIN USER ON COM_U_IDX = U_IDX
+                LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
         WHERE
-            COM_IDX IS NOT NULL
+            CT_TYPE = 'STORE'
     </select>
 
     <select id="selectFeeDatatable" resultType="Map">
@@ -257,8 +259,6 @@
                 JOIN COMPANY ON CF_COM_IDX = COM_IDX
         WHERE
             CF_COM_IDX = #{comIdx}
-            AND CATE_DEPTH = 2
-            AND CF_STATE = 'Y'
             <include refid="includeFeeDatatable"></include>
         <if test="length!=-1">
             limit #{start},#{length}
@@ -267,14 +267,12 @@
 
     <select id="countFeeDatatable" resultType="Long">
         SELECT
-            COUNT(*)
+            COUNT(DISTINCT(CF_IDX))
         FROM
             COMPANY_FEE
                 JOIN CATEGORY ON CF_CATE_IDX = CATE_IDX
         WHERE
             CF_COM_IDX = #{comIdx}
-            AND CATE_DEPTH = 2
-            AND CF_STATE = 'Y'
             <include refid="includeFeeDatatable"></include>
     </select>
 
@@ -299,9 +297,9 @@
         FROM
             COMPANY_INSURANCE AS CI
                 LEFT JOIN COMPANY ON CI_COM_IDX = COM_IDX
-        WHERE
-            CI_IDX IS NOT NULL
+        <where>
             <include refid="includeInsuranceDatatable"></include>
+        </where>
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -309,12 +307,12 @@
 
     <select id="countInsuranceDatatable" resultType="Long">
         SELECT
-            COUNT(*)
+            COUNT(DISTINCT(CI_IDX))
         FROM
             COMPANY_INSURANCE AS CI
                 LEFT JOIN COMPANY ON CI_COM_IDX = COM_IDX
-        WHERE
-            CI_IDX IS NOT NULL
+        <where>
             <include refid="includeInsuranceDatatable"></include>
+        </where>
     </select>
 </mapper>

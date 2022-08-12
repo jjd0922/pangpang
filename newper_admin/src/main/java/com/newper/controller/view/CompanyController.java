@@ -5,6 +5,7 @@ import com.newper.entity.Company;
 import com.newper.entity.CompanyEmployee;
 import com.newper.entity.Insurance;
 import com.newper.exception.MsgException;
+import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.*;
 import com.newper.service.CompanyService;
@@ -30,8 +31,8 @@ public class CompanyController {
     private final CompanyMapper companyMapper;
     private final ContractRepo contractRepo;
     private final CompanyRepo companyRepo;
-    private final CompanyEmployeeRepo companyEmployeeRepo;
     private final InsuranceRepo insuranceRepo;
+    private final CategoryMapper categoryMapper;
 
     /** 거래처 관리 페이지*/
     @GetMapping(value = "")
@@ -160,6 +161,8 @@ public class CompanyController {
     @GetMapping(value = "fee")
     public ModelAndView fee() {
         ModelAndView mav = new ModelAndView("company/fee");
+
+        mav.addObject("category", categoryMapper.selectCategoryListByCateDepth(2));
 
         return mav;
     }
