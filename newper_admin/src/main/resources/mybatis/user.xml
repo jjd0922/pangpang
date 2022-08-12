@@ -6,6 +6,7 @@
         <if test="U_NAME != null and U_NAME != ''">AND U_NAME LIKE CONCAT('%',#{U_NAME},'%')</if>
         <if test="U_PHONE != null and U_PHONE != ''">AND U_PHONE LIKE CONCAT('%',#{U_PHONE},'%')</if>
         <if test="U_ID != null and U_ID != ''">AND U_ID LIKE CONCAT('%',#{U_ID},'%')</if>
+        <if test="createdDate != null and createdDate != ''">AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
     </sql>
 
     <sql id="includeUserForCompany">
@@ -15,6 +16,7 @@
         <if test="uDepart != null and uDepart !=''">AND U_DEPART LIKE CONCAT('%',#{uDepart},'%')</if>
         <if test="uPosition != null and uPosition !=''">AND U_POSITION LIKE CONCAT('%',#{uPosition},'%')</if>
         <if test="uState != null and uState !=''">AND U_STATE = #{uState}</if>
+        <if test="createdDate != null and createdDate != ''">AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
     </sql>
 
     <select id="selectUserDatatable" resultType="Map" parameterType="Map">

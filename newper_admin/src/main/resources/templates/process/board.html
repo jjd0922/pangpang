@@ -292,12 +292,12 @@
                                         </a>
 
 
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="popLostBtn">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
                                             <i class="icon-popout mr-1"></i>망실
                                         </a>
 
 
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="popHandoverBtn">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="handoverBtn()">
                                             <i class="icon-popout mr-1"></i>재고인계
                                         </a>
                                     </div>
@@ -311,6 +311,9 @@
     </div>
 </div>
 </body>
+
+<th:block th:replace="process/modal/lostModal.html"/>
+<th:block th:replace="process/modal/handoverModal.html"/>
                 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -335,6 +338,13 @@
     function searchBtn() {
         var table = $('#boardTable').DataTable();
         table.page('first').ajax.url('/user/user.dataTable?' + $('#boardForm').serialize()).load(null, false);
+    }
+
+    function lostBtn(){
+        $('#lostModal').modal('show');
+    }
+    function handoverBtn(){
+        $('#handoverModal').modal('show');
     }
 </script>
 
@@ -421,14 +431,6 @@
     });
     $('#popRecheckBtn').on('click',function (){
         var focusPopup = window.open('recheckPop', 'recheck_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popLostBtn').on('click',function (){
-        var focusPopup = window.open('lostPop', 'lost_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popHandoverBtn').on('click',function (){
-        var focusPopup = window.open('productHandoverPop', 'handover_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>

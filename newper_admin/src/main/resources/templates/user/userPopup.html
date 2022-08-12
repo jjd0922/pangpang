@@ -171,11 +171,12 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                     상호법인명
-                                                                    <a id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
+                                                                    <a th:if="${user == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
                                                         <input type="hidden" name="U_COM_IDX" th:value="${user != null} ? ${user.company.comIdx}">
+                                                        <input type="hidden" name="CT_TYPE_LIST">
                                                     </div>
                                                 </div>
                                             </div>
@@ -493,11 +494,12 @@
 
     //거래처 검색 모달에서 거래처 선택
     function selectCompany(row) {
+
         var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
 
         $('#userForm input[name="COM_NAME"]').val(rowData.COM_NAME);
         $('#userForm input[name="U_COM_IDX"]').val(rowData.COM_IDX);
-
+        $('#userForm input[name="CT_TYPE_LIST"]').val(rowData.CT_TYPE_LIST);
         $('#searchComModal').modal('hide');
     }
 

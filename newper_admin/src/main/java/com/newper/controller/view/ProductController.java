@@ -170,9 +170,11 @@ public class ProductController {
     public ModelAndView detail(){
         ModelAndView mav = new ModelAndView("product/detail");
 
+/*
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("length",-1);
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
+*/
 
         return mav;
     }

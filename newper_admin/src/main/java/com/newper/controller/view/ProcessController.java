@@ -60,18 +60,17 @@ public class ProcessController {
 
         return mav;
     }
-
-    /**망실 팝업**/
-    @GetMapping(value = "lostPop")
-    public ModelAndView lostPopup() {
-        ModelAndView mav = new ModelAndView("process/lostPop");
+    /**망실 모달**/
+    @GetMapping(value = "lostModal")
+    public ModelAndView lostModal() {
+        ModelAndView mav = new ModelAndView("process/modal/lostModal");
 
         return mav;
     }
-    /**재고인계 팝업**/
-    @GetMapping(value = "productHandoverPop")
-    public ModelAndView productHandoverPopup() {
-        ModelAndView mav = new ModelAndView("process/productHandoverPop");
+    /**재고인계 모달**/
+    @GetMapping(value = "handoverModal")
+    public ModelAndView handoverModal() {
+        ModelAndView mav = new ModelAndView("process/modal/handoverModal");
 
         return mav;
     }
