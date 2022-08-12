@@ -43,7 +43,11 @@ public class Product extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PType1 pType1;
+
+    @Enumerated(EnumType.STRING)
     private String pType2;
+
+    @Enumerated(EnumType.STRING)
     private String pType3;
 
     /** 입점사 idx */
