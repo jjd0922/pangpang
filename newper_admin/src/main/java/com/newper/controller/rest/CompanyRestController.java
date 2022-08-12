@@ -54,7 +54,7 @@ public class CompanyRestController {
 
     @PostMapping("contract.dataTable")
     public ReturnDatatable companyContract(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("거래처 계약관리");
 
         paramMap.multiSelect("ccState");
         paramMap.multiSelect("ccType");
@@ -69,7 +69,7 @@ public class CompanyRestController {
     /**카테고리별 입점사 수수료관리 페이지 > 입점사 목록 가져오기*/
     @PostMapping("store.dataTable")
     public ReturnDatatable store(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("카테고리별 입점사 수수료관리 > 입점사 목록");
 
         rd.setData(companyMapper.selectStoreDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countStoreDatatable(paramMap.getMap()));
@@ -80,7 +80,7 @@ public class CompanyRestController {
     /**카테고리별  입점사 수수료관리 페이지 > 카테고리별 수수료 데이터테이블*/
     @PostMapping("fee.dataTable")
     public ReturnDatatable fee(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("카테고리별 입점사 수수료관리");
 
         String comIdx = paramMap.get("comIdx").toString();
         System.out.println("comIdx = " + comIdx);
@@ -105,7 +105,7 @@ public class CompanyRestController {
 
     @PostMapping("insurance.dataTable")
     public ReturnDatatable insurance(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("매입처보증보험관리");
 
         rd.setData(companyMapper.selectInsuranceDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countInsuranceDatatable(paramMap.getMap()));

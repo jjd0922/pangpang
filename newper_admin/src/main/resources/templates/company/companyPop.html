@@ -30,7 +30,6 @@
                         <div class="page-title">
                             <h4 class="font-weight-semibold" th:if="${company == null}"><i class="icon-office mr-1"></i>거래처 신규등록</h4>
                             <h4 class="font-weight-semibold" th:unless="${company == null}"><i class="icon-office mr-1"></i>거래처 조회/수정</h4>
-                            <div class="text-white-50 ml-3">설명글영역</div>
                         </div>
                     </div>
                 </div>
@@ -114,14 +113,10 @@
                                             </div>
                                         </div>
                                     </fieldset>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
-                                        <legend class="">2. 거래처정보</legend>
+                                        <legend class="pt-2">2. 거래처정보</legend>
 
                                         <div class="row">
                                             <!-- 입력필드 -->
@@ -265,7 +260,7 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                    구매담당자<a href="javascript: showUserModal();" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                                    구매담당자<a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="uName" class="form-control" th:value="${company?.user?.uName}" readonly>
@@ -411,14 +406,12 @@
                                         </div>
                                     </fieldset>
                                     <!-- 타이틀 구분 끝-->
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
+
+
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
-                                        <legend class="">3. 거래처 담당자정보</legend>
+                                        <legend class="pt-2">3. 거래처 담당자정보</legend>
 
                                         <div class="row">
                                             <!-- 입력필드 -->
@@ -661,24 +654,13 @@
         }
     }
 
-    function showUserModal() {
-        $('#searchUserModal').modal('show');
-        selectUserDatatable();
-    }
-
-    function searchUserForCompany() {
-        $("#userModalTable").DataTable().page('first').ajax.url('/company/userModal.dataTable?'+$('#userModalForm').serialize()).load();
-    }
-
-    function selectUserForCompany(row) {
+    function selectUser(row) {
         var rowData = $('#userModalTable').DataTable().rows(row).data()[0];
 
         $('#searchUserModal').modal('hide');
         $('#regiForm input[name="uName"]').val(rowData.U_NAME);
         $('input[name="uIdx"]').val(rowData.U_IDX);
     }
-
-
 </script>
 <script>
     function selectUserDatatable() {
@@ -706,15 +688,16 @@
                     {'title':'No','data':'No','render':function(data,type,full,meta){
                             return meta.settings._iDisplayStart+meta.row+1;
                         }}
-                    ,{'title':'이름','data':'U_NAME', 'render': function (data,type,full,meta) {
-                            return '<a href="javascript: selectUserForCompany(' + meta.row + ')" class="badge badge-primary">' + full.U_NAME + '</a>';
-                        }}
+                    ,{'title':'이름','data':'U_NAME','defaultContent':''}
                     ,{'title':'휴대폰번호','data':'U_PHONE','defaultContent':''}
                     ,{'title':'사원번호','data':'U_ID','defaultContent':''}
                     ,{'title':'부서','data':'U_DEPART','defaultContent':''}
                     ,{'title':'직급(직책)','data':'U_POSITION','defaultContent':''}
                     ,{'title':'이메일(개인)','data':'U_PERSON_MAIL','defaultContent':''}
                     ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL','defaultContent':''}
+                    ,{'title':'선택','data':'U_IDX', 'render': function (data, type, full, meta) {
+                        return '<a href="javascript: selectUser(' + meta.row + ')" class="badge badge-primary">선택</a>'
+                        }}
                 ]
             });
         }
@@ -722,6 +705,7 @@
     $(document).ready(activateSearchUserBtn());
     $("#saveBtn").on("click", saveAction);
     $("input[name=post]").on("click", daum_address);
+    $("#searchUserBtn").on("click", showUserModal);
     $('#userModalForm').on('keyup',function(event){
         if(event.keyCode==13){searchUserForCompany();return false;}
     });

@@ -71,7 +71,10 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">상품 상태</span>
                                                         </span>
-                                                        <input type="text" name="P_STATE" class="form-control" th:value="${product?.pState}">
+                                                        <select class="form-control select">
+                                                            <option th:each="pstate:${T(com.newper.constant.PState).values()}" th:text="${pstate.option}" th:value="${pstate}" th:selected="${product?.pState == pstate}"></option>
+                                                        </select>
+<!--                                                        <input type="text" name="P_STATE" class="form-control" th:value="${product?.pState}">-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +95,7 @@
                                                             <span class="input-group-text requested">브랜드</span>
                                                             <select class="form-control form-control-sm select-search" name="P_CATE_IDX2" data-placeholder="선택" data-container-css-class="select-sm">
                                                                 <option></option>
-                                                                <option th:each="brand : ${brand}" th:value="${brand.CATE_IDX}" th:text="${brand.CATE_NAME}" th:selected="${product?.category2?.cateIdx eq brand.CATE_IDX}"></option>
+                                                                <option th:each="brand : ${brand}" th:value="${brand.CATE_IDX}" th:text="${brand.CATE_NAME}" th:selected="${product?.brand?.cateIdx eq brand.CATE_IDX}"></option>
                                                             </select>
                                                         </span>
                                                     </div>

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContractRepo extends JpaRepository<Contract, Integer> {
 
-    @EntityGraph(attributePaths = {"company", "companyEmployee"})
+    @EntityGraph(attributePaths = {"company", "companyEmployee", "user"})
     public Contract findContractByccIdx(Integer ccIdx);
 }

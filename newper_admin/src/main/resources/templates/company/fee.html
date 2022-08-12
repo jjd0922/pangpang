@@ -27,26 +27,19 @@
                                                 <i class="mr-1" th:classappend="${mainIcon}"></i>
                                                 <th:block th:text="${mainTitle}"></th:block>
                                             </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                        <!--<span class="breadcrumb-item font-weight-bold text-secondary">
                                                 <i class="mr-1" th:classappend="${subIcon}"></i>
                                                 <th:block th:text="${subTitle}"></th:block>
-                                            </span>
+                                            </span>-->
                                     </div>
                                 </h6>
-                                <div class="header-elements text-right">
-                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <div class="list-icons ml-2">
-                                            <a class="list-icons-item" data-action="collapse"></a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="card-body pt-0">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-                                            <form id="searchStoreForm">
+                                        <form id="searchStoreForm">
+                                            <div class="d-flex justify-content-center align-items-end align-content-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">상호법인명</label>
                                                     <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
@@ -69,12 +62,12 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">승인일</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-datarange">
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
@@ -87,15 +80,25 @@
                                                         <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
                                                     </button>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="#">
-                                            <i class="icon-popout mr-1"></i>수수료수정
-                                        </a>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                                        <div class="btn-group">
+                                                            <div class="header-elements">
+                                                                <a type="button" class="btn btn-sm btn-primary ml-1" id="#">
+                                                                    <i class="icon-popout mr-1"></i>수수료수정
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="card">
-                                            <table class="table" id="storeTable"></table>
+                                                    <table class="table" id="storeTable"></table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -192,9 +195,13 @@
     }
 
     function showUpdateForm(row) {
+        if ($("#updateBtn").length > 0) {
+            alert("한번에 하나의 카테고리별 수수료만 수정가능합니다.");
+            return false;
+        }
+        $('a[data-row="'+row+'"]').attr("id", "updateBtn").after('<a href="javascript: searchFee()" class="badge badge-secondary">취소</a>');
         var targetRow = document.querySelectorAll("#feeTable tr")[row];
         var targetCols = targetRow.childNodes;
-
         var rowData = $('#feeTable').DataTable().rows(row-1).data()[0];
         var cfType = rowData.CF_TYPE;
 
@@ -221,7 +228,7 @@
             }}
         );
 
-        $('#goUpdateBtn'+row).attr('href', 'javascript: saveNewFee('+rowData.CF_IDX + ')');
+        $('#updateBtn').attr('href', 'javascript: saveNewFee('+rowData.CF_IDX + ')');
 
     }
 
@@ -308,7 +315,7 @@
                     }}
                 ,{'title':'수정버튼','data':'CF_IDX','render': function (data, type, full, meta) {
                         var rowNum = (meta.row+1);
-                        return '<a href="javascript: showUpdateForm('+rowNum+')" id="goUpdateBtn'+rowNum+'" class="badge badge-primary">수정</a>';
+                        return '<a href="javascript: showUpdateForm('+rowNum+')" class="badge badge-primary" data-row="' +rowNum+ '">수정</a>';
                     }}
             ]
         });

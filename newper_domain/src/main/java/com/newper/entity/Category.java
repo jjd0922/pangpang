@@ -44,6 +44,11 @@ public class Category extends BaseEntity {
 
     private String cateMemo;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.DETACH)
+    private List<Product> categoryProductList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand", cascade = CascadeType.DETACH)
+    private List<Product> brandProductList;
+
     /** order 업데이트.*/
     public void updateCategoryOrder(int cateOrder){
         if(getCateOrder() < 0){

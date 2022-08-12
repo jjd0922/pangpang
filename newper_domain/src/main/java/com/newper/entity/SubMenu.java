@@ -18,12 +18,13 @@ public class SubMenu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String smName;
+    private Integer smIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SM_MENU_NAME", referencedColumnName = "menuName")
+    @JoinColumn(name = "SM_MENU_IDX", referencedColumnName = "menuIdx")
     private Menu menu;
 
+    private String smName;
     private String smUrl;
     private byte smOrder;
 

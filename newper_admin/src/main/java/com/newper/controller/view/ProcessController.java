@@ -60,4 +60,85 @@ public class ProcessController {
 
         return mav;
     }
+
+    /**망실 팝업**/
+    @GetMapping(value = "lostPop")
+    public ModelAndView lostPopup() {
+        ModelAndView mav = new ModelAndView("process/lostPop");
+
+        return mav;
+    }
+    /**재고인계 팝업**/
+    @GetMapping(value = "productHandoverPop")
+    public ModelAndView productHandoverPopup() {
+        ModelAndView mav = new ModelAndView("process/productHandoverPop");
+
+        return mav;
+    }
+
+    /**매입처반품 페이지**/
+    @GetMapping(value = "purchasingReturn")
+    public ModelAndView purchasingReturn() {
+        ModelAndView mav = new ModelAndView("process/purchasingReturn");
+
+        return mav;
+    }
+
+
+    /**매입처반품 반품관리팝업**/
+    @GetMapping(value = "returnManagePop")
+    public ModelAndView returnManagePop() {
+        ModelAndView mav = new ModelAndView("process/returnManagePop");
+
+        return mav;
+    }
+
+    /**반품관리 작업요청취소 모달**/
+    @GetMapping(value = "calcelModal")
+    public ModelAndView calcelModal() {
+        ModelAndView mav = new ModelAndView("process/modal/calcelModal");
+
+        return mav;
+    }
+
+    /**반품관리 작업중(출고)모달**/
+    @GetMapping(value = "ingModal")
+    public ModelAndView ingModal() {
+        ModelAndView mav = new ModelAndView("process/modal/ingModal");
+
+        return mav;
+    }
+
+
+    /**반품관리 작업완료(입고)모달**/
+    @GetMapping(value = "finishModal")
+    public ModelAndView finishModal() {
+        ModelAndView mav = new ModelAndView("process/modal/finishModal");
+
+        return mav;
+    }
+
+    /**반품관리 반품완료 모달**/
+    @GetMapping(value = "finishReModal")
+    public ModelAndView finishReModal() {
+        ModelAndView mav = new ModelAndView("process/modal/finishReModal");
+
+        return mav;
+    }
+
+    /**반품관리 반품불가 모달**/
+    @GetMapping(value = "impossibleReModal")
+    public ModelAndView impossibleReModal() {
+        ModelAndView mav = new ModelAndView("process/modal/impossibleReModal");
+
+        return mav;
+    }
+
+    /**반품관리 반품결과업로드 모달**/
+    @GetMapping(value = "uploadReModal")
+    public ModelAndView uploadReModal() {
+        ModelAndView mav = new ModelAndView("process/modal/uploadReModal");
+
+        return mav;
+    }
 }
