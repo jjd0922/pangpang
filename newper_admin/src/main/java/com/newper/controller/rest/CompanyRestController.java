@@ -4,6 +4,8 @@ import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Company;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.UserMapper;
 import com.newper.repository.CompanyEmployeeRepo;
@@ -24,6 +26,8 @@ public class CompanyRestController {
     private final CompanyMapper companyMapper;
     private final CompanyService companyService;
     private final UserMapper userMapper;
+
+    private final CompanyRepo companyRepo;
 
     /**거래처 관리 데이터테이블*/
     @PostMapping("company.dataTable")
@@ -130,9 +134,24 @@ public class CompanyRestController {
     @PostMapping("companyCtType.dataTable")
     public ReturnDatatable companyCtType(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
+
+        paramMap.multiSelect("COM_TYPE");
+        paramMap.multiSelect("COM_STATE");
+
         rd.setData(companyMapper.selectCompanyDatatableByCtType(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countCompanyDatatableByCtType(paramMap.getMap()));
         return rd;
     }
+
+    /**comIdx로 거래처 조회*/
+    @PostMapping("companyByComIdx.ajax")
+    public ReturnMap companyByComIdx(int comIdx){
+        System.out.println(comIdx);
+        ReturnMap rm = new ReturnMap();
+        Company company = companyRepo.findCompanyByComIdx(comIdx);
+        rm.put("company",company);
+        return rm;
+    }
+
 
 }

@@ -227,7 +227,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">
-                                                          입점사 <a class="btn btn-sm badge-indigo" onclick="showCompanyModal('STORE')">검색</a>
+                                                          입점사 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal('STORE')">검색</a>
                                                         </span>
                                                     </span>
                                                     <input type="text" name="P_COM_NAME" class="form-control">
@@ -241,7 +241,7 @@
                                             <div class="input-group">
                                                     <span class="input-group-prepend">
                                                                         <span class="input-group-text">
-                                                                          입점사
+                                                                          제조사
                                                                         </span>
                                                                     </span>
                                                 <input type="text" name="U_TEL" class="form-control">
@@ -560,6 +560,23 @@
         var category = $('select[name=CATE_IDX3]').val();
         $('input[name=P_CATE_IDX]').val(category);
     }
+
+    function selectCompany(comIdx){
+        var CT_TYPE = $('input[name=CT_TYPE]').val();
+        $.ajax({
+            url:'/company/companyByComIdx.ajax',
+            type:'post',
+            data:'comIdx='+comIdx,
+            success:function (res){
+                if(CT_TYPE=='STORE'){
+                    $('input[name=P_COM_NAME]').val(res.data.company.comName)
+                    $('input[name=P_COM_IDX]').val(res.data.company.comIdx)
+                }
+            }
+        })
+
+    }
+
 </script>
 <script th:inline="javascript">
     window.onload=function(){
