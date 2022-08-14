@@ -61,7 +61,6 @@ public class CategoryService {
         cateOrder=cateOrder+1;
 
         category.setCateOrder(cateOrder);
-        category.setCateDisplay(CateDisplay.Y.name());
         category.setCateMemo("");
         category.setCateNick("");
         List<String > list = new ArrayList<>();
@@ -101,7 +100,6 @@ public class CategoryService {
         categoryParam.setCateNick(category.getCateNick());
         categoryParam.setCateOrder(category.getCateOrder());
         categoryParam.setCateDepth(category.getCateDepth());
-        categoryParam.setCateDisplay(category.getCateDisplay());
         if(paramMap.get("CATE_PARENT_IDX")!=null){
             Category parentCategory = categoryRepo.findById(paramMap.getInt("CATE_PARENT_IDX")).get();
             categoryParam.setParentCategory(parentCategory);
@@ -132,7 +130,6 @@ public class CategoryService {
         String cateIdxs[] = paramMap.get("CATE_IDXS").toString().split(",");
         for(int i=0; i<cateIdxs.length; i++){
             Category category = categoryRepo.findById(Integer.parseInt(cateIdxs[i])).get();
-            category.setCateDisplay(paramMap.get("CATE_DISPLAY")+"");
             categoryRepo.saveAndFlush(category);
         }
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,6 +137,16 @@ public class ProductRestController {
     public ReturnMap brandDelete(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         rm.setMessage(categoryService.brandDelete(paramMap));
+        return rm;
+    }
+
+    @PostMapping("category/parent.ajax")
+    public ReturnMap parent(int CATE_IDX){
+        ReturnMap rm = new ReturnMap();
+        Map<String,Object> map = new HashMap<>();
+        map.put("cateIdx",CATE_IDX);
+        List<Map<String,Object>> list = categoryMapper.selectCategory(map);
+        rm.put("list",list);
         return rm;
     }
 

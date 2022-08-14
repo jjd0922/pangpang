@@ -59,7 +59,7 @@
             category
         WHERE
             CATE_IDX IS NOT NULL
-            <if test="idx != '' and idx != null">and CATE_PARENT_IDX = #{cateIdx}</if>
+            <if test="cateIdx != '' and cateIdx != null">and CATE_PARENT_IDX = #{cateIdx}</if>
             AND CATE_TYPE='CATEGORY'
     </select>
     
@@ -90,7 +90,7 @@
 
     <sql id="includeCategoryDatatableByBrand">
         <if test='CATE_NAME != null and CATE_NAME != ""'>AND CATE_NAME LIKE CONCAT('%',#{CATE_NAME},'%')</if>
-        <if test='CATE_DISPLAY != null and CATE_DISPLAY != ""'>AND CATE_DISPLAY = #{CATE_DISPLAY}</if>
+        <!--<if test='CATE_DISPLAY != null and CATE_DISPLAY != ""'>AND CATE_DISPLAY = #{CATE_DISPLAY}</if>-->
         <if test='CREATED_BY != null and CREATED_BY != ""'>AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>
         <if test='CREATED_DATE != null and CREATED_DATE != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
         <if test='MODIFIED_BY != null and MODIFIED_BY != ""'>AND MODIFIED_BY LIKE CONCAT('%',#{MODIFIED_BY},'%')</if>
@@ -99,7 +99,7 @@
     <select id="selectCategoryDatatableByBrand" resultType="map">
         select
             CATE_IDX, CATE_NAME, CATE_NICK, CATE_ICON, CREATED_BY,
-            CATE_DISPLAY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE, CATE_ORDER
+            CREATED_DATE, MODIFIED_BY, MODIFIED_DATE, CATE_ORDER
         from
             category
         where

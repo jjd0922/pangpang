@@ -125,4 +125,14 @@ public class CompanyRestController {
         rd.setRecordsTotal(companyMapper.countInsuranceDatatable(paramMap.getMap()));
         return rd;
     }
+
+    /**CT_TYPE별 데이터테이블*/
+    @PostMapping("companyCtType.dataTable")
+    public ReturnDatatable companyCtType(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(companyMapper.selectCompanyDatatableByCtType(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countCompanyDatatableByCtType(paramMap.getMap()));
+        return rd;
+    }
+
 }

@@ -315,4 +315,55 @@
             <include refid="includeInsuranceDatatable"></include>
         </where>
     </select>
+
+    <sql id="includeCompanyDatatableByCtType">
+        <if test='CREATED_DATE != null and CREATED_DATE != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
+        <if test='COM_NAME != null and COM_NAME != ""'>AND COM_NAME LIKE CONCAT('%',#{COM_NAME},'%')</if>
+        <if test='COM_NUM != null and COM_NUM != ""'>AND COM_NUM LIKE CONCAT('%',#{COM_NUM},'%')</if>
+        <if test='COM_NAME != null and COM_NAME != ""'>AND COM_NAME LIKE CONCAT('%',#{COM_NAME},'%')</if>
+        <if test='COM_CEO != null and COM_CEO != ""'>AND COM_CEO LIKE CONCAT('%',#{COM_CEO},'%')</if>
+        <if test='COM_MID != null and COM_MID != ""'>AND COM_MID LIKE CONCAT('%',#{COM_MID},'%')</if>
+        <if test='COM_TYPE != null'>
+            <foreach collection="COM_TYPE" open="AND COM_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='COM_STATE != null'>
+            <foreach collection="COM_STATE" open="AND COM_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+    <select id="selectCompanyDatatableByCtType" resultType="map">
+        SELECT
+            COM_IDX,
+            COM_NAME,
+            COM_STATE,
+            COM_TYPE,
+            COM_MID,
+            COM_CEO,
+            COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
+            COMPANY.CREATED_TIME AS 'COM_CREATED_TIME',
+            CT_TYPE
+        FROM
+            COMPANY
+                LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
+        WHERE
+            CT_TYPE = #{CT_TYPE}
+            <include refid="includeCompanyDatatableByCtType"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+    <select id="countCompanyDatatableByCtType" resultType="Integer">
+        select
+            count(*)
+        from
+            COMPANY
+                LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
+        WHERE
+            CT_TYPE = #{CT_TYPE}
+            <include refid="includeCompanyDatatableByCtType"></include>
+    </select>
+
 </mapper>

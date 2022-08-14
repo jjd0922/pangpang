@@ -45,7 +45,7 @@ public class ProductController {
     /**카테고리 등록 팝업*/
     @GetMapping("category/categoryCreate/{cate_depth}")
     public ModelAndView categoryCreate(ParamMap paramMap,@PathVariable int cate_depth){
-        ModelAndView mav = new ModelAndView("product/category/category_create");
+        ModelAndView mav = new ModelAndView("product/category/categoryCreate");
         mav.addObject("cate_depth",cate_depth);
         if(cate_depth > 1){
             mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(cate_depth-1));
@@ -67,7 +67,7 @@ public class ProductController {
     /**카테고리 상세 팝업*/
     @GetMapping("category/categoryDetail/{cate_idx}")
     public ModelAndView categoryDetail(@PathVariable int cate_idx){
-        ModelAndView mav = new ModelAndView("product/category/category_detail");
+        ModelAndView mav = new ModelAndView("product/category/categoryDetail");
         Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         int depth = category.getCateDepth();
@@ -112,7 +112,7 @@ public class ProductController {
     /**브랜드 등록 팝업*/
     @GetMapping("category/brandCreate")
     public ModelAndView brandCreate(){
-        ModelAndView mav = new ModelAndView("product/category/brand_detail");
+        ModelAndView mav = new ModelAndView("product/category/brandDetail");
         return mav;
     }
 
@@ -170,11 +170,10 @@ public class ProductController {
     public ModelAndView detail(){
         ModelAndView mav = new ModelAndView("product/detail");
 
-/*
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("length",-1);
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
-*/
+        mav.addObject("category",categoryMapper.selectCategoryDatatableByParent());
 
         return mav;
     }
@@ -190,6 +189,20 @@ public class ProductController {
         Product product = productRepo.findById(pIdx).get();
         mav.addObject("product", product);
 
+        return mav;
+    }
+
+    /**재고상품관리*/
+    @GetMapping("stockProduct")
+    public ModelAndView stockProduct(){
+        ModelAndView mav = new ModelAndView("product/stockProduct");
+        return mav;
+    }
+
+    /**재고상품관리 등록*/
+    @GetMapping("stockProductCreate")
+    public ModelAndView stockProductCreate(){
+        ModelAndView mav = new ModelAndView("product/stockProduct/stockProductDetail");
         return mav;
     }
 

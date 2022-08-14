@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>재고상품관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="/common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+<!--                                        <span class="breadcrumb-item font-weight-bold text-secondary">-->
+<!--                                                <i class="mr-1" th:classappend="${subIcon}"></i>-->
+<!--                                                <th:block th:text="${subTitle}"></th:block>-->
+<!--                                        </span>-->
+                                    </div>
+                                </h6>
+                            </div>
+
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="productForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_CODE">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">상품상태</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">상품명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_NAME">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">모델명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_MODEL">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">재고코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">등급</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">일일재고 마감 관리</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_BY">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">수정자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="MODIFIED_BY">
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="approvalRequest">
+                                            <i class="icon-popout mr-1"></i>사방넷전송
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="stockProductTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn(){
+        var table = $('#productTable').DataTable();
+        table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
+    }
+
+    //create popup(idx == null) or detail popup
+    function productDetailPop(idx){
+        if (idx == null) {
+            idx='detail';
+        }
+        var focusPopup = window.open('/product/'+idx, 'product'+idx, 'width=900, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+
+</script>
+
+
+    <script>
+        var userTable = $('#productTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering:false,
+            select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+            serverSide: true,
+            ajax:{
+            url:'/product/product.dataTable?'+$('#productForm').serialize(),
+            type:'post'
+        },
+            columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+            "columns" : [
+                {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
+                        return '<input type="hidden" name="P_IDX" value="'+data+'">';
+                    }}
+                ,{'title':'재고대표썸네일','data':'P_INFO','render':function(data,type,full,meta){
+                        return data;
+                    }}
+                ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
+                        return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    }}
+                ,{'title':'상품명','data':'P_NAME'}
+                ,{'title':'상품 상태','data':'P_INFO'}
+                ,{'title':'모델명','data':'P_INFO'}
+                ,{'title':'기준매입원가','data':'P_INFO'}
+                ,{'title':'기준판매가(상품)','data':'P_INFO'}
+                ,{'title':'재고코드','data':'P_INFO','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="">'+'s-code'+'</a>';
+                }}
+                ,{'title':'재고상품명','data':'P_INFO','defaultContent':''}
+                ,{'title':'기준판매가(재고)','data':'P_INFO'}
+                ,{'title':'판매채널(품목운영구분)','data':'P_INFO'}
+                ,{'title':'등급','data':'P_INFO'}
+                ,{'title':'옵션1','data':'P_INFO'}
+                ,{'title':'옵션2','data':'P_INFO'}
+                ,{'title':'옵션3','data':'P_INFO'}
+                ,{'title':'재고관리','data':'P_INFO'}
+                ,{'title':'스펙','data':'P_INFO'}
+                ,{'title':'안전재고','data':'P_INFO'}
+                ,{'title':'적정재고','data':'P_INFO'}
+                ,{'title':'일일재고 마감관리','data':'P_INFO','defaultContent':''}
+                ,{'title':'재고 적재위치','data':'P_INFO','defaultContent':''}
+                ,{'title':'자산정보','data':'P_INFO','render':function(data,type,full,meta){
+                        return '<a class="btn btn-sm badge-indigo" onclick="">'+'ea'+'</a>';
+                }}
+                ,{'title':'사방넷 연동 상태','data':'P_INFO','defaultContent':''}
+                ,{'title':'사방넷 상품연동일','data':'P_INFO','defaultContent':''}
+                ,{'title':'사방넷 연동담당자','data':'P_INFO','defaultContent':''}
+                ,{'title':'등록일','data':'CREATED_BY'}
+                ,{'title':'등록일','data':'CREATED_DATE'}
+                ,{'title':'수정자','data':'MODIFIED_BY'}
+                ,{'title':'수정일','data':'MODIFIED_DATE'}
+            ]
+        });
+
+        $('#productForm').on('keyup',function(event){
+            if(event.keyCode==13){searchBtn();return false;}
+        });
+
+
+        $('#popNewBtn').on('click',function (){
+            var focusPopup = window.open('/product/stockProductCreate', 'stockProductCreate', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        });
+    </script>
+</html>

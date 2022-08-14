@@ -38,7 +38,6 @@ public class Category extends BaseEntity {
     private String cateThumbnail;
     private String cateImage;
     private int cateOrder;
-    private String cateDisplay;
 
     private List<String> cateSpec_list;
 
