@@ -5,11 +5,9 @@ import com.newper.constant.basic.EnumOption;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.util.ExcelDownload;
-import io.lettuce.core.ScriptOutputType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -121,8 +119,6 @@ public class DataTableAop {
             if(param instanceof ParamMap){
                 paramMap = (ParamMap) param;
                 isDownload = paramMap.containsKey("download");
-            }else if(param instanceof HttpServletResponse){
-                response = (HttpServletResponse) param;
             }
         }
         ReturnDatatable result=(ReturnDatatable)jp.proceed(params);
@@ -137,6 +133,8 @@ public class DataTableAop {
                 columns.add(column);
             }
 
+            //argsResolver에서 세팅
+            response = (HttpServletResponse) paramMap.get("response");
             ExcelDownload.createExcel(response, result.getFileName(), columns, result.getData());
             return null;
         }

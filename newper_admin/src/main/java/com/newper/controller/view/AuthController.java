@@ -28,8 +28,11 @@ public class AuthController {
         ModelAndView mav = new ModelAndView("auth/auth");
 
         //masking 정보 map
-        Map<String, List<AuthMask>> amMap = Arrays.stream(AuthMask.values()).collect(Collectors.groupingBy(AuthMask::getOptionGroup));
-        mav.addObject("authMap", amMap);
+        Map<String, List<AuthMask>> maskMap = Arrays.stream(AuthMask.values()).collect(Collectors.groupingBy(AuthMask::getOptionGroup));
+        mav.addObject("maskMap", maskMap);
+
+        Map<Integer, String> authMap = authRepo.findAll().stream().collect(Collectors.toMap(Auth::getAuthIdx, Auth::getAuthName));
+        mav.addObject("authMap", authMap);
 
         return mav;
     }

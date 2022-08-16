@@ -17,4 +17,11 @@ public class MainController {
 
         return mav;
     }
+    @GetMapping(value = "home")
+    public ModelAndView home() {
+        ModelAndView mav = new ModelAndView("main/home");
+
+
+        return mav;
+    }
 }

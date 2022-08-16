@@ -84,7 +84,7 @@ if($.fn.dataTable !== undefined){
             [ 10, 25, 50],
             [ '10행', '25행', '50행']
         ],
-        dom: '<"datatable-header"Bfip><"datatable-scroll"t><"datatable-footer">',
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         language: {
             search: '_INPUT_',
             searchPlaceholder: '결과내 재검색',
@@ -281,7 +281,8 @@ function downloadAllExcel(dtId){
     var dt = $("#"+dtId).DataTable();
     var t=dt.ajax.params().columns;
     var excel_cols_value='';
-    var phoneCheck = false;
+    var phoneCheck = true;
+    // var phoneCheck = false;
     for(var i=0;i<t.length;i++){
         if(dt.columns(i).visible()[0]){
             excel_cols_value+=t[i].data+';';

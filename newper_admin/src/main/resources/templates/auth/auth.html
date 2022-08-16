@@ -29,9 +29,9 @@
                                 </h6>
                                 <div class="header-elements text-right">
                                     <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popAuthBtn">
-                                            <i class="icon-popout mr-1"></i>신규등록
-                                        </a>
+<!--                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popAuthBtn">-->
+<!--                                            신규등록-->
+<!--                                        </a>-->
                                         <div class="list-icons ml-2">
                                             <a class="list-icons-item" data-action="collapse"></a>
                                         </div>
@@ -71,11 +71,11 @@
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-xs w-auto center-col my-1">
                                             <tbody>
-                                                <tr th:each=" am : ${authMap}">
-                                                    <td class="bg-dark-100" th:text="${am.key}">마스킹 option Group</td>
+                                                <tr th:each=" map : ${maskMap}">
+                                                    <td class="bg-dark-100" th:text="${map.key}">마스킹 option Group</td>
                                                     <td>
                                                         <div class="form-check form-check-inline">
-                                                            <label class="form-check-label" th:each="mask : ${am.value}">
+                                                            <label class="form-check-label" th:each="mask : ${map.value}">
                                                                 <input type="checkbox" class="form-check-input maskName">
                                                                 <th:block th:text="${mask.option}"></th:block>
                                                             </label>
@@ -99,13 +99,13 @@
                                         </span>
                                     </div>
                                 </h6>
-                                <div class="header-elements text-right">
-                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                        <a type="button" class="btn btn-sm btn-info ml-1">
-                                            <i class="icon-reload-alt mr-1"></i>새로고침
-                                        </a>
-                                    </div>
-                                </div>
+<!--                                <div class="header-elements text-right">-->
+<!--                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">-->
+<!--                                        <a type="button" class="btn btn-sm btn-info ml-1">-->
+<!--                                            <i class="icon-reload-alt mr-1"></i>새로고침-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-xs">
@@ -126,59 +126,15 @@
                                                     <td th:rowspan="${i.size}" th:text="${menus.menuName}"></td>
                                                 </th:block>
                                                 <td th:text="${submenu.smName}"></td>
-                                                <td th:text="${submenu.smAuth}"></td>
+                                                <td>
+                                                    <span class="badge badge-flat border-primary text-primary" th:each="sa: ${submenu.smAuth}" th:text="${authMap[__${sa}__]}">권한명</span>
+                                                </td>
                                                 <td>
                                                     <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
                                                 </td>
                                             </tr>
                                         </th:block>
                                     </th:block>
-
-                                    <tr>
-                                        <td>super admin</td>
-                                        <td>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">상품관리</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">아웃바운드</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">저장팀</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">쇼핑몰</span>
-                                        </td>
-                                        <td class="p-0">
-                                            <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>내 정보 > 비밀번호 변경</td>
-                                        <td>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">저장팀</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">쇼핑몰</span>
-                                        </td>
-                                        <td class="p-0">
-                                            <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>상품관리 > 매입상품</td>
-                                        <td>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">상품관리</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">아웃바운드</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">인바운드</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">운영팀</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">저장팀</span>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">쇼핑몰</span>
-                                        </td>
-                                        <td class="p-0">
-                                            <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>고객관리 > 상담고객관리(상담원조회)</td>
-                                        <td>
-                                            <span href="#" class="badge badge-flat border-primary text-primary">쇼핑몰</span>
-                                        </td>
-                                        <td class="p-0">
-                                            <a href="#" class="badge badge-flat border-primary text-primary p-1 border-0"><i class="icon-pencil7 position-static"></i></a>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
