@@ -98,9 +98,9 @@ public class DataTableAop {
                             EnumOption enumOption = Arrays.stream(enumClasses.get(columnName)).filter(en -> {
                                 return en.toString().equals((String) s);
                             }).findFirst().get();
-                            dtValue+=enumOption.getOption()+",";
+                            dtValue+=enumOption.getOption()+", ";
                         }
-                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-1));
+                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
                     }
 
                 }
