@@ -1,6 +1,3 @@
-
-INSERT INTO `auth` (`AUTH_IDX`, `AUTH_NAME`, `AUTH_MASK`) VALUES (1, 'SUPER ADMIN', '');
-
 -- menu query
 SET @menu_order:=0 ;
 
@@ -129,3 +126,34 @@ INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '기타�
 
 
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(16, '하위아이템', '' , @menu_order:=@menu_order+1 );
+
+
+
+-- shop menu
+
+SET @menu_order:=0 ;
+
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(17,'HOME' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(17, '요약통계', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(17, '게시판', '' , @menu_order:=@menu_order+1 );
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(18,'상품관리' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(18, 'SHOP 카테고리 관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(19,'게시판관리' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(19, '공지사항', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(19, 'FAQ', '' , @menu_order:=@menu_order+1 );
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(20,'분양몰관리' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, '분양몰관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, '플로팅바', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, 'FOOTER관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, '푸터메뉴', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, 'SNS정보 관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(20, '패밀리사이트', '' , @menu_order:=@menu_order+1 );
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(21,'SHOP관리' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '메인섹션관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '분양몰헤더관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '팝업관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '배너그룹관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '상품그룹관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(21, '이벤트그룹관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(22,'ADMIN' , 'SHOP' ,@menu_order:=@menu_order+1);
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(22, 'PG사이트코드', '' , @menu_order:=@menu_order+1 );

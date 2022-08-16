@@ -2,6 +2,7 @@ package com.newper.controller.rest;
 
 import com.newper.component.MenuList;
 import com.newper.component.SessionInfo;
+import com.newper.constant.MenuType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Menu;
@@ -32,7 +33,7 @@ public class MainRestController {
     @PostConstruct
     @GetMapping("updateMenu.ajax")
     public void updateMenu(){
-        List<Menu> menuList = menuRepo.findMenuALl();
+        List<Menu> menuList = menuRepo.findMenuALl(MenuType.ERP);
 
         MenuList.menus = menuList;
     }
