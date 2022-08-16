@@ -85,4 +85,12 @@
                 LEFT JOIN company AS afterservice
                           ON P_COM_IDX3 = afterservice.COM_IDX
     </select>
+
+    <select id="selectProductByListPcode" resultType="String">
+        select
+            P_CODE
+        from
+            product
+        order by P_IDX desc limit 1
+    </select>
 </mapper>

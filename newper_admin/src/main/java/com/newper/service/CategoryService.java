@@ -49,7 +49,6 @@ public class CategoryService {
     @Transactional
     public int categoryInsert(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail){
         Category category = paramMap.mapParam(Category.class);
-        System.out.println(category.getCateIdx());
         int cate_depth = Integer.parseInt(paramMap.get("CATE_DEPTH")+"");
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("CATE_DEPTH",cate_depth);
@@ -75,10 +74,10 @@ public class CategoryService {
         String iconFilePath = "";
         String thumbnailFilePath = "";
         if(icon.getSize()!=0){
-            iconFilePath = Common.uploadFilePath(icon, "summernote/category/icon/", AdminBucket.OPEN);
+            iconFilePath = Common.uploadFilePath(icon, "category/icon/", AdminBucket.OPEN);
         }
         if(thumbnail.getSize()!=0){
-            thumbnailFilePath = Common.uploadFilePath(thumbnail, "summernote/category/thumbnail/",AdminBucket.OPEN);
+            thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/",AdminBucket.OPEN);
         }
 
         category.setCateIcon(iconFilePath);
@@ -110,10 +109,10 @@ public class CategoryService {
         String thumbnailFilePath = category.getCateThumbnail();
 
         if(icon.getSize()!=0){
-            iconFilePath = Common.uploadFilePath(icon, "summernote/category/icon/", AdminBucket.OPEN);
+            iconFilePath = Common.uploadFilePath(icon, "category/icon/", AdminBucket.OPEN);
         }
         if(thumbnail.getSize()!=0){
-            thumbnailFilePath = Common.uploadFilePath(thumbnail, "summernote/category/thumbnail/",AdminBucket.OPEN);
+            thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/",AdminBucket.OPEN);
         }
         categoryParam.setCateIcon(iconFilePath);
         categoryParam.setCateThumbnail(thumbnailFilePath);
