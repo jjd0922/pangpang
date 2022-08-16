@@ -100,6 +100,10 @@
         select
             CATE_IDX, CATE_NAME, CATE_NICK, CATE_ICON, CREATED_BY,
             CREATED_DATE, MODIFIED_BY, MODIFIED_DATE, CATE_ORDER
+            ,CASE
+                WHEN CATE_ORDER > 0 THEN '노출'
+                ELSE '미노출'
+            END CATE_ORDER_STR
         from
             category
         where

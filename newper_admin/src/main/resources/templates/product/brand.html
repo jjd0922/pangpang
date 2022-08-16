@@ -160,7 +160,7 @@
 
 
     function categoryDetail(cateIdx) {
-        var focusPopup = window.open('/product/category/brandDetail/' + cateIdx, 'brandDetail', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/product/brand/' + cateIdx, 'brandDetail', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -252,10 +252,13 @@
                     }}
                 ,{'title':'브랜드약자','data':'CATE_NICK'}
                 ,{'title':'브랜드 아이콘','data':'CATE_ICON','render':function(data,type,full,meta){
+                        if(data == null || data == ''){
+                            return '';
+                        }
                         return '<img src="'+data+'" class="input-thumb">';
                     }}
                 ,{'title':'등록자','data':'CREATED_BY'}
-                ,{'title':'노출','data':'CATE_DISPLAY_STR'}
+                ,{'title':'노출','data':'CATE_ORDER_STR'}
                 ,{'title':'등록일','data':'CREATED_DATE'}
                 ,{'title':'수정자','data':'MODIFIED_BY'}
                 ,{'title':'수정일','data':'MODIFIED_DATE'}
@@ -288,7 +291,7 @@
 
 
             $('#popNewBtn').on('click',function (){
-            var focusPopup = window.open('/product/category/brandCreate', 'brandCreate', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            var focusPopup = window.open('/product/brand/detail', 'brandCreate', 'width=800, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
             focusPopup.focus();
         });
     </script>

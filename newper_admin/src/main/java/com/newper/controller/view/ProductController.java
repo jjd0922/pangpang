@@ -110,15 +110,15 @@ public class ProductController {
     }
 
     /**브랜드 등록 팝업*/
-    @GetMapping("category/brandCreate")
-    public ModelAndView brandCreate(){
-        ModelAndView mav = new ModelAndView("product/category/brandDetail");
+    @GetMapping("brand/detail")
+    public ModelAndView brandDetail(){
+        ModelAndView mav = new ModelAndView("product/brand_detail");
         return mav;
     }
 
     /**브랜드 등록*/
-    @PostMapping("category/brandCreate")
-    public ModelAndView brandCreatePost(ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+    @PostMapping("brand/detail")
+    public ModelAndView brandDetailPost(ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertClose");
         paramMap.put("CATE_DEPTH",1);
         paramMap.put("CATE_TYPE", CateType.BRAND);
@@ -128,9 +128,9 @@ public class ProductController {
     }
 
     /**브랜드 상세 팝업*/
-    @GetMapping("category/brandDetail/{cate_idx}")
+    @GetMapping("brand/{cate_idx}")
     public ModelAndView brandDetail(@PathVariable int cate_idx){
-        ModelAndView mav = new ModelAndView("product/category/brand_detail");
+        ModelAndView mav = new ModelAndView("product/brand_detail");
 
         Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
@@ -148,13 +148,13 @@ public class ProductController {
     }
 
     /**브랜드 수정*/
-    @PostMapping("category/brandDetail/{cate_idx}")
+    @PostMapping("brand/{cate_idx}")
     public ModelAndView brandDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
         paramMap.put("CATE_IDX",cate_idx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/category/brandDetail/"+cate_idx);
+        mav.addObject("loc","/product/brand/"+cate_idx);
         return mav;
     }
 
