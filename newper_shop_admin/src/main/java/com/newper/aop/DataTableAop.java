@@ -94,11 +94,9 @@ public class DataTableAop {
         boolean isDownload = false;
         HttpServletResponse response = null;
         for (Object param : params) {
-            if(param instanceof ParamMap){
+            if(param instanceof ParamMap) {
                 paramMap = (ParamMap) param;
                 isDownload = paramMap.containsKey("download");
-            }else if(param instanceof HttpServletResponse){
-                response = (HttpServletResponse) param;
             }
         }
         ReturnDatatable result=(ReturnDatatable)jp.proceed(params);
@@ -113,6 +111,8 @@ public class DataTableAop {
                 columns.add(column);
             }
 
+            //argsResolver에서 세팅
+            response = (HttpServletResponse) paramMap.get("response");
             ExcelDownload.createExcel(response, result.getFileName(), columns, result.getData());
             return null;
         }

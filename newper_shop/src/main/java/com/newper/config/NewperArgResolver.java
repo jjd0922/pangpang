@@ -67,6 +67,10 @@ public class NewperArgResolver implements HandlerMethodArgumentResolver {
                 }
             }
 
+            //excel다운로드 aop에서 사용
+//            if (paramMap.containsKey("download")) {
+//                paramMap.put("response", webRequest.getNativeResponse());
+//            }
             return paramMap;
         }
 
