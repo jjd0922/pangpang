@@ -6,7 +6,9 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -42,6 +44,11 @@ public class Category extends BaseEntity {
     private List<String> cateSpec_list;
 
     private String cateMemo;
+    /**
+     * 중분류에서 사용하는 고시정보 json
+     */
+    @Builder.Default
+    private Map<String, Object> cateInfo = new HashMap<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.DETACH)
     private List<Product> categoryProductList;

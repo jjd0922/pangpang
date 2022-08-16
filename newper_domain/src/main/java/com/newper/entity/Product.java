@@ -9,7 +9,9 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -109,7 +111,9 @@ public class Product extends BaseEntity {
 
     private String pNaver;
 
-    private String pInfo;
+    /** 고시정보. json map*/
+    @Builder.Default
+    private Map<String,Object> pInfo = new HashMap<String, Object>();
     private String pOption;
 
 
