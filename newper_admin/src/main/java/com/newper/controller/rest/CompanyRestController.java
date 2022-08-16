@@ -146,10 +146,10 @@ public class CompanyRestController {
     /**comIdx로 거래처 조회*/
     @PostMapping("companyByComIdx.ajax")
     public ReturnMap companyByComIdx(int comIdx){
-        System.out.println(comIdx);
         ReturnMap rm = new ReturnMap();
         Company company = companyRepo.findCompanyByComIdx(comIdx);
-        rm.put("company",company);
+        rm.put("COM_NAME",company.getComName());
+        rm.put("COM_IDX",company.getComIdx());
         return rm;
     }
 

@@ -7,11 +7,13 @@ import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
 import com.newper.service.CategoryService;
+import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +27,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductRestController {
 
-    private final CategoryRepo categoryRepo;
     private final CategoryMapper categoryMapper;
-    private final CategoryService categoryService;
     private final ProductMapper productMapper;
+    private final CategoryService categoryService;
+    private final ProductService productService;
+
 
     /**category 대분류 dataTable*/
     @PostMapping("category/parent.dataTable")
@@ -142,6 +145,7 @@ public class ProductRestController {
         return rm;
     }
 
+    /**상위 카테고리의 하위 카테고리*/
     @PostMapping("category/parent.ajax")
     public ReturnMap parent(int CATE_IDX){
         ReturnMap rm = new ReturnMap();
@@ -151,6 +155,16 @@ public class ProductRestController {
         rm.put("list",list);
         return rm;
     }
+
+    /**상품저장*/
+    @PostMapping("productSave.ajax")
+    public ReturnMap productSave(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
+        ReturnMap rm = new ReturnMap();
+        System.out.println(paramMap.getMap());
+        productService.productSave(paramMap,P_THUMB_FILE1,P_THUMB_FILE2,P_THUMB_FILE3,P_THUMB_FILE4,P_THUMB_FILE5,P_THUMB_FILE6);
+        return rm;
+    }
+
 
 
 }

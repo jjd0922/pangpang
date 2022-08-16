@@ -9,6 +9,8 @@ import java.util.Map;
 public interface ProductMapper {
     /** 상품 데이터 테이블 조회 */
     List<Map<String, Object>> selectProductDataTalbe(Map<String,Object> map);
-
     long countProductDataTable(Map<String,Object> map);
+
+    /**마지막 상품코드 조회*/
+    String selectProductByListPcode();
 }

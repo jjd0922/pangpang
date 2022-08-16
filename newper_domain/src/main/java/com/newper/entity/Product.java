@@ -5,8 +5,10 @@ import com.newper.constant.PType1;
 import com.newper.constant.PType2;
 import com.newper.constant.PType3;
 import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -110,6 +112,18 @@ public class Product extends BaseEntity {
     private boolean pDelFree;
 
     private String pNaver;
+
+
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if (!StringUtils.hasText(getPName())) {
+            throw new MsgException("상품명을 입력해주세요.");
+        }
+
+
+    }
+
 
     /** 고시정보. json map*/
     @Builder.Default
