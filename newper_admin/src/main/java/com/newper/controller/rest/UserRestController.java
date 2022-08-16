@@ -60,9 +60,6 @@ public class UserRestController {
 
         rm.setMessage(idx + "");
 
-
-
-
         return rm;
     }
 

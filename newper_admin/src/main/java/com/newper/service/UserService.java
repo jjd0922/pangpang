@@ -31,13 +31,18 @@ public class UserService {
     /**사용자신규 등록**/
     @Transactional
     public Integer saveUser(ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
-
         Address address = paramMap.mapParam(Address.class);
 
         Company company = paramMap.mapParam(Company.class);
 
         User user = paramMap.mapParam(User.class);
+
+        try{
+            int u_auth_idx = paramMap.getInt("U_AUTH_IDX");
+        }catch (NumberFormatException nfe){
+            throw new MsgException("권한을 선택해주세요");
+        }
+
         Auth auth =paramMap.mapParam(Auth.class);
 
         if(paramMap.getString("CT_TYPE_LIST").contains(CtType.MAIN.name())){
@@ -52,7 +57,6 @@ public class UserService {
         user.setCompany(company);
 
         userRepo.save(user);
-
 
         return user.getUIdx();
     }
