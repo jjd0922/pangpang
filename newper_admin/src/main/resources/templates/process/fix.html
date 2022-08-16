@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>매입처반품</title>
+    <title>수리관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="/common/css.html"></th:block>
 </head>
@@ -41,24 +41,24 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                                 <div class="form-group">
-                                                    <label class="d-block">반품코드</label>
+                                                    <label class="d-block">수리코드</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">반품상품상태값</label>
+                                                    <label class="d-block">수리 작업 상태값</label>
                                                     <select class="form-control form-control-sm select-search"  data-placeholder="선택" data-container-css-class="select-sm" name="">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">매입처</label>
+                                                    <label class="d-block">수리업체</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">매입처담당자</label>
+                                                    <label class="d-block">수리담당자</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
 
@@ -143,7 +143,7 @@
 <script>
     function searchBtn() {
         var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/process/fix.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 </script>
 
@@ -157,7 +157,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/purchasingReturn.dataTable?'+$('#returnForm').serialize(),
+            url:'/process/fix.dataTable?'+$('#returnForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -171,24 +171,22 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'반품코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: returnManagePop('+ data[''] +')" class="badge badge-primary" >'+ data[''] + '</a>';
+            ,{'title':'수리코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: fixPop('+ data[''] +')" class="badge badge-primary">' + data[''] + '</a>';
                 }}
-            //returnManagePop(상품관리 팝업 매핑 시키기)
-            ,{'class':'m-w-max', 'title':'반품상품상태값','data':''}
-            ,{'class':'m-w-max', 'title':'매입처','data':''}
-           ,{'class':'m-w-max', 'title':'매입처담당자','data':''}
-            ,{'class':'m-w-max', 'title':'요청자','data':''}
-            ,{'class':'m-w-max', 'title':'상품명','data':''}
-            ,{'class':'m-w-max', 'title':'작업지시자','data':''}
-            ,{'class':'m-w-max', 'title':'완료처리자','data':''}
-            ,{'class':'m-w-max', 'title':'요청일','data':''}
-            ,{'class':'m-w-max', 'title':'작업시작일','data':''}
-            ,{'class':'m-w-max', 'title':'작업종료일','data':''}
-            ,{'class':'m-w-max', 'title':'완료/요청건','data':''}
-            ,{'class':'m-w-max', 'title':'요청메모','data':''}
-            ,{'class':'m-w-max', 'title':'반품예정일 합계','data':''}
-            ,{'class':'m-w-max', 'title':'반품확정액 합계','data':''}
+            ,{ 'title':'수리<br>작업 상태값','data':''}
+            ,{ 'title':'수리업체','data':''}
+            ,{ 'title':'수리담당자','data':''}
+            ,{ 'title':'요청자','data':''}
+            ,{ 'title':'작업지시자','data':''}
+            ,{ 'title':'완료처리자','data':''}
+            ,{ 'title':'요청일','data':''}
+            ,{ 'title':'작업시작일','data':''}
+            ,{ 'title':'작업종료일','data':''}
+            ,{ 'title':'작업<br>소요시간','data':''}
+            ,{ 'title':'공정예정비<br>합계','data':''}
+            ,{ 'title':'공정완료/작업요청건','data':''}
+            ,{ 'title':'공정비 합계','data':''}
         ]
     });
 
