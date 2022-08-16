@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProcessController {
 
 
-    /**공정보드 공정관리 페이지**/
-    @GetMapping(value = "")
+    /**공정관리 공정보드 페이지**/
+    @GetMapping(value = "board")
     public ModelAndView process() {
         ModelAndView mav = new ModelAndView("process/board");
 
@@ -140,4 +140,34 @@ public class ProcessController {
 
         return mav;
     }
+
+    /**가공관리 페이지**/
+    @GetMapping(value = "processing")
+    public ModelAndView processing() {
+        ModelAndView mav = new ModelAndView("process/processing");
+
+        return mav;
+    }
+    /**수리관리 페이지**/
+    @GetMapping(value = "fix")
+    public ModelAndView fix() {
+        ModelAndView mav = new ModelAndView("process/fix");
+
+        return mav;
+    }
+    /**도색관리 페이지**/
+    @GetMapping(value = "paint")
+    public ModelAndView paint() {
+        ModelAndView mav = new ModelAndView("process/paint");
+
+        return mav;
+    }
+    /**재검수관리 페이지**/
+    @GetMapping(value = "recheck")
+    public ModelAndView recheck() {
+        ModelAndView mav = new ModelAndView("process/recheck");
+
+        return mav;
+    }
+
 }

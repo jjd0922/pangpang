@@ -54,14 +54,14 @@
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                   작업지시자(내부)
-                                                                    <a class="badge badge-sm badge-primary ml-1" onclick="inOperationModal()">검색</a>
+                                                                    <a class="badge badge-sm badge-primary ml-1" onclick="inOperationModal();">검색</a>
                                                                 </span>
                                                             </span>
                                             <input type="text" name="U_TEL" class="form-control">
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                 입고검수업체
-                                                                <a class="badge badge-sm badge-primary ml-1" onclick="searchComNameModal()">검색</a>
+                                                                <a class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
                                                                  <!-- <a href="daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>-->
                                                                 </span>
                                                             </span>
@@ -178,6 +178,9 @@
                                             </a>
 
                                         </div>
+                                    </fieldset>
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
                 </div>
@@ -191,7 +194,7 @@
 
 <th:block th:replace="/modal/inOperationModal.html"/>
 
-<!--<th:block th:replace="/modal/searchComNameModal.html"/>-->
+<th:block th:replace="/company/modal/comModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
@@ -240,14 +243,10 @@
         $('#operationModal').modal('show');
     }
 
-    function searchComNameModal(){
-        $('#comNameModal').modal('show');
-    }
-
-
 </script>
 <script>
-    $('#modalTable').DataTable({
+
+    $('#userTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -256,7 +255,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/modal.dataTable?'+$('#modalForm').serialize(),
+            url:'/process/user.dataTable?'+$('#userForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -290,54 +289,8 @@
     });
 
 
-        $('#modalTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-        style: 'multi',
-        selector: 'td:first-child'
-    },
-        serverSide: true,
-        ajax:{
-        url:'/process/modal2.dataTable?'+$('#modalForm').serialize(),
-        type:'post'
-    },
-        columnDefs: [ {
-        orderable: false,
-        targets:   [0]
-    } ],
-        "columns" : [
-    {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
-        return meta.settings._iDisplayStart+meta.row+1;
-    }}
-        ,{'class':'m-w-max', 'title':'상호법인명<br>(소속)','data':'COM_NAME','render':function (data,type,full,meta){
-        return '<a class="btn btn-secondary" onclick="selectCompany(this, '+full.COM_IDX+')">'+data+'</a>';
-    }}
-        ,{'class':'m-w-max', 'title':'등록일','data':'COM_CREATED_DATE'}
-        ,{'class':'m-w-max', 'title':'등록시간','data':'COM_CREATED_TIME'}
-        ,{'class':'m-w-max', 'title':'거래처구분코드','data':'CT_TYPE', 'render': function (data,type,full,meta){
-        if(data==null){
-        return '';
-    }else{
-        return '';
-    }
-    }}
-        ,{'class':'m-w-max', 'title':'사업자분류','data':' COM_TYPE' ,'render': function (data,type,full,meta){
-        if(data==null){
-        return '';
-    }else{
-        return '';
-    }
-    }}
-        ,{'class':'m-w-max', 'title':'상태','data':'COM_STATE'}
-        ,{'class':'m-w-max', 'title':'MID','data':'COM_MID'}
-        ,{'class':'m-w-max', 'title':'대표자명','data':'COM_CEO'}
 
-        ]
-    });
-
-
-        $('#modalForm').on('keyup',function(event){
+        $('#userForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 

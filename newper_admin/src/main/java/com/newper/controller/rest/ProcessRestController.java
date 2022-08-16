@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RequestMapping(value = "/process/")
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +22,8 @@ public class ProcessRestController {
 
 
     /**팝업창 내부 작업지시자(내부) 모달**/
-    @PostMapping("modal.dataTable")
-    public ReturnDatatable modal(ParamMap paramMap) {
+    @PostMapping("user.dataTable")
+    public ReturnDatatable user(ParamMap paramMap) {
 
         ReturnDatatable rd = new ReturnDatatable();
 
@@ -30,16 +32,58 @@ public class ProcessRestController {
         return rd;
     }
 
-    /**팝업창 입고검수업체 모달**/
-    @PostMapping("modal2.dataTable")
-    public ReturnDatatable modal2(ParamMap paramMap) {
 
-        ReturnDatatable rd = new ReturnDatatable();
+    /**가공관리 페이지 조회테이블**/
+    @PostMapping("processing.dataTable")
+    public ReturnDatatable processing(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("가공관리");
 
-        rd.setData(companyMapper.selectCompanyDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(companyMapper.countCompanyDatatable(paramMap.getMap()));
+        //임의로 userMapper 사용
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
     }
 
+    /**매입처반품 페이지 조회테이블**/
+    @PostMapping("purchasingReturn.dataTable")
+    public ReturnDatatable purchasingReturn(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("매입처반품");
+
+        //임의로 userMapper 사용
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        return rd;
+    }
+    /**수리관리 페이지 조회테이블**/
+    @PostMapping("fix.dataTable")
+    public ReturnDatatable fix(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("수리관리");
+
+        //임의로 userMapper 사용
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+    /**도색관리 페이지 조회테이블**/
+    @PostMapping("paint.dataTable")
+    public ReturnDatatable paint(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("도색관리");
+
+        //임의로 userMapper 사용
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        return rd;
+    }
+    /**재검수관리 페이지 조회테이블**/
+    @PostMapping("recheck.dataTable")
+    public ReturnDatatable recheck(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("재검수관리");
+
+        //임의로 userMapper 사용
+        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        return rd;
+    }
 
 }

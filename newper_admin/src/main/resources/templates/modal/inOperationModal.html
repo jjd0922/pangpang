@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">거래처검색</h5>
+                <h5 class="modal-title">사용자검색</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -10,49 +10,75 @@
             <div class="modal-body">
                 <div class="collapse show" id="collapse-button-collapsed">
                     <div class="card-body pt-0">
-                        <form id="modalForm">
+                        <form id="userForm">
                             <div class="row">
                                 <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                     <div class="form-group">
                                         <label class="d-block">이름</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CG_U_NAME">
+                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색"
+                                               name="CG_U_NAME">
                                     </div>
                                     <div class="form-group">
                                         <label class="d-block">휴대폰번호</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CG_U_PHONE">
+                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색"
+                                               name="CG_U_PHONE">
                                     </div>
                                     <div class="form-group">
                                         <label class="d-block">사원번호</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CG_U_ID">
+                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색"
+                                               name="CG_U_ID">
                                     </div>
                                     <div class="form-group">
                                         <label class="d-block">부서</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CG_U_DEPART">
+                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색"
+                                               name="CG_U_DEPART">
                                     </div>
                                     <div class="form-group">
                                         <label class="d-block">직급(직책)</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CG_U_POSITION">
+                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색"
+                                               name="CG_U_POSITION">
                                     </div>
                                     <div class="form-group">
                                         <label class="d-block">상태</label>
-                                        <select class="form-control form-control-sm select-search" name="CG_U_STATE" data-placeholder="선택" data-container-css-class="select-sm">
+                                        <select class="form-control form-control-sm select-search" name="CG_U_STATE"
+                                                data-placeholder="선택" data-container-css-class="select-sm">
                                             <option></option>
                                         </select>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover" id="modalTable"></table>
-                                    </div>
+                                </div>
+                                <div class="form-group end">
+                                    <button type="button" class="btn btn-secondary" onclick="searchUserDataTable()">
+                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                    </button>
                                 </div>
                             </div>
-                        </form>1
+                        </form>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="userTable"></table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <!--                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="mdSave" onclick="searchCompany()">저장</button>-->
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="window.close();"><i
+                    class="icon-cross2 mr-1"></i>닫기
+            </button>
         </div>
     </div>
 </div>
+
+
+
+<script th:inline="javascript">
+
+
+
+    function searchUserDataTable() {
+        $("#userTable").DataTable().page('first').ajax.url('/process/user.dataTable?' + $('#userForm').serialize()).load();
+    }
+
+
+</script>
+
