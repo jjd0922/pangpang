@@ -111,19 +111,24 @@
         table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
     }
 
+    //발주코드 팝업
+    function openInPop(idx){
+        var focusPopup = window.open('/in/'+idx, 'inDetail', 'width=1200, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
 
 <script>
     var inTable = $('#inTable').DataTable({
         ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        // select: {
+        //     style: 'multi',
+        //     selector: 'td:first-child'
+        // },
         serverSide: true,
         ajax:{
-            url:'/product/product.dataTable?'+$('#productForm').serialize(),
+            url:'/in/in.dataTable?'+$('#inSearchForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -131,51 +136,15 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '<input type="hidden" name="P_IDX" value="'+data+'">';
-                }}
-            ,{'title':'대표썸네일','data':'P_INFO','render':function(data,type,full,meta){
-                    return data;
-                }}
-            ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="productDetailPop('+full.P_IDX+')">'+data+'</a>';
-                }}
-            ,{'title':'상품명','data':'P_NAME'}
-            ,{'title':'상품 상태','data':'P_INFO'}
-            ,{'title':'모델명','data':'P_INFO'}
-            ,{'title':'브랜드','data':'BRAND_NAME','defaultContent':''}
-            ,{'title':'재고관리','data':'P_INFO'}
-            ,{'title':'카테고리 대분류','data':'CATE_NAME1','defaultContent':''}
-            ,{'title':'카테고리 중분류','data':'CATE_NAME2','defaultContent':''}
-            ,{'title':'카테고리 소분류','data':'CATE_NAME3','defaultContent':''}
-            ,{'title':'정산구분(품목구분1)','data':'P_TYPE1'}
-            ,{'title':'상품분류(품목구분2)','data':'P_TYPE2'}
-            ,{'title':'물류타입(품목자산구분)','data':'P_INFO'}
-            ,{'title':'입점사','data':'STORE_NAME','defaultContent':''}
-            ,{'title':'제조사','data':'MANUFACTURE_NAME','defaultContent':''}
-            ,{'title':'AS업체','data':'AFTERSERVICE_NAME','defaultContent':''}
-            ,{'title':'기준매입원가','data':'P_COST','render':function(data, type, full, meta){
-                    return comma(data);
-                }}
-            ,{'title':'유통가','data':'P_RETAIL_PRICE','render':function(data, type, full, meta){
-                    return comma(data);
-                }}
-            ,{'title':'기준 판매가','data':'P_SELL_PRICE','render':function(data, type, full, meta){
-                    return comma(data);
-                }}
-            ,{'title':'배송비','data':'P_DEL_PRICE','render':function(data, type, full, meta){
-                    return comma(data);
-                }}
-            ,{'title':'배송주체','data':'P_INFO'}
-            ,{'title':'옵션1','data':'P_OPTION'}
-            ,{'title':'옵션2','data':'P_OPTION'}
-            ,{'title':'옵션3','data':'P_OPTION'}
-            ,{'title':'스펙구성','data':'P_OPTION'}
-            ,{'title':'등록일','data':'CREATED_DATE'}
-            ,{'title':'승인자','data':'MODIFIED_BY'}
-            ,{'title':'승인일','data':'MODIFIED_DATE'}
-            ,{'title':'수정자','data':'MODIFIED_BY'}
-            ,{'title':'수정일','data':'MODIFIED_DATE'}
+            // {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
+            //         return '<input type="hidden" name="P_IDX" value="'+data+'">';
+            //     }}
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'발주코드','data':'','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="openInPop(1)">발주코드</a>';
+            }}
         ]
     });
 
