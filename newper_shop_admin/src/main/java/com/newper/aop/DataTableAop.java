@@ -33,13 +33,16 @@ public class DataTableAop {
 
         File enumDir = new File(ClassLoader.getSystemResource("com/newper/constant").getFile());
         for (String s : enumDir.list()) {
-            if(!s.equals("basic")){
-                s = s.replace(".class", "");
+            if(s.equals("basic")){
+                continue;
+            }else if(s.equals("etc")){
+                continue;
+            }
 
-                Object[] enumConstants = Class.forName("com.newper.constant." + s).getEnumConstants();
-                if(enumConstants instanceof EnumOption[]){
-                    enumClasses.put(s.replaceAll("([a-z])([A-Z]+)","$1_$2").toLowerCase(), (EnumOption[])enumConstants);
-                }
+            s = s.replace(".class", "");
+            Object[] enumConstants = Class.forName("com.newper.constant." + s).getEnumConstants();
+            if(enumConstants instanceof EnumOption[]){
+                enumClasses.put(s.replaceAll("([a-z])([A-Z]+)","$1_$2").toLowerCase(), (EnumOption[])enumConstants);
             }
         }
     }
@@ -81,6 +84,25 @@ public class DataTableAop {
                     }).findFirst().get();
                     addMap.put(key + "_STR", enumOption.getOption());
                 }
+            }else if(key.indexOf("_LIST") != -1){
+                int indexOfList = key.lastIndexOf("_LIST");
+                String columnName = key.substring(0, indexOfList).toLowerCase();
+                if (enumClasses.containsKey(columnName)) {
+                    Object value = map.get(key);
+                    if(value instanceof String){
+                        String[] enumList = ((String) value).split(",");
+                        String dtValue = "";
+                        for (String s : enumList) {
+                            EnumOption enumOption = Arrays.stream(enumClasses.get(columnName)).filter(en -> {
+                                return en.toString().equals((String) s);
+                            }).findFirst().get();
+                            dtValue+=enumOption.getOption()+", ";
+                        }
+                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
+                    }
+
+                }
+
             }
         }
         map.putAll(addMap);

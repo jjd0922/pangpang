@@ -6,9 +6,6 @@ import com.newper.constant.MenuType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Menu;
-import com.newper.entity.SubMenu;
-import com.newper.exception.MsgException;
-import com.newper.exception.NoSessionException;
 import com.newper.repository.MenuRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,6 @@ import java.util.List;
 public class MainRestController {
 
     private final MenuRepo menuRepo;
-
     @Autowired
     private SessionInfo sessionInfo;
 
@@ -33,11 +29,10 @@ public class MainRestController {
     @PostConstruct
     @GetMapping("updateMenu.ajax")
     public void updateMenu(){
-        List<Menu> menuList = menuRepo.findMenuAll(MenuType.ERP);
+        List<Menu> menuList = menuRepo.findMenuAll(MenuType.SHOP);
 
         MenuList.menus = menuList;
     }
-
     /** 로그인 처리*/
     @PostMapping(value = "login.ajax")
     public ReturnMap login(ParamMap paramMap){
