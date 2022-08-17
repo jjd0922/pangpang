@@ -109,9 +109,9 @@ public class CompanyService {
 
     @Transactional
     public Integer saveContract(ParamMap paramMap, MultipartFile ccFile) {
-        paramMap.put("ccStart", LocalDate.parse(paramMap.getString("ccStart")));
-        paramMap.put("ccEnd", LocalDate.parse(paramMap.getString("ccEnd")));
         CompanyContract contract = paramMap.mapParam(CompanyContract.class);
+        contract.setCcStart(LocalDate.parse(paramMap.getString("ccStart")));
+        contract.setCcEnd(LocalDate.parse(paramMap.getString("ccEnd")));
 
         Integer ceIdx = saveEmployee(paramMap);
         CompanyEmployee ce = CompanyEmployee.builder().ceIdx(ceIdx).build();
@@ -133,11 +133,11 @@ public class CompanyService {
 
     @Transactional
     public Integer updateContract(int ccIdx, ParamMap paramMap, MultipartFile ccFile) {
-        paramMap.put("ccEnd", LocalDate.parse(paramMap.getString("ccEnd")));
         CompanyContract oldContract = companyContractRepo.findById(ccIdx).orElseThrow(() -> new MsgException("존재하지 않는 계약입니다."));
 
         paramMap.put("user", User.builder().uIdx(paramMap.getInt("uIdx")).build());
         CompanyContract newContract = paramMap.mapParam(CompanyContract.class);
+        newContract.setCcEnd(LocalDate.parse(paramMap.getString("ccEnd")));
         newContract.notUpdate(oldContract);
 
         CompanyEmployee companyEmployee = oldContract.getCompanyEmployee();
@@ -161,7 +161,6 @@ public class CompanyService {
     /**카테고리별 입점사 수수료 등록*/
     @Transactional
     public void saveFee(ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
         CompanyFee fee = paramMap.mapParam(CompanyFee.class);
         fee.setCfState('Y');
 
@@ -191,9 +190,9 @@ public class CompanyService {
     /**매입처보증보험 등록**/
     @Transactional
     public Integer saveInsurance(ParamMap paramMap, MultipartFile ciFile) {
-        paramMap.put("ciStartDate", LocalDate.parse(paramMap.getString("ciStartDate")));
-        paramMap.put("ciEndDate", LocalDate.parse(paramMap.getString("ciEndDate")));
         CompanyInsurance insurance = paramMap.mapParam(CompanyInsurance.class);
+        insurance.setCiStartDate(LocalDate.parse(paramMap.getString("ciStartDate")));
+        insurance.setCiEndDate(LocalDate.parse(paramMap.getString("ciEndDate")));
 
         if (!StringUtils.hasText(paramMap.getString("comIdx"))) {
             throw new MsgException("거래처를 입력해주세요.");
@@ -219,7 +218,6 @@ public class CompanyService {
     /**매입처보증보험 수정**/
     @Transactional
     public void updateInsurance(Integer ciIdx, ParamMap paramMap, MultipartFile ciFile) {
-        paramMap.put("ciEndDate", LocalDate.parse(paramMap.getString("ciEndDate")));
         CompanyInsurance insurance = companyInsuranceRepo.findById(ciIdx).orElseThrow(() -> new MsgException("존재하지 않는 매입처보증보험입니다."));
 
         if (!ciFile.isEmpty()) {
@@ -229,6 +227,7 @@ public class CompanyService {
         }
 
         CompanyInsurance insuranceParam = paramMap.mapParam(CompanyInsurance.class);
+        insuranceParam.setCiEndDate(LocalDate.parse(paramMap.getString("ciEndDate")));
         insurance.updateInsurance(insuranceParam);
     }
 

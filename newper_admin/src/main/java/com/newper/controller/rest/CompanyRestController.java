@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,16 +46,38 @@ public class CompanyRestController {
         return rd;
     }
 
-    @PostMapping("userModal.dataTable")
-    public ReturnDatatable searchUser(ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
-        ReturnDatatable rd = new ReturnDatatable();
+    /** 거래처 신규등록 처리 */
+    @PostMapping(value = "companyPop.ajax")
+    public ReturnMap registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        ReturnMap rm = new ReturnMap();
+        paramMap.multiSelect("ctType");
 
-        paramMap.put("U_TYPE", UType.INSIDE.name());
-        rd.setData(userMapper.selectUserForCompany(paramMap.getMap()));
-        rd.setRecordsTotal(userMapper.countUserForCompany(paramMap.getMap()));
+        if (paramMap.getList("ctType").isEmpty()) {
+            throw new MsgException("거래처구분코드를 입력해주세요.");
+        }
+        if (comNumFile.isEmpty()) {
+            throw new MsgException("사업자등록증 파일을 첨부해 주세요");
+        }
+        if (comAccountFile.isEmpty()) {
+            throw new MsgException("통장사본 파일을 첨부해 주세요");
+        }
 
-        return rd;
+        // company insert
+        Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
+
+        rm.setMessage("등록완료");
+        rm.setLocation("/company/companyPop/"+comIdx);
+        return rm;
+    }
+
+    /** 거래처 수정 처리 */
+    @PostMapping("companyPop/{comIdx}.ajax")
+    public ReturnMap modify(@PathVariable Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
+        ReturnMap rm = new ReturnMap();
+        companyService.updateCompany(comIdx, paramMap, comNumFile, comAccountFile);
+
+        rm.setMessage("수정완료");
+        return rm;
     }
 
     @PostMapping("contract.dataTable")
@@ -68,6 +92,31 @@ public class CompanyRestController {
         rd.setData(companyMapper.selectCompanyContract(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countCompanyContract(paramMap.getMap()));
         return rd;
+    }
+
+    /** 거래처 계약서 생성 **/
+    @PostMapping(value = "contractPop.ajax")
+    public ReturnMap contractNewPost(ParamMap paramMap, MultipartFile ccFile){
+        ReturnMap rm = new ReturnMap();
+        if (ccFile.getSize() == 0) {
+            throw new MsgException("계약서 파일을 첨부해 주세요");
+        }
+        Integer ccIdx = companyService.saveContract(paramMap, ccFile);
+
+        rm.setMessage("등록완료");
+        rm.setLocation("/company/contractPop/" + ccIdx);
+        return rm;
+    }
+
+    /** 거래처 계약관리 수정 처리 **/
+    @PostMapping(value = "contractPop/{ccIdx}.ajax")
+    public ReturnMap contractDetailPost(@PathVariable Integer ccIdx, ParamMap paramMap, MultipartFile ccFile){
+        ReturnMap rm = new ReturnMap();
+        Integer newCcidx = companyService.updateContract(ccIdx, paramMap, ccFile);
+
+        rm.setMessage("수정완료");
+        rm.setLocation("/company/contractPop/" + newCcidx);
+        return rm;
     }
 
     /**카테고리별 입점사 수수료관리 페이지 > 입점사 목록 가져오기*/
@@ -110,7 +159,7 @@ public class CompanyRestController {
     }
 
     /**카테고리별 입점처 수수료 수정**/
-    @PostMapping(value = "fee.ajax/{cfIdx}")
+    @PostMapping(value = "fee/{cfIdx}.ajax")
     public ReturnMap updateFee(@PathVariable Integer cfIdx, ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         companyService.updateFee(cfIdx, paramMap);
@@ -128,6 +177,27 @@ public class CompanyRestController {
         rd.setData(companyMapper.selectInsuranceDatatable(paramMap.getMap()));
         rd.setRecordsTotal(companyMapper.countInsuranceDatatable(paramMap.getMap()));
         return rd;
+    }
+
+    /**매입처 보증보험관리 신규등록 처리**/
+    @PostMapping(value = "insurancePop.ajax")
+    public ReturnMap insuranceNewPost(ParamMap paramMap, MultipartFile ciFile) {
+        ReturnMap rm = new ReturnMap();
+        Integer ciIdx = companyService.saveInsurance(paramMap, ciFile);
+
+        rm.setMessage("등록완료");
+        rm.setLocation("/company/insurancePop/" + ciIdx);
+        return rm;
+    }
+
+    /**매입처 보증보험관리 수정처리**/
+    @PostMapping(value="insurancePop/{ciIdx}.ajax")
+    public ReturnMap insuranceDetailPost(@PathVariable Integer ciIdx, ParamMap paramMap, MultipartFile ciFile) {
+        ReturnMap rm = new ReturnMap();
+        companyService.updateInsurance(ciIdx, paramMap, ciFile);
+
+        rm.setMessage("수정완료");
+        return rm;
     }
 
     /**CT_TYPE별 데이터테이블*/
