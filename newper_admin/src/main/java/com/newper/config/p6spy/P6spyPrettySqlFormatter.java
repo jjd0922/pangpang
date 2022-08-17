@@ -56,7 +56,7 @@ public class P6spyPrettySqlFormatter implements MessageFormattingStrategy {
         }
 
         return new StringBuilder().append("\n")
-                .append(sql.toUpperCase())
+                .append(sql)
                 .append(message)
                 .toString();
     }

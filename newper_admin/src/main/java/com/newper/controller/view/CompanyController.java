@@ -73,10 +73,6 @@ public class CompanyController {
         // company insert
         Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
 
-        // companyType insert
-        paramMap.put("comIdx", comIdx);
-        companyMapper.insertCompanyType(paramMap.getMap());
-
         mav.addObject("msg", "등록완료");
         mav.addObject("loc", "/company/companyPop/" + comIdx);
         return mav;
@@ -88,11 +84,10 @@ public class CompanyController {
         ModelAndView mav = new ModelAndView("company/companyPop");
 
         Company company = companyRepo.findCompanyByComIdx(comIdx);
-        List<Map<String, Object>> ctTypes = companyMapper.selectCompanyType(comIdx);
+        List<String> ctTypes = companyMapper.selectCompanyType(comIdx);
 
-        if (!ctTypes.isEmpty()) {
-            mav.addObject("ctType", ctTypes);
-        }
+        mav.addObject("ctTypes", ctTypes);
+
         mav.addObject("company", company);
         return mav;
     }

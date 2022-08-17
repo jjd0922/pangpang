@@ -32,8 +32,6 @@ public class CompanyService {
     /** 거래처 등록 기능 */
     @Transactional
     public Integer saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
-        System.out.println("paramMap = " + paramMap);
-
         // employee, address
         Integer ceIdx = saveEmployee(paramMap);
         CompanyEmployee companyEmployee = CompanyEmployee.builder().ceIdx(ceIdx).build();
@@ -41,7 +39,6 @@ public class CompanyService {
         Company company = paramMap.mapParam(Company.class);
         company.setCompanyEmployee(companyEmployee);
         company.setAddress(address);
-        System.out.println("company = " + company);
 
         // 파일업로드
         String comNumFilePath = Common.uploadFilePath(comNumFile, "company/com_num/", AdminBucket.SECRET);
@@ -60,7 +57,12 @@ public class CompanyService {
 
         Company savedCompany = companyRepo.saveAndFlush(company);
 
-        return savedCompany.getComIdx();
+        // companyType insert
+        int comIdx = savedCompany.getComIdx();
+        paramMap.put("comIdx", comIdx);
+        companyMapper.insertCompanyType(paramMap.getMap());
+
+        return comIdx;
     }
 
     /**거래처담당자 insert*/

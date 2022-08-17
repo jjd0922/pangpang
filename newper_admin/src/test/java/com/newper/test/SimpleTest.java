@@ -1,20 +1,17 @@
 package com.newper.test;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.util.PatternMatchUtils;
+
+import java.util.regex.Pattern;
 
 public class SimpleTest {
 
 
     @Test
     public void test(){
-        byte  t = 1;
-        Byte test = new Byte(t);
-
-        if(test == 1){
-            System.out.println("is truee");
-        }else{
-            System.out.println("222");
-        }
+        String uId="";
+        System.out.println(Pattern.matches("^[a-zA-Z0-9]*$", uId));
 
     }
 }
