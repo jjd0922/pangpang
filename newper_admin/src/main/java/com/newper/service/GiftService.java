@@ -26,9 +26,9 @@ public class GiftService {
     /** GIFT_GROUP INSERT*/
     @Transactional
     public GiftGroup saveGiftGroup(ParamMap paramMap) {
-        paramMap.put("giftgStartDate", LocalDate.parse(paramMap.getString("giftgStartDate")));
-        paramMap.put("giftgEndDate", LocalDate.parse(paramMap.getString("giftgEndDate")));
         GiftGroup giftGroup = paramMap.mapParam(GiftGroup.class);
+        giftGroup.setGiftgStartDate(LocalDate.parse(paramMap.getString("giftgEndDate")));
+        giftGroup.setGiftgEndDate(LocalDate.parse(paramMap.getString("giftgStartDate")));
         GiftGroup savedGg = giftGroupRepo.save(giftGroup);
         return savedGg;
     }

@@ -246,11 +246,11 @@
     }
 
     function saveNewFee(cfIdx) {
-        var url = '/company/fee.ajax';
+        var url = location.pathname;
         if (cfIdx != null && cfIdx != "") {
-            url += '/' + cfIdx + '?' + $('#updateForm').serialize();
+            url += '/' + cfIdx + '.ajax?' + $('#updateForm').serialize();
         } else {
-            url += '?' + $('#updateForm').serialize() + '&comIdx=' + $('input[name="comIdx"]').val();
+            url += '.ajax?' + $('#updateForm').serialize() + '&comIdx=' + $('input[name="comIdx"]').val();
         }
         $.ajax({
             url:  url ,

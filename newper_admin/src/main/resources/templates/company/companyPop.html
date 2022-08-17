@@ -600,7 +600,13 @@
 
 <script th:inline="javascript">
     function saveAction(){
-        $("#regiForm").submit();
+        $.ajax({
+            url: location.pathname + '.ajax',
+            processData: false,
+            contentType: false,
+            type: 'post',
+            data: new FormData($('#regiForm')[0])
+        });
     }
 
     /** 다음 주소 api사용 */

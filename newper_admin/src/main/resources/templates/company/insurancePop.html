@@ -385,7 +385,13 @@
 
 <script>
     function saveAction(){
-        $("#regiForm").submit();
+        $.ajax({
+            url: location.pathname + '.ajax',
+            processData: false,
+            contentType: false,
+            type: 'post',
+            data: new FormData($('#regiForm')[0])
+        });
     }
 
     function selectCompany(row) {

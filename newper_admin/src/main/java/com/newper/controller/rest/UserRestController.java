@@ -82,5 +82,18 @@ public class UserRestController {
         return rm;
     }
 
+    /**사용자 모달 데이터테이블*/
+    @PostMapping("userModal.dataTable")
+    public ReturnDatatable searchUser(ParamMap paramMap) {
+        System.out.println("paramMap = " + paramMap);
+        ReturnDatatable rd = new ReturnDatatable();
+
+        paramMap.put("U_TYPE", UType.INSIDE.name());
+        rd.setData(userMapper.selectUserForCompany(paramMap.getMap()));
+        rd.setRecordsTotal(userMapper.countUserForCompany(paramMap.getMap()));
+
+        return rd;
+    }
+
 }
 
