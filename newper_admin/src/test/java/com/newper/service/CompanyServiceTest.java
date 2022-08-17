@@ -73,21 +73,4 @@ class CompanyServiceTest {
         System.out.println("end!!");
     }
 
-    @Test
-    @Transactional
-    public void menuTest(){
-        Menu home = menuRepo.findById("HOME").get();
-        SubMenu subMenu = home.getSubMenuList().get(0);
-        List<Long> smAuth = subMenu.getSmAuth();
-        Integer  i=1;
-        Long k=1l;
-        System.out.println( i.intValue() == k.intValue());
-
-
-        for (Long integer : smAuth) {
-            System.out.println(integer);
-        }
-
-    }
-
 }

@@ -5,8 +5,10 @@ import com.newper.entity.common.Address;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Entity
 @DynamicUpdate
@@ -54,6 +57,7 @@ public class User extends BaseEntity {
     private String uCompanyTel;
     private String uState;
     private String uId;
+    @ColumnTransformer(write = "SHA2(?,512)")
     private String uPassword;
 
     @Embedded
@@ -74,40 +78,30 @@ public class User extends BaseEntity {
         if (!StringUtils.hasText(getUPhone())) {
             throw new MsgException("휴대폰번호를 입력해주세요.");
         }
-//        String comName = paramMap.getString("COM_NAME");
-//        if (comName == null || comName.equals("")) {
-//            throw new MsgException("상호법인명을 입력해주세요.");
-//        }
-//
-//        String uState = paramMap.getString("U_STATE");
-//        if (uState == null || uState.equals("")) {
-//            throw new MsgException("상태를 선택해주세요.");
-//        }
-//        String uId = paramMap.getString("U_ID");
-//        if (uId == null || uId.equals("")) {
-//            throw new MsgException("로그인 ID를 입력해주세요.");
-//        }
-//        String uPassword = paramMap.getString("U_PASSWORD");
-//        if (uPassword == null || uPassword.equals("")) {
-//            throw new MsgException("비밀번호를 입력해주세요.");
-//        }
-//        String authIdx = paramMap.getString("U_AUTH_IDX");
-//        if (authIdx == null || authIdx.equals("")) {
-//            throw new MsgException("권한을 입력해주세요.");
-//        }
-//
-//        String uBirth = paramMap.getString("U_BIRTH");
-//        if ( uBirth.equals("")) {
-//            uBirth=null;
-//            paramMap.put("U_BIRTH",uBirth);
-//        }
-//
+        if (this.uState == null ) {
+            throw new MsgException("상태를 선택해주세요.");
+        }
+
+        if (uId == null){
+            throw new MsgException("로그인 ID를 입력해주세요.");
+        }
+        //영어 숫자 아닌 문자 있는지 체크
+        uId=uId.trim();
+        if (!Pattern.matches("^[a-zA-Z0-9]*$", uId)) {
+            throw new MsgException("ID는 영어, 숫자로만 가능합니다");
+        }
+        if (uId.equals("")) {
+            throw new MsgException("로그인 ID를 입력해주세요.");
+        }
+        if (uPassword == null || uPassword.equals("")) {
+            throw new MsgException("비밀번호를 입력해주세요.");
+        }
 
     }
 
     /*생년월일*/
     public String getUBirthStr(){
-        return getUBirth().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        return getUBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 }
