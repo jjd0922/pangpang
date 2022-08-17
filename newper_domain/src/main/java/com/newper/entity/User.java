@@ -7,8 +7,6 @@ import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -65,7 +63,7 @@ public class User extends BaseEntity {
     private List<Company> companies;
 
     @OneToMany(mappedBy = "user")
-    private List<Contract> contracts;
+    private List<CompanyContract> contracts;
 
     @PrePersist
     @PreUpdate
