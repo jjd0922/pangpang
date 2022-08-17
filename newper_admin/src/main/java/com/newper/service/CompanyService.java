@@ -10,7 +10,6 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -25,9 +24,9 @@ public class CompanyService {
 
     private final CompanyRepo companyRepo;
     private final CompanyMapper companyMapper;
-    private final ContractRepo contractRepo;
-    private final InsuranceRepo insuranceRepo;
-    private final FeeRepo feeRepo;
+    private final CompanyContractRepo companyContractRepo;
+    private final CompanyInsuranceRepo companyInsuranceRepo;
+    private final CompanyFeeRepo companyFeeRepo;
     private final CompanyEmployeeRepo companyEmployeeRepo;
 
     /** 거래처 등록 기능 */
@@ -110,7 +109,7 @@ public class CompanyService {
     public Integer saveContract(ParamMap paramMap, MultipartFile ccFile) {
         paramMap.put("ccStart", LocalDate.parse(paramMap.getString("ccStart")));
         paramMap.put("ccEnd", LocalDate.parse(paramMap.getString("ccEnd")));
-        Contract contract = paramMap.mapParam(Contract.class);
+        CompanyContract contract = paramMap.mapParam(CompanyContract.class);
 
         Integer ceIdx = saveEmployee(paramMap);
         CompanyEmployee ce = CompanyEmployee.builder().ceIdx(ceIdx).build();
@@ -125,7 +124,7 @@ public class CompanyService {
         contract.setCompany(company);
         contract.setUser(user);
 
-        contractRepo.save(contract);
+        companyContractRepo.save(contract);
 
         return contract.getCcIdx();
     }
@@ -133,10 +132,10 @@ public class CompanyService {
     @Transactional
     public Integer updateContract(int ccIdx, ParamMap paramMap, MultipartFile ccFile) {
         paramMap.put("ccEnd", LocalDate.parse(paramMap.getString("ccEnd")));
-        Contract oldContract = contractRepo.findById(ccIdx).orElseThrow(() -> new MsgException("존재하지 않는 계약입니다."));
+        CompanyContract oldContract = companyContractRepo.findById(ccIdx).orElseThrow(() -> new MsgException("존재하지 않는 계약입니다."));
 
         paramMap.put("user", User.builder().uIdx(paramMap.getInt("uIdx")).build());
-        Contract newContract = paramMap.mapParam(Contract.class);
+        CompanyContract newContract = paramMap.mapParam(CompanyContract.class);
         newContract.notUpdate(oldContract);
 
         CompanyEmployee companyEmployee = oldContract.getCompanyEmployee();
@@ -153,7 +152,7 @@ public class CompanyService {
         }
 
         oldContract.setCcState(CcState.STOP);
-        Contract savedContract = contractRepo.save(newContract);
+        CompanyContract savedContract = companyContractRepo.save(newContract);
         return savedContract.getCcIdx();
     }
 
@@ -161,7 +160,7 @@ public class CompanyService {
     @Transactional
     public void saveFee(ParamMap paramMap) {
         System.out.println("paramMap = " + paramMap);
-        Fee fee = paramMap.mapParam(Fee.class);
+        CompanyFee fee = paramMap.mapParam(CompanyFee.class);
         fee.setCfState('Y');
 
         Category category = Category.builder().cateIdx(paramMap.getInt("cateIdx")).build();
@@ -169,20 +168,20 @@ public class CompanyService {
         fee.setCategory(category);
         fee.setCompany(company);
 
-        feeRepo.save(fee);
+        companyFeeRepo.save(fee);
     }
 
     /**카테고리별 입점사 수수료 수정**/
     @Transactional
     public void updateFee(Integer cfIdx, ParamMap paramMap) {
 
-        Fee oldFee = feeRepo.findById(cfIdx).orElseThrow(() -> new MsgException("존재하지 않는 거래처입니다."));
+        CompanyFee oldFee = companyFeeRepo.findById(cfIdx).orElseThrow(() -> new MsgException("존재하지 않는 거래처입니다."));
 
-        Fee newFee = paramMap.mapParam(Fee.class);
+        CompanyFee newFee = paramMap.mapParam(CompanyFee.class);
         newFee.setCompany(oldFee.getCompany());
         newFee.setCategory(oldFee.getCategory());
         newFee.setCfState('Y');
-        feeRepo.save(newFee);
+        companyFeeRepo.save(newFee);
 
         oldFee.setCfState('N');
     }
@@ -192,7 +191,7 @@ public class CompanyService {
     public Integer saveInsurance(ParamMap paramMap, MultipartFile ciFile) {
         paramMap.put("ciStartDate", LocalDate.parse(paramMap.getString("ciStartDate")));
         paramMap.put("ciEndDate", LocalDate.parse(paramMap.getString("ciEndDate")));
-        Insurance insurance = paramMap.mapParam(Insurance.class);
+        CompanyInsurance insurance = paramMap.mapParam(CompanyInsurance.class);
 
         if (!StringUtils.hasText(paramMap.getString("comIdx"))) {
             throw new MsgException("거래처를 입력해주세요.");
@@ -210,7 +209,7 @@ public class CompanyService {
         insurance.setCiFile(ciFilePath);
         insurance.setCiFileName(ciFileName);
 
-        Insurance savedInsurance = insuranceRepo.save(insurance);
+        CompanyInsurance savedInsurance = companyInsuranceRepo.save(insurance);
 
         return savedInsurance.getCiIdx();
     }
@@ -219,7 +218,7 @@ public class CompanyService {
     @Transactional
     public void updateInsurance(Integer ciIdx, ParamMap paramMap, MultipartFile ciFile) {
         paramMap.put("ciEndDate", LocalDate.parse(paramMap.getString("ciEndDate")));
-        Insurance insurance = insuranceRepo.findById(ciIdx).orElseThrow(() -> new MsgException("존재하지 않는 매입처보증보험입니다."));
+        CompanyInsurance insurance = companyInsuranceRepo.findById(ciIdx).orElseThrow(() -> new MsgException("존재하지 않는 매입처보증보험입니다."));
 
         if (!ciFile.isEmpty()) {
             String ciFilePath = Common.uploadFilePath(ciFile, "company/insurance/", AdminBucket.SECRET);
@@ -227,7 +226,7 @@ public class CompanyService {
             insurance.setCiFileName(ciFile.getOriginalFilename());
         }
 
-        Insurance insuranceParam = paramMap.mapParam(Insurance.class);
+        CompanyInsurance insuranceParam = paramMap.mapParam(CompanyInsurance.class);
         insurance.updateInsurance(insuranceParam);
     }
 

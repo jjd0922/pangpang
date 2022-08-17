@@ -6,14 +6,11 @@ import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -63,7 +60,7 @@ public class User extends BaseEntity {
     private List<Company> companies;
 
     @OneToMany(mappedBy = "user")
-    private List<Contract> contracts;
+    private List<CompanyContract> contracts;
 
     @PrePersist
     @PreUpdate

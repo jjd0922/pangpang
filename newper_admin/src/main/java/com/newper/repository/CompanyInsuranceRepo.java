@@ -1,14 +1,14 @@
 package com.newper.repository;
 
-import com.newper.entity.Insurance;
+import com.newper.entity.CompanyInsurance;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InsuranceRepo extends JpaRepository<Insurance, Integer> {
+public interface CompanyInsuranceRepo extends JpaRepository<CompanyInsurance, Integer> {
 
     @EntityGraph(attributePaths = {"company"})
-    public Insurance findInsuranceByCiIdx(Integer ciIdx);
+    public CompanyInsurance findInsuranceByCiIdx(Integer ciIdx);
 
 }

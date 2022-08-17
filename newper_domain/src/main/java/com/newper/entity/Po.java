@@ -35,7 +35,7 @@ public class Po extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_CC_IDX", referencedColumnName = "ccIdx")
-    private Contract contract;
+    private CompanyContract contract;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_HW_IDX", referencedColumnName = "hwIdx")

@@ -37,66 +37,56 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="voucherForm">
+                                    <form id="giftForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권발행명</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm">
+                                                    <input type="text" name="giftgName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권 등록상태</label>
-                                                    <select name="ctType" data-placeholder="multi select" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="giftgState" data-placeholder="multi select" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권유효기간시작일</label>
-                                                    <input type="text" name="comName" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="giftgStartDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권유효기간종료일</label>
-                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px  w-datarange daterange-basic">
+                                                    <input type="text" name="giftgEndDate" class="form-control form-control-sm w-120px  w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권 고유코드</label>
-                                                    <input type="text" name="comNum" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="giftCode" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록자</label>
-                                                    <input type="text" name="comCeo" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="createdBy" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" name="comMid" class="form-control form-control-sm  w-datarange daterange-basic">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm  w-datarange daterange-basic">
                                                 </div>
 
-                                                <div class="form-group">
+                                                <!--<div class="form-group">
                                                     <label class="d-block">승인자</label>
-                                                    <input type="text" name="comCeo" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">승인일</label>
-                                                    <input type="text" name="comMid" class="form-control form-control-sm  w-datarange daterange-basic">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">수정자</label>
-                                                    <input type="text" name="comCeo" class="form-control form-control-sm w-120px">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">수정일</label>
-                                                    <input type="text" name="comMid" class="form-control form-control-sm  w-datarange daterange-basic">
-                                                </div>
+                                                    <input type="text" name="" class="form-control form-control-sm  w-datarange daterange-basic">
+                                                </div>-->
 
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
@@ -129,7 +119,7 @@
 
                             </div>
 
-                            <table class="table" id="voucherTable"></table>
+                            <table class="table table-hover" id="giftTable"></table>
 
 
                         </div>
@@ -171,16 +161,16 @@
 
 <script>
     function searchBtn(){
-        companyTable.page('first').ajax.url('/company/company.dataTable?'+$('#companyForm').serialize()).load();
+        giftTable.page('first').ajax.url('/gift/gift.dataTable?'+$('#giftForm').serialize()).load();
     }
 
-    function companyDetailPop(comIdx) {
-        var focusPopup = window.open('companyPop/' + comIdx, 'companyDetail', 'width=1200, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function giftDetailPop(giftgIdx) {
+        var focusPopup = window.open('/gift/giftPop/' + giftgIdx, 'giftDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
 <script th:inline="javascript">
-    var companyTable = $('#companyTable').DataTable({
+    var giftTable = $('#giftTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:true,
         select: {
@@ -189,7 +179,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/company/company.dataTable',
+            url:'/gift/giftGroup.dataTable',
             type:'post'
         },
         columnDefs: [ {
@@ -203,36 +193,27 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'등록일','data':'COM_CREATED_DATE','defaultContent':''}
-            ,{'title':'등록시간','data':'COM_CREATED_TIME','defaultContent':''}
-            ,{'title':'거래처구분코드','data':'CT_TYPE_LIST_STR','defaultContent':''}
-            ,{'title':'사업자 분류','data':'COM_TYPE_STR','defaultContent':''}
-            ,{'title':'상태','data':'COM_STATE_STR','defaultContent':''}
-            ,{'title':'MID','data':'COM_MID','defaultContent':''}
-            ,{'title':'상호법인명','data':'COM_NAME', 'render': function (data,type,full,meta) {
-                    return '<a href="#" onclick="companyDetailPop('+ full.COM_IDX +')" class="badge badge-primary">' + full.COM_NAME + '</a>';
+            ,{'title':'상품권 발행명','data':'GIFTG_NAME', 'render': function (date, type, full, meta) {
+                    return '<a href="#" onclick="giftDetailPop(' + full.GIFTG_IDX + ')" class="badge badge-primary">'+full.GIFTG_NAME+'</a>'
                 }}
-            ,{'title':'대표자명','data':'COM_CEO','defaultContent':''}
-            ,{'title':'업체주소','data':'ADDRESS','defaultContent':''}
-            ,{'title':'우편번호','data':'POST','defaultContent':''}
-            ,{'title':'전화번호','data':'COM_TEL','defaultContent':''}
-            ,{'title':'담당자','data':'CE_NAME','defaultContent':''}
-            ,{'title':'담당자전화번호', 'data':'CE_PHONE','defaultContent':''}
-            ,{'title':'등록자','data':'COM_CREATED_BY','defaultContent':''}
-            ,{'title':'수정일','data':'COM_MODIFIED_DATE','defaultContent':''}
-            ,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}
-            ,{'title':'수정이력','data':'', 'render': function (data) {
-                    return '<a href="#" class="badge badge-primary">보기</a>';
-                }}
+            ,{'title':'상품권 등록상태','data':'GIFTG_STATE_STR','defaultContent':''}
+            ,{'title':'상품권유효기간시작일','data':'GIFTG_START_DATE','defaultContent':''}
+            ,{'title':'상품권유효기간종료일','data':'GIFTG_END_DATE','defaultContent':''}
+            ,{'title':'상품권고유코드','data':'','defaultContent':''}
+            ,{'title':'상품권 생성수량','data':'GIFTG_CNT','defaultContent':''}
+            ,{'title':'등록자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+            ,{'title':'승인자','data':'','defaultContent':''}
+            ,{'title':'승인일','data':'','defaultContent':''}
         ]
     });
 
-    $('#companyForm').on('keyup',function(event){
+    $('#giftForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 
     $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('/company/companyPop', 'regist_company', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/gift/giftPop', 'insertGift', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 </script>

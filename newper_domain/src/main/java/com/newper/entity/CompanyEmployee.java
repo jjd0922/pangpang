@@ -27,7 +27,7 @@ public class CompanyEmployee {
     private List<Company> company;
 
     @OneToMany(mappedBy = "companyEmployee")
-    private List<Contract> contract;
+    private List<CompanyContract> contract;
 
     private String ceName;
     private String ceDepart;
