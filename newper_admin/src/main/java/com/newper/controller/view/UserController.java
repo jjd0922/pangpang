@@ -68,8 +68,12 @@ public class UserController {
     public ModelAndView userDetail(@PathVariable Integer uIdx) {
         ModelAndView mav = new ModelAndView("user/userPopup");
         User user = userRepo.findUserByuIdx(uIdx);
+
         List<Auth> list = new ArrayList<>();
         list = authRepo.findAll();
+
+
+
         mav.addObject("list", list);
 
         mav.addObject("user", user);

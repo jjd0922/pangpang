@@ -95,6 +95,13 @@ public class UserService {
         userRepo.save(user);
         return user.getUIdx();
     }
+
+    @Transactional
+    public void userUpdatePwd(Integer uIdx, String uPassword) {
+        User user = userRepo.findById(uIdx).orElseThrow(()-> new MsgException("존재하지 않는 회원입니다."));
+
+        user.setUPassword(uPassword);
+    }
     }
 
 

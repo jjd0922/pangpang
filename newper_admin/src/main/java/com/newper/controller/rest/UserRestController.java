@@ -67,19 +67,18 @@ public class UserRestController {
     @PostMapping("resetPwd.ajax")
     public ReturnMap resetPwd(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-/*
+        System.out.println("parammap = " + paramMap);
 
         // 비밀번호 초기화
-        String resetPwd = Common.getRandomPassword(8);
-        String encryptPwd = Common.parseSHA(resetPwd);
+        String resetPwd = User.getRandomPassword(8);
 
-        // cu_pw 업데이트
-        Long cuIdx = Long.parseLong(paramMap.get("CU_IDX").toString());
-        customerService.customerUpdatePwd(cuIdx, encryptPwd);
+        // pw 업데이트
+        Integer uIdx = Integer.parseInt(paramMap.get("U_IDX").toString());
+        System.out.println("uIdx = " + uIdx);
+        userService.userUpdatePwd(uIdx,resetPwd);
 
         // rm
         rm.put("resetPwd", resetPwd);
-*/
 
         return rm;
     }

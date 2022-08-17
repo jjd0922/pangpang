@@ -102,10 +102,10 @@ var DateTimePickers = function() {
             $(this).val('');
         });
 
+        //daterange-single 초기값 널값
         $('.daterange-singlenull').daterangepicker({
-            autoUpdateInput: false,
+            parentEl: '.content-inner',
             locale: {
-                parentEl: '.content-inner',
                 direction: 'ltr',
                 format: 'YYYY-MM-DD',
                 separator: ' ~ ',
@@ -117,15 +117,28 @@ var DateTimePickers = function() {
                 customRangeLabel: '◀ 기간 설정',
                 daysOfWeek: ['일','월', '화', '수', '목', '금', '토'], //moment.weekdaysMin(),
                 monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'], //moment.monthsShort(),
+                firstDay: moment.localeData().firstDayOfWeek()
             },
             showDropdowns: true,
             applyClass: 'btn-primary',
             cancelClass: 'btn-dark',
             autoApply: true,
-            singleDatePicker: true
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        })
+
+
+          .on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        }).on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
         }).on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
+
 
         // Pre-defined ranges and callback
         //
