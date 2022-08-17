@@ -2,12 +2,12 @@ package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
-import com.newper.entity.CompanyEmployee;
-import com.newper.entity.Insurance;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.CompanyMapper;
-import com.newper.repository.*;
+import com.newper.repository.CompanyInsuranceRepo;
+import com.newper.repository.CompanyRepo;
+import com.newper.repository.CompanyContractRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,9 +29,9 @@ public class CompanyController {
 
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
-    private final ContractRepo contractRepo;
+    private final CompanyContractRepo companyContractRepo;
     private final CompanyRepo companyRepo;
-    private final InsuranceRepo insuranceRepo;
+    private final CompanyInsuranceRepo companyInsuranceRepo;
     private final CategoryMapper categoryMapper;
 
     /** 거래처 관리 페이지*/
@@ -142,7 +142,7 @@ public class CompanyController {
     @GetMapping(value = "contractPop/{ccIdx}")
     public ModelAndView contractDetail(@PathVariable int ccIdx){
         ModelAndView mav = new ModelAndView("company/contractPop");
-        mav.addObject("contract", contractRepo.findContractByccIdx(ccIdx));
+        mav.addObject("contract", companyContractRepo.findContractByccIdx(ccIdx));
         return mav;
     }
 
@@ -203,7 +203,7 @@ public class CompanyController {
     @GetMapping(value="insurancePop/{ciIdx}")
     public ModelAndView insuranceDetail(@PathVariable Integer ciIdx) {
         ModelAndView mav = new ModelAndView("company/insurancePop");
-        mav.addObject("insurance", insuranceRepo.findInsuranceByCiIdx(ciIdx));
+        mav.addObject("insurance", companyInsuranceRepo.findInsuranceByCiIdx(ciIdx));
         return mav;
     }
 

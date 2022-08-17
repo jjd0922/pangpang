@@ -78,14 +78,14 @@ public class Company extends BaseEntity {
     private List<User> users;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-    private List<Fee> feeList;
+    private List<CompanyFee> feeList;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
 
     @OneToMany(mappedBy = "company")
-    private List<Insurance> insurances;
+    private List<CompanyInsurance> insurances;
 
     @PrePersist
     @PreUpdate

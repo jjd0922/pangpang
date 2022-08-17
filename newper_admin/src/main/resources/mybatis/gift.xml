@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.GiftMapper">
+    <sql id="includeGiftGroupDataTable">
+        <if test='giftgName != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
+        <if test='giftgCode != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
+        <if test='giftgName != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
+
+    </sql>
+
+    <select id="selectGiftGroupDataTable" resultType="Map">
+        SELECT
+            GIFTG_IDX,
+            GIFTG_NAME,
+            GIFTG_STATE,
+            GIFTG_START_DATE,
+            GIFTG_END_DATE,
+            GIFTG_CNT,
+            CREATED_BY,
+            CREATED_DATE
+        FROM
+            GIFT_GROUP
+    </select>
+
+    <select id="countGiftGroupDataTable" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            GIFT_GROUP
+    </select>
+
+    <select id="selectGiftDataTable" resultType="Map">
+        SELECT
+            GIFT_IDX,
+            GIFT_STATE,
+            GIFT_CODE,
+            POINT_CU_IDX,
+            CU_NAME
+        FROM GIFT
+                LEFT JOIN GIFT_GROUP ON GIFT_GIFTG_IDX = GIFTG_IDX
+                LEFT JOIN (
+                    SELECT
+                        POINT_IDX,
+                        POINT_CU_IDX,
+                        CU_NAME
+                    FROM POINT_HISTORY
+                        LEFT JOIN CUSTOMER ON POINT_CU_IDX = CU_IDX
+                    ) AS PH ON GIFT_POINT_IDX = POINT_IDX
+        WHERE
+            GIFTG_IDX = #{giftgIdx}
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countGiftDataTable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(GIFT_IDX))
+        FROM
+            GIFT
+                LEFT JOIN GIFT_GROUP ON GIFT_GIFTG_IDX = GIFTG_IDX
+                LEFT JOIN POINT_HISTORY ON GIFT_POINT_IDX = POINT_IDX
+        WHERE
+            GIFTG_IDX = #{giftgIdx}
+    </select>
+</mapper>
