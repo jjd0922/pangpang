@@ -38,7 +38,7 @@ public class GiftController {
     public ModelAndView giftDetail(@PathVariable Long giftgIdx) {
         ModelAndView mav = new ModelAndView("gift/giftPop");
 
-        mav.addObject("gift", giftGroupRepo.findById(giftgIdx).orElseThrow(()->new MsgException("존재하지 않는 상품권입니다.")));
+        mav.addObject("giftGroup", giftGroupRepo.findById(giftgIdx).orElseThrow(()->new MsgException("존재하지 않는 상품권입니다.")));
         return mav;
     }
 

@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -40,8 +41,8 @@ public class CompanyContract extends BaseEntity {
 
     private String ccTaxDate;
     private String ccBaseDate;
-    private String ccStart;
-    private String ccEnd;
+    private LocalDate ccStart;
+    private LocalDate ccEnd;
     private float ccRates;
     private int ccCost;
     private String ccNum;

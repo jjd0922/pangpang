@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${user != null} ? '사용자 상세/수정'">사용자 등록</title>
 
-    <th:block th:replace="/common/css.html"></th:block>
+    <th:block th:replace="common/css.html"></th:block>
 </head>
 
 <body>
@@ -25,11 +25,11 @@
                         </div>-->
                         </div>
                     </div>
-                 </div>
-             </div>
+                </div>
+            </div>
             <form id="userForm">
                 <div class="card">
-                    <div class="card-body popup-contents">
+                    <div class="card-body popup-contents pb-4">
                         <fieldset class="mb-0">
                                 <legend class="">1. 사용자정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                     <div class="row">
@@ -58,7 +58,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--입력필드-->
+
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -71,7 +71,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--입력필드-->
+
 
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
@@ -82,7 +82,7 @@
                                                                 </span>
                                                             </span>
                                                    <!--  <input type="text" name="U_BIRTH" class="form-control" th:value="${user?.getUBirthStr()}" placeholder="yyyy-mm-dd">-->
-                                                        <input type="text" name="U_BIRTH" class="form-control" th:value="${user != null} ? ${user.getUBirth()}" placeholder="yyyy-mm-dd">
+                                                        <input type="text" name="U_BIRTH" class="form-control" th:value="${user != null} ? ${user.getUBirth()}">
                                                        <!-- <input type="text" name="U_BIRTH" class="form-control" th:value="${user?.uBirth}" placeholder="yyyy-mm-dd">-->
                                                     </div>
                                                 </div>
@@ -102,7 +102,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--입력필드-->
+
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -116,7 +116,7 @@
                                                 </div>
                                             </div>
 
-                                            <!--입력필드-->
+
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -129,7 +129,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--입력필드-->
+
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -142,7 +142,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--입력필드-->
+
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -158,209 +158,183 @@
                                     </div>
                         </fieldset>
                     </div>
+
+                    <div class="card-body popup-contents pb-4">
+                            <fieldset class="mb-0">
+                            <legend class="">2. 업체정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                <div class="row">
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text requested">
+                                                            상호법인명
+                                                            <a th:if="${user == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
+                                                        </span>
+                                                    </span>
+                                                <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
+                                                <input type="hidden" name="U_COM_IDX" th:value="${user != null} ? ${user.company.comIdx}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                        부서
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_DEPART" class="form-control" th:value="${user?.uDepart}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                         직급(직책)
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_POSITION" class="form-control" th:value="${user?.uPosition}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                        직무
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_JOB" class="form-control" th:value="${user?.uJob}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                         이메일(회사)
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_COMPANY_MAIL" class="form-control" th:value="${user?.uCompanyMail}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                         이메일(개인)
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_PERSON_MAIL" class="form-control" th:value="${user?.uPersonMail}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                        전화번호(사무실번호)
+                                                        </span>
+                                                    </span>
+                                                <input type="text" name="U_COMPANY_TEL" class="form-control" th:value="${user?.uCompanyTel}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                    </div>
+                    <div class="card-body popup-contents pb-4">
+                        <!-- 타이틀 -->
+                        <fieldset class="mb-0">
+                            <legend class="">3. 계정정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
+                                            </span>
+                                            <select data-placeholder="선택" class="form-control select" data-fouc name="U_STATE">
+                                                <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(user?.uState) eq opt.name()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group ">
+                                        <div class="input-group ">
+                                           <span class="input-group-prepend">
+                                              <span class="input-group-text requested">
+                                             로그인 ID
+                                              </span>
+                                           </span>
+                                            <input type="text" name="U_ID" class="form-control" th:value="${user?.uId}" placeholder="영어, 숫자 조합">
+                                            <input type="hidden" name="U_IDX" class="form-control" th:value="${user?.uIdx}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                           <span class="input-group-prepend">
+                                               <span class="input-group-text requested">
+                                                   패스워드
+                                                   <button th:if="${user!=null}" th:value="${user?.uPassword}" onclick="resetPwd()" class="badge badge-sm badge-primary ml-1">초기화</button>
+                                               </span>
+                                           </span>
+                                            <input type="password" name="U_PASSWORD" class="form-control" th:readonly="${user != null}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                             <span class="input-group-text requested">권한 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
+                                            </span>
+                                            <select class="form-control select" name="U_AUTH_IDX" >
+                                                <option value="">선택</option>
+                                                <option th:each="val : ${list}" th:utext="${val.authName}" th:value="${val.authIdx}" th:selected="${user?.auth?.authIdx eq val.authIdx}" > //val.authIdx = user.auth.authIdx
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
                 </div>
-                        <div class="card">
-                            <div class="card-body popup-contents">
-                                    <fieldset class="mb-0">
-                                    <legend class="">2. 업체정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                        <div class="row">
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
-                                                                    상호법인명
-                                                                    <a th:if="${user == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
-                                                        <input type="hidden" name="U_COM_IDX" th:value="${user != null} ? ${user.company.comIdx}">
-                                                        <input type="hidden" name="CT_TYPE_LIST">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6 ex">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                 사원번호
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" class="form-control uid" id="uNumber" th:value="${user?.uId}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                부서
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_DEPART" class="form-control" th:value="${user?.uDepart}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                 직급(직책)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_POSITION" class="form-control" th:value="${user?.uPosition}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                직무
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_JOB" class="form-control" th:value="${user?.uJob}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                 이메일(회사)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_COMPANY_MAIL" class="form-control" th:value="${user?.uCompanyMail}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                 이메일(개인)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_PERSON_MAIL" class="form-control" th:value="${user?.uPersonMail}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                전화번호(사무실번호)
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="U_COMPANY_TEL" class="form-control" th:value="${user?.uCompanyTel}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">3. 계정정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text requested">상태 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
-                                                        </span>
-                                                        <select data-placeholder="선택" class="form-control select" data-fouc name="U_STATE">
-                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(user?.uState) eq opt.name()}"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group ">
-                                                    <div class="input-group ">
-                                                       <span class="input-group-prepend ">
-                                                          <span class="input-group-text requested">
-                                                         로그인 ID
-                                                          </span>
-                                                       </span>
-                                                        <input type="text" name="U_ID" class="form-control" th:value="${user?.uId}" onkeyup="copyId()">
-                                                        <input type="hidden" name="U_IDX" class="form-control" th:value="${user?.uIdx}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                           <span class="input-group-prepend">
-                                                               <span class="input-group-text">
-                                                             패스워드
-                                                                   <button th:if="${user!=null}" th:value="${user?.uPassword}" onclick="resetPwd()" class="badge badge-sm badge-primary ml-1">초기화</button>
-                                                               </span>
-                                                           </span>
-                                                        <input type="text" name="U_PASSWORD" class="form-control" th:value="${user?.uPassword}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--입력필드-->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                         <span class="input-group-text requested">권한 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
-                                                        </span>
-                                                        <select class="form-control select" name="U_AUTH_IDX" >
-                                                            <option value="">선택</option>
-                                                            <option th:each="val : ${list}" th:utext="${val.authName}" th:value="${val.authIdx}" th:selected="${user?.auth?.authIdx eq val.authIdx}" > //val.authIdx = user.auth.authIdx
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                            </div>
-                        </div>
             </form>
-<!--
-                            <div class="card-footer bg-white d-flex justify-content-sm-between align-items-sm-center">
-                                <button type="button" class="btn btn-sm btn-light float-left"><i class="icon-cross2 mr-1"></i>닫기</button>
-
-                                <button type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
-                            </div>-->
-
-
-            <!-- Footer -->
-            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
-            </div>
-            <!-- /footer -->
         </div>
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
     </div>
 </div>
 
-<th:block th:replace="/company/modal/comModal.html"/>
+<th:block th:replace="company/modal/comModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
@@ -431,13 +405,6 @@
         $('#comNameModal').modal('show');
     }
 
-
-    function copyId(){
-        var uid = $('input[name=U_ID]').val()
-        $("#uNumber").val(uid);
-
-    }
-
     /** 다음 주소 api사용 */
     function daum_address() {
         new daum.Postcode({
@@ -499,7 +466,6 @@
 
         $('#userForm input[name="COM_NAME"]').val(rowData.COM_NAME);
         $('#userForm input[name="U_COM_IDX"]').val(rowData.COM_IDX);
-        $('#userForm input[name="CT_TYPE_LIST"]').val(rowData.CT_TYPE_LIST);
         $('#searchComModal').modal('hide');
     }
 

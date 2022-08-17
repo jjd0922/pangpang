@@ -50,60 +50,17 @@ public class CompanyController {
         return mav;
     }
 
-    /** 거래처 신규등록 처리 */
-    @PostMapping(value = "companyPop")
-    public ModelAndView registPost(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
-//        ModelAndView mav = new ModelAndView("main/alertMove");
-        ModelAndView mav = new ModelAndView("main/alertClose");
-
-        paramMap.multiSelect("ctType");
-
-        if (paramMap.getList("ctType").isEmpty()) {
-            throw new MsgException("거래처구분코드를 입력해주세요.");
-        }
-
-        if (comNumFile.isEmpty()) {
-            throw new MsgException("사업자등록증 파일을 첨부해 주세요");
-        }
-
-        if (comAccountFile.isEmpty()) {
-            throw new MsgException("통장사본 파일을 첨부해 주세요");
-        }
-
-        // company insert
-        Integer comIdx = companyService.saveCompany(paramMap, comNumFile, comAccountFile);
-
-        // companyType insert
-        paramMap.put("comIdx", comIdx);
-        companyMapper.insertCompanyType(paramMap.getMap());
-
-        mav.addObject("msg", "등록완료");
-        mav.addObject("loc", "/company/companyPop/" + comIdx);
-        return mav;
-    }
-
     /**거래처 상세조회 페이지 */
     @GetMapping(value = "companyPop/{comIdx}")
     public ModelAndView detail(@PathVariable Integer comIdx) {
         ModelAndView mav = new ModelAndView("company/companyPop");
 
         Company company = companyRepo.findCompanyByComIdx(comIdx);
-        List<Map<String, Object>> ctTypes = companyMapper.selectCompanyType(comIdx);
+        List<String> ctTypes = companyMapper.selectCompanyType(comIdx);
 
-        if (!ctTypes.isEmpty()) {
-            mav.addObject("ctType", ctTypes);
-        }
+        mav.addObject("ctTypes", ctTypes);
+
         mav.addObject("company", company);
-        return mav;
-    }
-
-    /** 거래처 수정 처리 */
-    @PostMapping("companyPop/{comIdx}")
-    public ModelAndView modify(@PathVariable Integer comIdx, ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
-        ModelAndView mav = new ModelAndView("main/alertMove");
-        companyService.updateCompany(comIdx, paramMap, comNumFile, comAccountFile);
-
-        mav.addObject("msg", "수정완료");
         return mav;
     }
 
@@ -123,37 +80,11 @@ public class CompanyController {
         return mav;
     }
 
-    /** 거래처 계약서 생성 **/
-    @PostMapping(value = "contractPop")
-    public ModelAndView contractNewPost(ParamMap paramMap, MultipartFile ccFile){
-        ModelAndView mav = new ModelAndView("company/contractPop");
-
-        if (ccFile.getSize() == 0) {
-            throw new MsgException("계약서 파일을 첨부해 주세요");
-        }
-        Integer ccIdx = companyService.saveContract(paramMap, ccFile);
-        mav.addObject("msg", "등록완료");
-        mav.addObject("loc", ccIdx);
-
-        return mav;
-    }
-
     /** 거래처 계약관리 상세 페이지 **/
     @GetMapping(value = "contractPop/{ccIdx}")
     public ModelAndView contractDetail(@PathVariable int ccIdx){
         ModelAndView mav = new ModelAndView("company/contractPop");
         mav.addObject("contract", companyContractRepo.findContractByccIdx(ccIdx));
-        return mav;
-    }
-
-    /** 거래처 계약관리 수정 처리 **/
-    @PostMapping(value = "contractPop/{ccIdx}")
-    public ModelAndView contractDetailPost(@PathVariable Integer ccIdx, ParamMap paramMap, MultipartFile ccFile){
-        ModelAndView mav = new ModelAndView("main/alertMove");
-        Integer newCcidx = companyService.updateContract(ccIdx, paramMap, ccFile);
-
-        mav.addObject("msg", "수정완료");
-        mav.addObject("loc", newCcidx);
         return mav;
     }
 
@@ -183,37 +114,12 @@ public class CompanyController {
     
         return mav;
     }
-    
-    /**매입처 보증보험관리 신규등록 처리**/
-    @PostMapping(value = "insurancePop")
-    public ModelAndView insuranceNewPost(ParamMap paramMap, MultipartFile ciFile) {
-        System.out.println("paramMap = " + paramMap);
-        ModelAndView mav = new ModelAndView("main/alertMove");
-
-        Integer ciIdx = companyService.saveInsurance(paramMap, ciFile);
-
-        mav.addObject("msg", "등록완료");
-        mav.addObject("loc", "insurancePop/" + ciIdx);
-
-        return mav;
-    }
-    
 
     /**매입처 보증보험관리 상세조회**/
     @GetMapping(value="insurancePop/{ciIdx}")
     public ModelAndView insuranceDetail(@PathVariable Integer ciIdx) {
         ModelAndView mav = new ModelAndView("company/insurancePop");
         mav.addObject("insurance", companyInsuranceRepo.findInsuranceByCiIdx(ciIdx));
-        return mav;
-    }
-
-    /**매입처 보증보험관리 수정처리**/
-    @PostMapping(value="insurancePop/{ciIdx}")
-    public ModelAndView insuranceDetailPost(@PathVariable Integer ciIdx, ParamMap paramMap, MultipartFile ciFile) {
-        ModelAndView mav = new ModelAndView("main/alertMove");
-        companyService.updateInsurance(ciIdx, paramMap, ciFile);
-
-        mav.addObject("msg", "수정완료");
         return mav;
     }
 

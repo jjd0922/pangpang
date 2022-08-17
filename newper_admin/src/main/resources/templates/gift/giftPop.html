@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${gift != null} ? '상품권 조회/수정'">상품권 등록</title>
-    <th:block th:replace="/common/css.html"></th:block>
+    <title th:text="${giftGroup != null} ? '상품권 조회/수정'">상품권 등록</title>
+    <th:block th:replace="common/css.html"></th:block>
 </head>
 
 <body>
@@ -18,8 +18,8 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold" th:if="${gift == null}"><i class="icon-office mr-1"></i>상품권 등록</h4>
-                            <h4 class="font-weight-semibold" th:unless="${gift == null}"><i class="icon-office mr-1"></i>상품권 조회/수정</h4>
+                            <h4 class="font-weight-semibold" th:if="${giftGroup == null}"><i class="icon-office mr-1"></i>상품권 등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${giftGroup == null}"><i class="icon-office mr-1"></i>상품권 조회/수정</h4>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                                                                     상품권 발행명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="giftgName" class="form-control" th:value="${gift?.giftgName}" th:readonly="${gift != null}">
+                                                        <input type="text" name="giftgName" class="form-control" th:value="${giftGroup?.giftgName}" th:readonly="${giftGroup != null}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,7 +62,7 @@
                                                                 <span class="input-group-text requested">상품권 등록상태</span>
                                                             </span>
                                                         <select data-placeholder="선택" name="giftgState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(gift?.giftgState) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -77,7 +77,7 @@
                                                                     상품권유효기간시작일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="giftgStartDate" class="form-control w-datarange daterange-single" th:value="${gift?.giftgStartDate}" th:readonly="${gift != null}">
+                                                        <input type="text" name="giftgStartDate" class="form-control w-datarange daterange-single" th:value="${giftGroup?.giftgStartDate}" th:disabled="${giftGroup != null}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                                                     상품권유효기간종료일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="giftgEndDate" class="form-control w-datarange daterange-single" th:value="${gift?.giftgEndDate}" th:readonly="${gift != null}">
+                                                        <input type="text" name="giftgEndDate" class="form-control w-datarange daterange-single" th:value="${giftGroup?.giftgEndDate}" th:disabled="${giftGroup != null}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,7 +105,7 @@
                                                                     상품권 생성수량
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="giftgCnt" class="form-control" th:value="${gift?.giftgCnt}" th:readonly="${gift != null}">
+                                                        <input type="text" name="giftgCnt" class="form-control" th:value="${giftGroup?.giftgCnt}" th:readonly="${giftGroup != null}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,7 +119,7 @@
                                                                     상품권 금액
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="giftgMoney" class="form-control" th:value="${gift?.giftgMoney}" th:readonly="${gift != null}">
+                                                        <input type="text" name="giftgMoney" class="form-control" th:value="${giftGroup?.giftgMoney}" th:readonly="${giftGroup != null}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,7 +131,7 @@
                         </form>
                         <!-- #regiForm end -->
 
-                        <div th:if="${gift != null}">
+                        <div th:if="${giftGroup != null}">
                             <div class="card">
                                 <div class="card-footer d-sm-flex justify-content-sm-between align-items-center">
                                     <div class="btn-group">
@@ -230,11 +230,9 @@
                 var row = $(this)[0].rowIndex - 1;
                 var data = $('#giftTable').DataTable().rows(row).data()[0];
                 param += data.GIFT_IDX + ',';
-                debugger;
             });
-            param = param.replace(/.$/,'');
-            if (confirm("변경하시겠습니까?")) {
-                console.log(param);
+            param.replace(/.$/,'');
+            if (confirm("상품권 일괄 폐기 하시겠습니까?\n폐기 후 복구가 불가합니다.")) {
                 $.ajax({
                     url: '/gift/disposal.ajax',
                     type: 'post',
@@ -258,8 +256,8 @@
             },
             serverSide: true,
             ajax:{
-                url:'/gift/gift.dataTable?giftgIdx=' + [[${gift?.giftgIdx}]],
-                type:'post',
+                url:'/gift/gift.dataTable?giftgIdx=' + [[${giftGroup?.giftgIdx}]],
+                type:'post'
             },
             columnDefs: [ {
                 orderable: true,

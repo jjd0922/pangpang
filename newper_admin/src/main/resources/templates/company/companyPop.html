@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${company != null} ? '거래처 조회/수정'">거래처 등록</title>
 
-    <th:block th:replace="/common/css.html"></th:block>
+    <th:block th:replace="common/css.html"></th:block>
     <style>
         .modal-dialog{
             max-width: 915px;
@@ -59,12 +59,7 @@
                                                             </span>
                                                         <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple" onchange="activateSearchUserBtn()" th:disabled="${company != null} ? true">
                                                             <option></option>
-                                                            <span th:unless="${not #strings.isEmpty(ctType)}">
-                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                            </span>
-                                                            <span th:if="${not #strings.isEmpty(ctType)}" th:each="ctType: ${ctType}">
-                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${ctType.CT_TYPE eq opt.name()}"></option>
-                                                            </span>
+                                                            <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${ctTypes != null && ctTypes.contains(opt.name())}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -543,7 +538,7 @@
     </div>
 </div>
 
-<th:block th:replace="/modal/userModal.html"/>
+<th:block th:replace="modal/userModal.html"/>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
@@ -600,7 +595,13 @@
 
 <script th:inline="javascript">
     function saveAction(){
-        $("#regiForm").submit();
+        $.ajax({
+            url: location.pathname + '.ajax',
+            processData: false,
+            contentType: false,
+            type: 'post',
+            data: new FormData($('#regiForm')[0])
+        });
     }
 
     /** 다음 주소 api사용 */

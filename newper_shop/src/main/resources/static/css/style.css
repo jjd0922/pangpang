@@ -156,8 +156,6 @@
     z-index: 3;
     background-color: #314ad7;
     padding: 10px 0;
-    border-left: 2px solid #ebebeb;
-    border-right: 2px solid #ebebeb;
 }
 .ctg-all>li {
     width: 100%;
@@ -176,6 +174,7 @@
 .ctg-all>li.on>a {
     background-color: #fff;
     color:#314ad7;
+    border-right: 1px solid #d1d1d1;
 }
 .ctg-all .separation {
     display: inline-block;
@@ -192,8 +191,9 @@
     height: 100%;
     position: absolute;
     top: 0;
-    left: calc(100% + 2px);
+    left: 100%;
     background-color: #fff;
+    border-top: 1px solid #d1d1d1;
 }
 .ctg-first-area {
     width: 457px;
@@ -284,11 +284,10 @@
 }
 .swiper-thumbnail {
     margin: 30px auto;
-    overflow: hidden;
 }
 
 
-/* 타임세일 이벤트 */
+/* 뉴퍼딜 이벤트 */
 .time {
     text-align: center;
     font-size: 30px;
@@ -296,26 +295,10 @@
     font-weight: 500;
     margin-top: 20px;
 }
-.time-num {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background: #0c2da3;
-    color: #fff;
-    border-radius: 10px;
-    margin: 0 15px;
-}
-.time-colon {
-    display: inline-block;
-    transform: translateY(-3px);
-}
 .timeSale .swiper-slide {
     padding: 30px;
     border: 1px solid #d1d1d1;
 }
-
 .timeSale .item-img {
     padding: 0 105px 10px;
     position: relative;
@@ -337,6 +320,59 @@
     cursor: pointer;
 }
 
+/*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
+.swiper-event-group2 {
+    height: 530px;
+}
+.swiper-event-group2 .swiper-slide {
+    height: calc((100% - 35px) / 2)!important;
+    display: flex;
+}
+.swiper-event-group2 .item-img {
+    width: 40%;
+    padding: 0;
+}
+.swiper-event-group2 .item-info {
+    width: 60%;
+    padding-left: 30px;
+}
+
+/*** 뉴퍼마켓 숨을 꿀템 ***/
+.swiper-event-group3 .item-img {
+    padding: 5% 17%;
+}
+
+/*** 모아모아 알짜 기획전 (이벤트 상품 그룹 4) ***/
+.swiper-event-group4 {
+    padding-right: 12%!important;
+}
+.test-box {
+    width: 100%;
+    height: 230px;
+    border-radius: 15px;
+    background-color: #eee;
+}
+.swiper-event-group4 .item-list {
+    display: flex;
+    padding-top: 25px;
+}
+.swiper-event-group4 .item-img {
+    width: 40%;
+    padding: 0;
+}
+.swiper-event-group4 .item-info {
+    width: 60%;
+    padding-left: 15px;
+}
+.swiper-event-group4 .item-inner-wrap {
+    font-size: 13px;
+}
+.swiper-event-group4 .item-condition {
+    padding: 3px 15px;
+    font-size: 11px;
+    margin-right: 3px;
+}
+
 /*** MD 추천 카테고리 ***/
 .md-tab-wrap {
     margin-top: 40px;
@@ -347,6 +383,7 @@
     justify-content: center;
     padding: 30px 0;
     font-size: 18px;
+    cursor: pointer;
 }
 .md-tab>li.on {
     background-color: #f7f7f7;
@@ -360,7 +397,7 @@
     flex-direction: column;
     align-items: center;
 }
-.md-tab>li>a>span {
+.md-tab-title{
     margin-top: 15px;
 }
 .md-icon {
@@ -397,7 +434,7 @@
 }
 .md-tab-content {
     background-color: #f7f7f7;
-    padding: 60px 0;
+    padding: 35px 0;
 }
 .md-tab-content>li {
     display: none;
@@ -412,11 +449,12 @@
 .md-content-pagination {
     text-align: center;
     margin-top: 50px;
+    display: block;
 }
 .md-content-pagination .swiper-pagination-bullet {
     width: 11px;
     height: 11px;
-    margin: 0 10px;
+    margin: 0 10px!important;
     background-color: #fff;
     border: 1px solid #314ad7;
     opacity: 1;
@@ -424,8 +462,23 @@
 .md-content-pagination .swiper-pagination-bullet-active {
     background-color: #314ad7;
 }
+.all-view {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 12px;
+}
+.all-view p {
+    display: flex;
+}
+.all-view i {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("../image/viewAll-arrow.png") no-repeat center/contain;
+    margin-left: 10px;
+}
 
-/*** 공지사항 ***/
+    /*** 공지사항 ***/
 .notice-wrap {
     display: flex;
 }
@@ -464,9 +517,6 @@
 .swiper-storeInfo-cover {
     position: relative;
 }
-.swiper-storeInfo {
-    margin-right: 30px;
-}
 .storeInfo .phone-number {
     color: #333;
     font-size: 20px;
@@ -477,15 +527,15 @@
     width: 10px;
     height: 20px;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: -40px;
     cursor: pointer;
     z-index: 1;
-    right: 0
 }
 .storeInfo-prev {
     background: url(../image/storeInfo-prev.png) no-repeat center/contain;
+    right: 35px;
 }
 .storeInfo-next {
     background: url(../image/storeInfo-next.png) no-repeat center/contain;
+    right: 5px;
 }

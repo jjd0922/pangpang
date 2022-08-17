@@ -2,16 +2,20 @@
     body, html {
         min-width: 100%;
     }
+
     .container {
         width: 100%;
         padding: 0 7%;
     }
+
     section {
         margin-top: 25px;
     }
+
     header {
         display: none;
     }
+
     /*** 모바일 header ***/
     .mo-header {
         display: block;
@@ -20,6 +24,7 @@
         z-index: 9999;
         background-color: #fff;
     }
+
     .mo-header-top {
         display: flex;
         height: 50px;
@@ -28,56 +33,68 @@
         font-size: 12px;
         padding: 12px 15px;
     }
+
     .mo-header-left {
         height: 100%;
         display: flex;
         align-items: end;
     }
+
     .mo-logo {
         height: 100%;
         margin-right: 15px;
     }
+
     .mo-logo a {
         height: 100%;
         display: flex;
     }
+
     .mo-header-right {
         height: 100%;
         display: flex;
         align-items: center;
     }
+
     .mo-search {
         width: 17px;
         height: 17px;
-        background: url(/image/search.png) no-repeat center/contain;
+        background: url(../image/search.png) no-repeat center/contain;
         cursor: pointer;
     }
+
     .shopping-basket {
         width: 17px;
         height: 17px;
-        background: url(/image/star.png) no-repeat center/contain;
+        background: url(../image/star.png) no-repeat center/contain;
         margin-left: 15px;
         cursor: pointer;
     }
+
     .mo-nav {
         height: 50px;
         display: flex;
         font-weight: 600;
     }
+
     .swiper-gnb {
         width: 100%;
         border-top: 1px solid #d1d1d1;
         border-bottom: 1px solid #d1d1d1;
     }
+
     .gnb {
         padding: 0;
     }
+
     .swiper-gnb-next::after {
         content: none;
     }
+
     .mo-nav li.on a {
         color: #314ad7;
     }
+
     .mo-nav li.on a::before {
         content: "";
         position: absolute;
@@ -88,6 +105,7 @@
         height: 2px;
         background-color: #314ad7;
     }
+
     .new a::after {
         width: 15px;
         height: 15px;
@@ -99,6 +117,7 @@
         min-width: auto;
         padding-top: 100px;
     }
+
     .swiper-main-image {
         width: 100%;
         height: auto;
@@ -110,15 +129,23 @@
         width: 100%;
         overflow: hidden;
     }
+
     .swiper-timeSale {
         padding-right: 25%;
     }
-    .swiper-event-item-group1 {
+
+    .swiper-event-group1 {
         padding-right: 7%;
     }
+
+    .swiper-event-group2 {
+        padding-right: 12%;
+    }
+
     .swiper-thumbnail {
         overflow: initial;
     }
+
     .prev-custom, .next-custom {
         display: none;
     }
@@ -129,105 +156,177 @@
         font-size: 11px;
         margin-right: 0;
     }
+
     .item-inner-wrap {
         font-size: 12px;
     }
+
     .stock-quantity {
         font-size: 13px;
     }
+
     .item-price {
         font-size: 13px;
         flex: 1;
     }
+
     .item-title {
         font-size: 14px;
         height: 32px;
     }
+
     .discount-price {
         font-size: 14px;
     }
+
     .discount-rate {
         font-size: 24px;
     }
+
     .purchase-btn {
         padding: 5px 20px;
         font-size: 13px;
     }
+
     .item-img {
         padding: 0;
     }
+
     .item-footer {
         font-size: 12px;
     }
+
     .star, .heart {
         width: 16px;
         height: 16px;
     }
 
-    /* 타임세일 */
+    @media (max-width: 400px) {
+        .item-condition {
+            padding: 2px 5px;
+            font-size: 10px;
+        }
+
+        .discount-rate {
+            font-size: 21px;
+        }
+    }
+
+    /* 뉴퍼딜 */
     .timeSale .swiper-slide {
         padding: 20px;
     }
+
     .timeSale .item-img {
         padding: 0 25% 0;
     }
+
     .timeSale .item-title {
         font-size: 16px;
         height: 40px;
     }
+
     .timeSale .discount-price {
         font-size: 16px;
     }
 
-    /* 반값 이벤트 */
-    .halfPrice .swiper-slide {
+    /* 반값 이벤트 (이벤트 상품 그룹 1) */
+    .swiper-event-group1 .swiper-slide {
         padding: 15px;
     }
 
-    @media (max-width:539px) {
+    @media (max-width: 400px) {
+        .swiper-event-group1 .swiper-slide {
+            padding: 10px;
+        }
+    }
+
+    @media (max-width: 539px) {
         .timeSale .item-img {
             padding: 20px 0 0 0;;
         }
+
         .grade-wrap {
             flex-direction: column;
         }
+
         .grade {
             margin-right: 0;
             margin-bottom: 2px;
         }
+
         .item-inner-wrap.item-bedge-wrap {
             flex-direction: column;
             align-items: start;
         }
+
         .item-bedge {
             display: flex;
             order: 2;
         }
+
         .item-bedge span:first-child {
             margin-right: 3px;
         }
+
         .buy-count {
             margin-bottom: 5px;
             order: 1;
         }
-        .item-color>span {
+
+        .item-color > span {
             width: 13px;
             height: 13px;
         }
-        .item-color>span>span {
+
+        .item-color > span > span {
             width: 9px;
             height: 9px;
         }
     }
+    /*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
+    .swiper-event-group2 .item-info {
+        padding-left: 20px;
+    }
+
+    @media (max-width: 400px) {
+        .swiper-event-group2 .swiper-slide {
+            padding: 5px;
+        }
+    }
+
+    /*** 뉴퍼마켓 숨은 꿀템 (이벤트 상품 그룹 3) ***/
+    .swiper-event-group3 {
+        padding-right: 30%;
+    }
+
+
+    /*** 알짜만 모아모아 기획전 (이벤트 상품 그룹 4) ***/
 
     /*** MD 추천 카테고리 ***/
     .md-tab>li {
         flex: none;
         width: auto;
         padding: 15px;
+        font-size: 16px;
+        height: 128px;
     }
     .swiper-md-tab.container {
         padding: 0;
+    }
+    .md-tab-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .md-tab-content .swiper-all {
+        padding: 0 10px;
+    }
+    .swiper-md-content {
+        padding: 0;
+    }
+    .md-content-pagination {
+        display: none;
     }
 
     /*** 공지사항 ***/
@@ -246,9 +345,27 @@
     }
 
     /*** footer ***/
+    .footer-top .container {
+        padding: 0;
+    }
+    .footer-top {
+        height: auto;
+    }
     .footer-top-inner {
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .footer-top-inner>ul {
+        padding: 10px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    .footer-menu {
+        flex-wrap: wrap;
+        border-bottom: 1px solid #d1d1d1;
+    }
+    .footer-menu li>a {
+        padding: 0 7px!important;
     }
     .footer-sns {
         height: auto;
@@ -260,11 +377,40 @@
     .footerLeft, .footerRight {
         width: 100%;
     }
+    .footerLogo {
+        order: 2;
+        display: none;
+    }
     .footerLeft {
-        padding: 20px 0;
+        padding: 30px 0;
+        order: 3;
     }
     .footerRight {
-        padding-top: 30px;
+        order: 1;
+    }
+    .policy {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .policy span:first-child {
+        padding: 0 7px 0 0;
+    }
+    .policy span {
+        padding: 0 7px;
+    }
+    .award-list {
+        padding: 20px 0 0;
+    }
+    .copyright {
+        padding-top: 20px;
+    }
+    @media (max-width:610px) {
+        .center-info {
+            padding: 15px 0 0;
+        }
+        .center-info-wrap {
+            flex-direction: column;
+        }
     }
 
     /*** 모바일 하단 네비게이션 [고정] ***/

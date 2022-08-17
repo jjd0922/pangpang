@@ -45,7 +45,7 @@ public class GiftRestController {
         long ggIdx = giftService.saveGift(paramMap);
 
         rm.setMessage("등록완료");
-        rm.setLocation("/product/giftPop/"+ggIdx);
+        rm.setLocation("/gift/giftPop/"+ggIdx);
         return rm;
     }
 
