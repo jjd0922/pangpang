@@ -49,13 +49,13 @@
     .mo-search {
         width: 17px;
         height: 17px;
-        background: url(/image/search.png) no-repeat center/contain;
+        background: url(../image/search.png) no-repeat center/contain;
         cursor: pointer;
     }
     .shopping-basket {
         width: 17px;
         height: 17px;
-        background: url(/image/star.png) no-repeat center/contain;
+        background: url(../image/star.png) no-repeat center/contain;
         margin-left: 15px;
         cursor: pointer;
     }
@@ -163,8 +163,17 @@
         width: 16px;
         height: 16px;
     }
+    @media (max-width:400px) {
+        .item-condition {
+            padding: 2px 5px;
+            font-size: 10px;
+        }
+        .discount-rate {
+            font-size: 21px;
+        }
+    }
 
-    /* 타임세일 */
+    /* 뉴퍼딜 */
     .timeSale .swiper-slide {
         padding: 20px;
     }
@@ -182,6 +191,11 @@
     /* 반값 이벤트 */
     .halfPrice .swiper-slide {
         padding: 15px;
+    }
+    @media (max-width:400px) {
+        .halfPrice .swiper-slide {
+            padding: 10px;
+        }
     }
 
     @media (max-width:539px) {
@@ -225,9 +239,25 @@
         flex: none;
         width: auto;
         padding: 15px;
+        font-size: 16px;
+        height: 128px;
     }
     .swiper-md-tab.container {
         padding: 0;
+    }
+    .md-tab-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .md-tab-content .swiper-all {
+        padding: 0 10px;
+    }
+    .swiper-md-content {
+        padding: 0;
+    }
+    .md-content-pagination {
+        display: none;
     }
 
     /*** 공지사항 ***/
@@ -246,9 +276,27 @@
     }
 
     /*** footer ***/
+    .footer-top .container {
+        padding: 0;
+    }
+    .footer-top {
+        height: auto;
+    }
     .footer-top-inner {
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .footer-top-inner>ul {
+        padding: 10px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    .footer-menu {
+        flex-wrap: wrap;
+        border-bottom: 1px solid #d1d1d1;
+    }
+    .footer-menu li>a {
+        padding: 0 7px!important;
     }
     .footer-sns {
         height: auto;
@@ -260,11 +308,40 @@
     .footerLeft, .footerRight {
         width: 100%;
     }
+    .footerLogo {
+        order: 2;
+        display: none;
+    }
     .footerLeft {
-        padding: 20px 0;
+        padding: 30px 0;
+        order: 3;
     }
     .footerRight {
-        padding-top: 30px;
+        order: 1;
+    }
+    .policy {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .policy span:first-child {
+        padding: 0 7px 0 0;
+    }
+    .policy span {
+        padding: 0 7px;
+    }
+    .award-list {
+        padding: 20px 0 0;
+    }
+    .copyright {
+        padding-top: 20px;
+    }
+    @media (max-width:610px) {
+        .center-info {
+            padding: 15px 0 0;
+        }
+        .center-info-wrap {
+            flex-direction: column;
+        }
     }
 
     /*** 모바일 하단 네비게이션 [고정] ***/
