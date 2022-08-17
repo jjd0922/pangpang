@@ -58,7 +58,7 @@ public class UserRestController {
         ReturnMap rm = new ReturnMap();
         int idx = userService.saveUser(paramMap);
 
-        rm.setMessage(idx + "");
+        rm.setMessage("등록이 완료되었습니다.");
 
 
 
@@ -70,8 +70,9 @@ public class UserRestController {
     @PostMapping("resetPwd.ajax")
     public ReturnMap resetPwd(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
+/*
 
-/*        // 비밀번호 초기화
+        // 비밀번호 초기화
         String resetPwd = Common.getRandomPassword(8);
         String encryptPwd = Common.parseSHA(resetPwd);
 
@@ -80,7 +81,8 @@ public class UserRestController {
         customerService.customerUpdatePwd(cuIdx, encryptPwd);
 
         // rm
-        rm.put("resetPwd", resetPwd);*/
+        rm.put("resetPwd", resetPwd);
+*/
 
         return rm;
     }

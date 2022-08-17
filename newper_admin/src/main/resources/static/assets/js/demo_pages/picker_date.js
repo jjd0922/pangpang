@@ -102,7 +102,31 @@ var DateTimePickers = function() {
             $(this).val('');
         });
 
-        //
+        $('.daterange-singlenull').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                parentEl: '.content-inner',
+                direction: 'ltr',
+                format: 'YYYY-MM-DD',
+                separator: ' ~ ',
+                applyLabel: '적용',
+                startLabel: '시작일:',
+                endLabel: '종료일:',
+                cancelLabel: '취소',
+                weekLabel: '주',
+                customRangeLabel: '◀ 기간 설정',
+                daysOfWeek: ['일','월', '화', '수', '목', '금', '토'], //moment.weekdaysMin(),
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'], //moment.monthsShort(),
+            },
+            showDropdowns: true,
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-dark',
+            autoApply: true,
+            singleDatePicker: true
+        }).on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
         // Pre-defined ranges and callback
         //
 

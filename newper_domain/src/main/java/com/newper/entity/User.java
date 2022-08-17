@@ -74,10 +74,7 @@ public class User extends BaseEntity {
         if (!StringUtils.hasText(getUPhone())) {
             throw new MsgException("휴대폰번호를 입력해주세요.");
         }
-//        String comName = paramMap.getString("COM_NAME");
-//        if (comName == null || comName.equals("")) {
-//            throw new MsgException("상호법인명을 입력해주세요.");
-//        }
+
 //
 //        String uState = paramMap.getString("U_STATE");
 //        if (uState == null || uState.equals("")) {
