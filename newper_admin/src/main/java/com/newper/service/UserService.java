@@ -33,28 +33,32 @@ public class UserService {
     public Integer saveUser(ParamMap paramMap) {
         Address address = paramMap.mapParam(Address.class);
 
-        Company company = paramMap.mapParam(Company.class);
-
         User user = paramMap.mapParam(User.class);
-
         try{
             int u_auth_idx = paramMap.getInt("U_AUTH_IDX");
+            user.setAuth(authRepo.getReferenceById(u_auth_idx));
         }catch (NumberFormatException nfe){
             throw new MsgException("권한을 선택해주세요");
         }
+        try{
+            int u_com_idx = paramMap.getInt("U_COM_IDX");
+            Company company = companyRepo.getReferenceById(u_com_idx);
+            user.setCompany(company);
 
-        Auth auth =paramMap.mapParam(Auth.class);
+        }catch (NumberFormatException nfe){
+            throw new MsgException("소속 업체를 선택해주세요");
+        }
+
 
         if(paramMap.getString("CT_TYPE_LIST").contains(CtType.MAIN.name())){
                 user.setUType(UType.INSIDE);
         }else{ user.setUType(UType.OUTSIDE);
 
         }
-        user.setAuth(auth);
 
         user.setAddress(address);
 
-        user.setCompany(company);
+
 
         userRepo.save(user);
 

@@ -59,12 +59,7 @@
                                                             </span>
                                                         <select data-placeholder="다중선택가능" name="ctType" class="form-control select" multiple="multiple" onchange="activateSearchUserBtn()" th:disabled="${company != null} ? true">
                                                             <option></option>
-                                                            <span th:unless="${not #strings.isEmpty(ctType)}">
-                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                            </span>
-                                                            <span th:if="${not #strings.isEmpty(ctType)}" th:each="ctType: ${ctType}">
-                                                                <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${ctType.CT_TYPE eq opt.name()}"></option>
-                                                            </span>
+                                                            <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${ctTypes != null && ctTypes.contains(opt.name())}"></option>
                                                         </select>
                                                     </div>
                                                 </div>

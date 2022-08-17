@@ -156,14 +156,14 @@
             </foreach>
     </insert>
 
-    <select id="selectCompanyType" resultType="Map">
+    <select id="selectCompanyType" resultType="String">
         SELECT
             CT_TYPE
         FROM
-            COMPANY_TYPE
-                JOIN COMPANY ON CT_COM_IDX = COM_IDX
+            COMPANY_TYPE, COMPANY
         WHERE
-            CT_COM_IDX = #{comIdx}
+            CT_COM_IDX = COM_IDX
+            AND CT_COM_IDX = #{comIdx}
     </select>
 
     <select id="selectCompanyContract" resultType="Map">

@@ -13,7 +13,7 @@ public interface CompanyMapper {
 
     int insertCompanyType(Map<String, Object> param);
 
-    List<Map<String, Object>> selectCompanyType(Integer comIdx);
+    List<String> selectCompanyType(Integer comIdx);
 
     List<Map<String, Object>> selectCompanyContract(Map<String, Object> param);
 
