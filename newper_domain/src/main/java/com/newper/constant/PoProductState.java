@@ -4,7 +4,7 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 발주품의 상태. PO.PO_PRODUCT_STATE*/
+/** 발주품의 상태. PO.PO_BUY_PRODUCT_STATE*/
 @Getter
 @AllArgsConstructor
 public enum PoProductState implements EnumOption {

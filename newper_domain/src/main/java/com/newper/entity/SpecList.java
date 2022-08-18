@@ -20,7 +20,7 @@ public class SpecList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer speclList;
+    private Integer speclIdx;
 
     private String speclName;
 
