@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.UState;
 import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.*;
 
 @RequestMapping(value = "/user/")
@@ -67,19 +69,12 @@ public class UserRestController {
     @PostMapping("resetPwd.ajax")
     public ReturnMap resetPwd(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        System.out.println("parammap = " + paramMap);
+        System.out.println("paramMap = " + paramMap);
 
-        // 비밀번호 초기화
-        String resetPwd = User.getRandomPassword(8);
+        int uIdx = paramMap.getInt("U_IDX");
+        String resetPwd = userService.userUpdatePwd(uIdx);
 
-        // pw 업데이트
-        Integer uIdx = Integer.parseInt(paramMap.get("U_IDX").toString());
-        System.out.println("uIdx = " + uIdx);
-        userService.userUpdatePwd(uIdx,resetPwd);
-
-        // rm
         rm.put("resetPwd", resetPwd);
-
         return rm;
     }
 
@@ -95,6 +90,11 @@ public class UserRestController {
 
         return rd;
     }
+/*
+    */
+/** 회원관리 일괄변경*/
+
+
 
 }
 

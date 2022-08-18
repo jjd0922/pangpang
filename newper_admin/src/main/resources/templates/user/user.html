@@ -108,10 +108,10 @@
                                     </div>
                                     <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>계정상태변경</button>
                                     <div class="dropdown-menu">
-                                        <a onclick="brandDisplay('Y')" class="dropdown-item">정상</a>
-                                        <a onclick="brandDisplay('N')" class="dropdown-item">중지</a>
+                                        <a onclick="userChange('Y')" class="dropdown-item">정상</a>
+                                        <a onclick="userChange('N')" class="dropdown-item">중지</a>
                                         <div class="dropdown-divider"></div>
-                                        <a onclick="brandDelete()" class="dropdown-item">퇴사</a>
+                                        <a onclick="userDelete()" class="dropdown-item">퇴사</a>
                                     </div>
                                 </div>
                             </div>
@@ -146,94 +146,149 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
+
+
 <script>
-    function searchBtn(){
+    function userChange() {
+        var uIdx = dataTableGetSelectedDataArray('userTable', 'U_IDX')
+        if(uIdx.length == 0){
+            alert("선택한 데이터가 없습니다.");
+            return false;
+        }else{
+            if(window.confirm('선택된 회원들의 상태를 ' + UState_str + ' 상태로 변경하시겠습니까?')){
+                $.ajax({
+                    url: [[@{/user/userChange.ajax}]],
+                    type: 'post',
+                    data: {
+                    uIdx : uIdx,
+                    UState : UState
+                },
+                success: function(res){
+                    $('#userTable').DataTable().ajax.reload();
+                },
+                error: function(){
+                }
+            });
+            }
+        }
+    }
+
+    function userDelete() {
+        var uIdx = dataTableGetSelectedDataArray('userTable', 'U_IDX')
+        if(uIdx.length == 0){
+            alert("선택한 데이터가 없습니다.");
+            return false;
+        } else {
+            $.each($("#userTable .selected").find("input"), function (key, val) {
+                var idx = $(this).val();
+                if (leng == (key + 1)) {
+                    param = param + idx;
+                } else {
+                    param = param + idx + ",";
+                }
+            });
+            if (confirm("변경하시겠습니까?")) {
+                $.ajax({
+                    url: "/user/userDelete.ajax",
+                    data: "U_IDX=" + param,
+                    type: "POST",
+                    success: function () {
+                        $('#userTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
+</script>
+
+<script>
+    function searchBtn() {
         var table = $('#userTable').DataTable();
-        table.page('first').ajax.url('/user/user.dataTable?'+$('#userForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/user/user.dataTable?' + $('#userForm').serialize()).load(null, false);
     }
 
 
     function userDetailPop(uIdx) {
-        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
 
 
-    <script>
-        var userTable = $('#userTable').DataTable({
+<script>
+    var userTable = $('#userTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-        style: 'multi',
-        selector: 'td:first-child'
-    },
-        serverSide: true,
-        ajax:{
-        url:'/user/user.dataTable?'+$('#userForm').serialize(),
-        type:'post'
-    },
-        columnDefs: [ {
-        orderable: false,
-        targets:   [0]
-
-    } ],
-  /*  $('#userTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
+        ordering: false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
         },
         serverSide: true,
-        ajax:{
-            url:'/user/user.dataTable?'+$('#userForm').serialize(),
-            type:'post'
+        ajax: {
+            url: '/user/user.dataTable?' + $('#userForm').serialize(),
+            type: 'post'
         },
-        columnDefs: [ {
+        columnDefs: [{
             orderable: false,
-            targets:   [0]
-        } ],*/
-        "columns" : [
-            {'class':'select-checkbox', 'title':'선택','data':'SP_IDX','defaultContent':'','render':  function(data,type,full,meta){
+            targets: [0]
+
+        }],
+
+        "columns": [
+            {
+                'class': 'select-checkbox',
+                'title': '선택',
+                'data': 'SP_IDX',
+                'defaultContent': '',
+                'render': function (data, type, full, meta) {
                     return '';
-                }}
-            ,{'title':'이름','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-                }}
-            ,{'title':'휴대폰번호','data':'U_PHONE'}
-            ,{'title':'상호법인명<br>(소속)','data':'COM_NAME'}
-            ,{ 'title':'사원번호','data':'U_ID'}
-            ,{'title':'부서','data':'U_DEPART'}
-            ,{'title':'직급(직책)','data':'U_POSITION'}
-            ,{'title':'이메일(개인)','data':'U_PERSON_MAIL'}
-            ,{'title':'전화번호(사무실번호)','data':'U_COMPANY_TEL'}
-            ,{'title':'상태','data':'U_STATE'}
-            ,{'title':'권한','data':'AUTH_IDX'}
-            ,{'title':'등록자','data':'CREATED_BY'}
-            ,{'title':'등록일','data':'CREATED_DATE'}
-            ,{'title':'수정자','data':'MODIFIED_BY'}
-            ,{'title':'수정일','data':'MODIFIED_DATE'}
-            ,{'data':'', 'render': function (data) {
+                }
+            }
+            , {
+                'title': '이름', 'data': null, 'render': function (data, type, full, meta) {
+                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                }
+            }
+            , {'title': '휴대폰번호', 'data': 'U_PHONE'}
+            , {'title': '상호법인명<br>(소속)', 'data': 'COM_NAME'}
+            , {'title': '사원번호', 'data': 'U_ID'}
+            , {'title': '부서', 'data': 'U_DEPART'}
+            , {'title': '직급(직책)', 'data': 'U_POSITION'}
+            , {'title': '이메일(개인)', 'data': 'U_PERSON_MAIL'}
+            , {'title': '전화번호(사무실번호)', 'data': 'U_COMPANY_TEL'}
+            , {
+                'title': '상태', 'data': 'U_STATE_STR', 'render': function (data, type, full, meta) {
+                    return full.U_STATE;
+                }
+            }
+            , {'title': '권한', 'data': 'AUTH_IDX'}
+            , {'title': '등록자', 'data': 'CREATED_BY'}
+            , {'title': '등록일', 'data': 'CREATED_DATE'}
+            , {'title': '수정자', 'data': 'MODIFIED_BY'}
+            , {'title': '수정일', 'data': 'MODIFIED_DATE'}
+            , {
+                'title': '수정이력', 'data': '', 'render': function (data) {
                     return '<a href="#" class="badge badge-primary">보기</a>';
-                }}
-
-
-
-
+                }
+            }
 
 
         ]
     });
 
-        $('#userForm').on('keyup',function(event){
-            if(event.keyCode==13){searchBtn();return false;}
-        });
+    $('#userForm').on('keyup', function (event) {
+        if (event.keyCode == 13) {
+            searchBtn();
+            return false;
+        }
+    });
 
 
-        $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    $('#popNewBtn').on('click', function () {
+        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
+
 </script>
 </html>

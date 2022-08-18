@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <form id="userForm">
+            <form id="userForm" onsubmit="return false;">
                 <div class="card">
                     <div class="card-body popup-contents pb-4">
                         <fieldset class="mb-0">
@@ -276,10 +276,10 @@
                                            <span class="input-group-prepend">
                                                <span class="input-group-text requested">
                                                    패스워드
-                                                   <button th:if="${user!=null}" th:value="${user?.uPassword}" class="badge badge-sm badge-primary ml-1" th:onclick="resetPwd([[${user?.uIdx}]])">초기화</button>
+                                                   <button th:if="${user!=null}" class="badge badge-sm badge-primary ml-1" th:onclick="resetPwd([[${uIdx}]])">초기화</button>
                                                </span>
                                            </span>
-                                            <input type="password" name="U_PASSWORD" class="form-control" th:readonly="${user != null}" th:value="${user?.uPassword}">
+                                            <input type="password" name="U_PASSWORD" class="form-control" th:readonly="${user != null}">
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +312,8 @@
         <!-- /footer -->
     </div>
 </div>
-<th:block th:replace="modal/resetPwModal.html"/>
+<th:block th:replace="modal/resetPwdModal.html"/>
+
 <th:block th:replace="company/modal/comModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
@@ -357,7 +358,6 @@
 <script th:inline="javascript">
     function resetPwd(uIdx){
         if(window.confirm("비밀번호를 초기화 하시겠습니까?")){
-            console.log('1');
             $.ajax({
                 url: '/user/resetPwd.ajax?U_IDX='+uIdx,
                 type: 'post',
@@ -373,6 +373,29 @@
             $('#resetPwdModal').modal('show');
         }
     }
+
+/*
+    function resetPwd(uIdx){
+        if(window.confirm("비밀번호를 초기화 하시겠습니까?")){
+
+            $.ajax({
+                url: '/user/resetPwd.ajax?U_IDX='+uIdx,
+                type: 'post',
+                success: function(res) {
+                    $('#resetPwdTbody td').text('');
+                    $('#resetPwdTbody td').text(res.data.resetPwd);
+            },
+            error: function() {
+            }
+        });
+
+            $('#resetPwdModal').modal('show');
+        }
+    }
+*/
+
+
+
     function saveAction(){
         $("#userForm").submit();
 
@@ -386,55 +409,55 @@
     function daum_address() {
         new daum.Postcode({
             oncomplete: function (data) {
-                var addr = ''; // api에서 받아오는 기본 주소
-                var extraAddr = ''; // 도로명일때 참고주소
+            var addr = ''; // api에서 받아오는 기본 주소
+            var extraAddr = ''; // 도로명일때 참고주소
 
-                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                        extraAddr += data.bname;
-                    }
-
-                    if (data.buildingName !== '' && data.apartment === 'Y') {
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-
-                    if (extraAddr !== '') {
-                        extraAddr = '(' + extraAddr + ')';
-                    }
-                } else {
-                    addr = data.jibunAddress;
-                }
-
-                // addr1, addr2 부분을 제외한 기본주소 만들기
-                var addr_ = addr.split(' ');
-                addr = '';
-                for (var i = 2; i < addr_.length; i++) {
-                    addr += addr_[i] + ' ';
-                }
-
-                $('input[name=POST]').val(data.zonecode).attr("readonly", true);
-                $('input[name=ADDR1]').val(data.sido).attr("readonly", true);
-                $('input[name=ADDR2]').val(data.sigungu).attr("readonly", true);
-                $('input[name=ADDR3]').val(addr + extraAddr).attr("readonly", true);
+        // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+        if (data.userSelectedType === 'R') {
+            addr = data.roadAddress;
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraAddr += data.bname;
             }
+
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+
+            if (extraAddr !== '') {
+                extraAddr = '(' + extraAddr + ')';
+            }
+        } else {
+            addr = data.jibunAddress;
+        }
+
+        // addr1, addr2 부분을 제외한 기본주소 만들기
+        var addr_ = addr.split(' ');
+        addr = '';
+        for (var i = 2; i < addr_.length; i++) {
+            addr += addr_[i] + ' ';
+        }
+
+        $('input[name=POST]').val(data.zonecode).attr("readonly", true);
+        $('input[name=ADDR1]').val(data.sido).attr("readonly", true);
+        $('input[name=ADDR2]').val(data.sigungu).attr("readonly", true);
+        $('input[name=ADDR3]').val(addr + extraAddr).attr("readonly", true);
+        }
         }).open();
     }
-        function userCreate(){
-            $.ajax({
-                url:[[@{/user/userCreate.ajax}]],
-                data: $('#userForm').serialize(),
-                type:'POST',
-                success:function(data){
-                    console.log(data);
-                    window.close();
-                  //  window.refreshTable('#userTable');
-                }
-                ,error: function(){
-                }
-            });
-        }
+    function userCreate(){
+        $.ajax({
+            url:[[@{/user/userCreate.ajax}]],
+            data: $('#userForm').serialize(),
+            type:'POST',
+            success:function(data){
+            console.log(data);
+            window.close();
+            opener.location.reload();
+            }
+            ,error: function(){
+            }
+        });
+    }
 
     //거래처 검색 모달에서 거래처 선택
     function selectCompany(row) {
@@ -450,24 +473,20 @@
 
 </script>
 <script>
-    $('#modalForm').on('keyup',function(event){
-        if(event.keyCode==13){searchBtn();return false;}
-    });
+        $('#modalForm').on('keyup',function(event){
+            if(event.keyCode==13){searchBtn();return false;}
+        });
 
 
-    $('#popNewBtn').on('click',function (){
-        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    
-
-    $("#saveBtn").on("click", saveAction);
-
-    $("input[name=post]").on("click", daum_address);
+        $('#popNewBtn').on('click',function (){
+            var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        });
 
 
+        $("#saveBtn").on("click", saveAction);
 
-
+        $("input[name=post]").on("click", daum_address);
 
 </script>
 
