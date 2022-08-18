@@ -277,14 +277,14 @@ public class ProductController {
     }
 
     /**재고상품관리*/
-    @GetMapping("stockProduct")
+    @GetMapping("goodsStock")
     public ModelAndView stockProduct(){
         ModelAndView mav = new ModelAndView("product/goods_stock");
         return mav;
     }
 
     /**재고상품관리 등록*/
-    @GetMapping("stockProductCreate")
+    @GetMapping("goodsStock/detail")
     public ModelAndView stockProductCreate(){
         ModelAndView mav = new ModelAndView("product/goods_stock_detail");
         return mav;
