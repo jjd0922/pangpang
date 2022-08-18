@@ -111,4 +111,26 @@
         AND
             PEP_IDX IS NOT NULL
     </select>
+    <sql id="includeInDatatable">
+        AND (PO_TYPE = 'EMERGENCY' OR PO_STATE='APPROVAL')
+    </sql>
+    <select id="selectInDatatable" parameterType="map" resultType="map">
+        SELECT
+            *
+        FROM
+            PO
+        <where>
+            <include refid="includeInDatatable"></include>
+        </where>
+    </select>
+    <select id="countInDatatable" parameterType="map" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PO
+        <where>
+            <include refid="includeInDatatable"></include>
+        </where>
+    </select>
+
 </mapper>
