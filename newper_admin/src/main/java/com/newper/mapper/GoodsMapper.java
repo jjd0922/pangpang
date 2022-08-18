@@ -11,4 +11,6 @@ public interface GoodsMapper {
     List<Map<String, Object>> selectWareHouseDataTable(Map<String, Object> map);
 
     Integer countWareHouseDataTable(Map<String, Object> map);
+
+
 }

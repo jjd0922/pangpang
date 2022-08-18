@@ -248,4 +248,14 @@ public class ProductRestController {
         return rm;
     }
 
+    /**재고관리 데이터테이블*/
+    @PostMapping("goodsStock.dataTable")
+    public ReturnDatatable goodsStock(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable("재고관리");
+        returnDatatable.setData(productMapper.selectGoodsStockDataTable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(productMapper.countGoodsStockDataTable(paramMap.getMap()));
+        return returnDatatable;
+    }
+
+
 }
