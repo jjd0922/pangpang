@@ -24,6 +24,7 @@ import java.util.Map;
 @Builder
 @Table (name = "product")
 public class Product extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pIdx;
@@ -111,7 +112,7 @@ public class Product extends BaseEntity {
     private boolean pFreeInterest;
     private boolean pDelFree;
 
-    private String pNaver;
+
 
 
     @PrePersist
@@ -120,7 +121,15 @@ public class Product extends BaseEntity {
         if (!StringUtils.hasText(getPName())) {
             throw new MsgException("상품명을 입력해주세요.");
         }
-
+        if (getPType1() == null) {
+            throw new MsgException("정산구분(품목구분1)을 선택해주세요.");
+        }
+        if (getPType2() == null) {
+            throw new MsgException("상품분류(품목구분2)를 선택해주세요.");
+        }
+        if (getPType3() == null) {
+            throw new MsgException("물류타입(품목자산구분)을 선택해주세요.");
+        }
 
     }
 
@@ -128,7 +137,8 @@ public class Product extends BaseEntity {
     /** 고시정보. json map*/
     @Builder.Default
     private Map<String,Object> pInfo = new HashMap<String, Object>();
-    private String pOption;
+    private Map<String,Object> pOption = new HashMap<>();
+    private Map<String,Object> pNaver = new HashMap<>();
 
 
 

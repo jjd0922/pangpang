@@ -123,4 +123,18 @@
             CATE_TYPE='BRAND'
             <include refid="includeCategoryDatatableByBrand"></include>
     </select>
+
+    <select id="selectCategoryDetail" resultType="map">
+        SELECT
+            a.CATE_IDX as ori_cate_idx, a.CATE_DEPTH,b.CATE_IDX AS per_cate_idx1, c.CATE_IDX AS per_cate_idx2
+        FROM
+            category a
+                LEFT JOIN category b
+                          ON a.CATE_PARENT_IDX=b.CATE_IDX
+                LEFT JOIN category c
+                          ON b.CATE_PARENT_IDX=c.CATE_IDX
+        WHERE
+            a.CATE_IDX = #{CATE_IDX}
+          AND a.CATE_TYPE='CATEGORY'
+    </select>
 </mapper>

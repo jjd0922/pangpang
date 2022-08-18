@@ -10,8 +10,13 @@
   </div>
   <!-- iam Menu -->
   <div class="d-flex w-100 w-lg-auto overflow-x overflow-lg-visible border-top border-top-light-100 border-top-lg-0 order-1 order-lg-0"><!-- scrollbar-hidden -->
+    <div style="width: 100px;">
+      <select class="form-control" onchange="if(this.value!='')location.href=this.value;">
+        <option value="">ERP ADMIN</option>
+        <option value="/shopAdmin">SHOP ADMIN</option>
+      </select>
+    </div>
     <ul class="navbar-nav flex-row text-nowrap mx-auto">
-
       <li class="nav-item dropdown nav-item-dropdown-lg" th:each="menus: ${T(com.newper.component.MenuList).menus}">
         <a class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" th:classappend="${menus.getActiveClass(#httpServletRequest.requestURI)}">
           <span th:text="${menus.menuName}">대메뉴명</span>

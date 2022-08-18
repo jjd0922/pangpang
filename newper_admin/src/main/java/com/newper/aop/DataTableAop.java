@@ -43,7 +43,6 @@ public class DataTableAop {
 
     @PostConstruct
     public void postConstruct() {
-        enumClasses.put("auth_mask","AuthMask");
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_type","CateType");
         enumClasses.put("cc_cal_type","CcCalType");
@@ -120,7 +119,7 @@ public class DataTableAop {
                         for (String s : enumList) {
                             dtValue+=getEnumOption(columnName, s)+", ";
                         }
-                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
+                        addMap.put(key + "", dtValue.substring(0,dtValue.length()-2));
                     }
 
                 }

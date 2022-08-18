@@ -26,4 +26,7 @@ public interface CategoryMapper {
     /**브랜드 datatable*/
     List<Map<String,Object>> selectCategoryDatatableByBrand(Map<String, Object> map);
     Integer countCategoryDatatableByBrand(Map<String, Object> map);
+
+    /**cate_idx로 카테고리 부모카테고리 모두 불러오기*/
+    Map<String,Object> selectCategoryDetail(int CATE_IDX);
 }
