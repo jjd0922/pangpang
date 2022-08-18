@@ -102,6 +102,6 @@ public class UserService {
 
         user.setUPassword(uPassword);
     }
-    }
+}
 
 
