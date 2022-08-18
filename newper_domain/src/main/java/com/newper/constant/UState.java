@@ -9,12 +9,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UState implements EnumOption {
 
-    NORMAL("정상")
+     NORMAL("정상")
     ,STOP("중지")
     ,RETIRE("퇴사");
 
     private String option;
-
-
 
 }
