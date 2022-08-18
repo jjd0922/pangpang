@@ -172,7 +172,7 @@
 <script th:inline="javascript">
     var giftTable = $('#giftTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:true,
+        ordering:false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
@@ -182,10 +182,6 @@
             url:'/gift/giftGroup.dataTable',
             type:'post'
         },
-        columnDefs: [ {
-            orderable: true,
-            targets:   [0]
-        } ],
         columns : [
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
@@ -199,8 +195,8 @@
             ,{'title':'상품권 등록상태','data':'GIFTG_STATE_STR','defaultContent':''}
             ,{'title':'상품권유효기간시작일','data':'GIFTG_START_DATE','defaultContent':''}
             ,{'title':'상품권유효기간종료일','data':'GIFTG_END_DATE','defaultContent':''}
-            ,{'title':'상품권고유코드','data':'','defaultContent':''}
             ,{'title':'상품권 생성수량','data':'GIFTG_CNT','defaultContent':''}
+            ,{'title':'상품권 사용수량','data':'GIFTG_USED_CNT','defaultContent':''}
             ,{'title':'등록자','data':'CREATED_BY','defaultContent':''}
             ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
             ,{'title':'승인자','data':'','defaultContent':''}

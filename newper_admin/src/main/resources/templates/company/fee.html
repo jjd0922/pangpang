@@ -303,7 +303,7 @@
 <script th:inline="javascript">
     var storeTable = $('#storeTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:true,
+        ordering:false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
@@ -313,10 +313,6 @@
             url:'/company/store.dataTable',
             type:'post'
         },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
         columns : [
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
@@ -337,7 +333,7 @@
     function showFeeTable() {
         $('#feeTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-            ordering:true,
+            ordering:false,
             select: {
                 style: 'multi',
                 selector: 'td:first-child'
@@ -347,10 +343,6 @@
                 url: '/company/fee.dataTable?' + $('#searchFeeForm').serialize(),
                 type:'post'
             },
-            columnDefs: [ {
-                orderable: false,
-                targets:   [0]
-            } ],
             columns : [
                 {'title':'카테고리<br>중분류','data':'CATE_NAME','defaultContent':''}
                 ,{'title':'정액/정률','data':'CF_TYPE_STR','defaultContent':''}

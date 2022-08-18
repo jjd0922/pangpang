@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class GiftGroup extends CreatedEntity {
     private LocalDate giftgEndDate;
     private int giftgMoney;
     private int giftgCnt;
+    private int giftgUsedCnt;
 
     @OneToMany(mappedBy = "giftGroup")
     private List<Gift> giftList;
@@ -52,5 +54,6 @@ public class GiftGroup extends CreatedEntity {
         } else if (getGiftgMoney() <= 0) {
             throw new MsgException("올바른 상품권 금액을 입력해주세요.");
         }
+
     }
 }

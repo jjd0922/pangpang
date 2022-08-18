@@ -171,7 +171,7 @@
 <script th:inline="javascript">
     var companyTable = $('#companyTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:true,
+        ordering:false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
@@ -181,10 +181,6 @@
             url:'/company/company.dataTable',
             type:'post'
         },
-        columnDefs: [ {
-            orderable: true,
-            targets:   [0]
-        } ],
         columns : [
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
