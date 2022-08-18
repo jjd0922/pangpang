@@ -12,7 +12,6 @@ import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

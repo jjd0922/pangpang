@@ -76,4 +76,14 @@
             U_TYPE = 'INSIDE'
             <include refid="includeUserForCompany"></include>
     </select>
+    <select id="selectUserLogin" resultType="map">
+        SELECT
+             U_IDX,U_AUTH_IDX
+            ,U_ID, U_PASSWORD, U_TYPE, U_STATE
+            ,SHA2(#{pw},512) = U_PASSWORD PW_CHECK
+        FROM
+            USER
+        WHERE
+            U_ID=#{id}
+    </select>
 </mapper>
