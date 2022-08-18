@@ -1,20 +1,20 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="companyModal">
+<div class="modal" tabindex="-1" role="dialog" id="contractModal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">거래처 검색</h5>
+                <h5 class="modal-title">계약서 검색</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="companyModalForm" onkeypress="if(event.keyCode==13){searchCompanyModal();return false;}">
+                <form id="contractModalForm" onkeypress="if(event.keyCode==13){searchContractModal();return false;}">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body popup-contents">
                                 <fieldset class="mb-0">
-                                    <legend class="">거래처 검색</legend>
+                                    <legend class="">계약서 검색</legend>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
@@ -42,31 +42,9 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">사업자번호</span>
-                                                    </span>
-                                                   <input type="text" class="form-control" name="comNum" placeholder="검색">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">대표자명</span>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="comCeo" placeholder="검색">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
                                                         <span class="input-group-text">MID</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="comMid" placeholder="검색">
+                                                   <input type="text" class="form-control" name="comMid" placeholder="검색">
                                                 </div>
                                             </div>
                                         </div>
@@ -75,10 +53,21 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">사업자 분류</span>
+                                                        <span class="input-group-text">계약명</span>
                                                     </span>
-                                                    <select name="comType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.ComType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <input type="text" class="form-control" name="ccName" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">계약구분</span>
+                                                    </span>
+                                                    <select name="CcType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CcType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -101,18 +90,18 @@
                             </div>
 
                             <div class="card-footer bg-white d-flex justify-content-end align-items-center">
-                                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="searchCompanyModal()">
+                                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="searchContractModal()">
                                     <i class="icon-search4 mr-1"></i>조회
                                 </button>
                             </div>
                         </div>
                     </div>
                 </form>
-                <table class="table" id="companyModalTable">
+                <table class="table" id="contractModalTable">
                 </table>
                 <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                     <div class="btn-group">
-                        <a id="companyModalBtn" class="btn btn-sm btn-primary" onclick="companySelect()">거래처 선택</a>
+                        <a id="contractModalBtn" class="btn btn-sm btn-primary" onclick="contractSelect()">계약서 선택</a>
                     </div>
                 </div>
             </div>
@@ -121,20 +110,20 @@
 </div>
 
 <script th:inline="javascript">
-    function openCompanyModal() {
-        $('#companyModal').modal('show');
-        selectCompanyDataTable();
+    function openContractModal() {
+        $('#contractModal').modal('show');
+        selectContractDataTable();
     }
 
-    // 거래처 검색
-    function searchCompanyModal(){
-        $('#companyModalTable').DataTable().page('first').ajax.url('/company/company.dataTable?' + $('#companyModalForm').serialize()).load(null, false);
+    // 계약서 검색
+    function searchContractModal(){
+        $('#contractModalTable').DataTable().page('first').ajax.url('/company/contract.dataTable?' + $('#contractModalForm').serialize()).load(null, false);
     }
 </script>
 <script th:inline="javascript">
-    function selectCompanyDataTable(){
-        destroyDatatable('companyModalTable');
-        $('#companyModalTable').DataTable({
+    function selectContractDataTable(){
+        destroyDatatable('contractModalTable');
+        $('#contractModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
             select: {
@@ -143,36 +132,36 @@
             },
             serverSide: true,
             ajax:{
-                url:'/company/company.dataTable?',
+                url:'/company/contract.dataTable?',
                 type:'post'
             },
-        columnDefs: [{
-            width: '40px',
-            autoWidth: false,
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   [0]
-        },
+            columnDefs: [{
+                width: '40px',
+                autoWidth: false,
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   [0]
+            },
             {
                 width: '40px',
                 targets:    [1]
             }],
             "columns" : [
-            {'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                    return '';
-                }}
-            ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
-            ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
-            ,{'title':'거래처 구분코드','data':'CT_TYPE_LIST_STR', 'defaultContent':''}
-            ,{'title':'사업자 분류','data':'COM_TYPE_STR'}
-            ,{'title':'상태','data':'COM_STATE_STR'}
-            ,{'title':'MID','data':'COM_MID','class':'text-won','defaultContent':''}
-            ,{'title':'상호법인명','data':'COM_NAME','class':'text-won','defaultContent':''}
-            ,{'title':'대표자명','data':'COM_CEO','class':'text-won','defaultContent':''}
-        ]
+                {'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '';
+                    }}
+                ,{'title':'상호법인명','data':'COM_NAME', 'defaultContent':''}
+                ,{'title':'계약명','data':'CC_NAME', 'defaultContent':''}
+                ,{'title':'계약구분','data':'CC_TYPE_STR', 'defaultContent':''}
+                ,{'title':'상태','data':'CC_STATE_STR', 'defaultContent':''}
+                ,{'title':'정산주기','data':'CC_CYCLE_STR'}
+                ,{'title':'세금계산서발행일','data':'CC_TAX_DATE'}
+                ,{'title':'정산방식','data':'CC_CAL_TYPE_STR','class':'text-won','defaultContent':''}
+                ,{'title':'지급예정일','data':'CC_BASE_DATE','class':'text-won','defaultContent':''}
+                ,{'title':'계약시작일','data':'CC_START','class':'text-won','defaultContent':''}
+                ,{'title':'계약종료일','data':'CC_END','class':'text-won','defaultContent':''}
+                ,{'title':'계약번호','data':'CC_NUM','class':'text-won','defaultContent':''}
+            ]
     });
     }
 </script>
