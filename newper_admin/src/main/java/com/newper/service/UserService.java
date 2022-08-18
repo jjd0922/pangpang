@@ -12,10 +12,12 @@ import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -62,11 +64,23 @@ public class UserService {
         Address address = paramMap.mapParam(Address.class);
         user.setAddress(address);
 
+
         //생년월일
 
+/*
         String u_birth = paramMap.getString("U_BIRTH");
         LocalDate uBirth = LocalDate.parse(u_birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         user.setUBirth(uBirth);
+*/
+
+
+
+/*
+        if ( uBirth.equals("")) {
+            uBirth=null;
+            paramMap.put("U_BIRTH",uBirth);}
+*/
+
 
         try{
             userRepo.save(user);
