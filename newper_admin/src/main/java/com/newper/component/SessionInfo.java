@@ -16,5 +16,6 @@ import java.io.Serializable;
 /** 세션 정보 저장하는 class*/
 public class SessionInfo implements Serializable {
 
+    private Integer idx;
     private String id;
 }

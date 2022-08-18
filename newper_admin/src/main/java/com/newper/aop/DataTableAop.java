@@ -43,7 +43,6 @@ public class DataTableAop {
 
     @PostConstruct
     public void postConstruct() {
-        enumClasses.put("auth_mask","AuthMask");
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_type","CateType");
         enumClasses.put("cc_cal_type","CcCalType");
