@@ -406,7 +406,7 @@ if (!String.prototype.trim) {
 }
 //datatable refresh
 function refreshTable(selector){
-    try{ㅇ
+    try{
         $(selector).DataTable().ajax.reload();
     }catch (e) {
         console.log(e);
