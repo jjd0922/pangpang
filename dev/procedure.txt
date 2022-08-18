@@ -1,0 +1,46 @@
+-- 상품권 등록 procedure (insert_gift)
+DROP PROCEDURE IF EXISTS insert_gift;
+DELIMITER $$
+CREATE PROCEDURE `insert_gift` (
+            IN giftgIdx BIGINT,
+            IN giftgCnt INTEGER,
+            IN giftState VARCHAR(10),
+            IN len INTEGER
+         )
+BEGIN
+    DECLARE i INTEGER DEFAULT 0;
+
+    WHILE i < giftgCnt DO
+        CALL random_string(len, @randomCode);
+
+        INSERT IGNORE INTO
+            gift (GIFT_GIFTG_IDX, GIFT_STATE, GIFT_CODE)
+        VALUES
+            (giftgIdx, giftState, @randomCode);
+
+        SET i = i+1;
+    END WHILE;
+
+END $$
+
+
+-- 랜덤문자열 생성 procedure (random_string), 상품권등록 procedure에서 사용
+DROP PROCEDURE IF EXISTS random_string;
+DELIMITER $$
+CREATE PROCEDURE `random_string` (
+            IN len INTEGER,
+            OUT returnStr CHAR(16)
+         )
+BEGIN
+	DECLARE str CHAR(36) DEFAULT '';
+	DECLARE randomStr CHAR(16) DEFAULT '';
+	DECLARE i INTEGER DEFAULT 0;
+
+	SET str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	WHILE i < len DO
+		SET randomStr = CONCAT(randomStr, SUBSTRING(str,CEILING(RAND()*36),1));
+		SET i = i + 1;
+	END WHILE;
+
+	SET returnStr = randomStr;
+END $$

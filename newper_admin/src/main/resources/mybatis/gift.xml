@@ -63,4 +63,19 @@
         WHERE
             GIFTG_IDX = #{giftgIdx}
     </select>
+
+    <insert id="insertGift">
+        CALL
+            INSERT_GIFT
+                (#{giftgIdx}, #{giftgCnt}, #{giftState}, #{length});
+    </insert>
+
+    <select id="countGiftByGiftgIdx" resultType="int">
+        SELECT
+            COUNT(GIFT_CODE)
+        FROM
+            GIFT
+        WHERE
+            GIFT_GIFTG_IDX = #{giftgIdx}
+    </select>
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
@@ -18,4 +19,12 @@ public class SessionInfo implements Serializable {
 
     private Integer idx;
     private String id;
+    private Integer authIdx;
+
+    /** 로그인 처리*/
+    public void login(Map<String,Object> userMap) {
+        idx = Integer.parseInt(userMap.get("U_IDX")+"");
+        id = userMap.get("U_ID")+"";
+        authIdx = Integer.parseInt(userMap.get("U_AUTH_IDX")+"");
+    }
 }

@@ -5,6 +5,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Gift;
 import com.newper.entity.GiftGroup;
 import com.newper.exception.MsgException;
+import com.newper.mapper.GiftMapper;
 import com.newper.repository.GiftGroupRepo;
 import com.newper.repository.GiftRepo;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +21,7 @@ public class GiftService {
 
     private final GiftGroupRepo giftGroupRepo;
     private final GiftRepo giftRepo;
+    private final GiftMapper giftMapper;
 
     /** GIFT_GROUP INSERT*/
     @Transactional
@@ -38,16 +38,18 @@ public class GiftService {
     public long saveGift(ParamMap paramMap) {
         GiftGroup savedGg = saveGiftGroup(paramMap);
 
-        for (int i = 0; i < savedGg.getGiftgCnt(); i++) {
-            Gift newGift = Gift.builder()
-                    .giftState(GiftState.WAITING)
-                    .giftGroup(savedGg)
-                    .giftCode(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS"))) // 날짜로 임시생성
-                    .build();
-            giftRepo.save(newGift);
-        }
+        long giftgIdx = savedGg.getGiftgIdx();
+        int giftgCnt = savedGg.getGiftgCnt();
+        int round = 0;
+        int cnt = 0;
 
-        return savedGg.getGiftgIdx();
+        do {
+            giftMapper.insertGift(giftgIdx, (giftgCnt - cnt), GiftState.WAITING, 16);
+            cnt = giftMapper.countGiftByGiftgIdx(giftgIdx);
+            round++;
+        } while ((giftgCnt > cnt) && (round < 5));
+
+        return giftgIdx;
     }
 
     @Transactional
