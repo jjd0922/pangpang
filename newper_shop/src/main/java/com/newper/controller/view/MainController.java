@@ -13,8 +13,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class MainController {
 
-    @GetMapping(value = "")
+    @GetMapping(value = { "", "index"})
     public ModelAndView index(){
+        ModelAndView mav = new ModelAndView("index");
+
+        return mav;
+    }
+
+    @GetMapping(value = "mainMenu/index")
+    public ModelAndView mainIndex(){
         ModelAndView mav = new ModelAndView("mainMenu/index");
 
         return mav;
@@ -23,6 +30,12 @@ public class MainController {
     @GetMapping(value = "test")
     public ModelAndView test(){
         ModelAndView mav = new ModelAndView("mainMenu/test");
+
+        return mav;
+    }
+    @GetMapping(value = "best")
+    public ModelAndView best(){
+        ModelAndView mav = new ModelAndView("mainMenu/best");
 
         return mav;
     }
