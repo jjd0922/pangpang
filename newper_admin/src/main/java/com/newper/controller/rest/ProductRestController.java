@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
@@ -9,7 +10,9 @@ import com.newper.repository.CategoryRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -160,11 +163,89 @@ public class ProductRestController {
     @PostMapping("productSave.ajax")
     public ReturnMap productSave(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
         ReturnMap rm = new ReturnMap();
+
+        Map<String, Object> map1 = new HashMap<>();
+        Map<String, Object> map2 = new HashMap<>();
+        Map<String, Object> map3 = new HashMap<>();
+        for(int i=1; i<10; i++){
+            map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
+        }
+        paramMap.put("P_NAVER", map1);
+
+        for(int y=1; y<4; y++){
+            map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
+            map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
+
+            String p_option_key="";
+            String p_option_value="";
+            if(paramMap.get("p_option_key"+y)!=null){
+                p_option_key=paramMap.get("p_option_key"+y)+"";
+                p_option_value=paramMap.get("p_option_value"+y)+"";
+            }
+            map3.put("p_option_key"+y,p_option_key);
+            map3.put("p_option_value"+y,p_option_value);
+
+        }
+        paramMap.put("P_INFO",map2);
+        paramMap.put("P_OPTION",map3);
+
+        paramMap.put("P_STATE", PState.PROTO);
+        paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_SELL_PRICE", paramMap.get("P_SELL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_DEL_PRICE", paramMap.get("P_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
         System.out.println(paramMap.getMap());
-        productService.productSave(paramMap,P_THUMB_FILE1,P_THUMB_FILE2,P_THUMB_FILE3,P_THUMB_FILE4,P_THUMB_FILE5,P_THUMB_FILE6);
+        int res = productService.productSave(paramMap,P_THUMB_FILE1,P_THUMB_FILE2,P_THUMB_FILE3,P_THUMB_FILE4,P_THUMB_FILE5,P_THUMB_FILE6);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }
         return rm;
     }
 
+    /**상품수정*/
+    @PostMapping("{P_IDX}/productUpdate.ajax")
+    public ReturnMap productUpdate(@PathVariable int P_IDX, ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
+        ReturnMap rm = new ReturnMap();
+        paramMap.put("P_IDX",P_IDX);
+        System.out.println(paramMap.getMap());
+        Map<String, Object> map1 = new HashMap<>();
+        Map<String, Object> map2 = new HashMap<>();
+        Map<String, Object> map3 = new HashMap<>();
+        for(int i=1; i<10; i++){
+            map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
+        }
+        paramMap.put("P_NAVER", map1);
 
+        for(int y=1; y<4; y++){
+            map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
+            map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
+
+            String p_option_key="";
+            String p_option_value="";
+            if(paramMap.get("p_option_key"+y)!=null){
+                p_option_key=paramMap.get("p_option_key"+y)+"";
+                p_option_value=paramMap.get("p_option_value"+y)+"";
+            }
+            map3.put("p_option_key"+y,p_option_key);
+            map3.put("p_option_value"+y,p_option_value);
+
+        }
+        paramMap.put("P_INFO",map2);
+        paramMap.put("P_OPTION",map3);
+
+        paramMap.put("P_STATE", PState.PROTO);
+        paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_SELL_PRICE", paramMap.get("P_SELL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_DEL_PRICE", paramMap.get("P_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        System.out.println(paramMap.getMap());
+        int res = productService.productUpdate(paramMap,P_THUMB_FILE1,P_THUMB_FILE2,P_THUMB_FILE3,P_THUMB_FILE4,P_THUMB_FILE5,P_THUMB_FILE6);
+        if(res>0){
+            System.out.println(res);
+            rm.setMessage("저장되었습니다.");
+        }
+
+        return rm;
+    }
 
 }

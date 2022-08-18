@@ -82,7 +82,7 @@ public class DataTableAop {
                     EnumOption enumOption = Arrays.stream(enumClasses.get(key.toLowerCase())).filter(en -> {
                         return en.toString().equals((String) value);
                     }).findFirst().get();
-                    addMap.put(key + "_STR", enumOption.getOption());
+                    addMap.put(key + "", enumOption.getOption());
                 }
             }else if(key.indexOf("_LIST") != -1){
                 int indexOfList = key.lastIndexOf("_LIST");
@@ -98,7 +98,7 @@ public class DataTableAop {
                             }).findFirst().get();
                             dtValue+=enumOption.getOption()+", ";
                         }
-                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
+                        addMap.put(key + "", dtValue.substring(0,dtValue.length()-2));
                     }
 
                 }
