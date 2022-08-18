@@ -13,4 +13,8 @@ public interface ProductMapper {
 
     /**마지막 상품코드 조회*/
     String selectProductByListPcode();
+
+    /**재고상품 데이터테이블*/
+    List<Map<String, Object>> selectGoodsStockDataTable(Map<String, Object> map);
+    Integer countGoodsStockDataTable(Map<String, Object> map);
 }

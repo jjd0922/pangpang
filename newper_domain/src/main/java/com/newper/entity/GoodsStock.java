@@ -5,6 +5,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -28,17 +30,31 @@ public class GoodsStock {
     @JoinColumn(name = "GS_SPEC_IDX", referencedColumnName = "specIdx")
     private Spec spec ;
 
-    private Integer gsRank;
-
+    private String gsCode;
     private String gsSale;
-
-    private String gsOption;
-
-    private Long gsStock;
-
-    private Integer gsOriginalPrice;
-
+    private String gsName;
     private Integer gsPrice;
+    private Integer gsRank;
+    private String gsMd;
+    private Integer gsOriginalPrice;
+    private String gsThumbFile1;
+    private String gsThumbFile2;
+    private String gsThumbFile3;
+    private String gsThumbFileName1;
+    private String gsThumbFileName2;
+    private String gsThumbFileName3;
+    private String gsContent;
+    private Long gsStock;
+    private Long gsOutStock;
+    private Long gsSafeStock;
+    private Long gsProperStock;
+
+    private boolean gsDaily;
+    private String gsLocation;
+
+
+    @Builder.Default
+    private Map<String,Object> gsOption = new HashMap<>();
 
 
 }
