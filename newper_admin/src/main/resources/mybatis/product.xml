@@ -20,7 +20,10 @@
             brand.CATE_NAME as 'BRAND_NAME',
                 store.COM_NAME AS 'STORE_NAME',
                 manufacture.COM_NAME AS 'MANUFACTURE_NAME',
-                afterservice.COM_NAME AS 'AFTERSERVICE_NAME'
+                afterservice.COM_NAME AS 'AFTERSERVICE_NAME',
+            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value1'),'"','') OPTION1,
+            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value2'),'"','') OPTION2,
+            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value3'),'"','') OPTION3
         FROM
             product
                 LEFT JOIN (SELECT

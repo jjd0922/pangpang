@@ -3,10 +3,12 @@ package com.newper.controller.view;
 import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
+import com.newper.entity.Company;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.CategoryRepo;
+import com.newper.repository.CompanyRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping(value = "/product/")
@@ -29,6 +33,7 @@ public class ProductController {
 
     private final CategoryRepo categoryRepo;
     private final ProductRepo productRepo;
+    private final CompanyRepo companyRepo;
 
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
@@ -169,7 +174,6 @@ public class ProductController {
     @GetMapping("detail")
     public ModelAndView detail(){
         ModelAndView mav = new ModelAndView("product/detail");
-
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("length",-1);
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
@@ -185,8 +189,88 @@ public class ProductController {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("length",-1);
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
+        mav.addObject("category",categoryMapper.selectCategoryDatatableByParent());
 
-        Product product = productRepo.findById(pIdx).get();
+        Product product = productRepo.findById(pIdx).orElseThrow();
+
+        String content1 = product.getPContent1();
+        content1=content1.replaceAll("&lt;","<");
+        content1=content1.replaceAll("&#37;","%");
+        content1=content1.replaceAll("&gt;",">");
+        content1=content1.replaceAll("&quot;","\"");
+        content1=content1.replaceAll("<br>",System.getProperty("line.separator"));
+
+        String content2 = product.getPContent2();
+        content2=content2.replaceAll("&lt;","<");
+        content2=content2.replaceAll("&#37;","%");
+        content2=content2.replaceAll("&gt;",">");
+        content2=content2.replaceAll("&quot;","\"");
+        content2=content2.replaceAll("<br>",System.getProperty("line.separator"));
+
+        String content3 = product.getPContent3();
+        content3=content3.replaceAll("&lt;","<");
+        content3=content3.replaceAll("&#37;","%");
+        content3=content3.replaceAll("&gt;",">");
+        content3=content3.replaceAll("&quot;","\"");
+        content3=content3.replaceAll("<br>",System.getProperty("line.separator"));
+
+        mav.addObject("content1",content1);
+        mav.addObject("content2",content2);
+        mav.addObject("content3",content3);
+
+        Map<String,Object> option = product.getPOption();
+        List<Map<String,Object>> pOption = new ArrayList<Map<String,Object>>();
+
+        for(int i=1; i<4; i++){
+            Map<String,Object> optionMap = new HashMap<>();
+            if(!option.get("p_option_key"+i).equals("")||!option.get("p_option_value"+i).equals("")){
+                optionMap.put("p_option_key",option.get("p_option_key"+i));
+                optionMap.put("p_option_value",option.get("p_option_value"+i));
+                pOption.add(optionMap);
+            }
+        }
+        System.out.println(pOption);
+        System.out.println(pOption.size());
+        mav.addObject("pOption",pOption);
+        Map<String, Object> cg = new HashMap<>();
+        if(product.getCategory() != null){
+            Map<String,Object> category = categoryMapper.selectCategoryDetail(product.getCategory().getCateIdx());
+            int depth = Integer.parseInt(category.get("CATE_DEPTH")+"");
+            cg.put("depth",depth);
+            if(depth==1){
+                cg.put("CATE_IDX1",category.get("ori_cate_idx"));
+                cg.put("CATE_IDX2","");
+                cg.put("CATE_IDX3","");
+            }else if(depth==2){
+                cg.put("CATE_IDX2",category.get("ori_cate_idx"));
+                cg.put("CATE_IDX1",category.get("per_cate_idx1"));
+                cg.put("CATE_IDX3","");
+            }else if(depth==3){
+                cg.put("CATE_IDX3",category.get("ori_cate_idx"));
+                cg.put("CATE_IDX2",category.get("per_cate_idx1"));
+                cg.put("CATE_IDX1",category.get("per_cate_idx2"));
+            }
+            mav.addObject("cg",cg);
+        }
+
+        Map<String,Object> com = new HashMap<>();
+        if (product.getStoreName() != null) {
+            com.put("storeName",companyRepo.findById(product.getStoreName().getComIdx()).get().getComName());
+        }else{
+            com.put("storeName","");
+        }
+        if (product.getManufactureName() != null) {
+            com.put("manufactureName",companyRepo.findById(product.getManufactureName().getComIdx()).get().getComName());
+        }else{
+            com.put("manufactureName","");
+        }
+        if (product.getAfterServiceName() != null) {
+            com.put("afterServiceName",companyRepo.findById(product.getAfterServiceName().getComIdx()).get().getComName());
+        }else{
+            com.put("afterServiceName","");
+        }
+
+        mav.addObject("com",com);
         mav.addObject("product", product);
 
         return mav;

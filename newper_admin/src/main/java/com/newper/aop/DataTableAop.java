@@ -119,7 +119,7 @@ public class DataTableAop {
                         for (String s : enumList) {
                             dtValue+=getEnumOption(columnName, s)+", ";
                         }
-                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
+                        addMap.put(key + "", dtValue.substring(0,dtValue.length()-2));
                     }
 
                 }
