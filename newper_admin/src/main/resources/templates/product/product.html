@@ -268,23 +268,27 @@
                 {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
                         return '<input type="hidden" name="P_IDX" value="'+data+'">';
                     }}
-                ,{'title':'대표썸네일','data':'P_INFO','render':function(data,type,full,meta){
-                        return data;
+                ,{'title':'대표썸네일','data':'P_THUMB_FILE1','render':function(data,type,full,meta){
+                    if(data==''){
+                        return '';
+                    }else{
+                        return '<img src="'+data+'" class="input-thumb">'
+                    }
                     }}
                 ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
                         return '<a class="btn btn-sm badge-indigo" onclick="productDetailPop('+full.P_IDX+')">'+data+'</a>';
                     }}
                 ,{'title':'상품명','data':'P_NAME'}
-                ,{'title':'상품 상태','data':'P_INFO'}
-                ,{'title':'모델명','data':'P_INFO'}
+                ,{'title':'상품 상태','data':'P_STATE'}
+                ,{'title':'모델명','data':'P_MODEL'}
                 ,{'title':'브랜드','data':'BRAND_NAME','defaultContent':''}
-                ,{'title':'재고관리','data':'P_INFO'}
+                ,{'title':'재고관리','data':'P_USE_STOCK'}
                 ,{'title':'카테고리 대분류','data':'CATE_NAME1','defaultContent':''}
                 ,{'title':'카테고리 중분류','data':'CATE_NAME2','defaultContent':''}
                 ,{'title':'카테고리 소분류','data':'CATE_NAME3','defaultContent':''}
                 ,{'title':'정산구분(품목구분1)','data':'P_TYPE1'}
                 ,{'title':'상품분류(품목구분2)','data':'P_TYPE2'}
-                ,{'title':'물류타입(품목자산구분)','data':'P_INFO'}
+                ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3'}
                 ,{'title':'입점사','data':'STORE_NAME','defaultContent':''}
                 ,{'title':'제조사','data':'MANUFACTURE_NAME','defaultContent':''}
                 ,{'title':'AS업체','data':'AFTERSERVICE_NAME','defaultContent':''}
@@ -300,11 +304,11 @@
                 ,{'title':'배송비','data':'P_DEL_PRICE','render':function(data, type, full, meta){
                         return comma(data);
                     }}
-                ,{'title':'배송주체','data':'P_INFO'}
-                ,{'title':'옵션1','data':'P_OPTION'}
-                ,{'title':'옵션2','data':'P_OPTION'}
-                ,{'title':'옵션3','data':'P_OPTION'}
-                ,{'title':'스펙구성','data':'P_OPTION'}
+                ,{'title':'배송주체','data':'P_DEL_COMPANY'}
+                ,{'title':'옵션1','data':'OPTION1'}
+                ,{'title':'옵션2','data':'OPTION2'}
+                ,{'title':'옵션3','data':'OPTION3'}
+                ,{'title':'스펙구성','data':'null','defaultContent':''}
                 ,{'title':'등록일','data':'CREATED_DATE'}
                 ,{'title':'승인자','data':'MODIFIED_BY'}
                 ,{'title':'승인일','data':'MODIFIED_DATE'}
