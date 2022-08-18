@@ -230,5 +230,22 @@
         var focusPopup = window.open('/company/contractPop', 'contractNew', 'width=1030, height=850, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
+
+    function companySelect(){
+        var comIdx = dataTableGetSelectedDataArray('companyModalTable', 'COM_IDX');
+        var comName = dataTableGetSelectedDataArray('companyModalTable', 'COM_NAME');
+        var comNum = dataTableGetSelectedDataArray('companyModalTable', 'COM_NUM');
+
+        if(comIdx.length != 1){
+            alert('거래처는 하나만 선택해 주세요');
+            return false;
+        }else{
+            $('input[name=comIdx]').val(comIdx);
+            $('input[name=comName]').val(comName);
+            $('input[name=comNum]').val(comNum);
+        }
+
+        $('#companyModal').modal('hide');
+    }
 </script>
 </html>

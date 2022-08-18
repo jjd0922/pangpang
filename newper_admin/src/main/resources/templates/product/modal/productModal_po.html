@@ -1,0 +1,517 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="productModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">상품코드 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="productModalForm" onkeypress="if(event.keyCode==13){searchProductModal();return false;}">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <fieldset class="mb-0">
+                                    <legend class="">상품코드 검색</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pCode" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pName" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">브랜드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pBrand" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">카테고리 대분류</span>
+                                                    </span>
+                                                    <select name="category1" data-placeholder="다중선택가능" class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">카테고리 중분류</span>
+                                                    </span>
+                                                    <select name="category2" data-placeholder="다중선택가능" class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">카테고리 소분류</span>
+                                                    </span>
+                                                    <select name="category3" data-placeholder="다중선택가능" class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-end align-items-center">
+                                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="searchProductModal()">
+                                    <i class="icon-search4 mr-1"></i>조회
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <table class="table" id="productModalTable">
+                </table>
+            </div>
+            <!-- content area -->
+            <div id="productPoDiv" class="content container-fluid" style="display: none;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="productModalPoForm">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 상품 구매 정보</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">매입수량</span>
+                                                        </span>
+                                                        <input type="text" id="ppCount" class="form-control" placeholder="입력">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">구매단가<br>(실매입가)</span>
+                                                        </span>
+                                                        <input type="text" id="ppCost" class="form-control" placeholder="입력">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">외부상품코드<br>(aj자산코드)</span>
+                                                        </span>
+                                                        <input type="text" id="ajCode" class="form-control" placeholder="입력">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">목표수익률</span>
+                                                        </span>
+                                                        <input type="text" id="ppProfitTarget" class="form-control" placeholder="입력">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">2. 예상비용</legend>
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>공정구분</th>
+                                                        <th>예상공정항목</th>
+                                                        <th>예상비용</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>도색</td>
+                                                        <td><input type="text" id="paintText"></td>
+                                                        <td><input type="text" id="paintCost"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>수리</td>
+                                                        <td><input type="text" id="fixText"></td>
+                                                        <td><input type="text" id="fixCost"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>가공</td>
+                                                        <td><input type="text" id="processText"></td>
+                                                        <td><input type="text" id="processCost"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <!-- 타이틀 구분 끝-->
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">3. 상품 SPEC정보</legend>
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SPEC명</th>
+                                                        <th>입고SPEC(예정)</th>
+                                                        <th>판매SPEC(예정)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="poModalProductSpecList">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <!-- 타이틀 구분 끝-->
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">4. 옵션</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">옵션1</span>
+                                                        </span>
+                                                        <select class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">옵션2</span>
+                                                        </span>
+                                                        <select class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">옵션3</span>
+                                                        </span>
+                                                        <select class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- #regiForm end -->
+                    </div>
+                </div>
+            </div>
+            <!-- /content area -->
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnProductPoModal" style="display: none">상품세팅</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function priceSetting() {
+        var totalAmount = 0;
+        var totalSell = 0;
+        $.each($('input[name=poProductSellPrice]'), function (index, value){
+            var buy = $(this).parent().prev().prev().children('input[name=poProductCost]').val()
+            var sell =  $(this).val();
+            var count = $(this).parent().prev().prev().children('input[name=poProductCount]').val()
+
+            var paint = $(this).parent().siblings('input[name=poProductPaint]').val()
+            var process = $(this).parent().siblings('input[name=poProductProcess]').val()
+            var fix = $(this).parent().siblings('input[name=poProductFix]').val();
+
+            $(this).parent().next().text(comma(sell * count)); // 예상판매가 총액
+
+            // 총이익 판매예상액-매입원가(제품매입원가+공정비용)
+            var totalProfit = (sell * count) - ((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count);
+            $(this).parent().next().next().text(comma(totalProfit));
+
+            // 수익률 수익액/매입원가(제품매입원가+공정비용)*100입니다
+            var profitPer = totalProfit/((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count) * 100
+            $(this).parent().next().next().next().text(comma(profitPer));
+            totalSell += sell * count
+            totalAmount += buy;
+        });
+
+        $('input[name=poTotalAmount]').val(comma(totalAmount));
+        $('input[name=poSellTotalAmount]').val(comma(totalSell));
+    }
+
+    function productPoDelete (pIdx) {
+        $('.productPoTr_' + pIdx).remove();
+        priceSetting();
+    }
+
+    function settingProduct (id, rowIdx) {
+        var dataMap=getDatatablemap(id, rowIdx);
+
+        $('#productModal').modal('hide');
+        $('#productPoDiv').css('display', 'none');
+        $('#setBtnProductPoModal').css('display', 'none')
+        var spec1 = ''
+        $.each($('select[name=ppSpec1] option:selected'), function (index, value) {
+            spec1 += value.value + '/';
+        });
+
+        var spec2 = ''
+        $.each($('select[name=ppSpec2] option:selected'), function (index, value) {
+            spec2 += value.value + '/';
+        });
+
+        spec1 = spec1.slice(0, -1);
+        spec2 = spec2.slice(0, -1);
+
+        var product5 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
+        product5 += '<td>' + dataMap.P_CODE + '</td>'
+        product5 += '<td>' + $('#ajCode').val() + '</td>';
+        product5 += '<td>' + dataMap.P_NAME + '</td>';
+        product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
+        product5 += '<td>' +  + '</td>';
+        product5 += '<td>' +  + '</td>';
+        product5 += '<td>' +  + '</td>';
+        product5 += '<td>' + dataMap.P_COST + '</td>';
+        product5 += '<td>' + comma($('#ppCost').val()) + '</td>';
+        product5 += '<td>' + comma($('#ppCount').val()) + '</td>';
+        product5 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
+        product5 += '<td>' + spec1 + '</td>';
+        product5 += '<td>' + spec2 + '</td>';
+        product5 += '<td>' + $('#fixText').val() +'/' + comma($('#fixCost').val()) + '</td>';
+        product5 += '<td>' + $('#paintText').val() +'/' + comma($('#paintCost').val()) + '</td>';
+        product5 += '<td>' + $('#processText').val() +'/' + comma($('#processCost').val()) + '</td>';
+        product5 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + dataMap.P_IDX + ')">삭제</button></td>'
+        product5 += '</tr>'
+        $('#productTbody').append(product5);
+
+        var product6 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
+        product6 += '<td>' + dataMap.P_CODE + '</td>';
+        product6 += '<td>' + dataMap.P_NAME + '</td>';
+        product6 += '<td><input type="text" class="form-control" name="poProductCount" value="' + $('#ppCount').val() + '" readonly></td>';
+        product6 += '<td>' + comma($('#processCost').val()) + '</td>';
+        product6 += '<td>' + comma($('#fixCost').val()) + '</td>';
+        product6 += '<td>' + comma($('#paintCost').val()) + '</td>';
+        product6 += '<td>' + comma($('#ppCount').val() * (parseInt($('#processCost').val()) + parseInt($('#paintCost').val()) + parseInt($('#fixCost').val()))) + '</td>';
+        product6 += '<td>' +  + '</td>';
+        product6 += '<td><input type="text" name="poProductCost" value="' + comma($('#ppCost').val()) + '" onkeyup="priceSetting()" readonly><input type="hidden" name="poProductCount" value="' + $('#ppCount').val() + '"></td>';
+        product6 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
+        product6 += '<td><input type="text" class="form-control" name="poProductSellPrice" onkeyup="priceSetting()"></td>';
+        product6 += '<td>' +  + '</td>';
+        product6 += '<td>' +  + '</td>';
+        product6 += '<td>' +  + '</td>';
+        product6 += '<td><input type="text" class="form-control" name="poProductProfitTarget" value="' + $('#ppProfitTarget').val() + '" readonly></td>';
+        product6 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + dataMap.P_IDX + ')">삭제</button></td>'
+        product6 += '<input type="hidden" name="poProduct" value="' + dataMap.P_IDX + '"><input type="hidden" name="poProductProcess" value="' + $('#processCost').val() + '"><input type="hidden" name="poProductFix" value="' + $('#fixCost').val() + '"><input type="hidden" name="poProductPaint" value="' + $('#paintCost').val() + '">';
+        product6 += '</tr>';
+        $('#productTbody2').append(product6);
+
+        priceSetting();
+    }
+
+    function poProductChoose (id, rowIdx) {
+        $('#productPoDiv').css('display', 'block');
+        $('#setBtnProductPoModal').css('display', 'block');
+        var dataMap=getDatatablemap(id, rowIdx);
+
+        if($('input[name=pIdx][value='+dataMap.P_IDX+']').length > 0){
+            alert('이미 추가된 상품 입니다');
+            return false;
+        }
+
+        $('#setBtnProductPoModal').attr('onclick', 'settingProduct("' + id + '", "' + rowIdx + '")');
+
+        var specList = dataMap.CATE_SPEC_LIST.replace('[', '').replace(']', '').split(', ');
+
+        var text = '';
+        for (var i = 0; i < specList.length; i++) {
+            $.ajax({
+                type: "POST",
+                url:"/goods/spec/specSearch.ajax?specName=" + specList[i],
+                dataType:"json",
+                async: false,
+                success : function(result){
+                    $('#poModalProductSpecList').empty();
+                    var spec_option = '';
+                    text += '<tr>';
+                    text += '<td>' + specList[i] + '</td>';
+                    $.each(result, function (index, value) {
+                        spec_option += '<option value="' + value.speclName + '=' + value.speclValue + '">' + value.speclName + '=' + value.speclValue + '</option>';
+                    });
+                    text += '<td><select name="ppSpec1" class="form-control">' + spec_option + '</select></td>';
+                    text += '<td><select name="ppSpec2" class="form-control">' + spec_option + '</select></td>';
+                    text += '</tr>';
+                },
+                error : function(a, b, c){
+                    alert(a + b + c);
+                }
+            });
+        }
+
+        $('#poModalProductSpecList').append(text);
+    }
+
+    function openProductModal(){
+        $('#productModal').modal('show');
+        selectCategoryAjax(null, '1');
+        selectProductDataTable();
+    }
+
+    function selectCategoryAjax(idx, type) {
+        $.ajax({
+            type: "POST",
+            url:"/product/category/selectCategory.ajax?cateIdx=" + idx,
+            dataType:"json",
+            success : function(result){
+                var text = '<option>선택</option>';
+
+                $.each(result, function (index, value) {
+                    text += '<option value="' + value.CATE_IDX + '">' + value.CATE_NAME + '</option>'
+                });
+
+                if (type == '1') {
+                    $('select[name=category1]').empty();
+                    $('select[name=category2]').empty();
+                    $('select[name=category3]').empty();
+                    $('select[name=category1]').append(text);
+                } else if (type == '2') {
+                    $('select[name=category2]').empty();
+                    $('select[name=category3]').empty();
+                    $('select[name=category2]').append(text);
+                } else {
+                    $('select[name=category3]').empty();
+                    $('select[name=category3]').append(text);
+                }
+
+            },
+            error : function(a, b, c){
+                alert(a + b + c);
+            }
+        });
+    }
+
+    <!-- 상품 검색 -->
+    function searchProductModal(){
+        $('#productModalTable').dataTable().table.page("first").ajax.url("/product/product.dataTable?" + $('#productModalForm').serialize()).load(null, false);
+    }
+
+    function selectProductDataTable(){
+        destroyDatatable('productModalTable');
+        $('#productModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            ordering: false,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax:{
+                url:'/product/product.dataTable',
+                type:'post'
+            },
+            columnDefs: [ {
+                width: '40px',
+                orderable: false,
+                autoWidth: false,
+                className: 'select-checkbox',
+                targets:   [0]
+            },
+            {
+                width: '40px',
+                targets:    [1]
+            }],
+            "columns" : [
+                {'class':'select-checkbox', 'title':'선택','data':'CATE_SPEC_LIST','defaultContent':'','render':  function(data,type,full,meta){
+                        return '<input type="hidden" id="productSpecList" value="' + data + '">';
+                    }}
+                , {'title':'상품코드','data':'P_CODE', 'defaultContent':''}
+                ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+                ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
+                ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
+                ,{'title':'기준매입가','data':'P_SELL_PRICE', 'defaultContent':''}
+                ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="poProductChoose(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">선택</button>'
+                    }}
+
+            ]
+        });
+    }
+</script>
+</html>

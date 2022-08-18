@@ -3,8 +3,13 @@ package com.newper.controller.view;
 import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Estimate;
+import com.newper.entity.Hiworks;
+import com.newper.entity.PoProduct;
 import com.newper.exception.MsgException;
 import com.newper.repository.EstimateRepo;
+import com.newper.repository.HiworksRepo;
+import com.newper.repository.PoProductRepo;
+import com.newper.repository.PoRepo;
 import com.newper.service.PoService;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PoController {
     private final PoService poService;
+
+    private final PoRepo poRepo;
+
+    private final PoProductRepo poProductRepo;
+
+    private final HiworksRepo hiworksRepo;
+
     private final EstimateRepo estimateRepo;
 
     /** 발주품의 페이지 **/
@@ -39,6 +51,40 @@ public class PoController {
     @GetMapping(value = "poPop")
     public ModelAndView poPop(){
         ModelAndView mav = new ModelAndView("po/poPop");
+        return mav;
+    }
+
+    /** 발주품의 생성 */
+    @PostMapping(value = "poPop")
+    public ModelAndView poPopPost(ParamMap paramMap, MultipartFile poFile){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        if (poFile.getSize() == 0) {
+            throw new MsgException("파일을 첨부해 주세요");
+        }
+
+        Integer poIdx = poService.savePo(paramMap, poFile);
+
+        mav.addObject("loc", "/po/poPop/" + poIdx);
+        mav.addObject("msg", "발주품의 등록 완료");
+
+        return mav;
+    }
+
+    /** 발주품의 상세 & 수정 페이지 */
+    @GetMapping(value = "poPop/{poIdx}")
+    public ModelAndView poPopDetail(@PathVariable long poIdx){
+        ModelAndView mav = new ModelAndView("po/poPop");
+
+        return mav;
+    }
+
+    /** 발주품의 수정 */
+    @PostMapping(value = "poPop/{poIdx}")
+    public ModelAndView poPopDetailPost(@PathVariable long poIdx, ParamMap paramMap, MultipartFile poFile){
+        ModelAndView mav = new ModelAndView("po/poPop");
+        mav.addObject("po", poRepo.findById((int) poIdx));
+        mav.addObject("poProduct", poProductRepo.findPoProductByPo_PoIdx((int) poIdx));
+
         return mav;
     }
 

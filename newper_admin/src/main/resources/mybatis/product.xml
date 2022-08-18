@@ -3,19 +3,20 @@
 <mapper namespace="com.newper.mapper.ProductMapper">
     <select id="selectProductDataTalbe" resultType="Map">
         SELECT
+            dt.CATE_SPEC_LIST AS 'CATE_SPEC_LIST',
             product.*,
             FORMAT(P_SELL_PRICE , 0) AS 'P_SELL_PRICE',
-                (case
-                     when dt.CATE_DEPTH = 1 then dt.CATE_NAME1
-                     when dt.CATE_DEPTH = 2 then dt.CATE_NAME2
-                     when dt.CATE_DEPTH = 3 then dt.CATE_NAME3
-                    end
-                    ) CATE_NAME1,
             (case
-                 when dt.CATE_DEPTH = 3 then dt.CATE_NAME2
-                 when dt.CATE_DEPTH = 2 then dt.CATE_NAME1
+                 when dt.CATE_DEPTH = 1 then dt.CATE_NAME1
+                 when dt.CATE_DEPTH = 2 then dt.CATE_NAME2
+                 when dt.CATE_DEPTH = 3 then dt.CATE_NAME3
                 end
-                ) CATE_NAME2,
+                ) CATE_NAME1,
+            (case
+             when dt.CATE_DEPTH = 3 then dt.CATE_NAME2
+             when dt.CATE_DEPTH = 2 then dt.CATE_NAME1
+            end
+            ) CATE_NAME2,
             if(dt.CATE_DEPTH=3,dt.CATE_NAME1,NULL) CATE_NAME3,
             brand.CATE_NAME as 'BRAND_NAME',
                 store.COM_NAME AS 'STORE_NAME',
@@ -27,10 +28,12 @@
                                category1.CATE_NAME AS CATE_NAME1,
                                category1.CATE_IDX AS CATE_IDX1,
                                category1.CATE_DEPTH,
+                               category1.CATE_SPEC_LIST AS CATE_SPEC_LIST,
                                category2.CATE_NAME AS CATE_NAME2,
                                category2.CATE_IDX AS CATE_IDX2,
                                category3.CATE_NAME AS CATE_NAME3,
                                category3.CATE_IDX AS CATE_IDX3
+
                            FROM
                                category AS category1
                                    LEFT JOIN category AS category2

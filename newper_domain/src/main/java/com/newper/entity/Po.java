@@ -58,6 +58,7 @@ public class Po extends BaseEntity {
     private String poSellChannel;
     private long poSellReceiveAmount;
     private long poSellUnpaidAmount;
+    private long poSellTotalAmount;
     private String poSellPayDate;
     private float poSellProfit;
     private String poSellUse;
@@ -70,12 +71,7 @@ public class Po extends BaseEntity {
     private String poTaxMonth;
     private String poPayDate;
     private String poPayAccount;
-
-
-
-
-
-
-
+    private String poFile;
+    private String poFileName;
 
 }

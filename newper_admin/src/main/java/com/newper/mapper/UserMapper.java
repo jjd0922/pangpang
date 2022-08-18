@@ -20,5 +20,4 @@ public interface UserMapper {
     long countUser(Map<String, Object> param);
 
     List<Map<String, Object>> insertUser (Integer uIdx);
-
 }
