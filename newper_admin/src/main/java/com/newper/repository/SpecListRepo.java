@@ -1,6 +1,5 @@
 package com.newper.repository;
 
-import com.newper.entity.Fee;
 import com.newper.entity.SpecList;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
