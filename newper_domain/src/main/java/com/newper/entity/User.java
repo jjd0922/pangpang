@@ -108,12 +108,11 @@ public class User extends BaseEntity {
     }
 
     /** 랜덤 문자열 생성 (숫자,특수문자,대소문자)*/
-    public static String getRandomPassword(int size) {
+    public void setRandomPassword(int size) {
         char[] charSet = new char[] {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                '!', '@', '#', '$', '%', '^', '&' };
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
         StringBuffer sb = new StringBuffer();
         SecureRandom sr = new SecureRandom();
@@ -127,10 +126,10 @@ public class User extends BaseEntity {
             sb.append(charSet[idx]);
         }
 
-        return sb.toString();
+        setUPassword(sb.toString());
     }
 
-/*    *//**비밀번호 암호화*//*
+    /**비밀번호 암호화*/
     public static String parseSHA(String str){
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -141,7 +140,20 @@ public class User extends BaseEntity {
         }catch (NoSuchAlgorithmException nae){
             throw new MsgException("해쉬 암호화 중 에러발생");
         }
-    }*/
+    }
+
+
+/**사용자 업데이트*/
+
+    public void updateUser(int uIdx){
+        if(getUIdx() < 0){
+            setUIdx(uIdx * -1);
+        }else{
+            setUIdx(uIdx);
+        }
+    }
+
+
 
 }
 

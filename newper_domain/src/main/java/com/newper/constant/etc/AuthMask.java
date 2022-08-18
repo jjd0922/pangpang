@@ -1,13 +1,7 @@
-package com.newper.constant;
+package com.newper.constant.etc;
 
-import com.newper.entity.Auth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /** 마스킹 table column list. user.u_mask*/
 @Getter

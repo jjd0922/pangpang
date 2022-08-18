@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <form id="userForm">
+            <form id="userForm" onsubmit="return false;">
                 <div class="card">
                     <div class="card-body popup-contents pb-4">
                         <fieldset class="mb-0">
@@ -276,10 +276,10 @@
                                            <span class="input-group-prepend">
                                                <span class="input-group-text requested">
                                                    패스워드
-                                                   <button th:if="${user!=null}" th:value="${user?.uPassword}" class="badge badge-sm badge-primary ml-1" th:onclick="resetPwd([[${user?.uIdx}]])">초기화</button>
+                                                   <button th:if="${user!=null}" class="badge badge-sm badge-primary ml-1" th:onclick="resetPwd([[${uIdx}]])">초기화</button>
                                                </span>
                                            </span>
-                                            <input type="password" name="U_PASSWORD" class="form-control" th:readonly="${user != null}" th:value="${user?.uPassword}">
+                                            <input type="password" name="U_PASSWORD" class="form-control" th:readonly="${user != null}">
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +312,8 @@
         <!-- /footer -->
     </div>
 </div>
-<th:block th:replace="modal/resetPwModal.html"/>
+<th:block th:replace="modal/resetPwdModal.html"/>
+
 <th:block th:replace="company/modal/comModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
@@ -421,20 +422,20 @@
             }
         }).open();
     }
-        function userCreate(){
-            $.ajax({
-                url:[[@{/user/userCreate.ajax}]],
-                data: $('#userForm').serialize(),
-                type:'POST',
-                success:function(data){
-                    console.log(data);
-                    // window.close();
-                  //  window.refreshTable('#userTable');
-                }
-                ,error: function(){
-                }
-            });
-        }
+    function userCreate(){
+        $.ajax({
+            url:[[@{/user/userCreate.ajax}]],
+            data: $('#userForm').serialize(),
+            type:'POST',
+            success:function(data){
+            console.log(data);
+            window.close();
+            opener.location.reload();
+            }
+            ,error: function(){
+            }
+        });
+    }
 
     //거래처 검색 모달에서 거래처 선택
     function selectCompany(row) {

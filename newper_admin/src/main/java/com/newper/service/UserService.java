@@ -1,9 +1,7 @@
 package com.newper.service;
 
 
-import com.newper.constant.ComType;
-import com.newper.constant.CtType;
-import com.newper.constant.UType;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
@@ -14,6 +12,7 @@ import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +63,7 @@ public class UserService {
         user.setAddress(address);
 
         //생년월일
+
         String u_birth = paramMap.getString("U_BIRTH");
         LocalDate uBirth = LocalDate.parse(u_birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         user.setUBirth(uBirth);
@@ -96,12 +96,39 @@ public class UserService {
         return user.getUIdx();
     }
 
+    /** 비밀번호 초기화. 변경된 비밀번호 return*/
     @Transactional
-    public void userUpdatePwd(Integer uIdx, String uPassword) {
+    public String userUpdatePwd(int uIdx) {
         User user = userRepo.findById(uIdx).orElseThrow(()-> new MsgException("존재하지 않는 회원입니다."));
+        user.setRandomPassword(8);
 
-        user.setUPassword(uPassword);
+        return user.getUPassword();
     }
+
+
+    /** 회원상태 일괄변경*/
+    @Transactional
+    public void userUpdateState(Integer uIdx, String uState) {
+        User user = userRepo.findById(uIdx).orElseThrow(()-> new MsgException("존재하지 않는 회원입니다."));
+        user.setUState(uState);
     }
+
+
+    /**계정상태변경 삭제*/
+    @Transactional
+    public String userDelete(ParamMap paramMap){
+        String uIdxs[] = paramMap.get("U_IDXS").toString().split(",");
+        for(int i=0; i<uIdxs.length; i++){
+            userRepo.deleteById(Integer.parseInt(uIdxs[i]));
+        }
+        List<User> list = userRepo.findUserByuState(UState.RETIRE.name());
+        for(int j=0; j<list.size(); j++){
+            User user = list.get(j);
+           user.updateUser(j+1);
+        }
+        return "삭제되었습니다.";
+    }
+
+}
 
 
