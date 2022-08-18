@@ -10,10 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/mainMenu/")
+
 public class MainController {
 
-    @GetMapping(value = "index")
+    @GetMapping(value = "")
     public ModelAndView index(){
         ModelAndView mav = new ModelAndView("mainMenu/index");
 
