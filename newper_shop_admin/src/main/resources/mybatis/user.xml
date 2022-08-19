@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.UserMapper">
+
+    <select id="selectUserLogin" resultType="map">
+        SELECT
+             U_IDX,U_AUTH_IDX
+            ,U_ID, U_PASSWORD, U_TYPE, U_STATE
+            ,SHA2(#{pw},512) = U_PASSWORD PW_CHECK
+        FROM
+            USER
+        WHERE
+            U_ID=#{id}
+    </select>
+</mapper>
