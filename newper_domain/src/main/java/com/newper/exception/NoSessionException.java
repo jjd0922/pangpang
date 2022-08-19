@@ -1,6 +1,5 @@
 package com.newper.exception;
 
-/** 로그인 정보 없을 때 던지는 exception*/
 public class NoSessionException extends RuntimeException{
 
     public NoSessionException() {

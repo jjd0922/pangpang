@@ -22,7 +22,7 @@ public class ReturnMap {
     private int status=200;
     private String message;
 
-    /** location있는 경우 popup으로 열지*/
+    /** location있는 경우 popup으로 열기*/
     private boolean isPopup;
     private String location;
     @Builder.Default

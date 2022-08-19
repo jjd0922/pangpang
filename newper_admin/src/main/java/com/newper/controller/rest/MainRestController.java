@@ -4,6 +4,7 @@ import com.newper.component.MenuList;
 import com.newper.component.SessionInfo;
 import com.newper.constant.MenuType;
 import com.newper.constant.UState;
+import com.newper.controller.NoLogin;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Menu;
@@ -43,6 +44,7 @@ public class MainRestController {
     }
 
     /** 로그인 처리*/
+    @NoLogin
     @PostMapping(value = "login.ajax")
     public ReturnMap login(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();

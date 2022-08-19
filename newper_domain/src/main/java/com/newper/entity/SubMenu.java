@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.exception.NoSessionException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -37,6 +38,15 @@ public class SubMenu {
             return "active";
         }
         return "";
+    }
+
+    /** 해당 권한으로 메뉴 접근 가능한지 확인*/
+    public boolean hasAuth(Integer authIdx){
+        if( authIdx == null){
+            return false;
+        }
+
+        return smAuth.contains(Long.parseLong(authIdx + ""));
     }
 
 
