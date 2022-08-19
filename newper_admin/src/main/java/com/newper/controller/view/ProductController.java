@@ -1,14 +1,17 @@
 package com.newper.controller.view;
 
+import com.newper.component.Common;
 import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.entity.Company;
+import com.newper.entity.GoodsStock;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.CategoryRepo;
 import com.newper.repository.CompanyRepo;
+import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class ProductController {
     private final CategoryRepo categoryRepo;
     private final ProductRepo productRepo;
     private final CompanyRepo companyRepo;
+    private final GoodsStockRepo goodsStockRepo;
 
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
@@ -85,11 +89,7 @@ public class ProductController {
 
 
         String image = category.getCateImage();
-        image = image.replaceAll("&lt;","<");
-        image=image.replaceAll("&#37;","%");
-        image=image.replaceAll("&gt;",">");
-        image=image.replaceAll("&quot;","\"");
-        image=image.replaceAll("<br>",System.getProperty("line.separator"));
+        image=Common.summernoteContent(image);
         mav.addObject("category",category);
         mav.addObject("image",image);
         return mav;
@@ -140,11 +140,7 @@ public class ProductController {
         Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         String image = category.getCateImage();
-        image = image.replaceAll("&lt;","<");
-        image=image.replaceAll("&#37;","%");
-        image=image.replaceAll("&gt;",">");
-        image=image.replaceAll("&quot;","\"");
-        image=image.replaceAll("<br>",System.getProperty("line.separator"));
+        image= Common.summernoteContent(image);
 
         mav.addObject("category",category);
         mav.addObject("image",image);
@@ -191,28 +187,16 @@ public class ProductController {
         mav.addObject("brand", categoryMapper.selectCategoryDatatableByBrand(map));
         mav.addObject("category",categoryMapper.selectCategoryDatatableByParent());
 
-        Product product = productRepo.findById(pIdx).orElseThrow();
+        Product product = productRepo.findById(pIdx).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
 
         String content1 = product.getPContent1();
-        content1=content1.replaceAll("&lt;","<");
-        content1=content1.replaceAll("&#37;","%");
-        content1=content1.replaceAll("&gt;",">");
-        content1=content1.replaceAll("&quot;","\"");
-        content1=content1.replaceAll("<br>",System.getProperty("line.separator"));
+        content1= Common.summernoteContent(content1);
 
         String content2 = product.getPContent2();
-        content2=content2.replaceAll("&lt;","<");
-        content2=content2.replaceAll("&#37;","%");
-        content2=content2.replaceAll("&gt;",">");
-        content2=content2.replaceAll("&quot;","\"");
-        content2=content2.replaceAll("<br>",System.getProperty("line.separator"));
+        content2= Common.summernoteContent(content2);
 
         String content3 = product.getPContent3();
-        content3=content3.replaceAll("&lt;","<");
-        content3=content3.replaceAll("&#37;","%");
-        content3=content3.replaceAll("&gt;",">");
-        content3=content3.replaceAll("&quot;","\"");
-        content3=content3.replaceAll("<br>",System.getProperty("line.separator"));
+        content3=Common.summernoteContent(content3);
 
         mav.addObject("content1",content1);
         mav.addObject("content2",content2);
@@ -229,8 +213,6 @@ public class ProductController {
                 pOption.add(optionMap);
             }
         }
-        System.out.println(pOption);
-        System.out.println(pOption.size());
         mav.addObject("pOption",pOption);
         Map<String, Object> cg = new HashMap<>();
         if(product.getCategory() != null){
@@ -278,15 +260,45 @@ public class ProductController {
 
     /**재고상품관리*/
     @GetMapping("goodsStock")
-    public ModelAndView stockProduct(){
+    public ModelAndView goodsStock(){
         ModelAndView mav = new ModelAndView("product/goods_stock");
         return mav;
     }
 
     /**재고상품관리 등록*/
     @GetMapping("goodsStock/detail")
-    public ModelAndView stockProductCreate(){
+    public ModelAndView goodsStockCreate(){
         ModelAndView mav = new ModelAndView("product/goods_stock_detail");
+        return mav;
+    }
+
+    /**재고상품관리 상세*/
+    @GetMapping("goodsStock/{GS_IDX}")
+    public ModelAndView goodsStockDetail(@PathVariable int GS_IDX) {
+        ModelAndView mav = new ModelAndView("product/goods_stock_detail");
+
+        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(GS_IDX);
+        Product product = goodsStock.getProduct();
+
+        Map<String, Object> po = product.getPOption();
+        String ov1 = po.get("p_option_value1")+"";
+        String ov2 = po.get("p_option_value2")+"";
+        String ov3 = po.get("p_option_value3")+"";
+
+        String[] option1 = ov1.split(",");
+        String[] option2 = ov2.split(",");
+        String[] option3 = ov3.split(",");
+
+        String content = goodsStock.getGsContent();
+        content= Common.summernoteContent(content);
+
+        mav.addObject("goodsStock", goodsStock);
+        mav.addObject("product", product);
+        mav.addObject("content", content);
+        mav.addObject("option1", option1);
+        mav.addObject("option2", option2);
+        mav.addObject("option3", option3);
+
         return mav;
     }
 

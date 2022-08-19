@@ -1,12 +1,13 @@
 package com.newper.constant;
 
+import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /** 상품분류(품목구분2) PRODUCT.P_TYPE2 */
 @Getter
 @AllArgsConstructor
-public enum PType2 {
+public enum PType2 implements EnumOption {
 
     PRODUCT("상품")
     ,PARTS("부품")

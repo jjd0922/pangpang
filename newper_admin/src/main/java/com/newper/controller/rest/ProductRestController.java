@@ -4,9 +4,12 @@ import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Product;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
+import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class ProductRestController {
     private final ProductMapper productMapper;
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final ProductRepo productRepo;
 
 
     /**category 대분류 dataTable*/
@@ -233,7 +237,6 @@ public class ProductRestController {
         paramMap.put("P_INFO",map2);
         paramMap.put("P_OPTION",map3);
 
-        paramMap.put("P_STATE", PState.PROTO);
         paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_SELL_PRICE", paramMap.get("P_SELL_PRICE").toString().replaceAll("[^0-9.]", ""));
@@ -251,11 +254,102 @@ public class ProductRestController {
     /**재고관리 데이터테이블*/
     @PostMapping("goodsStock.dataTable")
     public ReturnDatatable goodsStock(ParamMap paramMap){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
         ReturnDatatable returnDatatable = new ReturnDatatable("재고상품관리");
         returnDatatable.setData(productMapper.selectGoodsStockDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countGoodsStockDataTable(paramMap.getMap()));
         return returnDatatable;
+    }
+
+    /**P_IDX로 상품조회*/
+    @PostMapping("productDetail.ajax")
+    public ReturnMap productDetial(int P_IDX){
+        ReturnMap returnMap = new ReturnMap();
+        Product product = productRepo.findById(P_IDX).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
+        String P_CODE = product.getPCode();
+        String P_NAME = product.getPName();
+        String P_STATE = product.getPState().getOption();
+        String P_MODEL = product.getPModel();
+        int P_COST = product.getPCost();
+        int P_SELL_PRICE = product.getPSellPrice();
+        String P_MEMO = product.getPMemo();
+        String P_THUMB_FILE1 = product.getPThumbFile1();
+        String P_THUMB_FILE2 = product.getPThumbFile2();
+        String P_THUMB_FILE3 = product.getPThumbFile3();
+        String P_THUMB_FILE4 = product.getPThumbFile4();
+        String P_THUMB_FILE5 = product.getPThumbFile5();
+        String P_THUMB_FILE6 = product.getPThumbFile6();
+        Map<String, Object> map = product.getPOption();
+        String ov1 = map.get("p_option_value1")+"";
+        String ov2 = map.get("p_option_value2")+"";
+        String ov3 = map.get("p_option_value3")+"";
+
+        String[] OPTION1 = ov1.split(",");
+        String[] OPTION2 = ov2.split(",");
+        String[] OPTION3 = ov3.split(",");
+
+        returnMap.put("P_CODE", P_CODE);
+        returnMap.put("P_NAME", P_NAME);
+        returnMap.put("P_STATE", P_STATE);
+        returnMap.put("P_MODEL", P_MODEL);
+        returnMap.put("P_COST", P_COST);
+        returnMap.put("P_SELL_PRICE", P_SELL_PRICE);
+        returnMap.put("P_MEMO", P_MEMO);
+        returnMap.put("P_THUMB_FILE1", P_THUMB_FILE1);
+        returnMap.put("P_THUMB_FILE2", P_THUMB_FILE2);
+        returnMap.put("P_THUMB_FILE3", P_THUMB_FILE3);
+        returnMap.put("P_THUMB_FILE4", P_THUMB_FILE4);
+        returnMap.put("P_THUMB_FILE5", P_THUMB_FILE5);
+        returnMap.put("P_THUMB_FILE6", P_THUMB_FILE6);
+        returnMap.put("OPTION1", OPTION1);
+        returnMap.put("OPTION2", OPTION2);
+        returnMap.put("OPTION3", OPTION3);
+
+
+        return returnMap;
+    }
+
+    /**재고상품 저장*/
+    @PostMapping("goodsStockSave.ajax")
+    public ReturnMap goodsStockSave(ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
+
+        ReturnMap rm = new ReturnMap();
+
+        if(paramMap.get("GS_SALE").equals("")){
+            rm.setMessage("판매채널(품목운영구분)을 선택해주세요.");
+            return rm;
+        }
+        System.out.println(paramMap.getMap());
+        Map<String, Object> option = new HashMap<>();
+        option.put("OPTION1",paramMap.get("OPTION1"));
+        option.put("OPTION2",paramMap.get("OPTION2"));
+        option.put("OPTION3",paramMap.get("OPTION3"));
+
+        paramMap.put("GS_OPTION", option);
+        paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
+        System.out.println(paramMap.getMap());
+        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }else{
+            rm.setMessage("잠시후 시도 해주세요.");
+        }
+        return rm;
+    }
+
+    /**재고상품 수정*/
+    @PostMapping("{GS_IDX}/goodsStockUpdate.ajax")
+    public ReturnMap goodsStockUpdate(@PathVariable int GS_IDX, ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
+        ReturnMap rm = new ReturnMap();
+
+        System.out.println(paramMap.getMap());
+        paramMap.put("GS_IDX", GS_IDX);
+
+        paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
+        int res = productService.goodsStockUpdate(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
+        if(res>0){
+            rm.setMessage("수정되었습니다.");
+        }
+        return rm;
     }
 
 

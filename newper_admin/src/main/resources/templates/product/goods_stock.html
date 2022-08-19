@@ -179,7 +179,12 @@
         if (idx == null) {
             idx='detail';
         }
-        var focusPopup = window.open('/product/goodsStock'+idx, 'goodsStock'+idx, 'width=900, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/product/goodsStock/'+idx, 'goodsStock'+idx, 'width=900, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function productDetail(pIdx){
+        var focusPopup = window.open('/product/'+pIdx, 'product'+pIdx, 'width=900, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -208,21 +213,31 @@
                     return '<input type="hidden" name="GS_IDX" value="'+data+'">';
                 }}
             ,{'title':'재고대표썸네일','data':'GS_THUMB_FILE1','render':function(data,type,full,meta){
-                    return data;
+                if(data==''){
+                    return '';
+                }else{
+                    return '<img src="'+data+'" class="input-thumb">'
+                }
                 }}
             ,{'title':'상품코드','data':'P_CODE','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="productDetail('+full.P_IDX+')">'+data+'</a>';
                 }}
             ,{'title':'상품명','data':'P_NAME'}
             ,{'title':'상품 상태','data':'P_STATE'}
             ,{'title':'모델명','data':'P_MODEL'}
-            ,{'title':'기준매입원가','data':'P_COST'}
-            ,{'title':'기준판매가(상품)','data':'P_SELL_PRICE'}
+            ,{'title':'기준매입원가','data':'P_COST', 'render':function(data,type,full,meta){
+                return comma(data);
+                }}
+            ,{'title':'기준판매가(상품)','data':'P_SELL_PRICE', 'render':function(data,type,full,meta){
+                    return comma(data);
+                }}
             ,{'title':'재고코드','data':'GS_CODE','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="productDetailPop('+full.GS_IDX+')">'+data+'</a>';
                 }}
             ,{'title':'재고상품명','data':'GS_NAME','defaultContent':''}
-            ,{'title':'기준판매가(재고)','data':'GS_PRICE'}
+            ,{'title':'기준판매가(재고)','data':'GS_PRICE', 'render':function(data,type,full,meta){
+                    return comma(data);
+                }}
             ,{'title':'판매채널(품목운영구분)','data':'GS_SALE'}
             ,{'title':'등급','data':'GS_RANK'}
             ,{'title':'옵션1','data':'OPTION1'}

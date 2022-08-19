@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <form id="baordForm">
+            <form id="goodsStockForm">
                 <div class="card">
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
@@ -46,10 +46,11 @@
                                             <div class="input-group">
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">
-                                                      상품코드 <a class="btn btn-sm badge-indigo" onclick="">검색</a>
+                                                      상품코드 <a class="btn btn-sm badge-indigo" onclick="showProductModal()">검색</a>
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_CODE" class="form-control"> <!--auto-->
+                                                <input type="text" name="P_CODE" class="form-control" th:value="${product?.pCode}" disabled>
+                                                <input type="hidden" name="P_IDX" th:value="${product?.pIdx}">
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +63,7 @@
                                                       상품명
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_NAME" class="form-control">
+                                                <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -75,7 +76,7 @@
                                                         상품 상태
                                                     </span>
                                                 </span>
-                                                <input type="text" class="form-control "  name="P_STATE" placeholder=""><!--auto-->
+                                                <input type="text" class="form-control "  name="P_STATE" th:value="${product?.pState}" readonly><!--auto-->
                                             </div>
                                         </div>
                                     </div>
@@ -88,7 +89,7 @@
                                                       모델명
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_MODEL" class="form-control">
+                                                <input type="text" name="P_MODEL" class="form-control" th:value="${product?.pModel}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +102,7 @@
                                                         기준매입원가
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control">
+                                                <input type="text" name="P_COST" class="form-control" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +115,7 @@
                                                         기준판매가(상품)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control">
+                                                <input type="text" name="P_SELL_PRICE" class="form-control" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -126,7 +127,7 @@
                                                         상품메모
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control">
+                                                <input type="text" name="P_MEMO" class="form-control" th:value="${product?.pMemo}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +145,7 @@
                                                       재고코드
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control">
+                                                <input type="text" name="GS_CODE" class="form-control" th:value="${goodsStock?.gsCode}" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -157,8 +158,9 @@
                                                       판매채널(품목운영구분)
                                                     </span>
                                                 </span>
-                                                <select data-placeholder="선택" class="form-control select" data-fouc name="">
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="GS_SALE" th:disabled="${goodsStock!=null}">
                                                     <option></option>
+                                                    <option th:each="ps:${T(com.newper.constant.Channel).values()}" th:value="${ps}" th:text="${ps.option}" th:selected="${goodsStock?.gsSale eq ps}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -172,7 +174,7 @@
                                                         기준판매가(재고)
                                                     </span>
                                                 </span>
-                                                <input type="text" class="form-control "  name="">
+                                                <input type="text" class="form-control "  name="GS_PRICE" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsPrice,0,'COMMA')}">
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +186,7 @@
                                                         재고상품명
                                                     </span>
                                                 </span>
-                                                <input type="text" class="form-control "  name="">
+                                                <input type="text" class="form-control "  name="GS_NAME" th:value="${goodsStock?.gsName}">
                                             </div>
                                         </div>
                                     </div>
@@ -196,7 +198,7 @@
                                                         등급
                                                     </span>
                                                 </span>
-                                                <select data-placeholder="선택" class="form-control select" data-fouc name="">
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="GS_RANK" th:disabled="${goodsStock!=null}">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -210,8 +212,9 @@
                                                         옵션1
                                                     </span>
                                                 </span>
-                                                <select data-placeholder="선택" class="form-control select" data-fouc name="">
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION1" th:disabled="${goodsStock!=null}">
                                                     <option></option>
+                                                    <option th:each="option:${option1}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION1 eq option}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -224,8 +227,9 @@
                                                         옵션2
                                                     </span>
                                                 </span>
-                                                <select data-placeholder="선택" class="form-control select" data-fouc name="">
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION2" th:disabled="${goodsStock!=null}">
                                                     <option></option>
+                                                    <option th:each="option:${option2}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION2 eq option}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -238,7 +242,73 @@
                                                         옵션3
                                                     </span>
                                                 </span>
-                                                <select data-placeholder="선택" class="form-control select" data-fouc name="">
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION3" th:disabled="${goodsStock!=null}">
+                                                    <option></option>
+                                                    <option th:each="option:${option3}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION3 eq option}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4" style="display: none;">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        MD상품평
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control "  name="GS_MD" th:value="${goodsStock?.gsMd}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4" style="display: none;">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        안전재고
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control "  name="GS_SAFE_STOCK" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsSafeStock,0,'COMMA')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4" style="display: none;">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                         적정재고
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control "  name="GS_PROPER_STOCK" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsProperStock,0,'COMMA')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4" style="display: none;">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        일일재고 마감관리
+                                                    </span>
+                                                </span>
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="GS_DAILY">
+                                                    <option value="false" th:selected="${goodsStock?.gsDaily eq flase}">N</option>
+                                                    <option value="true" th:selected="${goodsStock?.gsDaily eq true}">Y</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4" style="display: none;">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        재고 적재위치
+                                                    </span>
+                                                </span>
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="GS_LOCATION">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -258,7 +328,12 @@
                                                       썸네일1(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE1" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile1)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE1">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile1)}">
+                                                    <img th:src="${product?.pThumbFile1}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +345,12 @@
                                                       썸네일2(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE2" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile2)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE2">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile2)}">
+                                                    <img th:src="${product?.pThumbFile2}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -282,7 +362,12 @@
                                                       썸네일3(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE3" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile3)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE3">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile3)}">
+                                                    <img th:src="${product?.pThumbFile3}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -294,7 +379,12 @@
                                                       썸네일4(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE4" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile4)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE4">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile4)}">
+                                                    <img th:src="${product?.pThumbFile4}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +396,12 @@
                                                       썸네일5(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE5" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile5)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE5">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile5)}">
+                                                    <img th:src="${product?.pThumbFile5}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -318,7 +413,12 @@
                                                       썸네일6(상품정보)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_THUMB_FILE6" class="form-control"> <!--auto-->
+                                                <div class="form-control" th:if="${#strings.isEmpty(product?.pThumbFile6)}">
+                                                    <img class="input-thumb" id="P_THUMB_FILE6">
+                                                </div>
+                                                <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile6)}">
+                                                    <img th:src="${product?.pThumbFile6}" class="input-thumb">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -327,10 +427,14 @@
                                             <div class="input-group">
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">
-                                                      재고상품썸네일1 <a class="btn btn-sm badge-indigo" onclick="">file</a>
+                                                      재고상품썸네일1
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control"> <!--auto-->
+                                                <input th:if="${#strings.isEmpty(goodsStock?.gsThumbFile1)}" type="file" name="GS_THUMB_FILE1" accept="image/*" class="input-thumb-file form-control">
+                                                <div class="form-control" th:unless="${#strings.isEmpty(goodsStock?.gsThumbFile1)}">
+                                                    <img th:src="${goodsStock?.gsThumbFile1}" class="input-thumb">
+                                                    <input type="file" name="GS_THUMB_FILE1" accept="image/*" class="input-thumb-file">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -339,10 +443,14 @@
                                             <div class="input-group">
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">
-                                                      재고상품썸네일2 <a class="btn btn-sm badge-indigo" onclick="">file</a>
+                                                      재고상품썸네일2
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control"> <!--auto-->
+                                                <input th:if="${#strings.isEmpty(goodsStock?.gsThumbFile2)}" type="file" name="GS_THUMB_FILE2" accept="image/*" class="input-thumb-file form-control">
+                                                <div class="form-control" th:unless="${#strings.isEmpty(goodsStock?.gsThumbFile2)}">
+                                                    <img th:src="${goodsStock?.gsThumbFile2}" class="input-thumb">
+                                                    <input type="file" name="GS_THUMB_FILE2" accept="image/*" class="input-thumb-file">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -351,10 +459,14 @@
                                             <div class="input-group">
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">
-                                                      재고상품썸네일3 <a class="btn btn-sm badge-indigo" onclick="">file</a>
+                                                      재고상품썸네일3
                                                     </span>
                                                 </span>
-                                                <input type="text" name="" class="form-control"> <!--auto-->
+                                                <input th:if="${#strings.isEmpty(goodsStock?.gsThumbFile3)}" type="file" name="GS_THUMB_FILE3" accept="image/*" class="input-thumb-file form-control">
+                                                <div class="form-control" th:unless="${#strings.isEmpty(goodsStock?.gsThumbFile3)}">
+                                                    <img th:src="${goodsStock?.gsThumbFile3}" class="input-thumb">
+                                                    <input type="file" name="GS_THUMB_FILE3" accept="image/*" class="input-thumb-file">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -363,7 +475,7 @@
                             <br>
                             <fieldset class="mb-0">
                                 <span class="input-group-text w-100 mb--1">재고상품 상세이미지</span>
-                                <div id="summerNote1" ></div>
+                                <textarea id="summerNote1" name="GS_CONTENT" th:text="${content}"></textarea>
                             </fieldset>
                             <br>
                         <fieldset class="mb-0">
@@ -573,38 +685,147 @@
             </form>
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
                 <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <button onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+                <button th:if="${product}==null" onclick="goodsStockSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+                <button th:unless="${product}==null" onclick="goodsStockUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
             </div>
         </div>
     </div>
 </div>
-<!-- 공통 js -->
+
+<th:block th:replace="product/modal/productModal_goods_stock.html"/>
+<<!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
 
 <!-- 에디터 -->
 <script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
 <script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
 
-<!-- 맞춤 js -->
-<script th:src="@{/assets/js/app.js}"></script>
-<!-- input -->
-<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 <!-- 에디터 -->
 <script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
-<!-- 메뉴 호버 -->
-<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
 </body>
 
 
 <th:block th:replace="modal/summernoteImageModal.html"></th:block>
 
 <script th:inline="javascript">
-    // method
+    function selectProduct(pIdx){
+        $.ajax({
+            url:'/product/productDetail.ajax',
+            type:'post',
+            data:'P_IDX='+pIdx,
+            success:function(res){
+                $('input[name=P_IDX]').val(pIdx);
+                $('input[name=P_CODE]').val(res.data.P_CODE);
+                $('input[name=P_NAME]').val(res.data.P_NAME);
+                $('input[name=P_STATE]').val(res.data.P_STATE);
+                $('input[name=P_MODEL]').val(res.data.P_MODEL);
+                $('input[name=P_COST]').val(comma(res.data.P_COST));
+                $('input[name=P_SELL_PRICE]').val(comma(res.data.P_SELL_PRICE));
+                $('input[name=P_MEMO]').val(res.data.P_MEMO);
+                if(res.data.P_THUMB_FILE1!=''){
+                    document.getElementById("P_THUMB_FILE1").src=res.data.P_THUMB_FILE1
+                }
+                if(res.data.P_THUMB_FILE2!=''){
+                    document.getElementById("P_THUMB_FILE2").src=res.data.P_THUMB_FILE2;
+                }
+                if(res.data.P_THUMB_FILE3!=''){
+                    document.getElementById("P_THUMB_FILE3").src=res.data.P_THUMB_FILE3;
+                }
+                if(res.data.P_THUMB_FILE4!=''){
+                    document.getElementById("P_THUMB_FILE4").src=res.data.P_THUMB_FILE4;
+                }
+                if(res.data.P_THUMB_FILE5!=''){
+                    document.getElementById("P_THUMB_FILE5").src=res.data.P_THUMB_FILE5;
+                }
+                if(res.data.P_THUMB_FILE6!=''){
+                    document.getElementById("P_THUMB_FILE6").src=res.data.P_THUMB_FILE6;
+                }
+                var str= '';
+                var str2= '';
+                var str3= '';
+                $.each(res.data.OPTION1,function (i){
+                    var result = res.data.OPTION1[i]
+                    str+='<option>'+result+'</option>'
+                })
+                $.each(res.data.OPTION2,function (i){
+                    var result = res.data.OPTION2[i]
+                    str2+='<option>'+result+'</option>'
+                })
+                $.each(res.data.OPTION3,function (i){
+                    var result = res.data.OPTION3[i]
+                    str3+='<option>'+result+'</option>'
+                })
+                $('select[name=OPTION1]').append(str)
+                $('select[name=OPTION2]').append(str2);
+                $('select[name=OPTION3]').append(str3);
+                $('#searchProductModal').modal('hide');
+            }
+        })
+    }
+
+    function goodsStockSave(){
+        if(confirm("저장하시겠습니까?")){
+            var param = new FormData($('#goodsStockForm')[0]);
+            $.ajax({
+                url:'/product/goodsStockSave.ajax',
+                data: param,
+                processData:false,
+                contentType:false,
+                type:'post',
+                success:function(res) {
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        opener.location.reload();
+                        self.close();
+                    }
+                }
+            })
+        }
+    }
+
+    function goodsStockUpdate(){
+        if(confirm("수정하시겠습니까?")){
+            var param = new FormData($('#goodsStockForm')[0]);
+            $.ajax({
+                url:'/product/'+[[${goodsStock?.gsIdx}]]+'/goodsStockUpdate.ajax',
+                data: param,
+                processData:false,
+                contentType:false,
+                type:'post',
+                success:function(res) {
+                    if(res.message.indexOf('수정되었습니다.')!=-1){
+                        opener.location.reload();
+                        self.close();
+                    }
+                }
+            })
+        }
+    }
 </script>
 <script th:inline="javascript">
     window.onload=function(){

@@ -1,7 +1,10 @@
 package com.newper.entity;
 
+import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -16,7 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 
-public class GoodsStock {
+public class GoodsStock extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +55,16 @@ public class GoodsStock {
     private boolean gsDaily;
     private String gsLocation;
 
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if (!StringUtils.hasText(getGsName())) {
+            throw new MsgException("재고상품명을 입력해주세요.");
+        }
+        if (getProduct() == null) {
+            throw new MsgException("상품을 선택해주세요.");
+        }
+    }
 
     @Builder.Default
     private Map<String,Object> gsOption = new HashMap<>();
