@@ -9,11 +9,13 @@ import com.newper.mapper.GiftMapper;
 import com.newper.repository.GiftGroupRepo;
 import com.newper.repository.GiftRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,20 +25,14 @@ public class GiftService {
     private final GiftRepo giftRepo;
     private final GiftMapper giftMapper;
 
-    /** GIFT_GROUP INSERT*/
+    /** GIFT INSERT. 훗날 중복된 상품권 코드로 생성수량만큼 상품권 코드가 생성되지 않을 수 있음. */
     @Transactional
-    public GiftGroup saveGiftGroup(ParamMap paramMap) {
+    public long saveGift(ParamMap paramMap) {
         GiftGroup giftGroup = paramMap.mapParam(GiftGroup.class);
+
         giftGroup.setGiftgStartDate(LocalDate.parse(paramMap.getString("giftgEndDate")));
         giftGroup.setGiftgEndDate(LocalDate.parse(paramMap.getString("giftgStartDate")));
         GiftGroup savedGg = giftGroupRepo.save(giftGroup);
-        return savedGg;
-    }
-
-    /** GIFT INSERT*/
-    @Transactional
-    public long saveGift(ParamMap paramMap) {
-        GiftGroup savedGg = saveGiftGroup(paramMap);
 
         long giftgIdx = savedGg.getGiftgIdx();
         int giftgCnt = savedGg.getGiftgCnt();
@@ -48,6 +44,10 @@ public class GiftService {
             cnt = giftMapper.countGiftByGiftgIdx(giftgIdx);
             round++;
         } while ((giftgCnt > cnt) && (round < 5));
+
+        if(giftgCnt > cnt){
+            log.error("상품권 코드 생성 수량만큼 생성 안됨. 상품권 코드 길이 추가 필요 giftgIdx="+giftgIdx);
+        }
 
         return giftgIdx;
     }
