@@ -94,6 +94,10 @@ public class UserController {
         mav.addObject("loc", "user/userPopup" + uIdx);
         return mav;
     }
+
+
+
+
 }
 
 

@@ -72,7 +72,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<CompanyContract> contracts;
 
-    @PrePersist
+   @PrePersist
     @PreUpdate
     public void preSave(){
         if (!StringUtils.hasText(getUName())) {
@@ -89,7 +89,7 @@ public class User extends BaseEntity {
             throw new MsgException("로그인 ID를 입력해주세요.");
         }
         //영어 숫자 아닌 문자 있는지 체크
-        uId=uId.trim();
+           uId=uId.trim();
         if (!Pattern.matches("^[a-zA-Z0-9]*$", uId)) {
             throw new MsgException("ID는 영어, 숫자로만 가능합니다");
         }
