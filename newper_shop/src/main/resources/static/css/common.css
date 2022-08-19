@@ -254,14 +254,14 @@ header {
 .searchWord-tab li.on::before {
     background-color: #0c2da3;
 }
-.searchWord-content>ul {
+.searchWord-content>div {
     width: 100%;
     height: auto;
     display: none;
     font-weight: 500;
 }
-.searchWord-content>ul.on {
-    display: flex;
+.searchWord-content>div.on {
+    display: block;
 }
 .popular-searchWord {
     flex-direction: column;
@@ -269,6 +269,11 @@ header {
 }
 .popular-searchWord li {
     padding: 7px 0;
+}
+.popular-searchWord p {
+    font-size: 14px;
+    font-weight: 300;
+    text-align: end;
 }
 .ranking {
     display: inline-flex;
@@ -286,15 +291,16 @@ header {
     background-color: #314ad7;
     color: #fff;
 }
-.suggestion-searchWord {
+.suggestion-searchWord>ul {
+    display: flex;
     flex-wrap: wrap;
     padding: 30px 30px 110px 30px;
 }
-.suggestion-searchWord li {
+.suggestion-searchWord>ul>li {
     margin-right: 20px;
     padding: 5px 0;
 }
-.suggestion-searchWord li>a {
+.suggestion-searchWord>ul>li>a {
     display: inline-block;
     padding: 5px 17px;
     font-weight: 300;
@@ -309,6 +315,9 @@ header {
     position: relative;
     color: #999;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .userMenu ul li>a.color-blue {
     color: #314ad7;
@@ -325,14 +334,38 @@ header {
     width: 2px;
     height: 15px;
     position: absolute;
-    top: 50%;
+    bottom: 3px;
     right: 0;
-    transform: translateY(-50%);
     background-color: #d1d1d1;
 }
 .userMenu ul li:last-child>a::after {
     content: none;
 }
+.userMenu ul li>a>i {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 3px;
+}
+.login {
+    background: url("../image/login.png") no-repeat center/contain;
+}
+.logout {
+    background: url("../image/logout.png") no-repeat center/contain;
+}
+.signUp {
+    background: url("../image/signUp.png") no-repeat center/contain;
+}
+.myShopping {
+    background: url("../image/myShopping.png") no-repeat center/contain;
+}
+.cart {
+    background: url("../image/cart.png") no-repeat center/contain;
+}
+.sc {
+    background: url("../image/sc.png") no-repeat center/contain;
+}
+
+
 nav {
     width:1380px;
     height:70px;

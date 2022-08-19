@@ -328,7 +328,7 @@
     display: inline-block;
     width: 21px;
     height: 21px;
-    background: url("../image/time.png") no-repeat center;
+    background: url("../image/time.png") no-repeat center/contain;
     margin-right: 7px;
 }
 .time-num {
@@ -458,6 +458,8 @@
 }
 .realTime-trend>ul>li {
     padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
 }
 .realTime-trend>ul>li:hover a {
     color: #314ad7;
@@ -465,6 +467,25 @@
 .todayBest-tab-wrap {
     width: calc(100% - 230px);
     margin-left: 40px;
+}
+.realTime-trend>ul>li span {
+    display: flex;
+    align-items: center;
+}
+.up, .down, .same {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+}
+.same {
+    background: url("../image/same.png") no-repeat center/contain;
+}
+.up {
+    background: url("../image/up.png") no-repeat center/contain;
+}
+.down {
+    background: url("../image/down.png") no-repeat center/contain;
 }
 .todayBest-tab {
     display: flex;
@@ -494,6 +515,16 @@
 .todayBest-content>li .swiper-all {
     width: calc(100% + 40px);
 }
+.swiper-todayBest .item-img img {
+    width: 230px;
+    height: 230px;
+}
+.swiper-todayBest .item-condition {
+    padding: 2px 12px;
+    font-size: 11px;
+    margin-right: 0;
+}
+
 
 /*** 리얼리뷰 PICK ***/
 .swiper-realReview .swiper-slide {
@@ -508,6 +539,9 @@
     border-radius: 15px;
     padding: 15px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .realReview-inner>div {
     margin-bottom: 5px;
@@ -520,6 +554,7 @@
     justify-content: center;
     padding: 20px 0 30px;
     position: relative;
+    width: 100%;
 }
 .realReview-img img {
     width: 250px;
@@ -541,7 +576,7 @@
     background: url("../image/review-pick.png") no-repeat center/contain;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 15px;
     z-index: 1;
 }
 .realReview-id {
@@ -553,12 +588,51 @@
     width: 280px;
     height: 150px;
     background: url("../image/review-text-bg.png") no-repeat center/contain;
+    padding: 15px;
 }
-.realReview-content i {
+.realReview-content-top {
+    display: flex;
+    justify-content: space-between;
+}
+.realReview-grade {
+    display: flex;
+    align-items: center;
+}
+.realReview-grade i {
     display: inline-block;
-    width: 95px;
+    width: 90px;
     height: 15px;
-    background: url("../image/5star-grey.png") no-repeat center/contain;
+    background: url("../image/5star-grey.png") no-repeat 0 0/100% 100%;
+}
+/*별 5개 */
+.realReview-grade i::after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background: url("../image/5star-yellow.png") no-repeat 0 0/90px 100%;
+}
+/* 별 4개 */
+.realReview-grade.grade_80 i::after {
+    width: 80%!important;
+}
+/* 별 3개 */
+.realReview-grade.grade_60 i::after {
+    width: 60%!important;
+}
+/* 별 2개 */
+.realReview-grade.grade_40 i::after {
+    width: 40%!important;
+}
+/* 별 1개 */
+.realReview-grade.grade_20 i::after {
+    width: 20%!important;
+}
+.realReview-text {
+    margin-top: 10px;
+}
+.realReview-inner .item-price {
+    width: 100%;
 }
 
     /*** MD 추천 카테고리 ***/
@@ -636,7 +710,7 @@
 }
 .md-content-pagination, .review-pagination {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
     display: block;
 }
 .md-content-pagination .swiper-pagination-bullet, .review-pagination .swiper-pagination-bullet {
@@ -653,9 +727,9 @@
 .all-view {
     display: flex;
     justify-content: end;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
-.all-view p {
+.all-view a {
     display: flex;
 }
 .all-view i {
@@ -664,6 +738,13 @@
     height: 20px;
     background: url("../image/viewAll-arrow.png") no-repeat center/contain;
     margin-left: 10px;
+}
+.swiper-md-content .item-img {
+    margin-top: 15px;
+}
+.swiper-md-content .item-img img {
+    width: 240px;
+    height: 240px;
 }
 
     /*** 공지사항 ***/
@@ -698,12 +779,12 @@
     align-items: center;
     margin-bottom: 15px;
 }
+.swiper-storeInfo, .storeInfo .notice-title {
+    padding: 0 20px;
+}
 .storeInfo p {
     color: #999;
     font-weight: 300;
-}
-.swiper-storeInfo-cover {
-    position: relative;
 }
 .storeInfo .phone-number {
     color: #333;
@@ -715,15 +796,16 @@
     width: 10px;
     height: 20px;
     position: absolute;
-    top: -40px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
     z-index: 1;
 }
 .storeInfo-prev {
     background: url(../image/storeInfo-prev.png) no-repeat center/contain;
-    right: 35px;
+    left: 0;
 }
 .storeInfo-next {
     background: url(../image/storeInfo-next.png) no-repeat center/contain;
-    right: 5px;
+    right: 0;
 }
