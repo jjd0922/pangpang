@@ -45,8 +45,20 @@ public class SubMenu {
         if( authIdx == null){
             return false;
         }
+        return smAuth.contains(authIdx.longValue());
+    }
+    /** 해당 권한으로 메뉴 접근 가능한지 확인*/
+    public boolean hasAuth(Integer authIdx, String url){
+        int index = url.indexOf(";");
+        if(index != -1){
+            url = url.substring(0, index);
+        }
 
-        return smAuth.contains(Long.parseLong(authIdx + ""));
+        if (url.equals(smUrl) || url.equals(smUrl+"/")) {
+            return smAuth.contains(authIdx.longValue());
+        }else{
+            return true;
+        }
     }
 
 

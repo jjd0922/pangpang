@@ -11,6 +11,7 @@ import com.newper.entity.Menu;
 import com.newper.entity.SubMenu;
 import com.newper.exception.MsgException;
 import com.newper.exception.NoSessionException;
+import com.newper.mapper.MenuMapper;
 import com.newper.mapper.UserMapper;
 import com.newper.repository.MenuRepo;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class MainRestController {
 
     private final MenuRepo menuRepo;
     private final UserMapper userMapper;
+    private final MenuMapper menuMapper;
 
     @Autowired
     private SessionInfo sessionInfo;
@@ -58,7 +60,8 @@ public class MainRestController {
             if(uState.equals(UState.NORMAL.name())){
                 if ("1".equals(userMap.get("PW_CHECK")+"")) {
                     sessionInfo.login(userMap);
-                    rm.setLocation("/home");
+
+                    rm.setLocation(menuMapper.selectSubMenuUrlByAuth(sessionInfo.getAuthIdx()+""));
                 }else{
                     rm.setMessage("잘못된 비밀번호입니다");
                 }

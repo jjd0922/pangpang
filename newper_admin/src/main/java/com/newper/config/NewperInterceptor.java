@@ -1,7 +1,10 @@
 package com.newper.config;
 
+import com.newper.component.MenuList;
 import com.newper.component.SessionInfo;
 import com.newper.controller.NoLogin;
+import com.newper.entity.Menu;
+import com.newper.entity.SubMenu;
 import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +37,23 @@ public class NewperInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (sessionInfo.getIdx() != null) {
-            return true;
+        //세션 체크
+        if (sessionInfo.getIdx() == null || sessionInfo.getAuthIdx() == null) {
+            throw new NoSessionException();
         }
-        throw new NoSessionException();
+
+        String requestURI = request.getRequestURI();
+        for (Menu menu : MenuList.menus) {
+            for (SubMenu subMenu : menu.getSubMenuList()) {
+                if(!subMenu.hasAuth(sessionInfo.getAuthIdx(), requestURI)){
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
     }
 
     @Override

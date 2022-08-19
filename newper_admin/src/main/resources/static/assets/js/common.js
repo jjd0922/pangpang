@@ -49,7 +49,6 @@ $(document).ajaxStart(function(event, xhr, settings){
         }
 
         if(xhr.responseJSON.location!=null){
-            debugger;
             if(xhr.responseJSON.popup){
                 window.open('/loginPop', 'loginPop', 'width=500, height=500');
             }else{
