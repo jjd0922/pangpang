@@ -3,9 +3,16 @@
 <mapper namespace="com.newper.mapper.GiftMapper">
     <sql id="includeGiftGroupDataTable">
         <if test='giftgName != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
-        <if test='giftgCode != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
-        <if test='giftgName != null and giftgName != ""'>AND GIFTG_NAME LIKE CONCAT('%',#{giftgName},'%')</if>
-
+        <if test='giftgCode != null and giftgCode != ""'>AND GIFTG_CODE LIKE CONCAT('%',#{giftgCode},'%')</if>
+        <if test='createdBy != null and createdBy != ""'>AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test='giftgStartDate != null and giftgStartDate != ""'>AND GIFTG_START_DATE BETWEEN SUBSTR(#{giftgStartDate}, 1, 10) AND SUBSTR(#{giftgStartDate}, 13)</if>
+        <if test='giftgEndDate != null and giftgEndDate != ""'>AND GIFTG_END_DATE BETWEEN SUBSTR(#{giftgEndDate}, 1, 10) AND SUBSTR(#{giftgEndDate}, 13)</if>
+        <if test='createdDate != null and createdDate != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test="giftgState != null">
+            <foreach collection="giftgState" open="AND GIFTG_STATE IN(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
     </sql>
 
     <select id="selectGiftGroupDataTable" resultType="Map">
@@ -20,6 +27,12 @@
             CREATED_DATE
         FROM
             GIFT_GROUP
+        <where>
+            <include refid="includeGiftGroupDataTable"></include>
+        </where>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countGiftGroupDataTable" resultType="long">
@@ -27,6 +40,9 @@
             COUNT(*)
         FROM
             GIFT_GROUP
+        <where>
+            <include refid="includeGiftGroupDataTable"></include>
+        </where>
     </select>
 
     <select id="selectGiftDataTable" resultType="Map">

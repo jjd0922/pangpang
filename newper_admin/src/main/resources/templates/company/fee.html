@@ -92,7 +92,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 gu-hide">
                                         <form id="searchFeeForm">
                                             <div class="d-flex justify-content-center align-items-end align-content-end flex-wrap">
                                                 <input type="hidden" name="comIdx">
@@ -189,6 +189,7 @@
         if ($.fn.DataTable.isDataTable('#feeTable')) {
             searchFee();
         }else {
+            $('.gu-hide').removeClass('gu-hide');
             showFeeTable();
         }
     }
@@ -317,8 +318,8 @@
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'상호법인명','data':null, 'defaultContent':'', 'render': function (data) {
-                    return '<a href="javascript: initFeeTable(' + data['COM_IDX'] + ')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+            ,{'title':'상호법인명','data':'COM_NAME', 'defaultContent':'', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: initFeeTable(' + full.COM_IDX + ')" class="badge badge-primary">' + full.COM_NAME + '</a>';
                 }}
             ,{'title':'MID','data':'COM_MID', 'defaultContent':''}
             ,{'title':'구매담당자', 'data':'U_NAME', 'defaultContent':''}

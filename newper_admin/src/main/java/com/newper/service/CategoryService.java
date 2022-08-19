@@ -150,4 +150,22 @@ public class CategoryService {
         return "삭제되었습니다.";
     }
 
+    /**카테고리-고시정보템플릿 update*/
+    @Transactional
+    public void updateCateInfo(ParamMap paramMap) {
+        Category category = categoryRepo.findById(paramMap.getInt("cateIdx")).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+
+        List title = paramMap.getList("title");
+        List content = paramMap.getList("content");
+
+        List<Map<String, Object>> infoList = new ArrayList<>();
+        for (int i = 0; i < title.size(); i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("title", title.get(i));
+            map.put("content", content.get(i));
+            infoList.add(map);
+        }
+
+        category.setCateInfo(infoList);
+    }
 }
