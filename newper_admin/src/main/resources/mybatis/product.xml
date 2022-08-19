@@ -102,13 +102,13 @@
 
     <select id="selectGoodsStockDataTable" resultType="map">
         SELECT
-        GS_IDX, GS_THUMB_FILE1, P_CODE, P_STATE,
+        GS_IDX, GS_THUMB_FILE1, P_CODE, P_STATE, P_NAME, P_IDX,
         P_MODEL, P_COST, P_SELL_PRICE, GS_CODE, GS_NAME,
         GS_PRICE, GS_SALE, GS_RANK, GS_SAFE_STOCK, GS_PROPER_STOCK,
         GS_DAILY, goods_stock.CREATED_BY, goods_stock.CREATED_DATE, goods_stock.MODIFIED_BY, goods_stock.MODIFIED_DATE,
-        replace(JSON_EXTRACT(GS_OPTION,'$.gs_option_value1'),'"','') OPTION1,
-        replace(JSON_EXTRACT(GS_OPTION,'$.gs_option_value2'),'"','') OPTION2,
-        replace(JSON_EXTRACT(GS_OPTION,'$.gs_option_value3'),'"','') OPTION3
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
         FROM
         goods_stock
         LEFT JOIN product
@@ -129,5 +129,13 @@
                           ON GS_P_IDX=P_IDX
         WHERE
             GS_IDX IS NOT null
+    </select>
+
+    <select id="selectGoodsStockByListGsCode" resultType="String">
+        select
+            GS_CODE
+        from
+            goods_stock
+        order by GS_IDX desc limit 1
     </select>
 </mapper>

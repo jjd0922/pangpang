@@ -17,4 +17,7 @@ public interface ProductMapper {
     /**재고상품 데이터테이블*/
     List<Map<String, Object>> selectGoodsStockDataTable(Map<String, Object> map);
     Integer countGoodsStockDataTable(Map<String, Object> map);
+
+    /**마지막 재고상품 코드 조회*/
+    String selectGoodsStockByListGsCode();
 }

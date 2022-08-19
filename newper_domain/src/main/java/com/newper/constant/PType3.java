@@ -1,12 +1,13 @@
 package com.newper.constant;
 
+import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /** 물류타입(품목자산구분) PRODUCT.P_TYPE3 */
 @Getter
 @AllArgsConstructor
-public enum PType3 {
+public enum PType3 implements EnumOption {
 
     OWNLOGI("자사물류")
     ,THREEPLLOGI("3PL물류")

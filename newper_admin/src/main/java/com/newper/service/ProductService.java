@@ -5,10 +5,12 @@ import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.entity.Company;
+import com.newper.entity.GoodsStock;
 import com.newper.entity.Product;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
 import com.newper.repository.CompanyRepo;
+import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class ProductService {
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
     private final CompanyRepo companyRepo;
+    private final GoodsStockRepo goodsStockRepo;
 
     private final ProductMapper productMapper;
 
@@ -205,6 +208,136 @@ public class ProductService {
 
 
         return product.getPIdx();
+    }
+
+    @Transactional
+    public int goodsStockSave(ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
+        GoodsStock goodsStock = paramMap.mapParam(GoodsStock.class);
+        String gs_code = productMapper.selectGoodsStockByListGsCode();
+        String code = "goodsStock-";
+        if (gs_code == null) {
+            code = code + "001";
+        } else {
+            int no = Integer.parseInt(gs_code.replace(code, "").toString());
+            String codeNo = String.format("%03d", no + 1);
+            code = code + codeNo;
+        }
+        goodsStock.setGsCode(code);
+
+        if(!paramMap.get("P_IDX").equals("")){
+            Product product = productRepo.findById(paramMap.getInt("P_IDX")).get();
+            goodsStock.setProduct(product);
+        }
+
+        // 등급 추가 후 설정
+        goodsStock.setGsRank(1);
+        // 스펙 추가후 설정
+        goodsStock.setSpec(null);
+
+        //할인전 기준 가격
+        goodsStock.setGsOriginalPrice(0);
+
+        //가용재고
+        goodsStock.setGsStock(0L);
+        //출고재고
+        goodsStock.setGsOutStock(0L);
+
+
+        String thumbFilePath1="";
+        String thumbFilePath2="";
+        String thumbFilePath3="";
+
+
+        String GS_THUMB_FILE_NAME1="";
+        String GS_THUMB_FILE_NAME2="";
+        String GS_THUMB_FILE_NAME3="";
+
+
+        if(GS_THUMB_FILE1.getSize()!=0){
+            thumbFilePath1 = Common.uploadFilePath(GS_THUMB_FILE1, "product/goodsStock/thumbnail1/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME1= GS_THUMB_FILE1.getOriginalFilename();
+        }
+        if(GS_THUMB_FILE2.getSize()!=0){
+            thumbFilePath2 = Common.uploadFilePath(GS_THUMB_FILE2, "product/goodsStock/thumbnail2/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME2= GS_THUMB_FILE2.getOriginalFilename();
+        }
+        if(GS_THUMB_FILE3.getSize()!=0){
+            thumbFilePath3 = Common.uploadFilePath(GS_THUMB_FILE3, "product/goodsStock/thumbnail3/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME3= GS_THUMB_FILE3.getOriginalFilename();
+        }
+
+        goodsStock.setGsThumbFile1(thumbFilePath1);
+        goodsStock.setGsThumbFile2(thumbFilePath2);
+        goodsStock.setGsThumbFile3(thumbFilePath3);
+
+        goodsStock.setGsThumbFileName1(GS_THUMB_FILE_NAME1);
+        goodsStock.setGsThumbFileName2(GS_THUMB_FILE_NAME2);
+        goodsStock.setGsThumbFileName3(GS_THUMB_FILE_NAME3);
+
+
+        goodsStockRepo.saveAndFlush(goodsStock);
+
+
+        return goodsStock.getGsIdx();
+    }
+
+    @Transactional
+    public int goodsStockUpdate(ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
+        GoodsStock goodsStock = paramMap.mapParam(GoodsStock.class);
+        GoodsStock ori = goodsStockRepo.findById(paramMap.getInt("GS_IDX")).get();
+        String gs_code = productMapper.selectGoodsStockByListGsCode();
+
+        if(!paramMap.get("P_IDX").equals("")){
+            Product product = productRepo.findById(paramMap.getInt("P_IDX")).get();
+            goodsStock.setProduct(product);
+        }
+
+        String thumbFilePath1=ori.getGsThumbFile1();
+        String thumbFilePath2=ori.getGsThumbFile2();
+        String thumbFilePath3=ori.getGsThumbFile3();
+
+
+        String GS_THUMB_FILE_NAME1=ori.getGsThumbFileName1();
+        String GS_THUMB_FILE_NAME2=ori.getGsThumbFileName2();
+        String GS_THUMB_FILE_NAME3=ori.getGsThumbFileName3();
+
+
+        if(GS_THUMB_FILE1.getSize()!=0){
+            thumbFilePath1 = Common.uploadFilePath(GS_THUMB_FILE1, "product/goodsStock/thumbnail1/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME1= GS_THUMB_FILE1.getOriginalFilename();
+        }
+        if(GS_THUMB_FILE2.getSize()!=0){
+            thumbFilePath2 = Common.uploadFilePath(GS_THUMB_FILE2, "product/goodsStock/thumbnail2/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME2= GS_THUMB_FILE2.getOriginalFilename();
+        }
+        if(GS_THUMB_FILE3.getSize()!=0){
+            thumbFilePath3 = Common.uploadFilePath(GS_THUMB_FILE3, "product/goodsStock/thumbnail3/", AdminBucket.OPEN);
+            GS_THUMB_FILE_NAME3= GS_THUMB_FILE3.getOriginalFilename();
+        }
+
+        goodsStock.setGsThumbFile1(thumbFilePath1);
+        goodsStock.setGsThumbFile2(thumbFilePath2);
+        goodsStock.setGsThumbFile3(thumbFilePath3);
+
+        goodsStock.setGsThumbFileName1(GS_THUMB_FILE_NAME1);
+        goodsStock.setGsThumbFileName2(GS_THUMB_FILE_NAME2);
+        goodsStock.setGsThumbFileName3(GS_THUMB_FILE_NAME3);
+
+        goodsStock.setProduct(ori.getProduct());
+        goodsStock.setSpec(ori.getSpec());
+        goodsStock.setGsCode(ori.getGsCode());
+        goodsStock.setGsSale(ori.getGsSale());
+        goodsStock.setGsRank(ori.getGsRank());
+        goodsStock.setGsOption(ori.getGsOption());
+        goodsStock.setGsOriginalPrice(ori.getGsOriginalPrice());
+        goodsStock.setGsStock(ori.getGsStock());
+        goodsStock.setGsOutStock(ori.getGsOutStock());
+        goodsStock.setGsSafeStock(ori.getGsSafeStock());
+
+        goodsStockRepo.save(goodsStock);
+
+
+        return goodsStock.getGsIdx();
     }
 
 

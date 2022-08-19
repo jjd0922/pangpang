@@ -1,12 +1,13 @@
 package com.newper.constant;
 
+import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /** 정산구분(품목구분1) PRODUCT.P_TYPE1 */
 @Getter
 @AllArgsConstructor
-public enum PType1 {
+public enum PType1 implements EnumOption {
 
      NORMAL("정상품")
     ,REFUR("리퍼상품")
