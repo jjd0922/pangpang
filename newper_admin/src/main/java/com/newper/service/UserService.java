@@ -12,6 +12,7 @@ import com.newper.repository.AuthRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.bytecode.stackmap.BasicBlock;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,60 +37,93 @@ public class UserService {
     private final UserMapper userMapper;
 
 
-    /**사용자신규 등록**/
+    /**
+     * 사용자신규 등록
+     **/
     @Transactional
     public Integer saveUser(ParamMap paramMap) {
         User user = paramMap.mapParam(User.class);
-        try{
+
+        try {
+            String u_name = paramMap.getString("U_NAME");
+            user.setUName(u_name);
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("이름을 입력해주세요");
+        }
+        try {
+            String u_phone = paramMap.getString("U_PHONE");
+            user.setUPhone(u_phone);
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("휴대폰번호를 입력해주세요");
+        }
+        try {
+            String u_state = paramMap.getString("U_STATE");
+            user.setUState(u_state);
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("상태를 체크해주세요");
+        }
+        try {
             int u_auth_idx = paramMap.getInt("U_AUTH_IDX");
             user.setAuth(authRepo.getReferenceById(u_auth_idx));
-        }catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             throw new MsgException("권한을 선택해주세요");
         }
-        try{
+        try {
             int u_com_idx = paramMap.getInt("U_COM_IDX");
             Company company = companyRepo.getReferenceById(u_com_idx);
             user.setCompany(company);
-
+            System.out.println(u_com_idx);
             List<String> ctTypes = companyMapper.selectCompanyType(u_com_idx);
             if (ctTypes.contains(CtType.MAIN.name())) {
                 user.setUType(UType.INSIDE);
-            }else{
+            } else {
                 user.setUType(UType.OUTSIDE);
             }
-        }catch (NumberFormatException nfe){
+            System.out.println(user.getUType());
+        } catch (NumberFormatException nfe) {
             throw new MsgException("소속 업체를 선택해주세요");
         }
+
 
         Address address = paramMap.mapParam(Address.class);
         user.setAddress(address);
 
-
-        //생년월일
-
-/*
         String u_birth = paramMap.getString("U_BIRTH");
-        LocalDate uBirth = LocalDate.parse(u_birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        user.setUBirth(uBirth);
-*/
+        if (!paramMap.getString("U_BIRTH").equals("")) {
+            LocalDate uBirth = LocalDate.parse(u_birth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            user.setUBirth(uBirth);
+        } else if (paramMap.getString("U_BIRTH").equals("")) {
+            paramMap.put("U_BIRTH", null);
+        } else {
+            paramMap.put("U_BIRTH", null);
+        }
 
+        try {
+            String u_id = paramMap.getString("U_ID");
+            user.setUId(u_id);
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("로그인ID를 입력해주세요");
+        }
+        try {
+            String u_password = paramMap.getString("U_PASSWORD");
+            user.setUPassword(u_password);
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("패스워드를 입력해주세요");
+        }
+        try {
 
-
-/*
-        if ( uBirth.equals("")) {
-            uBirth=null;
-            paramMap.put("U_BIRTH",uBirth);}
-*/
-
-
-        try{
-            userRepo.save(user);
-        }catch (DataIntegrityViolationException de){
+        } catch (DataIntegrityViolationException de) {
             throw new MsgException("중복된 ID입니다");
         }
 
+        userRepo.save(user);
         return user.getUIdx();
     }
+
+
+
+
+
     /**
      * 사용자등록 수정 처리
      */
@@ -103,6 +137,7 @@ public class UserService {
         System.out.println("userIdx : " + user.getUIdx());
 
         user.setCompany(company);
+
         user.setAuth(auth);
         user.setAddress(address);
 
@@ -122,9 +157,9 @@ public class UserService {
 
     /** 회원상태 일괄변경*/
     @Transactional
-    public void userUpdateState(Integer uIdx, String uState) {
+    public void userUpdateState(Integer uIdx, String U_STATE) {
         User user = userRepo.findById(uIdx).orElseThrow(()-> new MsgException("존재하지 않는 회원입니다."));
-        user.setUState(uState);
+        user.setUState(U_STATE);
     }
 
 

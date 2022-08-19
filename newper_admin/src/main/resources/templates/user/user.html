@@ -34,47 +34,39 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">상호법인명<br>(소속)</label>
-                                                    <select class="form-control form-control-sm select-search" name="COM_NAME" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">사원번호</label>
+                                                    <label class="d-block">로그인ID</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">부서</label>
-                                                    <select class="form-control form-control-sm select-search" name="U_DEPART" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_DEPART">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">직급(직책)</label>
-                                                    <select class="form-control form-control-sm select-search" name="U_POSITION" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_POSITION">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">이메일(개인)</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_COMPANY_EMAIL">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PERSON_MAIL">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상태</label>
-                                                    <select class="form-control form-control-sm select-search" name="U_STATE" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">권한</label>
-                                                    <select class="form-control form-control-sm select-search" name="U_AUTH_IDX" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_AUTH_IDX">
                                                 </div>
 
                                                 <div class="form-group">
@@ -108,10 +100,10 @@
                                     </div>
                                     <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>계정상태변경</button>
                                     <div class="dropdown-menu">
-                                        <a onclick="userChange('Y')" class="dropdown-item">정상</a>
-                                        <a onclick="userChange('N')" class="dropdown-item">중지</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a onclick="userDelete()" class="dropdown-item">퇴사</a>
+                                        <div th:each="opt: ${T(com.newper.constant.UState).values()}" >
+                                            <a th:text="${opt.getOption()}" th:onclick="userChange([[${opt.name()}]])" class="dropdown-item"></a>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -131,6 +123,8 @@
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
 
@@ -141,27 +135,33 @@
 
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
+
+
 <!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
 
 
 <script>
-    function userChange() {
+
+    function userChange(U_STATE,U_STATE_STR){
         var uIdx = dataTableGetSelectedDataArray('userTable', 'U_IDX')
-        if(uIdx.length == 0){
-            alert("선택한 데이터가 없습니다.");
+        if(uIdx.length == 0) {
+            alert("선택된 회원이 없습니다");
             return false;
         }else{
-            if(window.confirm('선택된 회원들의 상태를 ' + UState_str + ' 상태로 변경하시겠습니까?')){
+            if(window.confirm('선택된 회원들의 상태를 변경하시겠습니까?')){
                 $.ajax({
-                    url: [[@{/user/userChange.ajax}]],
+                    url: '/user/userChange.ajax',
                     type: 'post',
                     data: {
                     uIdx : uIdx,
-                    UState : UState
+                    U_STATE_STR : U_STATE
                 },
                 success: function(res){
                     $('#userTable').DataTable().ajax.reload();
@@ -173,33 +173,6 @@
         }
     }
 
-    function userDelete() {
-        var uIdx = dataTableGetSelectedDataArray('userTable', 'U_IDX')
-        if(uIdx.length == 0){
-            alert("선택한 데이터가 없습니다.");
-            return false;
-        } else {
-            $.each($("#userTable .selected").find("input"), function (key, val) {
-                var idx = $(this).val();
-                if (leng == (key + 1)) {
-                    param = param + idx;
-                } else {
-                    param = param + idx + ",";
-                }
-            });
-            if (confirm("변경하시겠습니까?")) {
-                $.ajax({
-                    url: "/user/userDelete.ajax",
-                    data: "U_IDX=" + param,
-                    type: "POST",
-                    success: function () {
-                        $('#userTable').DataTable().ajax.reload();
-                    }
-                });
-            }
-        }
-    }
-
 </script>
 
 <script>
@@ -207,7 +180,6 @@
         var table = $('#userTable').DataTable();
         table.page('first').ajax.url('/user/user.dataTable?' + $('#userForm').serialize()).load(null, false);
     }
-
 
     function userDetailPop(uIdx) {
         var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
@@ -252,16 +224,12 @@
             }
             , {'title': '휴대폰번호', 'data': 'U_PHONE'}
             , {'title': '상호법인명<br>(소속)', 'data': 'COM_NAME'}
-            , {'title': '사원번호', 'data': 'U_ID'}
+            , {'title': '로그인ID', 'data': 'U_ID'}
             , {'title': '부서', 'data': 'U_DEPART'}
             , {'title': '직급(직책)', 'data': 'U_POSITION'}
             , {'title': '이메일(개인)', 'data': 'U_PERSON_MAIL'}
             , {'title': '전화번호(사무실번호)', 'data': 'U_COMPANY_TEL'}
-            , {
-                'title': '상태', 'data': 'U_STATE_STR', 'render': function (data, type, full, meta) {
-                    return full.U_STATE;
-                }
-            }
+            , {'title': '상태', 'data': 'U_STATE_STR', 'defaultContent':''}
             , {'title': '권한', 'data': 'AUTH_IDX'}
             , {'title': '등록자', 'data': 'CREATED_BY'}
             , {'title': '등록일', 'data': 'CREATED_DATE'}
@@ -289,6 +257,7 @@
         var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
+
 
 </script>
 </html>
