@@ -1,8 +1,11 @@
 package com.newper.config;
 
 import com.newper.component.SessionInfo;
+import com.newper.controller.NoLogin;
+import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.MethodParameter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.method.HandlerMethod;
@@ -18,41 +21,23 @@ public class NewperInterceptor implements HandlerInterceptor {
     @Autowired
     private SessionInfo sessionInfo;
 
-    @Value("${spring.profiles.active}")
-    private String active;
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
 
         //js img css 등
         if(handler.getClass().equals(ResourceHttpRequestHandler.class)) {
             return true;
         }
 
-        //error ex) 404 page
-        if(request.getRequestURI().equals("/error")){
-            return true;
-        }else if(request.getRequestURI().equals("/logout")){
+        if(((HandlerMethod) handler).hasMethodAnnotation(NoLogin.class)) {
             return true;
         }
 
-//        String requestURI = request.getRequestURI();
-//        requestURI=requestURI.substring(request.getContextPath().length());
-//
-//        //;jession 있는 경우 uri로 인식되는 문제
-//        if(requestURI.indexOf(";jsessionid")!=-1){
-//            requestURI=requestURI.substring(0, requestURI.indexOf(";"));
-//            response.sendRedirect(request.getContextPath()+requestURI);
-//            return false;
-//        }
-//
-//        //로그인, 로그인 처리
-//        if(requestURI.indexOf("/login")!=-1 || requestURI.equals("/admin/test/login.ajax")){
-//            return true;
-//        }
-
-
-        return true;
+        if (sessionInfo.getIdx() != null) {
+            return true;
+        }
+        throw new NoSessionException();
     }
 
     @Override

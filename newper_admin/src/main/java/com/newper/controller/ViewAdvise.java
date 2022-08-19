@@ -1,6 +1,5 @@
 package com.newper.controller;
 
-import com.newper.dto.ReturnMap;
 import com.newper.exception.MsgException;
 import com.newper.exception.NoSessionException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,8 @@ public class ViewAdvise {
 
     @ExceptionHandler(NoSessionException.class)
     public ModelAndView noSessionException(){
-        ModelAndView mav= new ModelAndView("redirect:/index");
+        ModelAndView mav= new ModelAndView("main/needLogin");
+
 
         return mav;
     }

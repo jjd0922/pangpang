@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.component.SessionInfo;
+import com.newper.controller.NoLogin;
 import com.newper.entity.AesEncrypt;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.MenuRepo;
@@ -36,19 +37,30 @@ public class MainController {
     @Autowired
     private SessionInfo sessionInfo;
 
+    @NoLogin
     @GetMapping("logout")
     public ModelAndView logout(HttpServletRequest request){
         request.getSession().invalidate();
         return new ModelAndView("redirect:/index");
     }
-    @GetMapping(value = {"", "index"})
+    @NoLogin
+    @GetMapping(value = {"", "index", "loginPop"})
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("main/index");
 
 
         return mav;
     }
+    /** login 팝업 띄우고 뒤로가기*/
+    @NoLogin
+    @GetMapping(value = "needLogin")
+    public ModelAndView needLogin() {
+        ModelAndView mav = new ModelAndView("main/needLogin");
+
+        return mav;
+    }
     /** SHOP ADMIN으로 이동*/
+    @NoLogin
     @GetMapping(value = "shopAdmin")
     public ModelAndView shopAdmin() {
         String sso;

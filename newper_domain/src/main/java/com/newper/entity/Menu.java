@@ -50,4 +50,15 @@ public class Menu {
         }
         return "";
     }
+    /** 보여지는 중메뉴 하나라도 있으면 true, 없으면 false를 return*/
+    public boolean hasAuth(Integer authIdx){
+        if (authIdx != null) {
+            for (SubMenu subMenu : subMenuList) {
+                if(subMenu.hasAuth(authIdx)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
