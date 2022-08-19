@@ -10,8 +10,29 @@
     height:520px;
     transform: translateX(140px);
 }
+.item-img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
 .swiper-slide img {
     cursor: pointer;
+}
+.swiper-newperDeal .swiper-slide img {
+    width: 180px;
+    height: 180px;
+}
+.swiper-event-group1 .swiper-slide img, .swiper-event-group3 .swiper-slide img {
+    width: 240px;
+    height: 240px;
+}
+.swiper-event-group2 .swiper-slide img {
+    width: 220px;
+    height: 220px;
+}
+.swiper-event-group4 .swiper-slide img {
+    width: 150px;
+    height: 150px;
 }
 .mo-img {
     display: none;
@@ -282,36 +303,48 @@
     text-align: center;
     font-weight: 600;
 }
+.section-sub-title {
+    text-align: center;
+    margin-top: 7px;
+}
 .swiper-thumbnail {
     margin: 30px auto;
 }
 
-
 /* 뉴퍼딜 이벤트 */
-.time {
-    text-align: center;
-    font-size: 30px;
-    color: #999;
-    font-weight: 500;
-    margin-top: 20px;
-}
-.timeSale .swiper-slide {
-    padding: 30px;
+.newperDeal .swiper-slide {
+    padding: 25px;
     border: 1px solid #d1d1d1;
 }
-.timeSale .item-img {
-    padding: 0 105px 10px;
-    position: relative;
-}
-.stock-quantity {
-    position: absolute;
-    top: 0;
-    left: 0;
+.time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
     font-weight: 500;
 }
-.timeSale .item-title {
+.time i {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background: url("../image/time.png") no-repeat center;
+    margin-right: 7px;
+}
+.time-num {
+    font-size: 27px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.stock-quantity {
+    font-weight: 500;
+}
+.newperDeal .item-title {
     font-size: 20px;
     height: 48px;
+}
+.newperDeal .discount-rate {
+    margin-left: 7px;
 }
 .purchase-btn {
     border: 1px solid #d1d1d1;
@@ -319,8 +352,36 @@
     padding: 10px 40px;
     cursor: pointer;
 }
+.newperDeal-prev.btn-disabled {
+    display: none!important;
+}
+.newperDeal-next.btn-disabled {
+    display: none!important;
+}
+.newperDeal-prev, .newperDeal-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 300;
+}
+.newperDeal-prev.prev-custom, .newperDeal-next.next-custom {
+    background: #fff;
+}
+.newperDeal-prev img, .newperDeal-next img {
+    width: 12px;
+    height: auto;
+    object-fit: contain;
+}
+.newperDeal-prev img {
+    margin-right: 2px;
+}
+.newperDeal-next img {
+    margin-left: 2px;
+}
 
-/*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
+
+    /*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
 .swiper-event-group2 {
     height: 530px;
 }
@@ -330,35 +391,33 @@
 }
 .swiper-event-group2 .item-img {
     width: 40%;
-    padding: 0;
+    margin-bottom: 0;
 }
 .swiper-event-group2 .item-info {
     width: 60%;
     padding-left: 30px;
 }
 
-/*** 뉴퍼마켓 숨을 꿀템 ***/
-.swiper-event-group3 .item-img {
-    padding: 5% 17%;
-}
-
-/*** 모아모아 알짜 기획전 (이벤트 상품 그룹 4) ***/
-.swiper-event-group4 {
-    padding-right: 12%!important;
-}
+/*** 알짜만 모아모아 기획전 (이벤트 상품 그룹 4) ***/
 .test-box {
     width: 100%;
-    height: 230px;
+    height: 220px;
     border-radius: 15px;
     background-color: #eee;
 }
+.swiper-event-group4 .swiper-slide {
+    padding: 10px;
+}
 .swiper-event-group4 .item-list {
     display: flex;
-    padding-top: 25px;
+    padding: 25px 10px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+.swiper-event-group4 .item-list:last-child {
+    border-bottom: none;
 }
 .swiper-event-group4 .item-img {
-    width: 40%;
-    padding: 0;
+    margin-bottom: 0;
 }
 .swiper-event-group4 .item-info {
     width: 60%;
@@ -368,12 +427,141 @@
     font-size: 13px;
 }
 .swiper-event-group4 .item-condition {
-    padding: 3px 15px;
+    padding: 3px 7px;
     font-size: 11px;
-    margin-right: 3px;
+    margin-right: 2px;
+}
+.swiper-event-group4-prev, .swiper-event-group4-next {
+    top: 120px!important;
 }
 
-/*** MD 추천 카테고리 ***/
+/*** TODAY BEST ***/
+.todayBest-wrap {
+    display: flex;
+    margin-top: 30px;
+}
+.realTime-trend {
+    width: 230px;
+}
+.realTime-trend h3 {
+    font-size: 19px;
+    font-weight: 400;
+}
+.realTime-trend p {
+    font-size: 14px;
+    font-weight: 300;
+}
+.realTime-trend>ul {
+    border-top: 1px solid #666;
+    padding: 15px 0;
+    margin-top: 30px;
+}
+.realTime-trend>ul>li {
+    padding: 15px 0;
+}
+.realTime-trend>ul>li:hover a {
+    color: #314ad7;
+}
+.todayBest-tab-wrap {
+    width: calc(100% - 230px);
+    margin-left: 40px;
+}
+.todayBest-tab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.todayBest-tab li.all {
+    padding: 7px 65px;
+}
+.todayBest-tab li {
+    padding: 7px 50px;
+    border-radius: 30px;
+    border: 1px solid #d1d1d1;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.todayBest-tab li.on {
+    color: #fff;
+    background-color: #314ad7;
+}
+.todayBest-content>li {
+    display: none;
+}
+.todayBest-content>li.on {
+    display: block;
+}
+.todayBest-content>li .swiper-all {
+    width: calc(100% + 40px);
+}
+
+/*** 리얼리뷰 PICK ***/
+.swiper-realReview .swiper-slide {
+    position: relative;
+    padding: 7px 0 0;
+}
+.swiper-realReview>ul>li {
+    position: relative;
+}
+.realReview-inner {
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+}
+.realReview-inner>div {
+    margin-bottom: 5px;
+}
+.realReview-inner>div:last-child {
+    margin-bottom: 0;
+}
+.realReview-img {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 30px;
+    position: relative;
+}
+.realReview-img img {
+    width: 250px;
+    height: 250px;
+}
+.realReview-photo {
+    position: absolute;
+    width: 110px!important;
+    height: 110px!important;
+    bottom: 10px;
+    right: 0;
+    border: 5px solid #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.realReview-pick {
+    display: inline-block;
+    width: 49px;
+    height: 45px;
+    background: url("../image/review-pick.png") no-repeat center/contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.realReview-id {
+    position: absolute;
+    top: 7px;
+    right: 25px;
+}
+.realReview-content {
+    width: 280px;
+    height: 150px;
+    background: url("../image/review-text-bg.png") no-repeat center/contain;
+}
+.realReview-content i {
+    display: inline-block;
+    width: 95px;
+    height: 15px;
+    background: url("../image/5star-grey.png") no-repeat center/contain;
+}
+
+    /*** MD 추천 카테고리 ***/
 .md-tab-wrap {
     margin-top: 40px;
 }
@@ -446,12 +634,12 @@
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
-.md-content-pagination {
+.md-content-pagination, .review-pagination {
     text-align: center;
     margin-top: 50px;
     display: block;
 }
-.md-content-pagination .swiper-pagination-bullet {
+.md-content-pagination .swiper-pagination-bullet, .review-pagination .swiper-pagination-bullet {
     width: 11px;
     height: 11px;
     margin: 0 10px!important;
@@ -459,7 +647,7 @@
     border: 1px solid #314ad7;
     opacity: 1;
 }
-.md-content-pagination .swiper-pagination-bullet-active {
+.md-content-pagination .swiper-pagination-bullet-active, .review-pagination .swiper-pagination-bullet-active {
     background-color: #314ad7;
 }
 .all-view {
