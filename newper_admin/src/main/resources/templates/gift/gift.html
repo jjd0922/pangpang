@@ -48,7 +48,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품권 등록상태</label>
-                                                    <select name="giftgState" data-placeholder="multi select" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                    <select name="giftgState" data-placeholder="multi select" class="form-control multiselect-reset" multiple="multiple">
                                                         <option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
@@ -161,7 +161,7 @@
 
 <script>
     function searchBtn(){
-        giftTable.page('first').ajax.url('/gift/gift.dataTable?'+$('#giftForm').serialize()).load();
+        giftTable.page('first').ajax.url('/gift/giftGroup.dataTable?'+$('#giftForm').serialize()).load();
     }
 
     function giftDetailPop(giftgIdx) {

@@ -137,4 +137,44 @@
             a.CATE_IDX = #{CATE_IDX}
           AND a.CATE_TYPE='CATEGORY'
     </select>
+
+    <sql id="includeCategoryListByCateDepth">
+        <if test='cateName != null and cateName != ""'>AND CATEGORY.CATE_NAME LIKE CONCAT('%',#{cateName},'%')</if>
+        <if test="createdBy != null and createdBy != ''">AND CATEGORY.CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test='createdDate != null and createdDate != ""'>AND CATEGORY.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+    </sql>
+
+    <select id="selectCategoryDatatableByDepth" resultType="map">
+        SELECT
+            CATE_IDX,
+            CATE_NAME,
+
+            CREATED_BY,
+            CREATED_DATE,
+            MODIFIED_BY,
+            MODIFIED_DATE
+        FROM
+            CATEGORY
+        WHERE
+            CATE_DEPTH=#{cateDepth}
+            AND CATE_TYPE='CATEGORY'
+            <include refid="includeCategoryListByCateDepth"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countCategoryDatatableByDepth" resultType="Long">
+        SELECT
+            COUNT(DISTINCT(CATE_IDX))
+        FROM
+            CATEGORY
+        WHERE
+            CATE_DEPTH=#{CATE_DEPTH}
+            AND CATE_TYPE='CATEGORY'
+            <include refid="includeCategoryListByCateDepth"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
 </mapper>

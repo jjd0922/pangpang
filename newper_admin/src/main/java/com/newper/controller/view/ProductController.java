@@ -290,6 +290,10 @@ public class ProductController {
         return mav;
     }
 
-
+    @GetMapping("info")
+    public ModelAndView info() {
+        ModelAndView mav = new ModelAndView("product/info");
+        return mav;
+    }
 
 }
