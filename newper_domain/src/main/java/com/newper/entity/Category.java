@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.CateSpec;
 import com.newper.converter.ConvertList;
 import com.newper.converter.ConvertMap;
 import com.newper.entity.common.BaseEntity;
@@ -41,6 +42,8 @@ public class Category extends BaseEntity {
     private String cateImage;
     private int cateOrder;
 
+    @Enumerated(EnumType.STRING)
+    private CateSpec cateSpec;
     private List<String> cateSpecList;
 
     private String cateMemo;
