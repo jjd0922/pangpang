@@ -38,10 +38,10 @@
         ON u_com_idx=com_idx
         LEFT JOIN auth
         ON u_auth_idx=auth_idx
-        <where>
-               <include refid="includeUserDatatable"></include>
-        </where>
-        
+        where
+            U_IDX!=1
+        <include refid="includeUserDatatable"></include>
+
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -53,9 +53,9 @@
         FROM
             User
                 LEFT JOIN COMPANY ON u_com_idx = Com_idx
-        <where>
+        where
+        U_IDX!=1
              <include refid="includeUserDatatable"></include>
-        </where>
     </select>
 
     <select id="selectUserForCompany" resultType="Map">
