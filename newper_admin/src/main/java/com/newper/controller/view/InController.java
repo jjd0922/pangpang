@@ -20,10 +20,10 @@ public class InController {
         return mav;
     }
 
-    /** 입고검수*/
-    @GetMapping("inCheck")
-    public ModelAndView inCheck(){
-        ModelAndView mav = new ModelAndView("in/inCheck");
+    /** 입고검수 페이지*/
+    @GetMapping("incheck")
+    public ModelAndView incheck(){
+        ModelAndView mav = new ModelAndView("in/incheck");
 
         return mav;
     }

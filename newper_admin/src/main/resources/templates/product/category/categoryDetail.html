@@ -107,6 +107,28 @@
                           </div>
                         </div>
                       </div>
+                      <div class="col-sm-12 col-md-6" th:if="${category.cateDepth==2}">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-prepend">
+                              <span class="input-group-text requested">스펙사용여부</span>
+                            </span>
+                            <select name="cateSpec" class="form-control form-control-sm select-search" data-container-css-class="select-sm" data-fouc>
+                              <option th:each="opt: ${T(com.newper.constant.CateSpec).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(category?.cateSpec) eq opt.name()}"></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6" th:if="${category.cateDepth==2}">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-prepend">
+                              <span class="input-group-text requested">스펙리스트</span>
+                            </span>
+                            <input th:value="${category.cateSpecList}" type="text" class="form-control" name="cateSpecList"> <!--insert 제이슨형식,categoryinfo 참고-->
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </fieldset>
                   <br>
