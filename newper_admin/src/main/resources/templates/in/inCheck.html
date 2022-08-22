@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>입고검수</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                <th:block th:text="${subTitle}"></th:block>
+                                            </span>
+                                    </div>
+                                </h6>
+                            </div>
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="returnForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고검수코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고겁수작업상태값</label>
+                                                    <select class="form-control form-control-sm select-search"  data-placeholder="선택" data-container-css-class="select-sm" name="">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고검수업체</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고검수담당자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">요청자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">작업지시자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">완료처리자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">요청일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">작업시작일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">작업종료일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <table class="table" id="returnTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn() {
+        var table = $('#returnTable').DataTable();
+        table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
+    }
+</script>
+
+<script>
+    var returnTable = $('#returnTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/inCheck/inCheck.dataTable?'+$('#returnForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+
+        } ],
+
+
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'입고검수코드','data':null, 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: returnManagePop('+ data[''] +')" class="badge badge-primary" >'+ data[''] + '</a>';
+                }}
+            ,{'title':'입고검수<br>작업상태값','data':"CG_STATE"}
+            ,{'title':'입고검수<br>업체','data':'CG_COM_IDX'}
+            ,{'title':'입고검수<br>담당자','data':'IG_U_IDX'}
+            ,{'title':'요청자','data':'HW_U_IDX'}
+            ,{'title':'작업지시자','data':'CG_U_IDX'}
+            ,{'title':'완료처리자','data':''}
+            ,{'title':'요청일','data':'CG_REQUEST_DATE'}
+            ,{'title':'작업시작일','data':'CG_START-DATE'}
+            ,{'title':'작업종료일','data':'CG_END_DATE'}
+            ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
+            ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST'}
+            ,{'title':'공정완료/<br>작업요청건','data':''}
+            ,{'title':'공정비<br>합계','data':'CGS_REAL_COST'}
+        ]
+    });
+
+    $('#returnForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+</script>
+</html>

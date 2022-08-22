@@ -58,7 +58,8 @@ public class MainController {
     public ModelAndView home() {
         ModelAndView mav = new ModelAndView("main/home");
 
-
+        System.out.println("sessionInfo.getIdx()");
+        System.out.println(sessionInfo.getIdx());
         return mav;
     }
 
