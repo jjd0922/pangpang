@@ -1,6 +1,5 @@
 package com.newper.entity;
 
-import com.newper.constant.CateSpec;
 import com.newper.converter.ConvertList;
 import com.newper.converter.ConvertMap;
 import com.newper.entity.common.BaseEntity;
