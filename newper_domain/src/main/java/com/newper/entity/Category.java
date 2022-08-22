@@ -45,7 +45,12 @@ public class Category extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CateSpec cateSpec;
 
-    private List<String> cateSpecList;
+
+    @Builder.Default
+    @Convert(converter = ConvertList.class)
+    private List<Map<String, Object>> cateSpecList = new ArrayList<>();
+
+   /* private List<String> cateSpecList;*/
 
     private String cateMemo;
     /**

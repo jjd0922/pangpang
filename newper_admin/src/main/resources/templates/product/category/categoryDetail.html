@@ -125,7 +125,7 @@
                             <span class="input-group-prepend">
                               <span class="input-group-text requested">스펙리스트</span>
                             </span>
-                            <input th:value="${category.cateSpecList}" type="text" class="form-control" name="cateSpecList"> <!--insert 제이슨형식,categoryinfo 참고-->
+                            <input  type="text" class="form-control" name="list" ${category?.cateSpecList} > <!--insert 제이슨형식,categoryinfo 참고-->
                           </div>
                         </div>
                       </div>
@@ -216,6 +216,7 @@
 <script th:inline="javascript">
   //대분류 등록
   function updateCategoryFirst(){
+    var list=$('input[name=list]').val();
     var cate_name = $('input[name=CATE_NAME]').val();
     var CATE_PARENT_IDX = $('select[name=CATE_PARENT_IDX]').val();
     if(window.confirm('수정하시겠습니까?')){
