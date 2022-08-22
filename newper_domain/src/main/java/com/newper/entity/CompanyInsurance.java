@@ -51,14 +51,14 @@ public class CompanyInsurance extends CreatedEntity {
             throw new MsgException("발행사를 입력해주세요.");
         } else if (!StringUtils.hasText(getCiName())) {
             throw new MsgException("증권명을 입력해주세요.");
-        } else if (getCiStartDate() == null || getCiEndDate() == null) {
-            throw new MsgException("올바른 보증기간을 선택해주세요.");
+        } else if (getCiStartDate() == null || getCiEndDate() == null || getCiStartDate().isAfter(getCiEndDate()) || getCiEndDate().isBefore(LocalDate.now())) {
+            throw new MsgException("유효한 보증기간을 설정해주세요.");
         } else if (!StringUtils.hasText(getCiNum())) {
             throw new MsgException("증권번호를 입력해주세요.");
         } else if (getCiFee() == null || getCiFee() < 0) {
-            throw new MsgException("올바른 보험가입금액을 입력해주세요.");
+            throw new MsgException("유효한 보험가입금액을 입력해주세요.");
         } else if (getCiPercent() == null || getCiPercent() < 0) {
-            throw new MsgException("올바른 보험요율을 입력해주세요.");
+            throw new MsgException("유효한 보험요율을 입력해주세요.");
         }
     }
 

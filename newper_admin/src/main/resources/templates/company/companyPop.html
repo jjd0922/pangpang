@@ -12,7 +12,7 @@
             max-width: 915px;
         }
 
-        .table-hover, #userModalForm {
+        #userModalTable {
             width: 100% !important;
         }
     </style>
@@ -657,7 +657,7 @@
     }
 
     function selectUser(row) {
-        var rowData = $('#userModalTable').DataTable().rows(row).data()[0];
+        var rowData = getDatatablemap('userModalTable', row);
 
         $('#searchUserModal').modal('hide');
         $('#regiForm input[name="uName"]').val(rowData.U_NAME);

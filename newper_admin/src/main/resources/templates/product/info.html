@@ -144,7 +144,7 @@
 
     function newRow() {
         var row=$('#templateTable tr').length;
-        $('#templateTable tbody').append('<tr><td>'+row+'</td><td><input type="text" name="title" class="border-0 text-center"></td><td><input type="text" name="content" class="border-0 text-center"></td><td><a href="#" onclick="deleteRow('+row+')" class="badge badge-primary">삭제</a></td></tr>');
+        $('#templateTable tbody').append('<tr><td>'+row+'</td><td><input type="text" name="title" class="border-0 text-center"></td><td><textarea name="content" class="border-0 text-center"></textarea></td><td><a href="#" onclick="deleteRow('+row+')" class="badge badge-primary">삭제</a></td></tr>');
     }
 
     function deleteRow(row) {
@@ -234,7 +234,7 @@
                         return '<input type="text" name="title" value="'+full.title+'" class="border-0 text-center">';
                 }}
                 ,{'title':'내용','data':'content','render':function(data,type,full,meta){
-                        return '<input type="text" name="content" value="'+full.content+'" class="border-0 text-center">';
+                        return '<textarea name="content" class="border-0 text-center">'+full.content+'</textarea>';
                     }}
                 ,{'title':'삭제','data':'','render': function (data, type, full, meta) {
                         return '<a href="#" onclick="deleteRow('+(meta.row+1)+')" class="badge badge-primary">삭제</a>';

@@ -376,7 +376,6 @@ public class ProductRestController {
     /**고시정보관리 고시정보 템플릿 update*/
     @PostMapping("info.ajax")
     public ReturnMap updateInfoTemplate(ParamMap paramMap) {
-        System.out.println("paramMap = " + paramMap);
         ReturnMap rm = new ReturnMap();
         categoryService.updateCateInfo(paramMap);
         return rm;
