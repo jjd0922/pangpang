@@ -99,11 +99,6 @@
                 </form>
                 <table class="table" id="contractModalTable">
                 </table>
-                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
-                    <div class="btn-group">
-                        <a id="contractModalBtn" class="btn btn-sm btn-primary" onclick="contractSelect()">계약서 선택</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -124,33 +119,14 @@
     function selectContractDataTable(){
         destroyDatatable('contractModalTable');
         $('#contractModalTable').DataTable({
-            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
-            },
             serverSide: true,
             ajax:{
                 url:'/company/contract.dataTable?',
                 type:'post'
             },
-            columnDefs: [{
-                width: '40px',
-                autoWidth: false,
-                orderable: false,
-                className: 'select-checkbox',
-                targets:   [0]
-            },
-            {
-                width: '40px',
-                targets:    [1]
-            }],
             "columns" : [
-                {'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '';
-                    }}
-                ,{'title':'상호법인명','data':'COM_NAME', 'defaultContent':''}
+                {'title':'상호법인명','data':'COM_NAME', 'defaultContent':''}
                 ,{'title':'계약명','data':'CC_NAME', 'defaultContent':''}
                 ,{'title':'계약구분','data':'CC_TYPE_STR', 'defaultContent':''}
                 ,{'title':'상태','data':'CC_STATE_STR', 'defaultContent':''}
@@ -161,6 +137,9 @@
                 ,{'title':'계약시작일','data':'CC_START','class':'text-won','defaultContent':''}
                 ,{'title':'계약종료일','data':'CC_END','class':'text-won','defaultContent':''}
                 ,{'title':'계약번호','data':'CC_NUM','class':'text-won','defaultContent':''}
+                ,{'title':'선택','data':'CC_IDX','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm btn-primary" onClick="contractSelect('+meta.row+')">선택</a>';
+                }}
             ]
     });
     }

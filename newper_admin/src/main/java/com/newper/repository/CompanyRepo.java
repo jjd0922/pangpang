@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
     @EntityGraph(attributePaths = {"companyEmployee", "user"})

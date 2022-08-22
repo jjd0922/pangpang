@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface UserRepo extends JpaRepository<User,Integer> {
     @EntityGraph(attributePaths = {"company"})
     public User findUserByuIdx(Integer uIdx);

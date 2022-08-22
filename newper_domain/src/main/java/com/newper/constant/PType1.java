@@ -4,7 +4,7 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 정산구분(품목구분1) PRODUCT.P_TYPE1 */
+/** 정산구분(품목구분1) PRODUCT.P_TYPE1, PO.PO_BUY_PRODUCT_TYPE */
 @Getter
 @AllArgsConstructor
 public enum PType1 implements EnumOption {

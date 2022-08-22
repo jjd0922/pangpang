@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface EstimateProductRepo extends JpaRepository<EstimateProduct, Integer> {
     public List<EstimateProduct> findEstimateProductByEstimate_PeIdx(Integer peIdx);
     public void deleteEstimateProductByEstimate_PeIdx(Integer peIdx);
