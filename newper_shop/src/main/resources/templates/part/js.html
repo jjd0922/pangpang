@@ -1,2 +1,306 @@
 <!-- Swiper -->
 <script type="text/javascript" th:src="@{/js/core/swiper-bundle.min.js}"></script>
+
+
+<!-- index 페이지 -->
+<script>
+    /*** 검색창 펼침 ***/
+    const searchInput = $('#searchInput');
+
+    searchInput.click(function(){
+        $(this).parents().find('.searchBar').toggleClass('on');
+        $('.searchBar-open').toggleClass('on');
+    });
+
+    /* 검색창 펼침 내부 tab 기능 */
+    const searchTab = $('.searchWord-tab li'),
+        searchTabContent = $('.searchWord-content>div')
+
+    searchTab.click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        let $Idx = $(this).index();
+        searchTabContent.eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+    /* 검색창 펼침 내부 배너 타이틀 슬라이드 */
+    new Swiper('.swiper-searchBar', {
+        slidesPerView: 1,
+        speed:700,
+        /*autoplay:true,*/
+        navigation: {
+            nextEl: '.searchBar-next',
+            prevEl: '.searchBar-prev',
+        },
+    });
+
+    /*** gnb-menu list slide [swiper] ***/
+    new Swiper('.swiper-gnb', {
+        slidesPerView: 'auto',
+        navigation: {
+            nextEl: '.swiper-gnb-next',
+            disabledClass: 'gnb-disabled',
+        }
+    });
+
+    /*** 메인 이미지 슬라이드 [swiper] ***/
+    const swiper = new Swiper('.swiper-main-image', {
+        slidesPerView: 1,
+        speed: 300,
+        autoplay: true,
+        loop: true,
+        loopAdditionalSlides: 1,
+        pagination: {
+            el: '.swiper-pagination', type: 'custom',
+            renderCustom: function (swiper, current, total) {
+                return '<span class="current-num">' + current + '</span> &nbsp;/&nbsp; <span class="total-num">' + total + '</span>';
+            },
+        },
+        navigation: {
+            nextEl: '.swiper-next',
+            prevEl: '.swiper-prev',
+        },
+        on: {
+            init: function () {
+                $(".swiper-progress-bar").removeClass("animate");
+                $(".swiper-progress-bar").eq(0).addClass("animate");
+            },
+            slideChangeTransitionStart: function () {
+                $(".swiper-progress-bar").removeClass("animate");
+            },
+            slideChangeTransitionEnd: function () {
+                $(".swiper-progress-bar").eq(0).addClass("animate");
+            }
+        }
+    });
+    /* index page-main image slide 일시정지, 재생 기능 */
+    $(".swiper-button-pause").click(function () {
+        $(this).css('display', 'none');
+        $('.swiper-button-play').css('display', 'block');
+        swiper.autoplay.stop();
+        return false
+    });
+    $(".swiper-button-play").click(function () {
+        $(this).css('display', 'none');
+        $('.swiper-button-pause').css('display', 'block');
+        swiper.autoplay.start();
+        return false
+    });
+
+    /** 메인 이미지 슬라이드 좌측 카테고리 서브 메뉴 열림 **/
+    $('.ctg-open').hide();
+    $(".ctg-all>li").mouseover(function(){
+        $(this).addClass("on")
+            .children(".ctg-open").show();
+
+    });
+    $(".ctg-all>li").mouseout(function(){
+        $(this).removeClass("on")
+            .children(".ctg-open").hide();
+    });
+
+
+    /** 뉴퍼딜 이벤트 **/
+    new Swiper('.swiper-newperDeal', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        speed:700,
+        /*autoplay:true,*/
+        observer: true,
+        observeParents: true,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                navigation: {
+                    nextEl: '.newperDeal-next',
+                    prevEl: '.newperDeal-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** 반값 이벤트 (이벤트 상품 그룹 1) **/
+    new Swiper('.swiper-event-group1', {
+        slidesPerView: 2,
+        spaceBetween: 0,
+        speed:700,
+        /*autoplay:true,*/
+        observer: true,
+        observeParents: true,
+        breakpoints: {
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 35,
+                navigation: {
+                    nextEl: '.swiper-event-group1-next',
+                    prevEl: '.swiper-event-group1-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+    /* 좋아요(하트) 클릭 시 하트 색채움 사진으로 전환 */
+    $(".heart").click(function () {
+        $(this).toggleClass('active');
+    });
+
+    /** 한정수량 일일특가 (이벤트 상품 그룹 2) **/
+    new Swiper('.swiper-event-group2', {
+        slidesPerView: 1,
+        grid: {
+            rows: 1,
+        },
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                },
+                spaceBetween: 35,
+                navigation: {
+                    nextEl: '.swiper-event-group2-next',
+                    prevEl: '.swiper-event-group2-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** 뉴퍼마켓 숨은 꿀템 (이벤트 상품 그룹 3) **/
+    new Swiper('.swiper-event-group3', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 35,
+                navigation: {
+                    nextEl: '.swiper-event-group3-next',
+                    prevEl: '.swiper-event-group3-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** 알짜만 모아모아 기획전 (이벤트 상품 그룹 4)**/
+    new Swiper('.swiper-event-group4', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 0,
+                navigation: {
+                    nextEl: '.swiper-event-group4-next',
+                    prevEl: '.swiper-event-group4-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** TODAY BEST **/
+    $('.todayBest-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        var $Idx = $(this).index();
+
+        $('.todayBest-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+    new Swiper('.swiper-todayBest', {
+        slidesPerView: 2,
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 50,
+                navigation: {
+                    nextEl: '.todayBest-content-next',
+                    prevEl: '.todayBest-content-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** 카테고리 탭 메뉴 (ex: MD 추천 카테고리, 베스트 100) **/
+    $('.ctg-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        var $Idx = $(this).index();
+
+        $('.ctg-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+    new Swiper('.swiper-ctg-tab', {
+        slidesPerView: 'auto',
+    });
+
+    new Swiper('.swiper-md-content', {
+        slidesPerView: 2,
+        spaceBetween: 15,
+        pagination: {
+            el: '.md-content-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 35,
+                navigation: {
+                    nextEl: '.md-tab-content-next',
+                    prevEl: '.md-tab-content-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    /** 리얼리뷰 PICK **/
+    new Swiper('.swiper-realReview', {
+        slidesPerView: 2,
+        spaceBetween: 15,
+        slidesPerGroup: 2,
+        pagination: {
+            el: '.review-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            992: {
+                slidesPerView: 4,
+                slidesPerGroup: 4,
+                spaceBetween: 35,
+            },
+        },
+    });
+
+    /** 공지사항 - 지점안내 [swiper] **/
+    new Swiper('.swiper-storeInfo', {
+        slidesPerView: 2,
+        spaceBetween: 5,
+        speed:700,
+        observer: true,
+        observeParents: true,
+        navigation: {
+            prevEl: '.storeInfo-prev',
+            nextEl: '.storeInfo-next',
+            disabledClass: 'btn-disabled',
+        },
+        breakpoints: {
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+
+            },
+        },
+    });
+
+</script>
