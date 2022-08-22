@@ -4,13 +4,16 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.ProcessMapper;
+import com.newper.mapper.SpecMapper;
 import com.newper.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RequestMapping(value = "/process/")
 @RestController
@@ -19,6 +22,7 @@ public class ProcessRestController {
     private final CompanyMapper companyMapper;
 
     private final UserMapper userMapper;
+    private final SpecMapper specMapper;
 
     /**팝업창 내부 작업지시자(내부) 모달**/
     @PostMapping("user.dataTable")

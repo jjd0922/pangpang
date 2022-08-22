@@ -1,5 +1,7 @@
 package com.newper.entity;
 
+import com.newper.constant.PoState;
+import com.newper.constant.PoType;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -41,8 +43,10 @@ public class Po extends BaseEntity {
     @JoinColumn(name = "PO_HW_IDX", referencedColumnName = "hwIdx")
     private Hiworks hiworks;
 
-    private String poState;
-    private String poType;
+    @Enumerated(EnumType.STRING)
+    private PoState poState;
+    @Enumerated(EnumType.STRING)
+    private PoType poType;
     private String poRequestDate;
     private String poMemo;
     private String poRepurchase;
