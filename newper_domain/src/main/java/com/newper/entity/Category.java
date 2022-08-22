@@ -41,7 +41,9 @@ public class Category extends BaseEntity {
     private String cateImage;
     private int cateOrder;
 
-    private List<String> cateSpec_list;
+    @Enumerated(EnumType.STRING)
+    private CateSpec cateSpec;
+    private List<String> cateSpecList;
 
     private String cateMemo;
     /**

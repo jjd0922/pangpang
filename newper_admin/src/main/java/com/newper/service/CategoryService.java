@@ -64,7 +64,7 @@ public class CategoryService {
         category.setCateMemo("");
         category.setCateNick("");
         List<String > list = new ArrayList<>();
-        category.setCateSpec_list(list);
+        category.setCateSpecList(list);
 
         if (paramMap.get("CATE_PARENT_IDX")!=null){
             Category parentCategory = categoryRepo.findById(Integer.parseInt(paramMap.get("CATE_PARENT_IDX")+"")).get();
@@ -95,7 +95,7 @@ public class CategoryService {
         Category category = categoryRepo.findById(paramMap.getInt("CATE_IDX")).get();
         Category categoryParam = paramMap.mapParam(Category.class);
         categoryParam.setCateMemo(category.getCateNick());
-        categoryParam.setCateSpec_list(category.getCateSpec_list());
+        categoryParam.setCateSpecList(category.getCateSpecList());
         categoryParam.setCateType(category.getCateType());
         categoryParam.setCateNick(category.getCateNick());
         categoryParam.setCateOrder(category.getCateOrder());

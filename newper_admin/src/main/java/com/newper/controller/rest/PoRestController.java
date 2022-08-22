@@ -26,4 +26,14 @@ public class PoRestController {
         rd.setRecordsTotal(poMapper.countEstimateDataTable(paramMap.getMap()));
         return rd;
     }
+    /** 발주 품의 데이터테이블 */
+    @PostMapping("po.dataTable")
+    public ReturnDatatable po(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("발주품의");
+
+        rd.setData(poMapper.selectPoDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(poMapper.countPoDataTable(paramMap.getMap()));
+
+        return rd;
+    }
 }

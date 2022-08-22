@@ -710,6 +710,8 @@
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
+
 <script th:src="@{/assets/js/common.js}"></script>
 
 <th:block th:replace="@{company/modal/companyModal.html}"/>
@@ -769,25 +771,16 @@
         }
     }
 
-    // 계약서 검색 선택
-    function contractSelect () {
-        var ccIdx = dataTableGetSelectedDataArray('contractModalTable', 'CC_ID');
-        var ccName = dataTableGetSelectedDataArray('contractModalTable', 'CC_NAME');
-        var ccType = dataTableGetSelectedDataArray('contractModalTable', 'CC_TYPE_STR');
-        var ccCycle = dataTableGetSelectedDataArray('contractModalTable', 'CC_CYCLE_STR');
-        var ccNum = dataTableGetSelectedDataArray('contractModalTable', 'CC_NUM');
+    //거래처 모달에서 선택
+    function companySelect(row){
+        var rowData = $('#companyModalTable').DataTable().rows(row).data()[0];
 
-        if(ccIdx.length != 1){
-            alert('계약서는 하나만 선택해 주세요');
-            return false;
-        }else{
-            $('input[name=ccIdx]').val(ccIdx);
-            $('input[name=ccName]').val(ccName);
-            $('input[name=ccType]').val(ccType);
-            $('input[name=ccCycle]').val(ccCycle);
-            $('input[name=ccNum]').val(ccNum);
-            $('#contractModal').modal('hide');
-        }
+        $('input[name=ccIdx]').val(rowData.CC_IDX);
+        $('input[name=ccName]').val(rowData.CC_NAME);
+        $('input[name=ccType]').val(rowData.CC_TYPE_STR);
+        $('input[name=ccCycle]').val(rowData.CC_CYCLE_STR);
+        $('input[name=ccNum]').val(rowData.CC_NUM);
+        $('#contractModal').modal('hide');
     }
 </script>
 </body>

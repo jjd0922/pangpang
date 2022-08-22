@@ -121,6 +121,10 @@
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 <script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
 <!-- 멀티 선택 (숫자) -->
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
@@ -144,7 +148,7 @@
 
     function newRow() {
         var row=$('#templateTable tr').length;
-        $('#templateTable tbody').append('<tr><td>'+row+'</td><td><input type="text" name="title" class="border-0 text-center"></td><td><textarea name="content" class="border-0 text-center"></textarea></td><td><a href="#" onclick="deleteRow('+row+')" class="badge badge-primary">삭제</a></td></tr>');
+        $('#templateTable tbody').append('<tr><td class="dragula-handle"><i class="icon-menu-open dragula-handle">'+row+'</i></td><td><input type="text" name="title" class="border-0 text-center"></td><td><textarea name="content" class="border-0 text-center"></textarea></td><td><a href="#" onclick="deleteRow('+row+')" class="badge badge-primary">삭제</a></td></tr>');
     }
 
     function deleteRow(row) {
@@ -227,19 +231,27 @@
                 type:'post'
             },
             columns : [
-                {'title':'No','data':'No','render':function(data,type,full,meta){
-                        return meta.settings._iDisplayStart+meta.row+1;
+                {'class':'dragula-handle','title':'No','data':'No','render':function(data,type,full,meta){
+                        return '<i class="icon-menu-open dragula-handle">'+(meta.settings._iDisplayStart+meta.row+1)+'</i>';
                     }}
-                ,{'title':'제목','data':'title','render':function(data,type,full,meta){
+                ,{'title':'고시정보항목','data':'title','render':function(data,type,full,meta){
                         return '<input type="text" name="title" value="'+full.title+'" class="border-0 text-center">';
                 }}
-                ,{'title':'내용','data':'content','render':function(data,type,full,meta){
+                ,{'title':'고시정보내용','data':'content','render':function(data,type,full,meta){
                         return '<textarea name="content" class="border-0 text-center">'+full.content+'</textarea>';
                     }}
                 ,{'title':'삭제','data':'','render': function (data, type, full, meta) {
                         return '<a href="#" onclick="deleteRow('+(meta.row+1)+')" class="badge badge-primary">삭제</a>';
                     }}
-            ]
+            ],
+            initComplete: function (settings, json) {
+                dragula([settings.nTBody], {
+                    mirrorContainer: settings.nTBody,
+                    moves: function (el, container, handle) {
+                        return handle.classList.contains('dragula-handle');
+                    }
+                });
+            }
         });
     }
 
