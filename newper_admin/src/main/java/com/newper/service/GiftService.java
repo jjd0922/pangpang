@@ -30,8 +30,8 @@ public class GiftService {
     public long saveGift(ParamMap paramMap) {
         GiftGroup giftGroup = paramMap.mapParam(GiftGroup.class);
 
-        giftGroup.setGiftgStartDate(LocalDate.parse(paramMap.getString("giftgEndDate")));
-        giftGroup.setGiftgEndDate(LocalDate.parse(paramMap.getString("giftgStartDate")));
+        giftGroup.setGiftgStartDate(LocalDate.parse(paramMap.getString("giftgStartDate")));
+        giftGroup.setGiftgEndDate(LocalDate.parse(paramMap.getString("giftgEndDate")));
         GiftGroup savedGg = giftGroupRepo.save(giftGroup);
 
         long giftgIdx = savedGg.getGiftgIdx();

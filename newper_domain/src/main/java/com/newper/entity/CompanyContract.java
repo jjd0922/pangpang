@@ -83,8 +83,8 @@ public class CompanyContract extends BaseEntity {
             throw new MsgException("정산주기를 선택해주세요.");
         } else if (getCcCalType() == null) {
             throw new MsgException("정산방식을 선택해주세요.");
-        } else if (getCcStart() == null || getCcEnd() == null) {
-            throw new MsgException("올바른 보증기간을 선택해주세요.");
+        } else if (getCcStart() == null || getCcEnd() == null || getCcStart().isAfter(getCcEnd()) || getCcEnd().isBefore(LocalDate.now())) {
+            throw new MsgException("유효한 보증기간을 설정해주세요.");
         } else if (getCcFeeType() == null) {
             throw new MsgException("정액/정률을 선택해주세요.");
         } else if (getCcRates() < 0) {

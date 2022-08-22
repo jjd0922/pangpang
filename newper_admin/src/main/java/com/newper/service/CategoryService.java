@@ -13,6 +13,7 @@ import com.newper.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -161,6 +162,12 @@ public class CategoryService {
         List<Map<String, Object>> infoList = new ArrayList<>();
         for (int i = 0; i < title.size(); i++) {
             Map<String, Object> map = new HashMap<>();
+            if (!StringUtils.hasText(title.get(i).toString())) {
+                throw new MsgException("입력이 완료되지 않은 고시정보 제목이 존재합니다.");
+            }
+            if (!StringUtils.hasText(content.get(i).toString())) {
+                throw new MsgException("입력이 완료되지 않은 고시정보 내용이 존재합니다.");
+            }
             map.put("title", title.get(i));
             map.put("content", content.get(i));
             infoList.add(map);

@@ -170,11 +170,8 @@
         FROM
             CATEGORY
         WHERE
-            CATE_DEPTH=#{CATE_DEPTH}
+            CATE_DEPTH=#{cateDepth}
             AND CATE_TYPE='CATEGORY'
             <include refid="includeCategoryListByCateDepth"></include>
-        <if test="length!=-1">
-            limit #{start},#{length}
-        </if>
     </select>
 </mapper>
