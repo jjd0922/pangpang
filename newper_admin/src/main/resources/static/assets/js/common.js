@@ -80,6 +80,52 @@ function destroyDatatable(id){
     }catch(e){}
 }
 
+//buttons: {buttons: buttonsSelect(boolean)};
+function buttonsSelect(useSelect){
+
+    var buttons=[
+    {
+        extend: 'excelHtml5',
+            className: 'btn btn-sm btn-dark opacity-60',
+        action: function (e, dt, node, config) {
+        downloadAllExcel(dt.settings()[0].sTableId);
+    },
+        text: '<i class="icon-file-excel mr-1"></i>엑셀',
+            footer: true
+    },
+    {
+        extend: 'pageLength',
+            className: 'btn btn-sm btn-dark opacity-50'
+    }
+,
+    {
+        text: '새로고침',
+            className: 'btn btn-sm btn-secondary',
+        action: function (e, dt, node, config) {
+        dt.ajax.reload();
+    }
+    }];
+
+    if(useSelect){
+        buttons.unshift({
+            extend: 'selectNone',
+                className: 'btn btn-sm badge-indigo opacity-80',
+            text: '<i class="icon-cross2 mr-1"></i>선택해제',
+            exportOptions: {
+            columns: ':visible'
+            }
+        });
+        buttons.unshift({
+            extend: 'selectAll',
+            className: 'btn btn-sm btn-primary opacity-80',
+            text: '<i class="icon-checkbox-checked2 mr-1"></i>전체선택',
+            exportOptions: {
+                columns: ':visible'
+            }
+        });
+    }
+    return buttons;
+}
 //datatable 기본 설정
 if($.fn.dataTable !== undefined){
     $.extend($.fn.dataTable.defaults, {
@@ -89,6 +135,7 @@ if($.fn.dataTable !== undefined){
         /*fixedColumns: {
             leftColumns: 4,
         },*/
+        ordering: false,
         scrollX:        true,
         deferRender:    true,
         scroller:       true,
@@ -110,45 +157,7 @@ if($.fn.dataTable !== undefined){
             zeroRecords: '검색 결과가 없습니다.',
         },
         buttons: {
-            buttons: [
-                {
-                    extend: 'selectAll',
-                    className: 'btn btn-sm btn-primary opacity-80',
-                    text: '<i class="icon-checkbox-checked2 mr-1"></i>전체선택',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'selectNone',
-                    className: 'btn btn-sm badge-indigo opacity-80',
-                    text: '<i class="icon-cross2 mr-1"></i>선택해제',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    className: 'btn btn-sm btn-dark opacity-60',
-                    action: function (e, dt, node, config) {
-                        downloadAllExcel(dt.settings()[0].sTableId);
-                    },
-                    text: '<i class="icon-file-excel mr-1"></i>엑셀',
-                    footer: true
-                },
-                {
-                    extend: 'pageLength',
-                    className: 'btn btn-sm btn-dark opacity-50'
-                }
-                ,
-                {
-                    text: '새로고침',
-                    className: 'btn btn-sm btn-secondary',
-                    action: function (e, dt, node, config) {
-                        dt.ajax.reload();
-                    }
-                }
-            ]
+            buttons: buttonsSelect(true)
         }
         ,'footerCallback':function(tfoot, data, start, end, display){
             //init하기 전에 tfoot 태그 있어야함
