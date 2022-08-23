@@ -31,6 +31,7 @@ public class BomRestController {
     public ReturnMap saveBom(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
 
+        paramMap.multiSelect("pIdx");
         bomService.saveBom(paramMap);
         rm.setMessage("등록완료");
         return rm;
