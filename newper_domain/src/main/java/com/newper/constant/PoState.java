@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PoState implements EnumOption {
-    WAITING("발주대기")
+     WAITING("발주대기")
+    ,CANCEL("발주취소")
     ,APPROVAL("발주완료")
 
     ;
