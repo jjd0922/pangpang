@@ -242,45 +242,45 @@
                                     <div class="collapse show" id="collapse-button-collapsed">
                                         <div class="card-body pt-0">
                                             <form id="goodsForm">
-                                                <div class="row">
-                                                    <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-                                                        <div class="form-group">
-                                                            <label class="d-block">발주코드</label>
-                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
-                                                        </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                            <div class="form-group">
+                                                                <label class="d-block">발주코드</label>
+                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                            </div>
 
-                                                        <div class="form-group">
-                                                            <label class="d-block">발주INDEX</label>
-                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
-                                                        </div>
+                                                            <div class="form-group">
+                                                                <label class="d-block">발주INDEX</label>
+                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                            </div>
 
-                                                        <div class="form-group">
-                                                            <label class="d-block">자산상태</label>
-                                                            <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                                <option></option>
-                                                            </select>
-                                                        </div>
+                                                            <div class="form-group">
+                                                                <label class="d-block">자산상태</label>
+                                                                <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
 
-                                                        <div class="form-group">
-                                                            <label class="d-block">상품명</label>
-                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
-                                                        </div>
+                                                            <div class="form-group">
+                                                                <label class="d-block">상품명</label>
+                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                            </div>
 
-                                                        <div class="form-group">
-                                                            <label class="d-block">자산코드</label>
-                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
-                                                        </div>
+                                                            <div class="form-group">
+                                                                <label class="d-block">자산코드</label>
+                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                            </div>
 
-                                                        <div class="form-group end">
-                                                            <button type="button" class="btn btn-secondary" onclick="searchBtn()">
-                                                                <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
-                                                            </button>
+                                                            <div class="form-group end">
+                                                                <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                                    <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
                                     <table class="table" id="goodsTable"></table>
                                     </fieldset>
                                 </div>
@@ -364,7 +364,10 @@
         $('#handoverModal').modal('show');
     }
 
-
+    function searchBtn() {
+        var table = $('#goodsTable').DataTable();
+        table.page('first').ajax.url('/in/goods.dataTable?' + $('#goodsForm').serialize()).load(null, false);
+    }
 
 </script>
 

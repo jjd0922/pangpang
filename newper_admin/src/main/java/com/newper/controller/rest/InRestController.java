@@ -29,4 +29,20 @@ public class InRestController {
 
         return rd;
     }
+
+    @PostMapping("incheck.dataTable")
+    public ReturnDatatable incheck(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+
+        return rd;
+    }
+
+    @PostMapping("goods.dataTable")
+    public ReturnDatatable goods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+
+        return rd;
+    }
 }
