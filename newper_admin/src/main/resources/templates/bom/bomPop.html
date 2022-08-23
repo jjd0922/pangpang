@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${bom != null} ? 'BOM 조회/수정'">BOM 등록</title>
+    <title th:text="${mProduct != null} ? 'BOM 조회/수정'">BOM 등록</title>
     <th:block th:replace="common/css.html"></th:block>
 </head>
 
@@ -18,8 +18,8 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold" th:if="${bom == null}"><i class="icon-office mr-1"></i>BOM 등록</h4>
-                            <h4 class="font-weight-semibold" th:unless="${bom == null}"><i class="icon-office mr-1"></i>BOM 조회/수정</h4>
+                            <h4 class="font-weight-semibold" th:if="${mProduct == null}"><i class="icon-office mr-1"></i>BOM 등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${mProduct == null}"><i class="icon-office mr-1"></i>BOM 조회/수정</h4>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                                                                     상품코드<a href="#" class="badge badge-sm badge-primary ml-1" id="searchMotherBtn">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="mpCode" class="form-control" th:value="${bom?.pCode}" readonly>
+                                                        <input type="text" name="mpCode" class="form-control" th:value="${mProduct?.pCode}" readonly>
                                                         <input type="hidden" name="mpIdx">
                                                     </div>
                                                 </div>
@@ -62,7 +62,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">상품명</span>
                                                             </span>
-                                                        <input type="text" name="mpName" class="form-control" th:value="${bom?.pName}" readonly>
+                                                        <input type="text" name="mpName" class="form-control" th:value="${mProduct?.pName}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -86,8 +86,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr id="defaultRow">
+                                                <tr id="defaultRow" th:unless="${mProduct != null}">
                                                     <td colspan="5">BOM구성항목을 선택하십시오.</td>
+                                                </tr>
+                                                <tr th:if="${mProduct != null}" th:each="child, i: ${cProduct}">
+                                                    <td th:text="${i.index+1}"><input type="hidden" name="pIdx" th:value="${child.P_IDX}"></td>
+                                                    <td th:text="${child.P_CODE}"></td>
+                                                    <td th:text="${child.P_NAME}"></td>
+                                                    <td th:text="${child.P_COST}"></td>
+                                                    <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
