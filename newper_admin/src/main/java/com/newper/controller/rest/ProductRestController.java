@@ -125,8 +125,10 @@ public class ProductRestController {
     @PostMapping("brand.dataTable")
     public ReturnDatatable CategoryDatatableByBrand(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
+
         List<Map<String,Object>> bList = categoryMapper.selectCategoryDatatableByBrand(paramMap.getMap());
         int total = categoryMapper.countCategoryDatatableByBrand(paramMap.getMap());
+
         returnDatatable.setData(bList);
         returnDatatable.setRecordsTotal(total);
         return returnDatatable;
@@ -380,4 +382,6 @@ public class ProductRestController {
         categoryService.updateCateInfo(paramMap);
         return rm;
     }
+
+
 }

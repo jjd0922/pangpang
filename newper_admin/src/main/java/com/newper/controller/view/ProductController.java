@@ -15,6 +15,7 @@ import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,10 +67,12 @@ public class ProductController {
     @PostMapping("category/categoryCreate/{cate_depth}")
     public ModelAndView categoryCatePost(@PathVariable int cate_depth,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertClose");
+
         paramMap.put("CATE_DEPTH",cate_depth);
         paramMap.put("CATE_TYPE", CateType.CATEGORY);
         categoryService.categoryInsert(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","등록 완료");
+
         return mav;
     }
 
@@ -87,11 +90,22 @@ public class ProductController {
             mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(2));
         }
 
+        List<Map<String,Object>> list = category.getCateSpecList();
+//        System.out.println("SPEC : "+list);
+//        System.out.println(list.size());
+//        System.out.println(list.get(0));
+//        System.out.println(list.get(0).get("list"));
+        if(list.size()!=0){
+            mav.addObject("spec",list.get(0).get("list"));
+        }else{
+            mav.addObject("spec","");
+        }
 
         String image = category.getCateImage();
         image=Common.summernoteContent(image);
         mav.addObject("category",category);
         mav.addObject("image",image);
+
         return mav;
     }
 

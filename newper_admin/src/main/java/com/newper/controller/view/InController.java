@@ -28,4 +28,11 @@ public class InController {
         return mav;
     }
 
+    /** 입고검수 입고검수코드 팝업*/
+    @GetMapping("incheckManagePop")
+    public ModelAndView incheckManagePop(){
+        ModelAndView mav = new ModelAndView("in/incheckManagePop");
+
+        return mav;
+    }
 }

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>입고검수 관리</title>
+
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .btn-group{
+            margin-left: 84%;
+        }
+
+        .btn-group3{
+            float: right;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >입고검수 관리</h4>
+                            <!--  <div class="text-white-50 ml-3">설명글영역</div>
+                          </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="baordForm">
+                <div class="card">
+                    <div class="card-body popup-contents">
+                        <fieldset class="mb-0">
+                            <div class="row">
+                                <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" onclick="cancelBtn()">
+                                        <i class="icon-popout mr-1"></i>작업요청취소
+                                    </a>
+
+
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" onclick="ingBtn()">
+                                        <i class="icon-popout mr-1"></i>작업중(출고)
+                                    </a>
+
+
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="finishBtn" onclick="finishBtn()">
+                                        <i class="icon-popout mr-1"></i>작업완료(입고)
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                  입고검수코드
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_NAME" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  작업지시자(내부)
+                                                                    <a class="badge badge-sm badge-primary ml-1" onclick="inOperationModal();">검색</a>
+                                                                </span>
+                                                            </span>
+                                             <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                입고검수업체
+                                                                <a class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
+                                                                    <!-- <a href="daum_address();" class="badge badge-sm badge-primary ml-1">검색</a>-->
+                                                                </span>
+                                                            </span>
+                                             <input type="text" class="form-control "  name="" placeholder="">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                  작업시작일
+                                                                </span>
+                                                            </span>
+                                             <input type="text" name="U_NAME" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  입고검수 상태
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  완료처리자(내부)
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  입고검수담당자(업체)
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  작업종료일
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   요청일
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  입고검수비(확정)합계
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                  완료/요청건
+                                                                </span>
+                                                            </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                  요청메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   작업메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                               <span class="input-group-text">
+                                                                   작업완료메모
+                                                               </span>
+                                                           </span>
+                                            <input type="text" name="U_TEL" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <fieldset class="mb-0">
+                                    <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                    <div class="btn-group2">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="incheckinBtn" onclick="incheckinBtn()">
+                                            <i class="icon-popout mr-1"></i>입고검수입고
+                                        </a>
+
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="returnBtn" onclick="returnBtn()">
+                                            <i class="icon-popout mr-1"></i>반품대기(검수)
+                                        </a>
+
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="lostBtn" onclick="lostBtn()">
+                                            <i class="icon-popout mr-1"></i>망실
+                                        </a>
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="handoverBtn" onclick="handoverBtn()">
+                                            <i class="icon-popout mr-1"></i>재고인계
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group3">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="reportuploadBtn" onclick="reportuploadBtn()">
+                                            <i class="icon-popout mr-1"></i>(1)검수리포트 업로드
+                                        </a>
+
+
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="mappingBtn" onclick="mappingBtn()">
+                                            <i class="icon-popout mr-1"></i>(2)발주코드 맵핑
+                                        </a>
+
+
+                                        <a type="button" class="btn btn-sm btn-warning ml-1" id="resultuploadBtn" onclick="resultuploadBtn()">
+                                            <i class="icon-popout mr-1"></i>공정결과 업로드
+                                        </a>
+                                    </div>
+                                    <div class="collapse show" id="collapse-button-collapsed">
+                                        <div class="card-body pt-0">
+                                            <form id="goodsForm">
+                                                <div class="row">
+                                                    <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                        <div class="form-group">
+                                                            <label class="d-block">발주코드</label>
+                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="d-block">발주INDEX</label>
+                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="d-block">자산상태</label>
+                                                            <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="d-block">상품명</label>
+                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="d-block">자산코드</label>
+                                                            <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                        </div>
+
+                                                        <div class="form-group end">
+                                                            <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                                <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <table class="table" id="goodsTable"></table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<th:block th:replace="process/modal/cancelModal.html"/>
+<th:block th:replace="process/modal/ingModal.html"/>
+<th:block th:replace="process/modal/finishModal.html"/>
+
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+
+<script th:inline="javascript">
+
+    function cancelBtn(){
+        $('#cancelModal').modal('show');
+    }
+
+    function ingBtn(){
+        $('#ingModal').modal('show');
+    }
+
+    function finishBtn(){
+        $('#finishModal').modal('show');
+    }
+
+    function inOperationModal(){
+        $('#operationModal').modal('show');
+    }
+
+    function lostBtn(){
+        $('#lostModal').modal('show');
+    }
+
+    function handoverBtn(){
+        $('#handoverModal').modal('show');
+    }
+
+
+
+</script>
+
+
+<script>
+    var goodsTable = $('#goodsTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/in/goods.dataTable?'+$('#goodsForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+
+        } ],
+
+
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'발주코드','data':''}
+            ,{ 'title':'발주<br>INDEX','data':''}
+            ,{ 'title':'자산상태','data':''}
+            ,{ 'title':'자산처리담당자','data':''}
+            ,{ 'title':'자산처리일','data':''}
+            ,{ 'title':'상품코드','data':''}
+            ,{ 'title':'상품명','data':''}
+            ,{ 'title':'매입원가','data':''}
+            ,{ 'title':'자산코드','data':''}
+            ,{ 'title':'IMEI','data':''}
+            ,{'title':'시리얼','data':''}
+            ,{ 'title':'입고SPEC(예정)','data':''}
+            ,{ 'title':'입고SPEC(확정)','data':''}
+            ,{ 'title':'판매SPEC(예정)','data':''}
+            ,{ 'title':'판매SPEC(확정)','data':''}
+            ,{ 'title':'가공','data':''}
+            ,{ 'title':'도색','data':''}
+            ,{ 'title':'수리','data':''}
+            ,{ 'title':'재검수','data':''}
+            ,{ 'title':'가공항목(예정)','data':''}
+            ,{ 'title':'가공비(예정)','data':''}
+            ,{ 'title':'수리항목(예정)','data':''}
+            ,{ 'title':'수리비(예정)','data':''}
+            ,{ 'title':'도색항목(예정)','data':''}
+            ,{ 'title':'도색비(예정)','data':''}
+            ,{ 'title':'공정예정비(합계)','data':''}
+            ,{ 'title':'공정결과','data':''}
+            ,{ 'title':'공정결과<br>상세','data':''}
+            ,{ 'title':'입고검수항목<br>확정','data':''}
+            ,{ 'title':'입고검수비(확정)','data':''}
+
+        ]
+    });
+
+
+    $('#goodsForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+</script>
+</body>
+</html>
