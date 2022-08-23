@@ -143,6 +143,9 @@ public class DataTableAop {
             return o.getOption();
         }catch (ClassNotFoundException ce){
             return name;
+        }catch (NoSuchElementException nse){
+            System.out.println(enumClass+"\t"+name+"\t no enum value");
+            throw nse;
         }
     }
 

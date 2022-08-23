@@ -113,4 +113,11 @@ public class PoController {
         mav.addObject("msg", "견적서 수정 완료");
         return mav;
     }
+    /** 발주 관리 페이지*/
+    @GetMapping("approved")
+    public ModelAndView approved(){
+        ModelAndView mav = new ModelAndView("po/approved");
+
+        return mav;
+    }
 }

@@ -54,4 +54,14 @@ public class PoRestController {
 
         return rm;
     }
+    /** 발주  관리 데이터테이블 */
+    @PostMapping("approved.dataTable")
+    public ReturnDatatable approved(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("발주관리");
+
+        rd.setData(poMapper.selectPoApprovedDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(poMapper.countPoApprovedDatatable(paramMap.getMap()));
+
+        return rd;
+    }
 }

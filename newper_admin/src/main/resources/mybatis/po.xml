@@ -107,7 +107,7 @@
     </select>
 
     <sql id="includeInDatatable">
-        AND (PO_TYPE = 'EMERGENCY' OR PO_STATE='APPROVAL')
+        AND (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
@@ -127,5 +127,32 @@
             <include refid="includeInDatatable"></include>
         </where>
     </select>
+    <sql id="includePoApprovedDatatable">
+        (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
+
+    </sql>
+    <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            PO
+        <where>
+            <include refid="includePoApprovedDatatable"></include>
+        </where>
+
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countPoApprovedDatatable" resultType="Integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM
+            PO
+        <where>
+            <include refid="includePoApprovedDatatable"></include>
+        </where>
+    </select>
+
 
 </mapper>
