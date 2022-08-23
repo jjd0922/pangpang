@@ -299,6 +299,7 @@
 .section-title {
     text-align: center;
     font-weight: 600;
+    font-size: 24px;
 }
 .section-sub-title {
     text-align: center;
@@ -788,4 +789,161 @@
     font-size: 26px;
     font-weight: 500;
     top: 50%;
+}
+
+/* 로그인 모달창 */
+#loginModal-wrap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0,0,0,0.8);
+    overflow-y: scroll;
+}
+.loginModal {
+    width: 380px;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px 20px 10px 20px;
+}
+.login-input-group li {
+    margin: 10px 0;
+}
+.login-check-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0 15px;
+    font-size: 13px;
+}
+.login-check {
+    font-weight: 600;
+    display: flex;
+    cursor: pointer;
+}
+.login-checkbox {
+    margin-right: 5px;
+}
+.login-find-group {
+    display: flex;
+}
+.login-find-group li {
+    padding-left: 10px;
+}
+.login-find-group li:nth-child(1) {
+    position: relative;
+    padding-right: 10px;
+}
+.login-find-group li:nth-child(1)::after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 80%;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: #d1d1d1;
+}
+.login-find-group a {
+    color: #999;
+}
+.login-button {
+    margin: 20px 0!important;
+}
+.or {
+    font-size: 24px;
+    text-align: center;
+    color: #d1d1d1;
+}
+.dummy-line {
+    width: 100%;
+    height: 25px;
+    position: relative;
+    margin: 7px 0;
+}
+.dummy-line::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 100%;
+    background-color: #d1d1d1;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.sns-login-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 50px 25px;
+}
+.sns-login-group li a {
+    position: relative;
+    display: inline-flex;
+    width: 35px;
+    height: 35px;
+    text-indent: -9999px;
+}
+.sns-login-group li a::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.naver-login::after {
+    background: url("../image/star.png") no-repeat center/contain;
+}
+.kakao-login::after {
+    background: url("../image/star.png") no-repeat center/contain;
+}
+.facebook-login::after {
+    background: url("../image/star.png") no-repeat center/contain;
+}
+.apple-login::after {
+    background: url("../image/star.png") no-repeat center/contain;
+}
+.loginModal-close {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.login-checkbox[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #999;
+    appearance: none;
+    cursor: pointer;
+    transition: background .2s;
+}
+.login-checkbox[type="checkbox"]:checked {
+    background: #314ad7;
+    border: none;
+}
+.login-checkbox[type="checkbox"]:checked::after {
+     content: "";
+     display: inline-block;
+     width: 100%;
+    height: 100%;
+     background: url("../image/star.png") no-repeat center/contain;
+ }
+@media (max-width:991px) {
+    #loginModal-wrap {
+        overflow-y: auto;
+    }
+}
+@media (max-width:380px) {
+    .loginModal {
+        width: 100%;
+        height: 100%;
+    }
 }
