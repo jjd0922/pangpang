@@ -17,4 +17,12 @@ public class BomController {
 
         return mav;
     }
+
+    @GetMapping("bomPop")
+    public ModelAndView newBom() {
+        ModelAndView mav = new ModelAndView("bom/bomPop");
+
+        return mav;
+    }
+
 }

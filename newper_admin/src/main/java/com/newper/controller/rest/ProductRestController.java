@@ -362,7 +362,7 @@ public class ProductRestController {
     }
 
     /**고시정보관리 중분류별 고시정보 템플릿 데이터테이블*/
-    @PostMapping("info.dataTable")
+    @PostMapping("cateInfo.dataTable")
     public ReturnDatatable infoTemplateDatatable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("중분류 고시정보");
 
@@ -374,7 +374,7 @@ public class ProductRestController {
     }
 
     /**고시정보관리 고시정보 템플릿 update*/
-    @PostMapping("info.ajax")
+    @PostMapping("cateInfo.ajax")
     public ReturnMap updateInfoTemplate(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         categoryService.updateCateInfo(paramMap);
