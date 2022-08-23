@@ -55,7 +55,7 @@ $(document).ajaxStart(function(event, xhr, settings){
                 //세션만료로 로그인 팝업 띄우는 경우
                 if(location.pathname == '/loginPop'){
                     //부모창 새로고침
-                    if(location.search.indexOf('refresh=true') != -1){
+                    if(location.search.indexOf('refresh=true') != -1 && window.opener != null){
                         window.opener.location.reload()
                     }
                     window.close();
