@@ -51,11 +51,7 @@
                 </form>
                 <table class="table" id="warehouseModalTable">
                 </table>
-                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
-                    <div class="btn-group">
-                        <a id="warehouseModalBtn" class="btn btn-sm btn-primary" onclick="warehouseSelect()">창고 선택</a>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -77,10 +73,10 @@
         $('#warehouseModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
-            },
+            // select: {
+            //     style: 'multi',
+            //     selector: 'td:first-child'
+            // },
             serverSide: true,
             ajax:{
                 url:'/goods/warehouse.dataTable',
@@ -90,7 +86,6 @@
                 width: '40px',
                 autoWidth: false,
                 orderable: false,
-                className: 'select-checkbox',
                 targets:   [0]
             },
             {
@@ -98,11 +93,11 @@
                 targets:    [1]
             }],
             "columns" : [
-                {'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '';
-                    }}
                 ,{'title':'창고명','data':'WH_NAME', 'defaultContent':''}
                 ,{'title':'창고주소','data':'ADDRESS', 'defaultContent':''}
+                ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="warehouseSelect(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">선택</button>';
+                    }}
             ]
         });
     }

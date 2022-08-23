@@ -241,7 +241,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">옵션1</span>
                                                         </span>
-                                                        <select class="form-control"></select>
+                                                        <select id="productOption1" class="form-control"></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +253,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">옵션2</span>
                                                         </span>
-                                                        <select class="form-control"></select>
+                                                        <select id="productOption2" class="form-control"></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,7 +264,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">옵션3</span>
                                                         </span>
-                                                        <select class="form-control"></select>
+                                                        <select id="productOption3" class="form-control"></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -308,9 +308,9 @@
 
             // 수익률 수익액/매입원가(제품매입원가+공정비용)*100입니다
             var profitPer = totalProfit/((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count) * 100
-            $(this).parent().next().next().next().text(comma(profitPer));
+            $(this).parent().next().next().next().text(Math.round(profitPer));
             totalSell += sell * count
-            totalAmount += buy;
+            totalAmount += buy * count;
         });
 
         $('input[name=poTotalAmount]').val(comma(totalAmount));
@@ -328,33 +328,30 @@
         $('#productModal').modal('hide');
         $('#productPoDiv').css('display', 'none');
         $('#setBtnProductPoModal').css('display', 'none')
-        var spec1 = ''
-        $.each($('select[name=ppSpec1] option:selected'), function (index, value) {
-            spec1 += value.value + '/';
+        var buy_spec = '';
+        var sell_spec = '';
+        $.each($('.specListTd'), function (index, value) {
+            buy_spec += $(this).text() + ':' + $(this).siblings('td').children('input[name=ppSpec1]').val() + '/';
+            sell_spec += $(this).text() + ':' + $(this).siblings('td').children('input[name=ppSpec2]').val() + '/';
         });
 
-        var spec2 = ''
-        $.each($('select[name=ppSpec2] option:selected'), function (index, value) {
-            spec2 += value.value + '/';
-        });
-
-        spec1 = spec1.slice(0, -1);
-        spec2 = spec2.slice(0, -1);
+        buy_spec = buy_spec.slice(0, -1);
+        sell_spec = sell_spec.slice(0, -1);
 
         var product5 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
         product5 += '<td>' + dataMap.P_CODE + '</td>'
-        product5 += '<td>' + $('#ajCode').val() + '</td>';
+        product5 += '<td><input type="text" name="poProductMemo" value="' + $('#ajCode').val() + '" readonly></td>';
         product5 += '<td>' + dataMap.P_NAME + '</td>';
         product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
-        product5 += '<td>' +  + '</td>';
-        product5 += '<td>' +  + '</td>';
-        product5 += '<td>' +  + '</td>';
+        product5 += '<td><input type="text" name="poProductOption1" value="' + $('#productOption1 option:selected').val() + '" readonly></td>';
+        product5 += '<td><input type="text" name="poProductOption2" value="' + $('#productOption2 option:selected').val() + '" readonly></td>';
+        product5 += '<td><input type="text" name="poProductOption3" value="' + $('#productOption3 option:selected').val() + '" readonly></td>';
         product5 += '<td>' + dataMap.P_COST + '</td>';
         product5 += '<td>' + comma($('#ppCost').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCount').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product5 += '<td>' + spec1 + '</td>';
-        product5 += '<td>' + spec2 + '</td>';
+        product5 += '<td>' + buy_spec + '</td>';
+        product5 += '<td>' + sell_spec + '</td>';
         product5 += '<td>' + $('#fixText').val() +'/' + comma($('#fixCost').val()) + '</td>';
         product5 += '<td>' + $('#paintText').val() +'/' + comma($('#paintCost').val()) + '</td>';
         product5 += '<td>' + $('#processText').val() +'/' + comma($('#processCost').val()) + '</td>';
@@ -395,6 +392,7 @@
 
         if(dataMap.CATE_SPEC_LIST != null){
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            specList = specList[0].list.split(',');
             $('#poModalProductSpecList').empty();
             for (var i = 0; i < specList.length; i++) {
                 var specTr
@@ -424,8 +422,23 @@
             }
         }
 
-    }
+        var options = JSON.parse(dataMap.P_OPTION);
+        for (var i = 0; i < 3; i++) {
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append('<<option value="">없음</option>>');
+        }
 
+        for (var i = 0; i < options.length; i++) {
+            var text = '';
+            for (var j = 0; j < options[i].values.length; j++) {
+                text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+            }
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append(text);
+        }
+    }
 
     function openProductModal(){
         $('#productModal').modal('show');
@@ -476,10 +489,10 @@
         $('#productModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
-            },
+            // select: {
+            //     style: 'multi',
+            //     selector: 'td:first-child'
+            // },
             serverSide: true,
             ajax:{
                 url:'/product/product.dataTable',
@@ -489,7 +502,7 @@
                 width: '40px',
                 orderable: false,
                 autoWidth: false,
-                className: 'select-checkbox',
+                // className: 'select-checkbox',
                 targets:   [0]
             },
             {
@@ -497,10 +510,9 @@
                 targets:    [1]
             }],
             "columns" : [
-                {'class':'select-checkbox', 'title':'선택','data':'CATE_SPEC_LIST','defaultContent':'','render':  function(data,type,full,meta){
-                        return '<input type="hidden" id="productSpecList" value="' + data + '">';
+                {'title':'상품코드','data':'P_CODE', 'defaultContent':'', 'render' : function (data, type, full, meta) {
+                        return data + '<input type="hidden" id="productSpecList" value="' + full.CATE_SPEC_LIST + '">';
                     }}
-                , {'title':'상품코드','data':'P_CODE', 'defaultContent':''}
                 ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
                 ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
                 ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
