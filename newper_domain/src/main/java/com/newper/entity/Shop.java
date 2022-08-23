@@ -19,27 +19,27 @@ public class Shop extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shopIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SHOP_PI_IDX", referencedColumnName = "piIdx")
-    private PayInfo payInfo;
-
-    private String shopState;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "SHOP_PI_IDX", referencedColumnName = "piIdx")
+//    private PayInfo payInfo;
+//
+//    private String shopState;
 
     private String shopName;
 
-    private String shopType;
-
-    private String shopPoint;
-
+//    private String shopType;
+//
+//    private String shopPoint;
+//
     private Float shopMileage;
 
     private String shopBasket;
-
-    private String shopHdMeta;
-
-    private String shopHdLoginGroup;
-
-    private String shopDesign;
+//
+//    private String shopHdMeta;
+//
+//    private String shopHdLoginGroup;
+//
+//    private String shopDesign;
 
 
 
