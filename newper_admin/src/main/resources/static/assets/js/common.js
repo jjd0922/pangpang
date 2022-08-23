@@ -155,10 +155,8 @@ if($.fn.dataTable !== undefined){
             infoFiltered: '(총 _MAX_개의 자료에서 재검색)',
             lengthMenu: '_MENU_',
             zeroRecords: '검색 결과가 없습니다.',
-        },
-        buttons: {
-            buttons: buttonsSelect(true)
         }
+        ,buttons: buttonsSelect(true)
         ,'footerCallback':function(tfoot, data, start, end, display){
             //init하기 전에 tfoot 태그 있어야함
             if(tfoot!=null){
@@ -476,6 +474,13 @@ function imageSizeCheck(obj){
                 return false;
             }
         }
+    }
+}
+function spanTag(text, className){
+    if(className != null){
+        return '<span class="'+className+'">'+text+'</span>';
+    }else{
+        return '<span>'+text+'</span>';
     }
 }
 //td tag return

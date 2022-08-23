@@ -49,6 +49,7 @@ public class DataTableAop {
 
 
         enumClasses.put("cate_display","CateDisplay");
+        enumClasses.put("cate_spec","CateSpec");
         enumClasses.put("cate_type","CateType");
         enumClasses.put("cc_cal_type","CcCalType");
         enumClasses.put("cc_cycle","CcCycle");
@@ -65,11 +66,13 @@ public class DataTableAop {
         enumClasses.put("giftg_state","GiftgState");
         enumClasses.put("gift_state","GiftState");
         enumClasses.put("g_stock_state","GStockState");
+        enumClasses.put("hw_state","HwState");
+        enumClasses.put("loc_state","LocState");
         enumClasses.put("menu_type","MenuType");
         enumClasses.put("pe_state","PeState");
         enumClasses.put("pn_process","PnProcess");
-
         enumClasses.put("po_state","PoState");
+        enumClasses.put("po_type","PoType");
         enumClasses.put("p_state","PState");
         enumClasses.put("p_type1","PType1");
         enumClasses.put("p_type2","PType2");
@@ -114,6 +117,11 @@ public class DataTableAop {
                     addMap.put(key + "_STR", getEnumOption(key.toLowerCase(), (String)value));
                 }
             }else if(key.indexOf("_LIST") != -1){
+                //제외
+                if(key.equals("CATE_SPEC_LIST")){
+                    continue;
+                }
+
                 int indexOfList = key.lastIndexOf("_LIST");
                 String columnName = key.substring(0, indexOfList).toLowerCase();
                 if (enumClasses.containsKey(columnName)) {
