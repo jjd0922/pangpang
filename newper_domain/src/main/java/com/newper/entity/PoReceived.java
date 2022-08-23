@@ -4,8 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.nio.channels.Pipe;
-import java.security.PrivateKey;
 import java.sql.Time;
 import java.util.Date;
 

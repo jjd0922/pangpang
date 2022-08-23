@@ -10,6 +10,8 @@ import java.util.Map;
 public interface PoMapper {
     /** 발주 품의 조회 쿼리문 **/
     List<Map<String, Object>> selectPoDataTable(Map<String, Object> param);
+    /** 발주 품의 조회 쿼리문 **/
+    int countPoDataTable(Map<String, Object> param);
 
     /** 견적서 조회 쿼리문 */
     List<Map<String, Object>> selectEstimateDataTable(Map<String, Object> param);
@@ -23,4 +25,10 @@ public interface PoMapper {
     List<Map<String, Object>> selectInDatatable(Map<String, Object> param);
     /**입고관리 datatable count*/
     int countInDatatable(Map<String, Object> param);
+
+
+    /** 발주 관리 조회 쿼리문 **/
+    List<Map<String, Object>> selectPoApprovedDatatable(Map<String, Object> param);
+    /** 발주 관리 조회 쿼리문 **/
+    int countPoApprovedDatatable(Map<String, Object> param);
 }

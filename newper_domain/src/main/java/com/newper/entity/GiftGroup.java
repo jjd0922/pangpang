@@ -47,7 +47,7 @@ public class GiftGroup extends CreatedEntity {
             throw new MsgException("상품권 발행명을 입력해주세요.");
         } else if (getGiftgState() == null) {
             throw new MsgException("상품권 등록상태를 선택해주세요.");
-        } else if (getGiftgStartDate() == null || getGiftgEndDate() == null) {
+        } else if (getGiftgStartDate() == null || getGiftgEndDate() == null || getGiftgStartDate().isAfter(getGiftgEndDate()) || getGiftgEndDate().isBefore(LocalDate.now())) {
             throw new MsgException("올바른 상품권 유효기간을 설정해주세요.");
         } else if (getGiftgCnt() <= 0) {
             throw new MsgException("올바른 상품권 생산수량을 설정해주세요.");

@@ -1,0 +1,183 @@
+<!--메인헤더-->
+<header th:fragment="main-header">
+    <div class="header-top">
+        <div class="container">
+            <div class="header-top-inner">
+                <h1 class="logo">
+                    <a th:href="@{/}">
+                        <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
+                    </a>
+                </h1>
+                <div class="searchSection">
+                    <div class="searchBar">
+                        <form name="searchForm" id="searchForm" action="" method="get" onsubmit="return false;">
+                            <input type="text" id="searchInput" name="i" class="main-search" value="">
+                        </form>
+                        <div class="search-icon"></div>
+                    </div>
+                    <div class="searchBar-open">
+                        <div class="searchBar-banner-slide">
+                            <div class="swiper swiper-searchBar">
+                                <ul class="swiper-wrapper">
+                                    <li class="swiper-slide">폭염주의보 발령! 에어컨 써큘레이터 초특가!</li>
+                                    <li class="swiper-slide">금손이 되기위한 나만의 잇템</li>
+                                </ul>
+                            </div>
+                            <div class="searchBar-prev"></div>
+                            <div class="searchBar-next"></div>
+                        </div>
+                        <div class="searchWord">
+                            <ul class="searchWord-tab">
+                                <li class="on">인기검색어</li>
+                                <li>추천검색어</li>
+                            </ul>
+                            <div class="searchWord-content">
+                                <div class="popular-searchWord on">
+                                    <ul>
+                                        <li>
+                                            <span class="ranking top-ranking">1</span>
+                                            <a href="javascript:;">노트북</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking top-ranking">2</span>
+                                            <a href="javascript:;">모니터</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking top-ranking">3</span>
+                                            <a href="javascript:;">컴퓨터</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">4</span>
+                                            <a href="javascript:;">아이패드</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">5</span>
+                                            <a href="javascript:;">TV</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">6</span>
+                                            <a href="javascript:;">냉장고</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">7</span>
+                                            <a href="javascript:;">선풍기</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">8</span>
+                                            <a href="javascript:;">그램</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">9</span>
+                                            <a href="javascript:;">맥북</a>
+                                        </li>
+                                        <li>
+                                            <span class="ranking">10</span>
+                                            <a href="javascript:;">lg 그램</a>
+                                        </li>
+                                    </ul>
+                                    <p>2022-08-29 13:40 기준</p>
+                                </div>
+                                <div class="suggestion-searchWord">
+                                    <ul>
+                                        <li><a href="javascript:;">노트북</a></li>
+                                        <li><a href="javascript:;">여름맞이 삼성 에어컨</a></li>
+                                        <li><a href="javascript:;">뉴퍼마켓 런칭 기념</a></li>
+                                        <li><a href="javascript:;">아이패드</a></li>
+                                        <li><a href="javascript:;">데스크탑 세일</a></li>
+                                        <li><a href="javascript:;">여름장마 시작!</a></li>
+                                        <li><a href="javascript:;">에어랩</a></li>
+                                        <li><a href="javascript:;">태블릿</a></li>
+                                        <li><a href="javascript:;">LG 스마트TV 특별혜택</a></li>
+                                        <li><a href="javascript:;">게이밍 할일전</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="userMenu">
+                    <ul>
+                        <li>
+                            <a href="javascript:;"><i class="login"></i>로그인</a> <!--모달-->
+                            <!-- 로그인 한 경우
+                            <a href="javascript:;"><i class="logout"></i>로그아웃</a>
+                            -->
+                        </li>
+                        <li>
+                            <a th:href="@{/join}" class="color-blue"><i class="signUp"></i>회원가입</a>
+                            <!-- 로그인 한 경우
+                            <a th:href="@{/myPage}" ><i class="myShopping"></i>마이쇼핑</a>
+                            -->
+                        </li>
+                        <li>
+                            <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav>
+        <div class="menu-btn-wrap">
+            <div class="menu-btn">
+            </div>
+            <p>전체 카테고리</p>
+        </div>
+        <div class="swiper swiper-gnb">
+            <ul class="gnb swiper-wrapper">
+                <!--<li class="swiper-slide new"><a href="javascript:;">단돈천원</a></li>-->
+                <li class="swiper-slide new"><a th:href="@{/newLaunch}">신상입고</a></li>
+                <!--<li class="swiper-slide"><a th:href="@{/}">균일가특판</a></li>-->
+                <li class="swiper-slide"><a th:href="@{/best}">베스트100</a></li>
+                <li class="swiper-slide new"><a th:href="@{/timeSale}">타임세일</a></li>
+                <li class="swiper-slide"><a th:href="@{/lastSecond}">품절임박</a></li>
+                <li class="swiper-slide"><a th:href="@{/event}">이벤트/기획전</a></li>
+                <li class="swiper-slide"><a th:href="@{/review}">상품리뷰</a></li>
+            </ul>
+            <div class="swiper-gnb-next"></div>
+        </div>
+        <div class="snb new"><a href="javascript:;">주간pick</a></div> <!--외부링크-->
+    </nav>
+</header>
+<!--메인헤더 끝-->
+
+<!--회원가입 헤더-->
+<header th:fragment="main-header-join">
+    <div class="header-top">
+        <div class="container">
+            <div class="header-top-inner">
+                <h1 class="logo">
+                    <a th:href="@{/}">
+                        <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
+                    </a>
+                </h1>
+                <div class="userMenu">
+                    <ul>
+                        <li>
+                            <a href="javascript:;"><i class="login"></i>로그인</a> <!--모달-->
+                            <!-- 로그인 한 경우
+                            <a href="javascript:;"><i class="logout"></i>로그아웃</a>
+                            -->
+                        </li>
+                        <li>
+                            <a th:href="@{/join}" class="color-blue"><i class="signUp"></i>회원가입</a>
+                            <!-- 로그인 한 경우
+                            <a th:href="@{/myPage}" ><i class="myShopping"></i>마이쇼핑</a>
+                            -->
+                        </li>
+                        <li>
+                            <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--회원가입 끝-->

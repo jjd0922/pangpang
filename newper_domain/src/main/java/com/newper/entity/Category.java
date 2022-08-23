@@ -1,14 +1,15 @@
 package com.newper.entity;
 
+import com.newper.constant.CateSpec;
 import com.newper.converter.ConvertList;
+import com.newper.converter.ConvertMap;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @DynamicUpdate
@@ -41,14 +42,23 @@ public class Category extends BaseEntity {
     private String cateImage;
     private int cateOrder;
 
-    private List<String> cateSpec_list;
+    @Enumerated(EnumType.STRING)
+    private CateSpec cateSpec;
+
+
+    @Builder.Default
+    @Convert(converter = ConvertList.class)
+    private List<Map<String, Object>> cateSpecList = new ArrayList<>();
+
+   /* private List<String> cateSpecList;*/
 
     private String cateMemo;
     /**
      * 중분류에서 사용하는 고시정보 json
      */
     @Builder.Default
-    private Map<String, Object> cateInfo = new HashMap<>();
+    @Convert(converter = ConvertList.class)
+    private List<Map<String, Object>> cateInfo = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.DETACH)
     private List<Product> categoryProductList;

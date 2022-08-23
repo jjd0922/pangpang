@@ -48,22 +48,6 @@ public class PoController {
         return mav;
     }
 
-    /** 발주품의 생성 */
-    @PostMapping(value = "poPop")
-    public ModelAndView poPopPost(ParamMap paramMap, MultipartFile poFile){
-        ModelAndView mav = new ModelAndView("main/alertMove");
-        if (poFile.getSize() == 0) {
-            throw new MsgException("파일을 첨부해 주세요");
-        }
-
-        Integer poIdx = poService.savePo(paramMap, poFile);
-
-        mav.addObject("loc", "/po/poPop/" + poIdx);
-        mav.addObject("msg", "발주품의 등록 완료");
-
-        return mav;
-    }
-
     /** 발주품의 상세 & 수정 페이지 */
     @GetMapping(value = "poPop/{poIdx}")
     public ModelAndView poPopDetail(@PathVariable long poIdx){
@@ -127,6 +111,13 @@ public class PoController {
 
         mav.addObject("loc", "/po/estimatePop/" + peIdx);
         mav.addObject("msg", "견적서 수정 완료");
+        return mav;
+    }
+    /** 발주 관리 페이지*/
+    @GetMapping("approved")
+    public ModelAndView approved(){
+        ModelAndView mav = new ModelAndView("po/approved");
+
         return mav;
     }
 }

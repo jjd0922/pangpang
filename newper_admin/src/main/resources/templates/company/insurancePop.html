@@ -7,7 +7,7 @@
     <title th:text="${insurance} ? '보증보험 조회/수정'">보증보험 등록</title>
     <th:block th:replace="common/css.html"></th:block>
     <style>
-        .table-hover {
+        #comModalTable {
             width: 100% !important;
         }
     </style>
@@ -395,15 +395,11 @@
     }
 
     function selectCompany(row) {
-        var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
+        var rowData = getDatatablemap('comModalTable', row);
 
         $('#searchComModal').modal('hide');
         $('#regiForm input[name="comName"]').val(rowData.COM_NAME).attr('readonly', true);
         $('input[name="comIdx"]').val(rowData.COM_IDX);
-    }
-
-    function dontChange(name) {
-        debugger;
     }
 </script>
 <script>

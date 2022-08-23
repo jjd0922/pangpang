@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+
 import com.newper.entity.common.Address;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -14,9 +15,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 public class Warehouse {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer whIdx;
 
     private String whName;

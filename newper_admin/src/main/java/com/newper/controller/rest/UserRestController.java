@@ -49,6 +49,8 @@ public class UserRestController {
     public ReturnDatatable user(ParamMap paramMap, HttpServletResponse response) {
         ReturnDatatable rd = new ReturnDatatable("사용자관리");
 
+        paramMap.multiSelect("U_STATE");
+
 
         rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
         rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
@@ -90,11 +92,17 @@ public class UserRestController {
 
         return rd;
     }
-/*
-    */
-/** 회원관리 일괄변경*/
 
-
-
+    @PostMapping("userChange.ajax")
+    public ReturnMap userChange(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        System.out.println(paramMap.getMap());
+        List<String> uIdxs = paramMap.getList("uIdx[]");
+        for(String uIdx : uIdxs){
+            userService.userUpdateState(Integer.parseInt(uIdx), paramMap.getString("U_STATE_STR"));
+        }
+        rm.setMessage("변경이 완료되었습니다.");
+        return rm;
+    }
 }
 

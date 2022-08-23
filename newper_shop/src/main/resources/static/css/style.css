@@ -15,22 +15,19 @@
     justify-content: center;
     margin-bottom: 15px;
 }
-.swiper-slide img {
-    cursor: pointer;
-}
-.swiper-newperDeal .swiper-slide img {
+.swiper-newperDeal img {
     width: 180px;
     height: 180px;
 }
-.swiper-event-group1 .swiper-slide img, .swiper-event-group3 .swiper-slide img {
+.swiper-event-group1 img, .swiper-event-group3 img {
     width: 240px;
     height: 240px;
 }
-.swiper-event-group2 .swiper-slide img {
+.swiper-event-group2 img {
     width: 220px;
     height: 220px;
 }
-.swiper-event-group4 .swiper-slide img {
+.swiper-event-group4 img {
     width: 150px;
     height: 150px;
 }
@@ -324,7 +321,11 @@
     font-size: 16px;
     font-weight: 500;
 }
-.time i {
+.time-remaining {
+    display: flex;
+    align-items: center;
+}
+.time-remaining i {
     display: inline-block;
     width: 21px;
     height: 21px;
@@ -380,8 +381,7 @@
     margin-left: 2px;
 }
 
-
-    /*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
+/*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
 .swiper-event-group2 {
     height: 530px;
 }
@@ -466,7 +466,7 @@
 }
 .todayBest-tab-wrap {
     width: calc(100% - 230px);
-    margin-left: 40px;
+    padding-left: 40px;
 }
 .realTime-trend>ul>li span {
     display: flex;
@@ -490,7 +490,6 @@
 .todayBest-tab {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 .todayBest-tab li.all {
     padding: 7px 65px;
@@ -501,6 +500,7 @@
     border: 1px solid #d1d1d1;
     cursor: pointer;
     margin-bottom: 5px;
+    margin-right: 5px;
 }
 .todayBest-tab li.on {
     color: #fff;
@@ -514,6 +514,10 @@
 }
 .todayBest-content>li .swiper-all {
     width: calc(100% + 40px);
+}
+.swiper-todayBest {
+    width: calc(100% - 40px);
+    margin: 0;
 }
 .swiper-todayBest .item-img img {
     width: 230px;
@@ -545,6 +549,9 @@
 }
 .realReview-inner>div {
     margin-bottom: 5px;
+}
+.realReview-inner>div:not(:nth-of-type(1)) {
+    padding: 0 15px;
 }
 .realReview-inner>div:last-child {
     margin-bottom: 0;
@@ -587,8 +594,8 @@
 .realReview-content {
     width: 280px;
     height: 150px;
-    background: url("../image/review-text-bg.png") no-repeat center/contain;
-    padding: 15px;
+    background: url("../image/review-text-bg.png") no-repeat center/100% auto;
+    padding: 15px!important;
 }
 .realReview-content-top {
     display: flex;
@@ -635,74 +642,9 @@
     width: 100%;
 }
 
-    /*** MD 추천 카테고리 ***/
-.md-tab-wrap {
-    margin-top: 40px;
-}
-.md-tab>li {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    padding: 30px 0;
-    font-size: 18px;
-    cursor: pointer;
-}
-.md-tab>li.on {
-    background-color: #f7f7f7;
-}
-.md-tab>li.on a{
-    color: #314ad7;
-    font-weight: 500;
-}
-.md-tab>li>a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.md-tab-title{
-    margin-top: 15px;
-}
-.md-icon {
-    display: block;
-    width: 50px;
-    height: 45px;
-}
-.md-icon1 {
-    background: url("../image/category-icon1.png") no-repeat center/contain;
-}
-.md-icon2 {
-    background: url("../image/category-icon2.png") no-repeat center/contain;
-}
-.md-icon3 {
-    background: url("../image/category-icon3.png") no-repeat center/contain;
-}
-.md-icon4 {
-    background: url("../image/category-icon4.png") no-repeat center/contain;
-}
-.md-icon5 {
-    background: url("../image/category-icon5.png") no-repeat center/contain;
-}
-.md-icon6 {
-    background: url("../image/category-icon6.png") no-repeat center/contain;
-}
-.md-icon7 {
-    background: url("../image/category-icon7.png") no-repeat center/contain;
-}
-.md-icon8 {
-    background: url("../image/category-icon8.png") no-repeat center/contain;
-}
-.md-icon9 {
-    background: url("../image/category-icon9.png") no-repeat center/contain;
-}
+/*** MD 추천 카테고리 ***/
 .md-tab-content {
     background-color: #f7f7f7;
-    padding: 35px 0;
-}
-.md-tab-content>li {
-    display: none;
-}
-.md-tab-content>li.on {
-    display: block;
 }
 .swiper-md-content>ul>li {
     background-color: #fff;
@@ -747,7 +689,7 @@
     height: 240px;
 }
 
-    /*** 공지사항 ***/
+/*** 공지사항 ***/
 .notice-wrap {
     display: flex;
 }
@@ -808,4 +750,42 @@
 .storeInfo-next {
     background: url(../image/storeInfo-next.png) no-repeat center/contain;
     right: 0;
+}
+
+/** 베스트 100 **/
+.thumb-list>li {
+    position: relative;
+}
+.best, .best-down {
+    display: inline-block;
+    width: 56px;
+    height: 68px;
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    z-index: 1;
+}
+.best {
+    background: url(../image/best.png) no-repeat center/contain;
+}
+.best-down {
+    background: url(../image/best-down.png) no-repeat center/contain;
+}
+.best>span, .best-down>span {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-style: normal;
+}
+.best>span {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    top: 41%;
+}
+.best-down>span {
+    color: #000;
+    font-size: 26px;
+    font-weight: 500;
+    top: 50%;
 }

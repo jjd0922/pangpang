@@ -28,7 +28,7 @@
             <div class="content container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form id="createForm" method="POST" enctype="multipart/form-data">
+                        <form id="createForm">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
@@ -254,8 +254,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">제품상태(품목구분1)</span>
                                                         </span>
-                                                        <select name="poProductState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.PoProductState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poState} == ${opt.name()}"></option>
+                                                        <select name="poBuyProductType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poBuyProductType} == ${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -304,7 +304,7 @@
                                                             <span class="input-group-text">채널유형</span>
                                                         </span>
                                                         <select name="poSellChannel" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.Channel).values()}" th:if="${opt.getOption() == '승인대기' or opt.getOption() == '긴급발주'}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poSellChannel} == ${opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.Channel).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${po != null} and ${po.poSellChannel} == ${opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -448,8 +448,8 @@
                                                             <span class="input-group-text">재매입</span>
                                                         </span>
                                                         <select name="poRepurchase" class="form-control select">
-                                                            <option value="Y" th:selected="${po != null} ? ${po.poRepurchase == 'Y'}">Y</option>
-                                                            <option value="N" th:selected="${po != null} ? ${po.poRepurchase == 'N'}">N</option>
+                                                            <option value="false">N</option>
+                                                            <option value="true" th:selected="${po != null} ? ${po.poRepurchase == 'Y'}">Y</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -710,6 +710,8 @@
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
+
 <script th:src="@{/assets/js/common.js}"></script>
 
 <th:block th:replace="@{company/modal/companyModal.html}"/>
@@ -718,40 +720,34 @@
 <th:block th:replace="@{company/modal/contractModal.html}"/>
 
 <script>
-    $(function () {
-        priceSetting();
-    });
-
     function saveAction(){
-        $("#createForm").submit();
+        $.ajax({
+            url: location.pathname + '.ajax',
+            processData: false,
+            contentType: false,
+            type: 'post',
+            data: new FormData($('#createForm')[0])
+        });
     }
 
-    $("#saveBtn").on("click", saveAction);
 
     // 거래처 검색 선택
+    var companyFlag = '';
     function openCompanyModal_flag (flag) {
+        companyFlag = flag;
         openCompanyModal();
-        $('#companyModalBtn').removeAttr('onclick');
-        $('#companyModalBtn').attr('onclick', 'selectCompany("' + flag + '")');
     }
+    function companySelect(row){
+        var rowData = $('#companyModalTable').DataTable().rows(row).data()[0];
 
-    function selectCompany(flag){
-        var comIdx = dataTableGetSelectedDataArray('companyModalTable', 'COM_IDX');
-        var comName = dataTableGetSelectedDataArray('companyModalTable', 'COM_NAME');
-
-        if(comIdx.length != 1){
-            alert('거래처는 하나만 선택해 주세요');
-            return false;
-        }else{
-            if (flag == 'BUY') {
-                $('input[name=comIdx_buy]').val(comIdx);
-                $('input[name=comName_buy]').val(comName);
-            } else {
-                $('input[name=comIdx_sell]').val(comIdx);
-                $('input[name=comName_sell]').val(comName);
-            }
-            $('#companyModal').modal('hide');
+        if (companyFlag == 'BUY') {
+            $('input[name=comIdx_buy]').val(rowData.COM_IDX);
+            $('input[name=comName_buy]').val(rowData.COM_NAME);
+        } else {
+            $('input[name=comIdx_sell]').val(rowData.COM_IDX);
+            $('input[name=comName_sell]').val(rowData.COM_NAME);
         }
+        $('#companyModal').modal('hide');
     }
 
     // 창고 검색 선택
@@ -769,26 +765,24 @@
         }
     }
 
-    // 계약서 검색 선택
-    function contractSelect () {
-        var ccIdx = dataTableGetSelectedDataArray('contractModalTable', 'CC_ID');
-        var ccName = dataTableGetSelectedDataArray('contractModalTable', 'CC_NAME');
-        var ccType = dataTableGetSelectedDataArray('contractModalTable', 'CC_TYPE_STR');
-        var ccCycle = dataTableGetSelectedDataArray('contractModalTable', 'CC_CYCLE_STR');
-        var ccNum = dataTableGetSelectedDataArray('contractModalTable', 'CC_NUM');
+    //거래처 모달에서 선택
+    function contractSelect(row){
+        var rowData = $('#contractModalTable').DataTable().rows(row).data()[0];
 
-        if(ccIdx.length != 1){
-            alert('계약서는 하나만 선택해 주세요');
-            return false;
-        }else{
-            $('input[name=ccIdx]').val(ccIdx);
-            $('input[name=ccName]').val(ccName);
-            $('input[name=ccType]').val(ccType);
-            $('input[name=ccCycle]').val(ccCycle);
-            $('input[name=ccNum]').val(ccNum);
-            $('#contractModal').modal('hide');
-        }
+        $('input[name=ccIdx]').val(rowData.CC_IDX);
+        $('input[name=ccName]').val(rowData.CC_NAME);
+        $('input[name=ccType]').val(rowData.CC_TYPE_STR);
+        $('input[name=ccCycle]').val(rowData.CC_CYCLE_STR);
+        $('input[name=ccNum]').val(rowData.CC_NUM);
+        $('#contractModal').modal('hide');
     }
+</script>
+<script>
+    $(function () {
+        priceSetting();
+    });
+
+    $("#saveBtn").on("click", saveAction);
 </script>
 </body>
 </html>

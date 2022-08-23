@@ -15,12 +15,15 @@
     header {
         display: none;
     }
-
+}
+@media (max-width:991px) {
     /*** 모바일 header ***/
     .mo-header {
         display: block;
         width: 100%;
-        position: fixed;
+        position: sticky;
+        top: 0;
+        left: 0;
         z-index: 9999;
         background-color: #fff;
     }
@@ -135,7 +138,7 @@
     }
 
     .swiper-event-group1 {
-        padding-right: 7%;
+        padding-right: 9%;
     }
 
     .swiper-event-group2 {
@@ -189,7 +192,13 @@
     }
 
     .item-img {
-        padding: 0;
+        padding: 0 10px;
+    }
+
+    .item-img img {
+        width: 100%!important;
+        height: auto!important;
+        object-fit: contain;
     }
 
     .item-footer {
@@ -201,24 +210,48 @@
         height: 16px;
     }
 
+    @media (max-width: 500px) {
+        .swiper-event-group1 .item-price, .swiper-event-group2 .item-price, .swiper-event-group4 .item-price {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .swiper-event-group1 .real-price, .swiper-event-group2 .real-price, .swiper-event-group4 .real-price {
+            padding-left: 0;
+        }
+        .swiper-event-group4 .item-footer span i {
+            display: none;
+        }
+    }
+    @media (max-width: 460px) {
+        .swiper-todayBest .item-price, .swiper-md-content .item-price {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .swiper-todayBest .real-price, .swiper-md-content .real-price {
+            padding-left: 0;
+        }
+    }
     @media (max-width: 400px) {
         .item-condition {
             padding: 2px 5px;
             font-size: 10px;
         }
-
         .discount-rate {
             font-size: 21px;
+        }
+        .swiper-md-content .item-footer span i {
+            display: none;
+        }
+    }
+    @media (max-width: 370px) {
+        .swiper-event-group1 .item-footer span i, .swiper-todayBest .item-footer span i {
+            display: none;
         }
     }
 
     /* 뉴퍼딜 */
     .newperDeal .swiper-slide {
         padding: 20px;
-    }
-
-    .newperDeal .item-img {
-        padding: 0 25% 0;
     }
 
     .newperDeal .item-title {
@@ -245,49 +278,72 @@
         .time {
             flex-direction: column;
         }
-        .newperDeal .item-img {
-            padding: 20px 0 0 0;;
-        }
+
         .grade-wrap {
             flex-direction: column;
         }
+
         .grade {
             margin-right: 0;
             margin-bottom: 2px;
         }
+
         .item-inner-wrap.item-bedge-wrap {
             flex-direction: column;
             align-items: start;
         }
+
         .item-bedge {
             display: flex;
             order: 2;
         }
+
         .item-bedge span:first-child {
             margin-right: 3px;
         }
+
         .buy-count {
             margin-bottom: 5px;
             order: 1;
         }
+
         .item-color > span {
             width: 13px;
             height: 13px;
         }
+
         .item-color > span > span {
             width: 9px;
             height: 9px;
         }
+
         .swiper-newperDeal .item-info .item-inner-wrap:last-child {
             flex-wrap: wrap;
             justify-content: end;
         }
     }
     /*** 한정수량 일일특가 (이벤트 상품 그룹 2) ***/
+    .swiper-event-group2 {
+        height: auto;
+    }
+
+    .swiper-event-group2 .swiper-slide {
+        height: calc((100% - 10px) / 2) !important;
+    }
+
+    .swiper-event-group2 .item-img {
+        padding: 0;
+    }
+
     .swiper-event-group2 .item-info {
         padding-left: 20px;
     }
 
+    @media (max-width: 550px) {
+        .swiper-event-group2 {
+            height: 520px;
+        }
+    }
     @media (max-width: 400px) {
         .swiper-event-group2 .swiper-slide {
             padding: 5px;
@@ -304,30 +360,63 @@
         padding-right: 12%!important;
     }
 
+    /*** TODAY BEST ***/
+    .realTime-trend {
+        display: none;
+    }
+    .todayBest-tab-wrap {
+        width: 100%;
+        padding-left: 0;
+    }
+    .todayBest-tab li {
+        padding: 5px 20px!important;
+    }
+
     /*** MD 추천 카테고리 ***/
-    .md-tab>li {
+    .ctg-tab>li {
         flex: none;
         width: auto;
         padding: 15px;
         font-size: 16px;
         height: 128px;
     }
-    .swiper-md-tab.container {
+    .swiper-ctg-tab.container {
         padding: 0;
     }
-    .md-tab-title {
+    .ctg-tab-title {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    .md-tab-content .swiper-all {
-        padding: 0 10px;
+    .ctg-tab-content .swiper-all {
+        padding: 0 15px;
     }
     .swiper-md-content {
         padding: 0;
     }
     .md-content-pagination {
         display: none;
+    }
+
+    /*** 리얼리뷰 ***/
+    .swiper-realReview.container {
+        padding: 0 15px;
+    }
+    .realReview-img img {
+        width: 95%;
+        height: auto;
+        object-fit: contain;
+    }
+    .realReview-photo {
+        width: 40%!important;
+        height: auto!important;
+    }
+    .realReview-content {
+        width: 90%;
+        height: auto;
+        background: #f6f6f6;
+        border-radius: 15px;
+        margin-bottom: 20px!important;
     }
 
     /*** 공지사항 ***/

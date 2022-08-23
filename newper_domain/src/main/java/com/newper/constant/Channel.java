@@ -4,7 +4,7 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 채널*/
+/** 채널. PO.PO_SELL_CHANNEL*/
 @Getter
 @AllArgsConstructor
 public enum Channel implements EnumOption {

@@ -59,6 +59,15 @@ public class ParamMap {
     public int getInt(String key) {
         return Integer.parseInt( map.get(key)+"" );
     }
+    /** 값이 없는 경우 MsgException*/
+    public int getInt(String key, String exceptionMsg) {
+        String value=map.get(key)+"";
+        value=value.replaceAll("[^0-9]","");
+        if(value.equals("")){
+            throw new MsgException(exceptionMsg);
+        }
+        return Integer.parseInt(value);
+    }
     public long getLong(String key) {
         return getLong(key, false);
     }

@@ -13,6 +13,7 @@ import com.newper.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -47,43 +48,52 @@ public class CategoryService {
 
     /**카테고리 등록*/
     @Transactional
-    public int categoryInsert(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail){
+    public int categoryInsert(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail) {
         Category category = paramMap.mapParam(Category.class);
-        int cate_depth = Integer.parseInt(paramMap.get("CATE_DEPTH")+"");
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("CATE_DEPTH",cate_depth);
-        map.put("CATE_TYPE",paramMap.get("CATE_TYPE"));
-        Integer cateOrder = categoryMapper.maxCategoryOrderByCateDepth(map);
-        if(cateOrder==null){
-            cateOrder=0;
+        List list = paramMap.getList("list");
+        System.out.println("list : "+ list);
+        List<Map<String, Object>> cateSpecList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> map2 = new HashMap<>();
+            map2.put("list", list.get(i));
+            cateSpecList.add(map2);
+            System.out.println("cateSpecList : " + cateSpecList);
         }
-        cateOrder=cateOrder+1;
+        int cate_depth = Integer.parseInt(paramMap.get("CATE_DEPTH") + "");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("CATE_DEPTH", cate_depth);
+        map.put("CATE_TYPE", paramMap.get("CATE_TYPE"));
+        Integer cateOrder = categoryMapper.maxCategoryOrderByCateDepth(map);
+
+        if (cateOrder == null) {
+            cateOrder = 0;
+        }
+        cateOrder = cateOrder + 1;
 
         category.setCateOrder(cateOrder);
         category.setCateMemo("");
         category.setCateNick("");
-        List<String > list = new ArrayList<>();
-        category.setCateSpec_list(list);
+        category.setCateSpecList(category.getCateSpecList());
 
-        if (paramMap.get("CATE_PARENT_IDX")!=null){
-            Category parentCategory = categoryRepo.findById(Integer.parseInt(paramMap.get("CATE_PARENT_IDX")+"")).get();
+        if (paramMap.get("CATE_PARENT_IDX") != null) {
+            Category parentCategory = categoryRepo.findById(Integer.parseInt(paramMap.get("CATE_PARENT_IDX") + "")).get();
             category.setParentCategory(parentCategory);
             category.setCateIdx(null);
         }
 
         String iconFilePath = "";
         String thumbnailFilePath = "";
-        if(icon.getSize()!=0){
+        if (icon.getSize() != 0) {
             iconFilePath = Common.uploadFilePath(icon, "category/icon/", AdminBucket.OPEN);
         }
-        if(thumbnail.getSize()!=0){
-            thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/",AdminBucket.OPEN);
+        if (thumbnail.getSize() != 0) {
+            thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/", AdminBucket.OPEN);
         }
-
         category.setCateIcon(iconFilePath);
         category.setCateThumbnail(thumbnailFilePath);
-        categoryRepo.saveAndFlush(category);
+        category.setCateSpecList(cateSpecList);
 
+        categoryRepo.saveAndFlush(category);
 
         return category.getCateIdx();
     }
@@ -92,18 +102,19 @@ public class CategoryService {
     @Transactional
     public int categoryUpdate(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail){
         Category category = categoryRepo.findById(paramMap.getInt("CATE_IDX")).get();
+
         Category categoryParam = paramMap.mapParam(Category.class);
         categoryParam.setCateMemo(category.getCateNick());
-        categoryParam.setCateSpec_list(category.getCateSpec_list());
+        categoryParam.setCateSpecList(category.getCateSpecList());
         categoryParam.setCateType(category.getCateType());
         categoryParam.setCateNick(category.getCateNick());
         categoryParam.setCateOrder(category.getCateOrder());
         categoryParam.setCateDepth(category.getCateDepth());
+
         if(paramMap.get("CATE_PARENT_IDX")!=null){
             Category parentCategory = categoryRepo.findById(paramMap.getInt("CATE_PARENT_IDX")).get();
             categoryParam.setParentCategory(parentCategory);
         }
-
 
         String iconFilePath = category.getCateIcon();
         String thumbnailFilePath = category.getCateThumbnail();
@@ -114,6 +125,18 @@ public class CategoryService {
         if(thumbnail.getSize()!=0){
             thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/",AdminBucket.OPEN);
         }
+
+        List list = paramMap.getList("list");
+        System.out.println("list : "+ list);
+        List<Map<String, Object>> cateSpecList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("list", list.get(i));
+            cateSpecList.add(map);
+            System.out.println("cateSpecList : " + cateSpecList);
+        }
+
+        categoryParam.setCateSpecList(cateSpecList);
         categoryParam.setCateIcon(iconFilePath);
         categoryParam.setCateThumbnail(thumbnailFilePath);
         categoryRepo.saveAndFlush(categoryParam);
@@ -150,4 +173,28 @@ public class CategoryService {
         return "삭제되었습니다.";
     }
 
+    /**카테고리-고시정보템플릿 update*/
+    @Transactional
+    public void updateCateInfo(ParamMap paramMap) {
+        Category category = categoryRepo.findById(paramMap.getInt("cateIdx")).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+
+        List title = paramMap.getList("title");
+        List content = paramMap.getList("content");
+
+        List<Map<String, Object>> infoList = new ArrayList<>();
+        for (int i = 0; i < title.size(); i++) {
+            Map<String, Object> map = new HashMap<>();
+            if (!StringUtils.hasText(title.get(i).toString())) {
+                throw new MsgException("미입력된 고시정보항목이 있습니다.");
+            }
+            if (!StringUtils.hasText(content.get(i).toString())) {
+                throw new MsgException("미입력된 고시정보내용이 있습니다.");
+            }
+            map.put("title", title.get(i));
+            map.put("content", content.get(i));
+            infoList.add(map);
+        }
+
+        category.setCateInfo(infoList);
+    }
 }

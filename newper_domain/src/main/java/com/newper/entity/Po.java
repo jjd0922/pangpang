@@ -1,12 +1,16 @@
 package com.newper.entity;
 
+
+import com.newper.constant.Channel;
+import com.newper.constant.PType1;
+import com.newper.constant.PoState;
+import com.newper.constant.PoType;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -41,35 +45,37 @@ public class Po extends BaseEntity {
     @JoinColumn(name = "PO_HW_IDX", referencedColumnName = "hwIdx")
     private Hiworks hiworks;
 
-    private String poState;
-    private String poType;
-    private String poRequestDate;
+    @Enumerated(EnumType.STRING)
+    private PoState poState;
+    @Enumerated(EnumType.STRING)
+    private PoType poType;
+    private LocalDate poRequestDate;
     private String poMemo;
-    private String poRepurchase;
+    private boolean poRepurchase;
     private long poTotalAmount;
     private long poTotalCount;
     private String poBuyChannel;
     private long poBuyReceiveAmount;
-    private long poUnpaidAmount;
-    private String poBuyProductType;
+    private long poBuyUnpaidAmount;
+    @Enumerated(EnumType.STRING)
+    private PType1 poBuyProductType;
     private String poBuyOriUse;
-    private String poBuyProductState;
     private String poBuySellPeriod;
-    private String poSellChannel;
+    @Enumerated(EnumType.STRING)
+    private Channel poSellChannel;
     private long poSellReceiveAmount;
     private long poSellUnpaidAmount;
-    private long poSellTotalAmount;
-    private String poSellPayDate;
+    private LocalDate poSellPayDate;
     private float poSellProfit;
     private String poSellUse;
-    private String poInDate;
-    private String poDueDate;
-    private String poRefundDate;
-    private String poAsDate;
+    private LocalDate poInDate;
+    private LocalDate poDueDate;
+    private LocalDate poRefundDate;
+    private LocalDate poAsDate;
     private String poDeliveryMain;
-    private String poDeliveryCost;
-    private String poTaxMonth;
-    private String poPayDate;
+    private int poDeliveryCost;
+    private LocalDate poTaxMonth;
+    private LocalDate poPayDate;
     private String poPayAccount;
     private String poFile;
     private String poFileName;

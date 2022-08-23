@@ -29,4 +29,8 @@ public interface CategoryMapper {
 
     /**cate_idx로 카테고리 부모카테고리 모두 불러오기*/
     Map<String,Object> selectCategoryDetail(int CATE_IDX);
+
+    /**카테고리 뎁스별 데이터테이블(부모카테고리 상관x)*/
+    List<Map<String, Object>> selectCategoryDatatableByDepth(Map<String,Object> map);
+    long countCategoryDatatableByDepth(Map<String, Object> map);
 }

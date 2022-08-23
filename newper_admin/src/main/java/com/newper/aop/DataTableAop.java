@@ -43,6 +43,11 @@ public class DataTableAop {
 
     @PostConstruct
     public void postConstruct() {
+
+        enumClasses.put("po_buy_product_type","PType1");
+        enumClasses.put("po_sell_channel","Channel");
+
+
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_type","CateType");
         enumClasses.put("cc_cal_type","CcCalType");
@@ -63,7 +68,7 @@ public class DataTableAop {
         enumClasses.put("menu_type","MenuType");
         enumClasses.put("pe_state","PeState");
         enumClasses.put("pn_process","PnProcess");
-        enumClasses.put("po_product_state","PoProductState");
+
         enumClasses.put("po_state","PoState");
         enumClasses.put("p_state","PState");
         enumClasses.put("p_type1","PType1");
@@ -138,6 +143,9 @@ public class DataTableAop {
             return o.getOption();
         }catch (ClassNotFoundException ce){
             return name;
+        }catch (NoSuchElementException nse){
+            System.out.println(enumClass+"\t"+name+"\t no enum value");
+            throw nse;
         }
     }
 

@@ -110,11 +110,6 @@
                 </form>
                 <table class="table" id="companyModalTable">
                 </table>
-                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
-                    <div class="btn-group">
-                        <a id="companyModalBtn" class="btn btn-sm btn-primary" onclick="companySelect()">거래처 선택</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -130,50 +125,41 @@
     function searchCompanyModal(){
         $('#companyModalTable').DataTable().page('first').ajax.url('/company/company.dataTable?' + $('#companyModalForm').serialize()).load(null, false);
     }
+
+    // 오버라이딩해서 사용할 것
+    function companySelect(row){
+        var rowData = $('#companyModalTable').DataTable().rows(row).data()[0];
+    }
 </script>
 <script th:inline="javascript">
     function selectCompanyDataTable(){
         destroyDatatable('companyModalTable');
         $('#companyModalTable').DataTable({
-            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
-            ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
+            buttons: {
+                buttons: buttonsSelect(false)
             },
             serverSide: true,
             ajax:{
-                url:'/company/company.dataTable?',
+                url:'/company/company.dataTable?'+$('#companyModalForm').serialize(),
                 type:'post'
             },
-        columnDefs: [{
-            width: '40px',
-            autoWidth: false,
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   [0]
-        },
-            {
-                width: '40px',
-                targets:    [1]
-            }],
             "columns" : [
-            {'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                    return '';
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                        return meta.settings._iDisplayStart+meta.row+1;
+                    }}
+                ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
+                ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
+                ,{'title':'거래처 구분코드','data':'CT_TYPE_LIST_STR', 'defaultContent':''}
+                ,{'title':'사업자 분류','data':'COM_TYPE_STR'}
+                ,{'title':'상태','data':'COM_STATE_STR'}
+                ,{'title':'MID','data':'COM_MID','class':'text-won','defaultContent':''}
+                ,{'title':'상호법인명','data':'COM_NAME','class':'text-won','defaultContent':''}
+                ,{'title':'대표자명','data':'COM_CEO','class':'text-won','defaultContent':''}
+                ,{'title':'선택','data':'COM_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm btn-primary" onClick="companySelect('+meta.row+')">선택</a>';
                 }}
-            ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                    return meta.settings._iDisplayStart+meta.row+1;
-                }}
-            ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
-            ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
-            ,{'title':'거래처 구분코드','data':'CT_TYPE_LIST_STR', 'defaultContent':''}
-            ,{'title':'사업자 분류','data':'COM_TYPE_STR'}
-            ,{'title':'상태','data':'COM_STATE_STR'}
-            ,{'title':'MID','data':'COM_MID','class':'text-won','defaultContent':''}
-            ,{'title':'상호법인명','data':'COM_NAME','class':'text-won','defaultContent':''}
-            ,{'title':'대표자명','data':'COM_CEO','class':'text-won','defaultContent':''}
-        ]
-    });
+            ]
+        });
     }
 </script>
 </html>

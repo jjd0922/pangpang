@@ -6,6 +6,8 @@ import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
+import com.newper.entity.Category;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
@@ -13,7 +15,6 @@ import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping(value = "/product/")
 @RestController
@@ -38,6 +34,7 @@ public class ProductRestController {
     private final CategoryService categoryService;
     private final ProductService productService;
     private final ProductRepo productRepo;
+    private final CategoryRepo categoryRepo;
 
 
     /**category 대분류 dataTable*/
@@ -119,7 +116,7 @@ public class ProductRestController {
     @PostMapping("product.dataTable")
     public ReturnDatatable productDataTable(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("상품관리");
-        returnDatatable.setData(productMapper.selectProductDataTalbe(paramMap.getMap()));
+        returnDatatable.setData(productMapper.selectProductDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countProductDataTable(paramMap.getMap()));
         return returnDatatable;
     }
@@ -353,4 +350,34 @@ public class ProductRestController {
     }
 
 
+    /**고시정보관리 중분류 카테고리 데이터테이블*/
+    @PostMapping("cateDepth2.dataTable")
+    public ReturnDatatable categoryDatatableForDepth2(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("중분류 카테고리");
+
+        paramMap.put("cateDepth", 2);
+        rd.setData(categoryMapper.selectCategoryDatatableByDepth(paramMap.getMap()));
+        rd.setRecordsTotal(categoryMapper.countCategoryDatatableByDepth(paramMap.getMap()));
+        return rd;
+    }
+
+    /**고시정보관리 중분류별 고시정보 템플릿 데이터테이블*/
+    @PostMapping("info.dataTable")
+    public ReturnDatatable infoTemplateDatatable(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("중분류 고시정보");
+
+        Category category = categoryRepo.findById(paramMap.getInt("cateIdx")).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+        List<Map<String, Object>> cateInfo = category.getCateInfo();
+
+        rd.setData(cateInfo);
+        return rd;
+    }
+
+    /**고시정보관리 고시정보 템플릿 update*/
+    @PostMapping("info.ajax")
+    public ReturnMap updateInfoTemplate(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        categoryService.updateCateInfo(paramMap);
+        return rm;
+    }
 }

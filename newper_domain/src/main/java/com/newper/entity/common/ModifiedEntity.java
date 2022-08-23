@@ -19,15 +19,12 @@ import java.time.LocalTime;
 public class ModifiedEntity {
 
     @LastModifiedBy
-    @Column(updatable = false)
     private String modifiedBy;
 
     @LastModifiedDate
-    @Column(updatable = false)
     private LocalDate modifiedDate;
 
     @LastModifiedDate
-    @Column(updatable = false)
     private LocalTime modifiedTime;
 
 }

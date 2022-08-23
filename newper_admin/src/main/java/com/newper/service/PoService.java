@@ -4,14 +4,13 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
+import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
-import com.newper.repository.EstimateProductRepo;
-import com.newper.repository.EstimateRepo;
-import com.newper.repository.PoProductRepo;
-import com.newper.repository.PoRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalTime;
@@ -27,25 +26,38 @@ public class PoService {
     private final PoRepo poRepo;
     private final PoProductRepo poProductRepo;
     private final EstimateRepo estimateRepo;
+    private final CompanyRepo companyRepo;
     private final EstimateProductRepo estimateProductRepo;
+    private final WarehouseRepo warehouseRepo;
 
     /** 발주(po) 생성 */
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
         Po po = paramMap.mapParam(Po.class);
 
-        Company company_buy = paramMap.mapParam(Company.class);
-        Company company_sell = paramMap.mapParam(Company.class);
-        company_buy.setComIdx((Integer) paramMap.getMap().get("comIdx_buy"));
-        company_sell.setComIdx((Integer) paramMap.getMap().get("comIdx_sell"));
-        po.setCompany(company_buy);
-        po.setCompany_sell(company_sell);
+        int buyerIdx = paramMap.getInt("comIdx_buy", "매입처 선택 부탁드립니다");
+        po.setCompany(companyRepo.getReferenceById(buyerIdx));
 
-        Warehouse warehouse = paramMap.mapParam(Warehouse.class);
-        po.setWarehouse(warehouse);
+        String comIdx_sell = paramMap.getString("comIdx_sell").replaceAll("[^0-9]","");
+        if(StringUtils.hasText(comIdx_sell)){
+            po.setCompany_sell(companyRepo.getReferenceById(Integer.parseInt(comIdx_sell)));
+        }
 
-        String poFilePath = Common.uploadFilePath(poFile, "po/po/", AdminBucket.SECRET);
-        po.setPoFile(poFilePath);
-        po.setPoFileName(poFile.getOriginalFilename());
+        String whIdx = paramMap.getString("whIdx").replaceAll("[^0-9]","");
+        if(StringUtils.hasText(whIdx)){
+            po.setWarehouse(warehouseRepo.getReferenceById(Integer.parseInt(whIdx)));
+        }
+
+
+        if (poFile.getSize() == 0) {
+            System.out.println("발주 품의 첨부파일 필수인지 확인 필요");
+            po.setPoFile("");
+            po.setPoFileName("");
+//            throw new MsgException("파일을 첨부해 주세요");
+        }else{
+            String poFilePath = Common.uploadFilePath(poFile, "po/po/", AdminBucket.SECRET);
+            po.setPoFile(poFilePath);
+            po.setPoFileName(poFile.getOriginalFilename());
+        }
 
         poRepo.save(po);
 

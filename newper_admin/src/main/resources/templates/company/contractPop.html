@@ -488,7 +488,7 @@
     }
 
     function selectCompany(row) {
-        var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
+        var rowData = getDatatablemap('comModalTable', row);
 
         $('#searchComModal').modal('hide');
         $('#createForm input[name="comName"]').val(rowData.COM_NAME);
@@ -497,7 +497,7 @@
     }
 
     function selectUser(row) {
-        var rowData = $('#userModalTable').DataTable().rows(row).data()[0];
+        var rowData = getDatatablemap('userModalTable', row);
 
         $('#searchUserModal').modal('hide');
         $('#createForm input[name="uName"]').val(rowData.U_NAME);

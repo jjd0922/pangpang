@@ -22,6 +22,8 @@ public class GiftRestController {
     public ReturnDatatable giftGroup(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("상품권관리");
 
+        paramMap.multiSelect("giftgState");
+
         rd.setData(giftMapper.selectGiftGroupDataTable(paramMap.getMap()));
         rd.setRecordsTotal(giftMapper.countGiftGroupDataTable(paramMap.getMap()));
         return rd;

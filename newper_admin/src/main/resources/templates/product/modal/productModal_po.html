@@ -391,42 +391,41 @@
         $('#setBtnProductPoModal').css('display', 'block');
         var dataMap=getDatatablemap(id, rowIdx);
 
-        if($('input[name=pIdx][value='+dataMap.P_IDX+']').length > 0){
-            alert('이미 추가된 상품 입니다');
-            return false;
-        }
-
         $('#setBtnProductPoModal').attr('onclick', 'settingProduct("' + id + '", "' + rowIdx + '")');
 
-        var specList = dataMap.CATE_SPEC_LIST.replace('[', '').replace(']', '').split(', ');
+        if(dataMap.CATE_SPEC_LIST != null){
+            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            $('#poModalProductSpecList').empty();
+            for (var i = 0; i < specList.length; i++) {
+                var specTr
+                        ='<tr>'
+                        +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
+                        +'<td><input type="text" specList="'+i+'" name="ppSpec1" class="form-control"></td>'
+                        +'<td><input type="text" specList="'+i+'" name="ppSpec2" class="form-control"></td>'
+                        +'</tr>';
 
-        var text = '';
-        for (var i = 0; i < specList.length; i++) {
-            $.ajax({
-                type: "POST",
-                url:"/goods/spec/specSearch.ajax?specName=" + specList[i],
-                dataType:"json",
-                async: false,
-                success : function(result){
-                    $('#poModalProductSpecList').empty();
-                    var spec_option = '';
-                    text += '<tr>';
-                    text += '<td>' + specList[i] + '</td>';
-                    $.each(result, function (index, value) {
-                        spec_option += '<option value="' + value.speclName + '=' + value.speclValue + '">' + value.speclName + '=' + value.speclValue + '</option>';
-                    });
-                    text += '<td><select name="ppSpec1" class="form-control">' + spec_option + '</select></td>';
-                    text += '<td><select name="ppSpec2" class="form-control">' + spec_option + '</select></td>';
-                    text += '</tr>';
-                },
-                error : function(a, b, c){
-                    alert(a + b + c);
-                }
-            });
+                $('#poModalProductSpecList').append(specTr);
+            }
+
+
+            var specListTd = $('.specListTd');
+            for (var i = 0; i < specListTd.length; i++) {
+                $.ajax({
+                    type: "GET",
+                    url:"/goods/specList.ajax?specName=" + specListTd[i].innerHTML,
+                    async:false,
+                    success : function(result){
+                        $('input[specList='+i+']').autocomplete({
+                             source: result
+                            ,minLength: 0
+                        });
+                    }
+                });
+            }
         }
 
-        $('#poModalProductSpecList').append(text);
     }
+
 
     function openProductModal(){
         $('#productModal').modal('show');

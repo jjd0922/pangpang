@@ -19,38 +19,6 @@
             </foreach>
         </if>
     </sql>
-
-    <select id="selectPoDataTable" resultType="Map">
-        SELECT
-            PO_IDX,
-            PO_STATE,
-            U_NAME,
-            PO_CODE,
-            COM_NUM,
-            COUNT(PP_IDX) AS 'PRODUCT_COUNT',
-            FORMAT(PO_TOTAL_AMOUNT, 0) AS 'PO_TOTAL_AMOUNT',
-            SUM(P_COST) AS 'P_COST',
-            SUM(P_SELL_PRICE) AS 'P_SELL_PRICE',
-
-
-
-
-
-
-
-
-        FROM
-            po
-                LEFT JOIN company ON PO_COM_IDX = company.COM_IDX
-                LEFT JOIN user ON COM_U_IDX = U_IDX
-                LEFT JOIN po_product ON PO_IDX = PP_PO_IDX
-                LEFT JOIN product on PP_P_IDX = P_IDX
-        GROUP BY
-            PO_IDX
-
-
-    </select>
-
     <select id="selectEstimateDataTable" resultType="Map">
         SELECT
             PE_IDX,
@@ -73,8 +41,9 @@
         WHERE
             PE_IDX IS NOT NULL
             <include refid="includeEstimateDataTable"></include>
-        LIMIT
-            #{start}, #{length}
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
     </select>
 
     <select id="countEstimateDataTable" resultType="Long">
@@ -111,14 +80,42 @@
         AND
             PEP_IDX IS NOT NULL
     </select>
+
+    <sql id="includePoDataTable">
+
+    </sql>
+    <select id="selectPoDataTable" resultType="Map">
+        SELECT
+            *
+        FROM
+            PO
+        <where>
+            <include refid="includePoDataTable"></include>
+        </where>
+        <if test="length!=-1">
+        LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countPoDataTable" parameterType="map" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PO
+        <where>
+            <include refid="includePoDataTable"></include>
+        </where>
+    </select>
+
     <sql id="includeInDatatable">
-        AND (PO_TYPE = 'EMERGENCY' OR PO_STATE='APPROVAL')
+        AND (PO_TYPE = 'EMERGENCY' HW_STATE = 'APPROVED')
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
             *
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -128,9 +125,42 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
     </select>
+    <sql id="includePoApprovedDatatable">
+        (PO_TYPE = 'EMERGENCY' OR HW_STATE = 'APPROVED')
+
+    </sql>
+    <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
+        <where>
+            <include refid="includePoApprovedDatatable"></include>
+        </where>
+
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countPoApprovedDatatable" resultType="Integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM
+            PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
+        <where>
+            <include refid="includePoApprovedDatatable"></include>
+        </where>
+    </select>
+
 
 </mapper>

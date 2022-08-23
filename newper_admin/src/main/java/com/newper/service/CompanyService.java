@@ -121,6 +121,12 @@ public class CompanyService {
         contract.setCcFile(ccFilePath);
         contract.setCcFileName(ccFile.getOriginalFilename());
 
+        if (!StringUtils.hasText(paramMap.getString("comIdx"))) {
+            throw new MsgException("상호법인명을 선택해주세요.");
+        }
+        if (StringUtils.hasText(paramMap.getString("uIdx"))) {
+            throw new MsgException("내부담당자를 선택해주세요.");
+        }
         Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
         User user = User.builder().uIdx(paramMap.getInt("uIdx")).build();
         contract.setCompany(company);
@@ -135,6 +141,9 @@ public class CompanyService {
     public Integer updateContract(int ccIdx, ParamMap paramMap, MultipartFile ccFile) {
         CompanyContract oldContract = companyContractRepo.findById(ccIdx).orElseThrow(() -> new MsgException("존재하지 않는 계약입니다."));
 
+        if (StringUtils.hasText(paramMap.getString("uIdx"))) {
+            throw new MsgException("내부담당자를 선택해주세요.");
+        }
         paramMap.put("user", User.builder().uIdx(paramMap.getInt("uIdx")).build());
         CompanyContract newContract = paramMap.mapParam(CompanyContract.class);
         newContract.setCcEnd(LocalDate.parse(paramMap.getString("ccEnd")));
@@ -197,8 +206,7 @@ public class CompanyService {
         if (!StringUtils.hasText(paramMap.getString("comIdx"))) {
             throw new MsgException("거래처를 입력해주세요.");
         }
-
-        Company company = Company.builder().comIdx(Integer.parseInt(paramMap.getString("comIdx"))).build();
+        Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
         insurance.setCompany(company);
 
         String ciFilePath = "";
