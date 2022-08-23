@@ -141,7 +141,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/bom.dataTable',
+            url:'/bom/bom.dataTable',
             type:'post'
         },
         columns : [
@@ -153,12 +153,17 @@
                 }}
             ,{'title':'상품코드','data':'P_CODE', 'defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
-            ,{'title':'구성상품','data':'P_NAME', 'render': function (data,type,full,meta) {
-                    return '';
+            ,{'title':'구성상품','data':'CNT', 'render': function (data,type,full,meta) {
+                    return '<a href="#" class="badge badge-primary">'+full.CNT+'개</a>';
                 }}
-            ,{'title':'대분류','data':'CATE_NAME','defaultContent':''}
-            ,{'title':'중분류','data':'CATE_NAME','defaultContent':''}
-            ,{'title':'소분류','data':'CATE_NAME','defaultContent':''}
+            ,{'title':'대분류','data':'CATE_NAME1','defaultContent':''}
+            ,{'title':'중분류','data':'CATE_NAME2','defaultContent':''}
+            ,{'title':'소분류','data':'CATE_NAME3','defaultContent':''}
         ]
+    });
+
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('/bom/bomPop', 'insertBom', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     });
 </script>

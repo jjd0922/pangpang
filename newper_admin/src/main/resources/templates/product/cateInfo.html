@@ -139,7 +139,7 @@
     function initTemplateTable(cateIdx) {
         $('input[name="cateIdx"]').val(cateIdx);
         if ($.fn.DataTable.isDataTable('#templateTable')) {
-            $('#templateTable').DataTable().ajax.url('/product/info.dataTable?cateIdx=' + cateIdx).load();
+            $('#templateTable').DataTable().ajax.url('/product/cateInfo.dataTable?cateIdx=' + cateIdx).load();
         }else {
             $('.gu-hide').removeClass('gu-hide');
             showTemplateTable(cateIdx);
@@ -148,16 +148,22 @@
 
     function newRow() {
         var row=$('#templateTable tr').length;
-        $('#templateTable tbody').append('<tr><td class="dragula-handle"><i class="icon-menu-open dragula-handle">'+row+'</i></td><td><input type="text" name="title" class="border-0 text-center"></td><td><textarea name="content" class="border-0 text-center"></textarea></td><td><a href="#" onclick="deleteRow('+row+')" class="badge badge-primary">삭제</a></td></tr>');
+        $('#templateTable tbody').append(
+            '<tr>' +
+            '   <td class="dragula-handle"><i class="icon-menu-open dragula-handle">'+row+'</i></td>' +
+            '   <td><input type="text" name="title" class="border-0 text-center"></td>' +
+            '   <td><textarea name="content" class="border-0 text-center"></textarea></td>' +
+            '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
+            '</tr>');
     }
 
-    function deleteRow(row) {
-        $('#templateTable tr')[row].remove();
+    function deleteRow(el) {
+        el.closest('tr').remove();
     }
 
-    function saveAllInfo() {
+    function saveAllCateInfo() {
         $.ajax({
-            url:'/product/info.ajax',
+            url:'/product/cateInfo.ajax',
             type: 'post',
             data: $('#updateForm').serializeArray(),
             success: function () {
@@ -215,7 +221,7 @@
                         text: '<i class="icon-checkmark4 mr-1 icon-2x"></i>저장',
                         className: 'btn btn-sm btn-secondary opacity-80',
                         action: function (e, dt, node, config) {
-                            saveAllInfo();
+                            saveAllCateInfo();
                         }
                     }
                 ]
@@ -227,7 +233,7 @@
             },
             serverSide: false,
             ajax:{
-                url: '/product/info.dataTable?cateIdx=' + cateIdx,
+                url: '/product/cateInfo.dataTable?cateIdx=' + cateIdx,
                 type:'post'
             },
             columns : [
@@ -241,7 +247,7 @@
                         return '<textarea name="content" class="border-0 text-center">'+full.content+'</textarea>';
                     }}
                 ,{'title':'삭제','data':'','render': function (data, type, full, meta) {
-                        return '<a href="#" onclick="deleteRow('+(meta.row+1)+')" class="badge badge-primary">삭제</a>';
+                        return '<a href="#" onclick="deleteRow($(this))" class="badge badge-primary">삭제</a>';
                     }}
             ],
             initComplete: function (settings, json) {

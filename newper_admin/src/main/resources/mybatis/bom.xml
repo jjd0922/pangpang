@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.BomMapper">
+    <select id="selectBomDatatable" resultType="map">
+        SELECT
+            BOM_P_IDX,
+            P_CODE,
+            P_NAME,
+            CNT,
+            CATE_NAME1,
+            CATE_NAME2,
+            CATE_NAME3
+        FROM
+            PRODUCT
+                LEFT JOIN (SELECT
+                               CATEGORY1.CATE_IDX AS CATE_IDX,
+                               CATEGORY1.CATE_NAME AS CATE_NAME1,
+                               CATEGORY2.CATE_NAME AS CATE_NAME2,
+                               CATEGORY3.CATE_NAME AS CATE_NAME3
+                           FROM
+                               CATEGORY AS CATEGORY1
+                                   LEFT JOIN CATEGORY AS CATEGORY2
+                                             ON CATEGORY1.CATE_PARENT_IDX = CATEGORY2.CATE_IDX
+                                   LEFT JOIN CATEGORY AS CATEGORY3
+                                             ON CATEGORY2.CATE_PARENT_IDX = CATEGORY3.CATE_IDX) DT ON DT.CATE_IDX = P_CATE_IDX
+                JOIN (SELECT
+                          BOM_P_IDX,
+                          COUNT(BOM_P_IDX2) CNT
+                      FROM
+                          BOM
+                      GROUP BY
+                          BOM_P_IDX) B ON BOM_P_IDX = P_IDX
+    </select>
+
+    <select id="countBomDatatable" resultType="Long">
+        SELECT
+            COUNT(DISTINCT(BOM_P_IDX))
+        FROM
+            BOM,
+            PRODUCT
+        WHERE
+            BOM_P_IDX = P_IDX
+    </select>
+
+    <insert id="insertBom">
+        INSERT INTO
+            BOM (BOM_P_IDX, BOM_P_IDX2)
+        VALUES
+            <foreach collection="pIdx" separator="," item="item">
+                (#{mpIdx}, #{item})
+            </foreach>
+    </insert>
 </mapper>

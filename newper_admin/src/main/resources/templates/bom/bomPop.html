@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${bom != null} ? 'BOM 조회/수정'">BOM 등록</title>
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" th:if="${bom == null}"><i class="icon-office mr-1"></i>BOM 등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${bom == null}"><i class="icon-office mr-1"></i>BOM 조회/수정</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <form id="regiForm" method="post">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-2">
+                                        <legend class="">1. BOM 등록정보</legend>
+
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    상품코드<a href="#" class="badge badge-sm badge-primary ml-1" id="searchMotherBtn">검색</a>
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="mpCode" class="form-control" th:value="${bom?.pCode}" readonly>
+                                                        <input type="hidden" name="mpIdx">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">상품명</span>
+                                                            </span>
+                                                        <input type="text" name="mpName" class="form-control" th:value="${bom?.pName}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="mb-0">
+                                        <legend class="pt-2">2. 구성항목
+                                            <a href="#" class="badge badge-sm badge-primary ml-1" id="searchChildBtn">검색</a>
+                                        </legend>
+
+                                        <table class="table table-hover" id="bomChildTable">
+                                            <thead>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>상품코드</td>
+                                                    <td>상품명</td>
+                                                    <td>상품매입가</td>
+                                                    <td>상품삭제</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="defaultRow">
+                                                    <td colspan="5">BOM구성항목을 선택하십시오.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- #regiForm end -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+
+<th:block th:replace="bom/modal/productModal.html"/>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script th:inline="javascript">
+    function saveAction(){
+        $.ajax({
+            url: '/bom/bomPop.ajax',
+            type: 'post',
+            data: $('#regiForm').serialize()
+        });
+    }
+
+    function selectProduct(row) {
+        var data = getDatatablemap('productModalTable',row);
+        var isChild = $('#productModalTable').DataTable().column({class:'select-checkbox'}).visible();
+
+        if (!isChild) {
+            $('input[name="mpCode"]').val(data.P_CODE);
+            $('input[name="mpName"]').val(data.P_NAME);
+            $('input[name="mpIdx"]').val(data.P_IDX);
+        } else {
+            $('#defaultRow').remove();
+            var rowNum = ($('#bomChildTable tbody tr').last().index()+2);
+            $('#bomChildTable tbody').append(
+                '<tr>' +
+                '   <td><input type="hidden" name="pIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
+                '   <td>'+data.P_CODE+'</td>' +
+                '   <td>'+data.P_NAME+'</td>' +
+                '   <td>'+data.P_COST+'</td>' +
+                '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
+                '</tr>'
+            );
+        }
+
+        $('#searchProductModal').modal('hide');
+    }
+
+    function deleteRow(el) {
+        el.closest('tr').remove();
+    }
+
+</script>
+<script th:inline="javascript">
+    $("#saveBtn").on("click", saveAction);
+    $("#searchMotherBtn").on("click", (e) =>  showProductModal(e));
+    $("#searchChildBtn").on("click", (e) => showProductModal(e));
+</script>
+</body>
+</html>

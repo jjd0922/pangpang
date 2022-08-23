@@ -318,7 +318,7 @@ public class ProductController {
 
     @GetMapping("info")
     public ModelAndView info() {
-        ModelAndView mav = new ModelAndView("product/info");
+        ModelAndView mav = new ModelAndView("product/cateInfo");
         return mav;
     }
 
