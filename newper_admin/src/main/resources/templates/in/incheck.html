@@ -36,7 +36,7 @@
                             </div>
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="returnForm">
+                                    <form id="incheckForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
@@ -111,8 +111,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <table class="table" id="returnTable"></table>
+                            <table class="table" id="incheckTable"></table>
                         </div>
+                            <!--임시 입고검수코드 팝업버튼 -->
+                        <div class="form-group end">
+                            <button type="button" class="btn btn-primary" onclick="incheckManagePop2()">
+                                <span class="ladda-label" onclick="incheckManagePop2()">입고검수코드임시버튼</span>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -142,13 +149,23 @@
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        var table = $('#incheckTable').DataTable();
+        table.page('first').ajax.url('/in/incheck.dataTable?' + $('#incheckForm').serialize()).load(null, false);
+    }
+
+    function incheckManagePop(comIdx) {
+        var focusPopup = window.open('companyPop/' + comIdx, 'companyDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function incheckManagePop2(){
+        var focusPopup = window.open('/in/incheckManagePop','incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 
 <script>
-    var returnTable = $('#returnTable').DataTable({
+    var incheckTable = $('#incheckTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -157,7 +174,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/incheck/incheck.dataTable?'+$('#returnForm').serialize(),
+            url:'/in/incheck.dataTable?'+$('#incheckForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -172,7 +189,7 @@
                     return '';
                 }}
             ,{'title':'입고검수코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: returnManagePop('+ data[''] +')" class="badge badge-primary" >'+ data[''] + '</a>';
+                    return '<a href="#" onclick="incheckManagePop('+ full.COM_IDX +')" class="badge badge-primary">' + full.COM_NAME + '</a>';
                 }}
             ,{'title':'입고검수<br>작업상태값','data':"CG_STATE"}
             ,{'title':'입고검수<br>업체','data':'CG_COM_IDX'}
@@ -190,7 +207,7 @@
         ]
     });
 
-    $('#returnForm').on('keyup',function(event){
+    $('#incheckForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 
