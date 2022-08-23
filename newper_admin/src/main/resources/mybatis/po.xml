@@ -107,13 +107,15 @@
     </select>
 
     <sql id="includeInDatatable">
-        AND (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
+        AND (PO_TYPE = 'EMERGENCY' HW_STATE = 'APPROVED')
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
             *
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -123,12 +125,14 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
     </select>
     <sql id="includePoApprovedDatatable">
-        (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
+        (PO_TYPE = 'EMERGENCY' OR HW_STATE = 'APPROVED')
 
     </sql>
     <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
@@ -136,6 +140,8 @@
             *
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includePoApprovedDatatable"></include>
         </where>
@@ -149,6 +155,8 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN HIWORKS
+                    ON PO_HW_IDX=HW_IDX
         <where>
             <include refid="includePoApprovedDatatable"></include>
         </where>

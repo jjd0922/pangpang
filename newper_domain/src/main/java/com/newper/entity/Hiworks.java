@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.HwState;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -25,7 +26,8 @@ public class Hiworks extends BaseEntity {
     private User user;
 
     private String hwType;
-    private String hwState;
+    @Enumerated(EnumType.STRING)
+    private HwState hwState;
     private String hwReqDate;
     private String hwReqTime;
     private String hwAprvId;
