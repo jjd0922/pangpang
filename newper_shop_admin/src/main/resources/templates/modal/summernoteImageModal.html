@@ -1,0 +1,97 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="summernoteImageModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">이미지 업로드</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <fieldset class="mb-0">
+          <form id="summernoteImageModalForm" method="post" enctype="multipart/form-data" th:action="@{/summernote/image}" target="summernoteImageModalTarget">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">
+                          이미지
+                        </span>
+                    </span>
+                    <input type="file" class="form-control" name="summernoteImageFile" accept="image/*" multiple="multiple" onchange="uploadImageFile()">
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <iframe name="summernoteImageModalTarget" style="display: none;"></iframe>
+</div>
+
+<script th:inline="javascript">
+function uploadImageUrl(){
+  var url=$('input[name=summernoteImageUrl]').val();
+  //$('textarea[name='+summernote_lastName+']').summernote('editor.insertImage', url);
+  $('textarea[name='+summernote_lastName+']').summernote('pasteHTML', '<img src="'+url+'">');
+  $('#summernoteImageModal').modal('hide');
+}
+function uploadImageFile (){
+  $('#summernoteImageModalForm').submit();
+}
+function insertImage(src){
+  //$('textarea[name='+summernote_lastName+']').summernote('editor.insertImage', src);
+  $('textarea[name='+summernote_lastName+']').summernote('pasteHTML', '<img src="'+src+'">');
+}
+function summernoteImageModalHide(){
+  $('#summernoteImageModal').modal('hide');
+}
+var summernote_lastName='';
+function smImage(selector){
+  $(selector).summernote({
+      height: 300,
+      lang: 'ko-KR',
+      toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['fontname', ['fontname']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'cusPicture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+      ],
+      buttons : {
+          cusPicture : function (context) {
+              var ui = $.summernote.ui;
+
+              var button = ui.button({
+                  contents: '<i class="note-icon-picture"/>',
+                  tooltip: '사진',
+                  click: function (e) {
+                    summernote_lastName=context.$note[0].name;
+                    $('#summernoteImageModal').modal('show');
+                  }
+              });
+              return button.render();
+            }
+      }
+  });
+}
+</script>
+<script th:inline="javascript">
+$(document).ready(function(){
+  $('#summernoteImageModal').on('hide.bs.modal',function(e){
+    summernote_lastName='';
+    $('input[name=summernoteImageFile]').val('');
+    $('input[name=summernoteImageUrl]').val('');
+  });
+});
+</script>

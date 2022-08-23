@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>중분류 등록</title>
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .group{
+            background:aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="collapse show">
+                                <div class="card-body pt-0">
+                                    <form id="shopCategoryForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">카테고리 중분류</label>
+                                                    <input class="form-control form-control-sm w-120px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <form id="categorySecondTableForm">
+                                <table class="table" id="categorySecondTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class=" w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-secondary" onclick="categoryChoose()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    $('#categorySecondTable').DataTable({
+        buttons: {
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-dark opacity-60',
+                    text: '<i class="icon-file-excel mr-1"></i>엑셀'
+                },
+                {
+                    text: '새로고침',
+                    className: 'btn btn-sm btn-secondary',
+                    action: function (e, dt, node, config) {
+                        dt.ajax.reload();
+                    }
+                }
+            ]
+        },
+        dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        serverSide: true,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        ajax:{
+            url:'/product/twoDepth.dataTable?SCATE_IDX=[[${SCATE_IDX}]]',
+            type:'post'
+        },
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'CATE_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="CATE_IDX" value="'+data+'">';
+                }}
+            ,{'class':'m-w-16 w-55', 'title':'카테고리 중분류','data':'CATE_NAME'}
+            ,{'class':'m-w-8 w-15', 'title':'현재 전시 대분류','data':'SCATE_NAME','defaultContent':''}
+        ]
+
+    });
+
+
+
+
+</script>
+
+<script>
+    function categoryChoose(){
+        var param = '';
+        var leng = $("#categorySecondTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#categorySecondTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("저장하시겠습니까?")){
+                $.ajax({
+                    url:"/product/"+[[${SCATE_IDX}]]+"/shopCategory.ajax",
+                    data: "CATE_IDXS="+param,
+                    type:"POST",
+                    success:function() {
+                        $('#categorySecondTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+</script>
+
+
+</body>
+
+
+
+</html>
