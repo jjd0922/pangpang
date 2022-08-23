@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: newper
-  namespace: dev
+  namespace: newper
 spec:
   replicas: 1
   selector:
@@ -11,12 +11,12 @@ spec:
   template:
     metadata:
       labels:
-        app: test
+        app: newper
     spec:
       containers:
         - image: 'reg-dev-container.kr.ncr.ntruss.com/newper_bit:latest'
           imagePullPolicy: Always
-          name: sampleapp
+          name: newper
           ports:
             - containerPort: 3000
       imagePullSecrets:
