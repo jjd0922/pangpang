@@ -2,13 +2,16 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.PoMapper;
+import com.newper.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/in/")
 @RestController
@@ -16,6 +19,7 @@ import java.util.*;
 public class InRestController {
 
     private final PoMapper poMapper;
+    private final GoodsService goodsService;
 
     /** 입고등록 조회*/
     @PostMapping("in.dataTable")
@@ -67,7 +71,15 @@ public class InRestController {
     public ReturnDatatable goods(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
-
         return rd;
+    }
+    /** 입고등록 발주서 상품 바코드 등록*/
+    @PostMapping("po/barcode.ajax")
+    public ReturnMap poBarcode(int pp_idx, String barcode){
+        ReturnMap rm = new ReturnMap();
+
+        goodsService.insertGoods(pp_idx, barcode);
+
+        return rm;
     }
 }

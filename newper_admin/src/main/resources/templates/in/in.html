@@ -120,20 +120,16 @@
 
 <script>
     var inTable = $('#inTable').DataTable({
-        ordering:false,
         // select: {
         //     style: 'multi',
         //     selector: 'td:first-child'
         // },
+        buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
             url:'/in/in.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
         "columns" : [
             // {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
             //         return '<input type="hidden" name="P_IDX" value="'+data+'">';
