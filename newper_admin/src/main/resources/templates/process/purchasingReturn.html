@@ -113,6 +113,11 @@
                         <div class="card">
                             <table class="table" id="returnTable"></table>
                         </div>
+                        <div class="form-group end">
+                            <button type="button" class="btn btn-primary" onclick="returnManagePop()">
+                                <span class="ladda-label" onclick="returnManagePop()">반품코드반품관리팝업임시버튼</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,6 +150,12 @@
         var table = $('#returnTable').DataTable();
         table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
+
+    function returnManagePop(){
+        var focusPopup = window.open('/process/returnManagePop','returnManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
 </script>
 
 <script>
