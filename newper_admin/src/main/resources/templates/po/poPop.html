@@ -576,6 +576,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                     </fieldset>
                                 </div>
                             </div>
@@ -714,13 +715,47 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="@{company/modal/companyModal.html}"/>
-<th:block th:replace="@{product/modal/productModal_po.html}"/>
-<th:block th:replace="@{goods/modal/warehouseModal.html}"/>
-<th:block th:replace="@{company/modal/contractModal.html}"/>
+<th:block th:replace="company/modal/companyModal.html"/>
+<th:block th:replace="product/modal/productModal_po.html"/>
+<th:block th:replace="goods/modal/warehouseModal.html"/>
+<th:block th:replace="company/modal/contractModal.html"/>
 
 <script>
     function saveAction(){
+        // if ($('hidden[name=comIdx_buy]').val() == '') {
+        //     alert('매입처를 선택해 주세요.');
+        //     return false;
+        // }
+        //
+        // if ($('hidden[name=comIdx_sell]').val() == '') {
+        //     alert('판매처를 선택해 주세요.');
+        //     return false;
+        // }
+        //
+        // if ($('hidden[name=ccIdx]').val() == '') {
+        //     alert('계약서를 선택해 주세요.');
+        //     return false;
+        // }
+        //
+        // if ($('input[name=poPayAccount]').val() == '') {
+        //     alert('입금계좌번호를 입력해 주세요.');
+        //     return false;
+        // }
+        //
+        // if ($('hidden[name=poProduct]').val() == '') {
+        //     alert('상품을 선택해 주세요.');
+        //     return false;
+        // }
+
+        var poProductCost = $('input[name=poProductCost]').val().replace(/,/gi,'');
+        $('input[name=poProductCost]').val(poProductCost);
+
+        var poTotalAmount = $('input[name=poTotalAmount]').val().replace(/,/gi,'');
+        $('input[name=poTotalAmount]').val(poTotalAmount);
+
+        var poSellTotalAmount = $('input[name=poSellTotalAmount]').val().replace(/,/gi,'');
+        $('input[name=poSellTotalAmount]').val(poSellTotalAmount);
+
         $.ajax({
             url: location.pathname + '.ajax',
             processData: false,
@@ -751,18 +786,11 @@
     }
 
     // 창고 검색 선택
-    function warehouseSelect () {
-        var whIdx = dataTableGetSelectedDataArray('warehouseModalTable', 'WH_IDX');
-        var whName = dataTableGetSelectedDataArray('warehouseModalTable', 'WH_NAME');
-
-        if(whIdx.length != 1){
-            alert('창고는 하나만 선택해 주세요');
-            return false;
-        }else{
-            $('input[name=whIdx]').val(whIdx);
-            $('input[name=whName]').val(whName);
-            $('#warehouseModal').modal('hide');
-        }
+    function warehouseSelect (id, rowIdx) {
+        var dataMap=getDatatablemap(id, rowIdx);
+        $('input[name=whIdx]').val(dataMap.WH_IDX);
+        $('input[name=whName]').val(dataMap.WH_NAME);
+        $('#warehouseModal').modal('hide');
     }
 
     //거래처 모달에서 선택

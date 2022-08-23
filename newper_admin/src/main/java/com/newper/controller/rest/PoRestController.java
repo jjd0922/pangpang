@@ -36,7 +36,7 @@ public class PoRestController {
     @PostMapping("po.dataTable")
     public ReturnDatatable po(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable("발주품의");
-
+        paramMap.multiSelect("poState");
         rd.setData(poMapper.selectPoDataTable(paramMap.getMap()));
         rd.setRecordsTotal(poMapper.countPoDataTable(paramMap.getMap()));
 

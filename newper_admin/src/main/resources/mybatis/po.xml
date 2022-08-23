@@ -82,18 +82,107 @@
     </select>
 
     <sql id="includePoDataTable">
+        <if test="poState != null and poState != ''">
+            <foreach collection="poState" open="AND PO_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="uName != null and uName != ''">
+            AND U_NAME = #{uName}
+        </if>
 
+        <if test="poCode != null and poCode != ''">
+            AND PO_CODE = #{poCode}
+        </if>
+
+        <if test="comName != null and comName != ''">
+            AND BUY.COM_NAME LIKE CONCAT ('%', #{comName}, '%')
+        </if>
+
+        <if test="poInDate != null and poInDate != ''">
+            AND PO_IN_DATE BETWEEN SUBSTR(#{poInDate}, 1, 10) AND SUBSTR(#{poInDate}, 13)
+        </if>
+        <if test="poDueDate != null and poDueDate != ''">
+            AND PO_DUE_DATE BETWEEN SUBSTR(#{poDueDate}, 1, 10) AND SUBSTR(#{poDueDate}, 13)
+        </if>
+
+        <if test="poRefundDate != null and poRefundDate != ''">
+            AND PO_REFUND_DATE BETWEEN SUBSTR(#{poRefundDate}, 1, 10) AND SUBSTR(#{poRefundDate}, 13)
+        </if>
+
+        <if test="poAsDate != null and poAsDate != ''">
+            AND PO_AS_DATE BETWEEN SUBSTR(#{poAsDate}, 1, 10) AND SUBSTR(#{poAsDate}, 13)
+        </if>
+
+        <if test="poRepurchase != null and poRepurchase != ''">
+            AND PO_REPURCHASE = #{poRepurchase}
+        </if>
+
+        <if test="createdBy != null and createdBy != ''">
+            AND po.CREATED_BY LIKE CONCAT ('%', #{createdBy}, '%')
+        </if>
+
+        <if test="createdDate != null and createdDate != ''">
+            AND PO.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)
+        </if>
+
+        <if test="createdBy != null and createdBy != ''">
+            AND po.CREATED_BY LIKE CONCAT ('%', #{createdBy}, '%')
+        </if>
+
+        <if test="createdDate != null and createdDate != ''">
+            AND PO.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)
+        </if>
+
+        <if test="modifiedBy != null and modifiedBy != ''">
+            AND po.MODIFIED_BY LIKE CONCAT ('%', #{modifiedBy}, '%')
+        </if>
+
+        <if test="modifiedDate != null and modifiedDate != ''">
+            AND PO.MODIFIED_DATE BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)
+        </if>
+
+        <if test="hwAprvId != null and hwAprvId != ''">
+            AND HW_APRV_ID LIKE CONCAT ('%', #{hwAprvId}, '%')
+        </if>
+
+        <if test="hwAprvDate != null and hwAprvDate != ''">
+            AND HW_APRV_DATE BETWEEN SUBSTR(#{hwAprvDate}, 1, 10) AND SUBSTR(#{hwAprvDate}, 13)
+        </if>
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
-            *
+            PO_STATE,
+            U_NAME,
+            BUY.COM_NUM,
+            PO_TOTAL_AMOUNT,
+            PO_SELL_PROFIT,
+            PO_SELL_TOTAL_AMOUNT,
+            PO_DELIVERY_MAIN,
+            PO_IN_DATE,
+            PO_DUE_DATE,
+            PO_REFUND_DATE,
+            PO_AS_DATE,
+            PO_BUY_SELL_PERIOD,
+            PO_REPURCHASE,
+            po.CREATED_BY AS 'CREATED_BY',
+            po.CREATED_BY AS 'CREATED_DATE',
+            hiworks.HW_APRV_ID AS 'HW_APRV_ID',
+            hiworks.HW_APRV_DATE AS 'HW_APRV_DATE',
+            po.MODIFIED_BY AS 'MODIFIED_BY',
+            po.MODIFIED_DATE AS 'MODIFIED_DATE'
         FROM
-            PO
+            po
+                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
+                LEFT JOIN user ON HW_U_IDX = U_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
         <if test="length!=-1">
-        LIMIT #{start},#{length}
+        LIMIT
+            #{start},#{length}
         </if>
     </select>
     <select id="countPoDataTable" parameterType="map" resultType="Integer">
