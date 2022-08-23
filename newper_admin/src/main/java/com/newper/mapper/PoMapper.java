@@ -21,9 +21,9 @@ public interface PoMapper {
 
     /**  견적서 - 상품 -상품분류 카테고리 - 브랜드 카테고리 조회 쿼리문 **/
     List<Map<String, Object>> selectEstimateProduct(@Param("peIdx") Integer peIdx);
-    /**입고관리 datatable*/
+    /**입고등록 datatable*/
     List<Map<String, Object>> selectInDatatable(Map<String, Object> param);
-    /**입고관리 datatable count*/
+    /**입고등록 datatable count*/
     int countInDatatable(Map<String, Object> param);
 
 
@@ -31,4 +31,10 @@ public interface PoMapper {
     List<Map<String, Object>> selectPoApprovedDatatable(Map<String, Object> param);
     /** 발주 관리 조회 쿼리문 **/
     int countPoApprovedDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 조회 쿼리문 **/
+    List<Map<String, Object>> selectInPoDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
+    List<Map<String, Object>> selectInPpDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
+    int countInPpDatatable(Map<String, Object> param);
 }

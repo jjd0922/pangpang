@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>입고관리</title>
+    <title>입고등록</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -38,7 +38,7 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="inSearchForm">
+                                    <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 <!--                                                <div class="form-group">-->
@@ -107,13 +107,12 @@
 
 <script>
     function searchBtn(){
-        var table = $('#productTable').DataTable();
-        table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
+        var table = $('#inTable').DataTable();
+        table.page('first').ajax.url('/in/in.dataTable?'+$('#searchForm').serialize()).load(null, false);
     }
 
-    //발주코드 팝업
-    function openInPop(idx){
-        var focusPopup = window.open('/in/'+idx, 'inDetail', 'width=1200, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function poDetail(idx) {
+        var focusPopup = window.open('/in/po/' + idx, 'inPo', 'width=1100,height=900,scrollbars=yes,resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -128,7 +127,7 @@
         // },
         serverSide: true,
         ajax:{
-            url:'/in/in.dataTable?'+$('#inSearchForm').serialize(),
+            url:'/in/in.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -142,13 +141,30 @@
             {'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
-            ,{'title':'발주코드','data':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-indigo" onclick="openInPop(1)">발주코드</a>';
+            ,{'title':'긴급발주','data':'PO_TYPE_STR','render':function(data,type,full,meta){
+                if(full.PO_TYPE == 'EMERGENCY'){
+                    return spanTag(full.PO_TYPE_STR,'text-danger');
+                }
+                return full.PO_TYPE_STR;
             }}
+            ,{'title':'입고상태','data':'','defaultContent':''}
+            ,{'title':'입고 담당자','data':'','defaultContent':''}
+            ,{'title':'자산 수령일','data':'','defaultContent':''}
+            ,{'title':'입고 완료일','data':'','defaultContent':''}
+            ,{'title':'세금계산서 발행일','data':'','defaultContent':''}
+            ,{'title':'입고창고','data':'','defaultContent':''}
+            ,{'title':'발주담당자','data':'','defaultContent':''}
+            ,{'title':'발주완료일','data':'','defaultContent':''}
+            ,{'title':'구매담당자','data':'','defaultContent':''}
+            ,{'title':'발주코드','data':'PO_IDX','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="poDetail('+full.PO_IDX+')">발주코드</a>';
+            }}
+            ,{'title':'매입처','data':'','defaultContent':''}
+            ,{'title':'재매입여부','data':'','defaultContent':''}
         ]
     });
 
-    $('#inSearchForm').on('keyup',function(event){
+    $('#searchForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 

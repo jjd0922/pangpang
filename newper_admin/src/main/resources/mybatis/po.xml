@@ -161,6 +161,46 @@
             <include refid="includePoApprovedDatatable"></include>
         </where>
     </select>
+    <select id="selectInPoDatatable" resultType="map" parameterType="map">
+        SELECT
+            PRODUCT.*
+            ,PO_PRODUCT.*
+            ,PP_COST * PP_COUNT PP_TOTAL
+        FROM
+            PO_PRODUCT, PRODUCT
+        WHERE
+            PP_PO_IDX = #{po_idx}
+            AND PP_P_IDX = P_IDX
+    </select>
+    <sql id="includeInPpDatatable">
+        PP_IDX = #{ppIdx}
+        AND PP_PO_IDX = POR_PO_IDX
+        AND G_POR_IDX = POR_IDX
+        AND POR_P_IDX = PP_P_IDX
+        AND ( POR_PP_IDX IS NULL OR POR_PP_IDX = PP_IDX)
+    </sql>
+    <select id="selectInPpDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            PO_PRODUCT, GOODS, PO_RECEIVED
+        <where>
+            <include refid="includeInPpDatatable"></include>
+        </where>
+
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countInPpDatatable" resultType="Integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM
+            PO_PRODUCT, GOODS, PO_RECEIVED
+        <where>
+            <include refid="includeInPpDatatable"></include>
+        </where>
+    </select>
 
 
 </mapper>
