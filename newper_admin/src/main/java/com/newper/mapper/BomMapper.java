@@ -13,4 +13,6 @@ public interface BomMapper {
     long countBomDatatable(Map<String, Object> map);
 
     void insertBom(Map<String, Object> map);
+
+    List<Map<String, Object>> selectBomChild(Integer mpIdx);
 }
