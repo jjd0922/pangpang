@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${mProduct != null} ? 'BOM 조회/수정'">BOM 등록</title>
     <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .table-hover{
+            width: 100% !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,11 +51,11 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                    상품코드<a href="#" class="badge badge-sm badge-primary ml-1" id="searchMotherBtn">검색</a>
+                                                                    상품코드<a th:if="${mProduct == null}" href="#" class="badge badge-sm badge-primary ml-1" id="searchMotherBtn">검색</a>
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="mpCode" class="form-control" th:value="${mProduct?.pCode}" readonly>
-                                                        <input type="hidden" name="mpIdx">
+                                                        <input type="hidden" name="mpIdx" th:value="${mProduct?.pIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,11 +94,11 @@
                                                 <tr id="defaultRow" th:unless="${mProduct != null}">
                                                     <td colspan="5">BOM구성항목을 선택하십시오.</td>
                                                 </tr>
-                                                <tr th:if="${mProduct != null}" th:each="child, i: ${cProduct}">
-                                                    <td th:text="${i.index+1}"><input type="hidden" name="pIdx" th:value="${child.P_IDX}"></td>
-                                                    <td th:text="${child.P_CODE}"></td>
-                                                    <td th:text="${child.P_NAME}"></td>
-                                                    <td th:text="${child.P_COST}"></td>
+                                                <tr th:if="${mProduct != null}" th:each="c, i: ${cProduct}">
+                                                    <td><input type="hidden" name="pIdx" th:value="${c.P_IDX}">[[${i.index+1}]]</td>
+                                                    <td th:text="${c.P_CODE}"></td>
+                                                    <td th:text="${c.P_NAME}"></td>
+                                                    <td th:text="${c.P_COST}"></td>
                                                     <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>
                                                 </tr>
                                             </tbody>
@@ -160,7 +165,7 @@
 <script th:inline="javascript">
     function saveAction(){
         $.ajax({
-            url: '/bom/bomPop.ajax',
+            url: location.pathname + '.ajax',
             type: 'post',
             data: $('#regiForm').serialize()
         });
@@ -176,23 +181,38 @@
             $('input[name="mpIdx"]').val(data.P_IDX);
         } else {
             $('#defaultRow').remove();
-            var rowNum = ($('#bomChildTable tbody tr').last().index()+2);
-            $('#bomChildTable tbody').append(
-                '<tr>' +
-                '   <td><input type="hidden" name="pIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
-                '   <td>'+data.P_CODE+'</td>' +
-                '   <td>'+data.P_NAME+'</td>' +
-                '   <td>'+data.P_COST+'</td>' +
-                '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
-                '</tr>'
-            );
+            appendRow(data);
         }
 
         $('#searchProductModal').modal('hide');
     }
 
+    function selectProductList() {
+        $('#defaultRow').remove();
+        var productModalTable = $('#productModalTable').DataTable();
+        var selectedRows = productModalTable.rows({selected:true})[0];
+        for(idx in selectedRows){
+            var data = productModalTable.data()[selectedRows[idx]];
+            appendRow(data);
+        }
+        $('#searchProductModal').modal('hide');
+    }
+
     function deleteRow(el) {
         el.closest('tr').remove();
+    }
+
+    function appendRow(data) {
+        var rowNum = ($('#bomChildTable tbody tr').last().index()+2);
+        $('#bomChildTable tbody').append(
+            '<tr>' +
+            '   <td><input type="hidden" name="pIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
+            '   <td>'+data.P_CODE+'</td>' +
+            '   <td>'+data.P_NAME+'</td>' +
+            '   <td>'+data.P_COST+'</td>' +
+            '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
+            '</tr>'
+        );
     }
 
 </script>

@@ -79,6 +79,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
+                <button type="button" class="btn btn-dark opacity-60" id="selectAllBtn" onclick="selectProductList()">일괄선택</button>
             </div>
         </div>
     </div>
@@ -90,8 +91,10 @@
         selectProductDatatable();
         if (e.currentTarget.id == 'searchMotherBtn') {
             selectCheckboxVisible(false);
+            $('#selectAllBtn').css('display', 'none');
         } else {
             selectCheckboxVisible(true);
+            $('#selectAllBtn').css('display', 'block');
         }
     }
 

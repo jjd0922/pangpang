@@ -3,7 +3,7 @@
 <mapper namespace="com.newper.mapper.BomMapper">
     <sql id="includeBomDatatable">
         <if test="pCode != null and pCode !=''">AND P_CODE LIKE CONCAT('%',#{pCode},'%')</if>
-        <if test="pName != null and pName !=''">AND P_CODE LIKE CONCAT('%',#{pName},'%')</if>
+        <if test="pName != null and pName !=''">AND P_NAME LIKE CONCAT('%',#{pName},'%')</if>
     </sql>
     <select id="selectBomDatatable" resultType="map">
         SELECT
@@ -58,9 +58,7 @@
             PRODUCT
         WHERE
             BOM_P_IDX = P_IDX
-        <where>
             <include refid="includeBomDatatable"></include>
-        </where>
     </select>
 
     <insert id="insertBom">
@@ -85,4 +83,20 @@
             BOM_P_IDX = #{mpIdx}
             AND BOM_P_IDX2 = P_IDX
     </select>
+
+    <delete id="deleteBom">
+        DELETE FROM
+                   BOM
+        WHERE
+            BOM_P_IDX = #{mpIdx}
+    </delete>
+
+    <delete id="deleteBomAll">
+        DELETE FROM
+            BOM
+        WHERE
+            <foreach collection="mpIdx" open="(" separator="OR" close=")" item="item">
+                BOM_P_IDX = #{item}
+            </foreach>
+    </delete>
 </mapper>
