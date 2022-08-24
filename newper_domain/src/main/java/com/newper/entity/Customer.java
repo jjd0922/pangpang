@@ -20,7 +20,7 @@ public class Customer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CU_SHOP_IDX", referencedColumnName = "shopIdx")
-    private  Shop shop;
+    private Shop shop;
 
     private String cuName;
 

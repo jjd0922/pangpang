@@ -2,6 +2,7 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.GRank;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.entity.Company;
@@ -230,7 +231,7 @@ public class ProductService {
         }
 
         // 등급 추가 후 설정
-        goodsStock.setGsRank(1);
+        goodsStock.setGsRank(GRank.A1);
         // 스펙 추가후 설정
         goodsStock.setSpec(null);
 

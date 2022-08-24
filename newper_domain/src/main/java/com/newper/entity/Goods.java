@@ -1,10 +1,12 @@
 package com.newper.entity;
 
+import com.newper.constant.GRank;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -19,32 +21,49 @@ public class Goods {
     private Long gidx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_IP_IDX", referencedColumnName = "ipIdx")
-    private InProduct inProduct;
+    @JoinColumn(name = "G_P_IDX", referencedColumnName = "pIdx")
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_PO_IDX", referencedColumnName = "poIdx")
+    private Po po;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_POR_IDX", referencedColumnName = "porIdx")
+    private PoReceived poReceived;
+
+    /** 판매 확정 스펙*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_SELL_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec sellSpec;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_LOC_IDX", referencedColumnName = "locIdx")
     private Location location;
 
+    /** 재고 스펙*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "G_STOCK_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec stockSpec;
+
+    /** 재고 코드*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_GS_IDX", referencedColumnName = "gsIdx")
-    private  GoodsStock goodsStock;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_SPEC_IDX", referencedColumnName = "specIdx")
-    private  Spec spec;
-
-/*    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_SPEC_IDX2", referencedColumnName = "specIdx2")
-    private  Spec spec;*/
+    private GoodsStock goodsStock;
 
     private String gBarcode;
-    private String ajBarcode;
+    private String gAjBarcode;
+
     private String gState;
+    private String gStockState;
+
     private String gMemo;
-    private String gRank;
+    @Enumerated(EnumType.STRING)
+    private GRank gRank;
     private String gVendor;
-    private String gOption;
+    private List<String> gOption;
+    private String gDt;
+    private String gImei;
 
 
 

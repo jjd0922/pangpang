@@ -22,13 +22,13 @@ public class MainSection extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MS_SHOP_IDX", referencedColumnName = "shopIdx")
-    private  Shop shop;
+    private Shop shop;
 
     private String msName;
 
     private int msDislay;
 
-    private  int msDan;
+    private int msDan;
 
 
 

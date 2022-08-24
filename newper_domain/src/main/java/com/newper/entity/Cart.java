@@ -24,11 +24,11 @@ public class Cart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_CU_IDX", referencedColumnName = "cuIdx")
-    private  Customer customer;
+    private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "C_SP_IDX", referencedColumnName = "spIdx")
-    private  ShopProduct shopProduct;
+    private ShopProduct shopProduct;
 
     @CreatedDate
     @Column(updatable = false)

@@ -23,7 +23,7 @@ public class EventGroup {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EG_PG_MSO_IDX", referencedColumnName = "msoIdx")
-    private  MainSectionOrder mainSectionOrder;
+    private MainSectionOrder mainSectionOrder;
 
 
     private String egPgName;

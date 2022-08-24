@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -28,5 +29,8 @@ public class Location {
     private String locZone;
     private String locRow;
     private String locColumn;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "location", cascade = CascadeType.DETACH)
+    private List<Goods> goodsList;
 
 }

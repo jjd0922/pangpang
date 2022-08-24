@@ -20,7 +20,7 @@ public class MainSectionOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MSO_MS_IDX", referencedColumnName = "msIdx")
-    private  MainSection mainSection;
+    private MainSection mainSection;
 
     private String msoType;
 

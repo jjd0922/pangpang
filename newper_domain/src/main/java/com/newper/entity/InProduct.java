@@ -25,7 +25,7 @@ public class InProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IP_P_IDX", referencedColumnName = "pIdx")
-    private  Product product;
+    private Product product;
 
     private Integer ipCount;
 

@@ -27,9 +27,7 @@ public class ProcessRestController {
     private final UserMapper userMapper;
     private final SpecMapper specMapper;
 
-    /**
-     * 공정보드 조회
-     */
+    /** 공정보드 조회 */
     @PostMapping("board.dataTable")
     public ReturnDatatable board(ParamMap paramMap) {
         ReturnDatatable returnDatatable = new ReturnDatatable("공정보드");

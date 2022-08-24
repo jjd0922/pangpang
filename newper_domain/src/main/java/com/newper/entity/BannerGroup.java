@@ -21,7 +21,7 @@ public class BannerGroup {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BG_MSO_IDX", referencedColumnName = "msoIdx")
-    private  MainSectionOrder mainSectionOrder;
+    private MainSectionOrder mainSectionOrder;
 
     private String bgTitle;
 

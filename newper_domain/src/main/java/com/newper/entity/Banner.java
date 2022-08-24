@@ -22,7 +22,7 @@ public class Banner {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BN_BG_IDX", referencedColumnName = "bgIdx")
-    private  BannerGroup bannerGroup;
+    private BannerGroup bannerGroup;
 
     private int bnDisplay;
 

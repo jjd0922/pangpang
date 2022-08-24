@@ -21,7 +21,7 @@ public class Resell {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer rsIdx;
+    private Integer rsIdx;
 
     private Date rsDate;
 

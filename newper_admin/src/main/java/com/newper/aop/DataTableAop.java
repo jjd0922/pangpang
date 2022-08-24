@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.*;
 
 @Aspect
@@ -22,9 +23,7 @@ public class DataTableAop {
     @Autowired
     private SessionInfo sessionInfo;
 
-    /**
-     * key: column명 (snake_case) , value : enum class명(camelBack)
-     */
+    /** key: column명 (snake_case) , value : enum class명(camelBack) */
     Map<String,String> enumClasses = new HashMap<>();
 
 //    @PostConstruct
@@ -38,7 +37,7 @@ public class DataTableAop {
 //            }
 //
 //        }
-//        System.out.println("\n\n  ====end====  \n");
+//        System.out.println("\n\n  ====end====  \n"+enumDir.list().length);
 //    }
 
     @PostConstruct
@@ -46,8 +45,10 @@ public class DataTableAop {
 
         enumClasses.put("po_buy_product_type","PType1");
         enumClasses.put("po_sell_channel","Channel");
+        enumClasses.put("gs_rank","GRank");
 
 
+        //36개
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_spec","CateSpec");
         enumClasses.put("cate_type","CateType");
@@ -65,8 +66,10 @@ public class DataTableAop {
         enumClasses.put("ct_type","CtType");
         enumClasses.put("giftg_state","GiftgState");
         enumClasses.put("gift_state","GiftState");
+        enumClasses.put("g_rank","GRank");
         enumClasses.put("g_stock_state","GStockState");
         enumClasses.put("hw_state","HwState");
+        enumClasses.put("ig_state","IgState");
         enumClasses.put("loc_state","LocState");
         enumClasses.put("menu_type","MenuType");
         enumClasses.put("pe_state","PeState");
