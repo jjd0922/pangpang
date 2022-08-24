@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ProductMapper">
+    <sql id="includeProductDataTable">
+        <if test="P_CODE != null and P_CODE != ''">AND P_CODE LIKE CONCAT('%',#{P_CODE},'%')</if>
+        <if test="P_NAME != null and P_NAME != ''">AND P_NAME LIKE CONCAT('%',#{P_NAME},'%')</if>
+        <if test="P_STATE != null and  P_STATE!=''">AND P_STATE LIKE CONCAT('%',#{P_STATE},'%')</if>
+        <if test="P_MODEL != null and P_MODEL !=''">AND P_MODEL LIKE CONCAT('%',#{P_MODEL},'%')</if>
+        <if test="P_CATE_IDX2 != null and P_CATE_IDX2 !=''">AND P_CATE_IDX2 like CONCAT('%',#{P_CATE_IDX2},'%')</if>
+        <if test="P_USE_STOCK != null and P_USE_STOCK != ''">AND P_USE_STOCK LIKE CONCAT('%',#{P_USE_STOCK},'%')</if>
+       <!-- <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리대분류*/
+            #{item}
+        </foreach>
+        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리중분류*/
+            #{item}
+        </foreach>
+        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리소분류*/
+            #{item}
+        </foreach>-->
+        <if test="P_TYPE1 != null">
+        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_TYPE2 != null">
+        <foreach collection="P_TYPE2" open="AND P_TYPE2 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_TYPE3 != null">
+        <foreach collection="P_TYPE3" open="AND P_TYPE3 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_COM_IDX != null and P_COM_IDX != ''">AND P_COM_IDX LIKE CONCAT('%',#{P_COM_IDX},'%')</if>
+        <if test="P_COM_IDX2 != null and P_COM_IDX2 != ''">AND P_COM_IDX2 LIKE CONCAT('%',#{P_COM_IDX2},'%')</if>
+        <if test="P_COM_IDX3 != null and P_COM_IDX3 != ''">AND P_COM_IDX3 LIKE CONCAT('%',#{P_COM_IDX3},'%')</if>
+        <if test="CREATED_BY != null and CREATED_BY != ''">AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
+        <if test="CREATED_BY != null and CREATED_BY != ''">AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>/*수정자*/
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>/*수정일*/
+        <if test="MODIFIED_BY != null and MODIFIED_BY != ''">AND MODIFIED_BY LIKE CONCAT('%',#{MODIFIED_BY},'%')</if>
+        <if test="MODIFIED_DATE != null and MODIFIED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{MODIFIED_DATE}, 1, 10) AND SUBSTR(#{MODIFIED_DATE}, 13)</if>
+    </sql>
     <select id="selectProductDataTable" resultType="Map">
         SELECT
             dt.CATE_SPEC_LIST AS 'CATE_SPEC_LIST',
@@ -55,7 +96,8 @@
                     ON P_COM_IDX3 = afterservice.COM_IDX
         WHERE
             P_IDX is not null
-            order by P_IDX desc
+            <include refid="includeProductDataTable"></include>
+         order by P_IDX desc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -90,7 +132,13 @@
                           ON P_COM_IDX2 = manufacture.COM_IDX
                 LEFT JOIN company AS afterservice
                           ON P_COM_IDX3 = afterservice.COM_IDX
-    </select>
+
+            WHERE
+                P_IDX is not null
+                <include refid="includeProductDataTable"></include>
+
+
+</select>
 
     <select id="selectProductByListPcode" resultType="String">
         select

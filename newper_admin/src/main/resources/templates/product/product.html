@@ -58,11 +58,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">모델명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_MODEL">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">브랜드</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_CATE_IDX2">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">재고관리</label>
@@ -72,51 +72,51 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 대분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 중분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 소분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">정산구분(품목구분1)</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">정산구분(품목구분2)</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE2" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType2).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">물류타입(품목자산구분)</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE3" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType3).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">입점사</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_COM_IDX">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">제조사</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_COM_IDX2">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">AS업체</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_COM_IDX3">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">등록자</label>
@@ -281,17 +281,17 @@
                 ,{'title':'상품명','data':'P_NAME'}
                 ,{'title':'상품 상태','data':'P_STATE'}
                 ,{'title':'모델명','data':'P_MODEL'}
-                ,{'title':'브랜드','data':'BRAND_NAME','defaultContent':''}
+                ,{'title':'브랜드','data':'P_CATE_IDX2','defaultContent':''}
                 ,{'title':'재고관리','data':'P_USE_STOCK'}
-                ,{'title':'카테고리 대분류','data':'CATE_NAME1','defaultContent':''}
-                ,{'title':'카테고리 중분류','data':'CATE_NAME2','defaultContent':''}
-                ,{'title':'카테고리 소분류','data':'CATE_NAME3','defaultContent':''}
-                ,{'title':'정산구분(품목구분1)','data':'P_TYPE1'}
-                ,{'title':'상품분류(품목구분2)','data':'P_TYPE2'}
-                ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3'}
-                ,{'title':'입점사','data':'STORE_NAME','defaultContent':''}
-                ,{'title':'제조사','data':'MANUFACTURE_NAME','defaultContent':''}
-                ,{'title':'AS업체','data':'AFTERSERVICE_NAME','defaultContent':''}
+                ,{'title':'카테고리 대분류','data':'P_TYPE1_STR','defaultContent':''}
+                ,{'title':'카테고리 중분류','data':'P_TYPE1_STR','defaultContent':''}
+                ,{'title':'카테고리 소분류','data':'P_TYPE1_STR','defaultContent':''}
+                ,{'title':'정산구분(품목구분1)','data':'P_TYPE1_STR'}
+                ,{'title':'상품분류(품목구분2)','data':'P_TYPE2_STR'}
+                ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3_STR'}
+                ,{'title':'입점사','data':'P_COM_IDX','defaultContent':''}
+                ,{'title':'제조사','data':'P_COM_IDX2','defaultContent':''}
+                ,{'title':'AS업체','data':'P_COM_IDX3','defaultContent':''}
                 ,{'title':'기준매입원가','data':'P_COST','render':function(data, type, full, meta){
                         return comma(data);
                     }}
@@ -305,9 +305,9 @@
                         return comma(data);
                     }}
                 ,{'title':'배송주체','data':'P_DEL_COMPANY'}
-                ,{'title':'옵션1','data':'OPTION1'}
-                ,{'title':'옵션2','data':'OPTION2'}
-                ,{'title':'옵션3','data':'OPTION3'}
+                ,{'title':'옵션1','data':'P_OPTION'}
+                ,{'title':'옵션2','data':'P_OPTION'}
+                ,{'title':'옵션3','data':'P_OPTION'}
                 ,{'title':'스펙구성','data':'null','defaultContent':''}
                 ,{'title':'등록일','data':'CREATED_DATE'}
                 ,{'title':'승인자','data':'MODIFIED_BY'}
