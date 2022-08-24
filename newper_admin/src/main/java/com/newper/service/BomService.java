@@ -17,4 +17,10 @@ public class BomService {
     public void saveBom(ParamMap paramMap) {
         bomMapper.insertBom(paramMap.getMap());
     }
+
+    @Transactional
+    public void updateBom(ParamMap paramMap) {
+        bomMapper.deleteBom(paramMap.getMap());
+        bomMapper.insertBom(paramMap.getMap());
+    }
 }

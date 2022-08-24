@@ -15,4 +15,8 @@ public interface BomMapper {
     void insertBom(Map<String, Object> map);
 
     List<Map<String, Object>> selectBomChild(Integer mpIdx);
+
+    void deleteBom(Map<String, Object> map);
+
+    void deleteBomAll(Map<String, Object> map);
 }
