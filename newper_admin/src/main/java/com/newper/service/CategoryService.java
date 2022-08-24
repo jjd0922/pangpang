@@ -2,11 +2,9 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
-import com.newper.constant.CateDisplay;
 import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
-import com.newper.entity.Company;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.CategoryRepo;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,16 +175,16 @@ public class CategoryService {
     public void updateCateInfo(ParamMap paramMap) {
         Category category = categoryRepo.findById(paramMap.getInt("cateIdx")).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
-        List title = paramMap.getList("title");
-        List content = paramMap.getList("content");
+        List<String> title = paramMap.getList("title");
+        List<String> content = paramMap.getList("content");
 
         List<Map<String, Object>> infoList = new ArrayList<>();
         for (int i = 0; i < title.size(); i++) {
             Map<String, Object> map = new HashMap<>();
-            if (!StringUtils.hasText(title.get(i).toString())) {
+            if (!StringUtils.hasText(title.get(i))) {
                 throw new MsgException("미입력된 고시정보항목이 있습니다.");
             }
-            if (!StringUtils.hasText(content.get(i).toString())) {
+            if (!StringUtils.hasText(content.get(i))) {
                 throw new MsgException("미입력된 고시정보내용이 있습니다.");
             }
             map.put("title", title.get(i));
