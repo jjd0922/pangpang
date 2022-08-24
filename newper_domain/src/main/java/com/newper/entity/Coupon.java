@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -36,7 +35,7 @@ public class Coupon {
 
     private Float cpMoney;
 
-    private Date cpEndDate;
+    private LocalDate cpEndDate;
 
 
 }

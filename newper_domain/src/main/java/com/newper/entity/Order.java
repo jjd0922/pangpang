@@ -4,9 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -52,9 +51,9 @@ public class Order {
 
     private String oPhone;
 
-    private Date oDate;
+    private LocalDate oDate;
 
-    private Time oTime;
+    private LocalTime oTime;
 
     private String oMemo;
 

@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -24,8 +24,8 @@ public class Check {
 
     private String checkState;
 
-    private Date checkDate;
+    private LocalDate checkDate;
 
-    private Time checkTime;
+    private LocalTime checkTime;
 
 }

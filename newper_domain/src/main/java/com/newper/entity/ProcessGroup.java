@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.lang.invoke.SwitchPoint;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -28,7 +27,7 @@ public class ProcessGroup extends CreatedEntity {
 
     private String pgLastState;
 
-    private Date pgRequestDate;
+    private LocalDate pgRequestDate;
 
     private String pgReqMemo;
 
@@ -36,9 +35,9 @@ public class ProcessGroup extends CreatedEntity {
 
     private String pgDoneMemo;
 
-    private Date pgStartDate;
+    private LocalDate pgStartDate;
 
-    private Date pgEndDate;
+    private LocalDate pgEndDate;
 
     private Integer pgUIdx;
 

@@ -4,9 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -34,17 +33,17 @@ public class EventGroup {
 
     private String egContent;
 
-    private Date egStartDate;
+    private LocalDate egStartDate;
 
-    private Date egEndDate;
+    private LocalDate egEndDate;
 
-    private Date egOpenDate;
+    private LocalDate egOpenDate;
 
-    private Time egOpenTime;
+    private LocalTime egOpenTime;
 
-    private Date egCloseDate;
+    private LocalDate egCloseDate;
 
-    private Time egCloseTime;
+    private LocalTime egCloseTime;
 
     private String egDesign;
 

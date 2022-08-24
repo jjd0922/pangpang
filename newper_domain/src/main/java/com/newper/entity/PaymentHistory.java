@@ -7,10 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
-import java.util.Timer;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -31,9 +29,9 @@ public class PaymentHistory {
 
     private String phResponse;
 
-    private Date phRequestDate;
+    private LocalDate phRequestDate;
 
-    private Time phRequestTime;
+    private LocalTime phRequestTime;
 
     private String phCode;
 

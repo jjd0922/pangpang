@@ -4,9 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -29,9 +28,9 @@ public class OrderGs {
 
     private Integer ogPrice;
 
-    private Date ogDate;
+    private LocalDate ogDate;
 
-    private Time ogTime;
+    private LocalTime ogTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_G_IDX", referencedColumnName = "gIdx")

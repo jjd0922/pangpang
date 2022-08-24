@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -31,9 +30,9 @@ public class PoEstimate extends BaseEntity {
 
     private String peName;
 
-    private Date peStart;
+    private LocalDate peStart;
 
-    private Date peEnd;
+    private LocalDate peEnd;
 
     private Integer peCount;
 

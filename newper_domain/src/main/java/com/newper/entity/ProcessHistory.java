@@ -2,11 +2,10 @@ package com.newper.entity;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.hql.internal.ast.ParameterTranslationsImpl;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -26,8 +25,8 @@ public class ProcessHistory {
 
     private String phState;
 
-    private Date phDate;
+    private LocalDate phDate;
 
-    private Time phTime;
+    private LocalTime phTime;
 
 }

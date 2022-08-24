@@ -1,6 +1,5 @@
 package com.newper.entity;
 
-import com.newper.exception.NoSessionException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 

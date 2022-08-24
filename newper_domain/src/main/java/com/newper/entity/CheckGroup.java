@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.net.Inet4Address;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -32,7 +31,7 @@ public class CheckGroup extends CreatedEntity {
 
     private String cgState;
 
-    private Date cgRequestDate;
+    private LocalDate cgRequestDate;
 
     private String cgReqMemo;
 
@@ -40,9 +39,9 @@ public class CheckGroup extends CreatedEntity {
 
     private String cgDoneMemo;
 
-    private Date cgStartDate;
+    private LocalDate cgStartDate;
 
-    private Date cgEndDate;
+    private LocalDate cgEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CG_U_IDX", referencedColumnName = "uIdx")
