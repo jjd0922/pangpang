@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -44,6 +45,10 @@ public class Po extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_HW_IDX", referencedColumnName = "hwIdx")
     private Hiworks hiworks;
+
+    /** one to one이지만 lazy fetch때문에 one to many로 설정함*/
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "po")
+    private List<InGroup> inGroup;
 
     @Enumerated(EnumType.STRING)
     private PoState poState;

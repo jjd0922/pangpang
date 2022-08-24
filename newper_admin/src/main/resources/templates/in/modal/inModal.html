@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="inPPModal" data-backdrop="static">
+<div class="modal" tabindex="-1" role="dialog" id="inProductModal" data-backdrop="static">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -72,7 +72,8 @@
                                             <a type="button" class="btn btn-sm btn-primary ml-1" onclick="toggleBarcodeForm()">등록</a>
                                         </legend>
                                         <form id="inModalForm" onsubmit="inModalFormSubmit()" style="display: none;">
-                                            <input type="hidden" name="pp_idx">
+                                            <input type="hidden" name="p_idx">
+                                            <input type="hidden" name="po_idx" th:value="${poIdx}">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
@@ -92,7 +93,7 @@
                                         <legend class="">
                                             자산 정보
                                         </legend>
-                                        <table id="inPPModalTable" class="table">
+                                        <table id="inModalProductTable" class="table">
 
                                         </table>
                                     </fieldset>
@@ -118,13 +119,13 @@
     function openInModal(row){
         var rowData = getDatatablemap('inPoProductTable', row);
 
-        initPPMOdalTable(rowData.PP_IDX);
+        initInProductModalTable();
 
         $('#inModalPname').val(rowData.P_NAME);
-        $('#inModalForm input[name=pp_idx]').val(rowData.PP_IDX);
+        $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
 
 
-        $('#inPPModal').modal('show');
+        $('#inProductModal').modal('show');
     }
     function toggleBarcodeForm(){
         $('#inModalForm').toggle(500);
@@ -149,16 +150,16 @@
     }
 </script>
 <script>
-    //자산 목록 dt
-    function initPPMOdalTable(ppIdx){
-        if ($.fn.DataTable.isDataTable('#inPPModalTable')) {
-            $('#inPPModalTable').DataTable().page('first').ajax.url('/in/pp.dataTable?pp_idx='+ppIdx).load(null, false);
+    //상품 입고 자산 목록 dt
+    function initInProductModalTable(){
+        if ($.fn.DataTable.isDataTable('#inModalProductTable')) {
+            $('#inModalProductTable').DataTable().page('first').ajax.url('/in/product.dataTable?'+$('#inModalForm').serialize()).load(null, false);
         }else{
-            $('#inPPModalTable').DataTable({
+            $('#inModalProductTable').DataTable({
                 ordering:false,
                 serverSide: true,
                 ajax:{
-                    url:'/in/pp.dataTable?pp_idx='+ppIdx,
+                    url:'/in/product.dataTable?'+$('#inModalForm').serialize(),
                     type:'post'
                 },
                 buttons: buttonsSelect(false),
@@ -166,14 +167,14 @@
                     {'title':'No','data':'No','render':function(data,type,full,meta){
                             return meta.settings._iDisplayStart+meta.row+1;
                         }}
-                    ,{'title':'자산코드','data':''}
+                    ,{'title':'자산코드','data':'G_BARCODE'}
                 ]
             });
         }
     }
 
 
-    $('#inPPModal').on('show.bs.modal',function (e){
+    $('#inProductModal').on('show.bs.modal',function (e){
         $('#inModalForm').hide();
     });
 </script>

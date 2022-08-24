@@ -165,8 +165,20 @@
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
                                     <legend class="">
-                                        2. 상품정보
-                                        <a class="btn btn-sm btn-primary ml-1" onclick="openInExcelModal()">자산코드 엑셀 업로드</a>
+                                        2. 상품 입고 정보
+                                    </legend>
+
+                                    <div class="row">
+                                        <table class="table" id="inProductTable">
+                                        </table>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="card-body popup-contents mb-4">
+                                <fieldset class="mb-0">
+                                    <legend class="">
+                                        3. 발주 상품정보
                                     </legend>
 
                                     <div class="row">
@@ -244,6 +256,52 @@
 
 </script>
 <script th:inline="javascript">
+    //입고 정보 table
+    var inProductTable = $('#inProductTable').DataTable({
+        ordering:false,
+        serverSide: false,
+        ajax:{
+            url:'/in/poProduct.dataTable?po_idx=[[${poIdx}]]',
+            type:'post'
+        },
+        pageLength: -1,
+        dom: '<"datatable-header"B><"datatable-scroll"t><"datatable-footer">',
+        buttons: [
+            {
+                text: '자산코드 엑셀 업로드',
+                className: 'btn btn-sm btn-primary',
+                action: function (e, dt, node, config) {
+                    openInExcelModal();
+                }
+            }
+            ,{
+                text: '새로고침',
+                className: 'btn btn-sm btn-secondary',
+                action: function (e, dt, node, config) {
+                    dt.ajax.reload();
+                }
+            }
+        ],
+        "columns" : [
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'상품코드','data':'P_IDX'}
+            ,{'title':'상품명','data':'P_NAME'}
+            ,{'title':'모델명','data':'P_MODEL'}
+            ,{'title':'매입수량','data':'PP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+                return comma(data);
+            }}
+            ,{'title':'입고 수량','data':'IP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+                return comma(data);
+            }}
+            ,{'title':'자산코드','data':'','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="openInModal('+meta.row+')">등록</a>';
+            }}
+        ]
+    });
+
+    //발주상품정보
     var inPoProductTable = $('#inPoProductTable').DataTable({
         ordering:false,
         serverSide: false,
@@ -252,7 +310,7 @@
             type:'post'
         },
         pageLength: -1,
-        dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
         buttons: [
             {
                 text: '새로고침',
@@ -281,9 +339,6 @@
             }}
             ,{'title':'입고 SPEC(예정)','data':'','defaultContent':''}
             ,{'title':'판매 SPEC(예정)','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-indigo" onclick="openInModal('+meta.row+')">등록</a>';
-            }}
         ]
     });
 </script>

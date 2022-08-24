@@ -31,10 +31,15 @@ public interface PoMapper {
     List<Map<String, Object>> selectPoApprovedDatatable(Map<String, Object> param);
     /** 발주 관리 조회 쿼리문 **/
     int countPoApprovedDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 group by 상품 . 조회 쿼리문 **/
+    List<Map<String, Object>> selectInPoProductDatatable(Map<String, Object> param);
     /** 입고등록 팝업 조회 쿼리문 **/
     List<Map<String, Object>> selectInPoDatatable(Map<String, Object> param);
-    /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
-    List<Map<String, Object>> selectInPpDatatable(Map<String, Object> param);
-    /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
-    int countInPpDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 상풉 입고 자산 조회 쿼리문 **/
+    List<Map<String, Object>> selectInProductDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 상풉 입고 자산 조회 쿼리문 **/
+    int countInProductDatatable(Map<String, Object> param);
+
+    /** 발주서에 상품idx, 수량 조회 */
+    List<Map<String, Object>> selectPoProductGroup(int po_idx);
 }
