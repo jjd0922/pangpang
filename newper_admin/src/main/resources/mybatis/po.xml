@@ -250,6 +250,27 @@
             <include refid="includePoApprovedDatatable"></include>
         </where>
     </select>
+    <select id="selectPoProductGroup" resultType="map">
+        SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT
+        WHERE PP_PO_IDX = #{po_idx}
+        GROUP BY PP_P_IDX
+    </select>
+    <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
+        SELECT
+             P_IDX, P_NAME, P_MODEL
+            ,PP_COUNT
+            ,IP_COUNT
+        FROM
+            PRODUCT
+            ,IN_PRODUCT
+            ,IN_GROUP
+            ,(SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT WHERE PP_PO_IDX = #{po_idx} GROUP BY PP_P_IDX) PP
+        WHERE
+            IG_PO_IDX = #{po_idx}
+            AND IP_IG_IDX = IG_IDX
+            AND IP_P_IDX = P_IDX
+            AND P_IDX = PP_P_IDX
+    </select>
     <select id="selectInPoDatatable" resultType="map" parameterType="map">
         SELECT
             PRODUCT.*
@@ -262,33 +283,30 @@
             AND PP_P_IDX = P_IDX
         ORDER BY PP_IDX
     </select>
-    <sql id="includeInPpDatatable">
-        PP_IDX = #{ppIdx}
-        AND PP_PO_IDX = POR_PO_IDX
-        AND G_POR_IDX = POR_IDX
-        AND POR_P_IDX = PP_P_IDX
-        AND ( POR_PP_IDX IS NULL OR POR_PP_IDX = PP_IDX)
+    <sql id="includeInProductDatatable">
+        G_PO_IDX = #{po_idx}
+        AND G_P_IDX = #{p_idx}
     </sql>
-    <select id="selectInPpDatatable" resultType="map" parameterType="map">
+    <select id="selectInProductDatatable" resultType="map" parameterType="map">
         SELECT
             *
         FROM
-            PO_PRODUCT, GOODS, PO_RECEIVED
+            GOODS
         <where>
-            <include refid="includeInPpDatatable"></include>
+            <include refid="includeInProductDatatable"></include>
         </where>
 
         <if test="length!=-1">
             LIMIT #{start},#{length}
         </if>
     </select>
-    <select id="countInPpDatatable" resultType="Integer" parameterType="map">
+    <select id="countInProductDatatable" resultType="Integer" parameterType="map">
         SELECT
             COUNT(*)
         FROM
-            PO_PRODUCT, GOODS, PO_RECEIVED
+            GOODS
         <where>
-            <include refid="includeInPpDatatable"></include>
+            <include refid="includeInProductDatatable"></include>
         </where>
     </select>
 

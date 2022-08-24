@@ -35,6 +35,9 @@ public class ReturnDatatable {
         if(data!=null){
             this.data.addAll(data);
         }
+        if (recordsTotal == 0) {
+            setRecordsTotal();
+        }
     }
 
     public void setRecordsTotal(long recordsTotal) {

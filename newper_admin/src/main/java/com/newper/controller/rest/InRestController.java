@@ -5,6 +5,7 @@ import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.PoMapper;
 import com.newper.service.GoodsService;
+import com.newper.service.InService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class InRestController {
 
     private final PoMapper poMapper;
     private final GoodsService goodsService;
+    private final InService inService;
 
     /** 입고등록 조회*/
     @PostMapping("in.dataTable")
@@ -35,23 +37,34 @@ public class InRestController {
         return rd;
     }
     /** 입고등록 팝업에서 발주서 group by 상품 조회*/
+    @PostMapping("poProduct.dataTable")
+    public ReturnDatatable poProduct(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        inService.insertInGroup(paramMap.getInt("po_idx"));
+
+        List<Map<String, Object>> data = poMapper.selectInPoProductDatatable(paramMap.getMap());
+        rd.setData(data);
+
+        return rd;
+    }
+    /** 입고등록 팝업에서 발주서 group by 상품 조회*/
     @PostMapping("po.dataTable")
     public ReturnDatatable po(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
         List<Map<String, Object>> data = poMapper.selectInPoDatatable(paramMap.getMap());
         rd.setData(data);
-        rd.setRecordsTotal();
 
         return rd;
     }
-    /** 입고등록 팝업에서 상품 클릭시 나오는 발주상품index 자산 목록 조회*/
-    @PostMapping("pp.dataTable")
+    /** 입고등록 팝업에서 상품 그룹으로 입고 수량 자산 목록 조회*/
+    @PostMapping("product.dataTable")
     public ReturnDatatable pp(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
-        List<Map<String, Object>> data = poMapper.selectInPpDatatable(paramMap.getMap());
-        int count = poMapper.countInPpDatatable(paramMap.getMap());
+        List<Map<String, Object>> data = poMapper.selectInProductDatatable(paramMap.getMap());
+        int count = poMapper.countInProductDatatable(paramMap.getMap());
 
         rd.setData(data);
         rd.setRecordsTotal(count);
