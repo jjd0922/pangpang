@@ -8,15 +8,9 @@
         <if test="P_MODEL != null and P_MODEL !=''">AND P_MODEL LIKE CONCAT('%',#{P_MODEL},'%')</if>
         <if test="P_CATE_IDX2 != null and P_CATE_IDX2 !=''">AND P_CATE_IDX2 like CONCAT('%',#{P_CATE_IDX2},'%')</if>
         <if test="P_USE_STOCK != null and P_USE_STOCK != ''">AND P_USE_STOCK LIKE CONCAT('%',#{P_USE_STOCK},'%')</if>
-       <!-- <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리대분류*/
-            #{item}
-        </foreach>
-        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리중분류*/
-            #{item}
-        </foreach>
-        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">/*카테고리소분류*/
-            #{item}
-        </foreach>-->
+        <if test="CATE_IDX1 != null and CATE_IDX1 !=''">AND CATE_IDX1 like CONCAT('%',#{CATE_IDX1},'%')</if>
+        <if test="CATE_IDX2 != null and CATE_IDX2 !=''">AND CATE_IDX2 like CONCAT('%',#{CATE_IDX2},'%')</if>
+        <if test="CATE_IDX3 != null and CATE_IDX3 !=''">AND CATE_IDX3 like CONCAT('%',#{CATE_IDX3},'%')</if>
         <if test="P_TYPE1 != null">
         <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">
             #{item}
