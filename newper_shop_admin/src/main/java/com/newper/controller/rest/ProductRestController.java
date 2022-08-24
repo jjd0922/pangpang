@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.ShopCategoryMapper;
+import com.newper.mapper.ShopProductMapper;
 import com.newper.service.ShopCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,6 +25,7 @@ public class ProductRestController {
 
     private final ShopCategoryMapper shopCategoryMapper;
     private final ShopCategoryService shopCategoryService;
+    private final ShopProductMapper shopProductMapper;
 
 
 
@@ -125,5 +127,17 @@ public class ProductRestController {
         }catch (Exception e){}
         return rm;
     }
+
+    /**shop_product datatable*/
+    @PostMapping("shopProduct.datatable")
+    public ReturnDatatable shopProduct(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String, Object>> list = shopProductMapper.selectShopProductDatatable(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(shopProductMapper.countShopProductDatatable(paramMap.getMap()));
+
+        return returnDatatable;
+    }
+
 
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.ShopProductMapper">
+
+    <select id="selectShopProductDatatable" resultType="map">
+        SELECT
+        shop_product.*,dt.*,SCATE_NAME,shop.*,
+        (case
+        when dt.CATE_DEPTH = 1 then dt.CATE_NAME1
+        when dt.CATE_DEPTH = 2 then dt.CATE_NAME2
+        when dt.CATE_DEPTH = 3 then dt.CATE_NAME3
+        end
+        ) CATE_NAME1,
+        (case
+        when dt.CATE_DEPTH = 3 then dt.CATE_NAME2
+        when dt.CATE_DEPTH = 2 then dt.CATE_NAME1
+        end
+        ) CATE_NAME2,
+        if(dt.CATE_DEPTH=3,dt.CATE_NAME1,NULL) CATE_NAME3,
+        if(SP_SHOW_START_DATE!=NULL AND concat(SP_SHOW_START_DATE,' ',SP_SHOW_START_TIME)<![CDATA[<]]>NOW() AND concat(SP_SHOW_END_DATE,' ',SP_SHOW_END_TIME)>NOW(),'Y','N') AS SP_SHOW,
+        if(SP_SELL_START_DATE!=NULL AND concat(SP_SELL_START_DATE,' ',SP_SELL_START_TIME)<![CDATA[<]]>NOW() AND concat(SP_SELL_END_DATE,' ',SP_SELL_END_TIME)>NOW(),'Y','N') AS SP_PANMAE
+        FROM
+        shop_product
+        LEFT JOIN (SELECT
+        category1.CATE_NAME AS CATE_NAME1,
+        category1.CATE_IDX AS CATE_IDX1,
+        category1.CATE_DEPTH,
+        category2.CATE_NAME AS CATE_NAME2,
+        category2.CATE_IDX AS CATE_IDX2,
+        category3.CATE_NAME AS CATE_NAME3,
+        category3.CATE_IDX AS CATE_IDX3
+        FROM
+        category AS category1
+        LEFT JOIN category AS category2
+        ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+        LEFT JOIN category AS category3
+        ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
+        ON dt.CATE_IDX1=SP_CATE_IDX
+        LEFT JOIN category_shop_category
+        ON CSC_CATE_IDX=dt.CATE_IDX1
+        LEFT JOIN shop_category
+        ON SCATE_IDX=CSC_SCATE_IDX
+        LEFT JOIN shop
+        ON SP_SHOP_IDX=SHOP_IDX
+
+
+        WHERE
+            SP_IDX is not null
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+    <select id="countShopProductDatatable" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            shop_product
+                LEFT JOIN (SELECT
+                               category1.CATE_NAME AS CATE_NAME1,
+                               category1.CATE_IDX AS CATE_IDX1,
+                               category1.CATE_DEPTH,
+                               category2.CATE_NAME AS CATE_NAME2,
+                               category2.CATE_IDX AS CATE_IDX2,
+                               category3.CATE_NAME AS CATE_NAME3,
+                               category3.CATE_IDX AS CATE_IDX3
+                           FROM
+                               category AS category1
+                                   LEFT JOIN category AS category2
+                                             ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+                                   LEFT JOIN category AS category3
+                                             ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
+                          ON dt.CATE_IDX1=SP_CATE_IDX
+                LEFT JOIN category_shop_category
+                          ON CSC_CATE_IDX=dt.CATE_IDX1
+                LEFT JOIN shop_category
+                          ON SCATE_IDX=CSC_SCATE_IDX
+                LEFT JOIN shop
+                          ON SP_SHOP_IDX=SHOP_IDX
+        WHERE
+            SP_IDX is not null
+    </select>
+
+</mapper>
