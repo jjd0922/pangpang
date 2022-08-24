@@ -1,9 +1,9 @@
 <!--로그인 모달창-->
 <th:block th:fragment="login-modal">
-    <div id="loginModal-wrap">
+    <div class="modal-wrap">
         <div class="loginModal">
             <div class="loginModal-close">Close</div>
-            <h2 class="section-title">로그인3</h2>
+            <h2 class="section-title">로그인</h2>
             <ul class="login-input-group">
                 <li class="input-wrap">
                     <input type="text" id="" maxlength="10" name="" placeholder="아이디">
@@ -57,16 +57,22 @@
 
     <script>
         /*** 로그인 모달 창 ***/
-        $loginModal = $("#loginModal-wrap");
+        const modal = $(".modal-wrap");
 
         $(".login").click(function(){
             $('body').addClass('no-scroll');
-            $loginModal.show();
+            modal.show();
             return false;
         });
         $(".loginModal-close").click(function(){
             $('body').removeClass('no-scroll');
-            $loginModal.hide();
+            modal.hide();
+        });
+        // 외부영역 클릭 시 팝업 닫기
+        $(document).mouseup(function (e){
+            if(modal.has(e.target).length === 0){
+                modal.hide();
+            }
         });
     </script>
 </th:block>
