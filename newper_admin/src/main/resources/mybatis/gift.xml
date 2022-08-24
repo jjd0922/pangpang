@@ -32,7 +32,7 @@
             <include refid="includeGiftGroupDataTable"></include>
         </where>
         <if test="length!=-1">
-            limit #{start},#{length}
+            LIMIT #{start},#{length}
         </if>
     </select>
 
@@ -66,7 +66,7 @@
         WHERE
             GIFTG_IDX = #{giftgIdx}
         <if test="length!=-1">
-            limit #{start},#{length}
+            LIMIT #{start},#{length}
         </if>
     </select>
 
@@ -95,4 +95,15 @@
         WHERE
             GIFT_GIFTG_IDX = #{giftgIdx}
     </select>
+
+    <update id="disposeAllGift">
+        UPDATE
+            GIFT
+        SET
+            GIFT_STATE = #{giftState}
+        WHERE
+            <foreach collection="giftIdxList" open="(" separator="OR" close=")" item="item">
+                GIFT_IDX = #{item}
+            </foreach>
+    </update>
 </mapper>

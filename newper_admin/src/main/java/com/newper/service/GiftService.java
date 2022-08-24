@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,10 +55,7 @@ public class GiftService {
 
     @Transactional
     public void disposeGift(ParamMap paramMap) {
-        String giftIdxs[] = paramMap.getString("giftIdxs").split(",");
-        for (int i = 0; i < giftIdxs.length; i++) {
-            Gift gift = giftRepo.findById(Long.parseLong(giftIdxs[i])).orElseThrow(() -> new MsgException("존재하지 않는 상품권입니다."));
-            gift.setGiftState(GiftState.DISPOSAL);
-        }
+        List<String> giftList = paramMap.getList("giftList[]");
+        giftMapper.disposeAllGift(giftList, GiftState.DISPOSAL);
     }
 }

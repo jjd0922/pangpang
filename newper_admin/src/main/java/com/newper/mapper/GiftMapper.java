@@ -25,4 +25,7 @@ public interface GiftMapper {
                            @Param("length") int length);
 
     public int countGiftByGiftgIdx(long giftgIdx);
+
+    public void disposeAllGift(@Param("giftIdxList") List<String> giftIdxList,
+                               @Param("giftState") GiftState giftState);
 }
