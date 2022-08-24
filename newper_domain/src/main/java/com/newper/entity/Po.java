@@ -85,4 +85,9 @@ public class Po extends BaseEntity {
     private String poFile;
     private String poFileName;
 
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "po", cascade = CascadeType.DETACH)
+    private List<Goods> goodsList;
+
 }
