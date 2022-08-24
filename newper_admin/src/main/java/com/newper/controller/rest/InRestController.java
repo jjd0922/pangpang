@@ -88,10 +88,10 @@ public class InRestController {
     }
     /** 입고등록 발주서 상품 바코드 등록*/
     @PostMapping("po/barcode.ajax")
-    public ReturnMap poBarcode(int pp_idx, String barcode){
+    public ReturnMap poBarcode(int p_idx,int po_idx, String barcode){
         ReturnMap rm = new ReturnMap();
 
-        goodsService.insertGoods(pp_idx, barcode);
+        goodsService.insertGoods(p_idx, po_idx, barcode);
 
         return rm;
     }
