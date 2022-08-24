@@ -40,6 +40,6 @@ public interface PoMapper {
     /** 입고등록 팝업 상풉 입고 자산 조회 쿼리문 **/
     int countInProductDatatable(Map<String, Object> param);
 
-    /** 발주서에 상품idx, 수량 조회 */
-    List<Map<String, Object>> selectPoProductGroup(int po_idx);
+    /** 발주서에 상품idx조회 */
+    List<Integer> selectPoProductIdxList(int po_idx);
 }

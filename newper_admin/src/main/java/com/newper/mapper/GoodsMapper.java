@@ -12,5 +12,10 @@ public interface GoodsMapper {
 
     Integer countWareHouseDataTable(Map<String, Object> map);
 
+    /** 공정보드 datatable*/
+    List<Map<String, Object>> selectProcessBoardDatatable(Map<String, Object> map);
+    /** 공정보드 datatable*/
+    long countProcessBoardDatatable(Map<String, Object> map);
+
 
 }
