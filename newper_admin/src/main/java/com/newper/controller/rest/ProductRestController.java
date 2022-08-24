@@ -4,9 +4,8 @@ import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
-import com.newper.entity.Product;
-import com.newper.exception.MsgException;
 import com.newper.entity.Category;
+import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
@@ -380,6 +379,8 @@ public class ProductRestController {
     public ReturnMap updateInfoTemplate(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         categoryService.updateCateInfo(paramMap);
+        
+        rm.setMessage("수정완료");
         return rm;
     }
 

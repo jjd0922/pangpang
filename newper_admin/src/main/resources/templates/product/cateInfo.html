@@ -82,6 +82,13 @@
                                     <div class="col-lg-6 gu-hide">
                                         <div class="card">
                                             <form id="updateForm">
+                                                <div class="card-header header-elements-inline">
+                                                    <h6 class="card-title">
+                                                        <div class="breadcrumb-caret">
+                                                            <span class="breadcrumb-item" id="cateName">test</span>
+                                                        </div>
+                                                    </h6>
+                                                </div>
                                                 <input type="hidden" name="cateIdx">
                                                 <table class="table table-hover" id="templateTable"></table>
                                             </form>
@@ -136,23 +143,24 @@
         $('#cateTable').DataTable().page('first').ajax.url('/product/cateDepth2.dataTable?' + $('#searchCateForm').serialize()).load();
     }
 
-    function initTemplateTable(cateIdx) {
+    function initTemplateTable(cateIdx,cateName) {
         $('input[name="cateIdx"]').val(cateIdx);
         if ($.fn.DataTable.isDataTable('#templateTable')) {
             $('#templateTable').DataTable().ajax.url('/product/cateInfo.dataTable?cateIdx=' + cateIdx).load();
+            $('#cateName').text(cateName);
         }else {
             $('.gu-hide').removeClass('gu-hide');
-            showTemplateTable(cateIdx);
+            showTemplateTable(cateIdx,cateName);
+            $('#cateName').text(cateName);
         }
     }
 
     function newRow() {
-        var row=$('#templateTable tr').length;
         $('#templateTable tbody').append(
             '<tr>' +
-            '   <td class="dragula-handle"><i class="icon-menu-open dragula-handle">'+row+'</i></td>' +
-            '   <td><input type="text" name="title" class="border-0 text-center"></td>' +
-            '   <td><textarea name="content" class="border-0 text-center"></textarea></td>' +
+            '   <td class="dragula-handle"><i class="icon-menu-open dragula-handle"></i></td>' +
+            '   <td><input type="text" name="title" class="form-control"></td>' +
+            '   <td><textarea name="content" class="form-control"></textarea></td>' +
             '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
             '</tr>');
     }
@@ -162,15 +170,17 @@
     }
 
     function saveAllCateInfo() {
-        $.ajax({
-            url:'/product/cateInfo.ajax',
-            type: 'post',
-            data: $('#updateForm').serializeArray(),
-            success: function () {
-                initTemplateTable($('input[name="cateIdx"]').val());
-                refreshTable('#cateTable');
-            }
-        });
+        if (confirm($('#cateName').text() + "의 고시정보 템플릿을 수정하시겠습니까?")) {
+            $.ajax({
+                url:'/product/cateInfo.ajax',
+                type: 'post',
+                data: $('#updateForm').serializeArray(),
+                success: function () {
+                    initTemplateTable($('input[name="cateIdx"]').val());
+                    refreshTable('#cateTable');
+                }
+            });
+        }
     }
 </script>
 <script th:inline="javascript">
@@ -194,7 +204,7 @@
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
             ,{'title':'중분류','data':'CATE_NAME', 'defaultContent':'', 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: initTemplateTable(' + full.CATE_IDX + ')" class="badge badge-primary">' + full.CATE_NAME + '</a>';
+                    return '<a href="javascript: initTemplateTable('+full.CATE_IDX+',\''+full.CATE_NAME+'\')" class="badge badge-primary">' + full.CATE_NAME + '</a>';
                 }}
             ,{'title':'등록여부','data':'', 'defaultContent':''}
             ,{'title':'등록자','data':'CREATED_BY', 'defaultContent':''}
@@ -237,14 +247,14 @@
                 type:'post'
             },
             columns : [
-                {'class':'dragula-handle','title':'No','data':'No','render':function(data,type,full,meta){
-                        return '<i class="icon-menu-open dragula-handle">'+(meta.settings._iDisplayStart+meta.row+1)+'</i>';
+                {'class':'dragula-handle','title':'순서변경','data':'','render':function(data,type,full,meta){
+                        return '<i class="icon-menu-open dragula-handle"></i>';
                     }}
                 ,{'title':'고시정보항목','data':'title','render':function(data,type,full,meta){
-                        return '<input type="text" name="title" value="'+full.title+'" class="border-0 text-center">';
+                        return '<input type="text" name="title" value="'+full.title+'" class="form-control">';
                 }}
                 ,{'title':'고시정보내용','data':'content','render':function(data,type,full,meta){
-                        return '<textarea name="content" class="border-0 text-center">'+full.content+'</textarea>';
+                        return '<textarea name="content" rows="4" class=form-control>'+full.content+'</textarea>';
                     }}
                 ,{'title':'삭제','data':'','render': function (data, type, full, meta) {
                         return '<a href="#" onclick="deleteRow($(this))" class="badge badge-primary">삭제</a>';
@@ -265,3 +275,4 @@
         if(event.keyCode==13){searchCate();return false;}
     });
 </script>
+</html>
