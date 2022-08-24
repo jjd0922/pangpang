@@ -18,6 +18,29 @@
         FROM
             warehouse
     </select>
-    
+    <sql id="includeProcessBoardDatatable">
+
+    </sql>
+    <select id="selectProcessBoardDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            GOODS
+        <where>
+            <include refid="includeProcessBoardDatatable"></include>
+        </where>
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countProcessBoardDatatable" resultType="Long" parameterType="map">
+        SELECT
+            count(*)
+        FROM
+            GOODS
+        <where>
+            <include refid="includeProcessBoardDatatable"></include>
+        </where>
+    </select>
 
 </mapper>

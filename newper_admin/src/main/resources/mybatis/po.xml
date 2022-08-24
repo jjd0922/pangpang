@@ -250,10 +250,9 @@
             <include refid="includePoApprovedDatatable"></include>
         </where>
     </select>
-    <select id="selectPoProductGroup" resultType="map">
-        SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT
+    <select id="selectPoProductIdxList" resultType="Integer">
+        SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
         WHERE PP_PO_IDX = #{po_idx}
-        GROUP BY PP_P_IDX
     </select>
     <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
         SELECT

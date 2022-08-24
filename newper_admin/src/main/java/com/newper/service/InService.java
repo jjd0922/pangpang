@@ -36,12 +36,11 @@ public class InService {
                     .build();
 
             List<InProduct> inProductList = new ArrayList<>();
-            for (Map<String, Object> ppMap : poMapper.selectPoProductGroup(po_idx)) {
-                System.out.println(ppMap.entrySet());
+            for (int p_idx : poMapper.selectPoProductIdxList(po_idx)) {
                 InProduct inProduct = InProduct.builder()
                         .inGroup(ig)
-                        .product(productRepo.getReferenceById(Integer.parseInt(ppMap.get("PP_P_IDX") + "")))
-                        .ipCount(Integer.parseInt(ppMap.get("PP_COUNT") + ""))
+                        .product(productRepo.getReferenceById(p_idx))
+                        .ipCount(0)
                         .build();
                 inProductList.add(inProduct);
             }

@@ -1,6 +1,8 @@
 package com.newper.entity;
 
 import com.newper.constant.GRank;
+import com.newper.constant.GState;
+import com.newper.constant.GStockState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -54,8 +56,12 @@ public class Goods {
     private String gBarcode;
     private String gAjBarcode;
 
-    private String gState;
-    private String gStockState;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private GState gState = GState.RECEIVED;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private GStockState gStockState = GStockState.N;
 
     private String gMemo;
     @Enumerated(EnumType.STRING)

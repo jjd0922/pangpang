@@ -3,20 +3,14 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.mapper.CompanyMapper;
-import com.newper.mapper.ProcessMapper;
-import com.newper.mapper.SpecMapper;
+import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RequestMapping(value = "/process/")
 @RestController
@@ -25,21 +19,15 @@ public class ProcessRestController {
     private final CompanyMapper companyMapper;
 
     private final UserMapper userMapper;
-    private final SpecMapper specMapper;
+    private final GoodsMapper goodsMapper;
 
     /** 공정보드 조회 */
     @PostMapping("board.dataTable")
     public ReturnDatatable board(ParamMap paramMap) {
         ReturnDatatable returnDatatable = new ReturnDatatable("공정보드");
 
-        List<Map<String, Object>> data = new ArrayList<>();
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        data.add(new HashMap<>());
-        returnDatatable.setData(data);
-        returnDatatable.setRecordsTotal(data.size());
-
+        returnDatatable.setData(goodsMapper.selectProcessBoardDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(goodsMapper.countProcessBoardDatatable(paramMap.getMap()));
 
         return returnDatatable;
     }
