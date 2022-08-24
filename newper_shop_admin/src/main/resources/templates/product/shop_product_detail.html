@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${product != null} ? 'SHOP 상품 조회/수정':'SHOP 상품 등록'"></title>
+
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .modal-dialog{
+            max-width: 950px;
+        }
+
+        .table-hover {
+            width: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >SHOP 상품 등록</h4>
+                            <!--  <div class="text-white-50 ml-3">설명글영역</div>
+                          </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="productForm">
+                <div class="card">
+                    <div class="card-body popup-contents">
+                        <fieldset class="mb-0">
+                            <legend class="">1.SHOP 상품 등록정보<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  SHOP 상품코드
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control" th:value="${product?.pCode}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested requested">
+                                                  SHOP 상품명
+                                                </span>
+                                            </span>
+                                            <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested requested">
+                                                  판매 SHOP<a class="btn btn-sm badge-indigo legitRipple" onclick="showShopModal()">검색</a>
+                                                </span>
+                                            </span>
+                                            <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    SHOP 판매상태
+                                                </span>
+                                            </span>
+                                            <input th:if="${product}==null" type="text" class="form-control "  name="P_STATE"  readonly>
+                                            <select th:if="${product}!=null" name="P_STATE" class="form-control form-control-sm select-search" data-container-css-class="select-sm" data-fouc>
+                                                <option th:each="ps:${T(com.newper.constant.PState).values()}" th:value="${ps}" th:text="${ps.option}" th:selected="${product?.pState eq ps}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  SHOP 판매상태
+                                                </span>
+                                            </span>
+                                            <input type="text" name="P_MODEL" class="form-control" th:value="${product?.pModel}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    전시 대분류
+                                                </span>
+                                            </span>
+                                            <select class="form-control select " data-placeholder="선택" name="P_CATE_IDX2">
+                                                <option></option>
+                                                <option th:each="brand:${brand}" th:text="${brand.CATE_NAME}" th:value="${brand.CATE_IDX}" th:selected="${product?.brand?.cateIdx == brand.CATE_IDX}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  카테고리 대분류
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX1" onchange="category1()">
+                                                <option></option>
+                                                <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
+                                            </select>
+                                            <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    카테고리 중분류
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX2" onchange="category2()">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  카테고리 소분류
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX3" onchange="category3()">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">2.SHOP상품 관리정보<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  썸네일1
+                                                </span>
+                                            </span>
+                                            <input th:if="${#strings.isEmpty(product?.pThumbFile1)}" type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file form-control">
+                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile1)}">
+                                                <img th:src="${product?.pThumbFile1}" class="input-thumb">
+                                                <input type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file">
+                                                <input type="hidden" name="re_P_THUMB_FILE1" th:value="${product?.pThumbFile1}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  썸네일2
+                                                </span>
+                                            </span>
+                                            <input th:if="${#strings.isEmpty(product?.pThumbFile2)}" type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file form-control">
+                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile2)}">
+                                                <img th:src="${product?.pThumbFile2}" class="input-thumb">
+                                                <input type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file">
+                                                <input type="hidden" name="re_P_THUMB_FILE2" th:value="${product?.pThumbFile2}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                             <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  썸네일3
+                                                </span>
+                                            </span>
+                                            <input th:if="${#strings.isEmpty(product?.pThumbFile3)}" type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file form-control">
+                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile3)}">
+                                                <img th:src="${product?.pThumbFile3}" class="input-thumb">
+                                                <input type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file">
+                                                <input type="hidden" name="re_P_THUMB_FILE3" th:value="${product?.pThumbFile3}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                        <br>
+                        <fieldset class="mb-0">
+                            <span class="input-group-text w-100 mb--1">상세이미지</span>
+                            <textarea id="summerNote1" name="P_CONTENT1" th:text="${content1}"></textarea>
+
+
+
+                            <span class="input-group-text w-100 mb--1">공통이미지</span>
+                            <textarea id="summerNote2" name="P_CONTENT2" th:text="${content2}"></textarea>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">3.가격정보<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">기준판매가(상품) 합</span>
+                                            </span>
+                                            <input type="text" name="P_COST" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">기준판매가(재고) 합</span>
+                                            </span>
+                                            <input type="text" name="P_RETAIL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">SHOP 판매가(뉴퍼마켓가) 합</span>
+                                            </span>
+                                            <input type="text" name="P_SELL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">할인가 합</span>
+                                            </span>
+                                            <input type="text" name="P_DEL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버최저가의 합</span>
+                                            </span>
+                                            <input type="text" name="P_DEL_TOGETHER" class="form-control" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">유통가의 합</span>
+                                            </span>
+                                            <input type="text" name="P_DEL_TOGETHER" class="form-control" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <
+                            </div>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">4.재고상품 구성<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text w-100 mb--1">
+                                                4-1. 필수상품
+                                                <a class="btn btn-sm badge-indigo" onclick="">필수상품 추가</a>
+                                                <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
+                                                <a class="btn btn-sm badge-indigo" onclick="">재고상품 검색</a>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="form-control">1번 필수상품</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead id="essential_head">
+                                        <tr class="alpha-brown text-bold">
+                                            <th>NO</th>
+                                            <th>상품코드</th>
+                                            <th>상품명</th>
+                                            <th>모델명</th>
+                                            <th>재고코드</th>
+                                            <th>재고상품명</th>
+                                            <th>등급</th>
+                                            <th>옵션1</th>
+                                            <th>옵션2</th>
+                                            <th>옵션3</th>
+                                            <th>스펙</th>
+                                            <th>기준매입원가</th>
+                                            <th>네이버최저가</th>
+                                            <th>유통가</th>
+                                            <th>기준판매가(상품)</th>
+                                            <th>기준판매가(재고)</th>
+                                            <th>SHOP 판매가(뉴퍼마켓가)</th>
+                                            <th>할인가(최종혜택가)</th>
+                                            <th>재고자산</th>
+                                            <th>삭제</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="essential_area">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text w-100 mb--1">
+                                                4-2 추가(선택)상품
+                                                <a class="btn btn-sm badge-indigo legitRipple" onclick="">재고상품 검색</a>
+                                                <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead id="choose_head">
+                                    <tr class="alpha-brown text-bold">
+                                        <th>NO</th>
+                                        <th>상품코드</th>
+                                        <th>상품명</th>
+                                        <th>모델명</th>
+                                        <th>재고코드</th>
+                                        <th>재고상품명</th>
+                                        <th>등급</th>
+                                        <th>옵션1</th>
+                                        <th>옵션2</th>
+                                        <th>옵션3</th>
+                                        <th>스펙</th>
+                                        <th>기준매입원가</th>
+                                        <th>네이버최저가</th>
+                                        <th>유통가</th>
+                                        <th>기준판매가(상품)</th>
+                                        <th>기준판매가(재고)</th>
+                                        <th>SHOP 판매가(뉴퍼마켓가)</th>
+                                        <th>할인가(최종혜택가)</th>
+                                        <th>재고자산</th>
+                                        <th>삭제</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="choose_area">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+            </form>
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+<!--                <button th:if="${product}==null" onclick="productSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>-->
+<!--                <button th:unless="${product}==null" onclick="productUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="product/modal/shopModal.html"/>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+</body>
+
+
+<th:block th:replace="modal/summernoteImageModal.html"></th:block>
+
+<script th:inline="javascript">
+    function category1(){
+        var category = $('select[name=CATE_IDX1]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX2] option').remove();
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX2]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
+
+    function category2(){
+        var category = $('select[name=CATE_IDX2]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX3]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
+
+    function category3(){
+        var category = $('select[name=CATE_IDX3]').val();
+        $('input[name=P_CATE_IDX]').val(category);
+    }
+
+    function selectCompany(comIdx){
+        var CT_TYPE = $('input[name=CT_TYPE]').val();
+        $.ajax({
+            url:'/company/companyByComIdx.ajax',
+            type:'post',
+            data:'comIdx='+comIdx,
+            success:function (res){
+                if(CT_TYPE=='STORE'){
+                    $('input[name=P_COM_NAME]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX]').val(res.data.COM_IDX)
+                }else if(CT_TYPE==''){
+                    $('input[name=P_COM_NAME2]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX2]').val(res.data.COM_IDX)
+                }else if(CT_TYPE=='REPAIRING'){
+                    $('input[name=P_COM_NAME3]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX3]').val(res.data.COM_IDX)
+                }
+                $('#searchCompanyModal').modal('hide');
+            }
+        })
+
+    }
+
+    function optionAdd(){
+        var cnt = $('#optCnt').val();
+        if(cnt==3){
+            alert("옵션은 최대 3개까지 추가할 수 있습니다.");
+        }else if(-1<cnt<3){
+            cnt++;
+            var str ="";
+            str+="<tr id='option_"+cnt+"'>";
+            str+="<td id='opCnt"+cnt+"'>"+cnt+"</td>";
+            str+="<td><input type='text' class='form-control' name='p_option_key"+cnt+"'></td>";
+            str+="<td><input type='text' class='form-control' name='p_option_value"+cnt+"' placeholder='옵션속성 ,로 구분'></td>";
+            str+="<td><a class='btn btn-sm badge-indigo' id='optionBtn"+cnt+"' onclick='deleteOption("+cnt+")'>삭제</a></td>";
+
+            $('#optCnt').val(cnt);
+            $('#option_area').append(str);
+        }
+    }
+
+    function deleteOption(cnt){
+        $('#option_'+cnt).remove();
+        if(cnt==1){
+            if(document.getElementById("option_2")){
+                $('#option_2').attr('id','option_1');
+                $('#opCnt2').html(1);
+                $('#opCnt2').attr('id','opCnt1');
+                $('input[name="p_option_key2"]').attr('name','p_option_key1');
+                $('input[name="p_option_value2"]').attr('name','p_option_value1');
+                document.getElementById("optionBtn2").setAttribute("onclick","deleteOption(1)")
+                $('#optionBtn2').attr('id','optionBtn1')
+            }
+            if(document.getElementById("option_3")){
+                $('#option_3').attr('id','option_2');
+                $('#opCnt3').html(2);
+                $('#opCnt3').attr('id','opCnt2');
+                $('input[name="p_option_key3"]').attr('name','p_option_key2');
+                $('input[name="p_option_value3"]').attr('name','p_option_value2');
+                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
+                $('#optionBtn3').attr('id','optionBtn2')
+            }
+
+        }else if(cnt==2){
+            if(document.getElementById("option_3")){
+                $('#option_3').attr('id','option_2');
+                $('#opCnt3').html(2);
+                $('#opCnt3').attr('id','opCnt2');
+                $('input[name="p_option_key3"]').attr('name','p_option_key2');
+                $('input[name="p_option_value3"]').attr('name','p_option_value2');
+                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
+                $('#optionBtn3').attr('id','optionBtn2')
+            }
+        }
+
+        var count = $('#optCnt').val();
+        count=count-1;
+        $('#optCnt').val(count);
+    }
+
+    function productSave(){
+        if(confirm("저장하시겠습니까?")){
+            var param = new FormData($('#productForm')[0]);
+            $.ajax({
+                url:'/product/productSave.ajax',
+                data: param,
+                processData:false,
+                contentType:false,
+                type:'post',
+                success:function(res) {
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        opener.location.reload();
+                        self.close();
+                    }
+                }
+            })
+        }
+    }
+
+    // function productUpdate(){
+    //     if(confirm("수정하시겠습니까?")){
+    //         var param = new FormData($('#productForm')[0]);
+    //         $.ajax({
+    //             url:'/product/'+[[${product?.pIdx}]]+'/productUpdate.ajax',
+    //             type:'post',
+    //             processData:false,
+    //             contentType:false,
+    //             data:param,
+    //             success: function(res){
+    //                 if(res.message.indexOf('수정되었습니다.')!=-1){
+    //                     opener.location.reload();
+    //                 }
+    //             }
+    //         })
+    //     }
+    // }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+        smImage('#summerNote1');
+        smImage('#summerNote2');
+        smImage('#summerNote3');
+
+        if([[${cg?.depth}]]!=null){
+            if([[${cg?.depth}]]==1){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+            }else if([[${cg?.depth}]]==2){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+            }else if([[${cg?.depth}]]==3){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+                $('select[name=CATE_IDX3]').val([[${cg?.CATE_IDX3}]]).trigger('change');
+            }
+        }
+
+    }
+
+
+    $('#companyModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchCompanyDataTable();return false;}
+    });
+</script>
+
+</html>

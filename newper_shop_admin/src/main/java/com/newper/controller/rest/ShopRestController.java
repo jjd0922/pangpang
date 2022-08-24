@@ -1,7 +1,9 @@
 package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
+import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.mapper.ShopMapper;
 import com.newper.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Map;
+
 @RequestMapping(value = "/shop/")
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class ShopRestController {
 
 
     private final ShopService shopService;
+    private final ShopMapper shopMapper;
 
 
     /**상품 관리*/
@@ -29,6 +35,16 @@ public class ShopRestController {
             rm.setMessage("생성");
         }
         return rm;
+    }
+
+    /**Shop DataTable*/
+    @PostMapping("shop.dataTable")
+    public ReturnDatatable shop(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String, Object>> list = shopMapper.selectShopDatatable(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(shopMapper.countShopDatatable(paramMap.getMap()));
+        return returnDatatable;
     }
 
 

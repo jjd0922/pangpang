@@ -31,8 +31,14 @@ public class ProductController {
     /**상품 관리*/
     @GetMapping("")
     public ModelAndView product(){
-        ModelAndView mav = new ModelAndView("product/product");
+        ModelAndView mav = new ModelAndView("product/shop_product");
 
+        return mav;
+    }
+
+    @GetMapping("shopDetail")
+    public ModelAndView shopDetail(){
+        ModelAndView mav = new ModelAndView("product/shop_product_detail");
         return mav;
     }
 
