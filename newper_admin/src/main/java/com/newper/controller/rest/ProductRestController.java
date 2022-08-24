@@ -116,6 +116,9 @@ public class ProductRestController {
     @PostMapping("product.dataTable")
     public ReturnDatatable productDataTable(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("상품관리");
+        paramMap.multiSelect("P_TYPE1");
+        paramMap.multiSelect("P_TYPE2");
+        paramMap.multiSelect("P_TYPE3");
         returnDatatable.setData(productMapper.selectProductDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countProductDataTable(paramMap.getMap()));
         return returnDatatable;
