@@ -72,20 +72,22 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 대분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select class="form-control select" data-placeholder="선택" name="CATE_IDX1" onchange="category1()">
+                                                        <option></option>
+                                                        <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
                                                     </select>
+                                                    <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 중분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select class="form-control select" data-placeholder="선택" name="CATE_IDX2" onchange="category2()">
+                                                        <option></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">카테고리 소분류</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_TYPE1" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select class="form-control select" data-placeholder="선택" name="CATE_IDX3" onchange="category3()">
+                                                        <option></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -228,7 +230,8 @@
 <script th:src="@{/assets/js/app.js}"></script>
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
+<script th:inline="javascript">
+
     function searchBtn(){
         var table = $('#productTable').DataTable();
         table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
@@ -242,12 +245,79 @@
         var focusPopup = window.open('/product/'+idx, 'product'+idx, 'width=900, height=600, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
-
-
 </script>
+<script th:inline="javascript">
+    function category1(){
+        var category = $('select[name=CATE_IDX1]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX2] option').remove();
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX2]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
 
+    function category2(){
+        var category = $('select[name=CATE_IDX2]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX3]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
 
-    <script>
+    function category3(){
+        var category = $('select[name=CATE_IDX3]').val();
+        $('input[name=P_CATE_IDX]').val(category);
+    }
+
+    function selectCompany(comIdx){
+        var CT_TYPE = $('input[name=CT_TYPE]').val();
+        $.ajax({
+            url:'/company/companyByComIdx.ajax',
+            type:'post',
+            data:'comIdx='+comIdx,
+            success:function (res){
+                if(CT_TYPE=='STORE'){
+                    $('input[name=P_COM_NAME]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX]').val(res.data.COM_IDX)
+                }else if(CT_TYPE==''){
+                    $('input[name=P_COM_NAME2]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX2]').val(res.data.COM_IDX)
+                }else if(CT_TYPE=='REPAIRING'){
+                    $('input[name=P_COM_NAME3]').val(res.data.COM_NAME)
+                    $('input[name=P_COM_IDX3]').val(res.data.COM_IDX)
+                }
+                $('#searchCompanyModal').modal('hide');
+            }
+        })
+
+    }
+</script>
+<script>
+
         var userTable = $('#productTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
             ordering:false,
@@ -283,9 +353,9 @@
                 ,{'title':'모델명','data':'P_MODEL'}
                 ,{'title':'브랜드','data':'P_CATE_IDX2','defaultContent':''}
                 ,{'title':'재고관리','data':'P_USE_STOCK'}
-                ,{'title':'카테고리 대분류','data':'P_TYPE1_STR','defaultContent':''}
-                ,{'title':'카테고리 중분류','data':'P_TYPE1_STR','defaultContent':''}
-                ,{'title':'카테고리 소분류','data':'P_TYPE1_STR','defaultContent':''}
+                ,{'title':'카테고리 대분류','data':'CATE_IDX1','defaultContent':''}
+                ,{'title':'카테고리 중분류','data':'CATE_IDX2','defaultContent':''}
+                ,{'title':'카테고리 소분류','data':'CATE_IDX3','defaultContent':''}
                 ,{'title':'정산구분(품목구분1)','data':'P_TYPE1_STR'}
                 ,{'title':'상품분류(품목구분2)','data':'P_TYPE2_STR'}
                 ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3_STR'}
@@ -309,6 +379,7 @@
                 ,{'title':'옵션2','data':'P_OPTION'}
                 ,{'title':'옵션3','data':'P_OPTION'}
                 ,{'title':'스펙구성','data':'null','defaultContent':''}
+                ,{'title':'등록자','data':'CREATED_BY'}
                 ,{'title':'등록일','data':'CREATED_DATE'}
                 ,{'title':'승인자','data':'MODIFIED_BY'}
                 ,{'title':'승인일','data':'MODIFIED_DATE'}
@@ -325,5 +396,5 @@
         $('#popNewBtn').on('click',function (){
             productDetailPop(null);
         });
-    </script>
+</script>
 </html>
