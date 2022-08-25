@@ -1,10 +1,14 @@
 package com.newper.entity;
 
+import com.newper.constant.CuGender;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -38,38 +42,38 @@ public class Customer {
 
     private String cuState;
 
-    private String cuBirth;
+    private LocalDate cuBirth;
 
-    private String cuGender;
+    @Enumerated(EnumType.STRING)
+    private CuGender cuGender;
 
-    private String cuJoinDate;
+    private LocalDate cuJoinDate;
 
-    private String cuJoinTime;
+    private LocalTime cuJoinTime;
 
-    private String cuLastDate;
+    private LocalDate cuLastDate;
 
-    private String cuLastTime;
+    private LocalTime cuLastTime;
 
     private Integer cuPoint;
 
     private Integer cuMileage;
 
-    private String cuPwChange;
-
-    private String cuMarketingAMail;
-
+    private LocalDate cuPwChange;
+    private boolean cuMarketingMail;
     private String cuMarketingMailCancel;
-
-    private String cuMarketingSms;
-
+    private boolean cuMarketingSms;
     private String cuMarketingSmsCancel;
-
     private String cuCi;
-
     private String cuDi;
 
 
 
-
+    /** 로그인 성공시 data update*/
+    public void login(){
+        LocalDateTime now = LocalDateTime.now();
+        setCuLastDate(now.toLocalDate());
+        setCuLastTime(now.toLocalTime());
+    }
 
 }

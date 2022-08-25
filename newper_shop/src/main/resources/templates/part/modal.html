@@ -4,14 +4,16 @@
         <div class="loginModal">
             <div class="loginModal-close">Close</div>
             <h2 class="section-title">로그인</h2>
-            <ul class="login-input-group">
-                <li class="input-wrap">
-                    <input type="text" id="" maxlength="10" name="" placeholder="아이디">
-                </li>
-                <li class="input-wrap">
-                    <input type="password" id="" maxlength="15" name="" placeholder="비밀번호">
-                </li>
-            </ul>
+            <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
+                <ul class="login-input-group">
+                    <li class="input-wrap">
+                        <input type="text" name="id" maxlength="10" placeholder="아이디">
+                    </li>
+                    <li class="input-wrap">
+                        <input type="password" name="pw" maxlength="15" placeholder="비밀번호">
+                    </li>
+                </ul>
+            </form>
             <div class="login-check-wrap">
                 <label class="login-check">
                     <input type="checkbox" class="login-checkbox" id="" name="">
@@ -27,7 +29,7 @@
                 </ul>
             </div>
             <div class="button button-bgBlue login-button">
-                <a href="javascript:;">로그인</a>
+                <a href="javascript:login();">로그인</a>
             </div>
             <p class="or">OR</p>
             <div class="dummy-line"></div>
@@ -55,6 +57,29 @@
         </div>
     </div>
 
+    <script>
+        function login(){
+            $.ajax({
+              url:'login.ajax'
+              ,type:'post'
+              ,data:$('#loginForm').serialize()
+            }).done(function(res){
+                try{
+                    if(res.data.result == '200'){
+                        //로그인 성공
+                        modal.hide();
+                        $('.nosessionClass').hide();
+                        $('.sessionClass').show();
+                    }else{
+                        //로그인 실패
+                        console.log(res.data.result);
+                    }
+                }catch (e){
+                    alert('잠시 후 시도해주세요');
+                }
+            });
+        }
+    </script>
     <script>
         /*** 로그인 모달 창 ***/
         var modal = $(".modal-wrap");
