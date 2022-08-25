@@ -1,5 +1,6 @@
 package com.newper.component;
 
+import com.newper.entity.Customer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +17,11 @@ import java.io.Serializable;
 /** 세션 정보 저장하는 class*/
 public class ShopSession implements Serializable {
 
-    private Integer idx;
+    private Long idx;
     private String id;
+
+    public void login(Customer customer) {
+        idx = customer.getCuIdx();
+        id = customer.getCuId();
+    }
 }

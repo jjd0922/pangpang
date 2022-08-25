@@ -1,4 +1,5 @@
-package com.newper.controller.rest;
+package com.newper.service;
+
 
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;

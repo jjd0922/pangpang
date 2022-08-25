@@ -1,5 +1,5 @@
 <!--메인헤더-->
-<header th:fragment="main-header">
+<header th:fragment="main-header" xmlns:th="http://www.w3.org/1999/html">
     <div class="header-top">
         <div class="container">
             <div class="header-top-inner">
@@ -98,21 +98,19 @@
                 <div class="userMenu">
                     <ul>
                         <li>
-                            <a href="javascript:;" class="login"><i class="login-icon"></i>로그인</a> <!--모달-->
-                            <!-- 로그인 한 경우
-                            <a href="javascript:;"><i class="logout"></i>로그아웃</a>
-                            -->
+                            <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="login nosessionClass"><i class="login-icon"></i>로그인</a>
+                            <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="sessionClass"><i class="logout"></i>로그아웃</a>
                         </li>
-                        <li>
-                            <a th:href="@{/join}" class="color-blue"><i class="signUp"></i>회원가입</a>
-                            <!-- 로그인 한 경우
-                            <a th:href="@{/myPage}" ><i class="myShopping"></i>마이쇼핑</a>
-                            -->
+                        <li class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/join')?'active':''}">
+                            <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" th:href="@{/join}" class="color-blue"><i class="signUp"></i>회원가입</a>
                         </li>
-                        <li>
+                        <li class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                            <a th:href="@{/myPage}"><i class="myShopping"></i>마이쇼핑</a>
+                        </li>
+                        <li th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
                             <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
                         </li>
-                        <li>
+                        <li th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
                             <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
                         </li>
                     </ul>
@@ -136,6 +134,7 @@
         </div>
         <div class="snb new"><a href="javascript:;">주간pick</a></div> <!--외부링크-->
     </nav>
+    <th:block th:replace="part/header :: js"></th:block>
 </header>
 <!--메인헤더 끝-->
 
@@ -166,7 +165,7 @@
                         <li>
                             <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
                         </li>
-                        <li>
+                        <li th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
                             <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
                         </li>
                     </ul>
@@ -174,6 +173,19 @@
             </div>
         </div>
     </div>
+    <th:block th:replace="part/header :: js"></th:block>
 </header>
 <!--회원가입 끝-->
-
+<th:block th:fragment="js">
+<script>
+    function logout(){
+        $.ajax({
+            url:'logout.ajax'
+            ,type:'get'
+        }).done(function(res){
+            $('.nosessionClass').show();
+            $('.sessionClass').hide();
+        });
+    }
+</script>
+</th:block>
