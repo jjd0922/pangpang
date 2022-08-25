@@ -1,14 +1,18 @@
 package com.newper.service;
 
+import com.newper.constant.WhState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.Warehouse;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
+import com.newper.mapper.WarehouseMapper;
 import com.newper.repository.WarehouseRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class WarehouseService {
 
     private final WarehouseRepo warehouseRepo;
+    private final WarehouseMapper warehouseMapper;
 
+    /** 창고정보 등록 */
     @Transactional
     public Integer saveWarehouse(ParamMap paramMap) {
         Warehouse warehouse = paramMap.mapParam(Warehouse.class);
@@ -29,6 +35,7 @@ public class WarehouseService {
         return savedWh.getWhIdx();
     }
 
+    /** 창고정보 수정 */
     @Transactional
     public void updateWarehouse(Integer whIdx, ParamMap paramMap) {
         Warehouse warehouse = warehouseRepo.findById(whIdx).orElseThrow(() -> new MsgException("존재하지 않는 창고입니다."));
@@ -37,5 +44,12 @@ public class WarehouseService {
         warehouse.setWhState(newWh.getWhState());
         warehouse.setCompany(Company.builder().comIdx(paramMap.getInt("comIdx")).build());
         warehouse.setAddress(paramMap.mapParam(Address.class));
+    }
+
+    /** 창고 상태 일괄변경 */
+    @Transactional
+    public void changeWhState(ParamMap paramMap) {
+        List<Integer> whIdxList = paramMap.getList("dataList[]");
+        warehouseMapper.changeAllWhState(whIdxList, WhState.valueOf(paramMap.getString("state")));
     }
 }

@@ -23,6 +23,7 @@ public class WarehouseRestController {
     public ReturnDatatable warehouseDatatable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("창고관리");
 
+        paramMap.multiSelect("whState");
         rd.setData(warehouseMapper.selectWarehouseDatatable(paramMap.getMap()));
         rd.setRecordsTotal(warehouseMapper.countWarehouseDatatable(paramMap.getMap()));
         return rd;
@@ -44,6 +45,16 @@ public class WarehouseRestController {
         warehouseService.updateWarehouse(whIdx, paramMap);
 
         rm.setMessage("수정완료");
+        return rm;
+    }
+
+    @PostMapping("changeWhState.ajax")
+    public ReturnMap changeWhState(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        paramMap.multiSelect("dataList[]");
+        warehouseService.changeWhState(paramMap);
+        rm.setMessage("일괄변경완료");
         return rm;
     }
 }

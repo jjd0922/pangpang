@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.WarehouseMapper">
+    <sql id="includeWarehouseDatatable">
+        <if test="whState != null">
+            <foreach collection="whState" open="AND WH_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="whName != null and whName !=''">AND WH_NAME LIKE CONCAT('%',#{whName},'%')</if>
+        <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test="ceName != null and ceName != ''">AND CE_NAME LIKE CONCAT('%',#{ceName},'%')</if>
+    </sql>
     <select id="selectWarehouseDatatable" resultType="map">
         SELECT
             WH_IDX,
@@ -12,6 +22,9 @@
             WAREHOUSE
                 LEFT JOIN COMPANY ON WH_COM_IDX = COM_IDX
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+        <where>
+            <include refid="includeWarehouseDatatable"></include>
+        </where>
         ORDER BY
             WH_IDX DESC
         <if test="length != -1">
@@ -26,7 +39,21 @@
             WAREHOUSE
                 LEFT JOIN COMPANY ON WH_COM_IDX = COM_IDX
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+        <where>
+            <include refid="includeWarehouseDatatable"></include>
+        </where>
     </select>
+
+    <update id="changeAllWhState">
+        UPDATE
+            WAREHOUSE
+        SET
+            WH_STATE = #{whState}
+        WHERE
+            <foreach collection="whIdxList" open="(" separator="OR" close=")" item="item">
+                WH_IDX = #{item}
+            </foreach>
+    </update>
 
     <select id="selectLocationDatatable" resultType="map">
         SELECT
