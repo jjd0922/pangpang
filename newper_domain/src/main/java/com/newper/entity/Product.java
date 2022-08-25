@@ -11,9 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @DynamicUpdate
@@ -140,9 +138,25 @@ public class Product extends BaseEntity {
     /** 고시정보. json map*/
     @Builder.Default
     private Map<String,Object> pInfo = new HashMap<String, Object>();
-    private Map<String,Object> pOption = new HashMap<>();
+    private List<Map<String,Object>> pOption = new ArrayList<>();
     private Map<String,Object> pNaver = new HashMap<>();
 
+    /** 해당 옵션 문자로 return*/
+    public String getOptionValues(String optionName){
+        Map<String, Object> optionMap = pOption.stream().filter(map -> {
+            return ((String) map.get("title")).equals(optionName);
+        }).findAny().get();
+        List<String> list = (List)optionMap.get("values");
+        if(list.size()==0){
+            return "";
+        }else{
+            StringBuffer sb = new StringBuffer();
+            for (int i=0; i<list.size(); i++){
+                sb.append(list.get(i)+",");
+            }
+            return sb.toString().substring(0, sb.length() - 1);
+        }
+    }
 
 
 

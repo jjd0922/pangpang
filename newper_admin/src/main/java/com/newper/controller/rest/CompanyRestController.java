@@ -213,15 +213,15 @@ public class CompanyRestController {
         return rd;
     }
 
-    /**comIdx로 거래처 조회*/
-    @PostMapping("companyByComIdx.ajax")
-    public ReturnMap companyByComIdx(int comIdx){
-        ReturnMap rm = new ReturnMap();
-        Company company = companyRepo.findCompanyByComIdx(comIdx);
-        rm.put("COM_NAME",company.getComName());
-        rm.put("COM_IDX",company.getComIdx());
-        return rm;
-    }
+//    /**comIdx로 거래처 조회*/
+//    @PostMapping("companyByComIdx.ajax")
+//    public ReturnMap companyByComIdx(int comIdx){
+//        ReturnMap rm = new ReturnMap();
+//        Company company = companyRepo.findCompanyByComIdx(comIdx);
+//        rm.put("COM_NAME",company.getComName());
+//        rm.put("COM_IDX",company.getComIdx());
+//        return rm;
+//    }
 
 
 }
