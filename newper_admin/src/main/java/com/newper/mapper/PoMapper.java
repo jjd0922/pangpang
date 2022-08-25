@@ -42,4 +42,6 @@ public interface PoMapper {
 
     /** 발주서에 상품idx조회 */
     List<Integer> selectPoProductIdxList(int po_idx);
+
+    public void updategoods(@Param("po_idx") int po_idx, @Param("p_idx") int p_idx);
 }

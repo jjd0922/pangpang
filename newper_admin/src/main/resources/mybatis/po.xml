@@ -307,6 +307,14 @@
             <include refid="includeInProductDatatable"></include>
         </where>
     </select>
+    <update id="updategoods">
 
+        UPDATE in_group,in_product
+        SET IP_COUNT = (SELECT COUNT(*) FROM goods WHERE g_po_idx=#{po_idx} AND g_p_idx=#{p_idx})
+        WHERE in_group.IG_IDX=in_product.IP_IG_IDX
+          AND ig_po_idx=#{po_idx}
+          AND IP_P_IDX=#{p_idx}
+
+    </update>
 
 </mapper>
