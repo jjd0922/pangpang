@@ -14,7 +14,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 /** 세션 정보 저장하는 class*/
-public class SessionInfo implements Serializable {
+public class ShopSession implements Serializable {
 
+    private Integer idx;
     private String id;
 }

@@ -1,6 +1,6 @@
 package com.newper;
 
-import com.newper.component.SessionInfo;
+import com.newper.component.ShopSession;
 import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,14 +27,14 @@ public class NewperShopApplication {
 
         return new AuditorAware<String>() {
             @Autowired
-            private SessionInfo sessionInfo;
+            private ShopSession shopSession;
 
             @Override
             public Optional<String> getCurrentAuditor() {
-                if(sessionInfo.getId()==null){
+                if(shopSession.getId()==null){
                     throw new NoSessionException();
                 }
-                return Optional.of(sessionInfo.getId());
+                return Optional.of(shopSession.getId());
             }
         };
     }

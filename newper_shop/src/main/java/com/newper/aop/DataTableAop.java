@@ -1,15 +1,11 @@
 package com.newper.aop;
 
-import com.newper.component.SessionInfo;
 import com.newper.constant.basic.EnumOption;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.util.ExcelDownload;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +15,6 @@ import java.util.*;
 //@Aspect
 //@Component
 public class DataTableAop {
-
-    @Autowired
-    private SessionInfo sessionInfo;
 
     /**
      * key: column명 (snake_case) , value : enum class명(camelBack)

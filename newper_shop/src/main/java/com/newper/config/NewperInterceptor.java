@@ -1,6 +1,6 @@
 package com.newper.config;
 
-import com.newper.component.SessionInfo;
+import com.newper.component.ShopSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class NewperInterceptor implements HandlerInterceptor {
     @Autowired
-    private SessionInfo sessionInfo;
+    private ShopSession shopSession;
 
     @Value("${spring.profiles.active}")
     private String active;
