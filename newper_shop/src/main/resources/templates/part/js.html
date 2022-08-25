@@ -1,7 +1,7 @@
 <script>
     <!-- 공통 헤더 -->
     /*** 검색창 펼침 ***/
-    const searchInput = $('#searchInput');
+    var searchInput = $('#searchInput');
 
     searchInput.click(function(){
         $(this).parents().find('.searchBar').toggleClass('on');
@@ -9,7 +9,7 @@
     });
 
     /* 검색창 펼침 내부 tab 기능 */
-    const searchTab = $('.searchWord-tab li'),
+    var searchTab = $('.searchWord-tab li'),
         searchTabContent = $('.searchWord-content>div')
 
     searchTab.click(function(){
@@ -42,7 +42,7 @@
 
     <!-- index 페이지 -->
     /*** 메인 이미지 슬라이드 [swiper] ***/
-    const swiper = new Swiper('.swiper-main-image', {
+    var swiper = new Swiper('.swiper-main-image', {
         slidesPerView: 1,
         speed: 300,
         autoplay: true,
@@ -320,6 +320,31 @@
         $('.cc-menu-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     });
 
+    /* 자주묻는질문 tab */
+    $('.questions-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
 
+        var $Idx = $(this).index();
+
+        $('.questions-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+    $('.cc-table-title').click(function() {
+        $(this).siblings().toggleClass('on');
+    });
+
+    /* 보기쉬운 FAQ tab */
+    $('.faq-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        var $Idx = $(this).index();
+
+        $('.faq-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+    var Height = $('.faq').outerHeight() /4 + 'px';
+    $('.faq-tab>li').css('height', Height);
 
 </script>
