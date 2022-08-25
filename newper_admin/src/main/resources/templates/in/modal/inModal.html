@@ -117,24 +117,25 @@
     }
     //po_poIdx.html에서 dt row 넘겨받음
     function openInModal(row){
-        var rowData = getDatatablemap('inPoProductTable', row);
+        var rowData = getDatatablemap('inProductTable', row);
 
-        initInProductModalTable();
 
         $('#inModalPname').val(rowData.P_NAME);
         $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
 
-
+        initInProductModalTable();
         $('#inProductModal').modal('show');
     }
     function toggleBarcodeForm(){
         $('#inModalForm').toggle(500);
         focusOnBarcode();
+
     }
     //바코드 input에 focus할 때. 바코드 비우기
-    function focusOnBarcode(){
+    function focusOnBarcode() {
         $('#inModalForm input[name=barcode]').val('');
     }
+
     function inModalFormSubmit(){
         //submit 방지
         event.preventDefault();
@@ -147,6 +148,51 @@
             focusOnBarcode();
         });
 
+    }
+    function buttonsSelect(useSelect) {
+
+        var buttons = [
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-sm btn-dark opacity-60',
+                action: function (e, dt, node, config) {
+                    downloadAllExcel(dt.settings()[0].sTableId);
+                },
+                text: '<i class="icon-file-excel mr-1"></i>엑셀',
+                footer: true
+            },
+            {
+                extend: 'pageLength',
+                className: 'btn btn-sm btn-dark opacity-50'
+            }
+            ,
+            {
+                text: '새로고침',
+                className: 'btn btn-sm btn-secondary',
+                action: function (e, dt, node, config) {
+                    dt.ajax.reload();
+                }
+            }];
+
+        if (useSelect) {
+            buttons.unshift({
+                extend: 'selectNone',
+                className: 'btn btn-sm badge-indigo opacity-80',
+                text: '<i class="icon-cross2 mr-1"></i>선택해제',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            });
+            buttons.unshift({
+                extend: 'selectAll',
+                className: 'btn btn-sm btn-primary opacity-80',
+                text: '<i class="icon-checkbox-checked2 mr-1"></i>전체선택',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            });
+        }
+        return buttons;
     }
 </script>
 <script>
@@ -176,6 +222,13 @@
 
     $('#inProductModal').on('show.bs.modal',function (e){
         $('#inModalForm').hide();
+    });$('#inProductModal').on('hide.bs.modal',function (e){
+        refreshTable('#inProductTable');
     });
+
+/*    $(focusOnBarcode()).on('show.bs.modal',function (e){
+        refreshTable('#inPoProductTable');
+    });*/
+
 </script>
 </html>

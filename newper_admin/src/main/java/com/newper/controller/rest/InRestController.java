@@ -3,6 +3,7 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+
 import com.newper.mapper.PoMapper;
 import com.newper.service.GoodsService;
 import com.newper.service.InService;
@@ -22,6 +23,8 @@ public class InRestController {
     private final PoMapper poMapper;
     private final GoodsService goodsService;
     private final InService inService;
+
+
 
     /** 입고등록 조회*/
     @PostMapping("in.dataTable")
@@ -63,6 +66,7 @@ public class InRestController {
     public ReturnDatatable pp(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
+
         List<Map<String, Object>> data = poMapper.selectInProductDatatable(paramMap.getMap());
         int count = poMapper.countInProductDatatable(paramMap.getMap());
 
@@ -88,7 +92,7 @@ public class InRestController {
     }
     /** 입고등록 발주서 상품 바코드 등록*/
     @PostMapping("po/barcode.ajax")
-    public ReturnMap poBarcode(int p_idx,int po_idx, String barcode){
+    public ReturnMap poBarcode(int p_idx, int po_idx, String barcode){
         ReturnMap rm = new ReturnMap();
 
         goodsService.insertGoods(p_idx, po_idx, barcode);

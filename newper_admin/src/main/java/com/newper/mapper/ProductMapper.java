@@ -21,3 +21,4 @@ public interface ProductMapper {
     /**마지막 재고상품 코드 조회*/
     String selectGoodsStockByListGsCode();
 }
+

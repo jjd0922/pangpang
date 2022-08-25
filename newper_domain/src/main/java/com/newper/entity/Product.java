@@ -116,6 +116,8 @@ public class Product extends BaseEntity {
     private List<Goods> goodsList;
 
 
+/*    @OneToMany(fetch = FetchType.LAZY, mappedBy = "Product", cascade = CascadeType.DETACH)
+    private List<InProduct> inProductList;*/
 
 
     @PrePersist

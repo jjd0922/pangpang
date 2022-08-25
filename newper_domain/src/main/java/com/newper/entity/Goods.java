@@ -4,13 +4,18 @@ import com.newper.constant.GRank;
 import com.newper.constant.GState;
 import com.newper.constant.GStockState;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -63,12 +68,23 @@ public class Goods {
     @Enumerated(EnumType.STRING)
     private GStockState gStockState = GStockState.N;
 
-    private String gMemo;
+
+
+     private String gMemo;
+
+
+
+
     @Enumerated(EnumType.STRING)
     private GRank gRank;
-    private String gVendor;
-    private List<String> gOption;
-    private String gDt;
+    /*private String gVendor;*/
+
+    @Builder.Default
+    private List<String> gOption = new ArrayList<>();
+
+
+    @Builder.Default
+    private Map<String, Object> gDt = new HashMap<>();
     private String gImei;
 
 
