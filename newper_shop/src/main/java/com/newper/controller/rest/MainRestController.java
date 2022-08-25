@@ -16,6 +16,11 @@ public class MainRestController {
     private final ShopService shopService;
 //    private final ShopComp shopComp;
 
+    @PostConstruct
+    public void postCon(){
+        shopService.setShopComp("localhost");
+    }
+
     /** set shopComp info. 분양몰 정보 세팅 */
     @GetMapping("refreshShop")
     public void refreshShop(HttpServletRequest request){
