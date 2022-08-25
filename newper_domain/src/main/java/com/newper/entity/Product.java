@@ -37,7 +37,6 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "P_CATE_IDX2", referencedColumnName = "cateIdx")
     private Category brand;
 
-    private String pCode;
     private String pName;
 
     @Enumerated(EnumType.STRING)
@@ -114,6 +113,11 @@ public class Product extends BaseEntity {
     private List<Goods> goodsList;
 
 
+    /** 고시정보. json map*/
+    @Builder.Default
+    private Map<String,Object> pInfo = new HashMap<String, Object>();
+    private List<Map<String,Object>> pOption = new ArrayList<>();
+    private Map<String,Object> pNaver = new HashMap<>();
 
 
     @PrePersist
@@ -134,13 +138,6 @@ public class Product extends BaseEntity {
 
     }
 
-
-    /** 고시정보. json map*/
-    @Builder.Default
-    private Map<String,Object> pInfo = new HashMap<String, Object>();
-    private List<Map<String,Object>> pOption = new ArrayList<>();
-    private Map<String,Object> pNaver = new HashMap<>();
-
     /** 해당 옵션 문자로 return*/
     public String getOptionValues(String optionName){
         Map<String, Object> optionMap = pOption.stream().filter(map -> {
@@ -156,6 +153,11 @@ public class Product extends BaseEntity {
             }
             return sb.toString().substring(0, sb.length() - 1);
         }
+    }
+
+    /** */
+    public void updateProduct(Product product) {
+        setPContent1(product.getPContent1());
     }
 
 

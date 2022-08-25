@@ -33,36 +33,27 @@ public class ProductService {
     @Transactional
     public int productSave(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
         Product product = paramMap.mapParam(Product.class);
-        System.out.println("p_cost : " + product.getPCost());
-        String p_code = productMapper.selectProductByListPcode();
-        String code = "product-";
-        if (p_code == null) {
-            code = code + "001";
-        } else {
-            int no = Integer.parseInt(p_code.replace(code, "").toString());
-            String codeNo = String.format("%03d", no + 1);
-            code = code + codeNo;
-        }
-        product.setPCode(code);
+
+
 
         if(!paramMap.get("P_CATE_IDX").equals("")){
-            Category category = categoryRepo.findById(paramMap.getInt("P_CATE_IDX")).get();
+            Category category = categoryRepo.getReferenceById(paramMap.getInt("P_CATE_IDX"));
             product.setCategory(category);
         }
         if(!paramMap.get("P_CATE_IDX2").equals("")){
-            Category brand = categoryRepo.findById(paramMap.getInt("P_CATE_IDX2")).get();
+            Category brand = categoryRepo.getReferenceById(paramMap.getInt("P_CATE_IDX2"));
             product.setBrand(brand);
         }
         if(!paramMap.get("P_COM_IDX").equals("")){
-            Company store = companyRepo.findById(paramMap.getInt("P_COM_IDX")).get();
+            Company store = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX"));
             product.setStoreName(store);
         }
         if(!paramMap.get("P_COM_IDX2").equals("")){
-            Company manufacture = companyRepo.findById(paramMap.getInt("P_COM_IDX2")).get();
+            Company manufacture = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             product.setManufactureName(manufacture);
         }
         if(!paramMap.get("P_COM_IDX3").equals("")){
-            Company afterService = companyRepo.findById(paramMap.getInt("P_COM_IDX3")).get();
+            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX3"));
             product.setAfterServiceName(afterService);
         }
 
@@ -130,26 +121,29 @@ public class ProductService {
     public int productUpdate(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
         Product product = paramMap.mapParam(Product.class);
         Product ori = productRepo.findById(paramMap.getInt("P_IDX")).get();
-        product.setPCode(ori.getPCode());
+
+        ori.updateProduct(product);
+
+
         if(!paramMap.get("P_CATE_IDX").equals("")){
-            Category category = categoryRepo.findById(paramMap.getInt("P_CATE_IDX")).get();
-            product.setCategory(category);
+            Category category = categoryRepo.getReferenceById(paramMap.getInt("P_CATE_IDX"));
+            ori.setCategory(category);
         }
         if(!paramMap.get("P_CATE_IDX2").equals("")){
-            Category brand = categoryRepo.findById(paramMap.getInt("P_CATE_IDX2")).get();
-            product.setBrand(brand);
+            Category brand = categoryRepo.getReferenceById(paramMap.getInt("P_CATE_IDX2"));
+            ori.setBrand(brand);
         }
         if(!paramMap.get("P_COM_IDX").equals("")){
-            Company store = companyRepo.findById(paramMap.getInt("P_COM_IDX")).get();
-            product.setStoreName(store);
+            Company store = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX"));
+            ori.setStoreName(store);
         }
         if(!paramMap.get("P_COM_IDX2").equals("")){
-            Company manufacture = companyRepo.findById(paramMap.getInt("P_COM_IDX2")).get();
-            product.setManufactureName(manufacture);
+            Company manufacture = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
+            ori.setManufactureName(manufacture);
         }
         if(!paramMap.get("P_COM_IDX3").equals("")){
-            Company afterService = companyRepo.findById(paramMap.getInt("P_COM_IDX3")).get();
-            product.setAfterServiceName(afterService);
+            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX3"));
+            ori.setAfterServiceName(afterService);
         }
 
         String thumbFilePath1=ori.getPThumbFile1();
@@ -205,7 +199,7 @@ public class ProductService {
         product.setPThumbFileName5(P_THUMB_FILE_NAME5);
         product.setPThumbFileName6(P_THUMB_FILE_NAME6);
 
-        productRepo.save(product);
+        //productRepo.save(ori);
 
 
         return product.getPIdx();

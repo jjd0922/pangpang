@@ -49,8 +49,7 @@
                                                       상품코드 <a class="btn btn-sm badge-indigo" onclick="showProductModal()">검색</a>
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_CODE" class="form-control" th:value="${product?.pCode}" disabled>
-                                                <input type="hidden" name="P_IDX" th:value="${product?.pIdx}">
+                                                <input type="text" name="P_IDX" class="form-control" th:value="${product?.pIdx}" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -741,7 +740,6 @@
             data:'P_IDX='+pIdx,
             success:function(res){
                 $('input[name=P_IDX]').val(pIdx);
-                $('input[name=P_CODE]').val(res.data.P_CODE);
                 $('input[name=P_NAME]').val(res.data.P_NAME);
                 $('input[name=P_STATE]').val(res.data.P_STATE);
                 $('input[name=P_MODEL]').val(res.data.P_MODEL);

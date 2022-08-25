@@ -292,7 +292,6 @@ public class ProductRestController {
     public ReturnMap productDetial(int P_IDX){
         ReturnMap returnMap = new ReturnMap();
         Product product = productRepo.findById(P_IDX).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
-        String P_CODE = product.getPCode();
         String P_NAME = product.getPName();
         String P_STATE = product.getPState().getOption();
         String P_MODEL = product.getPModel();
@@ -315,7 +314,7 @@ public class ProductRestController {
 //        String[] OPTION2 = ov2.split(",");
 //        String[] OPTION3 = ov3.split(",");
 
-        returnMap.put("P_CODE", P_CODE);
+//        returnMap.put("P_CODE", P_CODE);
         returnMap.put("P_NAME", P_NAME);
         returnMap.put("P_STATE", P_STATE);
         returnMap.put("P_MODEL", P_MODEL);

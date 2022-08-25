@@ -96,7 +96,7 @@
                                                 </tr>
                                                 <tr th:if="${mProduct != null}" th:each="c, i: ${cProduct}">
                                                     <td><input type="hidden" name="pIdx" th:value="${c.P_IDX}">[[${i.index+1}]]</td>
-                                                    <td th:text="${c.P_CODE}"></td>
+                                                    <td th:text="${c.P_IDX}"></td>
                                                     <td th:text="${c.P_NAME}"></td>
                                                     <td th:text="${c.P_COST}"></td>
                                                     <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>
@@ -176,7 +176,7 @@
         var isChild = $('#productModalTable').DataTable().column({class:'select-checkbox'}).visible();
 
         if (!isChild) {
-            $('input[name="mpCode"]').val(data.P_CODE);
+            $('input[name="mpCode"]').val(data.P_IDX);
             $('input[name="mpName"]').val(data.P_NAME);
             $('input[name="mpIdx"]').val(data.P_IDX);
         } else {
@@ -207,7 +207,7 @@
         $('#bomChildTable tbody').append(
             '<tr>' +
             '   <td><input type="hidden" name="pIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
-            '   <td>'+data.P_CODE+'</td>' +
+            '   <td>'+data.P_IDX+'</td>' +
             '   <td>'+data.P_NAME+'</td>' +
             '   <td>'+data.P_COST+'</td>' +
             '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +

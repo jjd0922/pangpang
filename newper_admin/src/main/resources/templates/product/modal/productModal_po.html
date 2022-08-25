@@ -339,7 +339,7 @@
         sell_spec = sell_spec.slice(0, -1);
 
         var product5 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
-        product5 += '<td>' + dataMap.P_CODE + '</td>'
+        product5 += '<td>' + dataMap.P_IDX + '</td>'
         product5 += '<td><input type="text" name="poProductMemo" value="' + $('#ajCode').val() + '" readonly></td>';
         product5 += '<td>' + dataMap.P_NAME + '</td>';
         product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
@@ -360,7 +360,7 @@
         $('#productTbody').append(product5);
 
         var product6 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
-        product6 += '<td>' + dataMap.P_CODE + '</td>';
+        product6 += '<td>' + dataMap.P_IDX + '</td>';
         product6 += '<td>' + dataMap.P_NAME + '</td>';
         product6 += '<td><input type="text" class="form-control" name="poProductCount" value="' + $('#ppCount').val() + '" readonly></td>';
         product6 += '<td>' + comma($('#processCost').val()) + '</td>';
@@ -510,7 +510,7 @@
                 targets:    [1]
             }],
             "columns" : [
-                {'title':'상품코드','data':'P_CODE', 'defaultContent':'', 'render' : function (data, type, full, meta) {
+                {'title':'상품코드','data':'P_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
                         return data + '<input type="hidden" id="productSpecList" value="' + full.CATE_SPEC_LIST + '">';
                     }}
                 ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}

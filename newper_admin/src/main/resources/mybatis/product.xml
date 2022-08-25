@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ProductMapper">
     <sql id="includeProductDataTable">
-        <if test="P_CODE != null and P_CODE != ''">AND P_CODE LIKE CONCAT('%',#{P_CODE},'%')</if>
+        <if test="P_CODE != null and P_CODE != ''">AND P_IDX LIKE CONCAT('%',#{P_CODE},'%')</if>
         <if test="P_NAME != null and P_NAME != ''">AND P_NAME LIKE CONCAT('%',#{P_NAME},'%')</if>
         <if test="P_STATE != null and  P_STATE!=''">AND P_STATE LIKE CONCAT('%',#{P_STATE},'%')</if>
         <if test="P_MODEL != null and P_MODEL !=''">AND P_MODEL LIKE CONCAT('%',#{P_MODEL},'%')</if>
@@ -134,17 +134,17 @@
 
 </select>
 
-    <select id="selectProductByListPcode" resultType="String">
-        select
-            P_CODE
-        from
-            product
-        order by P_IDX desc limit 1
-    </select>
+<!--    <select id="selectProductByListPcode" resultType="String">-->
+<!--        select-->
+<!--            P_CODE-->
+<!--        from-->
+<!--            product-->
+<!--        order by P_IDX desc limit 1-->
+<!--    </select>-->
 
     <select id="selectGoodsStockDataTable" resultType="map">
         SELECT
-        GS_IDX, GS_THUMB_FILE1, P_CODE, P_STATE, P_NAME, P_IDX,
+        GS_IDX, GS_THUMB_FILE1, P_STATE, P_NAME, P_IDX,
         P_MODEL, P_COST, P_SELL_PRICE, GS_CODE, GS_NAME,
         GS_PRICE, GS_SALE, GS_RANK, GS_SAFE_STOCK, GS_PROPER_STOCK,
         GS_DAILY, goods_stock.CREATED_BY, goods_stock.CREATED_DATE, goods_stock.MODIFIED_BY, goods_stock.MODIFIED_DATE,
