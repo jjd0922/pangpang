@@ -73,6 +73,21 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="card">
+                                                    <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                                        <div class="btn-group">
+                                                            <div class="header-elements">
+                                                                <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewWarehouseBtn">
+                                                                    <i class="icon-popout mr-1"></i>신규등록
+                                                                </a>
+
+                                                                <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄변경</button >
+                                                                <div class="dropdown-menu">
+                                                                    <a onclick="" class="dropdown-item">정상</a>
+                                                                    <a onclick="" class="dropdown-item">미사용</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <table class="table" id="warehouseTable"></table>
                                                 </div>
                                             </div>
@@ -85,7 +100,7 @@
                                                 <div class="card-header header-elements-inline">
                                                     <h6 class="card-title">
                                                         <div class="breadcrumb-caret">
-                                                            <span class="breadcrumb-item" id="whName">test</span>
+                                                            <span class="breadcrumb-item" id="whNameSpan">test</span>
                                                             <input type="hidden" name="whIdx">
                                                         </div>
                                                     </h6>
@@ -140,7 +155,17 @@
 
 <script th:inline="javascript">
     function searchWarehouse() {
-        // $('#warehouseTable').DataTable().page('first').ajax.url('/product/cateDepth2.dataTable?' + $('#searchCateForm').serialize()).load();
+        $('#warehouseTable').DataTable().page('first').ajax.url('/warehouse/warehouse.dataTable?' + $('#searchWarehouseForm').serialize()).load();
+    }
+
+    function popNewWarehouse() {
+        var focusPopup = window.open('/warehouse/warehousePop', 'insertWarehouse', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function popWarehouseDetail(whIdx) {
+        var focusPopup = window.open('warehousePop/' + whIdx, 'warehouseDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 
     // function initTemplateTable(cateIdx,cateName) {
@@ -176,13 +201,19 @@
             ,{'title':'번호','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
+            ,{'title':'상태','data':'WH_STATE_STR', 'defaultContent':''}
             ,{'title':'창고명','data':'WH_IDX', 'defaultContent':'', 'render': function (data,type,full,meta) {
-                    return '<a href="#" class="badge badge-primary">' + full.WH_NAME + '</a>';
+                    return '<a href="#" onclick="popWarehouseDetail('+full.WH_IDX+')" class="badge badge-primary">' + full.WH_NAME + '</a>';
                 }}
             ,{'title':'거래처','data':'COM_NAME', 'defaultContent':''}
             ,{'title':'담당자','data':'CE_NAME', 'defaultContent':''}
+            ,{'title':'로케이션보기','data':'', 'render': function (data, type, full, meta) {
+                    return '<a href="#" class="badge badge-info">보기</a>'
+                }}
         ]
     });
+
+    $('#popNewWarehouseBtn').on('click', popNewWarehouse);
 
     $('#searchWarehouseForm').on('keyup',function(event){
         if(event.keyCode==13){searchWarehouse();return false;}

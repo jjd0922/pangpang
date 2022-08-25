@@ -4,6 +4,7 @@
     <select id="selectWarehouseDatatable" resultType="map">
         SELECT
             WH_IDX,
+            WH_STATE,
             WH_NAME,
             COM_NAME,
             CE_NAME
@@ -11,6 +12,11 @@
             WAREHOUSE
                 LEFT JOIN COMPANY ON WH_COM_IDX = COM_IDX
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+        ORDER BY
+            WH_IDX DESC
+        <if test="length != -1">
+            LIMIT #{start},#{length}
+        </if>
     </select>
 
     <select id="countWarehouseDatatable" resultType="long">
@@ -20,5 +26,34 @@
             WAREHOUSE
                 LEFT JOIN COMPANY ON WH_COM_IDX = COM_IDX
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+    </select>
+
+    <select id="selectLocationDatatable" resultType="map">
+        SELECT
+            LOC_IDX,
+            WH_IDX,
+            LOC_TYPE,
+            LOC_CODE,
+            LOC_FORM,
+            LOC_ZONE,
+            LOC_ROW,
+            LOC_COLUMN,
+            U_NAME
+        FROM
+            LOCATION
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+                LEFT JOIN USER ON LOC_U_IDX = U_IDX
+        <if test="length != -1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countLocationDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(LOC_IDX))
+        FROM
+            LOCATION
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+                LEFT JOIN USER ON LOC_U_IDX = U_IDX
     </select>
 </mapper>
