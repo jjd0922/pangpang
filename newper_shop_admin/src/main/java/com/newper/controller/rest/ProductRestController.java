@@ -139,5 +139,16 @@ public class ProductRestController {
         return returnDatatable;
     }
 
+    /**상위 카테고리의 하위 카테고리*/
+    @PostMapping("category/parent.ajax")
+    public ReturnMap parent(int CATE_IDX){
+        ReturnMap rm = new ReturnMap();
+        Map<String,Object> map = new HashMap<>();
+        map.put("cateIdx",CATE_IDX);
+//        List<Map<String,Object>> list = categoryMapper.selectCategory(map);
+//        rm.put("list",list);
+        return rm;
+    }
+
 
 }

@@ -216,18 +216,14 @@ public class ProductController {
         mav.addObject("content2",content2);
         mav.addObject("content3",content3);
 
-        Map<String,Object> option = product.getPOption();
-        List<Map<String,Object>> pOption = new ArrayList<Map<String,Object>>();
-
-        for(int i=1; i<4; i++){
-            Map<String,Object> optionMap = new HashMap<>();
-            if(!option.get("p_option_key"+i).equals("")||!option.get("p_option_value"+i).equals("")){
-                optionMap.put("p_option_key",option.get("p_option_key"+i));
-                optionMap.put("p_option_value",option.get("p_option_value"+i));
-                pOption.add(optionMap);
-            }
+        List<Map<String,Object>> option = product.getPOption();
+        int cnt=0;
+        for(int i=0; i<option.size(); i++){
+            cnt++;
         }
-        mav.addObject("pOption",pOption);
+        System.out.println("cnt : "+cnt);
+        mav.addObject("optionSize",option.size());
+
         Map<String, Object> cg = new HashMap<>();
         if(product.getCategory() != null){
             Map<String,Object> category = categoryMapper.selectCategoryDetail(product.getCategory().getCateIdx());
@@ -294,14 +290,14 @@ public class ProductController {
         GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(GS_IDX);
         Product product = goodsStock.getProduct();
 
-        Map<String, Object> po = product.getPOption();
-        String ov1 = po.get("p_option_value1")+"";
-        String ov2 = po.get("p_option_value2")+"";
-        String ov3 = po.get("p_option_value3")+"";
+//        Map<String, Object> po = product.getPOption();
+//        String ov1 = po.get("p_option_value1")+"";
+//        String ov2 = po.get("p_option_value2")+"";
+//        String ov3 = po.get("p_option_value3")+"";
 
-        String[] option1 = ov1.split(",");
-        String[] option2 = ov2.split(",");
-        String[] option3 = ov3.split(",");
+//        String[] option1 = ov1.split(",");
+//        String[] option2 = ov2.split(",");
+//        String[] option3 = ov3.split(",");
 
         String content = goodsStock.getGsContent();
         content= Common.summernoteContent(content);
@@ -309,9 +305,9 @@ public class ProductController {
         mav.addObject("goodsStock", goodsStock);
         mav.addObject("product", product);
         mav.addObject("content", content);
-        mav.addObject("option1", option1);
-        mav.addObject("option2", option2);
-        mav.addObject("option3", option3);
+//        mav.addObject("option1", option1);
+//        mav.addObject("option2", option2);
+//        mav.addObject("option3", option3);
 
         return mav;
     }

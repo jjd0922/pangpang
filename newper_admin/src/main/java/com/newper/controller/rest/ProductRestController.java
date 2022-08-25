@@ -172,12 +172,13 @@ public class ProductRestController {
 
         Map<String, Object> map1 = new HashMap<>();
         Map<String, Object> map2 = new HashMap<>();
-        Map<String, Object> map3 = new HashMap<>();
+
         for(int i=1; i<10; i++){
             map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
         }
         paramMap.put("P_NAVER", map1);
 
+        List<Map<String,Object>> p_option = new ArrayList<>();
         for(int y=1; y<4; y++){
             map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
             map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
@@ -188,12 +189,23 @@ public class ProductRestController {
                 p_option_key=paramMap.get("p_option_key"+y)+"";
                 p_option_value=paramMap.get("p_option_value"+y)+"";
             }
-            map3.put("p_option_key"+y,p_option_key);
-            map3.put("p_option_value"+y,p_option_value);
 
+            Map<String, Object> map3 = new HashMap<>();
+            String p_option_values[]=p_option_value.split(",");
+            List<String> values = new ArrayList<>();
+            for(int z=0; z<p_option_values.length;z++){
+                if(!p_option_values[z].equals("")){
+                    values.add(p_option_values[z]);
+                }
+            }
+            if(!p_option_key.equals("")&&values.size()>0){
+                map3.put("title",p_option_key);
+                map3.put("values",values);
+                p_option.add(map3);
+            }
         }
         paramMap.put("P_INFO",map2);
-        paramMap.put("P_OPTION",map3);
+        paramMap.put("P_OPTION",p_option);
 
         paramMap.put("P_STATE", PState.PROTO);
         paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
@@ -216,12 +228,13 @@ public class ProductRestController {
         System.out.println(paramMap.getMap());
         Map<String, Object> map1 = new HashMap<>();
         Map<String, Object> map2 = new HashMap<>();
-        Map<String, Object> map3 = new HashMap<>();
         for(int i=1; i<10; i++){
             map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
         }
         paramMap.put("P_NAVER", map1);
 
+
+        List<Map<String,Object>> p_option = new ArrayList<>();
         for(int y=1; y<4; y++){
             map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
             map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
@@ -232,12 +245,24 @@ public class ProductRestController {
                 p_option_key=paramMap.get("p_option_key"+y)+"";
                 p_option_value=paramMap.get("p_option_value"+y)+"";
             }
-            map3.put("p_option_key"+y,p_option_key);
-            map3.put("p_option_value"+y,p_option_value);
+
+            Map<String, Object> map3 = new HashMap<>();
+            String p_option_values[]=p_option_value.split(",");
+            List<String> values = new ArrayList<>();
+            for(int z=0; z<p_option_values.length;z++){
+                if(!p_option_values[z].equals("")){
+                    values.add(p_option_values[z]);
+                }
+            }
+            if(!p_option_key.equals("")&&values.size()>0){
+                map3.put("title",p_option_key);
+                map3.put("values",values);
+                p_option.add(map3);
+            }
 
         }
         paramMap.put("P_INFO",map2);
-        paramMap.put("P_OPTION",map3);
+        paramMap.put("P_OPTION",p_option);
 
         paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
@@ -280,14 +305,15 @@ public class ProductRestController {
         String P_THUMB_FILE4 = product.getPThumbFile4();
         String P_THUMB_FILE5 = product.getPThumbFile5();
         String P_THUMB_FILE6 = product.getPThumbFile6();
-        Map<String, Object> map = product.getPOption();
-        String ov1 = map.get("p_option_value1")+"";
-        String ov2 = map.get("p_option_value2")+"";
-        String ov3 = map.get("p_option_value3")+"";
-
-        String[] OPTION1 = ov1.split(",");
-        String[] OPTION2 = ov2.split(",");
-        String[] OPTION3 = ov3.split(",");
+        List<Map<String, Object>> map = product.getPOption();
+        System.out.println(map.get(0).get("values"));
+//        String ov1 = map.get("p_option_value1")+"";
+//        String ov2 = map.get("p_option_value2")+"";
+//        String ov3 = map.get("p_option_value3")+"";
+//
+//        String[] OPTION1 = ov1.split(",");
+//        String[] OPTION2 = ov2.split(",");
+//        String[] OPTION3 = ov3.split(",");
 
         returnMap.put("P_CODE", P_CODE);
         returnMap.put("P_NAME", P_NAME);
@@ -302,9 +328,9 @@ public class ProductRestController {
         returnMap.put("P_THUMB_FILE4", P_THUMB_FILE4);
         returnMap.put("P_THUMB_FILE5", P_THUMB_FILE5);
         returnMap.put("P_THUMB_FILE6", P_THUMB_FILE6);
-        returnMap.put("OPTION1", OPTION1);
-        returnMap.put("OPTION2", OPTION2);
-        returnMap.put("OPTION3", OPTION3);
+//        returnMap.put("OPTION1", OPTION1);
+//        returnMap.put("OPTION2", OPTION2);
+//        returnMap.put("OPTION3", OPTION3);
 
 
         return returnMap;

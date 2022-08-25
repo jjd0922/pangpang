@@ -5,6 +5,7 @@ package com.newper.controller.view;
 import com.newper.component.Common;
 import com.newper.entity.ShopCategory;
 import com.newper.exception.MsgException;
+import com.newper.mapper.ShopCategoryMapper;
 import com.newper.repository.ShopCategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class ProductController {
 
     private final ShopCategoryRepo shopCategoryRepo;
-
+private final ShopCategoryMapper shopCategoryMapper;
 
     /**상품 관리*/
     @GetMapping("")
@@ -39,6 +40,8 @@ public class ProductController {
     @GetMapping("shopDetail")
     public ModelAndView shopDetail(){
         ModelAndView mav = new ModelAndView("product/shop_product_detail");
+        List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
+        mav.addObject("shopCategory",shopCategory);
         return mav;
     }
 

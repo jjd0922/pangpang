@@ -699,10 +699,10 @@
                                         </tr>
                                     </thead>
                                     <tbody id="option_area">
-                                        <tr th:if="${pOption}!=null" th:each="option:${pOption}" th:id="'option_'+${optionStat.count}">
+                                        <tr th:if="${product}!=null" th:each="option:${product?.pOption}" th:id="'option_'+${optionStat.count}">
                                             <td th:id="'opCnt'+${optionStat.count}" th:text="${optionStat.count}"></td>
-                                            <td><input type="text" class="form-control" th:name="'p_option_key'+${optionStat.count}" th:value="${option.p_option_key}"></td>
-                                            <td><input type="text" class="form-control" th:name="'p_option_value'+${optionStat.count}" th:value="${option.p_option_value}"></td>
+                                            <td><input type="text" class="form-control" th:name="'p_option_key'+${optionStat.count}" th:value="${option?.title}"></td>
+                                            <td><input type="text" class="form-control" th:name="'p_option_value'+${optionStat.count}" th:value="${product.getOptionValues(option?.title)}"></td>
                                             <td><a class="btn btn-sm badge-indigo" th:id="'optionBtn'+${optionStat.count}" th:onclick="'deleteOption('+${optionStat.count}+')'">삭제</a></td>
                                         </tr>
                                     </tbody>
@@ -811,27 +811,21 @@
         $('input[name=P_CATE_IDX]').val(category);
     }
 
-    function selectCompany(comIdx){
+    function selectCompany(row){
         var CT_TYPE = $('input[name=CT_TYPE]').val();
-        $.ajax({
-            url:'/company/companyByComIdx.ajax',
-            type:'post',
-            data:'comIdx='+comIdx,
-            success:function (res){
-                if(CT_TYPE=='STORE'){
-                    $('input[name=P_COM_NAME]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX]').val(res.data.COM_IDX)
-                }else if(CT_TYPE==''){
-                    $('input[name=P_COM_NAME2]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX2]').val(res.data.COM_IDX)
-                }else if(CT_TYPE=='REPAIRING'){
-                    $('input[name=P_COM_NAME3]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX3]').val(res.data.COM_IDX)
-                }
-                $('#searchCompanyModal').modal('hide');
-            }
-        })
+        var rowData = getDatatablemap('companyModalTable', row);
 
+        if(CT_TYPE=='STORE'){
+            $('input[name=P_COM_NAME]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX]').val(rowData.COM_IDX);
+        }else if(CT_TYPE==''){
+            $('input[name=P_COM_NAME2]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);
+        }else if(CT_TYPE=='REPAIRING'){
+            $('input[name=P_COM_NAME3]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX3]').val(rowData.COM_IDX);
+        }
+        $('#searchCompanyModal').modal('hide');
     }
 
     function optionAdd(){
@@ -920,7 +914,8 @@
                 contentType:false,
                 data:param,
                 success: function(res){
-                    if(res.message.indexOf('수정되었습니다.')!=-1){
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        window.location.reload();
                         opener.location.reload();
                     }
                 }

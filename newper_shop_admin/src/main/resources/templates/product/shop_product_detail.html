@@ -49,7 +49,7 @@
                                                   SHOP 상품코드
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control" th:value="${product?.pCode}" readonly>
+                                            <input type="text" name="SP_IDX" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -57,11 +57,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text requested requested">
+                                                <span class="input-group-text requested">
                                                   SHOP 상품명
                                                 </span>
                                             </span>
-                                            <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}">
+                                            <input type="text" name="SP_NAME" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -69,11 +69,12 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text requested requested">
+                                                <span class="input-group-text requested">
                                                   판매 SHOP<a class="btn btn-sm badge-indigo legitRipple" onclick="showShopModal()">검색</a>
                                                 </span>
                                             </span>
-                                            <input type="text" name="P_NAME" class="form-control" th:value="${product?.pName}">
+                                            <input type="text" name="SHOP_NAME" class="form-control" disabled>
+                                            <input type="hidden" name="SP_SHOP_IDX">
                                         </div>
                                     </div>
                                 </div>
@@ -82,30 +83,53 @@
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                    SHOP 판매상태
+                                                    SHOP 판매기간 시작일
                                                 </span>
+                                                <input type="text" name="SP_SELL_START_DATE" class="form-control daterange-singlenull" readonly>
+                                                <input type="time" name="SP_SELL_START_TIME" class="form-control">
                                             </span>
-                                            <input th:if="${product}==null" type="text" class="form-control "  name="P_STATE"  readonly>
-                                            <select th:if="${product}!=null" name="P_STATE" class="form-control form-control-sm select-search" data-container-css-class="select-sm" data-fouc>
-                                                <option th:each="ps:${T(com.newper.constant.PState).values()}" th:value="${ps}" th:text="${ps.option}" th:selected="${product?.pState eq ps}"></option>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                  SHOP 판매상태
+                                                    SHOP 판매기간 종료일
                                                 </span>
+                                                <input type="text" name="SP_SELL_END_DATE" class="form-control daterange-singlenull" readonly>
+                                                <input type="time" name="SP_SELL_END_TIME" class="form-control">
                                             </span>
-                                            <input type="text" name="P_MODEL" class="form-control" th:value="${product?.pModel}">
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    SHOP 노출기간 시작일
+                                                </span>
+                                                <input type="text" name="SP_SHOW_START_DATE" class="form-control daterange-singlenull" readonly>
+                                                <input type="time" name="SP_SHOW_START_TIME" class="form-control">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    SHOP 노출기간 종료일
+                                                </span>
+                                                <input type="text" name="SP_SHOW_END_DATE" class="form-control daterange-singlenull" readonly>
+                                                <input type="time" name="SP_SHOW_END_TIME" class="form-control">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -135,7 +159,7 @@
                                                 <option></option>
                                                 <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
                                             </select>
-                                            <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">
+<!--                                            <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">-->
                                         </div>
                                     </div>
                                 </div>
@@ -327,9 +351,8 @@
                                             <span class="form-control">1번 필수상품</span>
                                         </div>
                                     </div>
-                                </div>
-                                <table class="table table-bordered">
-                                    <thead id="essential_head">
+                                    <table class="table table-bordered">
+                                        <thead id="essential_head">
                                         <tr class="alpha-brown text-bold">
                                             <th>NO</th>
                                             <th>상품코드</th>
@@ -352,10 +375,11 @@
                                             <th>재고자산</th>
                                             <th>삭제</th>
                                         </tr>
-                                    </thead>
-                                    <tbody id="essential_area">
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody id="essential_area">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <br>
                         </fieldset>
@@ -372,35 +396,35 @@
 
                                         </div>
                                     </div>
+                                    <table class="table table-bordered">
+                                        <thead id="choose_head">
+                                        <tr class="alpha-brown text-bold">
+                                            <th>NO</th>
+                                            <th>상품코드</th>
+                                            <th>상품명</th>
+                                            <th>모델명</th>
+                                            <th>재고코드</th>
+                                            <th>재고상품명</th>
+                                            <th>등급</th>
+                                            <th>옵션1</th>
+                                            <th>옵션2</th>
+                                            <th>옵션3</th>
+                                            <th>스펙</th>
+                                            <th>기준매입원가</th>
+                                            <th>네이버최저가</th>
+                                            <th>유통가</th>
+                                            <th>기준판매가(상품)</th>
+                                            <th>기준판매가(재고)</th>
+                                            <th>SHOP 판매가(뉴퍼마켓가)</th>
+                                            <th>할인가(최종혜택가)</th>
+                                            <th>재고자산</th>
+                                            <th>삭제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="choose_area">
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <table class="table table-bordered">
-                                    <thead id="choose_head">
-                                    <tr class="alpha-brown text-bold">
-                                        <th>NO</th>
-                                        <th>상품코드</th>
-                                        <th>상품명</th>
-                                        <th>모델명</th>
-                                        <th>재고코드</th>
-                                        <th>재고상품명</th>
-                                        <th>등급</th>
-                                        <th>옵션1</th>
-                                        <th>옵션2</th>
-                                        <th>옵션3</th>
-                                        <th>스펙</th>
-                                        <th>기준매입원가</th>
-                                        <th>네이버최저가</th>
-                                        <th>유통가</th>
-                                        <th>기준판매가(상품)</th>
-                                        <th>기준판매가(재고)</th>
-                                        <th>SHOP 판매가(뉴퍼마켓가)</th>
-                                        <th>할인가(최종혜택가)</th>
-                                        <th>재고자산</th>
-                                        <th>삭제</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="choose_area">
-                                    </tbody>
-                                </table>
                             </div>
                         </fieldset>
 
@@ -420,6 +444,10 @@
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
 
 <!-- input -->
 <script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
@@ -442,10 +470,6 @@
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
-<!-- 맞춤 js -->
-<script th:src="@{/assets/js/app.js}"></script>
-<script th:src="@{/assets/js/common.js}"></script>
-
 <!-- 에디터 -->
 <script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
 <script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
@@ -460,6 +484,14 @@
 <th:block th:replace="modal/summernoteImageModal.html"></th:block>
 
 <script th:inline="javascript">
+
+    function selectShop(row){
+        var rowData = getDatatablemap('shopModalTable', row);
+        $('#searchShopModal').modal('hide');
+        $('input[name="SHOP_NAME"]').val(rowData.SHOP_NAME);
+        $('input[name="SP_SHOP_IDX"]').val(rowData.SHOP_IDX);
+    }
+
     function category1(){
         var category = $('select[name=CATE_IDX1]').val();
         $.ajax({
@@ -476,7 +508,7 @@
                     str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
                 })
                 $('select[name=CATE_IDX2]').append(str);
-                $('input[name=P_CATE_IDX]').val(category);
+                // $('input[name=P_CATE_IDX]').val(category);
             }
         })
     }
