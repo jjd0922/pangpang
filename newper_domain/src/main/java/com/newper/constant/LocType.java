@@ -6,12 +6,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-/**창고 상태; 정상,미사용*/
-public enum WhState implements EnumOption {
+public enum LocType implements EnumOption {
 
-    NORMAL("정상")
-    ,DISUSE("미사용");
+    NORMAL("정상"),
+    VIRTUAL("가상"),
+    DISUSE("불용");
 
     private String option;
-
 }

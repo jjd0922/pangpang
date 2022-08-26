@@ -84,6 +84,8 @@ public class DataTableAop {
         enumClasses.put("u_state","UState");
         enumClasses.put("u_type","UType");
         enumClasses.put("wh_state","WhState");
+        enumClasses.put("loc_type","LocType");
+        enumClasses.put("loc_form","LocForm");
     }
 
     @Around("execution(* com.newper.mapper.*.*(..)))")

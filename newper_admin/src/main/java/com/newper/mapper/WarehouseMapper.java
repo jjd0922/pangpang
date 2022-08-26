@@ -15,7 +15,7 @@ public interface WarehouseMapper {
     long countWarehouseDatatable(Map<String, Object> map);
 
     /**창고 상태 일괄변경*/
-    void changeAllWhState(@Param("whIdxList") List<Integer> whIdxList,
+    void changeAllWhState(@Param("whIdxList") String[] whIdxList,
                           @Param("whState") WhState whState);
 
     /**로케이션 데이터테이블 조회*/
