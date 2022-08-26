@@ -135,9 +135,6 @@ public class CompanyRestController {
     public ReturnDatatable fee(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("카테고리별 입점사 수수료관리");
 
-        String comIdx = paramMap.get("comIdx").toString();
-        System.out.println("comIdx = " + comIdx);
-
         paramMap.multiSelect("cateIdx");
         paramMap.multiSelect("cfType");
 
