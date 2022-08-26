@@ -170,11 +170,15 @@ public class CompanyService {
     /**카테고리별 입점사 수수료 등록*/
     @Transactional
     public void saveFee(ParamMap paramMap) {
+        // 이미 등록되어있는 해당 입점사의 중분류 수수료가 있는지 확인 후 에러처리
+        Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
+        Category category = Category.builder().cateIdx(paramMap.getInt("cateIdx")).build();
+        if (companyFeeRepo.findFeeByCompanyAndCategoryAndCfState(company, category, 'Y') != null) {
+            throw new MsgException("해당 카테고리에 관한 수수료는 이미 설정되어 있습니다.");
+        }
+        
         CompanyFee fee = paramMap.mapParam(CompanyFee.class);
         fee.setCfState('Y');
-
-        Category category = Category.builder().cateIdx(paramMap.getInt("cateIdx")).build();
-        Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
         fee.setCategory(category);
         fee.setCompany(company);
 
