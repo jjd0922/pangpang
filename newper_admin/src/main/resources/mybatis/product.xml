@@ -35,6 +35,12 @@
         <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>/*수정일*/
         <if test="MODIFIED_BY != null and MODIFIED_BY != ''">AND MODIFIED_BY LIKE CONCAT('%',#{MODIFIED_BY},'%')</if>
         <if test="MODIFIED_DATE != null and MODIFIED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{MODIFIED_DATE}, 1, 10) AND SUBSTR(#{MODIFIED_DATE}, 13)</if>
+        <if test="mpIdx != null and mpIdx != ''">AND P_IDX != #{mpIdx}</if>
+        <if test="cpIdx != null">
+            <foreach collection="cpIdx" open="AND P_IDX NOT IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
     </sql>
     <select id="selectProductDataTable" resultType="Map">
         SELECT

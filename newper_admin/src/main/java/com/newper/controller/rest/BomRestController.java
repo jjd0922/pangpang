@@ -35,7 +35,7 @@ public class BomRestController {
         paramMap.multiSelect("pIdx");
         bomService.saveBom(paramMap);
         rm.setMessage("등록완료");
-        rm.setLocation("/bom/bomPop/" + paramMap.get("mpIdx"));
+        rm.setLocation("/bom/bomPop/" + paramMap.getInt("mpIdx"));
         return rm;
     }
 

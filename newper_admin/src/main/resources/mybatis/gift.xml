@@ -102,8 +102,8 @@
         SET
             GIFT_STATE = #{giftState}
         WHERE
-            <foreach collection="giftIdxList" open="(" separator="OR" close=")" item="item">
-                GIFT_IDX = #{item}
+            <foreach collection="giftIdxList" open="GIFT_IDX IN (" separator="," close=")" item="item">
+                #{item}
             </foreach>
     </update>
 </mapper>

@@ -50,8 +50,8 @@
         SET
             WH_STATE = #{whState}
         WHERE
-            <foreach collection="whIdxs" open="(" separator="OR" close=")" item="item">
-                WH_IDX = #{item}
+            <foreach collection="whIdxs" open="WH_IDX IN (" separator="," close=")" item="item">
+                #{item}
             </foreach>
     </update>
 
@@ -116,8 +116,8 @@
         SET
             LOC_TYPE = #{locType}
         WHERE
-            <foreach collection="locIdxs" open="(" separator="OR" close=")" item="item">
-                LOC_IDX = #{item}
+            <foreach collection="locIdxs" open="LOC_IDX IN (" separator="," close=")" item="item">
+                #{item}
             </foreach>
     </update>
 </mapper>
