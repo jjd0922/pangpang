@@ -1,12 +1,13 @@
 package com.newper.constant;
 
+import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /** 자산 상태*/
 @Getter
 @AllArgsConstructor
-public enum GState {
+public enum GState implements EnumOption {
 
      RECEIVED("입고검수대기")
     ,CHECK_NEED("입고검수요청")

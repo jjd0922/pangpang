@@ -48,7 +48,7 @@ public class DataTableAop {
         enumClasses.put("gs_rank","GRank");
 
 
-        //36개
+        //41개
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_spec","CateSpec");
         enumClasses.put("cate_type","CateType");
@@ -64,13 +64,17 @@ public class DataTableAop {
         enumClasses.put("com_state","ComState");
         enumClasses.put("com_type","ComType");
         enumClasses.put("ct_type","CtType");
+        enumClasses.put("cu_gender","CuGender");
         enumClasses.put("giftg_state","GiftgState");
         enumClasses.put("gift_state","GiftState");
         enumClasses.put("g_rank","GRank");
+        enumClasses.put("g_state","GState");
         enumClasses.put("g_stock_state","GStockState");
         enumClasses.put("hw_state","HwState");
         enumClasses.put("ig_state","IgState");
+        enumClasses.put("loc_form","LocForm");
         enumClasses.put("loc_state","LocState");
+        enumClasses.put("loc_type","LocType");
         enumClasses.put("menu_type","MenuType");
         enumClasses.put("pe_state","PeState");
         enumClasses.put("pn_process","PnProcess");
@@ -84,8 +88,6 @@ public class DataTableAop {
         enumClasses.put("u_state","UState");
         enumClasses.put("u_type","UType");
         enumClasses.put("wh_state","WhState");
-        enumClasses.put("loc_type","LocType");
-        enumClasses.put("loc_form","LocForm");
     }
 
     @Around("execution(* com.newper.mapper.*.*(..)))")
