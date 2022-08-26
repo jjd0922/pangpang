@@ -353,7 +353,7 @@
 </script>
 
 <script>
-    var userTable = $('#boardTable').DataTable({
+    var boardTable = $('#boardTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -427,6 +427,21 @@
 
 
     $('#popInBtn').on('click',function (){
+
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        if(g_idxs.length > 0){
+            $.ajax({
+                url:'/process/in/temp.ajax'
+                ,type:'post'
+                ,data: 'g_idxs='+g_idxs
+                ,async: false
+            }).done(function(res){
+
+            }).error(function(){
+                return false;
+            });
+        }
+
         var focusPopup = window.open('incheckPop', 'in_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
