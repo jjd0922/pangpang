@@ -1,9 +1,9 @@
 package com.newper.service;
 
-import com.newper.entity.InGroup;
-import com.newper.entity.InProduct;
-import com.newper.entity.Po;
+import com.newper.entity.*;
+import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
+import com.newper.repository.GoodsRepo;
 import com.newper.repository.InGroupRepo;
 import com.newper.repository.PoRepo;
 import com.newper.repository.ProductRepo;
@@ -23,6 +23,8 @@ public class InService {
     private final PoRepo poRepo;
     private final ProductRepo productRepo;
     private final PoMapper poMapper;
+
+    private final GoodsRepo goodsRepo;
 
     /** 발주서에 입고그룹 없는 경우 생성. */
     @Transactional
@@ -48,4 +50,7 @@ public class InService {
             inGroupRepo.save(ig);
         }
     }
+
+
+
 }

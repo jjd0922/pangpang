@@ -129,13 +129,23 @@
     function toggleBarcodeForm(){
         $('#inModalForm').toggle(500);
         focusOnBarcode();
-
     }
     //바코드 input에 focus할 때. 바코드 비우기
     function focusOnBarcode() {
         $('#inModalForm input[name=barcode]').val('');
+        refreshTable('#inModalProductTable');
+        }
+
+/*    function refreshBarcodeTable(){
+        refreshTable('#inPoProductTable');
     }
 
+    $.ajax({
+        url:focusOnBarcode(),
+        success:function(){
+            refreshBarcodeTable();
+        }
+    })*/
     function inModalFormSubmit(){
         //submit 방지
         event.preventDefault();
@@ -194,31 +204,55 @@
         }
         return buttons;
     }
+
+    function deleteBarcode(g_idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                url:'/in/po/barcode/delete.ajax',
+                type:'post',
+                data:'g_idx='+g_idx,
+                success:function(){
+                    $('#inModalProductTable').DataTable().ajax.reload();
+                }
+            })
+        }
+    }
+
+
+
 </script>
 <script>
     //상품 입고 자산 목록 dt
     function initInProductModalTable(){
         if ($.fn.DataTable.isDataTable('#inModalProductTable')) {
             $('#inModalProductTable').DataTable().page('first').ajax.url('/in/product.dataTable?'+$('#inModalForm').serialize()).load(null, false);
-        }else{
+        }else {
             $('#inModalProductTable').DataTable({
-                ordering:false,
+                ordering: false,
                 serverSide: true,
-                ajax:{
-                    url:'/in/product.dataTable?'+$('#inModalForm').serialize(),
-                    type:'post'
+                ajax: {
+                    url: '/in/product.dataTable?' + $('#inModalForm').serialize(),
+                    type: 'post'
                 },
                 buttons: buttonsSelect(false),
-                "columns" : [
-                    {'title':'No','data':'No','render':function(data,type,full,meta){
-                            return meta.settings._iDisplayStart+meta.row+1;
-                        }}
-                    ,{'title':'자산코드','data':'G_BARCODE'}
+                "columns": [
+                    {
+                        'title': 'No', 'data': 'No', 'render': function (data, type, full, meta) {
+                            return meta.settings._iDisplayStart + meta.row + 1;
+                        }
+                    }
+                    , {'title': '자산코드', 'data': 'G_BARCODE'}
+                    , {
+                        'class': 'm-w-16 w-15',
+                        'title': '삭제',
+                        'data': 'G_IDX',
+                        'render': function (data, type, full, meta) {
+                            return '<a class="btn btn-sm badge-danger" onclick="deleteBarcode(' + data + ')">삭제</a>';
+                        }
+                    }
                 ]
             });
-        }
-    }
-
+        }}
 
     $('#inProductModal').on('show.bs.modal',function (e){
         $('#inModalForm').hide();

@@ -3,6 +3,7 @@ package com.newper.service;
 import com.newper.entity.Goods;
 import com.newper.entity.Po;
 import com.newper.entity.Product;
+import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
 import com.newper.repository.GoodsRepo;
 import com.newper.repository.PoRepo;
@@ -10,6 +11,8 @@ import com.newper.repository.ProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -45,5 +48,18 @@ public class GoodsService {
         poMapper.updategoods(po_idx,p_idx);
 
 
+    }
+    /**입고등록팝업 바코드 삭제 */
+    @Transactional
+    public void barcodeDelete(long g_idx){
+        //조건 체크 GOODS.java 에 생성 함
+
+
+        Goods goods = goodsRepo.findById(g_idx).orElseThrow(()->new MsgException(("존재하지 않는 자산코드입니다.")));
+        goodsRepo.delete(goods);
+
+        goodsRepo.flush();
+
+        poMapper.updategoods(goods.getPo().getPoIdx(), goods.getProduct().getPIdx());
     }
 }

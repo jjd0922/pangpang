@@ -3,6 +3,7 @@ package com.newper.entity;
 import com.newper.constant.GRank;
 import com.newper.constant.GState;
 import com.newper.constant.GStockState;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long gidx;
+    private Long gIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_P_IDX", referencedColumnName = "pIdx")
@@ -88,6 +89,13 @@ public class Goods {
     private String gImei;
 
 
+    /**바코드 삭제 전 조건 확인*/
+    @PreRemove
+    public void preRemove(){
+        if (getGState() != GState.RECEIVED) {
+            throw new MsgException("삭제할 수 없는 자산상태입니다");
+        }
+    }
 
 
 
