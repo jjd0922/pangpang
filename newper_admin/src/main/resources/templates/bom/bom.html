@@ -135,16 +135,23 @@
     }
 
     function deleteBom() {
-        $.ajax({
-            url: '/bom/delete.ajax',
-            type: 'post',
-            data: {
-                pIdxList : dataTableGetSelectedDataArray('bomTable', 'BOM_P_IDX')
-            },
-            success: function () {
-                refreshTable('#bomTable');
-            }
-        });
+        var data = dataTableGetSelectedDataArray('bomTable', 'BOM_P_IDX');
+
+        if (data.length <= 0) {
+            alert("선택한 BOM이 없습니다.");
+
+        } else if (confirm("선택한 BOM을 일괄삭제하시겠습니까?")) {
+            $.ajax({
+                url: '/bom/delete.ajax',
+                type: 'post',
+                data: {
+                    pIdxList : data
+                },
+                success: function () {
+                    refreshTable('#bomTable');
+                }
+            });
+        }
     }
 
     function searchBtn(){
@@ -171,7 +178,6 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'상품코드','data':'P_IDX', 'defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'구성상품','data':'CNT', 'render': function (data,type,full,meta) {
                     return '<a href="#" onclick="bomDetailPop('+full.BOM_P_IDX+')" class="badge badge-primary">'+full.CNT+'개</a>';

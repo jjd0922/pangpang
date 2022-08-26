@@ -119,6 +119,7 @@ public class ProductRestController {
         paramMap.multiSelect("P_TYPE1");
         paramMap.multiSelect("P_TYPE2");
         paramMap.multiSelect("P_TYPE3");
+        paramMap.multiSelect("cpIdx");
         returnDatatable.setData(productMapper.selectProductDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countProductDataTable(paramMap.getMap()));
         return returnDatatable;

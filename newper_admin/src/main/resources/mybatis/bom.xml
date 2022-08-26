@@ -64,7 +64,7 @@
         INSERT INTO
             BOM (BOM_P_IDX, BOM_P_IDX2)
         VALUES
-            <foreach collection="pIdx" separator="," item="item">
+            <foreach collection="cpIdx" separator="," item="item">
                 (#{mpIdx}, #{item})
             </foreach>
     </insert>
@@ -93,8 +93,17 @@
         DELETE FROM
             BOM
         WHERE
-            <foreach collection="mpIdx" open="(" separator="OR" close=")" item="item">
-                BOM_P_IDX = #{item}
+            <foreach collection="mpIdx" open="BOM_P_IDX IN (" separator="," close=")" item="item">
+                #{item}
             </foreach>
     </delete>
+
+    <select id="countBom" resultType="int">
+        SELECT
+            COUNT(DISTINCT(BOM_P_IDX))
+        FROM
+            BOM
+        WHERE
+            BOM_P_IDX = #{mpIdx}
+    </select>
 </mapper>

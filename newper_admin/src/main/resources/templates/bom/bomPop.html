@@ -54,8 +54,7 @@
                                                                     상품코드<a th:if="${mProduct == null}" href="#" class="badge badge-sm badge-primary ml-1" id="searchMotherBtn">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="mpCode" class="form-control" th:value="${mProduct?.pCode}" readonly>
-                                                        <input type="hidden" name="mpIdx" th:value="${mProduct?.pIdx}">
+                                                        <input type="text" name="mpIdx" class="form-control" th:value="${mProduct?.pIdx}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,7 +94,7 @@
                                                     <td colspan="5">BOM구성항목을 선택하십시오.</td>
                                                 </tr>
                                                 <tr th:if="${mProduct != null}" th:each="c, i: ${cProduct}">
-                                                    <td><input type="hidden" name="pIdx" th:value="${c.P_IDX}">[[${i.index+1}]]</td>
+                                                    <td><input type="hidden" name="cpIdx" th:value="${c.P_IDX}">[[${i.index+1}]]</td>
                                                     <td th:text="${c.P_IDX}"></td>
                                                     <td th:text="${c.P_NAME}"></td>
                                                     <td th:text="${c.P_COST}"></td>
@@ -167,7 +166,10 @@
         $.ajax({
             url: location.pathname + '.ajax',
             type: 'post',
-            data: $('#regiForm').serialize()
+            data: $('#regiForm').serialize(),
+            success: function () {
+                window.opener.refreshTable('#bomTable');
+            }
         });
     }
 
@@ -206,7 +208,7 @@
         var rowNum = ($('#bomChildTable tbody tr').last().index()+2);
         $('#bomChildTable tbody').append(
             '<tr>' +
-            '   <td><input type="hidden" name="pIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
+            '   <td><input type="hidden" name="cpIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
             '   <td>'+data.P_IDX+'</td>' +
             '   <td>'+data.P_NAME+'</td>' +
             '   <td>'+data.P_COST+'</td>' +
@@ -220,6 +222,9 @@
     $("#saveBtn").on("click", saveAction);
     $("#searchMotherBtn").on("click", (e) =>  showProductModal(e));
     $("#searchChildBtn").on("click", (e) => showProductModal(e));
+    $('#productModalForm').on("keyup", function (event) {
+        if (event.keyCode==13){searchProductDataTable();return false;}
+    });
 </script>
 </body>
 </html>
