@@ -3,10 +3,7 @@ package com.newper.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -59,5 +56,17 @@ public class ReturnDatatable {
         if(countMap.containsKey("CNT")){
             setRecordsTotal(Long.parseLong(String.valueOf(countMap.get("CNT"))));
         }
+    }
+
+    /** 임시 데이터 세팅. 개발 완료시 사용하지 않을 메서드*/
+    public void sampleData(){
+        data = new ArrayList<>();
+        data.add(new HashMap<>());
+        data.add(new HashMap<>());
+        data.add(new HashMap<>());
+        data.add(new HashMap<>());
+        data.add(new HashMap<>());
+        data.add(new HashMap<>());
+        setRecordsTotal();
     }
 }

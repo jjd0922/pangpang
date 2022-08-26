@@ -178,19 +178,16 @@
     $('#insuranceTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        buttons : buttonsSelect(false),
         serverSide: true,
         ajax:{
             url:'/company/insurance.dataTable',
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
-                }}
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
             ,{'title':'보증보험구분','data':'CI_TYPE_STR','defaultContent':''}
             ,{'title':'보증보험 발행상태','data':'CI_INSURANCE_STATE_STR','defaultContent':''}
             ,{'title':'거래처','data':'COM_NAME','defaultContent':''}

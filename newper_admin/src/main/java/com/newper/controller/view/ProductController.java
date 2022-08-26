@@ -314,7 +314,13 @@ public class ProductController {
 
     @GetMapping("info")
     public ModelAndView info() {
-        ModelAndView mav = new ModelAndView("product/cateInfo");
+        ModelAndView mav = new ModelAndView("product/info");
+        return mav;
+    }
+    /**재고 상품 관리*/
+    @GetMapping("stock")
+    public ModelAndView stock() {
+        ModelAndView mav = new ModelAndView("product/stock");
         return mav;
     }
 

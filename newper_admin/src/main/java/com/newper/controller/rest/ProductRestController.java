@@ -413,5 +413,15 @@ public class ProductRestController {
         return rm;
     }
 
+    /** 재고상품관리 dt*/
+    @PostMapping("stock.dataTable")
+    public ReturnDatatable stock(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("재고상품관리");
+
+        rd.sampleData();
+
+        return rd;
+
+    }
 
 }
