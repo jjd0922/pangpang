@@ -70,6 +70,8 @@
             LOCATION
                 LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
+        WHERE
+            LOC_WH_IDX = #{whIdx}
         <if test="length != -1">
             LIMIT #{start},#{length}
         </if>
@@ -82,5 +84,7 @@
             LOCATION
                 LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
+        WHERE
+            LOC_WH_IDX = #{whIdx}
     </select>
 </mapper>

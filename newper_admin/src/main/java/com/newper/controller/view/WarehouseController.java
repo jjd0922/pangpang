@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.repository.LocationRepo;
 import com.newper.repository.WarehouseRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class WarehouseController {
 
     private final WarehouseRepo warehouseRepo;
+    private final LocationRepo locationRepo;
 
     @GetMapping("")
     public ModelAndView warehouse() {
@@ -36,6 +38,24 @@ public class WarehouseController {
         mav.addObject("warehouse", warehouseRepo.findWarehouseByWhIdx(whIdx));
         return mav;
     }
+    
+    @GetMapping("locationPop/{whIdx}")
+    public ModelAndView newLocationPop(@PathVariable Integer whIdx) {
+        ModelAndView mav = new ModelAndView("/warehouse/locationPop");
+
+        return mav;
+    }
+
+    @GetMapping("locationPop/{whIdx}/{locIdx}")
+    public ModelAndView locationDetailPop(@PathVariable Integer whIdx,
+                                          @PathVariable Integer locIdx) {
+        ModelAndView mav = new ModelAndView("/warehouse/locationPop");
+
+        mav.addObject("location", locationRepo.findLocationByLocIdx(locIdx));
+        return mav;
+    }
+
+    
     
 
 

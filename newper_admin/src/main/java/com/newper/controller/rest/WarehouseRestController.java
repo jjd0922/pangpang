@@ -52,9 +52,37 @@ public class WarehouseRestController {
     public ReturnMap changeWhState(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
 
-        paramMap.multiSelect("dataList[]");
         warehouseService.changeWhState(paramMap);
         rm.setMessage("일괄변경완료");
+        return rm;
+    }
+
+    @PostMapping("location.dataTable")
+    public ReturnDatatable locationDatatable(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        rd.setData(warehouseMapper.selectLocationDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(warehouseMapper.countLocationDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+    @PostMapping("locationPop/{whIdx}.ajax")
+    public ReturnMap saveLocation(@PathVariable Integer whIdx, ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        Integer locIdx = warehouseService.saveLocation(whIdx, paramMap);
+        rm.setMessage("등록완료");
+        rm.setLocation("/warehouse/locationPop/"+whIdx+"/"+locIdx);
+        return rm;
+    }
+
+    @PostMapping("locationPop/{whIdx}/{locIdx}.ajax")
+    public ReturnMap updateLocation(@PathVariable Integer whIdx,
+                                    @PathVariable Integer locIdx,
+                                    ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        warehouseService.updateLocation(locIdx, paramMap);
+        rm.setMessage("수정완료");
         return rm;
     }
 }
