@@ -282,43 +282,30 @@
                         <div class="card">
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popInBtn">
-                                            <i class="icon-popout mr-1"></i>입고검수
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNeeedBtn">
-                                            <i class="icon-popout mr-1"></i>가공요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popFixBtn">
-                                            <i class="icon-popout mr-1"></i>수리요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popPaintBtn">
-                                            <i class="icon-popout mr-1"></i>도색요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popRecheckBtn">
-                                            <i class="icon-popout mr-1"></i>재검수요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
-                                            <i class="icon-popout mr-1"></i>망실
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="handoverBtn()">
-                                            <i class="icon-popout mr-1"></i>재고인계
-                                        </a>
-                                    </div>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popInBtn">
+                                        입고검수
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popNeeedBtn">
+                                        가공요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popFixBtn">
+                                        수리요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popPaintBtn">
+                                        도색요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="popRecheckBtn">
+                                        재검수요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
+                                        망실
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="handoverBtn()">
+                                        재고인계
+                                    </a>
                                 </div>
-                            <table class="table" id="boardTable"></table>
+                                </div>
+                                <table class="table" id="boardTable"></table>
                           </div>
                      </div>
                  </div>
@@ -331,7 +318,7 @@
 <th:block th:replace="process/modal/lostModal.html"/>
 <th:block th:replace="process/modal/handoverModal.html"/>
                 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
                 <!-- input -->
@@ -386,28 +373,31 @@
 
 
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'자산상태','data':'G_STATE'}
-            ,{ 'title':'자산처리<br>담당자','data':''}
-            ,{ 'title':'자산<br>처리일','data':'U_PHONE'}
-            ,{ 'title':'자산<br>코드','data':'U_PHONE'}
-            ,{ 'title':'상품<br>코드','data':'U_PHONE'}
-            ,{ 'title':'상품명','data':'U_PHONE'}
-            ,{ 'title':'입고SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'입고SPEC<br>(확정)','data':'U_PHONE'}
-            ,{ 'title':'판매SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'판매SPEC<br>(확정)','data':'U_PHONE'}
-            ,{'title':'가공SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'가공SPEC<br>(확정)','data':'U_PHONE'}
-            ,{ 'title':'판매스펙<br>확정일','data':'U_PHONE'}
-            ,{ 'title':'IMEI','data':'U_PHONE'}
-            ,{ 'title':'시리얼','data':'U_PHONE'}
-            ,{'data':null, 'render': function (data,type,full,meta) {
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'자산상태','data':'G_STATE_STR'}
+            ,{'title':'자산처리<br>담당자','data':'', defaultContent: ''}
+            ,{'title':'자산<br>처리일','data':'G_IDX'}
+            ,{'title':'자산<br>코드','data':'G_IDX'}
+            ,{'title':'상품<br>코드','data':'G_IDX'}
+            ,{'title':'상품명','data':'G_IDX'}
+            ,{'title':'입고SPEC<br>(예정)','data':'G_IDX'}
+            ,{'title':'입고SPEC<br>(확정)','data':'G_IDX'}
+            ,{'title':'판매SPEC<br>(예정)','data':'G_IDX'}
+            ,{'title':'판매SPEC<br>(확정)','data':'G_IDX'}
+            ,{'title':'가공SPEC<br>(예정)','data':'G_IDX'}
+            ,{'title':'가공SPEC<br>(확정)','data':'G_IDX'}
+            ,{'title':'판매스펙<br>확정일','data':'G_IDX'}
+            ,{'title':'IMEI','data':'G_IDX'}
+            ,{'title':'시리얼','data':'G_IDX'}
+            ,{title:'', 'data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
-            ,{'title':'발주<br>INDEX','data':'U_PHONE'}
+            // ,{'title':'발주<br>INDEX','data':'G_IDX'}
             ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}

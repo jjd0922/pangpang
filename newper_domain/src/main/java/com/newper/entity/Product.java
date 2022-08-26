@@ -20,7 +20,6 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table (name = "product")
 public class Product extends BaseEntity {
 
     @Id

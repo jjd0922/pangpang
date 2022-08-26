@@ -25,7 +25,7 @@ import java.util.Map;
 public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long gidx;
+    private Long gIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_P_IDX", referencedColumnName = "pIdx")
