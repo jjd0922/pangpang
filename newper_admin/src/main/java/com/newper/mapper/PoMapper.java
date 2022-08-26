@@ -39,9 +39,15 @@ public interface PoMapper {
     List<Map<String, Object>> selectInProductDatatable(Map<String, Object> param);
     /** 입고등록 팝업 상풉 입고 자산 조회 쿼리문 **/
     int countInProductDatatable(Map<String, Object> param);
+    /** 입고등록 팝업 바코드 등록 쿼리문 **/
+    public void updategoods(@Param("po_idx") int po_idx, @Param("p_idx") int p_idx);
 
     /** 발주서에 상품idx조회 */
     List<Integer> selectPoProductIdxList(int po_idx);
 
-    public void updategoods(@Param("po_idx") int po_idx, @Param("p_idx") int p_idx);
+
+
+
+
+
 }

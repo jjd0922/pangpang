@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.constant.GState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
