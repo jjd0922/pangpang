@@ -5,12 +5,16 @@ import com.newper.dto.ReturnDatatable;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.UserMapper;
+import com.newper.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/process/")
 @RestController
@@ -20,6 +24,7 @@ public class ProcessRestController {
 
     private final UserMapper userMapper;
     private final GoodsMapper goodsMapper;
+    private final GoodsService goodsService;
 
     /** 공정보드 조회 */
     @PostMapping("board.dataTable")
@@ -94,6 +99,15 @@ public class ProcessRestController {
         rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
         rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
+    }
+    /** 입고검수 임시 테이블*/
+    @PostMapping("in/temp.ajax")
+    public void inTemp(ParamMap paramMap){
+        String idx = paramMap.getString("idx");
+        String g_idxs = paramMap.getString("g_idxs");
+        goodsService.insertGoodsTemp(idx, g_idxs.split(","));
+
+
     }
 
 }
