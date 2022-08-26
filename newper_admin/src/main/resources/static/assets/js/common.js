@@ -96,8 +96,7 @@ function buttonsSelect(useSelect){
     {
         extend: 'pageLength',
             className: 'btn btn-sm btn-dark opacity-50'
-    }
-,
+    },
     {
         text: '새로고침',
             className: 'btn btn-sm btn-secondary',
