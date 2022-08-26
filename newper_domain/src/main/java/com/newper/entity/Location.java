@@ -3,8 +3,10 @@ package com.newper.entity;
 import com.newper.constant.LocForm;
 import com.newper.constant.LocType;
 import com.newper.entity.common.Address;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
@@ -44,6 +46,20 @@ public class Location {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "location", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
 
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if (!StringUtils.hasText(getLocCode())) {
+            throw new MsgException("로케이션코드를 입력해주세요");
+        } else if (!StringUtils.hasText(getLocZone())) {
+            throw new MsgException("로케이션 존을 입력해주세요");
+        } else if (!StringUtils.hasText(getLocRow())) {
+            throw new MsgException("로케이션 행을 입력해주세요");
+        } else if (!StringUtils.hasText(getLocColumn())) {
+            throw new MsgException("로케이션 열을 입력해주세요");
+        }
+    }
+    
     public void updateLocation(Location location) {
         setLocType(location.getLocType());
         setLocCode(location.getLocCode());

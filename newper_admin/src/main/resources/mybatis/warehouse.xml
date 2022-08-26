@@ -50,10 +50,29 @@
         SET
             WH_STATE = #{whState}
         WHERE
-            <foreach collection="whIdxList" open="(" separator="OR" close=")" item="item">
+            <foreach collection="whIdxs" open="(" separator="OR" close=")" item="item">
                 WH_IDX = #{item}
             </foreach>
     </update>
+
+    <sql id="includeLocationDatatable">
+        <if test="locType != null">
+            <foreach collection="locType" open="AND LOC_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="locForm != null">
+            <foreach collection="locForm" open="AND LOC_FORM IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="locCode != null and locCode != ''">AND LOC_CODE LIKE CONCAT('%',#{locCode},'%')</if>
+        <if test="locZone != null and locZone != ''">AND LOC_ZONE LIKE CONCAT('%',#{locZone},'%')</if>
+        <if test="locRow != null and locRow != ''">AND LOC_ROW LIKE CONCAT('%',#{locRow},'%')</if>
+        <if test="locColumn != null and locColumn != ''">AND LOC_COLUMN LIKE CONCAT('%',#{locColumn},'%')</if>
+        <if test="location != null and location != ''">AND CONCAT(LOC_ZONE,LOC_ROW,LOC_COLUMN) LIKE CONCAT('%',#{location},'%')</if>
+        <if test="uName != null and uName != ''">AND U_NAME CONCAT('%',#{uName},'%')</if>
+    </sql>
 
     <select id="selectLocationDatatable" resultType="map">
         SELECT
@@ -65,6 +84,7 @@
             LOC_ZONE,
             LOC_ROW,
             LOC_COLUMN,
+            CONCAT(LOC_ZONE,LOC_ROW,LOC_COLUMN) AS LOCATION,
             U_NAME
         FROM
             LOCATION
@@ -72,6 +92,7 @@
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
         WHERE
             LOC_WH_IDX = #{whIdx}
+            <include refid="includeLocationDatatable"></include>
         <if test="length != -1">
             LIMIT #{start},#{length}
         </if>
@@ -86,5 +107,17 @@
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
         WHERE
             LOC_WH_IDX = #{whIdx}
+            <include refid="includeLocationDatatable"></include>
     </select>
+
+    <update id="changeAllLocType">
+        UPDATE
+            LOCATION
+        SET
+            LOC_TYPE = #{locType}
+        WHERE
+            <foreach collection="locIdxs" open="(" separator="OR" close=")" item="item">
+                LOC_IDX = #{item}
+            </foreach>
+    </update>
 </mapper>

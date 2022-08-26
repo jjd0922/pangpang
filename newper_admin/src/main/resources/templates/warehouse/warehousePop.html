@@ -263,7 +263,10 @@
         $.ajax({
             url: location.pathname + '.ajax',
             type: 'post',
-            data: $('#regiForm').serializeArray()
+            data: $('#regiForm').serializeArray(),
+            success: function () {
+                window.opener.refreshTable('#warehouseTable');
+            }
         });
     }
 

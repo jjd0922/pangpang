@@ -83,8 +83,7 @@
 
                                                                 <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄변경</button >
                                                                 <div class="dropdown-menu">
-                                                                    <a onclick="changeWhState('NORMAL')" class="dropdown-item">정상</a>
-                                                                    <a onclick="changeWhState('DISUSE')" class="dropdown-item">미사용</a>
+                                                                    <a th:each="type: ${T(com.newper.constant.WhState).values()}" th:onclick="changeWhState([[${type.name()}]])" class="dropdown-item">[[${type.getOption()}]]</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -110,29 +109,51 @@
                                                 <input type="hidden" name="whIdx">
                                                 <div class="d-flex justify-content-center align-items-end align-content-end flex-wrap">
                                                     <div class="form-group">
-                                                        <label class="d-block">상태</label>
-                                                        <select name="whState" class="form-control multiselect" multiple="multiple">
-                                                            <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        <label class="d-block">구분</label>
+                                                        <select name="locType" data-placeholder="구분검색" class="form-control multiselect" multiple="multiple">
+                                                            <option th:each="opt: ${T(com.newper.constant.LocType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">창고명</label>
-                                                        <input type="text" name="whName" class="form-control form-control-sm w-120px">
+                                                        <label class="d-block">로케이션코드</label>
+                                                        <input type="text" name="locCode" class="form-control form-control-sm w-120px">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">거래처</label>
-                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px">
+                                                        <label class="d-block">형태</label>
+                                                        <select name="locForm" data-placeholder="형태검색" class="form-control multiselect" multiple="multiple">
+                                                            <option th:each="opt: ${T(com.newper.constant.LocForm).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">존</label>
+                                                        <input type="text" name="locZone" class="form-control form-control-sm w-120px">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">행</label>
+                                                        <input type="text" name="locRow" class="form-control form-control-sm w-120px">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">열</label>
+                                                        <input type="text" name="locColumn" class="form-control form-control-sm w-120px">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="d-block">로케이션</label>
+                                                        <input type="text" name="location" class="form-control form-control-sm w-120px">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">담당자</label>
-                                                        <input type="text" name="ceName" class="form-control form-control-sm w-120px">
+                                                        <input type="text" name="uName" class="form-control form-control-sm w-120px">
                                                     </div>
 
                                                     <div class="form-group end">
-                                                        <button type="button" class="btn btn-secondary" onclick="searchWarehouse()">
+                                                        <button type="button" class="btn btn-secondary" onclick="searchLocation()">
                                                             <span class="ladda-label">조회하기</span>
                                                         </button>
                                                     </div>
@@ -152,9 +173,12 @@
 
                                                                 <button type="button" class="btn btn-sm btn-primary ml-1 dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil3 mr-1"></i>일괄변경</button >
                                                                 <div class="dropdown-menu">
-                                                                    <a onclick="" class="dropdown-item">정상</a>
-                                                                    <a onclick="" class="dropdown-item">미사용</a>
+                                                                    <a th:each="type: ${T(com.newper.constant.LocType).values()}" th:onclick="changeLocType([[${type.name()}]])" class="dropdown-item">[[${type.getOption()}]]</a>
                                                                 </div>
+
+                                                                <a type="button" class="btn btn-sm btn-primary ml-1">
+                                                                    <i class="icon-upload4 mr-1"></i>엑셀업로드
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -212,6 +236,10 @@
         $('#warehouseTable').DataTable().page('first').ajax.url('/warehouse/warehouse.dataTable?' + $('#searchWarehouseForm').serialize()).load();
     }
 
+    function searchLocation() {
+        $('#locationTable').DataTable().page('first').ajax.url('/warehouse/location.dataTable?' + $('#searchLocationForm').serialize()).load();
+    }
+
     function popNewWarehouse() {
         var focusPopup = window.open('/warehouse/warehousePop', 'insertWarehouse', 'width=1030, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
@@ -236,8 +264,8 @@
         var data = dataTableGetSelectedData('warehouseTable', 'WH_IDX');
 
         if (data.length <= 0) {
-            alert("선택된 창고가 없습니다.");
-        } else if (confirm("선택된 창고들의 상태를 일괄변경하시겠습니까?")) {
+            alert("선택한 창고가 없습니다.");
+        } else if (confirm("선택한 창고를 일괄변경하시겠습니까?")) {
             $.ajax({
                 url: 'changeWhState.ajax',
                 type: 'post',
@@ -247,6 +275,26 @@
                 },
                 success: function () {
                     searchWarehouse();
+                }
+            });
+        }
+    }
+
+    function changeLocType(locType) {
+        var data = dataTableGetSelectedData('locationTable', 'LOC_IDX');
+
+        if (data.length <= 0) {
+            alert("선택한 로케이션이 없습니다.");
+        } else if (confirm("선택한 로케이션을 일괄변경하시겠습니까?")) {
+            $.ajax({
+                url: 'changeLocType.ajax',
+                type: 'post',
+                data: {
+                    dataList : data,
+                    locType: locType
+                },
+                success: function () {
+                    searchLocation();
                 }
             });
         }
@@ -325,6 +373,7 @@
                 ,{'title':'존','data':'LOC_ZONE', 'defaultContent':''}
                 ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
                 ,{'title':'열','data':'LOC_COLUMN', 'defaultContent':''}
+                ,{'title':'로케이션','data':'LOCATION', 'defaultContent':''}
                 ,{'title':'담당자','data':'U_NAME', 'defaultContent':''}
             ]
         });
@@ -335,6 +384,10 @@
 
     $('#searchWarehouseForm').on('keyup',function(event){
         if(event.keyCode==13){searchWarehouse();return false;}
+    });
+
+    $('#searchLocationForm').on('keyup', function (event) {
+        if(event.keyCode==13){searchLocation();return false;}
     });
 </script>
 </html>

@@ -61,6 +61,9 @@ public class WarehouseRestController {
     public ReturnDatatable locationDatatable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
+        paramMap.multiSelect("locType");
+        paramMap.multiSelect("locForm");
+
         rd.setData(warehouseMapper.selectLocationDatatable(paramMap.getMap()));
         rd.setRecordsTotal(warehouseMapper.countLocationDatatable(paramMap.getMap()));
         return rd;
@@ -83,6 +86,15 @@ public class WarehouseRestController {
 
         warehouseService.updateLocation(locIdx, paramMap);
         rm.setMessage("수정완료");
+        return rm;
+    }
+    
+    @PostMapping("changeLocType.ajax")
+    public ReturnMap changeLocType(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        warehouseService.changeLocType(paramMap);
+        rm.setMessage("일괄변경완료");
         return rm;
     }
 }

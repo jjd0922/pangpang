@@ -1,5 +1,6 @@
 package com.newper.mapper;
 
+import com.newper.constant.LocType;
 import com.newper.constant.WhState;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,10 +16,14 @@ public interface WarehouseMapper {
     long countWarehouseDatatable(Map<String, Object> map);
 
     /**창고 상태 일괄변경*/
-    void changeAllWhState(@Param("whIdxList") String[] whIdxList,
+    void changeAllWhState(@Param("whIdxs") String[] whIdxs,
                           @Param("whState") WhState whState);
 
     /**로케이션 데이터테이블 조회*/
     List<Map<String,Object>> selectLocationDatatable(Map<String, Object> map);
     long countLocationDatatable(Map<String, Object> map);
+
+    /**로케이션 구분 일괄변경*/
+    void changeAllLocType(@Param("locIdxs") String[] locIdxs,
+                          @Param("locType") LocType locType);
 }

@@ -3,8 +3,10 @@ package com.newper.entity;
 
 import com.newper.constant.WhState;
 import com.newper.entity.common.Address;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -32,5 +34,13 @@ public class Warehouse {
 
     @Embedded
     private Address address;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if (!StringUtils.hasText(getWhName())) {
+            throw new MsgException("창고명을 입력해주세요");
+        }
+    }
 
 }
