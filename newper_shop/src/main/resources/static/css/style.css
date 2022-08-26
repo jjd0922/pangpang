@@ -1263,12 +1263,19 @@ section {
 }
 /* 고객센터 - 공지사항 */
 .cc-notice-table {
-    display: flex;
     flex-direction: column-reverse;
 }
 .cc-notice-table li .cc-table-title {
     display: flex;
     justify-content: space-between;
+}
+.cc-table-left {
+    display: flex;
+    width: calc(100% - 90px);
+    padding-right: 10px;
+}
+.cc-table-right {
+    width: 90px;
 }
 /* 고객센터 - 보기쉬운 FAQ */
 .faq {
@@ -1381,7 +1388,6 @@ section {
 
     .cc-header > li > div {
         height: auto;
-        padding: 10px;
     }
 
     .cc-header-left, .cc-header-right {
@@ -1395,11 +1401,23 @@ section {
 
     .cc-header-left-content {
         flex-direction: column;
+        padding: 10px;
+    }
+    .cc-header-right-content>div {
+        padding: 10px;
+    }
+
+    .cc-header-right-content>div:nth-child(2) {
+        height: auto;
     }
 
     .questions {
         width: 100%;
         flex-direction: initial;
+        border-bottom: 1px solid #c6c6c6;
+    }
+    .questions li {
+        padding-bottom: 10px;
     }
 
     .answer {
@@ -1414,6 +1432,9 @@ section {
     .answer-content {
         padding: 25px 0;
     }
+    .answer-content p {
+        margin: 7px 0;
+    }
 
     .cc-header-right-content h3 {
         font-size: 16px;
@@ -1426,15 +1447,18 @@ section {
         margin: 45px 0;
     }
     .cc-menu-tab li {
-        width: auto;
-        height: auto;
-        font-size: 16px;
-        padding: 5px;
+        width: 100px;
+        height: 80px;
+        font-size: 15px;
+        margin: 5px 5px 5px 0;
     }
     .cc-menu-tab li i {
-        width: 40px;
-        height: 40px;
+        width: 37px;
+        height: 37px;
         margin-bottom: 10px;
+    }
+    .cc-content-title {
+        padding-bottom: 10px;
     }
     .cc-content-title h2 {
         font-size: 17px;
@@ -1442,8 +1466,9 @@ section {
     .cc-content-title p {
         font-size: 13px;
     }
-    .cc-btn {
-        bottom: -100%;
+    .cc-btn>div a {
+        padding: 5px 17px;
+        font-size: 14px!important;
     }
     .questions-tab {
         flex-wrap: wrap;
@@ -1452,7 +1477,7 @@ section {
     .questions-tab li {
         padding: 5px 15px;
         font-size: 15px;
-        margin-right: 5px;
+        margin: 0 5px 5px 0;
     }
     .cc-searchBar {
         width: 100%;
@@ -1461,6 +1486,7 @@ section {
     }
     #cc-searchInput {
         height: 35px;
+        margin-left: 30px;
     }
     #cc-searchInput::placeholder {
         font-size: 13px;
@@ -1475,5 +1501,20 @@ section {
     .cc-table>li {
         font-size: 16px;
     }
+    .faq {
+        flex-direction: column;
+    }
+    .faq>ul {
+        width: 100%;
+    }
 
+}
+
+@media (max-width:700px) {
+    .cc-btn {
+        bottom: -33px;
+    }
+    .cc-searchBar {
+        margin: 40px auto 20px;
+    }
 }
