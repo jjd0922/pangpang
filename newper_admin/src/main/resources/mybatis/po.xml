@@ -249,26 +249,6 @@
             <include refid="includePoApprovedDatatable"></include>
         </where>
     </select>
-    <select id="selectPoProductIdxList" resultType="Integer">
-        SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
-        WHERE PP_PO_IDX = #{po_idx}
-    </select>
-    <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
-        SELECT
-             P_IDX, P_NAME, P_MODEL
-            ,PP_COUNT
-            ,IP_COUNT
-        FROM
-            PRODUCT
-            ,IN_PRODUCT
-            ,IN_GROUP
-            ,(SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT WHERE PP_PO_IDX = #{po_idx} GROUP BY PP_P_IDX) PP
-        WHERE
-            IG_PO_IDX = #{po_idx}
-            AND IP_IG_IDX = IG_IDX
-            AND IP_P_IDX = P_IDX
-            AND P_IDX = PP_P_IDX
-    </select>
     <select id="selectInPoDatatable" resultType="map" parameterType="map">
         SELECT
             PRODUCT.*
@@ -281,30 +261,33 @@
             AND PP_P_IDX = P_IDX
         ORDER BY PP_IDX
     </select>
-    <sql id="includeInProductDatatable">
-        G_PO_IDX = #{po_idx}
-        AND G_P_IDX = #{p_idx}
+    <sql id="includeInPpDatatable">
+        PP_IDX = #{ppIdx}
+        AND PP_PO_IDX = POR_PO_IDX
+        AND G_POR_IDX = POR_IDX
+        AND POR_P_IDX = PP_P_IDX
+        AND ( POR_PP_IDX IS NULL OR POR_PP_IDX = PP_IDX)
     </sql>
-    <select id="selectInProductDatatable" resultType="map" parameterType="map">
+    <select id="selectInPpDatatable" resultType="map" parameterType="map">
         SELECT
             *
         FROM
-            GOODS
+            PO_PRODUCT, GOODS, PO_RECEIVED
         <where>
-            <include refid="includeInProductDatatable"></include>
+            <include refid="includeInPpDatatable"></include>
         </where>
 
         <if test="length!=-1">
             LIMIT #{start},#{length}
         </if>
     </select>
-    <select id="countInProductDatatable" resultType="Integer" parameterType="map">
+    <select id="countInPpDatatable" resultType="Integer" parameterType="map">
         SELECT
             COUNT(*)
         FROM
-            GOODS
+            PO_PRODUCT, GOODS, PO_RECEIVED
         <where>
-            <include refid="includeInProductDatatable"></include>
+            <include refid="includeInPpDatatable"></include>
         </where>
     </select>
     <update id="updategoods">
@@ -315,4 +298,44 @@
             AND IP_P_IDX=#{p_idx}
     </update>
 
+
+    <select id="selectPoProductByPoIdx" resultType="Map">
+        SELECT
+            *,
+            (PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) AS 'TOTAL_PROFIT',
+            ROUND((PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) / (((PP_COST + PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST) * PP_COUNT) * 100), 1) AS 'PROFIT_PER'
+
+        FROM
+            po_product
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+                LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoSpecBuy" resultType="String">
+        SELECT
+            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
+        FROM
+            po_product
+                LEFT JOIN spec ON PP_SPEC_IDX = SPEC_IDX
+                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
+
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoSpecSell" resultType="String">
+        SELECT
+            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
+        FROM
+            po_product
+                LEFT JOIN spec ON PP_SPEC_IDX2 = SPEC_IDX
+                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
+
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
 </mapper>

@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "hiworks")
-public class Hiworks extends BaseEntity {
+public class Hiworks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

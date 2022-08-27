@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface SpecListRepo extends JpaRepository<SpecList, Integer> {
-
+    public SpecList findSpecListBySpeclNameAndSpeclValue(String speclName, String speclValue);
 }
