@@ -37,4 +37,16 @@ public interface PoMapper {
     List<Map<String, Object>> selectInPpDatatable(Map<String, Object> param);
     /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
     int countInPpDatatable(Map<String, Object> param);
+
+    /** 발주품의 상품 조회 쿼리문 */
+    List<Map<String, Object>> selectPoProductByPoIdx(@Param("poIdx") long poIdx);
+
+    /** 발주품의 스펙 조회 */
+    List<Map<String, Object>> selectPoSpec(@Param("poIdx") long poIdx);
+
+    /** 발주 입고 예정스펙 **/
+    List<String> selectPoSpecBuy(@Param("poIdx") long poIdx);
+
+    /** 발주 판매 예정 스팩 **/
+    List<String> selectPoSpecSell(@Param("poIdx") long poIdx);
 }

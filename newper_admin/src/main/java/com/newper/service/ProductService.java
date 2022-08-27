@@ -339,7 +339,4 @@ public class ProductService {
 
         return goodsStock.getGsIdx();
     }
-
-
-
 }

@@ -152,6 +152,8 @@
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
+            PO_IDX,
+            PO_CODE,
             PO_STATE,
             U_NAME,
             BUY.COM_NUM,
@@ -190,6 +192,10 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
+                LEFT JOIN user ON HW_U_IDX = U_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
@@ -292,5 +298,43 @@
         </where>
     </select>
 
+    <select id="selectPoProductByPoIdx" resultType="Map">
+        SELECT
+            *,
+            (PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) AS 'TOTAL_PROFIT',
+            ROUND((PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) / (((PP_COST + PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST) * PP_COUNT) * 100), 1) AS 'PROFIT_PER'
 
+        FROM
+            po_product
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+                LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoSpecBuy" resultType="String">
+        SELECT
+            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
+        FROM
+            po_product
+                LEFT JOIN spec ON PP_SPEC_IDX = SPEC_IDX
+                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
+
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoSpecSell" resultType="String">
+        SELECT
+            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
+        FROM
+            po_product
+                LEFT JOIN spec ON PP_SPEC_IDX2 = SPEC_IDX
+                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
+
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
 </mapper>

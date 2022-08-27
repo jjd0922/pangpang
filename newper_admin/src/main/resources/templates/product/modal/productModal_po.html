@@ -22,7 +22,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="pCode" placeholder="검색">
+                                                    <input type="text" class="form-control" name="pIdx" placeholder="검색">
                                                 </div>
                                             </div>
                                         </div>
@@ -339,7 +339,7 @@
         sell_spec = sell_spec.slice(0, -1);
 
         var product5 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
-        product5 += '<td>' + dataMap.P_CODE + '</td>'
+        product5 += '<td>' + dataMap.P_IDX + '</td>'
         product5 += '<td><input type="text" name="poProductMemo" value="' + $('#ajCode').val() + '" readonly></td>';
         product5 += '<td>' + dataMap.P_NAME + '</td>';
         product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
@@ -350,8 +350,8 @@
         product5 += '<td>' + comma($('#ppCost').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCount').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product5 += '<td>' + buy_spec + '</td>';
-        product5 += '<td>' + sell_spec + '</td>';
+        product5 += '<td><input type="text" name="poProductSpec" value="'+buy_spec+'" readonly></td>';
+        product5 += '<td><input type="text" name="poProductSpec2" value="'+sell_spec+'" readonly></td>';
         product5 += '<td>' + $('#fixText').val() +'/' + comma($('#fixCost').val()) + '</td>';
         product5 += '<td>' + $('#paintText').val() +'/' + comma($('#paintCost').val()) + '</td>';
         product5 += '<td>' + $('#processText').val() +'/' + comma($('#processCost').val()) + '</td>';
@@ -360,9 +360,9 @@
         $('#productTbody').append(product5);
 
         var product6 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
-        product6 += '<td>' + dataMap.P_CODE + '</td>';
+        product6 += '<td>' + dataMap.P_IDX + '</td>';
         product6 += '<td>' + dataMap.P_NAME + '</td>';
-        product6 += '<td><input type="text" class="form-control" name="poProductCount" value="' + $('#ppCount').val() + '" readonly></td>';
+        product6 += '<td>' + $('#ppCount').val() +'</td>';
         product6 += '<td>' + comma($('#processCost').val()) + '</td>';
         product6 += '<td>' + comma($('#fixCost').val()) + '</td>';
         product6 += '<td>' + comma($('#paintCost').val()) + '</td>';
@@ -510,7 +510,7 @@
                 targets:    [1]
             }],
             "columns" : [
-                {'title':'상품코드','data':'P_CODE', 'defaultContent':'', 'render' : function (data, type, full, meta) {
+                {'title':'상품코드','data':'P_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
                         return data + '<input type="hidden" id="productSpecList" value="' + full.CATE_SPEC_LIST + '">';
                     }}
                 ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}

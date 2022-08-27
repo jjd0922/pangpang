@@ -10,9 +10,7 @@ import lombok.Getter;
 public enum PoState implements EnumOption {
      WAITING("발주대기")
     ,CANCEL("발주취소")
-    ,APPROVAL("발주완료")
-
-    ;
+    ,APPROVAL("발주완료");
 
     private String option;
 }

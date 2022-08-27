@@ -7,6 +7,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
 import com.newper.service.PoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,18 @@ public class PoRestController {
 
         return rm;
     }
+
+    /** 발주품의 수정 */
+    @PostMapping(value = "poPop/{poIdx}/poPop.ajax")
+    public ReturnMap poPopDetailPost(@PathVariable long poIdx, ParamMap paramMap, MultipartFile poFile){
+        ReturnMap rm = new ReturnMap();
+        poService.updatePo(poIdx, paramMap, poFile);
+        rm.setLocation("/po/poPop/" + poIdx);
+        rm.setMessage("발주품의 수정 완료");
+
+        return rm;
+    }
+
     /** 발주  관리 데이터테이블 */
     @PostMapping("approved.dataTable")
     public ReturnDatatable approved(ParamMap paramMap){
