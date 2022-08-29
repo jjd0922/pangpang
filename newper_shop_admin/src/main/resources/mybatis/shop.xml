@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ShopMapper">
+    <sql id="includeShopDatatable">
 
+    </sql>
     <select id="selectShopDatatable" resultType="map">
         SELECT
-            shop.*,DOM_URL
+            SHOP.*
         FROM
-            shop
-            LEFT JOIN domain
-                ON domain.SHOP_IDX=shop.SHOP_IDX
-        WHERE
-            shop.SHOP_IDX is not null
+            SHOP
+        <where>
+            <include refid="includeShopDatatable"></include>
+        </where>
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
     </select>
     <select id="countShopDatatable" resultType="Integer">
         SELECT
-            count(*)
+            COUNT(*)
         FROM
-            shop
-                LEFT JOIN domain
-                          ON domain.SHOP_IDX=shop.SHOP_IDX
-        WHERE
-            shop.SHOP_IDX is not null
+            SHOP
+        <where>
+            <include refid="includeShopDatatable"></include>
+        </where>
     </select>
 </mapper>

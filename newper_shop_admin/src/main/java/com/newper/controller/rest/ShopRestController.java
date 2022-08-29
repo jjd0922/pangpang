@@ -40,7 +40,7 @@ public class ShopRestController {
     /**Shop DataTable*/
     @PostMapping("shop.dataTable")
     public ReturnDatatable shop(ParamMap paramMap){
-        ReturnDatatable returnDatatable = new ReturnDatatable();
+        ReturnDatatable returnDatatable = new ReturnDatatable("분양몰 관리");
         List<Map<String, Object>> list = shopMapper.selectShopDatatable(paramMap.getMap());
         returnDatatable.setData(list);
         returnDatatable.setRecordsTotal(shopMapper.countShopDatatable(paramMap.getMap()));

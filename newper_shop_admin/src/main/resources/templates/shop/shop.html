@@ -23,14 +23,6 @@
               <div class="card-header header-elements-inline">
                 <h6 class="card-title">
                   <div class="breadcrumb breadcrumb-caret">
-                                            <span class="breadcrumb-item">
-                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                <th:block th:text="${mainTitle}"></th:block>
-                                            </span>
-                    <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                <th:block th:text="${subTitle}"></th:block>
-                                            </span>
                   </div>
                 </h6>
                 <div class="header-elements text-right">
@@ -44,18 +36,18 @@
 
               <div class="collapse show" id="collapse-button-collapsed">
                 <div class="card-body pt-0">
-                  <form id="productShopForm" onkeypress="if(event.keyCode==13){searchBtn();return false;}">
+                  <form id="searchForm" onkeypress="if(event.keyCode==13){searchBtn();return false;}">
                     <div class="row">
                       <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
-                        <div class="form-group">
-                          <label class="d-block">발행 상품 등록 여부</label>
-                          <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">
-                            <option value="all">전체</option>
-                            <option selected>Y</option>
-                            <option>N</option>
-                          </select>
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                          <label class="d-block">발행 상품 등록 여부</label>-->
+<!--                          <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">-->
+<!--                            <option value="all">전체</option>-->
+<!--                            <option selected>Y</option>-->
+<!--                            <option>N</option>-->
+<!--                          </select>-->
+<!--                        </div>-->
 
 
                         <div class="form-group end">
@@ -80,8 +72,9 @@
               <div class="card-header bg-white header-elements-inline justify-content-start">
                 <h6 class="card-title" th:text="${subTitle}"></h6>
                 <a class="btn btn-sm btn-primary ml-1" onclick="newShop()">신규등록</a>
-              </di>
-              <table class="table" id="productShopTable"></table>
+              </div>
+
+              <table class="table" id="shopTable"></table>
 
 
             </div>
@@ -115,6 +108,14 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
+  function searchBtn(){
+    $('#shopTable').DataTable().page('first').ajax.url('/shop/shop.dataTable?' + $('#searchForm').serialize()).load(null, false);
+  }
+  //분양몰 상세 팝업
+  function shopDetailPop(idx) {
+      var focusPopup = window.open('/shop/' + idx, 'shopDetail', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+      focusPopup.focus();
+  }
   function newShop(){
     $.ajax({
       url:'/shop/shopSave.ajax',
@@ -126,6 +127,23 @@
   }
 </script>
 <script>
-
+  $('#shopTable').DataTable({
+    buttons: buttonsSelect(false),
+    serverSide: true,
+    ajax:{
+      url:'/shop/shop.dataTable?'+$('#searchForm').serialize(),
+      type:'post'
+    },
+    "columns" : [
+      {'title':'No','data':'No','render':function(data,type,full,meta){
+          return meta.settings._iDisplayStart+meta.row+1;
+        }}
+      ,{'title':'선택','data':'SHOP_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+          return '<a class="btn btn-sm btn-primary" onClick="shopDetailPop('+full.SHOP_IDX+')">'+full.SHOP_NAME+'</a>';
+        }}
+      ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
+      ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
+    ]
+  });
 </script>
 </html>
