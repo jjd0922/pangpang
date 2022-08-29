@@ -1,51 +1,36 @@
 <!DOCTYPE html>
-        <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-        <head>
-        <meta charset="UTF-8">
-        <title>메세지템플릿관리 </title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상담결과관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
 <body>
 <th:block th:replace="common/header.html"></th:block>
 
+<!-- 본문 영역 시작 -->
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content-inner">
-                <div class="content container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header header-elements-inline">
-                                    <h6 class="card-title">
-                                    <div class="breadcrumb breadcrumb-caret">
-                                            <span class="breadcrumb-item">
-                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                <th:block th:text="${mainTitle}"></th:block>
-                                            </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                <th:block th:text="${subTitle}"></th:block>
-                                            </span>
-                                    </div>
-                                </h6>
-                            </div>
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="msgForm">
+                                    <form id="counselForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-
                                                 <div class="form-group">
-                                                    <label class="d-block">제목</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <label class="d-block">상담결과</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                 </div>
-
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
                                                         <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
@@ -59,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- 카드 2열 레이아웃 -->
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -77,20 +62,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table" id="msgTable"></table>
                         </div>
+                        <table class="table" id="counselTable"></table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
 </body>
+
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
 
@@ -101,59 +91,84 @@
 
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
+
+
 <!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
     function searchBtn() {
-        var table = $('#msgTable').DataTable();
-        table.page('first').ajax.url('/admin/msg.dataTable?' + $('#msgForm').serialize()).load(null, false);
+        var table = $('#counselTable').DataTable();
+        table.page('first').ajax.url('/admin/counsel.dataTable?' + $('#counselForm').serialize()).load(null, false);
     }
 
+    function counselDetailPop(uIdx) {
+        var focusPopup = window.open('counselPopup/' + uIdx, 'counselPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
+
 <script>
-    var msgTable = $('#msgTable').DataTable({
+    var counselTable = $('#counselTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
+        ordering: false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
         },
         serverSide: true,
-        ajax:{
-            url:'/admin/msg.dataTable?'+$('#msgForm').serialize(),
-            type:'post'
+        ajax: {
+            url: '/admin/counsel.dataTable?' + $('#counselForm').serialize(),
+            type: 'post'
         },
-        columnDefs: [ {
+        columnDefs: [{
             orderable: false,
-            targets:   [0]
+            targets: [0]
 
-        } ],
+        }],
 
-
-        "columns" : [
-            {'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+        "columns": [
+            {
+                'class': 'select-checkbox',
+                'title': '선택',
+                'data': 'SP_IDX',
+                'defaultContent': '',
+                'render': function (data, type, full, meta) {
                     return '';
-                }}
+                }
+            }
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'제목','data':''}
-            ,{'title':'내용','data':''}
-            ,{'title':'등록일','data':''}
+
+            , {'title': '사용구분', 'data': 'U_PHONE'}
+            , {
+                'title': '상담결과', 'data': null, 'render': function (data, type, full, meta) {
+                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                }
+            }
+            , {'title': '응대스크립트', 'data': 'U_ID'}
+            , {'title': '메모사항', 'data': 'U_DEPART'}
+            , {'title': '등록일', 'data': 'CREATED_DATE'}
         ]
     });
 
-    $('#msgForm').on('keyup',function(event){
-        if(event.keyCode==13){searchBtn();return false;}
+    $('#userForm').on('keyup', function (event) {
+        if (event.keyCode == 13) {
+            searchBtn();
+            return false;
+        }
     });
 
 
     $('#popNewBtn').on('click', function () {
-        var focusPopup = window.open('msgPop', 'msgPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('counselPop', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 

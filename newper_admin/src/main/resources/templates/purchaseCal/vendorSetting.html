@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>벤더 정산 설정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="vendorForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">거래처</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">타입</label>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="createdDate">
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="calBtn">
+                                            <i class="icon-popout mr-1"></i>정산처리
+                                        </a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="deadlineBtn">
+                                            <i class="icon-popout mr-1"></i>마감처리
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table" id="vendorTable"></table>
+                    </div>
+                    <!--임시 입고검수코드 팝업버튼 -->
+                    <div class="form-group end">
+                        <button type="button" class="btn btn-primary" onclick="vendorPopBtn()">
+                            <span class="ladda-label" onclick="vendorPopBtn()">벤더사정산설정 임시 팝업 버튼</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+
+
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+
+
+<script>
+
+    function userChange(U_STATE,U_STATE_STR){
+        var uIdx = dataTableGetSelectedDataArray('userTable', 'U_IDX')
+        if(uIdx.length == 0) {
+            alert("선택된 회원이 없습니다");
+            return false;
+        }else{
+            if(window.confirm('선택된 회원들의 상태를 변경하시겠습니까?')){
+                $.ajax({
+                    url: '/user/userChange.ajax',
+                    type: 'post',
+                    data: {
+                        uIdx : uIdx,
+                        U_STATE_STR : U_STATE
+                    },
+                    success: function(res){
+                        $('#userTable').DataTable().ajax.reload();
+                    },
+                    error: function(){
+                    }
+                });
+            }
+        }
+    }
+
+</script>
+
+<script>
+    function searchBtn() {
+        var table = $('#vendorTable').DataTable();
+        table.page('first').ajax.url('/purchaseCal/vendor.dataTable?' + $('#vendorForm').serialize()).load(null, false);
+    }
+
+    function vendorPop() {
+        var focusPopup = window.open('vendorPop/', 'vendorPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+
+    function vendorPopBtn() {
+        var focusPopup = window.open('vendorPop/', 'vendorPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+</script>
+
+
+<script>
+    var vendorTable = $('#vendorTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax: {
+            url: '/purchaseCal/vendor.dataTable?' + $('#vendorForm').serialize(),
+            type: 'post'
+        },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
+
+        }],
+
+        "columns": [
+            {'title': '등록일', 'data': 'CREATED_DATE'}
+            , {
+                'title': '거래처판매처', 'data': null, 'render': function (data, type, full, meta) {
+                    return '<a href="javascript:vendorPop(' + data['COM_IDX'] + ')" class="badge badge-primary">' + data['COM_NAME'] + '</a>';
+                }
+            }
+            , {'title': '타입', 'data': 'U_STATE_STR', 'defaultContent':''}
+            , {'title': '배송비별도정산', 'data': ''}
+            , {'title': '주문번호 기준열', 'data': ''}
+            , {'title': '상품번호 기준열', 'data': ''}
+            , {'title': '판매금액 기준열', 'data': ''}
+            , {'title': '배송비 기준열', 'data': ''}
+            , {'title': '수수료 기준열', 'data': ''}
+            , {'title': '정산금액 기준열', 'data': ''}
+            , {'title': '전시몰 정산계산', 'data': ''}
+            , {'title': '메모', 'data': ''}
+        ]
+    });
+
+    $('#vendorForm').on('keyup', function (event) {
+        if (event.keyCode == 13) {
+            searchBtn();
+            return false;
+        }
+    });
+
+
+    $('#popNewBtn').on('click', function () {
+        var focusPopup = window.open('vendorPop', 'vendorPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+
+
+</script>
+</html>

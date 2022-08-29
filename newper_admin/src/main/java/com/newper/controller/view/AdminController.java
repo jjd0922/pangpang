@@ -36,4 +36,29 @@ public class AdminController {
         return mav;
     }
 
+    /**카카오톡 템플릿 팝업페이지*/
+    @GetMapping(value = "kakaoPop")
+    public ModelAndView kakaoPop(){
+        ModelAndView mav = new ModelAndView("admin/kakaoPop");
+
+        return mav;
+    }
+
+
+    /**상담결과 페이지*/
+    @GetMapping(value = "counselResult")
+    public ModelAndView counselResult(){
+        ModelAndView mav = new ModelAndView("admin/counselResult");
+
+        return mav;
+    }
+
+
+    /**상담결과 팝업페이지*/
+    @GetMapping(value = "counselPop")
+    public ModelAndView counselPop(){
+        ModelAndView mav = new ModelAndView("admin/counselPop");
+
+        return mav;
+    }
 }
