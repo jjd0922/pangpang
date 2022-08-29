@@ -40,7 +40,7 @@ public class MainController {
     }
     @NoLogin
     @GetMapping(value = {"", "index", "loginPop"})
-    public ModelAndView index(ParamMap paramMap) {
+    public ModelAndView index() {
         ModelAndView mav = new ModelAndView("main/index");
 
         return mav;

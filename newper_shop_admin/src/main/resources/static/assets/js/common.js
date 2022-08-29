@@ -49,7 +49,20 @@ $(document).ajaxStart(function(event, xhr, settings){
         }
 
         if(xhr.responseJSON.location!=null){
-            location.href = xhr.responseJSON.location;
+            if(xhr.responseJSON.popup){
+                window.open(xhr.responseJSON.location, '', 'width=500, height=500');
+            }else{
+                //세션만료로 로그인 팝업 띄우는 경우
+                if(location.pathname == '/loginPop'){
+                    //부모창 새로고침
+                    if(location.search.indexOf('refresh=true') != -1 && window.opener != null){
+                        window.opener.location.reload()
+                    }
+                    window.close();
+                }else{
+                    location.href = xhr.responseJSON.location;
+                }
+            }
         }
     }
 }).ajaxStop(function(event, xhr, settings, thrownError){

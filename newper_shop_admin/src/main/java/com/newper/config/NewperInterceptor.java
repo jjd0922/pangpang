@@ -1,8 +1,14 @@
 package com.newper.config;
 
+import com.newper.component.MenuList;
 import com.newper.component.SessionInfo;
+import com.newper.controller.NoLogin;
+import com.newper.entity.Menu;
+import com.newper.entity.SubMenu;
+import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
@@ -25,27 +31,24 @@ public class NewperInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //error ex) 404 page
-        if(request.getRequestURI().equals("/error")){
+        if(((HandlerMethod) handler).hasMethodAnnotation(NoLogin.class)) {
             return true;
         }
 
-//        String requestURI = request.getRequestURI();
-//        requestURI=requestURI.substring(request.getContextPath().length());
-//
-//        //;jession 있는 경우 uri로 인식되는 문제
-//        if(requestURI.indexOf(";jsessionid")!=-1){
-//            requestURI=requestURI.substring(0, requestURI.indexOf(";"));
-//            response.sendRedirect(request.getContextPath()+requestURI);
-//            return false;
-//        }
-//
-//        //로그인, 로그인 처리
-//        if(requestURI.indexOf("/login")!=-1 || requestURI.equals("/admin/test/login.ajax")){
-//            return true;
-//        }
+        //세션 체크
+        if (sessionInfo.getIdx() == null || sessionInfo.getAuthIdx() == null) {
+            throw new NoSessionException();
+        }
 
-
+        String requestURI = request.getRequestURI();
+        for (Menu menu : MenuList.menus) {
+            for (SubMenu subMenu : menu.getSubMenuList()) {
+                if(!subMenu.hasAuth(sessionInfo.getAuthIdx(), requestURI)){
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
