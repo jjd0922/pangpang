@@ -35,7 +35,7 @@ public class Shop extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SHOP_PG_IDX", referencedColumnName = "pgIdx")
-    private PayInfo payInfo;
+    private Pg pg;
 
 //    private String shopPoint;
 //
