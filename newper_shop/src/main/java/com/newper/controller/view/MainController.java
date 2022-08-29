@@ -63,6 +63,13 @@ public class MainController {
         return mav;
     }
 
+    /* product 상품상세 */
+    @GetMapping(value = "product")
+    public ModelAndView product(){
+        ModelAndView mav = new ModelAndView("product/product");
+        return mav;
+    }
+
     /*테스트용 페이지*/
     @GetMapping(value = "mainMenu/index")
     public ModelAndView mainIndex(){
