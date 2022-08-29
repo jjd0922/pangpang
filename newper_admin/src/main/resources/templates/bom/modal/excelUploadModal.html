@@ -1,0 +1,67 @@
+<div class="modal" tabindex="-1" role="dialog" id="excelUploadModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">엑셀 업로드</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body popup-contents">
+                <fieldset class="mb-0 pl-2 pr-2">
+                    <form id="excelUploadForm" method="post" enctype="multipart/form-data">
+                        <legend class="">1. BOM 업로드
+                            <a class="btn btn-sm btn-primary ml-1" id="downloadExcelForm">
+                                <i class="icon-download4 mr-1"></i>양식다운
+                            </a>
+                        </legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">공정용역</span>
+                                        </span>
+                                        <input type="file" class="form-control" name="excelFile" accept=".xls,.xlsx">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="result" class="pl-2"></div>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-light ml-1" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</a>
+                <a class="btn btn-sm btn-secondary mr-1" id="bomExcelUploadBtn"><i class="icon-floppy-disk mr-1"></i>저장</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showExcelUploadModal() {
+        $('input[name="excelFile"]').val("");
+        $('#result').html("");
+        $('#excelUploadModal').modal('show');
+    }
+
+    function uploadBomByExcel() {
+        $.ajax({
+            url: '/bom/excelUpload.ajax',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: new FormData($('#excelUploadForm')[0]),
+            success: function (res) {
+                $('#result').html(res.data.result).css('color', 'red');
+                window.refreshTable('#bomTable');
+            }
+        });
+    }
+</script>
+<script>
+    $('#bomExcelUploadBtn').on("click", uploadBomByExcel);
+</script>

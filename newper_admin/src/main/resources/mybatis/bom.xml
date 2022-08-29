@@ -64,9 +64,11 @@
         INSERT INTO
             BOM (BOM_P_IDX, BOM_P_IDX2)
         VALUES
-            <foreach collection="cpIdx" separator="," item="item">
-                (#{mpIdx}, #{item})
-            </foreach>
+            <if test="mpIdx != cpIdx">
+                <foreach collection="cpIdx" separator="," item="item">
+                    (#{mpIdx}, #{item})
+                </foreach>
+            </if>
     </insert>
 
     <select id="selectBomChild" resultType="map">
@@ -106,4 +108,15 @@
         WHERE
             BOM_P_IDX = #{mpIdx}
     </select>
+
+    <insert id="insertBomByExcel" parameterType="List">
+        INSERT INTO
+            BOM (BOM_P_IDX, BOM_P_IDX2)
+        VALUES
+            <foreach collection="list" separator="," item="item">
+                <if test="item.mpIdx != item.cpIdx">
+                    (#{item.mpIdx},#{item.cpIdx})
+                </if>
+            </foreach>
+    </insert>
 </mapper>

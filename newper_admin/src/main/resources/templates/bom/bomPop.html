@@ -75,14 +75,16 @@
                                     </fieldset>
 
                                     <fieldset class="mb-0">
-                                        <legend class="pt-2">2. 구성항목
-                                            <a href="#" class="badge badge-sm badge-primary ml-1" id="searchChildBtn">검색</a>
-                                        </legend>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <legend class="pt-2">2. 구성항목
+                                                <a href="#" class="badge badge-sm badge-primary ml-1" id="searchChildBtn">검색</a>
+                                            </legend>
+                                            <div id="cntRow" class="m-w-9"></div>
+                                        </div>
 
                                         <table class="table table-hover" id="bomChildTable">
                                             <thead>
                                                 <tr>
-                                                    <td>No</td>
                                                     <td>상품코드</td>
                                                     <td>상품명</td>
                                                     <td>상품매입가</td>
@@ -94,8 +96,7 @@
                                                     <td colspan="5">BOM구성항목을 선택하십시오.</td>
                                                 </tr>
                                                 <tr th:if="${mProduct != null}" th:each="c, i: ${cProduct}">
-                                                    <td><input type="hidden" name="cpIdx" th:value="${c.P_IDX}">[[${i.index+1}]]</td>
-                                                    <td th:text="${c.P_IDX}"></td>
+                                                    <td th:text="${c.P_IDX}"><input type="hidden" name="cpIdx" th:value="${c.P_IDX}"></td>
                                                     <td th:text="${c.P_NAME}"></td>
                                                     <td th:text="${c.P_COST}"></td>
                                                     <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>
@@ -162,6 +163,7 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script th:inline="javascript">
+    /** bom 저장*/
     function saveAction(){
         $.ajax({
             url: location.pathname + '.ajax',
@@ -173,6 +175,7 @@
         });
     }
 
+    /** 구성상품 하나 선택*/
     function selectProduct(row) {
         var data = getDatatablemap('productModalTable',row);
         var isChild = $('#productModalTable').DataTable().column({class:'select-checkbox'}).visible();
@@ -189,6 +192,7 @@
         $('#searchProductModal').modal('hide');
     }
 
+    /** 구성상품 여러개 일괄선택*/
     function selectProductList() {
         $('#defaultRow').remove();
         var productModalTable = $('#productModalTable').DataTable();
@@ -200,25 +204,38 @@
         $('#searchProductModal').modal('hide');
     }
 
+    /** 테이블 행 삭제*/
     function deleteRow(el) {
         el.closest('tr').remove();
+        countRow();
     }
 
+    /** 테이블 새로운 행 더하기*/
     function appendRow(data) {
-        var rowNum = ($('#bomChildTable tbody tr').last().index()+2);
         $('#bomChildTable tbody').append(
             '<tr>' +
-            '   <td><input type="hidden" name="cpIdx" value="'+data.P_IDX+'">'+rowNum+'</td>' +
-            '   <td>'+data.P_IDX+'</td>' +
+            '   <td><input type="hidden" name="cpIdx" value="'+data.P_IDX+'">'+data.P_IDX+'</td>' +
             '   <td>'+data.P_NAME+'</td>' +
             '   <td>'+data.P_COST+'</td>' +
             '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
             '</tr>'
         );
+        countRow();
+    }
+
+    /** 구성상품 갯수 세기*/
+    function countRow() {
+        var cnt = 0;
+        if ($('#defaultRow')[0] == null) { // 기본 행(아무데이터도 없을때)이 없다면 tr갯수 세기
+            cnt = ($('#bomChildTable tr').length-1);
+        }
+        var str = "구성항목: 총 "+cnt+"개";
+        $('#cntRow').text(str);
     }
 
 </script>
 <script th:inline="javascript">
+    countRow();
     $("#saveBtn").on("click", saveAction);
     $("#searchMotherBtn").on("click", (e) =>  showProductModal(e));
     $("#searchChildBtn").on("click", (e) => showProductModal(e));

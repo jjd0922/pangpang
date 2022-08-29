@@ -45,7 +45,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">로케이션구분</span>
+                                                                <span class="input-group-text requested">로케이션구분</span>
                                                             </span>
                                                         <select name="locType" class="form-control select">
                                                             <option th:each="opt: ${T(com.newper.constant.LocType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(location?.locType) eq opt.name()}"></option>
@@ -59,21 +59,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
-                                                                    로케이션코드
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="locCode" class="form-control" th:value="${location?.locCode}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend requested">
-                                                                <span class="input-group-text">로케이션형태</span>
+                                                                <span class="input-group-text requested">로케이션형태</span>
                                                             </span>
                                                         <select name="locForm" class="form-control select">
                                                             <option th:each="opt: ${T(com.newper.constant.LocForm).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(location?.locForm) eq opt.name()}"></option>
@@ -102,10 +88,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    로케이션
+                                                                    로케이션코드
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="location" class="form-control" tabindex="-1" readonly>
+                                                        <input type="text" name="locCode" class="form-control" th:value="${location?.locCode}" tabindex="-1" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,10 +117,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
-                                                                    담당자<a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                    담당자<a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1" tabindex="-1">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="uName" class="form-control" th:value="${location?.user?.uName}" readonly>
+                                                        <input type="text" name="uName" class="form-control" th:value="${location?.user?.uName}" tabindex="-1" readonly>
                                                         <input type="hidden" name="uIdx" th:value="${location?.user?.uIdx}">
                                                     </div>
                                                 </div>
@@ -257,7 +243,7 @@
 
     function setLocation() {
         var location = $('input[name="locZone"]').val()+$('input[name="locRow"]').val()+$('input[name="locColumn"]').val();
-        $('input[name="location"]').val(location);
+        $('input[name="locCode"]').val(location);
     }
 </script>
 <script th:inline="javascript">

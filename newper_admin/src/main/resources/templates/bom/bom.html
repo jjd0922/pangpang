@@ -81,7 +81,7 @@
                                             <i class="icon-popout mr-1"></i>일괄삭제
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="excelUploadBtn">
                                             <i class="icon-upload4 mr-1"></i>엑셀업로드
                                         </a>
                                     </div>
@@ -101,9 +101,9 @@
     </div>
 </div>
 
-</body>
-<!-- 공통 js -->
+<th:block th:replace="bom/modal/excelUploadModal.html"/>
 
+<!-- 공통 js -->
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -197,4 +197,7 @@
     $('#bomForm').on('keyup', function (event) {
         if(event.keyCode==13){searchBtn();return false;}
     });
+    $('#excelUploadBtn').on('click', showExcelUploadModal);
 </script>
+</body>
+</html>
