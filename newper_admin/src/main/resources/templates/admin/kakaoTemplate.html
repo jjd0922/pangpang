@@ -119,7 +119,7 @@
 </script>
 
 <script>
-    var kakaoTable = $('#mkakaoTable').DataTable({
+    var kakaoTable = $('#kakaoTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -151,9 +151,16 @@
         ]
     });
 
-    $('#incheckForm').on('keyup',function(event){
+    $('#kakaoForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
+
+
+    $('#popNewBtn').on('click', function () {
+        var focusPopup = window.open('kakaoPop', 'kakaoPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+
 
 </script>
 </html>
