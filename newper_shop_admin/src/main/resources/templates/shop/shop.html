@@ -71,7 +71,7 @@
             <div class="card">
               <div class="card-header bg-white header-elements-inline justify-content-start">
                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                <a class="btn btn-sm btn-primary ml-1" onclick="newShop()">신규등록</a>
+                <a class="btn btn-sm btn-primary ml-1" onclick="shopNewPop()">신규등록</a>
               </div>
 
               <table class="table" id="shopTable"></table>
@@ -116,14 +116,10 @@
       var focusPopup = window.open('/shop/' + idx, 'shopDetail', 'width=1000, height=800, scrollbars=yes, resizable=yes');
       focusPopup.focus();
   }
-  function newShop(){
-    $.ajax({
-      url:'/shop/shopSave.ajax',
-      type:'post',
-      success:function(res){
-
-      }
-    })
+  //분양몰 신규 팝업
+  function shopNewPop(){
+      var focusPopup = window.open('/shop/new', 'shopNew', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+      focusPopup.focus();
   }
 </script>
 <script>

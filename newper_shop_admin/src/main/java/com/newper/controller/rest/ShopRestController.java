@@ -3,14 +3,12 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Shop;
 import com.newper.mapper.ShopMapper;
 import com.newper.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -27,13 +25,18 @@ public class ShopRestController {
 
 
     /**상품 관리*/
-    @PostMapping("shopSave.ajax")
-    public ReturnMap shopSave(ParamMap paramMap){
+    @PostMapping(value = {"{shopIdx}.ajax", "new.ajax"})
+    public ReturnMap shopIdx(@PathVariable(required = false) Integer shopIdx, ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        int res=shopService.shopSave(paramMap);
-        if(res>0){
-            rm.setMessage("생성");
-        }
+
+        paramMap.printEntrySet();
+        Shop shop = paramMap.mapParam(Shop.class);
+        System.out.println(shop.getShopName());
+
+//        int res=shopService.shopSave(paramMap);
+//        if(res>0){
+//            rm.setMessage("생성");
+//        }
         return rm;
     }
 
