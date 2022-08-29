@@ -12,4 +12,7 @@ public interface ShopProductMapper {
     List<Map<String, Object>> selectShopProductDatatable(Map<String, Object> map);
     Integer countShopProductDatatable(Map<String, Object> map);
 
+    /**재고상품 dataTable*/
+    List<Map<String, Object>> selectGoodStockDatatalbe(Map<String, Object> map);
+
 }

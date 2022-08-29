@@ -153,5 +153,15 @@ public class ProductRestController {
         return rm;
     }
 
+    /**재고상품 dataTable*/
+    @PostMapping("goodsStock.datatable")
+    public ReturnDatatable goodsStock(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String,Object>> goodsStock = shopProductMapper.selectGoodStockDatatalbe(paramMap.getMap());
+        returnDatatable.setData(goodsStock);
+        returnDatatable.setRecordsTotal(goodsStock.size());
+        return returnDatatable;
+    }
+
 
 }

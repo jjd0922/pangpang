@@ -340,7 +340,6 @@
                                                 4-1. 필수상품
                                                 <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
                                             </span>
-
                                         </div>
                                     </div>
                                 </div>
@@ -349,12 +348,12 @@
                                         <div class="input-group">
                                             <span class="form-control">
                                                 1번 필수상품
-                                                <a class="btn btn-sm badge-indigo" onclick="">재고상품 검색</a>
+                                                <a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal()">재고상품 검색</a>
                                             </span>
                                         </div>
                                     </div>
                                     <table class="table table-bordered">
-                                        <thead id="essential_head">
+                                        <thead id="essential_head1">
                                         <tr class="alpha-brown text-bold">
                                             <th>NO</th>
                                             <th>상품코드</th>
@@ -378,7 +377,7 @@
                                             <th>삭제</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="essential_area">
+                                        <tbody id="essential_area1">
                                         </tbody>
                                     </table>
                                 </div>
@@ -725,6 +724,7 @@
         </div>
     </div>
 </div>
+<th:block th:replace="product/modal/goodsStockModal.html"/>
 <th:block th:replace="product/modal/shopModal.html"/>
 
 <!-- 공통 js -->
@@ -847,99 +847,12 @@
 
     }
 
-    function optionAdd(){
-        var cnt = $('#optCnt').val();
-        if(cnt==3){
-            alert("옵션은 최대 3개까지 추가할 수 있습니다.");
-        }else if(-1<cnt<3){
-            cnt++;
-            var str ="";
-            str+="<tr id='option_"+cnt+"'>";
-            str+="<td id='opCnt"+cnt+"'>"+cnt+"</td>";
-            str+="<td><input type='text' class='form-control' name='p_option_key"+cnt+"'></td>";
-            str+="<td><input type='text' class='form-control' name='p_option_value"+cnt+"' placeholder='옵션속성 ,로 구분'></td>";
-            str+="<td><a class='btn btn-sm badge-indigo' id='optionBtn"+cnt+"' onclick='deleteOption("+cnt+")'>삭제</a></td>";
-
-            $('#optCnt').val(cnt);
-            $('#option_area').append(str);
-        }
+    function addGoodsStock(cnt){
+        var str = '';
+        $('#essential_area'+cnt).append(str);
     }
 
-    function deleteOption(cnt){
-        $('#option_'+cnt).remove();
-        if(cnt==1){
-            if(document.getElementById("option_2")){
-                $('#option_2').attr('id','option_1');
-                $('#opCnt2').html(1);
-                $('#opCnt2').attr('id','opCnt1');
-                $('input[name="p_option_key2"]').attr('name','p_option_key1');
-                $('input[name="p_option_value2"]').attr('name','p_option_value1');
-                document.getElementById("optionBtn2").setAttribute("onclick","deleteOption(1)")
-                $('#optionBtn2').attr('id','optionBtn1')
-            }
-            if(document.getElementById("option_3")){
-                $('#option_3').attr('id','option_2');
-                $('#opCnt3').html(2);
-                $('#opCnt3').attr('id','opCnt2');
-                $('input[name="p_option_key3"]').attr('name','p_option_key2');
-                $('input[name="p_option_value3"]').attr('name','p_option_value2');
-                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
-                $('#optionBtn3').attr('id','optionBtn2')
-            }
 
-        }else if(cnt==2){
-            if(document.getElementById("option_3")){
-                $('#option_3').attr('id','option_2');
-                $('#opCnt3').html(2);
-                $('#opCnt3').attr('id','opCnt2');
-                $('input[name="p_option_key3"]').attr('name','p_option_key2');
-                $('input[name="p_option_value3"]').attr('name','p_option_value2');
-                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
-                $('#optionBtn3').attr('id','optionBtn2')
-            }
-        }
-
-        var count = $('#optCnt').val();
-        count=count-1;
-        $('#optCnt').val(count);
-    }
-
-    function productSave(){
-        if(confirm("저장하시겠습니까?")){
-            var param = new FormData($('#productForm')[0]);
-            $.ajax({
-                url:'/product/productSave.ajax',
-                data: param,
-                processData:false,
-                contentType:false,
-                type:'post',
-                success:function(res) {
-                    if(res.message.indexOf('저장되었습니다.')!=-1){
-                        opener.location.reload();
-                        self.close();
-                    }
-                }
-            })
-        }
-    }
-
-    // function productUpdate(){
-    //     if(confirm("수정하시겠습니까?")){
-    //         var param = new FormData($('#productForm')[0]);
-    //         $.ajax({
-    //             url:'/product/'+[[${product?.pIdx}]]+'/productUpdate.ajax',
-    //             type:'post',
-    //             processData:false,
-    //             contentType:false,
-    //             data:param,
-    //             success: function(res){
-    //                 if(res.message.indexOf('수정되었습니다.')!=-1){
-    //                     opener.location.reload();
-    //                 }
-    //             }
-    //         })
-    //     }
-    // }
 
 </script>
 <script th:inline="javascript">
@@ -963,10 +876,6 @@
 
     }
 
-
-    $('#companyModalForm').on('keyup',function(event){
-        if(event.keyCode==13){searchCompanyDataTable();return false;}
-    });
 </script>
 
 </html>

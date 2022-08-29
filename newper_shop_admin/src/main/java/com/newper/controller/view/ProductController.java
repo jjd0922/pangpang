@@ -34,14 +34,14 @@ public class ProductController {
     /**상품 관리*/
     @GetMapping("")
     public ModelAndView product(){
-        ModelAndView mav = new ModelAndView("product/shop_product");
+        ModelAndView mav = new ModelAndView("product/product");
 
         return mav;
     }
 
-    @GetMapping("shopDetail")
-    public ModelAndView shopDetail(){
-        ModelAndView mav = new ModelAndView("product/shop_product_detail");
+    @GetMapping("productDetail")
+    public ModelAndView productDetail(){
+        ModelAndView mav = new ModelAndView("product/product_detail");
         List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
         List<Map<String, Object>> category = categoryMapper.selectCategoryListByParent();
         mav.addObject("shopCategory",shopCategory);
@@ -66,10 +66,10 @@ public class ProductController {
     }
 
     /**전시대분류 상세*/
-    @GetMapping("shopCategoryDetail/{SCATE_IDX}")
-    public ModelAndView shopCategoryDetail(@PathVariable int SCATE_IDX){
+    @GetMapping("shopCategoryDetail/{scateIdx}")
+    public ModelAndView shopCategoryDetail(@PathVariable int scateIdx){
         ModelAndView mav = new ModelAndView("product/shop_category_detail");
-        ShopCategory shopCategory = shopCategoryRepo.findById(SCATE_IDX).orElseThrow(() -> new MsgException("존재하지 않는 전시대분류입니다."));
+        ShopCategory shopCategory = shopCategoryRepo.findById(scateIdx).orElseThrow(() -> new MsgException("존재하지 않는 전시대분류입니다."));
         String image = shopCategory.getScateImage();
         image= Common.summernoteContent(image);
 
@@ -80,10 +80,10 @@ public class ProductController {
     }
 
     /**전시중분류 등록*/
-    @GetMapping("shopCategory/{SCATE_IDX}/detail")
-    public ModelAndView shopCategoryDetail2(@PathVariable int SCATE_IDX){
+    @GetMapping("shopCategory/{scateIdx}/detail")
+    public ModelAndView shopCategoryDetail2(@PathVariable int scateIdx){
         ModelAndView mav = new ModelAndView("product/shop_category_detail2");
-        mav.addObject("SCATE_IDX",SCATE_IDX);
+        mav.addObject("SCATE_IDX",scateIdx);
         return mav;
     }
 
