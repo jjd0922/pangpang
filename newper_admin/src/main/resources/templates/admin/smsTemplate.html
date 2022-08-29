@@ -35,15 +35,14 @@
                                     <form id="smsForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-
                                                 <div class="form-group">
                                                     <label class="d-block">제목</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="TF_TITLE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -135,15 +134,24 @@
 
 
         "columns" : [
-            {'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'title':'선택','data':'TF_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="TF_IDX" value="'+data+'">';
+
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'제목','data':''}
-            ,{'title':'내용','data':''}
-            ,{'title':'등록일','data':''}
+            ,{'title':'제목','data':'TF_TITLE', "render" : function(data, type, full, meta){
+                return '<button type="button" class="btn btn-xs bg-primary-600" onclick="detailTemplate('+full.TF_IDX+')">'+data+'</button>';
+            }},
+            ,{'title':'내용','data':'TF_CONTENT', "className" : "text-left", "render": function(data, type, full, meta){
+                    if(data.length<150){
+                        return data;
+                    }else{
+                        return data.substring(0,150)+"...";
+                    }
+                }},
+            ,{'title':'등록일','data':'CREATED_BY'}
         ]
     });
 
