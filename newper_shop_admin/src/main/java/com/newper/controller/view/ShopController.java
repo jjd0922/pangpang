@@ -22,10 +22,15 @@ public class ShopController {
 
         return mav;
     }
-    /**분양몰 상세 팝업*/
-    @GetMapping("{shopIdx}")
-    public ModelAndView shopIdx(@PathVariable int shopIdx){
+    /**분양몰 신규, 상세 팝업*/
+    @GetMapping(value = {"{shopIdx}", "new"})
+    public ModelAndView shopIdx(@PathVariable(required = false) Integer shopIdx){
         ModelAndView mav = new ModelAndView("shop/shopIdx");
+
+        //상세
+        if(shopIdx != null){
+
+        }
 
         return mav;
     }
