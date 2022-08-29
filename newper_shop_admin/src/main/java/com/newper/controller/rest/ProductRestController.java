@@ -8,12 +8,14 @@ import com.newper.mapper.ShopProductMapper;
 import com.newper.service.ShopCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,17 +45,18 @@ public class ProductRestController {
     /**shop_category 중분류 dataTable*/
     @PostMapping("children.dataTable")
     public ReturnDatatable categoryChildren(ParamMap paramMap){
-        ReturnDatatable returnDatatable = new ReturnDatatable();
-        Integer SCATE_IDX=null;
-        if(paramMap.get("SCATE_IDX")!=null&&!paramMap.get("SCATE_IDX").equals("")){
-            SCATE_IDX=Integer.parseInt(paramMap.get("SCATE_IDX")+"");
+        ReturnDatatable returnDatatable = new ReturnDatatable("전시 중분류");
+
+        if (!StringUtils.hasText(paramMap.getString("SCATE_IDX"))) {
+            returnDatatable.setData(new ArrayList());
+        }else{
+            int scate_idx = paramMap.getInt("SCATE_IDX");
+            List<Map<String,Object>> ccList = shopCategoryMapper.selectShopCategoryDatatableByChildren(scate_idx);
+            returnDatatable.setData(ccList);
+            returnDatatable.setRecordsTotal(ccList.size());
         }
-        List<Map<String,Object>> ccList = shopCategoryMapper.selectShopCategoryDatatableByChildren(SCATE_IDX);
-        returnDatatable.setData(ccList);
-        returnDatatable.setRecordsTotal(ccList.size());
 
         return returnDatatable;
-
     }
 
     /**shop_category 순서 변경*/
