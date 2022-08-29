@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping(value = "/bom/")
 @RestController
@@ -19,6 +20,7 @@ public class BomRestController {
     private final BomMapper bomMapper;
     private final BomService bomService;
 
+    /**bom 데이터테이블 조회*/
     @PostMapping("bom.dataTable")
     public ReturnDatatable bomDataTable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("BOM관리");
@@ -28,6 +30,7 @@ public class BomRestController {
         return rd;
     }
 
+    /**bom 등록*/
     @PostMapping("bomPop.ajax")
     public ReturnMap saveBom(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
@@ -39,6 +42,7 @@ public class BomRestController {
         return rm;
     }
 
+    /**bom 수정*/
     @PostMapping("bomPop/{mpIdx}.ajax")
     public ReturnMap updateBom(@PathVariable Integer mpIdx, ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
@@ -49,6 +53,7 @@ public class BomRestController {
         return rm;
     }
 
+    /**bom일괄삭제*/
     @PostMapping("delete.ajax")
     public ReturnMap deleteBom(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
@@ -56,6 +61,22 @@ public class BomRestController {
         paramMap.put("mpIdx", paramMap.getList("pIdxList[]"));
         bomMapper.deleteBomAll(paramMap.getMap());
         rm.setMessage("삭제완료");
+        return rm;
+    }
+    
+    /**bom 엑셀 업로드*/
+    @PostMapping("excelUpload.ajax")
+    public ReturnMap saveBomByExcelUpload(ParamMap paramMap, MultipartFile excelFile) {
+        ReturnMap rm = new ReturnMap();
+
+        String result = bomService.uploadBomByExcel(paramMap, excelFile);
+
+        if (result == "") {
+            rm.put("result","BOM 엑셀 업로드 완료");
+        } else {
+            rm.put("result", result);
+        }
+
         return rm;
     }
 
