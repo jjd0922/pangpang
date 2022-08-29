@@ -3,6 +3,7 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ShopCategoryMapper;
 import com.newper.mapper.ShopProductMapper;
 import com.newper.service.ShopCategoryService;
@@ -26,6 +27,7 @@ public class ProductRestController {
     private final ShopCategoryMapper shopCategoryMapper;
     private final ShopCategoryService shopCategoryService;
     private final ShopProductMapper shopProductMapper;
+    private final CategoryMapper categoryMapper;
 
 
 
@@ -46,9 +48,10 @@ public class ProductRestController {
         ReturnDatatable returnDatatable = new ReturnDatatable();
         Integer SCATE_IDX=null;
         if(paramMap.get("SCATE_IDX")!=null&&!paramMap.get("SCATE_IDX").equals("")){
-            SCATE_IDX=Integer.parseInt(paramMap.get("SCATE_IDX")+"");
+            SCATE_IDX=paramMap.getInt("SCATE_IDX");
         }
-        List<Map<String,Object>> ccList = shopCategoryMapper.selectShopCategoryDatatableByChildren(SCATE_IDX);
+        System.out.println("SCATE_IDX : "+SCATE_IDX);
+        List<Map<String,Object>> ccList = categoryMapper.selectCategoryDatatableByChildren(SCATE_IDX);
         returnDatatable.setData(ccList);
         returnDatatable.setRecordsTotal(ccList.size());
 

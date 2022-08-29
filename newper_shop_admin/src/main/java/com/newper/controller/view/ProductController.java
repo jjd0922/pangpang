@@ -5,6 +5,7 @@ package com.newper.controller.view;
 import com.newper.component.Common;
 import com.newper.entity.ShopCategory;
 import com.newper.exception.MsgException;
+import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ShopCategoryMapper;
 import com.newper.repository.ShopCategoryRepo;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ import java.util.Map;
 public class ProductController {
 
     private final ShopCategoryRepo shopCategoryRepo;
-private final ShopCategoryMapper shopCategoryMapper;
+    private final ShopCategoryMapper shopCategoryMapper;
+    private final CategoryMapper categoryMapper;
 
     /**상품 관리*/
     @GetMapping("")
@@ -41,7 +43,9 @@ private final ShopCategoryMapper shopCategoryMapper;
     public ModelAndView shopDetail(){
         ModelAndView mav = new ModelAndView("product/shop_product_detail");
         List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
+        List<Map<String, Object>> category = categoryMapper.selectCategoryListByParent();
         mav.addObject("shopCategory",shopCategory);
+        mav.addObject("category",category);
         return mav;
     }
 

@@ -138,9 +138,9 @@
                                                     전시 대분류
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="P_CATE_IDX2">
+                                            <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
-                                                <option th:each="brand:${brand}" th:text="${brand.CATE_NAME}" th:value="${brand.CATE_IDX}" th:selected="${product?.brand?.cateIdx == brand.CATE_IDX}"></option>
+                                                <option th:each="sc:${shopCategory}" th:text="${sc.SCATE_NAME}" th:value="${sc.SCATE_IDX}" th:selected="${product?.brand?.cateIdx == sc.SCATE_IDX}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -192,6 +192,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
                         </fieldset>
                         <fieldset class="mb-0">
                             <legend class="">2.SHOP상품 관리정보<span class="small ml-2"></span></legend>
@@ -326,20 +327,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <
                             </div>
+                            <br>
                         </fieldset>
                         <fieldset class="mb-0">
-                            <legend class="">4.재고상품 구성<span class="small ml-2"></span></legend>
+                            <legend class="">4.재고상품 구성<span class="small ml-2"><a class="btn btn-sm badge-indigo" onclick="">필수상품 추가</a></span></legend>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-text w-100 mb--1">
                                                 4-1. 필수상품
-                                                <a class="btn btn-sm badge-indigo" onclick="">필수상품 추가</a>
                                                 <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
-                                                <a class="btn btn-sm badge-indigo" onclick="">재고상품 검색</a>
                                             </span>
 
                                         </div>
@@ -348,7 +347,10 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="form-control">1번 필수상품</span>
+                                            <span class="form-control">
+                                                1번 필수상품
+                                                <a class="btn btn-sm badge-indigo" onclick="">재고상품 검색</a>
+                                            </span>
                                         </div>
                                     </div>
                                     <table class="table table-bordered">
@@ -390,10 +392,16 @@
                                         <div class="input-group">
                                             <span class="input-group-text w-100 mb--1">
                                                 4-2 추가(선택)상품
-                                                <a class="btn btn-sm badge-indigo legitRipple" onclick="">재고상품 검색</a>
-                                                <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
                                             </span>
-
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="form-control">
+                                                <a class="btn btn-sm badge-indigo legitRipple" onclick="">재고상품 검색</a>
+                                            </span>
                                         </div>
                                     </div>
                                     <table class="table table-bordered">
@@ -426,8 +434,286 @@
                                     </table>
                                 </div>
                             </div>
+                            <br>
                         </fieldset>
-
+                        <fieldset class="mb-0">
+                            <legend class="">5.리뷰정보<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    조회수
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    검색받은 수
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    상품문의수
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    상품평 수
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">6.SHOP상품 제어항목<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <!-- 입력필드 -->
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    부적격상품
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    상품 숨김 기능
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    무상서비스 기간 선택
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control daterange-singlenull" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    할인율제외
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    할인율표기여부
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    타임특가 여부
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    구매 최대수량(1회 최대 구매수량)
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    아이디당 구매제한(전체기간)
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    최소 주문수량
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    수도권배송상품여부
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    앱전용상품 여부
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    네이버최저가/유통가
+                                                </span>
+                                            </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    네이버최저가 리미트
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">7.관련 상품<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text w-100 mb--1">
+                                                관련 SHOP상품
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="form-control">
+                                                <a class="btn btn-sm badge-indigo" onclick="">SHOP상품 검색</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead id="related_head">
+                                        <tr class="alpha-brown text-bold">
+                                            <th>NO</th>
+                                            <th>SHOP상품코드</th>
+                                            <th>SHOP상품명</th>
+                                            <th>SHOP 판매가(뉴퍼마켓가)의 합</th>
+                                            <th>할인가의 합</th>
+                                            <th>삭제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="related_area">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">8.리뷰<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <table class="table table-bordered">
+                                </table>
+                            </div>
+                            <br>
+                        </fieldset>
                     </div>
                 </div>
             </form>

@@ -8,9 +8,9 @@
         FROM
             shop
             LEFT JOIN domain
-                ON domain.SHOP_IDX=shop.SHOP_IDX
+                ON DOM_SHOP_IDX=SHOP_IDX
         WHERE
-            shop.SHOP_IDX is not null
+            SHOP_IDX is not null
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -21,8 +21,8 @@
         FROM
             shop
                 LEFT JOIN domain
-                          ON domain.SHOP_IDX=shop.SHOP_IDX
+                          ON DOM_SHOP_IDX=SHOP_IDX
         WHERE
-            shop.SHOP_IDX is not null
+            SHOP_IDX is not null
     </select>
 </mapper>
