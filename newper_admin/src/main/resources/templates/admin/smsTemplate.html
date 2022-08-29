@@ -23,7 +23,7 @@
                                                 <i class="mr-1" th:classappend="${mainIcon}"></i>
                                                 <th:block th:text="${mainTitle}"></th:block>
                                             </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <span class="breadcrumb-item font-weight-bold text-secondary">
                                                 <i class="mr-1" th:classappend="${subIcon}"></i>
                                                 <th:block th:text="${subTitle}"></th:block>
                                             </span>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="msgForm">
+                                    <form id="smsForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table" id="msgTable"></table>
+                            <table class="table" id="smsTable"></table>
                         </div>
                     </div>
                 </div>
@@ -108,14 +108,14 @@
 
 <script>
     function searchBtn() {
-        var table = $('#msgTable').DataTable();
-        table.page('first').ajax.url('/admin/msg.dataTable?' + $('#msgForm').serialize()).load(null, false);
+        var table = $('#smsTable').DataTable();
+        table.page('first').ajax.url('/admin/sms.dataTable?' + $('#smsForm').serialize()).load(null, false);
     }
 
 </script>
 
 <script>
-    var msgTable = $('#msgTable').DataTable({
+    var smsTable = $('#smsTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -124,7 +124,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/admin/msg.dataTable?'+$('#msgForm').serialize(),
+            url:'/admin/sms.dataTable?'+$('#smsForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -147,13 +147,13 @@
         ]
     });
 
-    $('#msgForm').on('keyup',function(event){
+    $('#smsForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 
 
     $('#popNewBtn').on('click', function () {
-        var focusPopup = window.open('msgPop', 'msgPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('smsPop', 'smsPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 
