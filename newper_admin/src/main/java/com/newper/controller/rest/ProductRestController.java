@@ -288,53 +288,7 @@ public class ProductRestController {
         return returnDatatable;
     }
 
-    /**P_IDX로 상품조회*/
-    @PostMapping("productDetail.ajax")
-    public ReturnMap productDetial(int P_IDX){
-        ReturnMap returnMap = new ReturnMap();
-        Product product = productRepo.findById(P_IDX).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
-        String P_NAME = product.getPName();
-        String P_STATE = product.getPState().getOption();
-        String P_MODEL = product.getPModel();
-        int P_COST = product.getPCost();
-        int P_SELL_PRICE = product.getPSellPrice();
-        String P_MEMO = product.getPMemo();
-        String P_THUMB_FILE1 = product.getPThumbFile1();
-        String P_THUMB_FILE2 = product.getPThumbFile2();
-        String P_THUMB_FILE3 = product.getPThumbFile3();
-        String P_THUMB_FILE4 = product.getPThumbFile4();
-        String P_THUMB_FILE5 = product.getPThumbFile5();
-        String P_THUMB_FILE6 = product.getPThumbFile6();
-        List<Map<String, Object>> map = product.getPOption();
-        System.out.println(map.get(0).get("values"));
-//        String ov1 = map.get("p_option_value1")+"";
-//        String ov2 = map.get("p_option_value2")+"";
-//        String ov3 = map.get("p_option_value3")+"";
-//
-//        String[] OPTION1 = ov1.split(",");
-//        String[] OPTION2 = ov2.split(",");
-//        String[] OPTION3 = ov3.split(",");
 
-//        returnMap.put("P_CODE", P_CODE);
-        returnMap.put("P_NAME", P_NAME);
-        returnMap.put("P_STATE", P_STATE);
-        returnMap.put("P_MODEL", P_MODEL);
-        returnMap.put("P_COST", P_COST);
-        returnMap.put("P_SELL_PRICE", P_SELL_PRICE);
-        returnMap.put("P_MEMO", P_MEMO);
-        returnMap.put("P_THUMB_FILE1", P_THUMB_FILE1);
-        returnMap.put("P_THUMB_FILE2", P_THUMB_FILE2);
-        returnMap.put("P_THUMB_FILE3", P_THUMB_FILE3);
-        returnMap.put("P_THUMB_FILE4", P_THUMB_FILE4);
-        returnMap.put("P_THUMB_FILE5", P_THUMB_FILE5);
-        returnMap.put("P_THUMB_FILE6", P_THUMB_FILE6);
-//        returnMap.put("OPTION1", OPTION1);
-//        returnMap.put("OPTION2", OPTION2);
-//        returnMap.put("OPTION3", OPTION3);
-
-
-        return returnMap;
-    }
 
     /**재고상품 저장*/
     @PostMapping("goodsStockSave.ajax")

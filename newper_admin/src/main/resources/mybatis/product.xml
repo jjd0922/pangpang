@@ -63,9 +63,9 @@
                 store.COM_NAME AS 'STORE_NAME',
                 manufacture.COM_NAME AS 'MANUFACTURE_NAME',
                 afterservice.COM_NAME AS 'AFTERSERVICE_NAME',
-            if(P_OPTION!='',regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),'') OPTION1,
-            if(P_OPTION!='',regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),'') OPTION2,
-            if(P_OPTION!='',regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),'') OPTION3
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
         FROM
             product
                 LEFT JOIN (SELECT
