@@ -9,7 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PoType implements EnumOption {
 
-     NORMAL("일반 발주")
+    /**일반 발주*/
+    NORMAL("일반 발주")
+    /**긴급 발주*/
     ,EMERGENCY("긴급 발주")
 
     ;

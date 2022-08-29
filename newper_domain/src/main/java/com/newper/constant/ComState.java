@@ -10,9 +10,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public enum ComState implements EnumOption {
 
+    /**정상업체*/
     NORMAL("정상업체")
+    /**거래중지*/
     ,STOP("거래중지")
-    ,ETC("기타");
+    /**기타*/
+    ,ETC("기타")
+    ;
 
     private String option;
 

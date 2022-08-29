@@ -9,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CcFeeType implements EnumOption {
 
+    /**정액*/
     COST("정액")
-    ,RATES("정률");
+    /**정률*/
+    ,RATES("정률")
+    ;
 
     private String option;
 }

@@ -9,10 +9,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PType3 implements EnumOption {
 
+    /** 자사물류 */
     OWNLOGI("자사물류")
+    /** 3PL물류 */
     ,THREEPLLOGI("3PL물류")
+    /** 외부물류 */
     ,EXTERNALLOGI("외부물류")
+    /** 설치물류 */
     ,INSTALLLOGI("설치물류")
+    /** 해당사항없음 */
     ,ORELSE("해당사항없음")
     ;
     private String option;

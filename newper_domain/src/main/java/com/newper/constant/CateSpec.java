@@ -9,7 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CateSpec implements EnumOption {
 
-     Y("사용")
+    /**사용*/
+    Y("사용")
+    /**미사용*/
     ,N("미사용")
     ;
 
