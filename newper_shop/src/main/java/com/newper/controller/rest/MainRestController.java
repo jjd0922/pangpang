@@ -7,6 +7,7 @@ import com.newper.service.CustomerService;
 import com.newper.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,26 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class MainRestController {
 
-
-    @Autowired
-    private ShopSession shopSession;
     private final ShopService shopService;
     private final CustomerService customerService;
-//    private final ShopComp shopComp;
 
+    /** 쇼핑몰 정보 조회*/
     @PostConstruct
-    public void postCon(){
-        shopService.setShopComp("localhost");
-    }
-
-    /** set shopComp info. 분양몰 정보 세팅 */
-    @GetMapping("refreshShop")
-    public void refreshShop(HttpServletRequest request){
-        System.out.println(shopSession.getIdx());
-
-        String domain = request.getServerName();
-        shopService.setShopComp(domain);
-
+    @Scheduled(cron = "0 0 * * * *")
+    @GetMapping("refreshShop.ajax")
+    public void setShopComp(){
+        shopService.setShopComp();
     }
     /** 로그인 */
     @PostMapping("login.ajax")
