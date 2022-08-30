@@ -2,7 +2,7 @@
         <html lang="ko" xmlns:th="http://www.thymeleaf.org">
         <head>
         <meta charset="UTF-8">
-        <title>메세지템플릿관리 </title>
+        <title>메세지템플릿관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table" id="smsTable"></table>
+                            <table class="table" id="smsTemplateTable"></table>
                         </div>
                     </div>
                 </div>
@@ -85,11 +85,12 @@
     </div>
 </div>
 </body>
-<!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
 
@@ -100,60 +101,72 @@
 
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
+
+
 <!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
+<script th:inline="javascript">
+
     function searchBtn() {
-        var table = $('#smsTable').DataTable();
+        var smsTemplateTable = $('#smsTemplateTable').DataTable();
         table.page('first').ajax.url('/admin/sms.dataTable?' + $('#smsForm').serialize()).load(null, false);
     }
 
+    function smsDetailPop(tfIdx) {
+        var focusPopup = window.open('smsPop/' + tfIdx, 'smsPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
-
 <script>
-    var smsTable = $('#smsTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
-        serverSide: true,
-        ajax:{
-            url:'/admin/sms.dataTable?'+$('#smsForm').serialize(),
-            type:'post'
-        },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
 
-        } ],
+        var smsTemplateTable = $('#smsTemplateTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+        style: 'multi',
+        selector: 'td:first-child'
+    },
+        serverSide: true,
+        ajax: {
+        url: '/admin/sms.dataTable?' + $('#smsForm').serialize(),
+        type: 'post'
+    },
+        columnDefs: [{
+        orderable: false,
+        targets: [0]
+
+    }],
 
 
         "columns" : [
-            {'title':'선택','data':'TF_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '<input type="hidden" name="TF_IDX" value="'+data+'">';
-
+            {'class':'select-checkbox', 'title':'선택','data':'TF_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'제목','data':'TF_TITLE', "render" : function(data, type, full, meta){
-                return '<button type="button" class="btn btn-xs bg-primary-600" onclick="detailTemplate('+full.TF_IDX+')">'+data+'</button>';
-            }},
+            ,{'title':'제목','data':'TF_TITLE',
+               "render" : function(data, type, full, meta){
+                return '<button type="button" class="btn btn-xs bg-primary-600" onclick="smsDetailPop('+full.TF_IDX+')">'+data+'</button>';
+            }}
             ,{'title':'내용','data':'TF_CONTENT', "className" : "text-left", "render": function(data, type, full, meta){
                     if(data.length<150){
                         return data;
                     }else{
                         return data.substring(0,150)+"...";
                     }
-                }},
-            ,{'title':'등록일','data':'CREATED_BY'}
+                }}
+            ,{'title':'등록일','data':'CREATED_DATE'}
         ]
     });
+</script>
+<script>
 
     $('#smsForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}

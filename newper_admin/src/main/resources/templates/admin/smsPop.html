@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${templates_form != null} ? 'SMS 템플릿 상세/수정'">SMS 템플릿관리</title>
+    <title th:text="${templateForm != null} ? 'SMS 템플릿 상세/수정'">SMS 템플릿관리</title>
 
     <th:block th:replace="common/css.html"></th:block>
 
@@ -131,8 +131,9 @@
                                                      템플릿명
                                                     </span>
                                                 </span>
-                                                <input type="text" name="TF_TITLE" class="form-control" th:value="${templates_form?.tfTitle}">
-                                                <input type="hidden" name="TF_IDX" value="${data.TF_IDX}">
+                                                <input type="text" name="TF_TITLE" class="form-control" th:value="${templateForm?.tfTitle}">
+                                                <input type="hidden" name="TF_IDX" th:value="${templateForm?.tfIdx}">
+                                                <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('M')}">
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +145,7 @@
                                                      내용
                                                     </span>
                                                 </span>
-                                                <textarea name="TF_CONTENT" class="form-control" style="height: 200px;" >${fn:replace(data.TF_CONTENT, '<br>', '&#10;')}</textarea>
+                                                <textarea th:value="${templateForm?.tfContent}" name="TF_CONTENT" class="form-control" style="height: 200px;" ></textarea>
                                             </div>
                                          </div>
                                     </div>
@@ -164,7 +165,7 @@
 </div>
     <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
         <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-        <button onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+        <button onclick="createSmsTemplate()" type="button" class="btn btn-sm btn-secondary ml-1" id="createSmsTemplate"><i class="icon-floppy-disk mr-1"></i>저장</button>
     </div>
     </div>
 </div>
@@ -213,31 +214,37 @@
 
 <script th:inline="javascript">
 
+
+    function saveAction(){
+        $("#smsForm").submit();
+    }
+
+
+
+    function createSmsTemplate(){
+        $.ajax({
+            url:[[@{/admin/createSmsTemplate.ajax}]],
+        data: $('#smsForm').serialize(),
+            type:'POST',
+            success:function(data){
+            console.log(data);
+            window.close();
+            opener.location.reload();
+        }
+    ,error: function(){
+        }
+    });
+    }
+
 </script>
 
 <script>
-    function createTemplate(){
-    var TF_TITLE = $("input[name=TF_TITLE]");
-    var TF_CONTENT = $("input[name=TF_CONTENT]");
 
-    if(confirm("등록하시겠습니까?")){
-    var param=$('form[name=smsForm]').serialize();
-    $('#smsForm').ajaxForm({
-    url:'/sms/addTemplate',
-    type:'post',
-    enctype:"multipart/form-data",
-    contentType: false,
-    success:function(res){
-    alert(res);
-    if(res.trim()=='등록완료'){
-    /* window.opener.refreshTable(); */
-    window.close();
-}
-}
-});
-    $("smsForm").submit();
-}
-}
+
+
+$("#saveBtn").on("click", saveAction);
+
+
 </script>
 </body>
 </html>

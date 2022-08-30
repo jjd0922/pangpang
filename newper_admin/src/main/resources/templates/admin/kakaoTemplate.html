@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-        <head>
-        <meta charset="UTF-8">
-        <title>카카오템플릿관리 </title>
+    <title>카카오템플릿관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -39,15 +35,14 @@
                                     <form id="kakaoForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-
                                                 <div class="form-group">
                                                     <label class="d-block">제목</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="TF_TITLE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -90,11 +85,12 @@
     </div>
 </div>
 </body>
-<!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
 
@@ -105,53 +101,75 @@
 
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
+
+
 <!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
+<script th:inline="javascript">
+
     function searchBtn() {
-        var table = $('#kakaoTable').DataTable();
-        table.page('first').ajax.url('/admin/kakao.dataTable?' + $('#kakaoForm').serialize()).load(null, false);
+        var kakaoTable = $('#kakaoTable').DataTable();
+
     }
 
+    function kakaoDetailPop(tfIdx) {
+        var focusPopup = window.open('kakaoPop/' + tfIdx, 'kakaoPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
-
 <script>
+
     var kakaoTable = $('#kakaoTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-        ordering:false,
+        ordering: false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
         },
         serverSide: true,
-        ajax:{
-            url:'/admin/kakao.dataTable?'+$('#kakaoForm').serialize(),
-            type:'post'
+        ajax: {
+            url: '/admin/kakao.dataTable?' + $('#kakaoForm').serialize(),
+            type: 'post'
         },
-        columnDefs: [ {
+        columnDefs: [{
             orderable: false,
-            targets:   [0]
+            targets: [0]
 
-        } ],
+        }],
 
 
         "columns" : [
-            {'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
+
+            {'class':'select-checkbox', 'title':'선택','data':'TF_IDX','defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'제목','data':''}
-            ,{'title':'내용','data':''}
-            ,{'title':'등록일','data':''}
+            ,{'title':'제목','data':'TF_TITLE',
+                "render" : function(data, type, full, meta){
+                    return '<button type="button" class="btn btn-xs bg-primary-600" onclick="kakaoDetailPop('+full.TF_IDX+')">'+data+'</button>';
+                }}
+            ,{'title':'내용','data':'TF_CONTENT', "className" : "text-left", "render": function(data, type, full, meta){
+                    if(data.length<150){
+                        return data;
+                    }else{
+                        return data.substring(0,150)+"...";
+                    }
+                }}
+            ,{'title':'등록일','data':'CREATED_DATE'}
         ]
     });
+</script>
+<script>
 
-    $('#kakaoForm').on('keyup',function(event){
+    $('#kaakaoForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 
