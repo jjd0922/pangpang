@@ -70,6 +70,14 @@ public class MainController {
         return mav;
     }
 
+    /* cart 주문프로세서 - 장바구니 */
+    @GetMapping(value = "cart")
+    public ModelAndView cart(){
+        ModelAndView mav = new ModelAndView("orderProcess/cart");
+        return mav;
+    }
+
+
     /*테스트용 페이지*/
     @GetMapping(value = "mainMenu/index")
     public ModelAndView mainIndex(){

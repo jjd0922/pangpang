@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('장바구니')">
+</head>
+<body>
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!--페이지 타이틀-->
+<div class="container">
+    <section id="orderProcess-route">
+        <div th:insert="part/title :: pageTitle_2('장바구니')"></div>
+        <p class="font-md"><span class="color-blue">01 장바구니</span><i class="route-icon on"></i>02 주문결제정보입력<i class="route-icon"></i>03 주문완료</p>
+    </section>
+</div>
+
+<section>
+    <div class="container">
+        <div class="cart-option">
+            <label for="itemAll-select">
+                <input type="checkbox" id="itemAll-select" class="custom-checkbox" title="장바구니 상품 전체">
+                <p>전체선택</p>
+            </label>
+            <div class="itemSelect-Delete font-sm">선택상품 삭제</div>
+            <div class="itemAll-Delete font-sm">전체상품 삭제</div>
+        </div>
+        <div class="cart-list-wrap">
+            <ul class="cart-header">
+                <li>상품번호</li>
+                <li>상품평</li>
+                <li>수량</li>
+                <li>가격</li>
+                <li>에누리금액</li>
+                <li>배송비</li>
+                <li>가격</li>
+                <li>주문</li>
+            </ul>
+            <ul class="cart-basket-list">
+                <li>
+                    <div class="cart-basket-title">
+                        <div class="basket-title basket-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
+                    </div>
+                    <div class="cart-basket-content">
+                        <div>
+                            <ul class="item">
+                                <li><img src="" alt="상품이미지"></li>
+                                <li>상품명</li>
+                                <li>수량</li>
+                                <li>가격</li>
+                                <li>에누리금액</li>
+                                <li>배송비</li>
+                                <li>가격</li>
+                                <li>주문</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cart-basket-title">
+                        <div class="basket-title basket-title-2"><span>협력업체</span> 직배송 상품</div>
+                    <div class="cart-basket-content"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+</html>
