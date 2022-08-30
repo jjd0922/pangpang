@@ -1664,6 +1664,19 @@ section {
 }
 
 /*** 삼품상세 ***/
+.page-route {
+    color: #999;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.circle-down {
+    display: inline-block;
+    background: url("../image/arrow/down-arrow2.png") no-repeat center/contain;
+    width: 15px;
+    height: 15px;
+    margin-left: 7px;
+}
 .product-thumb {
     display: flex;
 }
@@ -1671,7 +1684,7 @@ section {
     width: 50%;
 }
 .product-thumb>li:nth-child(1) {
-    margin-right: 75px;
+    padding-right: 75px;
 }
 .product-thumb>li:nth-child(1)>div {
     padding: 0 55px;
@@ -1692,6 +1705,7 @@ section {
     margin-left: 15px;
     padding-left: 15px;
     position: relative;
+    color: #666;
 }
 .prod-num:before {
     content: "";
@@ -1717,6 +1731,7 @@ section {
 .delivery-notice {
     display: flex;
     align-items: end;
+    margin-bottom: 30px;
 }
 .delivery-notice span:nth-of-type(1) {
     margin-right: 10px;
@@ -1724,6 +1739,7 @@ section {
 .delivery-notice .delivery {
     width: 49px;
     height: 31px;
+    margin-right: 5px;
 }
 .prod-thumb-top {
     display: flex;
@@ -1820,19 +1836,146 @@ section {
 .prod-option select {
     height: 45px;
     width: calc(100% - 190px);
+    border: 1px solid #d1d1d1;
+    border-radius: 7px;
+    outline: none;
+    color: #666;
+    padding: 0 25px;
+    appearance: none;
+    background:url('../image/arrow/down-arrow.png') no-repeat right 20px center;
+    cursor: pointer;
+}
+.prod-option-price>ul {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
 }
 .prod-option-price>ul>li {
-    padding: 20px 0;
+    padding: 10px 0;
 }
 .prod-op-price-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+.select-amount-wrap {
+    width: 200px;
+    position: relative;
+    padding: 9px 30px 9px 0;
+}
+.select-amount {
+    border-radius: 30px;
+    border: 1px solid #d1d1d1;
+    background-color: #fcfcfc;
+    padding: 2px 10px;
+}
+.select-amount>span {
+    cursor: pointer;
+}
+.select-amount input {
+    width: 24px;
+    outline: none;
+    border: none;
+    background-color: #fcfcfc;
+    text-align: center;
+}
 .option-close {
-    display: inline-flex;
+    display: inline-block;
     background: url("../image/option-close.png") no-repeat center/contain;
     width: 20px;
     height: 20px;
     cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.option-totalPrice {
+    text-align: end;
+    padding: 25px 0;
+    font-size: 24px;
+}
+.prod-btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.prod-heart {
+    width: 70px;
+    height: 67px;
+    border: 1px solid #333;
+    border-radius: 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.product-thumb .heart {
+    width: 33px;
+    height: 30px;
+    margin-left: 0;
+}
+.product-thumb .heart.active {
+    width: 33px;
+    height: 30px;
+}
+.prod-heart span {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    color: #314ad7;
+    font-size: 20px;
+}
+.nonMember-buy {
+    font-size: 20px;
+    color: #999;
+    position: relative;
+}
+.nonMember-buy::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #999;
+}
+/* 바로구매 & 장바구니 버튼 */
+.btn-blue, .btn-white {
+    border-radius: 9px;
+    background-color: #314ad7;
+    cursor: pointer;
+    width: 280px;
+    height: 67px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-blue a, .btn-white a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+.btn-blue a {
+    color: #fff;
+}
+.btn-white {
+    border: 2px solid #314ad7!important;
+    background-color: #fff!important;
+}
+.btn-white a {
+    color: #314ad7;
+}
+@media (max-width:991px) {
+    .product-thumb {
+        flex-direction: column;
+    }
+    .product-thumb>li {
+        width: 100%;
+        padding: 0!important;
+    }
+
 }
