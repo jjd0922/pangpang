@@ -24,12 +24,12 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">상담결과</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CR_TITLE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
                                                 </div>
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
@@ -103,12 +103,12 @@
 
 <script>
     function searchBtn() {
-        var table = $('#counselTable').DataTable();
+        var counselTable = $('#counselTable').DataTable();
         table.page('first').ajax.url('/admin/counsel.dataTable?' + $('#counselForm').serialize()).load(null, false);
     }
 
-    function counselDetailPop(uIdx) {
-        var focusPopup = window.open('counselPopup/' + uIdx, 'counselPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+    function counselDetailPop(crIdx) {
+        var focusPopup = window.open('counselPop/' + crIdx, 'counselPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -137,7 +137,7 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'SP_IDX',
+                'data': 'CR_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
                     return '';
@@ -147,19 +147,19 @@
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
 
-            , {'title': '사용구분', 'data': 'U_PHONE'}
+            , {'title': '사용구분', 'data': 'CR_TYPE_STR','defaultContent':''}
             , {
-                'title': '상담결과', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                'title': '상담결과', 'data': 'CR_TITLE', 'render': function (data, type, full, meta) {
+                    return '<button type="button" class="btn btn-xs bg-primary-600" onclick="counselDetailPop('+full.CR_IDX+')">'+data+'</button>';
                 }
             }
-            , {'title': '응대스크립트', 'data': 'U_ID'}
-            , {'title': '메모사항', 'data': 'U_DEPART'}
+            , {'title': '응대스크립트', 'data': 'CR_SCRIPT'}
+            , {'title': '메모사항', 'data': 'CR_CONTENT'}
             , {'title': '등록일', 'data': 'CREATED_DATE'}
         ]
     });
 
-    $('#userForm').on('keyup', function (event) {
+    $('#counselForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
             return false;
@@ -168,7 +168,7 @@
 
 
     $('#popNewBtn').on('click', function () {
-        var focusPopup = window.open('counselPop', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('counselPop', 'counselPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
 

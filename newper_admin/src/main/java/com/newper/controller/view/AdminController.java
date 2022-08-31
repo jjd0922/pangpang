@@ -1,16 +1,27 @@
 package com.newper.controller.view;
 
+import com.newper.constant.TfType;
+import com.newper.entity.Auth;
+import com.newper.entity.TemplateForm;
+import com.newper.entity.User;
+import com.newper.repository.TemplateFormRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/")
 public class AdminController {
+    private final TemplateFormRepo templateFormRepo;
+
     /**뮨자 템플릿 페이지*/
     @GetMapping(value = "smsTemplate")
     public ModelAndView smsTemplate(){
@@ -32,7 +43,20 @@ public class AdminController {
     @GetMapping(value = "smsPop")
     public ModelAndView smsPop(){
         ModelAndView mav = new ModelAndView("admin/smsPop");
+     /*   mav.addObject("M",TfType.M);*/
+        return mav;
+    }
 
+    /**
+     * 문자템플릿 상세조회 페이지
+     */
+    @GetMapping("smsPop/{tfIdx}")
+    public ModelAndView smsDetail(@PathVariable Integer tfIdx) {
+        ModelAndView mav = new ModelAndView("admin/smsPop");
+        TemplateForm templateForm = templateFormRepo.findTemplateFormBytfIdx(tfIdx);
+
+   /*     mav.addObject("tfType", TfType.M);*/
+        mav.addObject("templateForm", templateForm);
         return mav;
     }
 
@@ -43,7 +67,17 @@ public class AdminController {
 
         return mav;
     }
+    /**
+     * 카카오템플릿 상세조회 페이지
+     */
+    @GetMapping("kakaoPop/{tfIdx}")
+    public ModelAndView kakaoDetail(@PathVariable Integer tfIdx) {
+        ModelAndView mav = new ModelAndView("admin/smsPop");
+        TemplateForm templateForm = templateFormRepo.findTemplateFormBytfIdx(tfIdx);
 
+        mav.addObject("templateForm", templateForm);
+        return mav;
+    }
 
     /**상담결과 페이지*/
     @GetMapping(value = "counselResult")

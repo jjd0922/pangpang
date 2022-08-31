@@ -2,6 +2,7 @@ package com.newper.entity;
 
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
+import lombok.experimental.PackagePrivate;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
@@ -27,6 +28,8 @@ public class TemplateForm extends BaseEntity {
     private String tfContent;
 
     private String tfType;
+
+
 
 
 
