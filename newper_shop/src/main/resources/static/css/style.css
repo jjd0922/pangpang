@@ -1928,12 +1928,14 @@ section {
     background-color: #999;
 }
 /* 바로구매 & 장바구니 버튼 */
+.prod-btn-group .btn-blue, .prod-btn-group .btn-white {
+    width: 280px;
+    height: 67px;
+}
 .btn-blue, .btn-white {
     border-radius: 9px;
     background-color: #314ad7;
     cursor: pointer;
-    width: 280px;
-    height: 67px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1991,6 +1993,7 @@ section {
 .cart-option {
     display: flex;
     align-items: center;
+    margin-bottom: 15px;
 }
 .cart-option label {
     font-size: 20px;
@@ -2029,9 +2032,16 @@ section {
 }
 .cart-header {
     display: flex;
+    justify-content: space-between;
+    padding: 10px 30px 10px 65px;
+    border-bottom: 1px solid #d1d1d1;
+    color: #666;
+}
+.cart-header>li {
+    text-align: center;
 }
 .cart-basket-title {
-    padding: 20px 0;
+    padding: 20px 0 20px 65px;
     border-bottom: 1px solid #d1d1d1;
 }
 .basket-title {
@@ -2049,6 +2059,146 @@ section {
 .basket-title>span:first-child {
     color: #C2F1FF;
 }
-.item {
+.basket-item {
+    position: relative;
+}
+.basket-item>ul {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px 30px 65px;
+    position: relative;
+    border-bottom: 1px solid #d1d1d1;
+}
+.basket-item>ul>li:not(:nth-child(2)) {
+    display: flex;
+    justify-content: center;
+}
+.basket-item>ul>li:nth-child(1), .cart-header>li:nth-child(1) {
+    width: 130px;
+    margin-right: 15px;
+}
+.basket-item>ul>li:nth-child(2), .cart-header>li:nth-child(2) {
+    width: 360px;
+}
+.basket-item>ul>li:nth-child(2) {
+    height: 150px;
+}
+.basket-item>ul>li:nth-child(3), .cart-header>li:nth-child(3) {
+    width: 150px;
+}
+.basket-item>ul>li:nth-child(4), .cart-header>li:nth-child(4) {
+    width: 115px;
+}
+.basket-item>ul>li:nth-child(5), .cart-header>li:nth-child(5) {
+    width: 120px;
+}
+.basket-item>ul>li:nth-child(6), .cart-header>li:nth-child(6) {
+    width: 90px;
+}
+.basket-item>ul>li:nth-child(7), .cart-header>li:nth-child(7) {
+    width: 140px;
+}
+.basket-item>ul>li:nth-child(8), .cart-header>li:nth-child(8) {
+    width: 100px;
+}
+.basket-item-thumb a {
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.basket-item-thumb-img {
+    width: 125px;
+    height: 125px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+.soldOut-thumb {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.basket-item-info-wrap>*:not(:last-child) {
+    margin-bottom: 7px;
+}
+.basket-item-info-wrap h3:hover {
+    color: #314ad7;
+}
+.basket-item-info {
+    color: #666;
+}
+.basket-selct-amount {
+    width: 150px;
+}
+.basket-aenuri {
+    text-align: center;
+}
+.basket-aenuri .aenuri {
+    width: 61px;
+    height: 25px;
+    margin-left: 0;
+}
+.basket-item .custom-checkbox {
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    top: 45%;
+    left: 23px;
+    transform: translateY(-50%);
+}
+.basket-item .option-close {
+    top: 30px;
+    right: 30px;
+}
+.soldout-text, .nowBuy-text {
+    border-radius: 30px;
+    width: 95px;
+    padding: 7px 0;
+    text-align: center;
+}
+.soldout-text {
+    border: 1px solid #333;
+}/* 품절 */
+.nowBuy-text {
+    border: 1px solid #314ad7;
+    color: #314ad7;
+}/* 바로구매 */
+.order-totalPrice {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #f2f5f7;
+}
+.order-totalPrice>p:first-child {
+    margin-right: 50px;
+    font-size: 20px;
+}
+.cart-order-button-group {
+    display: flex;
+    justify-content: end;
+    padding: 30px 0;
+}
+.cart-order-btn {
+    border-radius: 30px;
+    padding: 13px 60px;
+}
+.cart-order-btn:nth-of-type(1) {
+    margin-right: 15px;
+}
+@media (max-width:991px) {
+    .basket-item>ul {
+        flex-wrap: wrap;
+    }
 }
