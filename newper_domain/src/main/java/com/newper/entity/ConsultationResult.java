@@ -29,5 +29,5 @@ public class ConsultationResult extends BaseEntity{
 
     private String crType;
 
-
+    private String crScript;
 }

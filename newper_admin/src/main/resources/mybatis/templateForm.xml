@@ -15,9 +15,12 @@
             CREATED_DATE
         FROM
             template_form
-<!--        <where>
-            <include refid="includeTemplateFormDataTable"></include>
-        </where>-->
+        WHERE
+            TF_TYPE=#{TF_TYPE}
+        <!--        <where>
+        WHERE
+                    <include refid="includeTemplateFormDataTable"></include>
+                </where>-->
         ORDER BY
         TF_IDX DESC
         <if test="length!=-1">
@@ -30,8 +33,16 @@
         COUNT(*)
         FROM
         template_form
+        WHERE
+        TF_TYPE=#{TF_TYPE}
 <!--        <where>
             <include refid="includeTemplateFormDataTable"></include>
         </where>-->
     </select>
+    <delete id="deleteTemplate">
+        DELETE FROM
+        template_form
+        WHERE
+        TF_IDX = #{TF_IDX}
+    </delete>
 </mapper>
