@@ -42,7 +42,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                    <input type="text"  class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
                                                     <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('K')}">
                                                 </div>
 
@@ -115,7 +115,9 @@
 <script th:inline="javascript">
 
     function searchBtn() {
-        var kakaoTable = $('#kakaoTable').DataTable();
+        var table = $('#kakaoTable').DataTable();
+        table.page('first').ajax.url('/admin/kakao.dataTable?' + $('#kakaoForm').serialize()).load(null, false);
+
 
     }
 
@@ -124,35 +126,27 @@
         focusPopup.focus();
     }
 
-/*
     function deletekakao() {
-        var data = dataTableGetSelectedDataArray('kakaoTable', 'TF_IDX');
+        var param = dataTableGetSelectedDataArray('kakaoTable', 'TF_IDX');
+        if (param.length == 0) {
+            alert('선택된 템플릿이 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 템플릿을 일괄삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/admin/deletekakao.ajax',
+                    type: 'post',
+                    data: {
+                        tfIdxs : param
+                    },
+                    success: function (res) {
+                        $('#kakaoTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
 
-        if (confirm("선택한 템플릿을 일괄삭제하시겠습니까?")) {
-            $.ajax({
-                url: '/admin/deletekakao.ajax',
-                type: 'post',
-                data: {
-                    tfIdxList : data
-                },
-                success: function () {
-                    refreshTable('#kakaoTable');
-                }
-            });
-        }
-    }
-*/
-
-    function deletekakao(tf_idx){
-        if(confirm("삭제하시겠습니까?")){
-            $.ajax({
-                url:'/admin/deletekakao.ajax',
-                type:'post',
-                data:'tf_idx='+tf_idx,
-                success:function(){
-                    $('#kakaoTable').DataTable().ajax.reload();
-                }
-            })
+                });
+            }
         }
     }
 

@@ -13,7 +13,4 @@ public interface TemplateFormMapper {
     Integer countTemplateFormDatatable(Map<String, Object> param);
 
 
-    /** kakao템플릿 일괄 삭제*/
-    void deleteTemplate(Map<String, Object> map);
-
     }

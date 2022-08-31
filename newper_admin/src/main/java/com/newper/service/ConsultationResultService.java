@@ -33,8 +33,8 @@ public class ConsultationResultService {
             throw new MsgException("제목을 입력해주세요");
         }
         try {
-            String cr_content = paramMap.getString("CR_CONTENT");
-            consultationResult.setCrContent(cr_content);
+            String cr_memo = paramMap.getString("CR_MEMO");
+            consultationResult.setCrMemo(cr_memo);
         } catch (NumberFormatException nfe) {
             throw new MsgException("내용을 입력해주세요");
         }
@@ -42,5 +42,12 @@ public class ConsultationResultService {
         consultationResultRepo.save(consultationResult);
         return consultationResult.getCrIdx();
     }
+
+    /**상담결과 삭제*/
+    @Transactional
+    public void deletecounsel(Integer cr_idx){
+        consultationResultRepo.deleteById(cr_idx);
+    }
+
 
 }

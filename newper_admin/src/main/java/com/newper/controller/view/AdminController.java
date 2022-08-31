@@ -2,8 +2,10 @@ package com.newper.controller.view;
 
 import com.newper.constant.TfType;
 import com.newper.entity.Auth;
+import com.newper.entity.ConsultationResult;
 import com.newper.entity.TemplateForm;
 import com.newper.entity.User;
+import com.newper.repository.ConsultationResultRepo;
 import com.newper.repository.TemplateFormRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.List;
 @RequestMapping("/admin/")
 public class AdminController {
     private final TemplateFormRepo templateFormRepo;
+
+    private final ConsultationResultRepo consultationResultRepo;
 
     /**뮨자 템플릿 페이지*/
     @GetMapping(value = "smsTemplate")
@@ -93,6 +97,19 @@ public class AdminController {
     public ModelAndView counselPop(){
         ModelAndView mav = new ModelAndView("admin/counselPop");
 
+        return mav;
+    }
+
+    /**
+     * 카카오템플릿 상세조회 페이지
+     */
+    @GetMapping("counselPop/{crIdx}")
+    public ModelAndView counselDetail(@PathVariable Integer crIdx) {
+        ModelAndView mav = new ModelAndView("admin/counselPop");
+
+        ConsultationResult consultationResult = consultationResultRepo.findConsultationResultBycrIdx(crIdx);
+
+        mav.addObject("consultationResult", consultationResult);
         return mav;
     }
 }
