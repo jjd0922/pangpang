@@ -7,11 +7,17 @@ import lombok.Getter;
 /** SCHEDULE.S_STATE*/
 @Getter
 @AllArgsConstructor
-public enum SState implements EnumOption{
+public enum SState implements EnumOption {
 
-    TEST("test")
+    /**미팅전*/
+    BEFORE("미팅전"),
+    /**미팅완료*/
+    COMPLETE("미팅완료"),
+    /**미팅취소*/
+    CANCELED("미팅취소"),
+    /**미팅일정변경*/
+    RESCHEDULE("미팅일정변경");
 
-    ;
+    public String option;
 
-    private String option;
 }

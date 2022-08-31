@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${schedule != null} ? '영업활동 조회/수정'">영업활동 등록</title>
+    <style>
+        #regiForm .popup-contents .long-content {
+            height: inherit !important;
+        }
+        .many-cols {
+            width: calc(100% - 135px);
+        }
+        .many-cols>span {
+            border-left: 0;
+        }
+        .schedule-check {
+            width: 100px!important;
+            margin-left: -1px;
+            display: flex;
+            justify-content: center;
+        }
+        .calendar-time select {
+            min-width: 37px;
+        }
+    </style>
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" th:if="${schedule == null}"><i class="icon-office mr-1"></i>창고 신규등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${schedule == null}"><i class="icon-office mr-1"></i>창고 조회/수정</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <form id="regiForm" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-2">
+                                        <legend class="">1. 등록정보</legend>
+
+                                        <div class="row">
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    영업활동코드
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sIdx" class="form-control" th:value="${schedule?.sIdx}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">영업활동상태</span>
+                                                            </span>
+                                                        <select name="sState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.SState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(schedule?.sState) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    업체명<a href="#" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sComName" class="form-control" th:value="${schedule?.sComName}">
+                                                        <input type="hidden" name="comIdx" th:value="${schedule?.company?.comIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    사업자등록번호
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sComNum" class="form-control" th:value="${schedule?.sComNum}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    미팅일
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sDate" class="form-control w-datarange daterange-single" th:value="${schedule?.sDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    미팅시각
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sTime" class="form-control w-datarange daterange-time" th:value="${schedule?.sTime}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 --><!--미팅구분 db생성후 다시 미팅구분도 필수-->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    미팅구분
+                                                                </span>
+                                                            </span>
+                                                        <select name="sType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.SType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(schedule?.sType) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    미팅회차
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sCount" class="form-control" th:value="${schedule?.sCount}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    미팅요청등록일
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" th:name="${schedule != null} ? 'sRequestDate'" class="form-control w-datarange daterange" th:value="${schedule?.sRequestDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    미팅완료일
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="sCompletionDate" class="form-control w-datarange daterange-singlenull" th:value="${schedule?.sCompletionDate}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <legend class="pt-2">2. 세부내용</legend>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    미팅명
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" name="sTitle" class="form-control" th:value="${schedule?.sTitle}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    미팅참석자
+                                                                </span>
+                                                            </span>
+                                                    <input type="text" name="sAttendees" class="form-control" th:value="${schedule?.sAttendees}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드2-->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                            <span class="input-group-prepend mb--1">
+                                                                <span class="input-group-text long-content">
+                                                                    미팅내용
+                                                                </span>
+                                                            </span>
+                                                    <textarea name="sContent" rows="16" class="form-control long-content mt-0 p-2" style="overflow-y:scroll" th:text="${schedule?.sContent}"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text long-content mb--1">
+                                                        미팅 후 <br>확인사항
+                                                    </span>
+
+                                                    <div class="many-cols">
+                                                        <div class="input-group-append mb--1">
+                                                            <input type="text" name="checkList1" class="form-control" th:value="${checkList1?.get('checkText')}">
+                                                            <span class="input-group-text bg-white schedule-check">
+                                                                <input type="checkbox" name="isDone1" th:checked="${checkList1?.get('checked') != null} ? true">
+                                                            </span>
+                                                        </div>
+
+
+                                                        <div class="input-group-append">
+                                                            <input type="text" name="checkList2" class="form-control" th:value="${checkList2?.get('checkText')}">
+                                                            <span class="input-group-text bg-white schedule-check">
+                                                                <input type="checkbox" name="isDone2" th:checked="${checkList2?.get('checked') != null} ? true">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text long-content">
+                                                        첨부파일
+                                                    </span>
+
+                                                    <div class="many-cols">
+                                                        <span class="form-control d-flex mb--1 justify-content-between">
+                                                            <input type="file" name="sFile1" class="mb--1">
+                                                            <a th:if="${(schedule != null) && (schedule.sFileName1 != '')}" class="badge badge-primary" th:href="|javascript: fileDownload('${schedule.sFile1}', '${schedule.sFileName1}')|" th:text="${schedule?.sFileName1}"></a>
+                                                        </span>
+                                                        <span class="form-control d-flex mb--1 justify-content-between">
+                                                            <input type="file" name="sFile2" class="mb--1">
+                                                            <a th:if="${(schedule != null) && (schedule.sFileName2 != '')}" class="badge badge-primary" th:href="|javascript: fileDownload('${schedule.sFile2}', '${schedule.sFileName2}')|" th:text="${schedule?.sFileName2}"></a>
+                                                        </span>
+                                                        <span class="form-control d-flex justify-content-between">
+                                                            <input type="file" name="sFile3" class="mb--1">
+                                                            <a th:if="${(schedule != null) && (schedule.sFileName3 != '')}" class="badge badge-primary" th:href="|javascript: fileDownload('${schedule.sFile3}', '${schedule.sFileName3}')|" th:text="${schedule?.sFileName3}"></a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+
+                                </div>
+                            </div>
+                        </form>
+                        <!-- #regiForm end -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" th:unless="${schedule?.sState == T(com.newper.constant.SState).valueOf('RESCHEDULE')}" th:id="${schedule != null} ? 'updateBtn' : 'saveBtn'"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+<th:block th:replace="modal/companyModal.html"/>
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 그래프 -->
+<script th:src="@{/assets/js/plugins/visualization/echarts/echarts.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+
+
+<script th:src="@{/assets/js/common.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:inline="javascript">
+    function saveAction(){
+        $.ajax({
+            url: location.pathname + '.ajax',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: new FormData($('#regiForm')[0]),
+            success: function () {
+                window.opener.refreshTable('#scheduleTable');
+            }
+        });
+    }
+
+    function updateAction() {
+        if (confirm("수정하시겠습니까?")) {
+            saveAction();
+        }
+    }
+
+    function selectCompany(row) {
+        var rowData = getDatatablemap('comModalTable', row);
+
+        $('#searchComModal').modal('hide');
+        $('#regiForm input[name="sComName"]').val(rowData.COM_NAME);
+        $('#regiForm input[name="sComNum"]').val(rowData.COM_NUM);
+        $('input[name="comIdx"]').val(rowData.COM_IDX);
+    }
+</script>
+<script th:inline="javascript">
+    $("#saveBtn").on("click", saveAction);
+    $("#updateBtn").on("click", updateAction);
+    $("#searchCompanyBtn").on("click", showComModal);
+</script>
+</body>
+</html>

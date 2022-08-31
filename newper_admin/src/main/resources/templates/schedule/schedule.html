@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>영업활동관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <!--<span class="breadcrumb-item font-weight-bold text-secondary">
+                                             <i class="mr-1" th:classappend="${subIcon}"></i>
+                                             <th:block th:text="${subTitle}"></th:block>
+                                        </span>-->
+                                    </div>
+                                </h6>
+                            </div>
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="scheduleForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업활동코드</label>
+                                                    <input type="text" name="sIdx" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업활동상태</label>
+                                                    <select name="sState" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.SState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">미팅요청등록일</label>
+                                                    <input type="text" name="sRequestDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">미팅일</label>
+                                                    <input type="text" name="sDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">미팅완료일</label>
+                                                    <input type="text" name="sCompletionDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">업체명</label>
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">미팅구분</label>
+                                                    <select name="sType" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.SType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">미팅명</label>
+                                                    <input type="text" name="sTitle" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label">조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <table class="table table-hover" id="scheduleTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<script th:inline="javascript">
+    function scheduleDetailPop(sIdx) {
+        var focusPopup = window.open('/schedule/schedulePop/' + sIdx, 'scheduleDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function searchBtn(){
+        $('#scheduleTable').DataTable().page('first').ajax.url('/schedule/schedule.dataTable?'+$('#scheduleForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    $('#scheduleTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/schedule/schedule.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'영업활동코드','data':'S_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="#" onclick="scheduleDetailPop('+full.S_IDX+')" class="badge badge-primary">'+full.S_IDX+'</a>';
+                }}
+            ,{'title':'영업활동상태','data':'S_STATE_STR','defaultContent':''}
+            ,{'title':'미팅요청등록일','data':'S_REQUEST_DATE','defaultContent':''}
+            ,{'title':'미팅일','data':'S_DATE','defaultContent':''}
+            ,{'title':'미팅시각','data':'S_TIME','defaultContent':''}
+            ,{'title':'미팅완료일','data':'S_COMPLETION_DATE','defaultContent':''}
+            ,{'title':'업체명','data':'S_COM_NAME','defaultContent':''}
+            ,{'title':'사업자등록번호','data':'S_COM_NUM','defaultContent':''}
+            ,{'title':'미팅구분','data':'S_TYPE_STR','defaultContent':''}
+            ,{'title':'미팅회차','data':'S_COUNT','defaultContent':''}
+            ,{'title':'미팅명','data':'S_TITLE','defaultContent':''}
+            ,{'title':'미팅참석자','data':'S_ATTENDEES','defaultContent':''}
+        ]
+    });
+
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('/schedule/schedulePop', 'insertSchedule', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+
+    $('#scheduleForm').on('keyup', function (event) {
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+</script>
+</body>
+</html>

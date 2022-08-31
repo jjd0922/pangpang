@@ -33,11 +33,11 @@ public class CompanyService {
     @Transactional
     public Integer saveCompany(ParamMap paramMap, MultipartFile comNumFile, MultipartFile comAccountFile) {
         // employee, address
-        Integer ceIdx = saveEmployee(paramMap);
-        CompanyEmployee companyEmployee = CompanyEmployee.builder().ceIdx(ceIdx).build();
+        CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
+        CompanyEmployee savedCe = companyEmployeeRepo.save(companyEmployee);
         Address address = paramMap.mapParam(Address.class);
         Company company = paramMap.mapParam(Company.class);
-        company.setCompanyEmployee(companyEmployee);
+        company.setCompanyEmployee(savedCe);
         company.setAddress(address);
 
         // 파일업로드
@@ -63,14 +63,6 @@ public class CompanyService {
         companyMapper.insertCompanyType(paramMap.getMap());
 
         return comIdx;
-    }
-
-    /**거래처담당자 insert*/
-    @Transactional
-    public Integer saveEmployee(ParamMap paramMap) {
-        CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
-        companyEmployeeRepo.save(companyEmployee);
-        return companyEmployee.getCeIdx();
     }
 
     @Transactional
@@ -113,9 +105,9 @@ public class CompanyService {
         contract.setCcStart(LocalDate.parse(paramMap.getString("ccStart")));
         contract.setCcEnd(LocalDate.parse(paramMap.getString("ccEnd")));
 
-        Integer ceIdx = saveEmployee(paramMap);
-        CompanyEmployee ce = CompanyEmployee.builder().ceIdx(ceIdx).build();
-        contract.setCompanyEmployee(ce);
+        CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
+        CompanyEmployee savedCe = companyEmployeeRepo.save(companyEmployee);
+        contract.setCompanyEmployee(savedCe);
 
         String ccFilePath = Common.uploadFilePath(ccFile, "company/contract/", AdminBucket.SECRET);
         contract.setCcFile(ccFilePath);
