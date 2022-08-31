@@ -41,16 +41,91 @@
                                     <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-<!--                                                <div class="form-group">-->
-<!--                                                    <label class="d-block">수정일</label>-->
-<!--                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="MODIFIED_DATE">-->
-<!--                                                </div>-->
+                                                <div class="form-group">
+                                                    <label class="d-block">발주 상태</label>
+                                                    <select name="poState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">구매담당자</label>
+                                                    <input type="text" name="uName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">발주 코드</label>
+                                                    <input type="text" name="poCode" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">매입처</label>
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고예정일</label>
+                                                    <input type="text" name="poInDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">납기일</label>
+                                                    <input type="text" name="poDueDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">반품기한</label>
+                                                    <input type="text" name="poRefundDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">A/S 기한</label>
+                                                    <input type="text" name="poAsDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재매입 여부</label>
+                                                    <select name="poRepurchase" class="form-control">
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" name="createdBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">2
+                                                    <label class="d-block">승인자</label>
+                                                    <input type="text" name="hwAprvId" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">승인일</label>
+                                                    <input type="text" name="hwAprvDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정자</label>
+                                                    <input type="text" name="modifiedBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정일</label>
+                                                    <input type="text" name="modifiedDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
                                                         <span class="ladda-label">조회하기</span>
                                                     </button>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </form>
@@ -120,10 +195,6 @@
 
 <script>
     var inTable = $('#inTable').DataTable({
-        // select: {
-        //     style: 'multi',
-        //     selector: 'td:first-child'
-        // },
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
@@ -131,9 +202,6 @@
             type:'post'
         },
         "columns" : [
-            // {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
-            //         return '<input type="hidden" name="P_IDX" value="'+data+'">';
-            //     }}
             {'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
@@ -143,20 +211,19 @@
                 }
                 return full.PO_TYPE_STR;
             }}
-            ,{'title':'입고상태','data':'','defaultContent':''}
-            ,{'title':'입고 담당자','data':'','defaultContent':''}
-            ,{'title':'자산 수령일','data':'','defaultContent':''}
-            ,{'title':'입고 완료일','data':'','defaultContent':''}
-            ,{'title':'세금계산서 발행일','data':'','defaultContent':''}
-            ,{'title':'입고창고','data':'','defaultContent':''}
-            ,{'title':'발주담당자','data':'','defaultContent':''}
-            ,{'title':'발주완료일','data':'','defaultContent':''}
+            ,{'title':'입고상태','data':'PO_STATE_STR','defaultContent':''}
+            ,{'title':'입고 담당자','data':'U_NAME','defaultContent':''}
+            ,{'title':'입고 완료일','data':'PO_IN_DATE','defaultContent':''}
+            ,{'title':'세금계산서 발행일','data':'PO_TAX_MONTH','defaultContent':''}
+            ,{'title':'입고창고','data':'WH_NAME','defaultContent':''}
+            ,{'title':'발주담당자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'발주완료일','data':'CREATED_DATE','defaultContent':''}
             ,{'title':'구매담당자','data':'','defaultContent':''}
             ,{'title':'발주코드','data':'PO_IDX','render':function(data,type,full,meta){
                 return '<a class="btn btn-sm badge-indigo" onclick="poDetail('+full.PO_IDX+')">발주코드</a>';
             }}
-            ,{'title':'매입처','data':'','defaultContent':''}
-            ,{'title':'재매입여부','data':'','defaultContent':''}
+            ,{'title':'매입처','data':'COM_NAME','defaultContent':''}
+            ,{'title':'재매입여부','data':'PO_REPURCHASE','defaultContent':''}
         ]
     });
 

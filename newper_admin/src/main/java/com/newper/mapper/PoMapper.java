@@ -43,7 +43,7 @@ public interface PoMapper {
     public void updategoods(@Param("po_idx") int po_idx, @Param("p_idx") int p_idx);
 
     /** 발주서에 상품idx조회 */
-    List<Integer> selectPoProductIdxList(int po_idx);
+    List<Integer> selectPoProductIdxList(@Param("poIdx") int po_idx);
 
 
 
@@ -62,8 +62,8 @@ public interface PoMapper {
     List<Map<String, Object>> selectPoSpec(@Param("poIdx") long poIdx);
 
     /** 발주 입고 예정스펙 **/
-    List<String> selectPoSpecBuy(@Param("poIdx") long poIdx);
+    List<String> selectPoSpecBuy(@Param("ppIdx") long poIdx);
 
     /** 발주 판매 예정 스팩 **/
-    List<String> selectPoSpecSell(@Param("poIdx") long poIdx);
+    List<String> selectPoSpecSell(@Param("ppIdx") long poIdx);
 }

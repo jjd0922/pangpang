@@ -195,15 +195,16 @@
     </select>
 
     <sql id="includeInDatatable">
-        AND (PO_TYPE = 'EMERGENCY' OR HW_STATE = 'APPROVED')
+
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
             *
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX=HW_IDX
+                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
+                LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -213,8 +214,9 @@
             COUNT(*)
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX=HW_IDX
+                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
+                LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -253,12 +255,14 @@
         SELECT
             PRODUCT.*
             ,PO_PRODUCT.*
+            ,PO.*
             ,PP_COST * PP_COUNT PP_TOTAL
         FROM
-            PO_PRODUCT, PRODUCT
+            PO_PRODUCT, PRODUCT, PO
         WHERE
             PP_PO_IDX = #{po_idx}
             AND PP_P_IDX = P_IDX
+            AND PP_PO_IDX = PO_IDX
         ORDER BY PP_IDX
     </select>
     <sql id="includeInPpDatatable">
@@ -323,7 +327,7 @@
                 LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
 
         WHERE
-            PP_PO_IDX = #{poIdx}
+            PP_IDX = #{ppIdx}
     </select>
 
     <select id="selectPoSpecSell" resultType="String">
@@ -336,6 +340,28 @@
                 LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
 
         WHERE
-            PP_PO_IDX = #{poIdx}
+            PP_IDX = #{ppIdx}
+    </select>
+
+    <select id="selectInPoProductDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            po_product
+                LEFT JOIN po ON PP_PO_IDX = PO_IDX
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+        WHERE
+            PO_IDX = #{po_idx}
+    </select>
+
+    <select id="selectPoProductIdxList" resultType="int">
+        SELECT
+            P_IDX
+        FROM
+            po
+                LEFT JOIN po_product ON po_idx = pp_po_idx
+                LEFT JOIN product ON pp_p_idx = p_idx
+        WHERE
+            PO_IDX = #{poIdx}
     </select>
 </mapper>

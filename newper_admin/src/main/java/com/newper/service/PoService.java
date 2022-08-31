@@ -414,7 +414,7 @@ public class PoService {
     }
 
     public String selectPoSpecSell(long poIdx) {
-        List<String> spec = poMapper.selectPoSpecBuy(poIdx);
+        List<String> spec = poMapper.selectPoSpecSell(poIdx);
         String spec_str = "";
         for (int i = 0; i < spec.size(); i++) {
             spec_str += spec.get(i) + "/";

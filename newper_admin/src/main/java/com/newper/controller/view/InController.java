@@ -1,6 +1,8 @@
 package com.newper.controller.view;
 
 import com.newper.constant.GState;
+import com.newper.repository.InGroupRepo;
+import com.newper.repository.PoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @Controller
 public class InController {
+    private final PoRepo poRepo;
+    private final InGroupRepo inGroupRepo;
+
+
 
     /** 입고등록*/
     @GetMapping("")
@@ -24,6 +30,7 @@ public class InController {
     @GetMapping("po/{poIdx}")
     public ModelAndView inIdx(@PathVariable int poIdx){
         ModelAndView mav = new ModelAndView("in/po_poIdx");
+        mav.addObject("ig", inGroupRepo.findInGroupByPoPoIdx(poIdx));
 
         return mav;
     }

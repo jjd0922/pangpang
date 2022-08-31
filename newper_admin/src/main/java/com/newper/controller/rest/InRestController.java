@@ -7,6 +7,7 @@ import com.newper.dto.ReturnMap;
 import com.newper.mapper.PoMapper;
 import com.newper.service.GoodsService;
 import com.newper.service.InService;
+import com.newper.service.PoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ public class InRestController {
     private final PoMapper poMapper;
     private final GoodsService goodsService;
     private final InService inService;
+    private final PoService poService;
 
 
     /**
@@ -48,11 +50,8 @@ public class InRestController {
     @PostMapping("poProduct.dataTable")
     public ReturnDatatable poProduct(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
-
         inService.insertInGroup(paramMap.getInt("po_idx"));
-
         List<Map<String, Object>> data = poMapper.selectInPoProductDatatable(paramMap.getMap());
-
         rd.setData(data);
 
         return rd;
@@ -64,11 +63,9 @@ public class InRestController {
     @PostMapping("po.dataTable")
     public ReturnDatatable po(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
-
         List<Map<String, Object>> data = poMapper.selectInPoDatatable(paramMap.getMap());
-
+        inService.settingOptionAndSpec(data);
         rd.setData(data);
-
         return rd;
     }
 
