@@ -176,7 +176,7 @@
                                                                     <a th:each="type: ${T(com.newper.constant.LocType).values()}" th:onclick="changeLocType([[${type.name()}]])" class="dropdown-item">[[${type.getOption()}]]</a>
                                                                 </div>
 
-                                                                <a type="button" class="btn btn-sm btn-primary ml-1">
+                                                                <a type="button" class="btn btn-sm btn-primary ml-1" id="excelUploadBtn">
                                                                     <i class="icon-upload4 mr-1"></i>엑셀업로드
                                                                 </a>
                                                             </div>
@@ -197,7 +197,7 @@
     </div>
 </div>
 
-</body>
+<th:block th:replace="warehouse/modal/excelUploadModal.html"/>
 
 <!-- 공통 js -->
 
@@ -373,7 +373,6 @@
                 ,{'title':'존','data':'LOC_ZONE', 'defaultContent':''}
                 ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
                 ,{'title':'열','data':'LOC_COLUMN', 'defaultContent':''}
-                ,{'title':'로케이션','data':'LOCATION', 'defaultContent':''}
                 ,{'title':'담당자','data':'U_NAME', 'defaultContent':''}
             ]
         });
@@ -389,5 +388,7 @@
     $('#searchLocationForm').on('keyup', function (event) {
         if(event.keyCode==13){searchLocation();return false;}
     });
+    $('#excelUploadBtn').on('click', showExcelUploadModal);
 </script>
+</body>
 </html>

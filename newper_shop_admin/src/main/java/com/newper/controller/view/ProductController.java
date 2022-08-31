@@ -39,7 +39,7 @@ private final ShopCategoryMapper shopCategoryMapper;
 
     @GetMapping("shopDetail")
     public ModelAndView shopDetail(){
-        ModelAndView mav = new ModelAndView("product/shop_product_detail");
+        ModelAndView mav = new ModelAndView("product/shop_detail");
         List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
         mav.addObject("shopCategory",shopCategory);
         return mav;

@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${product != null}"></title>
+
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .modal-dialog{
+            max-width: 950px;
+        }
+
+        .table-hover {
+            width: 100% !important;
+        }
+
+        .form-division{
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >주문정보 상세</h4>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button type="button" class="" onclick="">문자발송</button>
+                        <button type="button" class="" onclick="">카카오톡</button>
+                        <button type="button" class="" onclick="">APP PUSH</button>
+                    </div>
+
+                </div>
+            </div>
+            <form id="productForm" class="form-division">
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">1. 주문, 결제정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">결제완료</button>
+                                    <button type="button" class="btn btn-xs bg-success pull-right legitRipple" onclick="">결제취소</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문완료일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제상태
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제방식
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문분양몰
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               PG결제승인코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               회원구분
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문자 ID
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               카드결제취소코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문자 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               카드결제취소일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text ">
+                                               주문자 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문경로
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">2. 주문, 결제정보 <span class="small ml-2"></span>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               판매가(뉴퍼마켓가) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불은행
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               할인가 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불계좌번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                쿠폰할인가 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불예금주
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               사용적립금(마일리지) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불처리금액합계
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               사용적립금(예치금)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송비(설치비) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               예정적립금합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text ">
+                                               최종결제금액
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제취소금액
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">3. 배송/설치정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">배송지정보변경</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송/설치메세지
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 우편번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 주소
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 상세주소
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">4. 반품/수거정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">배송지정보변경</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송/설치메세지
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 우편번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 주소
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 상세주소
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">반품요청</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">교환요청</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">관리자반품완료</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">관리자교환완료</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">AS요청</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">환불처리</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">송장등록</button>
+
+                                </legend>
+                            </fieldset>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>선택</th>
+                                    <th>주문상품코드</th>
+                                    <th>주문상태</th>
+                                    <th>환불상태</th>
+                                    <th>상품코드</th>
+                                    <th>상품명</th>
+                                    <th>수량</th>
+                                    <th>재고코드</th>
+                                    <th>자산코드</th>
+                                    <th>옵션1</th>
+                                    <th>옵션2</th>
+                                    <th>옵션3</th>
+                                    <th>자산상태</th>
+                                    <th>판매가(뉴퍼마켓가)</th>
+                                    <th>할인가</th>
+                                    <th>쿠폰할인가(-)</th>
+                                    <th>사용적립금(마일리지)(-)</th>
+                                    <th>사용적립금(예치금)(-)</th>
+                                    <th>배송비(설치비)</th>
+                                    <th>최종결제금액</th>
+                                    <th>예정적립금</th>
+                                    <th>환불금액</th>
+                                </tr>
+                                </thead>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>출고택배사</th>
+                                    <th>출고송장번호</th>
+                                    <th>수거택배사</th>
+                                    <th>수거송장번호</th>
+                                    <th>설치업체</th>
+                                    <th>수거업체</th>
+                                    <th>주문완료일</th>
+                                    <th>배송출고일</th>
+                                    <th>배송완료일</th>
+                                    <th>설치완료일</th>
+                                    <th>구매확정일</th>
+                                    <th>설치예정일</th>
+                                    <th>주문취소일</th>
+                                    <th>반품요청일</th>
+                                    <th>반품완료일</th>
+                                    <th>환불요청일</th>
+                                    <th>사용적립금(마일리지)(-)</th>
+                                    <th>사용적립금(예치금)(-)</th>
+                                    <th>배송비(설치비)</th>
+                                    <th>최종결제금액</th>
+                                    <th>예정적립금</th>
+                                    <th>환불금액</th>
+                                </tr>
+                                </thead>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button th:if="${product}==null" onclick="productSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button th:unless="${product}==null" onclick="productUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
+        </div>
+    </div>
+
+</div>
+
+<th:block th:replace="product/modal/companyModal.html"/>
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+</body>
+
+
+<th:block th:replace="modal/summernoteImageModal.html"></th:block>
+
+<script th:inline="javascript">
+    function category1(){
+        var category = $('select[name=CATE_IDX1]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX2] option').remove();
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX2]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
+
+    function category2(){
+        var category = $('select[name=CATE_IDX2]').val();
+        $.ajax({
+            url:'/product/category/parent.ajax',
+            data:'CATE_IDX='+category,
+            type:'post',
+            async: false,
+            success:function (res){
+                $('select[name=CATE_IDX3] option').remove();
+                var str = '<option value="">선택</option>';
+                $.each(res.data.list,function (i){
+                    var result = res.data.list[i]
+                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
+                })
+                $('select[name=CATE_IDX3]').append(str);
+                $('input[name=P_CATE_IDX]').val(category);
+            }
+        })
+    }
+
+    function category3(){
+        var category = $('select[name=CATE_IDX3]').val();
+        $('input[name=P_CATE_IDX]').val(category);
+    }
+
+    function selectCompany(row){
+        var CT_TYPE = $('input[name=CT_TYPE]').val();
+        var rowData = getDatatablemap('companyModalTable', row);
+
+        if(CT_TYPE=='STORE'){
+            $('input[name=P_COM_NAME]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX]').val(rowData.COM_IDX);
+        }else if(CT_TYPE==''){
+            $('input[name=P_COM_NAME2]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);
+        }else if(CT_TYPE=='REPAIRING'){
+            $('input[name=P_COM_NAME3]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX3]').val(rowData.COM_IDX);
+        }
+        $('#searchCompanyModal').modal('hide');
+    }
+
+    function optionAdd(){
+        var cnt = $('#optCnt').val();
+        if(cnt==3){
+            alert("옵션은 최대 3개까지 추가할 수 있습니다.");
+        }else if(-1<cnt<3){
+            cnt++;
+            var str ="";
+            str+="<tr id='option_"+cnt+"'>";
+            str+="<td id='opCnt"+cnt+"'>"+cnt+"</td>";
+            str+="<td><input type='text' class='form-control' name='p_option_key"+cnt+"'></td>";
+            str+="<td><input type='text' class='form-control' name='p_option_value"+cnt+"' placeholder='옵션속성 ,로 구분'></td>";
+            str+="<td><a class='btn btn-sm badge-indigo' id='optionBtn"+cnt+"' onclick='deleteOption("+cnt+")'>삭제</a></td>";
+
+            $('#optCnt').val(cnt);
+            $('#option_area').append(str);
+        }
+    }
+
+    function deleteOption(cnt){
+        $('#option_'+cnt).remove();
+        if(cnt==1){
+            if(document.getElementById("option_2")){
+                $('#option_2').attr('id','option_1');
+                $('#opCnt2').html(1);
+                $('#opCnt2').attr('id','opCnt1');
+                $('input[name="p_option_key2"]').attr('name','p_option_key1');
+                $('input[name="p_option_value2"]').attr('name','p_option_value1');
+                document.getElementById("optionBtn2").setAttribute("onclick","deleteOption(1)")
+                $('#optionBtn2').attr('id','optionBtn1')
+            }
+            if(document.getElementById("option_3")){
+                $('#option_3').attr('id','option_2');
+                $('#opCnt3').html(2);
+                $('#opCnt3').attr('id','opCnt2');
+                $('input[name="p_option_key3"]').attr('name','p_option_key2');
+                $('input[name="p_option_value3"]').attr('name','p_option_value2');
+                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
+                $('#optionBtn3').attr('id','optionBtn2')
+            }
+
+        }else if(cnt==2){
+            if(document.getElementById("option_3")){
+                $('#option_3').attr('id','option_2');
+                $('#opCnt3').html(2);
+                $('#opCnt3').attr('id','opCnt2');
+                $('input[name="p_option_key3"]').attr('name','p_option_key2');
+                $('input[name="p_option_value3"]').attr('name','p_option_value2');
+                document.getElementById("optionBtn3").setAttribute("onclick","deleteOption(2)")
+                $('#optionBtn3').attr('id','optionBtn2')
+            }
+        }
+
+        var count = $('#optCnt').val();
+        count=count-1;
+        $('#optCnt').val(count);
+    }
+
+    function productSave(){
+        if(confirm("저장하시겠습니까?")){
+            var param = new FormData($('#productForm')[0]);
+            $.ajax({
+                url:'/product/productSave.ajax',
+                data: param,
+                processData:false,
+                contentType:false,
+                type:'post',
+                success:function(res) {
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        opener.location.reload();
+                        self.close();
+                    }
+                }
+            })
+        }
+    }
+
+    function productUpdate(){
+        if(confirm("수정하시겠습니까?")){
+            var param = new FormData($('#productForm')[0]);
+            $.ajax({
+                url:'/product/'+[[${product?.pIdx}]]+'/productUpdate.ajax',
+                type:'post',
+                processData:false,
+                contentType:false,
+                data:param,
+                success: function(res){
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        window.location.reload();
+                        opener.location.reload();
+                    }
+                }
+            })
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+        smImage('#summerNote1');
+        smImage('#summerNote2');
+        smImage('#summerNote3');
+
+        if([[${cg?.depth}]]!=null){
+            if([[${cg?.depth}]]==1){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+            }else if([[${cg?.depth}]]==2){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+            }else if([[${cg?.depth}]]==3){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+                $('select[name=CATE_IDX3]').val([[${cg?.CATE_IDX3}]]).trigger('change');
+            }
+        }
+
+    }
+
+
+    $('#companyModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchCompanyDataTable();return false;}
+    });
+</script>
+
+</html>

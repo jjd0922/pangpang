@@ -16,21 +16,6 @@
         order by SCATE_ORDER
     </select>
 
-    <select id="selectShopCategoryDatatableByChildren" resultType="map">
-        SELECT
-            category.*,category_shop_category.*
-        FROM
-            category
-                LEFT JOIN category_shop_category
-                          ON CATE_IDX=CSC_CATE_IDX
-                LEFT JOIN shop_category
-                          ON SCATE_IDX=CSC_SCATE_IDX
-        WHERE
-            CATE_DEPTH=2
-          AND SCATE_IDX=#{SCATE_IDX}
-        ORDER BY CSC_ORDER
-    </select>
-
     <select id="maxShopCategoryOrderBySCateDepth" resultType="Integer">
         SELECT
             MAX(SCATE_ORDER)
@@ -69,5 +54,6 @@
             CATE_DEPTH=2
             and CATE_IDX=#{CATE_IDX}
     </select>
+
 
 </mapper>

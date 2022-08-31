@@ -48,15 +48,71 @@ body.no-scroll {
     src: local('Pretendard Light'), url('../font/woff2/Pretendard-Light.woff2') format('woff2'), url('../font/woff/Pretendard-Light.woff') format('woff');
 }
 
+.font-xxlg {
+    font-size: 33px;
+}
+.font-xlg {
+    font-size: 26px;
+}
+.font-lg {
+    font-size: 21px;
+}
+.font-md {
+    font-size: 17px;
+}
+.font-sm {
+    font-size: 15px;
+}
+.font-xsm {
+    font-size: 14px;
+}
+.font-xxsm {
+    font-size: 11px;
+}
+
+.bold {
+    font-weight: 600;
+}
+.semi-bold {
+    font-weight: 500;
+}
+.medium {
+    font-weight: 400;
+}
 
 .color-blue {
-    color: #314ad7;
+    color: #314ad7!important;
 }
 .color-red {
-     color: #ff0000;
+     color: #ff0000!important;
  }
+
+.opacity-8 {
+    opacity: .8;
+}
+
+.div-line {
+    position: relative;
+    margin-left: 15px;
+    padding-left: 15px;
+}
+.div-line::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 15px;
+    background: #333;
+}
 #index section {
     margin-top: 85px;
+}
+.section-title .title-img {
+    width: 365px;
+    height: auto;
+    margin: 0 auto;
 }
 .separation {
     position: relative;
@@ -652,7 +708,7 @@ nav {
 }
 .discount-rate {
     font-size: 26px;
-    color: #ff0000;
+    color: #ff0000!important;
     font-weight: 600;
 }
 .grade-wrap, .wish, .grade {
@@ -700,6 +756,10 @@ nav {
     display: inline-flex;
     align-items: center;
 }
+.won {
+    font-size: .7em;
+    font-weight: 400;
+}
 
 /*** 썸네일 슬라이드 화살표 커스텀 ***/
 .btn-disabled {
@@ -730,26 +790,65 @@ nav {
     display: flex;
     flex-wrap: wrap;
 }
-.thumb-list li {
-    width: 25%;
+.thumb-list>li {
     padding: 25px;
+    position: relative;
 }
-.thumb-list li:hover {
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    border-radius: 15px;
+.lg-col-12>* {
+    width: 100%;
 }
-
+.lg-col-6>* {
+    width: 49.5%;
+}
+.lg-col-4>* {
+    width: 33.33%;
+}
+.lg-col-3>* {
+    width: 25%;
+}
+.lg-col-6>li:nth-child(2n-1) {
+    margin-right: 1%;
+}
 @media (max-width:991px) {
-    .thumb-list li.width-100per {
+    .sm-col-12>* {
         width: 100%;
     }
-    .thumb-list li.width-50per {
+    .sm-col-6>* {
         width: 50%;
     }
-    .thumb-list li.width-33per {
+    .sm-col-4>* {
         width: 33.33%;
     }
+    .sm-col-3>* {
+        width: 25%;
+    }
 }
+/*** 썸네일 목록 1행 1열 ***/
+.thumbnailLayout_1>li {
+    margin-bottom: 30px;
+}
+.thumbnailLayout_1>li:last-child {
+    margin-bottom: 0;
+}
+/*** 가로형 썸네일 ***/
+.thumbnail-2 {
+    display: flex;
+    position: relative;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    border-radius: 15px;
+    padding: 30px;
+}
+.thumbnail-2 .item-img {
+    width: 40%;
+    margin-bottom: 0;
+}
+.thumbnail-2 .item-info {
+    width: 60%;
+    padding-left: 30px;
+    position: relative;
+}
+
+
 /*** 모든 페이지 공통 tab 디자인 ***/
 .ctg-tab-cover {
     border-top: 1px solid #d1d1d1;
@@ -1027,4 +1126,45 @@ footer {
     color:#666;
     font-size: 15px;
     font-weight: 300;
+}
+
+/*** 구매하기 버튼 ***/
+.purchase-btn {
+    border: 1px solid #d1d1d1;
+    border-radius: 30px;
+    padding: 10px 40px;
+    cursor: pointer;
+}
+.purchase-btn2 {
+    display: flex;
+    justify-content: center;
+}
+.purchase-btn2 a {
+    border: 1px solid #0c2da3;
+    border-radius: 30px;
+    padding: 10px 120px;
+    color: #0c2da3;
+}
+
+
+/*** input[type="checkbox"] custom-checkbox ***/
+.custom-checkbox[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    appearance: none;
+    cursor: pointer;
+    transition: background .2s;
+    background: url("../image/check/check.png") no-repeat center/contain;
+    margin-right: 5px;
+}
+.custom-checkbox[type="checkbox"]:checked {
+    background: #314ad7;
+}
+.custom-checkbox[type="checkbox"]:checked::after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background: url("../image/check/check-active.png") no-repeat center/contain;
 }

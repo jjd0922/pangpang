@@ -1,5 +1,7 @@
 package com.newper.entity;
 
+import com.newper.constant.ShopState;
+import com.newper.constant.ShopType;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -21,16 +23,20 @@ public class Shop extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shopIdx;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "SHOP_PG_IDX", referencedColumnName = "pgIdx")
-//    private PayInfo payInfo;
-//
-//    private String shopState;
+
+    @Enumerated(EnumType.STRING)
+    private ShopState shopState;
 
     private String shopName;
 
-//    private String shopType;
-//
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private ShopType shopType = ShopType.NORMAL;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SHOP_PG_IDX", referencedColumnName = "pgIdx")
+    private Pg pg;
+
 //    private String shopPoint;
 //
     private Float shopMileage;

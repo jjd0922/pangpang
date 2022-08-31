@@ -154,10 +154,6 @@ public class Product extends BaseEntity {
         }
     }
 
-    /** */
-    public void updateProduct(Product product) {
-        setPContent1(product.getPContent1());
-    }
 
 
 

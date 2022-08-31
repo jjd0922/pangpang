@@ -27,4 +27,7 @@ public interface BomMapper {
 
     /** 모상품으로 bom count*/
     int countBom(Map<String, Object> map);
+
+    /** bom 엑셀 업로드*/
+    void insertBomByExcel(List<Map<String, Integer>> map);
 }

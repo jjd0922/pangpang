@@ -1,9 +1,6 @@
 package com.newper.util;
 
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.BuiltinFormats;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
@@ -15,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.awt.Color;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -142,6 +140,20 @@ public class ExcelDownload {
                 wb.close();
             }catch (Exception e) {}
         }
+    }
+
+    /** 숫자타입 셀타입을 String으로 변환 */
+    public static String getStringCellValueOfExcelRow(Row row, int cellNum) {
+        String value = "";
+        if (row.getCell(cellNum) != null) {
+            if (row.getCell(cellNum).getCellType() == CellType.STRING) {
+                value = row.getCell(cellNum).getStringCellValue();
+            } else if (row.getCell(cellNum).getCellType() == CellType.NUMERIC) {
+                value = Integer.toString((int)row.getCell(cellNum).getNumericCellValue());
+            }
+        }
+
+        return value;
     }
 
 }

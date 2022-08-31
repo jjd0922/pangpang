@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,15 +22,17 @@ public class ShopService {
     private final DomainRepo domainRepo;
 
     /** shop 정보 가져오기 */
-    public void setShopComp(String domain) {
-        Domain dom = domainRepo.findByDomUrl(domain);
+    public void setShopComp() {
 
-        Shop shop = dom.getShop();
-        shopComp.getShopMap().put(domain, shop);
+        List<Domain> domainList = domainRepo.findWithShopBy();
+        for (Domain domain : domainList) {
+            Shop shop = domain.getShop();
+            shopComp.getShopMap().put(domain.getDomUrl(), shop);
 
-        //select sql
-        shop.getHeaderMenulist().size();
-
+            //select sql
+            //N+1 (shop갯수만큼 조회됨) vs shop 중복 조회 효율
+            shop.getHeaderMenulist().size();
+        }
     }
 
 }

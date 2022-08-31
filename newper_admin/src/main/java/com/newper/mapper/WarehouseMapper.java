@@ -2,6 +2,7 @@ package com.newper.mapper;
 
 import com.newper.constant.LocType;
 import com.newper.constant.WhState;
+import com.newper.entity.Location;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +27,8 @@ public interface WarehouseMapper {
     /**로케이션 구분 일괄변경*/
     void changeAllLocType(@Param("locIdxs") String[] locIdxs,
                           @Param("locType") LocType locType);
+
+
+    /**로케이션 엑셀 업로드*/
+    void insertLocationByExcel(List<Location> locations);
 }

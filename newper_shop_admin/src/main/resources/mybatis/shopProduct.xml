@@ -80,4 +80,21 @@
             SP_IDX is not null
     </select>
 
+    <select id="selectGoodStockDatatalbe" resultType="map">
+        select
+            *,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
+        from
+            goods_stock
+            left join spec
+            on SPEC_IDX = GS_SPEC_IDX
+        WHERE
+            GS_IDX is not null
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
 </mapper>

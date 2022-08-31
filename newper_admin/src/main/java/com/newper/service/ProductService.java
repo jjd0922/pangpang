@@ -3,6 +3,7 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.GRank;
+import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Category;
 import com.newper.entity.Company;
@@ -122,7 +123,32 @@ public class ProductService {
         Product product = paramMap.mapParam(Product.class);
         Product ori = productRepo.findById(paramMap.getInt("P_IDX")).get();
 
-        ori.updateProduct(product);
+        ori.setPName(product.getPName());
+        ori.setPState(product.getPState());
+        ori.setPModel(product.getPModel());
+        ori.setPUseStock(product.isPUseStock());
+        ori.setPType1(product.getPType1());
+        ori.setPType2(product.getPType2());
+        ori.setPType3(product.getPType3());
+        ori.setPContent1(product.getPContent1());
+        ori.setPContent2(product.getPContent2());
+        ori.setPContent3(product.getPContent3());
+        ori.setPMemo(product.getPMemo());
+        ori.setPTag(product.getPTag());
+        ori.setPBlogUrl(product.getPBlogUrl());
+        ori.setPPriceUrl(product.getPPriceUrl());
+        ori.setPYoutubeUrl(product.getPYoutubeUrl());
+        ori.setPCost(product.getPCost());
+        ori.setPRetailPrice(product.getPRetailPrice());
+        ori.setPSellPrice(product.getPSellPrice());
+        ori.setPDelPrice(product.getPDelPrice());
+        ori.setPDelCompany(product.getPDelCompany());
+        ori.setPDelTogether(product.getPDelTogether());
+        ori.setPFreeInterest(product.isPFreeInterest());
+        ori.setPDelFree(product.isPDelFree());
+        ori.setPNaver(product.getPNaver());
+        ori.setPInfo(product.getPInfo());
+        ori.setPOption(product.getPOption());
 
 
         if(!paramMap.get("P_CATE_IDX").equals("")){
@@ -199,12 +225,13 @@ public class ProductService {
         product.setPThumbFileName5(P_THUMB_FILE_NAME5);
         product.setPThumbFileName6(P_THUMB_FILE_NAME6);
 
-        //productRepo.save(ori);
+        productRepo.save(ori);
 
 
-        return product.getPIdx();
+        return ori.getPIdx();
     }
 
+    /**재고상품 저장*/
     @Transactional
     public int goodsStockSave(ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
         GoodsStock goodsStock = paramMap.mapParam(GoodsStock.class);
@@ -220,7 +247,7 @@ public class ProductService {
         goodsStock.setGsCode(code);
 
         if(!paramMap.get("P_IDX").equals("")){
-            Product product = productRepo.findById(paramMap.getInt("P_IDX")).get();
+            Product product = productRepo.getReferenceById(paramMap.getInt("P_IDX"));
             goodsStock.setProduct(product);
         }
 
@@ -280,12 +307,6 @@ public class ProductService {
     public int goodsStockUpdate(ParamMap paramMap, MultipartFile GS_THUMB_FILE1, MultipartFile GS_THUMB_FILE2, MultipartFile GS_THUMB_FILE3){
         GoodsStock goodsStock = paramMap.mapParam(GoodsStock.class);
         GoodsStock ori = goodsStockRepo.findById(paramMap.getInt("GS_IDX")).get();
-        String gs_code = productMapper.selectGoodsStockByListGsCode();
-
-        if(!paramMap.get("P_IDX").equals("")){
-            Product product = productRepo.findById(paramMap.getInt("P_IDX")).get();
-            goodsStock.setProduct(product);
-        }
 
         String thumbFilePath1=ori.getGsThumbFile1();
         String thumbFilePath2=ori.getGsThumbFile2();
@@ -310,28 +331,24 @@ public class ProductService {
             GS_THUMB_FILE_NAME3= GS_THUMB_FILE3.getOriginalFilename();
         }
 
-        goodsStock.setGsThumbFile1(thumbFilePath1);
-        goodsStock.setGsThumbFile2(thumbFilePath2);
-        goodsStock.setGsThumbFile3(thumbFilePath3);
+        ori.setGsThumbFile1(thumbFilePath1);
+        ori.setGsThumbFile2(thumbFilePath2);
+        ori.setGsThumbFile3(thumbFilePath3);
 
-        goodsStock.setGsThumbFileName1(GS_THUMB_FILE_NAME1);
-        goodsStock.setGsThumbFileName2(GS_THUMB_FILE_NAME2);
-        goodsStock.setGsThumbFileName3(GS_THUMB_FILE_NAME3);
+        ori.setGsThumbFileName1(GS_THUMB_FILE_NAME1);
+        ori.setGsThumbFileName2(GS_THUMB_FILE_NAME2);
+        ori.setGsThumbFileName3(GS_THUMB_FILE_NAME3);
 
-        goodsStock.setProduct(ori.getProduct());
-        goodsStock.setSpec(ori.getSpec());
-        goodsStock.setGsCode(ori.getGsCode());
-        goodsStock.setGsSale(ori.getGsSale());
-        goodsStock.setGsRank(ori.getGsRank());
-        goodsStock.setGsOption(ori.getGsOption());
-        goodsStock.setGsOriginalPrice(ori.getGsOriginalPrice());
-        goodsStock.setGsStock(ori.getGsStock());
-        goodsStock.setGsOutStock(ori.getGsOutStock());
-        goodsStock.setGsSafeStock(ori.getGsSafeStock());
-
-        goodsStockRepo.save(goodsStock);
+        ori.setGsContent(goodsStock.getGsContent());
+        ori.setGsName(goodsStock.getGsName());
+        ori.setGsPrice(goodsStock.getGsPrice());
 
 
-        return goodsStock.getGsIdx();
+
+
+        goodsStockRepo.save(ori);
+
+
+        return ori.getGsIdx();
     }
 }

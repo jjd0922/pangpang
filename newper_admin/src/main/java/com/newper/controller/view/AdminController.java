@@ -12,9 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin/")
 public class AdminController {
     /**뮨자 템플릿 페이지*/
-    @GetMapping(value = "msgTemplate")
-    public ModelAndView msgTemplate(){
-        ModelAndView mav = new ModelAndView("admin/msgTemplate");
+    @GetMapping(value = "smsTemplate")
+    public ModelAndView smsTemplate(){
+        ModelAndView mav = new ModelAndView("admin/smsTemplate");
 
         return mav;
     }
@@ -29,11 +29,36 @@ public class AdminController {
 
 
     /**문자 템플릿 팝업페이지*/
-    @GetMapping(value = "msgPop")
-    public ModelAndView msgPop(){
-        ModelAndView mav = new ModelAndView("admin/msgPop");
+    @GetMapping(value = "smsPop")
+    public ModelAndView smsPop(){
+        ModelAndView mav = new ModelAndView("admin/smsPop");
 
         return mav;
     }
 
+    /**카카오톡 템플릿 팝업페이지*/
+    @GetMapping(value = "kakaoPop")
+    public ModelAndView kakaoPop(){
+        ModelAndView mav = new ModelAndView("admin/kakaoPop");
+
+        return mav;
+    }
+
+
+    /**상담결과 페이지*/
+    @GetMapping(value = "counselResult")
+    public ModelAndView counselResult(){
+        ModelAndView mav = new ModelAndView("admin/counselResult");
+
+        return mav;
+    }
+
+
+    /**상담결과 팝업페이지*/
+    @GetMapping(value = "counselPop")
+    public ModelAndView counselPop(){
+        ModelAndView mav = new ModelAndView("admin/counselPop");
+
+        return mav;
+    }
 }

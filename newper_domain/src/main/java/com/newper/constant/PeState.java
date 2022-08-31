@@ -8,8 +8,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PeState implements EnumOption {
+
+    /**유효*/
     AVAILABLE("유효")
-    ,DISPOSAL("폐기");
+    /**폐기*/
+    ,DISPOSAL("폐기")
+    ;
 
     private String option;
 }

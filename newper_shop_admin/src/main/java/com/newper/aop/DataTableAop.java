@@ -1,6 +1,7 @@
 package com.newper.aop;
 
 import com.newper.component.SessionInfo;
+import com.newper.constant.basic.EnumClasses;
 import com.newper.constant.basic.EnumOption;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
@@ -23,28 +24,27 @@ public class DataTableAop {
     @Autowired
     private SessionInfo sessionInfo;
 
-    /**
-     * key: column명 (snake_case) , value : enum class명(camelBack)
-     */
-    HashMap<String, EnumOption[]> enumClasses = new HashMap<>();
+    /** key: column명 (snake_case) , value : enum class명(camelBack) */
+    Map<String,String> enumClasses;
+
+//    @PostConstruct
+//    public void printCode() throws ClassNotFoundException{
+//        File enumDir = new File(ClassLoader.getSystemResource("com/newper/constant").getFile());
+//        System.out.println("====start====  \n");
+//        for (String s : enumDir.list()) {
+//            if(s.endsWith(".class")){
+//                s = s.replace(".class", "");
+//                System.out.println("enumClasses.put(\""+s.replaceAll(("([A-Z])"),"_$1").substring(1).toLowerCase()+"\",\""+s+"\");");
+//            }
+//
+//        }
+//        System.out.println("\n\n  ====end====  \n"+enumDir.list().length);
+//    }
 
     @PostConstruct
-    public void postConstruct() throws ClassNotFoundException{
-
-        File enumDir = new File(ClassLoader.getSystemResource("com/newper/constant").getFile());
-        for (String s : enumDir.list()) {
-            if(s.equals("basic")){
-                continue;
-            }else if(s.equals("etc")){
-                continue;
-            }
-
-            s = s.replace(".class", "");
-            Object[] enumConstants = Class.forName("com.newper.constant." + s).getEnumConstants();
-            if(enumConstants instanceof EnumOption[]){
-                enumClasses.put(s.replaceAll("([a-z])([A-Z]+)","$1_$2").toLowerCase(), (EnumOption[])enumConstants);
-            }
-        }
+    public void postConstruct() {
+        EnumClasses ec = new EnumClasses();
+        enumClasses = ec.enumClasses();
     }
 
     @Around("execution(* com.newper.mapper.*.*(..)))")
@@ -79,12 +79,14 @@ public class DataTableAop {
             if(enumClasses.containsKey(key.toLowerCase())){
                 Object value = map.get(key);
                 if(value instanceof String){
-                    EnumOption enumOption = Arrays.stream(enumClasses.get(key.toLowerCase())).filter(en -> {
-                        return en.toString().equals((String) value);
-                    }).findFirst().get();
-                    addMap.put(key + "", enumOption.getOption());
+                    addMap.put(key + "_STR", getEnumOption(key.toLowerCase(), (String)value));
                 }
             }else if(key.indexOf("_LIST") != -1){
+                //제외
+                if(key.equals("CATE_SPEC_LIST")){
+                    continue;
+                }
+
                 int indexOfList = key.lastIndexOf("_LIST");
                 String columnName = key.substring(0, indexOfList).toLowerCase();
                 if (enumClasses.containsKey(columnName)) {
@@ -93,12 +95,9 @@ public class DataTableAop {
                         String[] enumList = ((String) value).split(",");
                         String dtValue = "";
                         for (String s : enumList) {
-                            EnumOption enumOption = Arrays.stream(enumClasses.get(columnName)).filter(en -> {
-                                return en.toString().equals((String) s);
-                            }).findFirst().get();
-                            dtValue+=enumOption.getOption()+", ";
+                            dtValue+=getEnumOption(columnName, s)+", ";
                         }
-                        addMap.put(key + "_STR", dtValue.substring(0,dtValue.length()-2));
+                        addMap.put(key + "", dtValue.substring(0,dtValue.length()-2));
                     }
 
                 }
@@ -106,6 +105,21 @@ public class DataTableAop {
             }
         }
         map.putAll(addMap);
+    }
+    /** enumClass이름과 name으로 option 가져오기*/
+    private String getEnumOption(String enumClass, String name){
+        try{
+            EnumOption[] enumConstants = (EnumOption[])Class.forName("com.newper.constant." + enumClasses.get(enumClass)).getEnumConstants();
+            EnumOption o = Arrays.stream(enumConstants).filter(en -> {
+                return en.toString().equals(name);
+            }).findFirst().get();
+            return o.getOption();
+        }catch (ClassNotFoundException ce){
+            return name;
+        }catch (NoSuchElementException nse){
+            System.out.println(enumClass+"\t"+name+"\t no enum value");
+            throw nse;
+        }
     }
 
     @Around("execution(com.newper.dto.ReturnDatatable com.newper.controller.rest.*.*(..)))")
@@ -116,7 +130,7 @@ public class DataTableAop {
         boolean isDownload = false;
         HttpServletResponse response = null;
         for (Object param : params) {
-            if(param instanceof ParamMap) {
+            if(param instanceof ParamMap){
                 paramMap = (ParamMap) param;
                 isDownload = paramMap.containsKey("download");
             }

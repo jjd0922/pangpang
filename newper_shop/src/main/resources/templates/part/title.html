@@ -1,10 +1,17 @@
-<!--페이지 타이틀-->
+<!--페이지 타이틀 1-->
 <th:block th:fragment="pageTitle(pageMainTitle,pageSubTitle)">
     <div class="container">
-        <div class="page-title">
+        <div>
             <h2 class="section-title" th:text="${pageMainTitle}">페이지 타이틀</h2>
             <p class="section-sub-title" th:text="${pageSubTitle}">페이지 서브 타이틀</p>
         </div>
+    </div>
+</th:block>
+
+<!--페이지 타이틀 2-->
+<th:block th:fragment="pageTitle_2(pageMainTitle)">
+    <div>
+        <h2 class="section-title2" th:text="${pageMainTitle}">페이지 타이틀</h2>
     </div>
 </th:block>
 
@@ -12,8 +19,11 @@
 <th:block th:fragment="pageImageTitle_1">
     <div class="container">
         <div class="page-title">
-            <!--<img th:attr="src=@{/image/logo.png},title='품절임박',alt='품절임박'">-->
-            <h2 class="section-title">품절임박 이미지 gif 자리</h2>
+            <h2 class="section-title">
+                <div class="title-img">
+                    <img img th:attr="src=@{/image/lastSecond-title.gif},title='품절임박',alt='품절임박'">
+                </div>
+            </h2>
         </div>
     </div>
 </th:block>
@@ -22,8 +32,11 @@
 <th:block th:fragment="pageImageTitle_2">
     <div class="container">
         <div class="page-title">
-            <!--<img th:attr="src=@{/image/logo.png},title='품절임박',alt='품절임박'">-->
-            <h2 class="section-title">타임세일 이미지 gif 자리</h2>
+            <h2 class="section-title">
+                <div class="title-img">
+                    <img th:attr="src=@{/image/timeSale-title.gif},title='품절임박',alt='품절임박'">
+                </div>
+            </h2>
         </div>
     </div>
 </th:block>

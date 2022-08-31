@@ -8,8 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CateDisplay implements EnumOption {
 
+    /**노출*/
     Y("노출")
-    ,N("미노출");
+    /**미노출*/
+    ,N("미노출")
+    ;
 
     private String option;
 

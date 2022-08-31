@@ -9,10 +9,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PType2 implements EnumOption {
 
+    /** 상품*/
     PRODUCT("상품")
+    /** 부품*/
     ,PARTS("부품")
+    /** 소모품*/
     ,EXPENDABLES("소모품")
+    /** 사은품*/
     ,GIFTS("사은품")
+    /** 해당사항없음*/
     ,ELSE("해당사항없음")
     ;
     private String option;

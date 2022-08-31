@@ -8,8 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CateType implements EnumOption {
 
+    /**카테고리*/
     CATEGORY("카테고리")
-    ,BRAND("브랜드");
+    /**브랜드*/
+    ,BRAND("브랜드")
+    ;
 
     private String option;
 

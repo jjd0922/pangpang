@@ -84,7 +84,6 @@
             LOC_ZONE,
             LOC_ROW,
             LOC_COLUMN,
-            CONCAT(LOC_ZONE,LOC_ROW,LOC_COLUMN) AS LOCATION,
             U_NAME
         FROM
             LOCATION
@@ -120,4 +119,19 @@
                 #{item}
             </foreach>
     </update>
+
+    <insert id="insertLocationByExcel" parameterType="List">
+        INSERT INTO
+            LOCATION (LOC_WH_IDX, LOC_CODE, LOC_TYPE, LOC_FORM, LOC_ZONE, LOC_ROW, LOC_COLUMN)
+        VALUES
+            <foreach collection="list" separator="," item="item">
+                (#{item.warehouse.whIdx},
+                 #{item.locCode},
+                 #{item.locType},
+                 #{item.locForm},
+                 #{item.locZone},
+                 #{item.locRow},
+                 #{item.locColumn})
+            </foreach>
+    </insert>
 </mapper>

@@ -9,10 +9,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CcCycle implements EnumOption {
 
+    /**월1회*/
     MONTH1("월1회")
+    /**월2회*/
     ,MONTH2("월2회")
+    /**주*/
     ,WEEK("주")
-    ,DAY("일");
+    /**일*/
+    ,DAY("일")
+    ;
 
     private String option;
 

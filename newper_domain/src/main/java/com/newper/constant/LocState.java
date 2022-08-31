@@ -9,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LocState implements EnumOption {
 
+    /**정상*/
     NORMAL("정상")
-    ,STOP("중지");
+    /**중지*/
+    ,STOP("중지")
+    ;
 
     private String option;
 

@@ -50,7 +50,7 @@ $(document).ajaxStart(function(event, xhr, settings){
 
         if(xhr.responseJSON.location!=null){
             if(xhr.responseJSON.popup){
-                window.open('/loginPop', 'loginPop', 'width=500, height=500');
+                window.open(xhr.responseJSON.location, '', 'width=500, height=500');
             }else{
                 //세션만료로 로그인 팝업 띄우는 경우
                 if(location.pathname == '/loginPop'){

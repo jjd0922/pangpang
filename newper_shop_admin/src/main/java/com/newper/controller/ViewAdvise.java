@@ -29,7 +29,7 @@ public class ViewAdvise {
 
     @ExceptionHandler(NoSessionException.class)
     public ModelAndView noSessionException(){
-        ModelAndView mav= new ModelAndView("redirect:/index");
+        ModelAndView mav= new ModelAndView("main/needLogin");
 
         return mav;
     }

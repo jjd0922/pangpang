@@ -8,8 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum IgState {
 
-     NONE("입고전")
+    /**입고전*/
+    NONE("입고전")
+    /**진행중*/
     ,ING("진행중")
+    /**입고완료*/
     ,DONE("입고완료")
     ;
 

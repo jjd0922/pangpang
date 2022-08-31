@@ -9,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CiInsuranceState implements EnumOption {
 
+    /**요청*/
     REQUEST("요청"),
+    /**발행*/
     ISSUE("발행"),
+    /**만료*/
     EXPIRED("만료");
 
     String option;

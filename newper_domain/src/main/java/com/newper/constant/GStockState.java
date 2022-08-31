@@ -9,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GStockState implements EnumOption {
 
-     N("미적재")
+    /**미적재*/
+    N("미적재")
+    /**가용재고*/
     ,STOCK("가용재고")
+    /**출고재고*/
     ,OUT_STOCK("출고재고")
     ;
 

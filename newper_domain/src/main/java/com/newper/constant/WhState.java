@@ -4,13 +4,16 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**창고 상태; 정상,미사용*/
 @Getter
 @AllArgsConstructor
-/**창고 상태; 정상,미사용*/
 public enum WhState implements EnumOption {
 
+    /** 정상*/
     NORMAL("정상")
-    ,DISUSE("미사용");
+    /** 미사용*/
+    ,DISUSE("미사용")
+    ;
 
     private String option;
 

@@ -49,8 +49,10 @@ public class Location {
     @PrePersist
     @PreUpdate
     public void preSave(){
-        if (!StringUtils.hasText(getLocCode())) {
-            throw new MsgException("로케이션코드를 입력해주세요");
+        if (getLocForm() == null) {
+            throw new MsgException("로케이션 형태를 입력해주세요");
+        } else if (getLocType() == null) {
+            throw new MsgException("로케이션 구분을 입력해주세요");
         } else if (!StringUtils.hasText(getLocZone())) {
             throw new MsgException("로케이션 존을 입력해주세요");
         } else if (!StringUtils.hasText(getLocRow())) {

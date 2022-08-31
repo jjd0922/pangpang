@@ -290,14 +290,14 @@ public class ProductController {
         GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(GS_IDX);
         Product product = goodsStock.getProduct();
 
-//        Map<String, Object> po = product.getPOption();
-//        String ov1 = po.get("p_option_value1")+"";
-//        String ov2 = po.get("p_option_value2")+"";
-//        String ov3 = po.get("p_option_value3")+"";
+        List<Map<String, Object>> po = product.getPOption();
 
-//        String[] option1 = ov1.split(",");
-//        String[] option2 = ov2.split(",");
-//        String[] option3 = ov3.split(",");
+        for(int i=0; i<po.size();i++){
+            List<String> val = (List)po.get(i).get("values");
+            System.out.println("option"+(i+1));
+            mav.addObject("option"+(i+1),val);
+        }
+
 
         String content = goodsStock.getGsContent();
         content= Common.summernoteContent(content);
@@ -305,9 +305,6 @@ public class ProductController {
         mav.addObject("goodsStock", goodsStock);
         mav.addObject("product", product);
         mav.addObject("content", content);
-//        mav.addObject("option1", option1);
-//        mav.addObject("option2", option2);
-//        mav.addObject("option3", option3);
 
         return mav;
     }
