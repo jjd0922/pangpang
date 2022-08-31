@@ -42,7 +42,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="CREATED_DATE">
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
                                                     <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('M')}">
                                                 </div>
 
@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table" id="smsTemplateTable"></table>
+                            <table class="table" id="smsTable"></table>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
 <script th:inline="javascript">
 
     function searchBtn() {
-        var smsTemplateTable = $('#smsTemplateTable').DataTable();
+        var table = $('#smsTable').DataTable();
         table.page('first').ajax.url('/admin/sms.dataTable?' + $('#smsForm').serialize()).load(null, false);
     }
 
@@ -123,10 +123,37 @@
         var focusPopup = window.open('smsPop/' + tfIdx, 'smsPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function deletesms() {
+        var param = dataTableGetSelectedDataArray('smsTable', 'TF_IDX');
+        if (param.length == 0) {
+            alert('선택된 템플릿이 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 템플릿을 일괄삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/admin/deletesms.ajax',
+                    type: 'post',
+                    data: {
+                        tfIdxs : param
+                    },
+                    success: function (res) {
+                        $('#smsTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
+
+
+
 </script>
 <script>
 
-        var smsTemplateTable = $('#smsTemplateTable').DataTable({
+        var smsTable = $('#smsTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering: false,
         select: {
@@ -179,6 +206,7 @@
         focusPopup.focus();
     });
 
+    $('#deleteBtn').on('click', deletesms);
 
 </script>
 </html>

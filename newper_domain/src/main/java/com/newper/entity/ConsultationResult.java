@@ -25,7 +25,7 @@ public class ConsultationResult extends BaseEntity{
 
     private String crTitle;
 
-    private String crContent;
+    private String crMemo;
 
     private String crType;
 

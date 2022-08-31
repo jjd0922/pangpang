@@ -35,17 +35,12 @@ public class TemplateFormService {
         return templateForm.getTfIdx();
     }
 
+
+    /**kakao/sms 템플릿 삭제*/
     @Transactional
     public void deleteTemplate(Integer tf_idx){
-
-        TemplateForm templateForm = templateFormRepo.findById(tf_idx).orElseThrow(()->new MsgException(("존재하지 않는 템플릿입니다.")));
-
-        templateFormRepo.delete(templateForm);
-
-        templateForm.getTfIdx();
-        templateFormRepo.save(templateForm);
-
-
+        templateFormRepo.deleteById(tf_idx);
+      }
 
     }
-}
+

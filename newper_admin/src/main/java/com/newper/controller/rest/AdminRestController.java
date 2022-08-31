@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.InvalidParameterException;
+import java.util.List;
 
 @RequestMapping(value = "/admin/")
 @RestController
@@ -46,6 +48,18 @@ public class AdminRestController {
 
         return rm;
     }
+    /**문자템플릿 삭제*/
+    @PostMapping(value = "deletesms.ajax")
+    public ReturnMap deletesms (ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        List<String> tfIdxs = paramMap.getList("tfIdxs[]");
+        for(String tfIdx : tfIdxs){
+            templateFormService.deleteTemplate(Integer.parseInt(tfIdx));
+        }
+        rm.setMessage("삭제 완료");
+        return rm;
+    }
+
     /**카카오템플릿 관리 페이지*/
     @PostMapping("kakao.dataTable")
     public ReturnDatatable kakao(ParamMap paramMap, HttpServletResponse response) {
@@ -68,27 +82,19 @@ public class AdminRestController {
 
     /**카카오템플릿 삭제*/
     @PostMapping(value = "deletekakao.ajax")
-    /*public ReturnMap deletekakao(ParamMap paramMap) {*/
-/*        ReturnMap rm = new ReturnMap();
-
-        paramMap.put("tfIdx", paramMap.getList("tfIdxList[]"));
-        templateFormMapper.deleteTemplate(paramMap.getMap());
-        rm.setMessage("삭제완료");
-        return rm;
-    }*/
-    public ReturnMap deletekakao (Integer tf_idx) {
+    public ReturnMap deletekakao (ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-
-        templateFormService.deleteTemplate(tf_idx);
+        List<String> tfIdxs = paramMap.getList("tfIdxs[]");
+        for(String tfIdx : tfIdxs){
+            templateFormService.deleteTemplate(Integer.parseInt(tfIdx));
+        }
         rm.setMessage("삭제 완료");
-
         return rm;
-
     }
 
     /**상담결과 관리 페이지*/
     @PostMapping("counsel.dataTable")
-    public ReturnDatatable counssel(ParamMap paramMap, HttpServletResponse response) {
+    public ReturnDatatable counsel (ParamMap paramMap, HttpServletResponse response) {
         ReturnDatatable rd = new ReturnDatatable("상담결과");
 
         rd.setData(consultationResultMapper.selectConsultationResultDatatable(paramMap.getMap()));
@@ -106,4 +112,19 @@ public class AdminRestController {
 
         return rm;
     }
+
+    /**상담결과 삭제*/
+    @PostMapping(value = "deletecounsel.ajax")
+    public ReturnMap deletecounsel (ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        List<String> crIdxs = paramMap.getList("crIdxs[]");
+        for(String crIdx : crIdxs){
+            consultationResultService.deletecounsel(Integer.parseInt(crIdx));
+        }
+        rm.setMessage("삭제 완료");
+        return rm;
+    }
+
+
+
 }

@@ -29,7 +29,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">등록일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="CREATED_DATE">
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
                                                 </div>
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
@@ -101,7 +101,7 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
+<script th:inline="javascript">
     function searchBtn() {
         var counselTable = $('#counselTable').DataTable();
         table.page('first').ajax.url('/admin/counsel.dataTable?' + $('#counselForm').serialize()).load(null, false);
@@ -110,6 +110,29 @@
     function counselDetailPop(crIdx) {
         var focusPopup = window.open('counselPop/' + crIdx, 'counselPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
+    }
+    function deletecounsel() {
+        var param = dataTableGetSelectedDataArray('counselTable', 'CR_IDX');
+        if (param.length == 0) {
+            alert('선택된 상담결과가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 상담결과를 일괄삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/admin/deletecounsel.ajax',
+                    type: 'post',
+                    data: {
+                        crIdxs : param
+                    },
+                    success: function (res) {
+                        $('#counselTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
     }
 </script>
 
@@ -153,8 +176,8 @@
                     return '<button type="button" class="btn btn-xs bg-primary-600" onclick="counselDetailPop('+full.CR_IDX+')">'+data+'</button>';
                 }
             }
-            , {'title': '응대스크립트', 'data': 'CR_SCRIPT'}
-            , {'title': '메모사항', 'data': 'CR_CONTENT'}
+            , {'title': '응대스크립트', 'data': 'CR_SCRIPT','defaultContent':''}
+            , {'title': '메모사항', 'data': 'CR_MEMO'}
             , {'title': '등록일', 'data': 'CREATED_DATE'}
         ]
     });
@@ -172,6 +195,6 @@
         focusPopup.focus();
     });
 
-
+    $('#deleteBtn').on('click', deletecounsel);
 </script>
 </html>
