@@ -364,4 +364,32 @@
         WHERE
             PO_IDX = #{poIdx}
     </select>
+
+    <select id="selectInProductDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            product
+                LEFT JOIN po_product ON P_IDX = PP_P_IDX
+                LEFT JOIN po ON PP_PO_IDX = PO_IDX
+                LEFT JOIN goods ON G_PO_IDX = PO_IDX AND G_P_IDX = P_IDX
+        WHERE
+            PP_PO_IDX = #{po_idx}
+        AND
+            G_IDX IS NOT NULL
+    </select>
+
+    <select id="countInProductDatatable" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product
+                LEFT JOIN po_product ON P_IDX = PP_P_IDX
+                LEFT JOIN po ON PP_PO_IDX = PO_IDX
+                LEFT JOIN goods ON G_PO_IDX = PO_IDX AND G_P_IDX = P_IDX
+        WHERE
+            PP_PO_IDX = #{po_idx}
+        AND
+            G_IDX IS NOT NULL
+    </select>
 </mapper>

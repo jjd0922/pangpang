@@ -63,6 +63,18 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">세금계산서 발행일</span>
+                                                    </span>
+                                                    <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${ig?.igTaxDate}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">입고담당자<a onclick="showUserModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
@@ -77,9 +89,33 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">세금계산서 발행일</span>
+                                                        <span class="input-group-text">입고완료일</span>
                                                     </span>
-                                                    <input type="text" name="poTaxDate" class="form-control" placeholder="입력" th:value="${ig?.po?.poTaxDate}">
+                                                    <input type="text" name="igDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${ig?.igDate}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고 메모</span>
+                                                    </span>
+                                                    <input type="text" name="igMemo" class="form-control" placeholder="입력" th:value="${ig?.igMemo}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">강제입고 사유</span>
+                                                    </span>
+                                                    <input type="text" name="igDoneMemo" class="form-control" placeholder="입력" th:value="${ig?.igDoneMemo}">
                                                 </div>
                                             </div>
                                         </div>
@@ -120,7 +156,104 @@
                                     </legend>
 
                                     <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주상태</span>
+                                                    </span>
+                                                    <select class="form-control select">
+                                                        <option th:each="opt : ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po?.poState} == ${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주예정창고</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="검색" th:value="${po?.warehouse?.whName}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주담당자</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="입력" th:value="${po?.hiworks?.hwAprvId}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주완료일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="입력" th:value="${po?.hiworks?.hwAprvDate}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">거래처 담당자</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="입력" th:value="${po?.hiworks?.user?.uName}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주메모</span>
+                                                    </span>
+                                                    <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${po?.poMemo}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">첨부파일<a th:if="${po != null}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고 메모</span>
+                                                    </span>
+                                                    <input type="text" name="igMemo" class="form-control" placeholder="입력" th:value="${ig?.igMemo}">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -137,9 +270,9 @@
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
             <div>
-                <button type="button" class="btn btn-sm btn-secondary ml-1">자산수령</button>
-                <button type="button" class="btn btn-sm btn-secondary ml-1">입고완료</button>
-                <button type="button" class="btn btn-sm btn-secondary ml-1">강제 입고완료</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productComp();">자산수령</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="inComp('normal');">입고완료</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="inComp('compulsion');">강제 입고완료</button>
             </div>
         </div>
         <!-- /footer -->
@@ -180,7 +313,48 @@
 <th:block th:replace="modal/userModal.html"/>
 
 <script>
+    function productComp () {
+        $.ajax({
+            url: '/in/[[${poIdx}]]/poComp.ajax',
+            processData: false,
+            contentType: false,
+            type: 'post',
+            data: new FormData($('#createForm')[0])
+        });
+    }
 
+    function inComp (flag) {
+        if (flag == 'normal') {
+            $.ajax({
+                url: '/in/inGroupSave.ajax',
+                processData: false,
+                contentType: false,
+                type: 'post',
+                data: new FormData($('#createForm')[0])
+            });
+        } else {
+            if ($('input[name=igDoneMemo]') == '') {
+                alert ('강제 입고 사유를 입력해 주세요.');
+                return false;
+            }
+
+            $.ajax({
+                url: '/in/po/compulsion.ajax',
+                processData: false,
+                contentType: false,
+                type: 'post',
+                data: new FormData($('#createForm')[0])
+            });
+        }
+    }
+
+    function selectUser(row) {
+        var rowData = getDatatablemap('userModalTable', row);
+
+        $('#searchUserModal').modal('hide');
+        $('#regiForm input[name="uName"]').val(rowData.U_NAME);
+        $('input[name="uIdx"]').val(rowData.U_IDX);
+    }
 </script>
 <script th:inline="javascript">
     //입고 정보 table
@@ -188,7 +362,7 @@
         ordering:false,
         serverSide: false,
         ajax:{
-            url:'/in/poProduct.dataTable?po_idx=[[${igIdx}]]',
+            url:'/in/poProduct.dataTable?po_idx=[[${poIdx}]]',
             type:'post'
         },
         pageLength: -1,
@@ -233,7 +407,7 @@
         ordering:false,
         serverSide: false,
         ajax:{
-            url:'/in/po.dataTable?po_idx=[[${igIdx}]]',
+            url:'/in/po.dataTable?po_idx=[[${poIdx}]]',
             type:'post'
         },
         pageLength: -1,
