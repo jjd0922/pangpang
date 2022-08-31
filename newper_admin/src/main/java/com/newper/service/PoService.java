@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.PoState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
@@ -421,6 +422,12 @@ public class PoService {
         }
         spec_str = spec_str.substring(0, spec_str.length() - 1);
         return spec_str;
+    }
+
+    public void productComp(int poIdx) {
+        Po po = poRepo.findPoByPoIdx(poIdx);
+        po.setPoState(PoState.APPROVAL);
+        poRepo.save(po);
     }
 }
 

@@ -3,6 +3,8 @@ package com.newper.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newper.constant.IgState;
+import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
@@ -79,5 +81,11 @@ public class InService {
 
             data.get(i).put("PP_OPTION", option);
         }
+    }
+
+    public void updateInGroup(ParamMap paramMap) {
+        InGroup inGroup = paramMap.mapParam(InGroup.class);
+        inGroup.setIgState(IgState.DONE);
+        inGroupRepo.save(inGroup);
     }
 }

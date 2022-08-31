@@ -31,6 +31,7 @@ public class InController {
     public ModelAndView inIdx(@PathVariable int poIdx){
         ModelAndView mav = new ModelAndView("in/po_poIdx");
         mav.addObject("ig", inGroupRepo.findInGroupByPoPoIdx(poIdx));
+        mav.addObject("po", poRepo.findPoByPoIdx(poIdx));
 
         return mav;
     }

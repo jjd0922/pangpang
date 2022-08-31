@@ -50,6 +50,7 @@ public class InGroup {
     private String igMemo;
 
     private String igDoneMemo;
+    private String igTaxDate;
 
 
     @OneToMany(mappedBy = "inGroup", cascade = CascadeType.ALL)

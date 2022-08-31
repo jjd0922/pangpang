@@ -10,6 +10,7 @@ import com.newper.service.InService;
 import com.newper.service.PoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -124,8 +125,41 @@ public class InRestController {
 
         return rm;
 
-        }
+    }
+    /** 자산수령 */
+
+    @PostMapping("{poIdx}/poComp.ajax")
+    public ReturnMap productComp(@PathVariable int poIdx) {
+        ReturnMap rm = new ReturnMap();
+        poService.productComp(poIdx);
+        rm.setMessage("자산수령 완료");
+
+        return rm;
 
     }
+    /** 강제 입고 완료 */
+    @PostMapping("po/compulsion.ajax")
+    public ReturnMap compulsion(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        inService.updateInGroup(paramMap);
+        rm.setMessage("강제입고 완료");
+
+        return rm;
+
+    }
+
+    /** 입고완료 */
+    @PostMapping("inGroupSave.ajax")
+    public ReturnMap inGroupSave(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        inService.updateInGroup(paramMap);
+        rm.setMessage("입고 완료");
+
+        return rm;
+
+    }
+
+
+}
 
 

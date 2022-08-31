@@ -58,6 +58,14 @@
 </div>
 
 <script th:inline="javascript">
+    // 창고 검색 선택
+    function warehouseSelect (id, rowIdx) {
+        var dataMap=getDatatablemap(id, rowIdx);
+        $('input[name=whIdx]').val(dataMap.WH_IDX);
+        $('input[name=whName]').val(dataMap.WH_NAME);
+        $('#warehouseModal').modal('hide');
+    }
+
     function openWarehouseModal() {
         $('#warehouseModal').modal('show');
         selectWarehouseDataTable();
