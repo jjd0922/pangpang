@@ -124,19 +124,30 @@ var DateTimePickers = function() {
             cancelClass: 'btn-dark',
             autoApply: true,
             singleDatePicker: true,
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear'
-            }
-        })
-
-
-          .on('cancel.daterangepicker', function(ev, picker) {
+            autoUpdateInput: false
+        }).on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         }).on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD'));
         }).on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
+        });
+
+        // time picker
+        $('.daterange-time').daterangepicker({
+            timePicker: true,
+            singleDatePicker:true,
+            timePicker24Hour: true,
+            timePickerIncrement: 5,
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-dark',
+            locale: {
+                applyLabel: '적용',
+                cancelLabel: '취소',
+                format: 'HH:mm'
+            }
+        }).on('show.daterangepicker', function (ev, picker) {
+            picker.container.find(".calendar-table").hide();
         });
 
 
