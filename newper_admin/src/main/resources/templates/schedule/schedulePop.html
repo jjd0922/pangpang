@@ -83,7 +83,7 @@
                                                                 <span class="input-group-text requested">영업활동상태</span>
                                                             </span>
                                                         <select name="sState" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.SState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(schedule?.sState) eq opt.name()}"></option>
+                                                            <option th:each="opt: ${T(com.newper.constant.SState).values()}" th:unless="${opt.name() eq #strings.toString(T(com.newper.constant.SState).RESCHEDULE)}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(schedule?.sState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
