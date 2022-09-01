@@ -103,7 +103,7 @@
 
 <script th:inline="javascript">
     function searchBtn() {
-        var counselTable = $('#counselTable').DataTable();
+        var table = $('#counselTable').DataTable();
         table.page('first').ajax.url('/admin/counsel.dataTable?' + $('#counselForm').serialize()).load(null, false);
     }
 
@@ -173,7 +173,7 @@
             , {'title': '사용구분', 'data': 'CR_TYPE_STR','defaultContent':''}
             , {
                 'title': '상담결과', 'data': 'CR_TITLE', 'render': function (data, type, full, meta) {
-                    return '<button type="button" class="btn btn-xs bg-primary-600" onclick="counselDetailPop('+full.CR_IDX+')">'+data+'</button>';
+                    return '<button type="button"  class="badge badge-primary" onclick="counselDetailPop('+full.CR_IDX+')">'+data+'</button>';
                 }
             }
             , {'title': '응대스크립트', 'data': 'CR_SCRIPT','defaultContent':''}

@@ -49,5 +49,34 @@ public class ConsultationResultService {
         consultationResultRepo.deleteById(cr_idx);
     }
 
+    /**
+     * 상담결과 템플릿 업데이트
+     */
+    @Transactional
+    public Integer updateCounsel(ParamMap paramMap, int crIdx) {
+
+/*       ConsultationResult consultationResult = paramMap.mapParam(ConsultationResult.class);
+
+        System.out.println("crIdx : " + consultationResult.getCrIdx());
+
+        consultationResult.setCrIdx(consultationResult.getCrIdx());
+        consultationResult.setCrType(consultationResult.getCrType());
+
+        consultationResultRepo.save(consultationResult);
+
+        return consultationResult.getCrIdx();*/
+        ConsultationResult ori = consultationResultRepo.findById(crIdx).get();
+        ConsultationResult consultationResult = paramMap.mapParam(ConsultationResult.class);
+        System.out.println("type : " +ori.getCrType());
+        System.out.println("idx : " +ori.getCrIdx());
+
+        ori.setCrTitle(consultationResult.getCrTitle());
+        ori.setCrMemo(consultationResult.getCrMemo());
+        ori.setCrScript(consultationResult.getCrScript());
+
+
+        consultationResultRepo.save(ori);
+        return ori.getCrIdx();
+    }
 
 }

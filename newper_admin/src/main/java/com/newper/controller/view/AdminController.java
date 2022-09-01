@@ -1,16 +1,20 @@
 package com.newper.controller.view;
 
 import com.newper.constant.TfType;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Auth;
 import com.newper.entity.ConsultationResult;
 import com.newper.entity.TemplateForm;
 import com.newper.entity.User;
 import com.newper.repository.ConsultationResultRepo;
 import com.newper.repository.TemplateFormRepo;
+import com.newper.service.ConsultationResultService;
+import com.newper.service.TemplateFormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +29,10 @@ public class AdminController {
     private final TemplateFormRepo templateFormRepo;
 
     private final ConsultationResultRepo consultationResultRepo;
+
+    private final TemplateFormService templateFormService;
+
+    private final ConsultationResultService consultationResultService;
 
     /**뮨자 템플릿 페이지*/
     @GetMapping(value = "smsTemplate")
@@ -76,7 +84,7 @@ public class AdminController {
      */
     @GetMapping("kakaoPop/{tfIdx}")
     public ModelAndView kakaoDetail(@PathVariable Integer tfIdx) {
-        ModelAndView mav = new ModelAndView("admin/smsPop");
+        ModelAndView mav = new ModelAndView("admin/kakaoPop");
         TemplateForm templateForm = templateFormRepo.findTemplateFormBytfIdx(tfIdx);
 
         mav.addObject("templateForm", templateForm);
@@ -112,4 +120,47 @@ public class AdminController {
         mav.addObject("consultationResult", consultationResult);
         return mav;
     }
+
+    /**
+     * Sms템플릿 수정 처리
+     */
+    @PostMapping("smsPop/{tfIdx}")
+    public ModelAndView updateSms(@PathVariable Integer tfIdx, ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        System.out.println(paramMap.getMap());
+
+        templateFormService.updateSms(paramMap,tfIdx);
+        mav.addObject("msg", "수정 완료");
+        mav.addObject("loc", "admin/smsPop" + tfIdx);
+        return mav;
+    }
+
+    /**
+     * Kakao템플릿 수정 처리
+     */
+    @PostMapping("kakaoPop/{tfIdx}")
+    public ModelAndView updateKakao(@PathVariable Integer tfIdx, ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        System.out.println(paramMap.getMap());
+        templateFormService.updateKakao(paramMap,tfIdx);
+        mav.addObject("msg", "수정 완료");
+        mav.addObject("loc", "admin/kakaoPop" + tfIdx);
+        return mav;
+    }
+
+    /**
+     * 상담결과 수정 처리
+     */
+    @PostMapping("counselPop/{crIdx}")
+    public ModelAndView updateCounsel(@PathVariable Integer crIdx, ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        System.out.println(paramMap.getMap());
+        consultationResultService.updateCounsel(paramMap,crIdx);
+        mav.addObject("msg", "수정 완료");
+        mav.addObject("loc", "admin/counselPop" + crIdx);
+        return mav;
+    }
+
+
+
 }
