@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ConsultationResultMapper">
     <sql id="includeConsultationResultDataTable">
-        <if test="CR_TITLE != null and CR_TITLE != ''">AND CR_TITLE LIKE CONCAT('%',#{CR_TITLE},'%')</if>
+        <if test="CR_TITLE != null and CR_TITLE !=''">AND CR_TITLE like CONCAT('%',#{CR_TITLE},'%')</if>
         <if test="CREATED_DATE != null and CREATED_DATE != ''">AND CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
     </sql>
     <select id="selectConsultationResultDatatable" resultType="Map" parameterType="Map">
@@ -15,9 +15,9 @@
         CREATED_DATE
         FROM
         consultation_result
-
+        WHERE
+        CR_IDX is not null
         <include refid="includeConsultationResultDataTable"></include>
-
         ORDER BY
         CR_IDX desc
         <if test="length!=-1">
@@ -30,6 +30,8 @@
         COUNT(*)
         FROM
         consultation_result
+        WHERE
+        CR_IDX is not null
         <include refid="includeConsultationResultDataTable"></include>
     </select>
 </mapper>
