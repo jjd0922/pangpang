@@ -325,6 +325,71 @@
     function settingProduct (id, rowIdx) {
         var dataMap=getDatatablemap(id, rowIdx);
 
+        var productCheck = $('productPoTr_' + dataMap.P_IDX).length;
+        if (productCheck != 0) {
+            alert('이미 선택하신 상품입니다.');
+            return false;
+        }
+
+        var ppCount = $('#ppCount').val();
+        if (ppCount == '') {
+            alert('매입수량을 입력해 주세요.');
+            return false;
+        }
+
+        var ppCost = $('#ppCost').val();
+        if (ppCost == '') {
+            alert('구매단가를 입력해 주세요.');
+            return false;
+        }
+
+        var ppProfitTarget = $('#ppProfitTarget').val();
+        if (ppProfitTarget == '') {
+            alert('목표수익률을 입력해 주세요.');
+            return false;
+        }
+
+        var paintText = $('#paintText').val();
+        var paintCost = $('#paintCost').val();
+        if (paintText == '' || paintCost == '') {
+            alert('예상비용 도색 부분을 확인해주세요.');
+            return false;
+        }
+
+        var fixText = $('#fixText').val();
+        var fixCost = $('#fixCost').val();
+        if (fixText == '' || fixCost == '') {
+            alert('예상비용 수리 부분을 확인해주세요.');
+            return false;
+        }
+
+        var processText = $('#processText').val();
+        var processCost = $('#processCost').val();
+        if (processText == '' || processCost == '') {
+            alert('예상비용 가공 부분을 확인해주세요.');
+            return false;
+        }
+
+        var spec_check = 0;
+        $.each($('input[name=ppSpec1]'), function (index, value) {
+            if($(this).val() == '') {
+                alert('상품 예상 입고SPEC 정보를 확인해주세요.');
+                spec_check = 1;
+                return false;
+            }
+
+            var ppSpec2 = $(this).parent().next().children('input').val();
+            if(ppSpec2 == '') {
+                alert('상품 예상 판매SPEC 정보를 확인해주세요.');
+                spec_check = 1;
+                return false;
+            }
+        });
+
+        if (spec_check == 1) {
+            return false;
+        }
+
         $('#productModal').modal('hide');
         $('#productPoDiv').css('display', 'none');
         $('#setBtnProductPoModal').css('display', 'none')
@@ -381,6 +446,23 @@
         $('#productTbody2').append(product6);
 
         priceSetting();
+
+        $('#ppCount').val('')
+        $('#ppCost').val('');
+        $('#ppProfitTarget').val('');
+        $('#paintText').val('');
+        $('#paintCost').val('');
+        $('#fixText').val('');
+        $('#fixCost').val('');
+        $('#processText').val('');
+        $('#processCost').val('');
+
+        $.each($('input[name=ppSpec1]'), function (index, value) {
+            this.val('');
+
+            var ppSpec2 = $(this).parent().next().children('input').val();
+            ppSpec2.val('');
+        });
     }
 
     function poProductChoose (id, rowIdx) {
