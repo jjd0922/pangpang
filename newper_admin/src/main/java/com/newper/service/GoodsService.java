@@ -6,6 +6,7 @@ import com.newper.entity.GoodsGroupTemp;
 import com.newper.entity.Po;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
+import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.repository.GoodsGroupTempRepo;
 import com.newper.repository.GoodsRepo;
@@ -29,6 +30,7 @@ public class GoodsService {
 
     private  final PoMapper poMapper;
     private  final GoodsGroupTempRepo goodsGroupTempRepo;
+    private  final GoodsMapper goodsMapper;
 
 
     /** 자산 등록. 상품코드와 바코드만 먼저 등록. 입고검수가 되어야 입고확정스펙 나옴 */
@@ -68,7 +70,7 @@ public class GoodsService {
     }
     /**입고검수 임시 그룹 생성 및 바코드 추가.*/
     @Transactional
-    public void insertGoodsTemp(String idx, String[] gIdxs){
+    public String insertGoodsTemp(String idx, String[] gIdxs){
 
         //임시그룹 생성
         if (idx == null) {
@@ -78,11 +80,9 @@ public class GoodsService {
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
         }
-
-        System.out.println("idx============");
-        System.out.println(idx);
         //임시그룹에 바코드 추가
+        goodsMapper.insertGoodsTemp(idx, gIdxs);
 
-
+        return idx;
     }
 }

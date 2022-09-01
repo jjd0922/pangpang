@@ -32,4 +32,17 @@ public class GoodsRestController {
     public List<String> specList(String specName) {
         return specMapper.selectSpecListValueList(specName);
     }
+
+    /** 자산 임시 테이블 조회 */
+    @PostMapping("temp.dataTable")
+    public ReturnDatatable temp(ParamMap paramMap) {
+        ReturnDatatable returnDatatable = new ReturnDatatable("자산 임시 테이블");
+
+        returnDatatable.setData(goodsMapper.selectGoodsTempDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(goodsMapper.countGoodsTempDatatable(paramMap.getMap()));
+
+        return returnDatatable;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -17,5 +18,11 @@ public interface GoodsMapper {
     /** 공정보드 datatable*/
     long countProcessBoardDatatable(Map<String, Object> map);
 
+    /** 임시 테이블에 insert */
+    void insertGoodsTemp(@Param("ggt_idx") String ggt_idx, @Param("g_idxs") String[] g_idxs);
 
+    /** 자산 임시 테이블 조회*/
+    List<Map<String, Object>> selectGoodsTempDatatable(Map<String, Object> map);
+    /** 자산 임시 테이블 조회*/
+    Long countGoodsTempDatatable(Map<String, Object> map);
 }

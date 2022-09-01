@@ -42,5 +42,29 @@
             <include refid="includeProcessBoardDatatable"></include>
         </where>
     </select>
-
+    <insert id="insertGoodsTemp">
+        INSERT IGNORE INTO GOODS_TEMP
+            (GT_GGT_IDX, GT_G_IDX)
+        VALUES
+            <foreach collection="g_idxs" separator="," item="g_idx">
+            (#{ggt_idx}, #{g_idx})
+            </foreach>
+    </insert>
+    <select id="selectGoodsTempDatatable" parameterType="map" resultType="map">
+        SELECT
+            G_IDX, G_BARCODE
+        FROM
+            GOODS, GOODS_TEMP, GOODS_GROUP_TEMP
+        WHERE
+            GT_GGT_IDX = GGT_IDX
+            AND GT_G_IDX = G_IDX
+            AND GGT_IDX = #{ggt_idx}
+        ORDER BY GT_CREATED_DATETIME DESC
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countGoodsTempDatatable" parameterType="map" resultType="Long">
+        SELECT COUNT(*) FROM GOODS_TEMP WHERE GT_GGT_IDX = #{ggt_idx}
+    </select>
 </mapper>
