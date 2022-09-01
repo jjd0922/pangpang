@@ -16,7 +16,6 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
 public class ConsultationResult extends BaseEntity{
 
     @Id
