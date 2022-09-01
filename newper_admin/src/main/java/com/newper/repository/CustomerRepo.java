@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
-    Customer findByCuId(String cuId);
+    @EntityGraph(attributePaths = {"shop"})
+    public Customer findBycuIdx(Long cuIdx);
 }

@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value="/customer/")
@@ -26,6 +31,61 @@ public class CustomerRestController {
 
         rd.setData(customerMapper.selectCustomerDatatable(paramMap.getMap()));
         rd.setRecordsTotal(customerMapper.countCustomerDatatable(paramMap.getMap()));
+        return rd;
+    }
+    @PostMapping("order.dataTable")
+    public ReturnDatatable test(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        List<Map<String,Object>> testList = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            Map<String, Object> testMap = new HashMap<>();
+            testList.add(testMap);
+        }
+
+        rd.setData(testList);
+        rd.setRecordsTotal(testList.size());
+        return rd;
+    }
+
+    @PostMapping("point.dataTable")
+    public ReturnDatatable pointTemp(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        List<Map<String,Object>> testList = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            Map<String, Object> testMap = new HashMap<>();
+            testList.add(testMap);
+        }
+
+        rd.setData(testList);
+        rd.setRecordsTotal(testList.size());
+        return rd;
+    }
+
+    @PostMapping("coupon.dataTable")
+    public ReturnDatatable couponTemp(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        List<Map<String,Object>> testList = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            Map<String, Object> testMap = new HashMap<>();
+            testList.add(testMap);
+        }
+
+        rd.setData(testList);
+        rd.setRecordsTotal(testList.size());
+        return rd;
+    }
+
+    @PostMapping("qna.dataTable")
+    public ReturnDatatable qnaTemp(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        List<Map<String,Object>> testList = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            Map<String, Object> testMap = new HashMap<>();
+            testList.add(testMap);
+        }
+
+        rd.setData(testList);
+        rd.setRecordsTotal(testList.size());
         return rd;
     }
 }

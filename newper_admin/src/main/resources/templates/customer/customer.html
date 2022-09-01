@@ -136,23 +136,23 @@
                                             <i class="icon-pencil3 mr-1"></i>일괄변경
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="couponBtn">
                                             <i class="icon-cash2 mr-1"></i>쿠폰지급
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="pointBtn">
                                             <i class="icon-coins mr-1"></i>적립금지급
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1">
-                                            <i class="icon-bubble-lines4 mr-1"></i>SMS발송
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="smsBtn">
+                                            <i class="icon-bubble-dots4 mr-1"></i>SMS발송
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="kakaoBtn">
                                             <i class="icon-bubbles3 mr-1"></i>카카오톡
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1">
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="appPushBtn">
                                             <i class="icon-notification2 mr-1"></i>APP PUSH
                                         </a>
                                     </div>
@@ -196,7 +196,32 @@
 <script th:src="@{/assets/js/common.js}"></script>
 <script th:inline="javascript">
     function customerDetailPop(cuIdx) {
-        var focusPopup = window.open('/customer/customer_pop/' + cuIdx, 'customerDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/customer/detail/' + cuIdx, 'customerDetail', 'width=1950, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function couponPopup() {
+        var focusPopup = window.open('/customer/pop/coupon/', 'couponPopup', 'width=850, height=250, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function pointPopup() {
+        var focusPopup = window.open('/customer/pop/point/', 'pointPopup', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function smsPopup() {
+        var focusPopup = window.open('/customer/pop/sms/', 'smsPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function kakaoPopup() {
+        var focusPopup = window.open('/customer/pop/kakao/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function appPushPopup() {
+        var focusPopup = window.open('/customer/pop/appPush/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -225,7 +250,7 @@
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
             ,{'title':'ID','data':'CU_ID', 'render': function (data,type,full,meta) {
-                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">'+full.CU_IDX+'</a>';
+                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">'+full.CU_ID+'</a>';
                 }}
             ,{'title':'휴대폰번호','data':'CU_PHONE','defaultContent':''}
             ,{'title':'회원상태','data':'CU_STATE_STR','defaultContent':''}
@@ -251,6 +276,11 @@
     $('#customerForm').on('keyup', function (event) {
         if(event.keyCode==13){searchBtn();return false;}
     });
+    $('#couponBtn').on('click', couponPopup);
+    $('#pointBtn').on('click', pointPopup);
+    $('#smsBtn').on('click', smsPopup);
+    $('#kakaoBtn').on('click', kakaoPopup);
+    $('#appPushBtn').on('click', appPushPopup);
 </script>
 </body>
 </html>
