@@ -39,9 +39,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">입고상태</span>
                                                     </span>
-                                                    <select name="igState" class="form-control select">
-                                                        <option th:each="opt : ${T(com.newper.constant.IgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${ig?.igState} == ${opt.name()}"></option>
-                                                    </select>
+                                                    <input class="form-control" th:value="${ig.igState.option}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -428,11 +426,15 @@
             ,{'title':'상품코드','data':'P_IDX'}
             ,{'title':'상품명','data':'P_NAME'}
             ,{'title':'옵션','data':'PP_OPTION'}
-            ,{'title':'기준 매입가','data':'P_SELL_PRICE','defaultContent':''}
+            ,{'title':'기준 매입가','data':'P_SELL_PRICE', 'class':'text-right','render':function(data,type,full,meta){
+                return comma(data);
+            }}
             ,{'title':'구매단가','data':'PP_COST', 'class':'text-right','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'매입수량','data':'PP_COUNT', 'class':'text-right'}
+            ,{'title':'매입수량','data':'PP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+                return comma(data);
+            }}
             ,{'title':'매입총액','data':'PP_TOTAL' , 'class':'text-right','render':function(data,type,full,meta){
                 return comma(data);
             }}

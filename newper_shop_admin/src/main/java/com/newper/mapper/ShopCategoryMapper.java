@@ -23,6 +23,8 @@ public interface ShopCategoryMapper {
     /**category 중분류의 전시대분류*/
     Map<String,Object> selectCategoryDetailByTwoDetph(int CATE_IDX);
 
+    List<Map<String, Object>> selectShopCategoryDatatableByChildren(int SCATE_IDX);
+
 
 
     /**부모 카테고리가 있는 카테고리 CATE_PARENT_IDX 로 조회 */

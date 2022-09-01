@@ -73,7 +73,7 @@ public class Po extends BaseEntity {
     private long poSellUnpaidAmount;
     private LocalDate poSellPayDate;
     private long poSellTotalAmount;
-    private float poSellProfit;
+    private Float poSellProfit;
     private String poSellUse;
     private LocalDate poInDate;
     private LocalDate poDueDate;

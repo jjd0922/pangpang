@@ -436,14 +436,13 @@
                 ,data: 'g_idxs='+g_idxs
                 ,async: false
             }).done(function(res){
-
-            }).error(function(){
+                var focusPopup = window.open('/process/incheckPop?ggt_idx='+res, 'in_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+                focusPopup.focus();
+            }).fail(function(){
                 return false;
             });
         }
 
-        var focusPopup = window.open('incheckPop', 'in_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
     });
     $('#popNeeedBtn').on('click',function (){
         var focusPopup = window.open('needPop', 'need_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');

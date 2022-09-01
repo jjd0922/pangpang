@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('주문/결제정보입력')">
+</head>
+<body>
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!--페이지 타이틀-->
+<div class="container">
+    <section id="orderProcess-route">
+        <div th:insert="part/title :: pageTitle_2('주문&#183;결제정보입력')"></div>
+        <p class="font-md">01 장바구니<i class="route-icon"></i><span class="color-blue">02 주문&#183;결제정보입력</span><i class="route-icon on"></i>03 주문완료</p>
+    </section>
+</div>
+
+<section>
+    <div class="container">
+        <!-- 주문정보 테이블 -->
+        <h2 class="orderPage-title">01. 주문정보</h2>
+        <div class="order-info-wrap">
+            <!-- 주문정보 테이블 제목 -->
+            <ul class="order-header font-sm">
+                <li>상품코드</li>
+                <li>상품명</li>
+                <li>수량</li>
+                <li>판매가</li>
+                <li>에누리</li>
+                <li>합계</li>
+                <li>배송구분</li>
+            </ul>
+            <!-- 주문정보 상품 리스트 -->
+            <ul class="order-item-list">
+                <!-- 상품 1 -->
+                <li class="order-item">
+                    <ul>
+                        <!-- 상품코드(썸네일) -->
+                        <li>
+                            <div class="order-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-sm">001762984</p>
+                                </a>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xsm order-item-info">
+                                    <p>상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>컬러 : 스페이스그레이</p>
+                                </div>
+                                <p class="font-xsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
+                            </div>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-md semi-bold">1개</p>
+                        </li>
+                        <!-- 판매가 -->
+                        <li>
+                            <p class="font-md">305,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 에누리 -->
+                        <li>
+                            <div class="basket-aenuri">
+                                <!-- 에누리 할인 없는 경우는 <i>태그 삭제 -->
+                                <i class="aenuri"></i>
+                                <p class="font-md">-6,000<span class="won">원</span></p>
+                            </div>
+                        </li>
+                        <!-- 합계 -->
+                        <li>
+                            <p class="font-md semi-bold">299,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 배송구분 -->
+                        <li>
+                            <!-- 뉴퍼마켓 직배송 상품 -->
+                            <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
+                            <!-- 협력업체 직배송 상품
+                            <div class="deliveryDivision-title deliveryDivision-title-2"><span>협력업체</span> 직배송 상품</div> -->
+                        </li>
+                    </ul>
+                </li>
+                <!-- 상품 2 -->
+                <li class="order-item">
+                    <ul>
+                        <!-- 상품코드(썸네일) -->
+                        <li>
+                            <div class="order-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-sm">001762984</p>
+                                </a>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xsm order-item-info">
+                                    <p>상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>컬러 : 스페이스그레이</p>
+                                </div>
+                                <p class="font-xsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
+                            </div>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-md semi-bold">1개</p>
+                        </li>
+                        <!-- 판매가 -->
+                        <li>
+                            <p class="font-md">305,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 에누리 -->
+                        <li>
+                            <div class="basket-aenuri">
+                                <!-- 에누리 할인 없는 경우는 <i>태그 삭제 -->
+                                <i class="aenuri"></i>
+                                <p class="font-md">-6,000<span class="won">원</span></p>
+                            </div>
+                        </li>
+                        <!-- 합계 -->
+                        <li>
+                            <p class="font-md semi-bold">299,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 배송구분 -->
+                        <li>
+                            <!-- 뉴퍼마켓 직배송 상품 -->
+                            <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
+                            <!-- 협력업체 직배송 상품
+                            <div class="deliveryDivision-title deliveryDivision-title-2"><span>협력업체</span> 직배송 상품</div> -->
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- 총 상품 금액 -->
+            <div class="order-totalPrice">
+                <p>총 상품 금액</p>
+                <p class="color-blue font-xlg semi-bold">598,000<span class="won">원</span></p>
+            </div>
+        </div>
+
+        <h2 class="orderPage-title">02. 정보입력</h2>
+        <!-- 주문자 정보  -->
+        <ul class="order-table font-sm">
+            <!-- 주문자 -->
+            <li>
+                <div class="infoInput-title">주문자</div>
+                <div class="infoInput-content">홍길동</div>
+            </li>
+            <!-- 전화번호 -->
+            <li>
+                <div class="infoInput-title">전화번호</div>
+                <div class="infoInput-content">02-1234-5678</div>
+            </li>
+            <!-- 휴대전화 -->
+            <li>
+                <div class="infoInput-title">휴대전화</div>
+                <div class="infoInput-content">
+                    <span>010-123-4567</span>
+                    <span class="smsGuide">입력하신 휴대전화번호로 주문완료 메세지를 보내드릴까요?</span>
+                    <span class="radioSet">
+                        <input type="radio" name="radio" id="01" value="01">
+                        <label for="01">예</label>
+                    </span>
+                    <span class="radioSet">
+                        <input type="radio" name="radio" id="02" value="02">
+                        <label for="02">아니오</label>
+                    </span>
+                </div>
+            </li>
+            <!-- 이메일 -->
+            <li>
+                <div class="infoInput-title">이메일</div>
+                <div class="infoInput-content">angegs@naver.com</div>
+            </li>
+            <!-- 주소 -->
+            <li>
+                <div class="infoInput-title">주소</div>
+                <div class="infoInput-content">(152-050) 서울특별시 송파구 법원로 11길 11</div>
+            </li>
+        </ul>
+        <!-- 배송지 정보  -->
+        <ul class="order-table font-sm">
+            <!-- 배송상품 및 수량 -->
+            <li>
+                <div class="infoInput-title">배송상품 및 수량</div>
+                <div class="infoInput-content semi-bold">삼성 노트북 코어i5 램8G SSD 대용량 듀얼하드 윈10 1개</div>
+            </li>
+            <!-- 배송지 확인 -->
+            <li>
+                <div class="infoInput-title">배송지 확인</div>
+                <div class="infoInput-content addressConfirm">
+                    <span class="radioSet">
+                        <input type="radio" name="radio" id="03" value="03">
+                        <label for="03">회원정보동일</label>
+                    </span>
+                    <span class="radioSet">
+                        <input type="radio" name="radio" id="04" value="04">
+                        <label for="04">직접입력</label>
+                    </span>
+                    <a href="javascript:;">
+                        <div class="btn">
+                            배송지목록
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <!-- 받으시는 분 -->
+            <li>
+                <div class="infoInput-title">받으시는 분</div>
+                <div class="infoInput-content receiver">
+                    <!-- input : 이름 -->
+                    <input type="text" id="receiverName" name="receiverName" class="form-control" maxlength="20" title="이름" placeholder="이름"  value="">
+                    <!-- input : 이메일 -->
+                    <div class="input-email">
+                        <label for="email" class="semi-bold">이메일주소&nbsp;&nbsp;</label>
+                        <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                        <span class="at">@</span>
+                        <input type="text" id="emailDomain" name="emailDomain" class="form-control">
+                        <select class="form-control">
+                                <option value="직접입력">직접입력</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="daum.net">daum.net</option>
+                                <option value="hotmail.com">hotmail.com</option>
+                                <option value="nate.com">nate.com</option>
+                                <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                <option value="paran.com">paran.com</option>
+                                <option value="empas.com">empas.com</option>
+                                <option value="dreamwiz.com">dreamwiz.com</option>
+                                <option value="lycos.co.kr">lycos.co.kr</option>
+                                <option value="korea.com">korea.com</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="hanmir.com">hanmir.com</option>
+                            </select>
+                </div>
+            </li>
+            <!-- 주소 -->
+            <li>
+                <div class="infoInput-title">주소</div>
+                <div class="infoInput-content">
+                    <div class="addr-info">
+                        <div class="addr-input">
+                            <input type="text" class="form-control" id="k_address1" title="상세주소" readonly="" value="">
+                            <a href="javascript:;">
+                                <div class="btn">우편번호 선택</div>
+                            </a>
+                        </div>
+                        <div class="addr-input">
+                            <input type="text" title="상세 주소 입력" class="form-control addr-txt" readonly="" value="">
+                            <label for="no-addr">
+                                <input type="checkbox" id="no-addr" title="나머지 주소 없음">
+                                <p>&nbsp;&nbsp;나머지 주소 없음</p>
+                            </label>
+                        </div>
+                        <div class="addr-input">
+                            <input type="text" title="나머지 주소 입력" class="form-control addr-txt" name="addr2" value="">
+                            <p>*&nbsp;&nbsp;나머지 주소 입력</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <!-- 전화번호 -->
+            <li class="phone">
+                <div class="infoInput-title">전화번호</div>
+                <div class="infoInput-content">
+                    <select class="form-control">
+                        <option value="없음">없음</option>
+                        <option value="02">02</option>
+                        <option value="031">031</option>
+                        <option value="032">032</option>
+
+                    </select>
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3"  value="" title="휴대폰번호 마지막 네자리">
+                    </span>
+                </div>
+            </li>
+            <!-- 휴대전화 -->
+            <li class="phone">
+                <div class="infoInput-title">휴대전화</div>
+                <div class="infoInput-content">
+                    <select class="form-control">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                    </select>
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3"  value="" title="휴대폰번호 마지막 네자리">
+                    </span>
+                </div>
+            </li>
+            <!-- 배송메시지 -->
+            <li>
+                <div class="infoInput-title">배송메시지</div>
+                <div class="infoInput-content">
+                    <input type="text" id="deliveryMessage" name="deliveryMessage" class="deliveryMessage form-control" maxlength="20" title="배송메세지" placeholder="* 띄어쓰기 포함 30자 이내" value="">
+                </div>
+            </li>
+        </ul>
+
+        <!-- 할인적용 -->
+        <h2 class="orderPage-title">03. 할인적용</h2>
+        <ul class="order-table font-sm">
+            <li>
+                <div class="infoInput-title">쿠폰적용</div>
+                <div class="infoInput-content verticalAlign saleCoupon">
+                    <p>할인쿠폰을 사용하실 수 있습니다. (할인쿠폰의 경우 1개 상품만 적용가능합니다)</p>
+                    <div class="coupon-group">
+                        <a href="javascript:;">
+                            <div class="btn"><i class="check"></i>쿠폰적용하기</div>
+                        </a>
+                        <i class="saleCoupon-icon"></i>
+                    </div>
+                </div>
+            </li>
+            <!-- 적립금 및 예치금 사용 -->
+            <li>
+                <div class="infoInput-title">적립금 및 예치금 사용</div>
+                <div class="infoInput-content verticalAlign point-wrap">
+                    <!-- 적립금 -->
+                    <div class="point">
+                        <input type="radio" id="point1" name="pointCheck" value="">
+                        <label for="point1">적립금</label>
+                        <input type="number" id="" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        <p>사용가능&nbsp;&nbsp;<span>806,060<span>원</p>
+                    </div>
+                    <!-- 예치금 -->
+                    <div class="point">
+                        <input type="radio" id="point2" name="pointCheck" value="">
+                        <label for="point2">예치금</label>
+                        <input type="number" id="" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        <p>사용가능&nbsp;&nbsp;<span>76,060<span>원</p>
+                    </div>
+                    <p><span class="font-md">※&nbsp;</span>적립금을 사용하시는 경우, 차액은 신용카드 결제만 가능합니다.</p>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 결제수단 -->
+        <h2 class="orderPage-title">04. 결제수단</h2>
+        <ul class="order-table font-sm">
+            <!-- 일반결제 -->
+            <li>
+                <div class="infoInput-title">일반결제</div>
+                <div class="infoInput-content verticalAlign generalPayment">
+                    <div>
+                        <input type="radio" id="generalPayment1" name="paymentCheck" value="">
+                        <label  for="generalPayment1">신용카드</label>
+                        <input type="radio" id="generalPayment2" name="paymentCheck" value="">
+                        <label  for="generalPayment2">무통장입금</label>
+                        <input type="radio" id="generalPayment3" name="paymentCheck" value="">
+                        <label for="generalPayment3">실시간계좌이체(에스크로)</label>
+                    </div>
+                    <p><span class="font-md">※&nbsp;</span>신용카드의 경우, 국세청에 자동 등록이 되기 때문에 현금영수증 또는 세금계산서 발행이 불가합니다. (부가가치세법 제 32조의 제3항, 동법 시행령 제57조 제2항)</p>
+                </div>
+            </li>
+            <!-- 간편결제 -->
+            <li>
+                <div class="infoInput-title">간편결제</div>
+                <div class="infoInput-content easyPayment">
+                    <input type="radio" id="easyPayment1" name="paymentCheck" value="">
+                    <label  for="easyPayment1">
+                        <img th:attr="src=@{/image/payment/easyPayment1.png},title='차이페이',alt='차이페이'">
+                    </label>
+                    <input type="radio" id="easyPayment2" name="paymentCheck" value="">
+                    <label  for="easyPayment2">
+                        <img th:attr="src=@{/image/payment/easyPayment2.png},title='페이코',alt='페이코'">
+                    </label>
+                    <input type="radio" id="easyPayment3" name="paymentCheck" value="">
+                    <label for="easyPayment3">
+                        <img th:attr="src=@{/image/payment/easyPayment3.png},title='카카오페이',alt='카카오페이'">
+                    </label>
+                    <input type="radio" id="easyPayment4" name="paymentCheck" value="">
+                    <label for="easyPayment4">
+                        <img th:attr="src=@{/image/payment/easyPayment4.png},title='네이버페이',alt='네이버페이'">
+                    </label>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 버튼 -->
+        <div class="order-button-group">
+            <div class="btn-white order-btn semi-bold">
+                <a href="javascript:;">이전으로</a>
+            </div>
+            <div class="btn-blue order-btn semi-bold">
+                <a href="javascript:;">결제하기</a>
+            </div>
+        </div>
+</section>
+
+
+
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+</html>

@@ -100,14 +100,12 @@ public class ProcessRestController {
         rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
         return rd;
     }
-    /** 입고검수 임시 테이블*/
+    /** 입고검수 임시 테이블. return ggt_idx*/
     @PostMapping("in/temp.ajax")
-    public void inTemp(ParamMap paramMap){
+    public String inTemp(ParamMap paramMap){
         String idx = paramMap.getString("idx");
         String g_idxs = paramMap.getString("g_idxs");
-        goodsService.insertGoodsTemp(idx, g_idxs.split(","));
-
-
+        return goodsService.insertGoodsTemp(idx, g_idxs.split(","));
     }
 
 }

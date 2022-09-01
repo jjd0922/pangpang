@@ -192,14 +192,13 @@
     </select>
 
     <sql id="includeInDatatable">
-
+        (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
             *
         FROM
             PO
-                LEFT JOIN HIWORKS ON PO_HW_IDX=HW_IDX
                 LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
                 LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
@@ -211,7 +210,6 @@
             COUNT(*)
         FROM
             PO
-                LEFT JOIN HIWORKS ON PO_HW_IDX=HW_IDX
                 LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
                 LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
@@ -374,6 +372,9 @@
             PP_PO_IDX = #{po_idx}
         AND
             G_IDX IS NOT NULL
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countInProductDatatable" resultType="Integer">

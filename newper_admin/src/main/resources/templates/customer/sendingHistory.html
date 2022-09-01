@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>발송내역</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="sendingForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">발신타입</label>
+                                                    <select name="" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                       <!-- <option th:each="opt: ${T(com.newper.constant.).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">고객명</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">수신전화번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">발신전화번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">발신자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">발신번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                            </div>
+                            <table class="table" id="sendingTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+
+
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script th:inline="javascript">
+
+    function searchBtn() {
+        var table = $('#smsSendingTable').DataTable();
+        table.page('first').ajax.url('/customer/sendingHistory.dataTable?' + $('#sendingForm').serialize()).load(null, false);
+    }
+
+
+</script>
+<script>
+
+    var sendingTable = $('#sendingTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax: {
+            url: '/customer/sendingHistory.dataTable?' + $('#sendingForm').serialize(),
+            type: 'post',
+        },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
+
+        }],
+
+
+        "columns" : [
+            {'title':'발신타입','data':''}
+            ,{'title':'고객명','data':''}
+            ,{'title':'수신전화번호','data':''}
+            ,{'title':'발신전화번호','data':''}
+            ,{'title':'내용','data':''}
+            ,{'title':'주문번호','data':'',"render" : function(data, type, full, meta){
+                    return '<button type="button"  class="badge badge-primary" onclick="smsDetailPop('+full.TF_IDX+')">'+data+'</button>';}}
+            ,{'title':'발송일','data':''}
+            ,{'title':'발송자','data':''}
+            ,{'title':'발송결과','data':''}
+
+        ]
+    });
+</script>
+<script>
+
+    $('#sendingForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+
+</script>
+</html>
