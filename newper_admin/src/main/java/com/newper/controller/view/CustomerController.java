@@ -17,6 +17,12 @@ public class CustomerController {
 
         return mav;
     }
+    /**발송내역 페이지*/
+    @GetMapping(value = "sendingHistory")
+    public ModelAndView sendingHistory(){
+        ModelAndView mav = new ModelAndView("customer/sendingHistory");
 
+        return mav;
+    }
 
 }
