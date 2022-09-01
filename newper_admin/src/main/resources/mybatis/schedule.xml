@@ -8,9 +8,9 @@
                 #{item}
             </foreach>
         </if>
-        <if test="sRequestDate != null and sRequestDate != ''">AND S_REQUEST_DATE BETWEEN SUBSTR(#{sRequestDate}, 1, 10) AND SUBSTR(#{sRequestDate}, 13)</if>
+        <if test="createdDate != null and createdDate != ''">AND CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
         <if test="sDate != null and sDate != ''">AND S_DATE BETWEEN SUBSTR(#{sDate}, 1, 10) AND SUBSTR(#{sDate}, 13)</if>
-        <if test="sCompletionDate != null and sCompletionDate != ''">AND S_COMPLETION_DATE BETWEEN SUBSTR(#{sCompletionDate}, 1, 10) AND SUBSTR(#{sCompletionDate}, 13)</if>
+        <if test="sDoneDate != null and sDoneDate != ''">AND S_DONE_DATE BETWEEN SUBSTR(#{sDoneDate}, 1, 10) AND SUBSTR(#{sDoneDate}, 13)</if>
         <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
         <if test="sType != null">
             <foreach collection="sType" open="AND S_TYPE IN (" separator="," close=")" item="item">
@@ -24,10 +24,10 @@
         SELECT
             S_IDX,
             S_STATE,
-            S_REQUEST_DATE,
+            CREATED_DATE,
             S_DATE,
             DATE_FORMAT(S_TIME,'%H:%i') AS S_TIME,
-            S_COMPLETION_DATE,
+            S_DONE_DATE,
             S_COM_NAME,
             S_COM_NUM,
             S_TYPE,
@@ -36,7 +36,6 @@
             S_ATTENDEES
         FROM
             SCHEDULE
-                LEFT JOIN COMPANY ON S_COM_IDX = COM_IDX
         <where>
             <include refid="includeScheduleDatatable"></include>
         </where>
@@ -55,7 +54,6 @@
             COUNT(DISTINCT(S_IDX))
         FROM
             SCHEDULE
-                LEFT JOIN COMPANY ON S_COM_IDX = COM_IDX
         <where>
             <include refid="includeScheduleDatatable"></include>
         </where>

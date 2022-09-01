@@ -12,7 +12,7 @@ public enum SState implements EnumOption {
     /**미팅전*/
     BEFORE("미팅전"),
     /**미팅완료*/
-    COMPLETE("미팅완료"),
+    DONE("미팅완료"),
     /**미팅취소*/
     CANCELED("미팅취소"),
     /**미팅일정변경*/

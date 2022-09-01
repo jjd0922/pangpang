@@ -4,7 +4,6 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.SState;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Company;
 import com.newper.entity.Schedule;
 import com.newper.exception.MsgException;
 import com.newper.repository.ScheduleRepo;
@@ -16,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -98,17 +100,11 @@ public class ScheduleService {
     public Schedule setScheduleByParamMap(ParamMap paramMap) {
         Schedule schedule = paramMap.mapParam(Schedule.class);
 
-        // 기존거래처인 경우 comIdx와 schedule 연결
-        if (StringUtils.hasText(paramMap.getString("comIdx"))) {
-            Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
-            schedule.setCompany(company);
-        }
-
         // date타입들 set
         schedule.setSDate(LocalDate.parse(paramMap.getString("sDate")));
         schedule.setSTime(LocalTime.parse(paramMap.getString("sTime")));
         if (StringUtils.hasText(paramMap.getString("sCompletionDate"))) {
-            schedule.setSCompletionDate(LocalDate.parse(paramMap.getString("sCompletionDate")));
+            schedule.setSDoneDate(LocalDate.parse(paramMap.getString("sCompletionDate")));
         }
 
         // 미팅 후 확인사항 List로

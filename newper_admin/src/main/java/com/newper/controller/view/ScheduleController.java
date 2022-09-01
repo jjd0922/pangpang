@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.entity.Schedule;
+import com.newper.exception.MsgException;
 import com.newper.repository.ScheduleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ScheduleController {
     public ModelAndView popScheduleDetail(@PathVariable Integer sIdx) {
         ModelAndView mav = new ModelAndView("/schedule/schedulePop");
 
-        Schedule schedule = scheduleRepo.findScheduleBysIdx(sIdx);
+        Schedule schedule = scheduleRepo.findById(sIdx).orElseThrow(() -> new MsgException("존재하지 않는 영업활동입니다."));
         mav.addObject("schedule", schedule);
 
         // 확인사항 값

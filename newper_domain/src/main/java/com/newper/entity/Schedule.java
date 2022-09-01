@@ -4,11 +4,10 @@ package com.newper.entity;
 import com.newper.constant.SState;
 import com.newper.constant.SType;
 import com.newper.converter.ConvertList;
+import com.newper.entity.common.CreatedEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 @DynamicUpdate
 @Getter
@@ -27,16 +25,13 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 /**영업활동*/
-public class Schedule {
+public class Schedule extends CreatedEntity {
     
     /**영업활동 IDX*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer	sIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "S_COM_IDX", referencedColumnName = "comIdx")
-    private Company company;
     private String sComName;
     private String sComNum;
 
@@ -53,14 +48,10 @@ public class Schedule {
     private short sCount;
     private String sAttendees;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDate sRequestDate;
-
     private LocalDate sDate;
     private LocalTime sTime;
-    private LocalDate sCompletionDate;
-    private LocalTime sCompletionTime;
+    private LocalDate sDoneDate;
+    private LocalTime sDoneTime;
 
     private String sContent;
     private String sFile1;
@@ -79,7 +70,7 @@ public class Schedule {
             throw new MsgException("업체명을 입력해주세요");
         } else if (getSDate() == null) {
             throw new MsgException("유효한 미팅일을 설정해 주세요.");
-        } else if (getSCompletionDate()!=null && getSDate().isAfter(getSCompletionDate())) {
+        } else if (getSDoneDate()!=null && getSDate().isAfter(getSDoneDate())) {
             throw new MsgException("유효한 미팅일을 설정해 주세요.");
         } else if (getSTime() == null) {
             throw new MsgException("유효한 미팅시각을 설정해 주세요.");
@@ -104,7 +95,6 @@ public class Schedule {
 
     /**스케줄 수정*/
     public void updateSchedule(Schedule newSchedule) {
-        setCompany(newSchedule.getCompany());
         setSComName(newSchedule.getSComName());
         setSComNum(newSchedule.getSComNum());
         setSState(newSchedule.getSState());
@@ -113,11 +103,10 @@ public class Schedule {
         setSTitle(newSchedule.getSTitle());
         setSCount(newSchedule.getSCount());
         setSAttendees(newSchedule.getSAttendees());
-        setSRequestDate(newSchedule.getSRequestDate());
         setSDate(newSchedule.getSDate());
         setSTime(newSchedule.getSTime());
-        setSCompletionDate(newSchedule.getSCompletionDate());
-        setSCompletionTime(newSchedule.getSCompletionTime());
+        setSDoneDate(newSchedule.getSDoneDate());
+        setSDoneTime(newSchedule.getSDoneTime());
         setSContent(newSchedule.getSContent());
     }
 }

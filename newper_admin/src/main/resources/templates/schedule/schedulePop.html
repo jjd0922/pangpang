@@ -24,6 +24,9 @@
         .calendar-time select {
             min-width: 37px;
         }
+        .table-hover {
+            width: 100% !important;
+        }
     </style>
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -100,7 +103,6 @@
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="sComName" class="form-control" th:value="${schedule?.sComName}">
-                                                        <input type="hidden" name="comIdx" th:value="${schedule?.company?.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,7 +188,7 @@
                                                                     미팅요청등록일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" th:name="${schedule != null} ? 'sRequestDate'" class="form-control w-datarange daterange" th:value="${schedule?.sRequestDate}" readonly>
+                                                        <input type="text" th:name="${schedule != null} ? 'createdDate'" class="form-control w-datarange daterange" th:value="${schedule?.createdDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,7 +202,7 @@
                                                                     미팅완료일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="sCompletionDate" class="form-control w-datarange daterange-singlenull" th:value="${schedule?.sCompletionDate}" readonly>
+                                                        <input type="text" name="sDoneDate" class="form-control w-datarange daterange-singlenull" th:value="${schedule?.sDoneDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -400,7 +402,6 @@
         $('#searchComModal').modal('hide');
         $('#regiForm input[name="sComName"]').val(rowData.COM_NAME);
         $('#regiForm input[name="sComNum"]').val(rowData.COM_NUM);
-        $('input[name="comIdx"]').val(rowData.COM_IDX);
     }
 </script>
 <script th:inline="javascript">
