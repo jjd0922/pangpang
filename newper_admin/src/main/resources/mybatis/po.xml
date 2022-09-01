@@ -337,57 +337,52 @@
         WHERE
             PP_IDX = #{ppIdx}
     </select>
+    <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
+        SELECT
+            P_IDX, P_NAME, P_MODEL
+             ,PP_COUNT
+             ,IP_COUNT
+        FROM
+            PRODUCT
+           ,IN_PRODUCT
+           ,IN_GROUP
+           ,(SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT WHERE PP_PO_IDX = #{po_idx} GROUP BY PP_P_IDX) PP
+        WHERE
+            IG_PO_IDX = #{po_idx}
+          AND IP_IG_IDX = IG_IDX
+          AND IP_P_IDX = P_IDX
+          AND P_IDX = PP_P_IDX
+    </select>
+    <select id="selectPoProductIdxList" resultType="Integer">
+        SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
+        WHERE PP_PO_IDX = #{po_idx}
+    </select>
 
-    <select id="selectInPoProductDatatable" resultType="Map">
+    <sql id="includeInProductDatatable">
+        G_PO_IDX = #{po_idx}
+        AND G_P_IDX = #{p_idx}
+    </sql>
+    <select id="selectInProductDatatable" resultType="map" parameterType="map">
         SELECT
             *
         FROM
-            po_product
-                LEFT JOIN po ON PP_PO_IDX = PO_IDX
-                LEFT JOIN product ON PP_P_IDX = P_IDX
-        WHERE
-            PO_IDX = #{po_idx}
-    </select>
-
-    <select id="selectPoProductIdxList" resultType="int">
-        SELECT
-            P_IDX
-        FROM
-            po
-                LEFT JOIN po_product ON po_idx = pp_po_idx
-                LEFT JOIN product ON pp_p_idx = p_idx
-        WHERE
-            PO_IDX = #{poIdx}
-    </select>
-
-    <select id="selectInProductDatatable" resultType="Map">
-        SELECT
-            *
-        FROM
-            product
-                LEFT JOIN po_product ON P_IDX = PP_P_IDX
-                LEFT JOIN po ON PP_PO_IDX = PO_IDX
-                LEFT JOIN goods ON G_PO_IDX = PO_IDX AND G_P_IDX = P_IDX
-        WHERE
-            PP_PO_IDX = #{po_idx}
-        AND
-            G_IDX IS NOT NULL
+            GOODS
+        <where>
+            <include refid="includeInProductDatatable"></include>
+        </where>
+        ORDER BY
+        G_IDX desc
         <if test="length!=-1">
-            limit #{start},#{length}
+            LIMIT #{start},#{length}
         </if>
     </select>
-
-    <select id="countInProductDatatable" resultType="Integer">
+    <select id="countInProductDatatable" resultType="Integer" parameterType="map">
         SELECT
             COUNT(*)
         FROM
-            product
-                LEFT JOIN po_product ON P_IDX = PP_P_IDX
-                LEFT JOIN po ON PP_PO_IDX = PO_IDX
-                LEFT JOIN goods ON G_PO_IDX = PO_IDX AND G_P_IDX = P_IDX
-        WHERE
-            PP_PO_IDX = #{po_idx}
-        AND
-            G_IDX IS NOT NULL
+            GOODS
+        <where>
+            <include refid="includeInProductDatatable"></include>
+        </where>
     </select>
 </mapper>
