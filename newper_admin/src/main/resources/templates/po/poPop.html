@@ -17,7 +17,7 @@
                     <div class="d-flex">
                         <div class="page-title">
                             <h4 class="font-weight-semibold" th:text="${po != null ? '발주품의 상세' : '발주품의 신규 등록'}"><i class="icon-office mr-1"></i></h4>
-                            <div class="text-white-50 ml-3" th:text="${po != null ? '발주품의 상세' : '발주품의 신규 등록'}"></div>
+
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">발주코드</span>
                                                         </span>
-                                                        <input type="text" name="poCode" class="form-control" placeholder="자동입력" th:value="${po?.poCode}" readonly>
+                                                        <input type="text" name="poIdx" class="form-control" th:value="${po?.poIdx}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -164,9 +164,7 @@
                                         </div>
                                     </fieldset>
                                 </div>
-                            </div>
 
-                            <div class="card">
                                 <div class="card-body popup-contents">
                                     <!-- 타이틀 -->
                                     <fieldset class="mb-0">
@@ -177,7 +175,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">매입처<a onclick="openCompanyModal_flag('BUY');" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text">매입처<a onclick="openCompanyModal_flag('PURCHASE');" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
                                                         <input type="text" name="comName_buy" class="form-control" placeholder="자동입력" th:value="${po?.company?.comName}" readonly>
                                                         <input type="hidden" name="comIdx_buy" th:value="${po?.company?.comIdx}">
@@ -268,7 +266,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">판매기한</span>
                                                         </span>
-                                                        <input type="text" name="poBuySellPeriod" class="form-control w-datarange daterange-basic-form" th:value="${po?.poBuySellPeriod}" readonly>
+                                                        <input type="text" name="poBuySellPeriod" class="form-control w-datarange daterange-basic-form" th:value="${po?.poBuySellPeriod}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -803,12 +801,14 @@
     var companyFlag = '';
     function openCompanyModal_flag (flag) {
         companyFlag = flag;
+        $('#companyModalType').hide();
+        $('#companyModalForm select[name=ctType]').val(flag);
         openCompanyModal();
     }
     function companySelect(row){
         var rowData = $('#companyModalTable').DataTable().rows(row).data()[0];
 
-        if (companyFlag == 'BUY') {
+        if (companyFlag == 'PURCHASE') {
             $('input[name=comIdx_buy]').val(rowData.COM_IDX);
             $('input[name=comName_buy]').val(rowData.COM_NAME);
         } else {

@@ -71,6 +71,19 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-sm-12 col-md-6" id="companyModalType">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">거래처 구분</span>
+                                                    </span>
+                                                    <select name="ctType" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CtType).values()}" th:text="${opt.option}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -149,7 +162,7 @@
                     }}
                 ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
                 ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
-                ,{'title':'거래처 구분코드','data':'CT_TYPE_LIST_STR', 'defaultContent':''}
+                ,{'title':'거래처 구분코드','data':'CT_TYPE_LIST', 'defaultContent':''}
                 ,{'title':'사업자 분류','data':'COM_TYPE_STR'}
                 ,{'title':'상태','data':'COM_STATE_STR'}
                 ,{'title':'MID','data':'COM_MID','class':'text-won','defaultContent':''}

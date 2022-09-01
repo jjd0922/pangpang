@@ -49,7 +49,7 @@ var DateTimePickers = function() {
             autoApply: true
         }).on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
-        });
+        }).val('');
 
         $('.daterange-basic-form').daterangepicker({
             parentEl: '.content-inner',
