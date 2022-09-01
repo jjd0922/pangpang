@@ -188,7 +188,7 @@
 <script>
     function searchBtn(){
         var table = $('#orderTable').DataTable();
-        table.page('first').ajax.url('/product/goodsStock.dataTable?'+$('#orderTableForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/order/order.dataTable?'+$('#orderTableForm').serialize()).load(null, false);
     }
 
 
@@ -205,7 +205,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/product/goodsStock.dataTable?'+$('#orderTableForm').serialize(),
+            url:'/order/order.dataTable?'+$('#orderTableForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -214,38 +214,38 @@
         } ],
         "columns" : [
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'null','defaultContent':'','render':function(data,type,full,meta){
-                    return '<input type="hidden" name="GS_IDX" value="'+data+'">';
+                    return '<input type="hidden" name="O_IDX" value="'+data+'">';
                 }}
-            ,{'title':'주문일','data':'null'}
-            ,{'title':'주문코드','data':'null','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">code</a>';
+            ,{'title':'주문일','data':'O_DATE'}
+            ,{'title':'주문코드','data':'O_CODE','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
                 }}
-            ,{'title':'주문쇼핑몰/판매처','data':'null','defaultContent':''}
-            ,{'title':'주문자 ID','data':'null','defaultContent':''}
-            ,{'title':'주문자 이름','data':'null','defaultContent':''}
-            ,{'title':'주문자 연락처','data':'null','defaultContent':''}
-            ,{'title':'주문경로','data':'null','defaultContent':''}
-            ,{'title':'결제상태','data':'null','defaultContent':''}
-            ,{'title':'결제방식','data':'null','defaultContent':''}
-            ,{'title':'PG결제승인코드','data':'null','defaultContent':''}
-            ,{'title':'결제일','data':'null','defaultContent':''}
-            ,{'title':'카드결제취소코드','data':'null','defaultContent':''}
-            ,{'title':'카드결제취소일','data':'null','defaultContent':''}
-            ,{'title':'판매가 합(+)','data':'null','defaultContent':''}
-            ,{'title':'이벤트할인가 합(-)','data':'null','defaultContent':''}
-            ,{'title':'쿠폰할인가 합(-)','data':'null','defaultContent':''}
-            ,{'title':'사용적립금(마일리지) 합(-)','data':'null','defaultContent':''}
-            ,{'title':'사용적립금(예치금) 합(-','data':'GS_SAFE_STOCK','defaultContent':''}
-            ,{'title':'배송비(설치비)(+)','data':'GS_PROPER_STOCK','defaultContent':''}
-            ,{'title':'최종결제금액','data':'GS_DAILY','defaultContent':''}
-            ,{'title':'결제취소금액','data':'GS_LOCATION','defaultContent':''}
-            ,{'title':'예정적립금합계','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 이름','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 연락처','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 우편번호','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 주소','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 상세주소','data':'null','defaultContent':''}
-            ,{'title':'배송자(설치자) 메시지(현관비밀번호)','data':'null','defaultContent':''}
+            ,{'title':'주문쇼핑몰/판매처','data':'SHOP_NAME','defaultContent':''}
+            ,{'title':'주문자 ID','data':'CU_ID','defaultContent':''}
+            ,{'title':'주문자 이름','data':'CU_NAME','defaultContent':''}
+            ,{'title':'주문자 연락처','data':'CU_PHONE','defaultContent':''}
+            ,{'title':'주문경로','O_LOCATION':'null','defaultContent':''}
+            ,{'title':'결제상태','data':'PAY_STATE','defaultContent':''}
+            ,{'title':'결제방식','data':'PAY_METHOD','defaultContent':''}
+            ,{'title':'PG결제승인코드','data':'PH_CODE1','defaultContent':''}
+            ,{'title':'결제일','data':'PH_RESPONSE1','defaultContent':''}
+            ,{'title':'카드결제취소코드','data':'PH_CODE2','defaultContent':''}
+            ,{'title':'카드결제취소일','data':'PH_RESPONSE2','defaultContent':''}
+            ,{'title':'판매가 합(+)','data':'PAY_PRODUCT_PRICE','defaultContent':''}
+            ,{'title':'이벤트할인가 합(-)','data':'PAY_EVENT','defaultContent':''}
+            ,{'title':'쿠폰할인가 합(-)','data':'PAY_COUPON','defaultContent':''}
+            ,{'title':'사용적립금(마일리지) 합(-)','data':'PAY_USE_MILEAGE','defaultContent':''}
+            ,{'title':'사용적립금(예치금) 합(-)','data':'PAY_POINT','defaultContent':''}
+            ,{'title':'배송비(설치비)(+)','data':'PAY_DELIVERY','defaultContent':''}
+            ,{'title':'최종결제금액','data':'PAY_PRICE','defaultContent':''}
+            ,{'title':'결제취소금액','data':'PAY_CANCEL_PRICE','defaultContent':''}
+            ,{'title':'예정적립금합계','data':'PAY_MILEAGE','defaultContent':''}
+            ,{'title':'배송자(설치자) 이름','data':'AD_NAME','defaultContent':''}
+            ,{'title':'배송자(설치자) 연락처','data':'AD_PHONE','defaultContent':''}
+            ,{'title':'배송자(설치자) 우편번호','data':'POST','defaultContent':''}
+            ,{'title':'배송자(설치자) 주소','data':'ADDRS','defaultContent':''}
+            ,{'title':'배송자(설치자) 상세주소','data':'ADDR4','defaultContent':''}
+            ,{'title':'배송자(설치자) 메시지(현관비밀번호)','data':'AD_ENTRANCE','defaultContent':''}
         ]
     });
 

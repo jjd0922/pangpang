@@ -283,11 +283,11 @@ public class ProductController {
     }
 
     /**재고상품관리 상세*/
-    @GetMapping("goodsStock/{GS_IDX}")
-    public ModelAndView goodsStockDetail(@PathVariable int GS_IDX) {
+    @GetMapping("goodsStock/{gsidx}")
+    public ModelAndView goodsStockDetail(@PathVariable int gsidx) {
         ModelAndView mav = new ModelAndView("product/goods_stock_detail");
 
-        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(GS_IDX);
+        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(gsidx);
         Product product = goodsStock.getProduct();
 
         List<Map<String, Object>> po = product.getPOption();
