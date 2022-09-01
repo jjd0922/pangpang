@@ -29,6 +29,8 @@ public class EnumClasses {
         enumClasses.put("com_type","ComType");
         enumClasses.put("ct_type","CtType");
         enumClasses.put("cu_gender","CuGender");
+        enumClasses.put("cu_rate", "CuRate");
+        enumClasses.put("cu_state", "CuState");
         enumClasses.put("giftg_state","GiftgState");
         enumClasses.put("gift_state","GiftState");
         enumClasses.put("g_rank","GRank");

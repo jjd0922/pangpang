@@ -23,7 +23,7 @@ public class ScheduleRestController {
     /**영업활동 데이터테이블 조회*/
     @PostMapping("schedule.dataTable")
     public ReturnDatatable scheduleDatatable(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("영업활동관리");
 
         paramMap.multiSelect("sState");
         paramMap.multiSelect("sType");
