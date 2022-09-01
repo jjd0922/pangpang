@@ -28,6 +28,7 @@ public class ScheduleService {
     /**영업활동정보 등록 처리후 idx반환*/
     @Transactional
     public Integer saveSchedule(ParamMap paramMap, MultipartFile file1, MultipartFile file2, MultipartFile file3) {
+        // paramMap으로 스케쥴 구성
         Schedule schedule = setScheduleByParamMap(paramMap);
 
         // 파일업로드 후 schedule에 셋팅
@@ -64,16 +65,17 @@ public class ScheduleService {
     /**영업활동 수정*/
     @Transactional
     public Integer updateSchedule(Integer sIdx, ParamMap paramMap, MultipartFile file1, MultipartFile file2, MultipartFile file3) {
+        // 기존 schedule find
         Schedule oldSchedule = scheduleRepo.findById(sIdx).orElseThrow(() -> new MsgException("존재하지 않는 영업활동입니다."));
+        
+        // paramMap으로 새로운 schedule 구성
         paramMap.remove("sIdx");
         Schedule scheduleParam = setScheduleByParamMap(paramMap);
-        System.out.println("scheduleParam = " + scheduleParam.getSIdx());
         
         // 미팅일, 미팅시각이 바뀌었는지 확인
         LocalDate paramDate = LocalDate.parse(paramMap.getString("sDate"));
         LocalTime paramTime = LocalTime.parse(paramMap.getString("sTime"));
         boolean isRescheduled = !oldSchedule.getSDate().isEqual(paramDate) || !oldSchedule.getSTime().equals(paramTime);
-        System.out.println("isRescheduled = " + isRescheduled);
 
         // 미팅일, 미팅시각이 바뀐경우 > 기존 schedule의 sState를 '일정변경'으로 바꾸고, 미팅일시만 바뀐 새로운 schedule 생성
         if (isRescheduled) {
