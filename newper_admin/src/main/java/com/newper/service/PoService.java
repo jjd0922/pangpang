@@ -54,7 +54,7 @@ public class PoService {
         }
 
 
-        if (poFile.getSize() == 0) {
+        if (poFile.isEmpty()) {
             po.setPoFile(paramMap.getMap().get("poFileOri").toString());
             po.setPoFileName(paramMap.getMap().get("poFileNameOri").toString());
         }else{
@@ -63,8 +63,6 @@ public class PoService {
             po.setPoFileName(poFile.getOriginalFilename());
         }
 
-        LocalTime now = LocalTime.now();
-        po.setPoCode(now.toString());
 
         poRepo.save(po);
 
@@ -167,9 +165,6 @@ public class PoService {
             po.setPoFileName(poFile.getOriginalFilename());
         }
 
-
-        LocalTime now = LocalTime.now();
-        po.setPoCode(now.toString());
 
         poRepo.save(po);
 
