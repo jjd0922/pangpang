@@ -59,7 +59,7 @@
 <script th:inline="javascript">
     function showGoodsStockModal(res) {
         $('#searchGoodsStockModal').modal('show');
-        selectGoodsStockDatatable();
+        selectGoodsStockDatatable(res);
     }
 
     function searchGoodsStockDataTable() {
@@ -68,14 +68,13 @@
 
 </script>
 <script th:inline="javascript">
-    function selectGoodsStockDatatable() {
-        if ($.fn.DataTable.isDataTable('#goodsStockModalTable')) {
-            searchProductDataTable();
-        } else {
+    function selectGoodsStockDatatable(cnt) {
+
             $("#goodsStockModalTable").DataTable({
                 dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
                 ordering: false,
                 autoWidth: true,
+                destroy: true,
                 select: {
                     style: 'multi',
                     selector: 'td:first-child'
@@ -109,11 +108,11 @@
                     ,{'title':'옵션3','data':'OPTION3','defaultContent':''}
                     ,{'title':'스펙','data':'SPEC_LOOKUP','defaultContent':''}
                     ,{'title':'선택','data':'GS_IDX', 'render': function (data, type, full, meta) {
-                            return '<a onclick="selectProduct('+meta.row+')" class="badge badge-primary">선택</a>';
+                            return '<a onclick="selectProduct('+meta.row+','+cnt+')" class="badge badge-primary">선택</a>';
                         }}
                 ]
             });
-        }
+
     }
 
 

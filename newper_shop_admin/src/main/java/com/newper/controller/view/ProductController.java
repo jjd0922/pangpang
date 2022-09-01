@@ -32,16 +32,19 @@ private final ShopCategoryMapper shopCategoryMapper;
     /**상품 관리*/
     @GetMapping("")
     public ModelAndView product(){
-        ModelAndView mav = new ModelAndView("product/shop_product");
+        ModelAndView mav = new ModelAndView("product/product");
 
         return mav;
     }
 
-    @GetMapping("shopDetail")
-    public ModelAndView shopDetail(){
-        ModelAndView mav = new ModelAndView("product/shop_detail");
+    @GetMapping("detail")
+    public ModelAndView detail(){
+        ModelAndView mav = new ModelAndView("product/detail");
         List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
+        List<Map<String, Object>> category = shopCategoryMapper.selectCategoryListByParent();
         mav.addObject("shopCategory",shopCategory);
+        mav.addObject("category",category);
+
         return mav;
     }
 
