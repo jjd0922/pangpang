@@ -72,7 +72,7 @@ public class Schedule {
 
     @PreUpdate
     @PrePersist
-    public void preSave() { // 미팅명, 미팅구분 db추가시 수정필요
+    public void preSave() { 
         if (getSState() == null) {
             throw new MsgException("영업활동상태를 입력해주세요.");
         } else if (!StringUtils.hasText(getSComName())) {
@@ -83,6 +83,8 @@ public class Schedule {
             throw new MsgException("유효한 미팅일을 설정해 주세요.");
         } else if (getSTime() == null) {
             throw new MsgException("유효한 미팅시각을 설정해 주세요.");
+        } else if (getSType() == null) {
+            throw new MsgException("미팅구분을 입력해주세요.");
         } else if (!StringUtils.hasText(getSTitle())) {
             throw new MsgException("미팅명을 입력해주세요.");
         } else if (!StringUtils.hasText(getSAttendees())) {

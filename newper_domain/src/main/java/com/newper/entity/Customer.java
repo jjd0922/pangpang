@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.CuGender;
+import com.newper.constant.CuState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -40,7 +41,8 @@ public class Customer {
 
     private String cuRate;
 
-    private String cuState;
+    @Enumerated(EnumType.STRING)
+    private CuState cuState;
 
     private LocalDate cuBirth;
 

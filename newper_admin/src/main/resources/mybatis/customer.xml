@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.CustomerMapper">
+    <sql id="includeCustomerDatatable">
+        <if test="cuId != null and cuId != ''">AND CU_ID LIKE CONCAT('%',#{cuId},'%')</if>
+        <if test="cuPhone != null and cuPhone != ''">AND CU_PHONE LIKE CONCAT('%',#{cuPhone},'%')</if>
+        <if test="cuState != null">
+            <foreach collection="cuState" open="AND CU_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cuRate != null">
+            <foreach collection="cuRate" open="AND CU_RATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="shopName != null and shopName != ''">AND SHOP_NAME LIKE CONCAT('%',#{shopName},'%')</if>
+        <if test="cuName != null and cuName != ''">AND CU_NAME LIKE CONCAT('%',#{cuName},'%')</if>
+        <if test="cuGender != null">
+            <foreach collection="cuGender" open="AND CU_GENDER IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cuLastDate != null and cuLastDate != ''">AND CU_LAST_DATE BETWEEN SUBSTR(#{cuLastDate}, 1, 10) AND SUBSTR(#{cuLastDate}, 13)</if>
+        <if test="cuJoinDate != null and cuJoinDate != ''">AND CU_JOIN_DATE BETWEEN SUBSTR(#{cuJoinDate}, 1, 10) AND SUBSTR(#{cuJoinDate}, 13)</if>
+    </sql>
+
+    <select id="selectCustomerDatatable" resultType="map">
+        SELECT
+            CU_IDX,
+            CU_ID,
+            CU_PHONE,
+            CU_STATE,
+            CU_RATE,
+            /*싱글싸인온? 추가 필요(검색까지)*/
+            SHOP_NAME,
+            CU_NAME,
+            CU_TELECOM,
+            CU_BIRTH,
+            /*추천인코드 (본인, 등록 둘다) 추가 필요(검색까지)*/
+            CU_LAST_DATE,
+            /*누적어쩌구들 추가 필요*/
+            CU_POINT,
+            /*잔여예치금 추가 필요*/
+            CU_JOIN_DATE
+        FROM
+            CUSTOMER
+                LEFT JOIN SHOP ON CU_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeCustomerDatatable"></include>
+        </where>
+        ORDER BY
+            CU_IDX DESC
+        <if test="length != -1">
+            LIMIT #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countCustomerDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(CU_IDX))
+        FROM
+            CUSTOMER
+                LEFT JOIN SHOP ON CU_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeCustomerDatatable"></include>
+        </where>
+    </select>
+</mapper>
