@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value="/customer/")
@@ -28,4 +30,15 @@ public class CustomerRestController {
         rd.setRecordsTotal(customerMapper.countCustomerDatatable(paramMap.getMap()));
         return rd;
     }
+
+    /**발송내역 페이지*/
+    @PostMapping("sendingHistory.dataTable")
+    public ReturnDatatable sendingHistory(ParamMap paramMap, HttpServletResponse response) {
+        ReturnDatatable rd = new ReturnDatatable("발송내역");
+        System.out.println(paramMap.getMap());
+
+        return rd;
+    }
+
+
 }
