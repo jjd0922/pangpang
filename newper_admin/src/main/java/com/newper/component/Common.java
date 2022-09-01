@@ -29,17 +29,6 @@ public class Common {
         }
     }
 
-    /** 배열 괄호 제거 */
-    public static void changeArr(ParamMap paramMap, String key) {
-        String value = paramMap.getMap().get(key).toString();
-        value = value.replace("[", "");
-        value = value.replace("]", "");
-
-        String[] value_arr = value.split(", ");
-
-        paramMap.getMap().put(key, value_arr);
-    }
-
     public static String summernoteContent(String content){
         content=content.replaceAll("&lt;","<");
         content=content.replaceAll("&#37;","%");

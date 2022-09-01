@@ -54,7 +54,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의작성자(등록자)</span>
                                                         </span>
-                                                        <input type="text" name="createdBy" class="form-control" placeholder="자동입력" th:value="${po?.createdBy}" readonly>
+                                                        <input type="text" name="createdBy" class="form-control" th:value="${po != null ? po?.createdBy: @sessionInfo.id}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -66,31 +66,31 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의등록일(등록일)</span>
                                                         </span>
-                                                        <input type="text" name="createdDate" class="form-control" placeholder="자동입력" th:value="${po?.createdDate}" readonly>
+                                                        <input type="text" name="createdDate" class="form-control" th:value="${po != null ? po?.createdDate : #calendars.format(#calendars.createNow(),'yyyy-MM-dd')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의 승인/반려일</span>
                                                         </span>
-                                                        <input type="text" name="hwAprvDate" class="form-control" placeholder="자동입력" th:value="${po?.hiworks?.hwAprvDate}" readonly>
+                                                        <input type="text" name="hwAprvDate" class="form-control" th:value="${po?.hiworks?.hwAprvDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의 승인/반려자</span>
                                                         </span>
-                                                        <input type="text" name="hwAprvId" class="form-control" placeholder="자동입력" th:value="${po?.hiworks?.hwAprvId}" readonly>
+                                                        <input type="text" name="hwAprvId" class="form-control" th:value="${po?.hiworks?.hwAprvId}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,28 +102,22 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의상태</span>
                                                         </span>
-                                                        <select name="poState" class="form-control select">
-                                                            <option th:each="opt : ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po?.poState} == ${opt.name()}"></option>
-                                                        </select>
+                                                        <input name="poState" class="form-control" readonly th:value="${po?.poState?.option}">
                                                     </div>
                                                 </div>
                                             </div>
 
-
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">품의요청일</span>
                                                         </span>
-                                                        <input type="text" name="poRequestDate" class="form-control" placeholder="자동입력" th:value="${po?.poRequestDate}" readonly>
+                                                        <input type="text" name="poRequestDate" class="form-control" th:value="${po?.poRequestDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -142,9 +136,9 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">구매담당자</span>
+                                                            <span class="input-group-text">구매담당자<a onclick="showUserModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="uName" class="form-control" placeholder="자동입력" readonly>
+                                                        <input type="text" name="uName" class="form-control" readonly>
                                                         <input type="hidden" name="uIdx">
                                                     </div>
                                                 </div>
@@ -177,7 +171,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">매입처<a onclick="openCompanyModal_flag('PURCHASE');" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="comName_buy" class="form-control" placeholder="자동입력" th:value="${po?.company?.comName}" readonly>
+                                                        <input type="text" name="comName_buy" class="form-control" th:value="${po?.company?.comName}" readonly>
                                                         <input type="hidden" name="comIdx_buy" th:value="${po?.company?.comIdx}">
                                                     </div>
                                                 </div>
@@ -228,7 +222,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총구매액</span>
                                                         </span>
-                                                        <input type="text" name="poTotalAmount" class="form-control" placeholder="자동입력" th:value="${po?.poTotalAmount}" readonly>
+                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${po?.poTotalAmount}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,7 +333,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총판매액</span>
                                                         </span>
-                                                        <input type="text" name="poSellTotalAmount" class="form-control" placeholder="자동입력" th:value="${po?.poSellTotalAmount}" readonly>
+                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${po?.poSellTotalAmount}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -363,7 +357,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">예상수익률</span>
                                                         </span>
-                                                        <input type="text" name="poSellProfit" class="form-control" placeholder="자동입력" th:value="${po?.poSellProfit}" readonly>
+                                                        <input type="text" name="poSellProfit" class="form-control" th:value="${po?.poSellProfit}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -546,7 +540,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">정산방식</span>
                                                         </span>
-                                                        <input type="text" name="ccCalType" class="form-control" placeholder="자동입력" th:value="${po?.contract?.ccCalType}" readonly>
+                                                        <input type="text" name="ccCalType" class="form-control" th:value="${po?.contract?.ccCalType}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -558,7 +552,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">정산주기</span>
                                                         </span>
-                                                        <input type="text" name="ccCycle" class="form-control" placeholder="자동입력" th:value="${po?.contract?.ccCycle}" readonly>
+                                                        <input type="text" name="ccCycle" class="form-control" th:value="${po?.contract?.ccCycle}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -570,7 +564,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">계약번호</span>
                                                         </span>
-                                                        <input type="text" name="ccNum" class="form-control" placeholder="자동입력" th:value="${po?.contract?.ccNum}" readonly>
+                                                        <input type="text" name="ccNum" class="form-control" th:value="${po?.contract?.ccNum}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -747,10 +741,17 @@
 <th:block th:replace="product/modal/productModal_po.html"/>
 <th:block th:replace="goods/modal/warehouseModal.html"/>
 <th:block th:replace="company/modal/contractModal.html"/>
+<th:block th:replace="modal/userModal.html"/>
 
 
 <script>
+    function selectUser(row) {
+        var rowData = getDatatablemap('userModalTable', row);
 
+        $('#searchUserModal').modal('hide');
+        $('input[name=uName]').val(rowData.U_NAME);
+        $('input[name=uIdx]').val(rowData.U_IDX);
+    }
 
     function saveAction(){
         // if ($('hidden[name=comIdx_buy]').val() == '') {
@@ -778,6 +779,10 @@
         //     return false;
         // }
 
+        if ($('input[name=poProductCost]').length == 0) {
+            alert('상품을 추가해주세요');
+            return false;
+        }
         var poProductCost = $('input[name=poProductCost]').val().replace(/,/gi,'');
         $('input[name=poProductCost]').val(poProductCost);
 
@@ -805,10 +810,13 @@
         $('#companyModalForm select[name=ctType]').val(flag);
         openCompanyModal();
     }
+
     function companySelect(row){
         var rowData = $('#companyModalTable').DataTable().rows(row).data()[0];
 
         if (companyFlag == 'PURCHASE') {
+            $('input[name=uName]').val(rowData.U_NAME);
+            $('input[name=uIdx]').val(rowData.U_IDX);
             $('input[name=comIdx_buy]').val(rowData.COM_IDX);
             $('input[name=comName_buy]').val(rowData.COM_NAME);
         } else {
@@ -836,6 +844,18 @@
     });
 
     $("#saveBtn").on("click", saveAction);
+
+    function openContractModal() {
+        var comIdx = $('input[name=comIdx_buy]').val();
+        if (comIdx == '') {
+            alert('매입처를 선택해 주세요.');
+            return false;
+        }
+
+        $('#contractModalComIdx').val(comIdx);
+        $('#contractModal').modal('show');
+        selectContractDataTable();
+    }
 </script>
 </body>
 </html>
