@@ -54,9 +54,9 @@ public class PoService {
         }
 
 
-        if (poFile.isEmpty()) {
-            po.setPoFile(paramMap.getMap().get("poFileOri").toString());
-            po.setPoFileName(paramMap.getMap().get("poFileNameOri").toString());
+        if (poFile == null || poFile.isEmpty()) {
+            po.setPoFile("");
+            po.setPoFileName("");
         }else{
             String poFilePath = Common.uploadFilePath(poFile, "po/po/", AdminBucket.SECRET);
             po.setPoFile(poFilePath);
@@ -66,71 +66,64 @@ public class PoService {
 
         poRepo.save(po);
 
-        Common.changeArr(paramMap, "poProductCost");
-        Common.changeArr(paramMap, "poProductSellPrice");
-        Common.changeArr(paramMap, "poProductProcess");
-        Common.changeArr(paramMap, "poProductFix");
-        Common.changeArr(paramMap, "poProductPaint");
-        Common.changeArr(paramMap, "poProductProfitTarget");
-        Common.changeArr(paramMap, "poProductCount");
-        Common.changeArr(paramMap, "poProduct");
-        Common.changeArr(paramMap, "poProductOption1");
-        Common.changeArr(paramMap, "poProductOption2");
-        Common.changeArr(paramMap, "poProductOption3");
+        List<Long> ppCost = paramMap.getListLong("poProductCost");
+        List<Long> ppSellPrice = paramMap.getListLong("poProductSellPrice");
+        List<Long> ppProcessCost = paramMap.getListLong("poProductProcess");
+        List<Long> ppFixCost = paramMap.getListLong("poProductFix");
+        List<Long> ppPaintCost = paramMap.getListLong("poProductPaint");
+        List<Long> ppProfitTarget = paramMap.getListLong("poProductProfitTarget");
+        List<Long> ppCount = paramMap.getListLong("poProductCount");
 
-        String [] ppCost = (String[]) paramMap.getMap().get("poProductCost");
-        String [] ppSellPrice = (String[]) paramMap.getMap().get("poProductSellPrice");
-        String [] ppProcessCost = (String[]) paramMap.getMap().get("poProductProcess");
-        String [] ppFixCost = (String[]) paramMap.getMap().get("poProductFix");
-        String [] ppPaintCost = (String[]) paramMap.getMap().get("poProductPaint");
-        String [] ppProfitTarget = (String[]) paramMap.getMap().get("poProductProfitTarget");
-        String [] ppCount = (String[]) paramMap.getMap().get("poProductCount");
-        String [] pIdx = (String[]) paramMap.getMap().get("poProduct");
-        String [] ppOption1 = (String[]) paramMap.getMap().get("poProductOption1");
-        String [] ppOption2 = (String[]) paramMap.getMap().get("poProductOption2");
-        String [] ppOption3 = (String[]) paramMap.getMap().get("poProductOption3");
-        String [] ppMemo = (String[]) paramMap.getMap().get("poProductMemo");
+//        String [] ppFixCost = (String[]) paramMap.getMap().get("poProductFix");
+//        String [] ppPaintCost = (String[]) paramMap.getMap().get("poProductPaint");
+//        String [] ppProfitTarget = (String[]) paramMap.getMap().get("poProductProfitTarget");
+//        String [] ppCount = (String[]) paramMap.getMap().get("poProductCount");
+//        String [] pIdx = (String[]) paramMap.getMap().get("poProduct");
+//        String [] ppOption1 = (String[]) paramMap.getMap().get("poProductOption1");
+//        String [] ppOption2 = (String[]) paramMap.getMap().get("poProductOption2");
+//        String [] ppOption3 = (String[]) paramMap.getMap().get("poProductOption3");
+//        String [] ppMemo = (String[]) paramMap.getMap().get("poProductMemo");
 
 
-        for (int i = 0; i < ppCost.length; i++) {
-            PoProduct poProduct = paramMap.mapParam(PoProduct.class);
-            poProduct.setPo(po);
-
-            Product product = paramMap.mapParam(Product.class);
-            product.setPIdx((int) Long.parseLong(pIdx[i]));
-            poProduct.setProduct(product);
-
-            String ppOption = "[";
-            if (!ppOption1[i].equals("")) {
-                String [] option1 = ppOption1[i].split(":");
-                ppOption += "{\"title\":" + "\"" + option1[0] + "\"" + ",\"values\":" + "\"" + option1[1] + "\"" + "}";
-            }
-
-            if (!ppOption2[i].equals("")) {
-                String [] option2 = ppOption2[i].split(":");
-                ppOption += "{\"title\":" + "\"" + option2[0] + "\"" + ",\"values\":" + "\"" + option2[1] + "\"" + "}";
-            }
-
-            if (!ppOption3[i].equals("")) {
-                String [] option3 = ppOption3[i].split(":");
-                ppOption += "{\"title\":" + "\"" + option3[0] + "\"" + ",\"values\":" + "\"" + option3[1] + "\"" + "}";
-            }
-
-            ppOption += "]";
-            ppOption = ppOption.replace("}{", "},{");
-
-            poProduct.setPpMemo("");
-            poProduct.setPpOption(ppOption);
-            poProduct.setPpCost(Integer.parseInt(ppCost[i]));
-            poProduct.setPpSellPrice(Integer.parseInt(ppSellPrice[i]));
-            poProduct.setPpProcessCost(Integer.parseInt(ppProcessCost[i]));
-            poProduct.setPpFixCost(Integer.parseInt(ppFixCost[i]));
-            poProduct.setPpPaintCost(Integer.parseInt(ppPaintCost[i]));
-            poProduct.setPpProfitTarget(Integer.parseInt(ppProfitTarget[i]));
-            poProduct.setPpCount(Integer.parseInt(ppCount[i]));
-
-            poProductRepo.save(poProduct);
-        }
+//        for (int i = 0; i < ppCost.size(); i++) {
+//            PoProduct poProduct = paramMap.mapParam(PoProduct.class);
+//            poProduct.setPo(po);
+//
+//            Product product = paramMap.mapParam(Product.class);
+//            product.setPIdx((int) Long.parseLong(pIdx[i]));
+//            poProduct.setProduct(product);
+//
+//            String ppOption = "[";
+//            if (!ppOption1[i].equals("")) {
+//                String [] option1 = ppOption1[i].split(":");
+//                ppOption += "{\"title\":" + "\"" + option1[0] + "\"" + ",\"values\":" + "\"" + option1[1] + "\"" + "}";
+//            }
+//
+//            if (!ppOption2[i].equals("")) {
+//                String [] option2 = ppOption2[i].split(":");
+//                ppOption += "{\"title\":" + "\"" + option2[0] + "\"" + ",\"values\":" + "\"" + option2[1] + "\"" + "}";
+//            }
+//
+//            if (!ppOption3[i].equals("")) {
+//                String [] option3 = ppOption3[i].split(":");
+//                ppOption += "{\"title\":" + "\"" + option3[0] + "\"" + ",\"values\":" + "\"" + option3[1] + "\"" + "}";
+//            }
+//
+//            ppOption += "]";
+//            ppOption = ppOption.replace("}{", "},{");
+//
+//            poProduct.setPpMemo("");
+//            poProduct.setPpOption(ppOption);
+//            poProduct.setPpCost(ppCost.get(i).intValue());
+//            poProduct.setPpSellPrice(Integer.parseInt(ppSellPrice[i]));
+//            poProduct.setPpProcessCost(Integer.parseInt(ppProcessCost[i]));
+//            poProduct.setPpFixCost(Integer.parseInt(ppFixCost[i]));
+//            poProduct.setPpPaintCost(Integer.parseInt(ppPaintCost[i]));
+//            poProduct.setPpProfitTarget(Integer.parseInt(ppProfitTarget[i]));
+//            poProduct.setPpCount(Integer.parseInt(ppCount[i]));
+//
+//            poProductRepo.save(poProduct);
+//        }
 
 
         return po.getPoIdx();
@@ -165,22 +158,23 @@ public class PoService {
             po.setPoFileName(poFile.getOriginalFilename());
         }
 
+        po.setPoState(PoState.WAITING);
 
         poRepo.save(po);
 
-        Common.changeArr(paramMap, "poProductCost");
-        Common.changeArr(paramMap, "poProductSellPrice");
-        Common.changeArr(paramMap, "poProductProcess");
-        Common.changeArr(paramMap, "poProductFix");
-        Common.changeArr(paramMap, "poProductPaint");
-        Common.changeArr(paramMap, "poProductProfitTarget");
-        Common.changeArr(paramMap, "poProductCount");
-        Common.changeArr(paramMap, "poProduct");
-        Common.changeArr(paramMap, "poProductOption1");
-        Common.changeArr(paramMap, "poProductOption2");
-        Common.changeArr(paramMap, "poProductOption3");
-        Common.changeArr(paramMap, "poProductSpec");
-        Common.changeArr(paramMap, "poProductSpec2");
+//        Common.changeArr(paramMap, "poProductCost");
+//        Common.changeArr(paramMap, "poProductSellPrice");
+//        Common.changeArr(paramMap, "poProductProcess");
+//        Common.changeArr(paramMap, "poProductFix");
+//        Common.changeArr(paramMap, "poProductPaint");
+//        Common.changeArr(paramMap, "poProductProfitTarget");
+//        Common.changeArr(paramMap, "poProductCount");
+//        Common.changeArr(paramMap, "poProduct");
+//        Common.changeArr(paramMap, "poProductOption1");
+//        Common.changeArr(paramMap, "poProductOption2");
+//        Common.changeArr(paramMap, "poProductOption3");
+//        Common.changeArr(paramMap, "poProductSpec");
+//        Common.changeArr(paramMap, "poProductSpec2");
 
         String [] ppCost = (String[]) paramMap.getMap().get("poProductCost");
         String [] ppSellPrice = (String[]) paramMap.getMap().get("poProductSellPrice");
@@ -291,9 +285,9 @@ public class PoService {
         estimateRepo.save(estimate);
 
         // 견적서-상품 관계테이블 생성
-        Common.changeArr(paramMap, "pIdxs");
-        Common.changeArr(paramMap, "purchase_count");
-        Common.changeArr(paramMap, "sell_price");
+//        Common.changeArr(paramMap, "pIdxs");
+//        Common.changeArr(paramMap, "purchase_count");
+//        Common.changeArr(paramMap, "sell_price");
 
         String[] pIdx = (String[]) paramMap.getMap().get("pIdxs");
         String[] pepCount = (String[]) paramMap.getMap().get("purchase_count");
@@ -357,9 +351,9 @@ public class PoService {
             estimateProductRepo.deleteById(estimateProducts.get(i).getPepIdx());
         }
 
-        Common.changeArr(paramMap, "pIdxs");
-        Common.changeArr(paramMap, "purchase_count");
-        Common.changeArr(paramMap, "sell_price");
+//        Common.changeArr(paramMap, "pIdxs");
+//        Common.changeArr(paramMap, "purchase_count");
+//        Common.changeArr(paramMap, "sell_price");
 
         String[] pIdx = (String[]) paramMap.getMap().get("pIdxs");
         String[] pepCount = (String[]) paramMap.getMap().get("purchase_count");

@@ -54,6 +54,7 @@ public class Po extends BaseEntity {
     private PoState poState;
     @Enumerated(EnumType.STRING)
     private PoType poType;
+    /** 발주완료일. 매입처로 보낸 날짜*/
     private LocalDate poRequestDate;
     private String poMemo;
     private boolean poRepurchase;
