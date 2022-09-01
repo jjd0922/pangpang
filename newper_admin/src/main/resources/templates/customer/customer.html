@@ -144,6 +144,10 @@
                                             <i class="icon-coins mr-1"></i>적립금지급
                                         </a>
 
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="giftBtn">
+                                            <i class="icon-cash4 mr-1"></i>상품권지급
+                                        </a>
+
                                         <a type="button" class="btn btn-sm btn-secondary ml-1" id="smsBtn">
                                             <i class="icon-bubble-dots4 mr-1"></i>SMS발송
                                         </a>
@@ -207,6 +211,11 @@
 
     function pointPopup() {
         var focusPopup = window.open('/customer/pop/point/', 'pointPopup', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function giftPopup() {
+        var focusPopup = window.open('/customer/pop/gift/', 'giftPopup', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -278,6 +287,7 @@
     });
     $('#couponBtn').on('click', couponPopup);
     $('#pointBtn').on('click', pointPopup);
+    $('#giftBtn').on('click', giftPopup);
     $('#smsBtn').on('click', smsPopup);
     $('#kakaoBtn').on('click', kakaoPopup);
     $('#appPushBtn').on('click', appPushPopup);

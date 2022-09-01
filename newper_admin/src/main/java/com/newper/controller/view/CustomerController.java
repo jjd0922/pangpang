@@ -58,6 +58,13 @@ public class CustomerController {
         return mav;
     }
 
+    @GetMapping(value = "pop/gift")
+    public ModelAndView giftPopup() {
+        ModelAndView mav = new ModelAndView("/customer/pop_gift");
+
+        return mav;
+    }
+
     @GetMapping(value = "pop/sms")
     public ModelAndView smsPopup() {
         ModelAndView mav = new ModelAndView("/customer/pop_sms");
