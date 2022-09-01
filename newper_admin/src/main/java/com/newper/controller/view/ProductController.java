@@ -77,10 +77,10 @@ public class ProductController {
     }
 
     /**카테고리 상세 팝업*/
-    @GetMapping("category/categoryDetail/{cate_idx}")
-    public ModelAndView categoryDetail(@PathVariable int cate_idx){
+    @GetMapping("category/categoryDetail/{cateIdx}")
+    public ModelAndView categoryDetail(@PathVariable int cateIdx){
         ModelAndView mav = new ModelAndView("product/category/categoryDetail");
-        Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+        Category category = categoryRepo.findById(cateIdx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         int depth = category.getCateDepth();
 
@@ -110,13 +110,13 @@ public class ProductController {
     }
 
     /**카테고리 수정*/
-    @PostMapping("category/categoryDetail/{cate_idx}")
-    public ModelAndView categoryDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+    @PostMapping("category/categoryDetail/{cateIdx}")
+    public ModelAndView categoryDetailPost(@PathVariable int cateIdx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        paramMap.put("CATE_IDX",cate_idx);
+        paramMap.put("CATE_IDX",cateIdx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/category/categoryDetail/"+cate_idx);
+        mav.addObject("loc","/product/category/categoryDetail/"+cateIdx);
         return mav;
     }
 
@@ -147,11 +147,11 @@ public class ProductController {
     }
 
     /**브랜드 상세 팝업*/
-    @GetMapping("brand/{cate_idx}")
-    public ModelAndView brandDetail(@PathVariable int cate_idx){
+    @GetMapping("brand/{cateIdx}")
+    public ModelAndView brandDetail(@PathVariable int cateIdx){
         ModelAndView mav = new ModelAndView("product/brand_detail");
 
-        Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+        Category category = categoryRepo.findById(cateIdx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         String image = category.getCateImage();
         image= Common.summernoteContent(image);
@@ -163,13 +163,13 @@ public class ProductController {
     }
 
     /**브랜드 수정*/
-    @PostMapping("brand/{cate_idx}")
-    public ModelAndView brandDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+    @PostMapping("brand/{cateIdx}")
+    public ModelAndView brandDetailPost(@PathVariable int cateIdx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        paramMap.put("CATE_IDX",cate_idx);
+        paramMap.put("CATE_IDX",cateIdx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/brand/"+cate_idx);
+        mav.addObject("loc","/product/brand/"+cateIdx);
         return mav;
     }
 
