@@ -59,8 +59,8 @@
 
 <script th:inline="javascript">
     // 창고 검색 선택
-    function warehouseSelect (id, rowIdx) {
-        var dataMap=getDatatablemap(id, rowIdx);
+    function warehouseSelect (rowIdx) {
+        var dataMap=getDatatablemap('warehouseModalTable', rowIdx);
         $('input[name=whIdx]').val(dataMap.WH_IDX);
         $('input[name=whName]').val(dataMap.WH_NAME);
         $('#warehouseModal').modal('hide');
@@ -81,30 +81,21 @@
         $('#warehouseModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
-            // select: {
-            //     style: 'multi',
-            //     selector: 'td:first-child'
-            // },
+            buttons: buttonsSelect(false),
             serverSide: true,
             ajax:{
                 url:'/goods/warehouse.dataTable',
                 type:'post'
             },
-            columnDefs: [{
-                width: '40px',
-                autoWidth: false,
-                orderable: false,
-                targets:   [0]
-            },
-            {
-                width: '40px',
-                targets:    [1]
-            }],
+
             "columns" : [
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
                 ,{'title':'창고명','data':'WH_NAME', 'defaultContent':''}
                 ,{'title':'창고주소','data':'ADDRESS', 'defaultContent':''}
                 ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="warehouseSelect(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">선택</button>';
+                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="warehouseSelect('+ meta.row +')">선택</button>';
                     }}
             ]
         });
