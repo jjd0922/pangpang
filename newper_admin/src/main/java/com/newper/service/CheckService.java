@@ -27,5 +27,7 @@ public class CheckService {
 
 
 
+        // delete ggt_idx
+
     }
 }

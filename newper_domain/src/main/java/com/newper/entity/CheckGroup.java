@@ -2,12 +2,14 @@ package com.newper.entity;
 
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
