@@ -119,6 +119,22 @@ public class CustomerController {
 
         return mav;
     }
+    
+    /**고객상담관리 페이지*/
+    @GetMapping(value = "qna")
+    public ModelAndView customerQna() {
+        ModelAndView mav = new ModelAndView("/customer/qna");
+    
+        return mav;
+    }
 
+    /**고객상담관리 detail*/
+    @GetMapping(value = "qna/pop")
+    public ModelAndView customerNewQna() {
+        ModelAndView mav = new ModelAndView("/customer/qna_pop");
+
+        return mav;
+    }
+    
 
 }
