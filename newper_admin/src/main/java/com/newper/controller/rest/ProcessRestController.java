@@ -2,9 +2,11 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.UserMapper;
+import com.newper.service.CheckService;
 import com.newper.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,7 @@ public class ProcessRestController {
     private final UserMapper userMapper;
     private final GoodsMapper goodsMapper;
     private final GoodsService goodsService;
+    private final CheckService checkService;
 
     /** 공정보드 조회 */
     @PostMapping("board.dataTable")
@@ -107,5 +110,14 @@ public class ProcessRestController {
         String g_idxs = paramMap.getString("g_idxs");
         return goodsService.insertGoodsTemp(idx, g_idxs.split(","));
     }
+    /**입고검수 그룹 등록*/
+    @PostMapping("incheckPop.ajax")
+    public ReturnMap incheckPop(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
 
+        checkService.insertCheckGroup(paramMap);
+
+
+        return rm;
+    }
 }

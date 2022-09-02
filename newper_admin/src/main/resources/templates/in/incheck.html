@@ -113,12 +113,6 @@
                         <div class="card">
                             <table class="table" id="incheckTable"></table>
                         </div>
-                            <!--임시 입고검수코드 팝업버튼 -->
-                        <div class="form-group end">
-                            <button type="button" class="btn btn-primary" onclick="incheckManagePop2()">
-                                <span class="ladda-label" onclick="incheckManagePop2()">입고검수코드임시버튼</span>
-                            </button>
-                        </div>
 
                     </div>
                 </div>
@@ -153,12 +147,7 @@
         table.page('first').ajax.url('/in/incheck.dataTable?' + $('#incheckForm').serialize()).load(null, false);
     }
 
-    function incheckManagePop(comIdx) {
-        var focusPopup = window.open('companyPop/' + comIdx, 'companyDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
-
-    function incheckManagePop2(){
+    function incheckPop(idx){
         var focusPopup = window.open('/in/incheckManagePop','incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
@@ -166,30 +155,19 @@
 
 <script>
     var incheckTable = $('#incheckTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
             url:'/in/incheck.dataTable?'+$('#incheckForm').serialize(),
             type:'post'
         },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-
-        } ],
-
-
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
-                }}
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
             ,{'title':'입고검수코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="#" onclick="incheckManagePop('+ full.COM_IDX +')" class="badge badge-primary">' + full.COM_NAME + '</a>';
+                    return '<a href="#" onclick="incheckPop('+ full.COM_IDX +')" class="badge badge-primary">' + full.COM_NAME + '</a>';
                 }}
             ,{'title':'입고검수<br>작업상태값','data':"CG_STATE"}
             ,{'title':'입고검수<br>업체','data':'CG_COM_IDX'}

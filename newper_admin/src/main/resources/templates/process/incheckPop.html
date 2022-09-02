@@ -26,13 +26,11 @@
                     <div class="d-flex">
                         <div class="page-title">
                             <h4 class="font-weight-semibold" >입고검수 요청</h4>
-                            <!--  <div class="text-white-50 ml-3">설명글영역</div>
-                          </div>-->
                         </div>
                     </div>
                 </div>
             </div>
-            <form id="baordForm">
+            <form id="incheckPopForm">
                 <div class="card">
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
@@ -153,10 +151,10 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                               <span class="input-group-text">
-                                                                   작업완료메모
-                                                               </span>
-                                                           </span>
+                                               <span class="input-group-text">
+                                                   작업완료메모
+                                               </span>
+                                           </span>
                                             <input type="text" name="U_TEL" class="form-control">
                                         </div>
                                     </div>
@@ -168,13 +166,13 @@
                             <legend class="">2.자산정보</legend>
                             <div class="btn-group mr-1" style="z-index: 1;float: left;">
                                 <a type="button" class="btn btn-sm btn-primary ml-1" id="barcodeBtn" onclick="alert('test');">
-                                    </i>바코드
+                                    바코드
                                 </a>
                                 <a type="button" class="btn btn-sm btn-primary ml-1" id="addBtn">
-                                    </i>추가
+                                    추가
                                 </a>
                                 <a type="button" class="btn btn-sm btn-primary ml-1" id="deleteBtn">
-                                    </i>삭제
+                                    삭제
                                 </a>
                             </div>
 
@@ -184,8 +182,16 @@
                 </div>
             </form>
         </div>
+
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="saveBtn()"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
     </div>
 </div>
+
+
+
 
 
 
@@ -238,6 +244,18 @@
     function selectCompany(row) {
         var rowData = getDatatablemap('comModalTable', row);
 
+    }
+    
+    function saveBtn(){
+        if(window.confirm('저장하시겠습니까?')){
+            $.ajax({
+              url:location.pathname+'.ajax'+location.search
+              ,type:'post'
+              ,data:$('#incheckPopForm').serialize()
+            }).done(function(res){
+                
+            });
+          }
     }
 </script>
 <script th:inline="javascript">
