@@ -37,15 +37,16 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">등록일</span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="createdDate">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     거래처(판매처)
-                                                <a th:if="${user == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
+                                                <a th:if="${calculate == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
                                                 </span>
                                             </span>
-                                            <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${user != null} ? ${user.company.comName}">
-                                            <input type="hidden" name="U_COM_IDX" th:value="${user != null} ? ${user.company.comIdx}">
+                                            <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${calculateSetting != null} ? ${calculateSetting.company.comName}">
+                                            <input type="hidden" name="COM_IDX" th:value="${calculateSetting != null} ? ${calculateSetting.company.comIdx}">
+                                            <input type="hidden" name="csIdx" >
                                         </div>
                                     </div>
                                 </div>
@@ -59,15 +60,15 @@
                                                    타입
                                                </span>
                                             </span>
-                                            <select name="whState" class="form-control select">
-                                                <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(warehouse?.whState) eq opt.name()}"></option>
+                                            <select name="csType" class="form-control select">
+                                                <option th:each="opt: ${T(com.newper.constant.CsType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csType) eq opt.name()}"></option>
                                             </select>
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    판매금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csPrice" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -81,15 +82,15 @@
                                                    배송비별도정산
                                                </span>
                                             </span>
-                                            <select name="whState" class="form-control select">
-                                                <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(warehouse?.whState) eq opt.name()}"></option>
+                                            <select name="csDeliveryCal" class="form-control select">
+                                                <option th:each="opt: ${T(com.newper.constant.CsDeliveryCal).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csDeliveryCal) eq opt.name()}"></option>
                                             </select>
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    배송비 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csDeliveryCost" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -103,13 +104,13 @@
                                                    주문번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csOrder" class="form-control">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    수수료 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csFee" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -123,13 +124,13 @@
                                                    상품번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csProduct" class="form-control">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    정산금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csRealprice" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +144,7 @@
                                                    메모
                                                </span>
                                             </span>
-                                            <input type="text" name="U_TEL" class="form-control">
+                                            <input type="text" name="csMemo" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -152,10 +153,10 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div>1
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button onclick="vendorCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="vendorCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
     </div>
 </div>
@@ -202,6 +203,27 @@
 <script th:inline="javascript">
 
 
+    function saveAction(){
+        $("#vendorForm").submit();
+    }
+
+
+
+    function vendorCreate(){
+        $.ajax({
+            url:[[@{/purchaseCal/vendorCreate.ajax}]],
+        data: $('#vendorForm').serialize(),
+            type:'POST',
+            success:function(data){
+            console.log(data);
+            window.close();
+            opener.location.reload();
+        }
+    ,error: function(){
+        }
+    });
+    }
+
 </script>
 <script>
     //거래처 검색 모달에서 거래처 선택
@@ -210,7 +232,7 @@
         var rowData = $('#comModalTable').DataTable().rows(row).data()[0];
 
         $('#vendorForm input[name="COM_NAME"]').val(rowData.COM_NAME);
-        $('#vendorForm input[name="U_COM_IDX"]').val(rowData.COM_IDX);
+        $('#vendorForm input[name="COM_IDX"]').val(rowData.COM_IDX);
         $('#searchComModal').modal('hide');
     }
 
@@ -218,6 +240,8 @@
     $('#modalForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
+
+    $("#saveBtn").on("click", saveAction);
 
 
 </script>
