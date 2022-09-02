@@ -193,6 +193,7 @@
         }
     }
 
+    /**수정폼 보여주기*/
     function showUpdateForm(row) {
         if ($("#saveBtn").length > 0) {
             alert("수수료 생성을 먼저 완료해 주세요.");
@@ -202,11 +203,12 @@
             alert("이미 수정 중입니다.");
             return false;
         }
-        $('a[data-row="'+row+'"]').attr("id", "updateBtn").removeClass("badge-primary").addClass("badge-secondary").after('<a href="javascript: searchFee()" class="badge badge-light">취소</a>');
-        var targetCols = document.querySelectorAll("#feeTable tr")[row].childNodes;
-        var rowData = getDatatablemap('feeTable', (row-1));
-        var cfType = rowData.CF_TYPE;
 
+        // 버튼 전환
+        $('a[data-row="'+row+'"]').attr("id", "updateBtn").removeClass("badge-primary").addClass("badge-secondary").after('<a href="javascript: searchFee()" class="badge badge-light">취소</a>');
+
+        // 수정창으로 전환
+        var targetCols = $("a[data-row="+row+"]").closest("tr").find("td");
         targetCols[1].innerHTML = '';
         targetCols[2].innerHTML = '<input type="text" name="cfPercent" value="">';
         targetCols[3].innerHTML = '<input type="text" name="cfMoney" value="">';
@@ -214,6 +216,11 @@
         selectBox[0][0].remove();
         selectBox.appendTo(targetCols[1]);
 
+        // 필요한 데이터 가져오기
+        var rowData = getDatatablemap('feeTable', (row-1));
+        var cfType = rowData.CF_TYPE;
+
+        // 정액/정률 선택박스 옵션 세팅
         var opt = [[${T(com.newper.constant.CfType).values()}]];
         $.each(opt, function(index, item){
             if (item == cfType) {
@@ -233,6 +240,7 @@
 
     }
 
+    /**등록, 수정창에서 정액/정률 선택시 input창 전환*/
     function switchInput(selected) {
         if (selected[0].options.selectedIndex == '1') {
             $('input[name="cfPercent"]').attr('disabled', false);
@@ -265,6 +273,7 @@
         }
     }
 
+    /**수수료 등록폼 보여주기*/
     function showNewFeeForm() {
         if (!$.fn.DataTable.isDataTable('#feeTable')) {
             alert("거래처를 선택해주세요.");
@@ -278,6 +287,8 @@
             alert("이미 생성 중입니다.");
             return false;
         }
+
+        // 새로운 행 추가
         $('#feeTable tr:last').after('<tr><td>' +
                                         '<select name="cateIdx" data-placeholder="중분류선택" class="form-control"><option></option></select></td>' +
                                     '<td></td>' +
@@ -292,6 +303,8 @@
                                         '<a href="javascript: saveNewFee()" id="saveBtn" class="badge badge-secondary">저장</a>' +
                                         '<a href="javascript: searchFee()" class="badge badge-light">취소</a>' +
                                     '</td></tr>');
+
+        //중분류 선택 박스 설정
         $('select[name="cateIdx"]').append($('option.opt').clone());
 
         $('select[name="cateIdx"]').select2({
@@ -299,6 +312,7 @@
             allowClear: true
         });
 
+        // 정액/정률 선택 박스 추가
         var selectBox = $('select[name="cfType"]:first').clone();
         selectBox[0][0].remove();
         $('tr:last td')[1].append(selectBox[0]);
