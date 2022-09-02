@@ -38,7 +38,8 @@ public class Order {
     @JoinColumn(name = "O_AD_IDX", referencedColumnName = "adIdx")
     private OrderAddress orderAddress;
 
-    private String oLocation;
+    @Enumerated(EnumType.STRING)
+    private OLocation oLocation;
 
     private String oCode;
 

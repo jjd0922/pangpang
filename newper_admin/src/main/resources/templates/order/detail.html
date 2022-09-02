@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${product != null}"></title>
+    <title th:text="${order != null}? '주문정보상세':'주문정보등록'"></title>
 
     <th:block th:replace="common/css.html"></th:block>
     <style>
@@ -62,13 +62,13 @@
                                                주문완료일
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_DATE" class="form-control" th:value="${order?.O_DATE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                결제상태
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_STATE" class="form-control" th:value="${order?.PAY_STATE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -76,13 +76,13 @@
                                                주문코드
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_CODE" class="form-control" th:value="${order?.O_CODE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                결제방식
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_METHOD" class="form-control" th:value="${order?.PAY_METHOD}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -90,13 +90,13 @@
                                                주문분양몰
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="SHOP_NAME" class="form-control" th:value="${order?.SHOP_NAME}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                PG결제승인코드
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_CODE" class="form-control" th:value="${order?.PAY_CODE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -104,13 +104,13 @@
                                                회원구분
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="" class="form-control" th:value="${order?.CU_IDX}!=null? '회원':'비회원'" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                결제일
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_DATE" class="form-control" th:value="${order?.PAY_DATE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -118,13 +118,13 @@
                                                주문자 ID
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="CU_ID" class="form-control" th:value="${order?.CU_ID}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                카드결제취소코드
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_CANCEL_CODE" class="form-control" th:value="${order?.PAY_CANCEL_CODE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -132,13 +132,13 @@
                                                주문자 이름
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="CU_NAME" class="form-control" th:value="${order?.CU_NAME}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                카드결제취소일
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_CANCEL_DATE" class="form-control" th:value="${order?.PAY_CANCEL_DATE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -146,13 +146,13 @@
                                                주문자 연락처
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="CU_PHONE" class="form-control" th:value="${order?.CU_PHONE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                주문경로
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_LOCATION" class="form-control" th:value="${order?.O_LOCATION}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                                                판매가(뉴퍼마켓가) 합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_GS_PRICE" class="form-control" th:value="${order?.O_GS_PRICE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불은행
@@ -188,7 +188,7 @@
                                                할인가 합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_EVENT" class="form-control" th:value="${order?.O_EVENT}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불계좌번호
@@ -202,7 +202,7 @@
                                                 쿠폰할인가 합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_COUPON" class="form-control" th:value="${order?.O_COUPON}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불예금주
@@ -216,7 +216,7 @@
                                                사용적립금(마일리지) 합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_MILEAGE" class="form-control" th:value="${order?.O_MILEAGE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불처리금액합계
@@ -230,7 +230,7 @@
                                                사용적립금(예치금)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="O_POINT" class="form-control" th:value="${order?.O_POINT}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -244,13 +244,13 @@
                                                배송비(설치비) 합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_DELIVERY" class="form-control" th:value="${order?.PAY_DELIVERY}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                예정적립금합
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_MILEAGE" class="form-control" th:value="${order?.PAY_MILEAGE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -258,13 +258,13 @@
                                                최종결제금액
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_PRICE" class="form-control" th:value="${order?.PAY_PRICE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                결제취소금액
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="PAY_CANCEL_PRICE" class="form-control" th:value="${order?.PAY_CANCEL_PRICE}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -287,13 +287,13 @@
                                                배송자(설치자) 이름
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="AD_NAME" class="form-control" th:value="${order?.AD_NAME}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                배송/설치메세지
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="AD_MEMO" class="form-control" th:value="${order?.AD_MEMO}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -301,7 +301,7 @@
                                                배송자(설치자) 연락처
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="AD_PHONE" class="form-control" th:value="${order?.AD_PHONE}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -315,7 +315,7 @@
                                                배송자(설치자) 우편번호
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="POST" class="form-control" th:value="${order?.POST}" readonly>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -329,7 +329,10 @@
                                                배송자(설치자) 주소
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="ADDRS" class="form-control" th:value="${order?.ADDRS}" readonly>
+                                        <input type="hidden" name="ADDR1" class="form-control" th:value="${order?.ADDR1}">
+                                        <input type="hidden" name="ADDR2" class="form-control" th:value="${order?.ADDR2}">
+                                        <input type="hidden" name="ADDR3" class="form-control" th:value="${order?.ADDR3}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -343,7 +346,7 @@
                                                배송자(설치자) 상세주소
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="ADDR4" class="form-control" th:value="${order?.ADDR4}">
                                     </div>
                                 </div>
                             </div>
