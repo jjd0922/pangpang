@@ -68,6 +68,7 @@ public class GoodsService {
 
         poMapper.updategoods(goods.getPo().getPoIdx(), goods.getProduct().getPIdx());
     }
+
     /**입고검수 임시 그룹 생성 및 바코드 추가.*/
     @Transactional
     public String insertGoodsTemp(String idx, String[] gIdxs){

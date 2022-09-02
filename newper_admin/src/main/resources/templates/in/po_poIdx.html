@@ -231,12 +231,12 @@
                                         </div>
 
                                         <!-- 입력필드 -->
-                                        <div class="col-sm-12 col-md-6">
+                                        <div class="col-sm-12 col-md-6" th:if="${po.poFile != ''}" >
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">첨부파일<a th:if="${po != null}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
-                                                        </span>
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">첨부파일<a th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -350,7 +350,7 @@
         var rowData = getDatatablemap('userModalTable', row);
 
         $('#searchUserModal').modal('hide');
-        $('#regiForm input[name="uName"]').val(rowData.U_NAME);
+        $('input[name="uName"]').val(rowData.U_NAME);
         $('input[name="uIdx"]').val(rowData.U_IDX);
     }
 </script>
@@ -438,8 +438,8 @@
             ,{'title':'매입총액','data':'PP_TOTAL' , 'class':'text-right','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'입고 SPEC(예정)','data':'buy_spec','defaultContent':''}
-            ,{'title':'판매 SPEC(예정)','data':'sell_spec','defaultContent':''}
+            ,{'title':'입고 SPEC(예정)','data':'SPEC_BUY','defaultContent':''}
+            ,{'title':'판매 SPEC(예정)','data':'SPEC_SELL','defaultContent':''}
         ]
     });
 </script>

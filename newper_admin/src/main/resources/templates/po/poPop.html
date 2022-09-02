@@ -155,6 +155,20 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text requested">긴급발주</span>
+                                                        </span>
+                                                        <select name="poType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PoType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(po?.poType) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </fieldset>
                                 </div>
