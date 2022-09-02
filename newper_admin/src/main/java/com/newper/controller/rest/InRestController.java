@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 
+import com.newper.mapper.CheckMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.service.GoodsService;
 import com.newper.service.InService;
@@ -27,6 +28,7 @@ public class InRestController {
     private final GoodsService goodsService;
     private final InService inService;
     private final PoService poService;
+    private final CheckMapper checkMapper;
 
 
     /**
@@ -89,8 +91,11 @@ public class InRestController {
 
     @PostMapping("incheck.dataTable")
     public ReturnDatatable incheck(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
+        ReturnDatatable rd = new ReturnDatatable("입고검수");
 
+        List<Map<String, Object>> list = checkMapper.selectCheckGroupDatatable(paramMap.getMap());
+        rd.setData(list);
+        rd.setRecordsTotal(checkMapper.countCheckGroupDatatable(paramMap.getMap()));
 
         return rd;
     }
