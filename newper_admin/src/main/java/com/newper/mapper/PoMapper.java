@@ -43,7 +43,7 @@ public interface PoMapper {
     public void updategoods(@Param("po_idx") int po_idx, @Param("p_idx") int p_idx);
 
     /** 발주서에 상품idx조회 */
-    List<Integer> selectPoProductIdxList(@Param("poIdx") int po_idx);
+    List<Integer> selectPoProductIdxList(@Param("poIdx") int poIdx);
 
 
 

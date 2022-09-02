@@ -51,10 +51,8 @@ public class InRestController {
     @PostMapping("poProduct.dataTable")
     public ReturnDatatable poProduct(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
-        inService.insertInGroup(paramMap.getInt("po_idx"));
         List<Map<String, Object>> data = poMapper.selectInPoProductDatatable(paramMap.getMap());
         rd.setData(data);
-
         return rd;
     }
 
@@ -65,7 +63,6 @@ public class InRestController {
     public ReturnDatatable po(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
         List<Map<String, Object>> data = poMapper.selectInPoDatatable(paramMap.getMap());
-        inService.settingOptionAndSpec(data);
         rd.setData(data);
         return rd;
     }
@@ -126,8 +123,8 @@ public class InRestController {
         return rm;
 
     }
-    /** 자산수령 */
 
+    /** 자산수령 */
     @PostMapping("{poIdx}/poComp.ajax")
     public ReturnMap productComp(@PathVariable int poIdx) {
         ReturnMap rm = new ReturnMap();
@@ -158,8 +155,6 @@ public class InRestController {
         return rm;
 
     }
-
-
 }
 
 

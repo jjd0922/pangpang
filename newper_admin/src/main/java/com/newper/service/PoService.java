@@ -37,10 +37,12 @@ public class PoService {
     private final SpecRepo specRepo;
     private final SpecItemRepo specItemRepo;
     private final SpecMapper specMapper;
+    private final CompanyContractRepo companyContractRepo;
 
 
 
     /** 발주(po) 생성 */
+    @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
         Po po = paramMap.mapParam(Po.class);
         System.out.println("po: " + paramMap.getMap().entrySet());
@@ -56,6 +58,11 @@ public class PoService {
         String whIdx = paramMap.getString("whIdx").replaceAll("[^0-9]","");
         if(StringUtils.hasText(whIdx)){
             po.setWarehouse(warehouseRepo.getReferenceById(Integer.parseInt(whIdx)));
+        }
+
+        String ccIdx = paramMap.getString("ccIdx").replaceAll("[^0-9]","");
+        if(StringUtils.hasText(ccIdx)){
+            po.setContract(companyContractRepo.getReferenceById(Integer.parseInt(ccIdx)));
         }
 
 
@@ -225,6 +232,7 @@ public class PoService {
     }
 
     /** 발주품의 수정 */
+    @Transactional
     public void updatePo(long poIdx, ParamMap paramMap, MultipartFile poFile) {
         Po po = paramMap.mapParam(Po.class);
         System.out.println("po: " + paramMap.getMap().entrySet());

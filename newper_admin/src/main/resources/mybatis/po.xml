@@ -248,17 +248,25 @@
     </select>
     <select id="selectInPoDatatable" resultType="map" parameterType="map">
         SELECT
-            PRODUCT.*
-            ,PO_PRODUCT.*
-            ,PO.*
-            ,PP_COST * PP_COUNT PP_TOTAL
+            P_IDX,
+            P_NAME,
+            PP_OPTION,
+            P_SELL_PRICE,
+            PP_COST,
+            PP_COUNT,
+            PP_COST * PP_COUNT PP_TOTAL,
+            BUY.SPEC_CONFIRM SPEC_BUY,
+            SELL.SPEC_CONFIRM SPEC_SELL
         FROM
-            PO_PRODUCT, PRODUCT, PO
+            PO
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_IDX
+                LEFT JOIN PRODUCT ON PP_P_IDX = P_IDX
+                LEFT JOIN SPEC AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN SPEC AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
         WHERE
             PP_PO_IDX = #{po_idx}
-            AND PP_P_IDX = P_IDX
-            AND PP_PO_IDX = PO_IDX
-        ORDER BY PP_IDX
+        ORDER BY
+            PP_IDX
     </select>
     <sql id="includeInPpDatatable">
         PP_IDX = #{ppIdx}
@@ -348,7 +356,7 @@
     </select>
     <select id="selectPoProductIdxList" resultType="Integer">
         SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
-        WHERE PP_PO_IDX = #{po_idx}
+        WHERE PP_PO_IDX = #{poIdx}
     </select>
 
     <sql id="includeInProductDatatable">
