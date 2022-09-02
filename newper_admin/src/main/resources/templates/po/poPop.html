@@ -604,25 +604,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="productTbody">
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${i.P_IDX}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:class="|productPoTr_${i.P_IDX}|">
                                                         <td th:text="${i.P_IDX}"></td>
-                                                        <td><input type="text" name="poProductMemo" th:value="${i.PP_MEMO}"></td>
+                                                        <td th:text="${i.PP_MEMO}"></td>
+                                                        <input type="hidden" name="poProductMemo" th:value="${i.PP_MEMO}">
                                                         <td th:text="${i.P_NAME}"></td>
                                                         <td th:text="${i.CATE_NAME}"></td>
-                                                        <td><input type="text" name="poProductOption1" th:value="${i.option1}" readonly></td>
-                                                        <td><input type="text" name="poProductOption2" th:value="${i.option2}" readonly></td>
-                                                        <td><input type="text" name="poProductOption3" th:value="${i.option2}" readonly></td>
+                                                        <td th:text="${i.OPTION1}"></td>
+                                                        <input type="hidden" name="poProductOption1" th:value="${i.OPTION1}">
+                                                        <td th:text="${i.OPTION2}"></td>
+                                                        <input type="hidden" name="poProductOption2" th:value="${i.OPTION2}">
+                                                        <td th:text="${i.OPTION3}"></td>
+                                                        <input type="hidden" name="poProductOption3" th:value="${i.OPTION3}">
                                                         <td th:text="${i.P_COST}"></td>
                                                         <td th:text="${i.PP_COST}"></td>
                                                         <td th:text="${i.PP_COUNT}"></td>
                                                         <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
-                                                        <td><input type="text" name="poProductSpec" th:value="${i.spec1}" readonly></td>
-                                                        <td><input type="text" name="poProductSpec2" th:value="${i.spec2}" readonly></td>
-                                                        <td th:text="${i.PP_FIX_COST}"></td>
-                                                        <td th:text="${i.PP_PAINT_COST}"></td>
-                                                        <td th:text="${i.PP_PROCESS_COST}"></td>
+                                                        <td th:text="${i.SPEC_BUY}"></td>
+                                                        <input type="hidden" name="poProductSpec" th:value="${i.SPEC_BUY}">
+                                                        <td th:text="${i.SPEC_SELL}"></td>
+                                                        <input type="hidden" name="poProductSpec2" th:value="${i.SPEC_SELL}">
+                                                        <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
+                                                        <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
+                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
                                                         <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${i.P_IDX})|">삭제</button></td>
-                                                        <input type="hidden" name="pIdxs" th:value="${i.P_IDX}">
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -660,7 +665,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="productTbody2">
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${i.P_IDX}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${i.P_IDX}|" th:class="|productPoTr_${i.P_IDX}|">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
                                                         <td th:text="${i.PP_COUNT}"></td>
@@ -668,20 +673,25 @@
                                                         <td th:text="${i.PP_FIX_COST}"></td>
                                                         <td th:text="${i.PP_PAINT_COST}"></td>
                                                         <td th:text="${(i.PP_PAINT_COST + i.PP_FIX_COST + i.PP_PROCESS_COST) * i.PP_COUNT}"></td>
-                                                        <td></td>
-                                                        <td><input type="text" name="poProductCost" th:value="${i.PP_COST}" readonly></td>
-                                                        <input type="hidden" name="poProductCount" th:value="${i.PP_COUNT}">
+                                                        <td th:id="|buy_per_${i.P_IDX}|"></td>
+                                                        <td th:text="${i.PP_COST}"></td>
+                                                        <input type="hidden" th:id="|poProductCost_${i.P_IDX}|" th:value="${i.PP_COST}">
+                                                        <input type="hidden" th:id="|poProductCount_${i.P_IDX}|" th:value="${i.PP_COUNT}">
                                                         <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
-                                                        <td><input type="text" name="poProductSellPrice" th:value="${i.PP_SELL_PRICE}" onkeyup="priceSetting()"></td>
-                                                        <td th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
-                                                        <td th:text="${i.TOTAL_PROFIT}"></td>
-                                                        <td th:tel="${i.PROFIT_PER}"></td>
-                                                        <td><input type="text" name="poProductProfitTarget" th:value="${i.PP_PROFIT_TARGET}"></td>
+                                                        <td><input type="text" class="form-control" th:id="|poProductSellPrice_${i.P_IDX}|" name="poProductSellPrice" th:value="${i.PP_SELL_PRICE}" th:onkeyup="|priceSetting(${i.P_IDX})|"></td>
+                                                        <td th:id="|poProductSellPriceTotal_${i.P_IDX}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
+                                                        <td th:id="|totalProfit_${i.P_IDX}|"></td>
+                                                        <td th:id="|profitPer_${i.P_IDX}|"></td>
+                                                        <td th:text="${i.PP_PROFIT_TARGET}"></td>
+                                                        <input type="hidden" name="poProductProfitTarget" th:value="${i.PP_PROFIT_TARGET}">
                                                         <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${i.P_IDX})|">삭제</button></td>
                                                         <input type="hidden" name="poProduct" th:value="${i.P_IDX}">
-                                                        <input type="hidden" name="poProductProcess" th:value="${i.PP_PROCESS_COST}">
-                                                        <input type="hidden" name="poProductFix" th:value="${i.PP_FIX_COST}">
-                                                        <input type="hidden" name="poProductPaint" th:value="${i.PP_PAINT_COST}">
+                                                        <input type="hidden" th:id="|poProductProcess_${i.P_IDX}|" name="poProductProcess" th:value="${i.PP_PROCESS_COST}">
+                                                        <input type="hidden" th:id="|poProductFix_${i.P_IDX}|" name="poProductFix" th:value="${i.PP_FIX_COST}">
+                                                        <input type="hidden" th:id="|poProductPaint_${i.P_IDX}|" name="poProductPaint" th:value="${i.PP_PAINT_COST}">
+                                                        <input type="hidden" name="poProductProcessMemo" th:value="${i.PP_PROCESS_MEMO}">
+                                                        <input type="hidden" name="poProductFixMemo" th:value="${i.PP_FIX_MEMO}">
+                                                        <input type="hidden" name="poProductPaintMemo" th:value="${i.PP_PAINT_MEMO}">
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -754,37 +764,30 @@
     }
 
     function saveAction(){
-        // if ($('hidden[name=comIdx_buy]').val() == '') {
-        //     alert('매입처를 선택해 주세요.');
-        //     return false;
-        // }
-        //
-        // if ($('hidden[name=comIdx_sell]').val() == '') {
-        //     alert('판매처를 선택해 주세요.');
-        //     return false;
-        // }
-        //
-        // if ($('hidden[name=ccIdx]').val() == '') {
-        //     alert('계약서를 선택해 주세요.');
-        //     return false;
-        // }
-        //
-        // if ($('input[name=poPayAccount]').val() == '') {
-        //     alert('입금계좌번호를 입력해 주세요.');
-        //     return false;
-        // }
-        //
-        // if ($('hidden[name=poProduct]').val() == '') {
-        //     alert('상품을 선택해 주세요.');
-        //     return false;
-        // }
+        if ($('hidden[name=comIdx_buy]').val() == '') {
+            alert('매입처를 선택해 주세요.');
+            return false;
+        }
+
+        if ($('hidden[name=uIdx]').val() == '') {
+            alert('구매담당자를 선택해 주세요.');
+            return false;
+        }
+
+        if ($('hidden[name=ccIdx]').val() == '') {
+            alert('계약서를 선택해 주세요.');
+            return false;
+        }
+
+        if ($('input[name=whIdx]').val() == '') {
+            alert('입고예정창고를 선택해 주세요.');
+            return false;
+        }
 
         if ($('input[name=poProductCost]').length == 0) {
             alert('상품을 추가해주세요');
             return false;
         }
-        var poProductCost = $('input[name=poProductCost]').val().replace(/,/gi,'');
-        $('input[name=poProductCost]').val(poProductCost);
 
         var poTotalAmount = $('input[name=poTotalAmount]').val().replace(/,/gi,'');
         $('input[name=poTotalAmount]').val(poTotalAmount);
@@ -839,10 +842,6 @@
     }
 </script>
 <script>
-    $(function () {
-        priceSetting();
-    });
-
     $("#saveBtn").on("click", saveAction);
 
     function openContractModal() {
@@ -856,6 +855,11 @@
         $('#contractModal').modal('show');
         selectContractDataTable();
     }
+</script>
+<script th:if="${poProduct != null}" th:each="i : ${poProduct}">
+    $(function () {
+        priceSetting([[${i.P_IDX}]]);
+    });
 </script>
 </body>
 </html>

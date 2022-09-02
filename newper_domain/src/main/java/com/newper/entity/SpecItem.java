@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 public class SpecItem {
     @Id
-    private Long speciIdx;
+    private Long specIIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SPECI_SPEC_IDX", referencedColumnName = "specIdx")
@@ -24,5 +24,5 @@ public class SpecItem {
     @JoinColumn(name = "SPECI_SPECL_IDX", referencedColumnName = "speclIdx")
     private SpecList specList;
 
-    private int speciOrder;
+    private int specIOrder;
 }

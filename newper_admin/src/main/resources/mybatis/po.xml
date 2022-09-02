@@ -300,43 +300,36 @@
 
     <select id="selectPoProductByPoIdx" resultType="Map">
         SELECT
-            *,
-            (PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) AS 'TOTAL_PROFIT',
-            ROUND((PP_SELL_PRICE * PP_COUNT) - ((PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST + PP_COST) * PP_COUNT) / (((PP_COST + PP_PROCESS_COST + PP_FIX_COST + PP_PAINT_COST) * PP_COUNT) * 100), 1) AS 'PROFIT_PER'
-
+            P_IDX,
+            PP_MEMO,
+            P_NAME,
+            CATE_NAME,
+            P_COST,
+            PP_COST,
+            PP_COUNT,
+            BUY.SPEC_CONFIRM SPEC_BUY,
+            SELL.SPEC_CONFIRM SPEC_SELL,
+            PP_FIX_MEMO,
+            PP_FIX_COST,
+            PP_PAINT_MEMO,
+            PP_PAINT_COST,
+            PP_PROCESS_MEMO,
+            PP_PROCESS_COST,
+            PP_SELL_PRICE,
+            PP_PROFIT_TARGET,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
         FROM
             po_product
                 LEFT JOIN product ON PP_P_IDX = P_IDX
                 LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN spec AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN spec AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
         WHERE
             PP_PO_IDX = #{poIdx}
     </select>
 
-    <select id="selectPoSpecBuy" resultType="String">
-        SELECT
-            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
-        FROM
-            po_product
-                LEFT JOIN spec ON PP_SPEC_IDX = SPEC_IDX
-                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
-                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
-
-        WHERE
-            PP_IDX = #{ppIdx}
-    </select>
-
-    <select id="selectPoSpecSell" resultType="String">
-        SELECT
-            CONCAT(SPECL_NAME, ':', SPECL_VALUE)
-        FROM
-            po_product
-                LEFT JOIN spec ON PP_SPEC_IDX2 = SPEC_IDX
-                LEFT JOIN spec_item ON SPEC_IDX = SPECI_SPEC_IDX
-                LEFT JOIN spec_list ON SPECI_SPECL_IDX = SPECL_IDX
-
-        WHERE
-            PP_IDX = #{ppIdx}
-    </select>
     <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
         SELECT
             P_IDX, P_NAME, P_MODEL

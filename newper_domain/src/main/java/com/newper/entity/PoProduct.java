@@ -37,8 +37,11 @@ public class PoProduct {
     private int ppCost;
     private int ppCount;
     private int ppFixCost;
+    private String ppFixMemo;
     private int ppPaintCost;
+    private String ppPaintMemo;
     private int ppProcessCost;
+    private String ppProcessMemo;
     private String ppMemo;
     private int ppSellPrice;
     private float ppProfitTarget;
