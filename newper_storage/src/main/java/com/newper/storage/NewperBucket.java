@@ -9,6 +9,7 @@ public enum NewperBucket {
     ,DEV_SECRET("dev-secret", false)
 
     ,PROD_SECRET("prod-secret", false)
+    ,FORM("form", true)
 
     ;
 
