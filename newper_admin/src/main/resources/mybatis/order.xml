@@ -5,8 +5,7 @@
     <select id="selectOrderDatatable" resultType="map">
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
-            CU_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, ph1.PH_CODE as PH_CODE1,
-            ph1.PH_RESPONSE as PH_RESPONSE1, ph2.PH_CODE as PH_CODE2, ph2.PH_RESPONSE as PH_RESPONSE2, PAY_PRODUCT_PRICE, PAY_EVENT,
+            CU_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, PAY_PRODUCT_PRICE,
             PAY_COUPON, PAY_USE_MILEAGE, PAY_POINT, PAY_DELIVERY, PAY_PRICE,
             if(PAY_STATE='결제취소',PAY_PRICE,0) AS PAY_CANCEL_PRICE,
             PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
@@ -21,10 +20,7 @@
                           ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
-                LEFT JOIN payment_history ph1
-                          ON PAY_PH_IDX=ph1.PH_IDX
-                LEFT JOIN payment_history ph2
-                          ON PAY_PH_IDX2=ph2.PH_IDX
+
         order by O_IDX desc
         <if test="length!=-1">
             LIMIT #{start},#{length}
@@ -43,10 +39,6 @@
                           ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
-                LEFT JOIN payment_history ph1
-                          ON PAY_PH_IDX=ph1.PH_IDX
-                LEFT JOIN payment_history ph2
-                          ON PAY_PH_IDX2=ph2.PH_IDX
     </select>
 
 </mapper>
