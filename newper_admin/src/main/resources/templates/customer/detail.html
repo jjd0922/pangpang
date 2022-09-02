@@ -25,9 +25,9 @@
                         </div>
 
                         <div>
-                            <button type="button" class="btn btn-sm btn-secondary"><i class="icon-bubble-dots4 mr-1"></i>문자발송</button>
-                            <button type="button" class="btn btn-sm btn-secondary"><i class="icon-bubbles3 mr-1"></i>카카오톡</button>
-                            <button type="button" class="btn btn-sm btn-secondary"><i class="icon-notification2 mr-1"></i>APP PUSH</button>
+                            <button type="button" class="btn btn-sm btn-secondary" id="smsBtn"><i class="icon-bubble-dots4 mr-1"></i>문자발송</button>
+                            <button type="button" class="btn btn-sm btn-secondary" id="kakaoBtn"><i class="icon-bubbles3 mr-1"></i>카카오톡</button>
+                            <button type="button" class="btn btn-sm btn-secondary" id="appPushBtn"><i class="icon-notification2 mr-1"></i>APP PUSH</button>
                         </div>
                     </div>
                 </div>
@@ -600,6 +600,21 @@
         var focusPopup = window.open('/customer/detail/qna', 'popQnaForAnswer', 'width=1050, height=950, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function smsPopup() {
+        var focusPopup = window.open('/customer/pop/sms/', 'smsPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function kakaoPopup() {
+        var focusPopup = window.open('/customer/pop/kakao/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function appPushPopup() {
+        var focusPopup = window.open('/customer/pop/appPush/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 <script>
 $(document).ready(function(){
@@ -743,6 +758,10 @@ $(document).ready(function(){
                 }}
         ]
     });
+
+    $('#smsBtn').on('click', smsPopup);
+    $('#kakaoBtn').on('click', kakaoPopup);
+    $('#appPushBtn').on('click', appPushPopup);
 })
 </script>
 </body>
