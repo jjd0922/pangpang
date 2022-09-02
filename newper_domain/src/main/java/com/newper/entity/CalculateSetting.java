@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "calculate_setting")
 public class CalculateSetting {
     @Id
     @GeneratedValue
@@ -44,7 +46,7 @@ public class CalculateSetting {
 
     private String csMemo;
 
-    private LocalDate csDate;
-
     private LocalDate csLog;
+
+    private LocalDate createdDate;
 }

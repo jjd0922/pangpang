@@ -20,8 +20,8 @@ public class Calculate {
     private Integer caIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CA_C_IDX", referencedColumnName = "cuIdx")
-    private Customer customer;
+    @JoinColumn(name = "CA_COM_IDX", referencedColumnName = "comIdx")
+    private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CA_O_IDX", referencedColumnName = "oIdx")
