@@ -6,4 +6,16 @@
         WHERE SPECL_NAME=#{speclName}
         ORDER BY SPECL_NAME
     </select>
+
+    <insert id="insertSpecItem">
+        INSERT INTO spec_item (
+            SPECI_ORDER,
+            SPECI_SPEC_IDX,
+            SPECI_SPECL_IDX
+        ) VALUES (
+            #{SPECI_ORDER},
+            #{SPEC_IDX},
+            #{SPECL_IDX}
+        )
+    </insert>
 </mapper>

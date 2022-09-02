@@ -183,17 +183,17 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>도색</td>
-                                                        <td><input type="text" id="paintText"></td>
+                                                        <td><input type="text" id="paintMemo"></td>
                                                         <td><input type="text" id="paintCost"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>수리</td>
-                                                        <td><input type="text" id="fixText"></td>
+                                                        <td><input type="text" id="fixMemo"></td>
                                                         <td><input type="text" id="fixCost"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>가공</td>
-                                                        <td><input type="text" id="processText"></td>
+                                                        <td><input type="text" id="processMemo"></td>
                                                         <td><input type="text" id="processCost"></td>
                                                     </tr>
                                                 </tbody>
@@ -288,33 +288,47 @@
 </div>
 
 <script th:inline="javascript">
-    function priceSetting() {
+    function priceSetting(p_idx) {
         var totalAmount = 0;
         var totalSell = 0;
+        var poSellProfit = 0;
         $.each($('input[name=poProductSellPrice]'), function (index, value){
-            var buy = $(this).parent().prev().prev().children('input[name=poProductCost]').val()
-            var sell =  $(this).val();
-            var count = $(this).parent().prev().prev().children('input[name=poProductCount]').val()
+            var buy = $('#poProductCost_' + p_idx).val();
+            var sell =  $('#poProductSellPrice_' + p_idx).val();
+            var count = $('#poProductCount_' + p_idx).val();
 
-            var paint = $(this).parent().siblings('input[name=poProductPaint]').val()
-            var process = $(this).parent().siblings('input[name=poProductProcess]').val()
-            var fix = $(this).parent().siblings('input[name=poProductFix]').val();
+            var paint = $('#poProductPaint_' + p_idx).val();
+            var process = $('#poProductProcess_' + p_idx).val();
+            var fix = $('#poProductFix_' + p_idx).val();
 
-            $(this).parent().next().text(comma(sell * count)); // 예상판매가 총액
+            // 예상판매가 총액
+            $('#poProductSellPriceTotal_' + p_idx).text(comma(sell * count));
 
             // 총이익 판매예상액-매입원가(제품매입원가+공정비용)
             var totalProfit = (sell * count) - ((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count);
-            $(this).parent().next().next().text(comma(totalProfit));
+            $('#totalProfit_' + p_idx).text(comma(totalProfit));
 
             // 수익률 수익액/매입원가(제품매입원가+공정비용)*100입니다
             var profitPer = totalProfit/((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count) * 100
-            $(this).parent().next().next().next().text(Math.round(profitPer));
+            $('#profitPer_' + p_idx).text(Math.round(profitPer) + '%');
+
             totalSell += sell * count
             totalAmount += buy * count;
+            poSellProfit += profitPer
+
+            // 생산원가율 원가 / 매출총액 * 100
+            var buy_total_product = buy * count;
+            var sell_total_product = sell * count;
+            var totalPer = buy_total_product / sell_total_product * 100
+
+            $('#buy_per_' + p_idx).text(Math.round(totalPer) + '%');
         });
 
         $('input[name=poTotalAmount]').val(comma(totalAmount));
         $('input[name=poSellTotalAmount]').val(comma(totalSell));
+
+        var len = $('input[name=poProductSellPrice]').length;
+        $('input[name=poSellProfit]').val(Math.round(poSellProfit/len));
     }
 
     function productPoDelete (pIdx) {
@@ -349,23 +363,23 @@
             return false;
         }
 
-        var paintText = $('#paintText').val();
+        var paintMemo = $('#paintMemo').val();
         var paintCost = $('#paintCost').val();
-        if (paintText == '' || paintCost == '') {
+        if (paintMemo == '' || paintCost == '') {
             alert('예상비용 도색 부분을 확인해주세요.');
             return false;
         }
 
-        var fixText = $('#fixText').val();
+        var fixMemo = $('#fixMemo').val();
         var fixCost = $('#fixCost').val();
-        if (fixText == '' || fixCost == '') {
+        if (fixMemo == '' || fixCost == '') {
             alert('예상비용 수리 부분을 확인해주세요.');
             return false;
         }
 
-        var processText = $('#processText').val();
+        var processMemo = $('#processMemo').val();
         var processCost = $('#processCost').val();
-        if (processText == '' || processCost == '') {
+        if (processMemo == '' || processCost == '') {
             alert('예상비용 가공 부분을 확인해주세요.');
             return false;
         }
@@ -403,23 +417,30 @@
         buy_spec = buy_spec.slice(0, -1);
         sell_spec = sell_spec.slice(0, -1);
 
+
         var product5 = '<tr class="productPoTr_' + dataMap.P_IDX + '">';
         product5 += '<td>' + dataMap.P_IDX + '</td>'
-        product5 += '<td><input type="text" name="poProductMemo" value="' + $('#ajCode').val() + '" readonly></td>';
+        product5 += '<td>' + $('#ajCode').val() + '</td>';
+        product5 += '<input type="hidden" name="poProductMemo" value="' + $('#ajCode').val() + '">'
         product5 += '<td>' + dataMap.P_NAME + '</td>';
         product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
-        product5 += '<td><input type="text" name="poProductOption1" value="' + $('#productOption1 option:selected').val() + '" readonly></td>';
-        product5 += '<td><input type="text" name="poProductOption2" value="' + $('#productOption2 option:selected').val() + '" readonly></td>';
-        product5 += '<td><input type="text" name="poProductOption3" value="' + $('#productOption3 option:selected').val() + '" readonly></td>';
+        product5 += '<td>' + $('#productOption1 option:selected').val() + '</td>';
+        product5 += '<input type="hidden" name="poProductOption1" value="' + $('#productOption1 option:selected').val() + '">';
+        product5 += '<td>' + $('#productOption2 option:selected').val() + '</td>';
+        product5 += '<input type="hidden" name="poProductOption2" value="' + $('#productOption2 option:selected').val() + '">';
+        product5 += '<td>' + $('#productOption3 option:selected').val() + '</td>';
+        product5 += '<input type="hidden" name="poProductOption3" value="' + $('#productOption3 option:selected').val() + '">';
         product5 += '<td>' + dataMap.P_COST + '</td>';
         product5 += '<td>' + comma($('#ppCost').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCount').val()) + '</td>';
         product5 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product5 += '<td><input type="text" name="poProductSpec" value="'+buy_spec+'" readonly></td>';
-        product5 += '<td><input type="text" name="poProductSpec2" value="'+sell_spec+'" readonly></td>';
-        product5 += '<td>' + $('#fixText').val() +'/' + comma($('#fixCost').val()) + '</td>';
-        product5 += '<td>' + $('#paintText').val() +'/' + comma($('#paintCost').val()) + '</td>';
-        product5 += '<td>' + $('#processText').val() +'/' + comma($('#processCost').val()) + '</td>';
+        product5 += '<td>' + buy_spec + '</td>';
+        product5 += '<input type="hidden" name="poProductSpec" value="'+buy_spec+'">'
+        product5 += '<td>' + sell_spec + '</td>';
+        product5 += '<input type="hidden" name="poProductSpec2" value="'+sell_spec+'">'
+        product5 += '<td>' + $('#fixMemo').val() +'/' + comma($('#fixCost').val()) + '</td>';
+        product5 += '<td>' + $('#paintMemo').val() +'/' + comma($('#paintCost').val()) + '</td>';
+        product5 += '<td>' + $('#processMemo').val() +'/' + comma($('#processCost').val()) + '</td>';
         product5 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + dataMap.P_IDX + ')">삭제</button></td>'
         product5 += '</tr>'
         $('#productTbody').append(product5);
@@ -432,16 +453,25 @@
         product6 += '<td>' + comma($('#fixCost').val()) + '</td>';
         product6 += '<td>' + comma($('#paintCost').val()) + '</td>';
         product6 += '<td>' + comma($('#ppCount').val() * (parseInt($('#processCost').val()) + parseInt($('#paintCost').val()) + parseInt($('#fixCost').val()))) + '</td>';
-        product6 += '<td>' +  + '</td>';
-        product6 += '<td><input type="text" name="poProductCost" value="' + comma($('#ppCost').val()) + '" onkeyup="priceSetting()" readonly><input type="hidden" name="poProductCount" value="' + $('#ppCount').val() + '"></td>';
+        product6 += '<td id="buy_per_' + dataMap.P_IDX + '">0%</td>';
+        product6 += '<td>' + comma($('#ppCost').val()) + '</td>';
+        product6 += '<input type="hidden" id="poProductCost_' + dataMap.P_IDX + '" name="poProductCost" value="' + $('#ppCost').val() + '">'
+        product6 += '<input type="hidden" id="poProductCount_' + dataMap.P_IDX + '" name="poProductCount" value="' + $('#ppCount').val() + '">'
         product6 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product6 += '<td><input type="text" class="form-control" name="poProductSellPrice" onkeyup="priceSetting()"></td>';
-        product6 += '<td>' +  + '</td>';
-        product6 += '<td>' +  + '</td>';
-        product6 += '<td>' +  + '</td>';
-        product6 += '<td><input type="text" class="form-control" name="poProductProfitTarget" value="' + $('#ppProfitTarget').val() + '" readonly></td>';
+        product6 += '<td><input type="text" class="form-control" id="poProductSellPrice_' + dataMap.P_IDX + '" name="poProductSellPrice" onkeyup="priceSetting(' + dataMap.P_IDX + ')"></td>';
+        product6 += '<td id="poProductSellPriceTotal_' + dataMap.P_IDX + '">' +  + '</td>';
+        product6 += '<td id="totalProfit_' + dataMap.P_IDX + '">' +  + '</td>';
+        product6 += '<td id="profitPer_' + dataMap.P_IDX + '">' +  + '</td>';
+        product6 += '<td>' + $('#ppProfitTarget').val() + '%</td>';
+        product6 += '<input type="hidden" name="poProductProfitTarget" value="' + $('#ppProfitTarget').val() + '">'
         product6 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + dataMap.P_IDX + ')">삭제</button></td>'
-        product6 += '<input type="hidden" name="poProduct" value="' + dataMap.P_IDX + '"><input type="hidden" name="poProductProcess" value="' + $('#processCost').val() + '"><input type="hidden" name="poProductFix" value="' + $('#fixCost').val() + '"><input type="hidden" name="poProductPaint" value="' + $('#paintCost').val() + '">';
+        product6 += '<input type="hidden" name="poProduct" value="' + dataMap.P_IDX + '">';
+        product6 += '<input type="hidden" id="poProductProcess_' + dataMap.P_IDX + '" name="poProductProcess" value="' + $('#processCost').val() + '">';
+        product6 += '<input type="hidden" id="poProductFix_' + dataMap.P_IDX + '" name="poProductFix" value="' + $('#fixCost').val() + '">';
+        product6 += '<input type="hidden" id="poProductPaint_' + dataMap.P_IDX + '" name="poProductPaint" value="' + $('#paintCost').val() + '">';
+        product6 += '<input type="hidden" name="poProductProcessMemo" value="' + $('#processMemo').val() + '">';
+        product6 += '<input type="hidden" name="poProductFixMemo" value="' + $('#fixMemo').val() + '">';
+        product6 += '<input type="hidden" name="poProductPaintMemo" value="' + $('#paintMemo').val() + '">';
         product6 += '</tr>';
         $('#productTbody2').append(product6);
 
@@ -450,18 +480,16 @@
         $('#ppCount').val('')
         $('#ppCost').val('');
         $('#ppProfitTarget').val('');
-        $('#paintText').val('');
+        $('#paintMemo').val('');
         $('#paintCost').val('');
-        $('#fixText').val('');
+        $('#fixMemo').val('');
         $('#fixCost').val('');
-        $('#processText').val('');
+        $('#processMemo').val('');
         $('#processCost').val('');
 
         $.each($('input[name=ppSpec1]'), function (index, value) {
-            this.val('');
-
-            var ppSpec2 = $(this).parent().next().children('input').val();
-            ppSpec2.val('');
+            $(this).val('');
+            $(this).parent().next().children('input').val('');
         });
     }
 

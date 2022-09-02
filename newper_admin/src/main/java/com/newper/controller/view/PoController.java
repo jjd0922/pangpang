@@ -45,8 +45,6 @@ public class PoController {
     public ModelAndView poPop(){
         ModelAndView mav = new ModelAndView("po/poPop");
 
-
-
         return mav;
     }
 
@@ -56,8 +54,6 @@ public class PoController {
         ModelAndView mav = new ModelAndView("po/poPop");
         mav.addObject("po", poRepo.findPoByPoIdx((int) poIdx));
         mav.addObject("poProduct", poService.selectPoProduct(poIdx));
-        mav.addObject("spec1", poService.selectPoSpecBuy(poIdx));
-        mav.addObject("spec2", poService.selectPoSpecSell(poIdx));
         return mav;
     }
 
