@@ -1,7 +1,7 @@
 <!--로그인 모달창-->
 <th:block th:fragment="login-modal">
-    <div class="modal-wrap">
-        <div class="loginModal">
+    <div class="modal-wrap loginModal-wrap">
+        <div class="modal loginModal">
             <div class="loginModal-close">Close</div>
             <h2 class="section-title">로그인</h2>
             <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
@@ -57,6 +57,7 @@
         </div>
     </div>
 
+
     <script>
         function login(){
             $.ajax({
@@ -82,7 +83,7 @@
     </script>
     <script>
         /*** 로그인 모달 창 ***/
-        var modal = $(".modal-wrap");
+        var modal = $(".loginModal-wrap");
 
         $(".login").click(function(){
             $('body').addClass('no-scroll');
@@ -105,3 +106,90 @@
 </th:block>
 <!--로그인 모달창 끝-->
 
+<!--배송지목록 모달창-->
+<th:block th:fragment="addrList-modal">
+    <div class="modal-wrap addrListModal-wrap">
+        <div class="modal addrListModal">
+            <h2 class="font-xxxlg">배송지 목록</h2>
+            <!-- 배송지 테이블 제목 -->
+            <ul class="addrList-table-title font-sm">
+                <li>배송지명</li>
+                <li>주소</li>
+                <li>연락처</li>
+                <li>선택</li>
+            </ul>
+            <!-- 배송지 목록 리스트 1 -->
+            <ul class="addrList-table-cont font-md">
+                <li>
+                    <p>집</p>
+                    <p class="bold">홍길동</p>
+                    <!-- 기본배송지 아닐 경우 아래 <div>태그 삭제 -->
+                    <div class="defaultAddr font-xsm">기본배송지</div>
+                </li>
+                <li>
+                    <p>15205</p>
+                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
+                    <p>901호</p>
+                </li>
+                <li class="font-sm">010-1234-1234</li>
+                <li>
+                    <div class="btn-white select-btn font-xsm">선택</div>
+                </li>
+            </ul>
+            <!-- 배송지 목록 리스트 1 -->
+            <ul class="addrList-table-cont font-md">
+                <li>
+                    <p>집</p>
+                    <p class="bold">홍길동</p>
+                </li>
+                <li>
+                    <p>15205</p>
+                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
+                    <p>901호</p>
+                </li>
+                <li class="font-sm">010-1234-1234</li>
+                <li>
+                    <div class="btn-white select-btn font-xsm">선택</div>
+                </li>
+            </ul>
+            <div class="order-button-group">
+                <div class="btn-blue addrListClose-btn semi-bold">
+                    <a href="javascript:;">닫기</a>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        /*** 배송지목록 모달 창 ***/
+        var addrListModal = $(".addrListModal-wrap");
+
+        $(".addressConfirm .btn").click(function(){
+            $('body').addClass('no-scroll');
+            addrListModal.show();
+            return false;
+        });
+        // 모달 창 닫기
+        $(".addrListClose-btn").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
+        });
+        // 외부영역 클릭 시 팝업 닫기
+        $(document).mouseup(function (e){
+            if(addrListModal.has(e.target).length === 0){
+                addrListModal.hide();
+                $('body').removeClass('no-scroll');
+            }
+        });
+        // ESC 키 누를시 팝업 닫기
+        $(document).keydown(function(e){
+            //keyCode 구 브라우저, which 현재 브라우저
+            var code = e.keyCode || e.which;
+
+            if (code == 27) { // 27은 ESC 키번호
+                addrListModal.hide();
+                $('body').removeClass('no-scroll');
+            }
+        });
+    </script>
+</th:block>
+<!--배송지 목록 모달창 끝-->
