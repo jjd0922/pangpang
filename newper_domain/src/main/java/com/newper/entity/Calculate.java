@@ -25,7 +25,7 @@ public class Calculate {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CA_O_IDX", referencedColumnName = "oIdx")
-    private Order order;
+    private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CA_P_IDX", referencedColumnName = "pIdx")

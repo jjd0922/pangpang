@@ -1,13 +1,13 @@
 package com.newper.entity;
 
+import com.newper.constant.PayState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigInteger;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -21,28 +21,28 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payIdx;
 
-    private String payState;
-
-    private String payCancelDate;
-
-    private Integer payPrice;
-
-    private Integer payProductPrice;
-
-    private Integer payPoint;
-
-    private Integer payUseMileage;
-
-    private Integer payCoupon;
-
-    private Integer payDelivery;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PayState payState = PayState.BEFORE;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PayState payCancelState = PayState.BEFORE;
+    private int payPrice;
+    private int payProductPrice;
+    private int payDelivery;
 
     private String payMethod;
 
-    private Integer payMileage;
+    private int payMileage;
+    private Map<String,Object> payJson;
 
-    private Long phIdx;
+    /** OneToOne */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
+    private List<Orders> orders;
 
-    private Long phIdx2;
-
+    /** order에서 setPayment로 세팅할 때 호출되는 메서드*/
+    void setOrders(Orders orders){
+        this.orders = new ArrayList<>();
+        this.orders.add(orders);
+    }
 }

@@ -97,7 +97,7 @@
         WHERE
             P_IDX is not null
             <include refid="includeProductDataTable"></include>
-         order by P_IDX desc
+         orders by P_IDX desc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -145,7 +145,7 @@
 <!--            P_CODE-->
 <!--        from-->
 <!--            product-->
-<!--        order by P_IDX desc limit 1-->
+<!--        orders by P_IDX desc limit 1-->
 <!--    </select>-->
 
     <select id="selectGoodsStockDataTable" resultType="map">
@@ -163,7 +163,7 @@
         ON GS_P_IDX=P_IDX
         WHERE
         GS_IDX IS NOT null
-        order by P_IDX desc
+        orders by P_IDX desc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -184,6 +184,6 @@
             GS_CODE
         from
             goods_stock
-        order by GS_IDX desc limit 1
+        orders by GS_IDX desc limit 1
     </select>
 </mapper>

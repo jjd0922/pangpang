@@ -10,6 +10,9 @@
         .calendar-time select {
             min-width: 37px;
         }
+        #shopModalTable, #shopModalForm {
+            width: 100% !important;
+        }
     </style>
 </head>
 
@@ -51,10 +54,11 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text d-flex justify-content-between">
-                                                                    분양몰<a class="badge badge-primary">검색</a>
+                                                                    분양몰<a class="badge badge-primary" id="searchShopBtn">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control" readonly>
+                                                        <input type="text" name="shopName" class="form-control" readonly>
+                                                        <input type="hidden" name="shopIdx">
                                                     </div>
                                                 </div>
                                             </div>
@@ -167,7 +171,7 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    쿠폰그룹코드
+                                                                    할인타입
                                                                 </span>
                                                             </span>
                                                         <select name="" class="form-control select">
@@ -197,7 +201,7 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    발급유형
+                                                                    쿠폰타입
                                                                 </span>
                                                             </span>
                                                         <select name="" class="form-control select">
@@ -214,6 +218,64 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                     쿠폰잔여수량
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    발급유형
+                                                                </span>
+                                                            </span>
+                                                        <select name="" class="form-control select">
+                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    최소사용금액
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    할인액(할인율)
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    최대적용금액
                                                                 </span>
                                                             </span>
                                                         <input type="text" name="" class="form-control">
@@ -264,6 +326,7 @@
     </div>
 </div>
 
+<th:block th:replace="coupon/modal/shopModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -318,6 +381,14 @@
             data: $('#regiForm').serialize()
         });
     }
+
+    function selectShop(row) {
+        var rowData = getDatatablemap('shopModalTable', row);
+
+        $('#searchShopModal').modal('hide');
+        $('#regiForm input[name="shopName"]').val(rowData.SHOP_NAME);
+        $('#regiForm input[name="shopIdx"]').val(rowData.SHOP_IDX);
+    }
 </script>
 <script th:inline="javascript">
     if ($('#couponTable')) {
@@ -350,6 +421,10 @@
     }
 
     $("#saveBtn").on("click", saveAction);
+    $("#searchShopBtn").on("click", showShopModal);
+    $('#shopModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchShopDataTable();return false;}
+    });
 </script>
 </body>
 </html>

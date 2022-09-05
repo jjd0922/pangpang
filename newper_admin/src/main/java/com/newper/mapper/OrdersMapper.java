@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface OrderMapper {
+public interface OrdersMapper {
 
     /**통합주문관리 dataTable*/
     List<Map<String, Object>> selectOrderDatatable(Map<String, Object> map);

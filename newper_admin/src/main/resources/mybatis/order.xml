@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newper.mapper.OrderMapper">
+<mapper namespace="com.newper.mapper.OrdersMapper">
 
     <select id="selectOrderDatatable" resultType="map">
         SELECT
@@ -11,7 +11,7 @@
             PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
             ADDR4, AD_ENTRANCE, O_DATE, O_TIME
         FROM
-            `order`
+            `orders`
                 LEFT JOIN customer
                           ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
@@ -21,7 +21,7 @@
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
 
-        order by O_IDX desc
+        orders by O_IDX desc
         <if test="length!=-1">
             LIMIT #{start},#{length}
         </if>
@@ -30,7 +30,7 @@
         SELECT
             count(*)
         FROM
-            `order`
+            `orders`
                 LEFT JOIN customer
                           ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop

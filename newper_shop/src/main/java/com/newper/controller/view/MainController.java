@@ -103,4 +103,10 @@ public class MainController {
         ModelAndView mav = new ModelAndView("mainMenu/test");
         return mav;
     }
+    @GetMapping(value = "iamportTest")
+    public ModelAndView iamportTest(){
+        ModelAndView mav = new ModelAndView("iamport/payment");
+        return mav;
+    }
+
 }
