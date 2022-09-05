@@ -17,12 +17,16 @@
         if(payRequestAvailable){
             payRequestAvailable = false;
             $.ajax({
-              url:'/order/iamport.ajax'
+              url:'/orders/iamport.ajax'
               ,type:'post'
               ,data: 'test=test1234'
             }).done(function(res){
 
+            }).always(function(){
+                payRequestAvailable = true;
             });
+        }else{
+            console.log('not available');
         }
     }
     function requestPay() {

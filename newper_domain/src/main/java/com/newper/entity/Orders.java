@@ -1,8 +1,8 @@
 package com.newper.entity;
 
-import com.newper.constant.OLocation;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,8 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,10 +51,18 @@ public class Order {
 
     private String oPhone;
 
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDate oDate;
-
+    @CreatedDate
+    @Column(updatable = false)
     private LocalTime oTime;
 
     private String oMemo;
 
+    public void setPayment(Payment payment){
+        System.out.println("pay!!!");
+        this.payment = payment;
+        payment.setOrders(this);
+    }
 }
