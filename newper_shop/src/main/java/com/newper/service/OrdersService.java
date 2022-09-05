@@ -5,7 +5,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Orders;
 import com.newper.entity.Payment;
 import com.newper.repository.CustomerRepo;
-import com.newper.repository.OrderRepo;
+import com.newper.repository.OrdersRepo;
 import com.newper.repository.PaymentRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrdersService {
 
     private final CustomerRepo customerRepo;
-    private final OrderRepo orderRepo;
+    private final OrdersRepo ordersRepo;
     private final PaymentRepo paymentRepo;
     @Autowired
     private ShopSession shopSession;
