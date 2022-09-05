@@ -148,7 +148,15 @@
                                         승인요청
                                     </a>
 
-                                    <a type="button" class="btn btn-sm btn-danger">
+                                    <a onclick="poHiworksApply()" type="button" class="btn btn-sm btn-primary">
+                                        하이웍스 승인요청 TEST
+                                    </a>
+
+                                    <a onclick="poHiworksResponse()" type="button" class="btn btn-sm btn-primary">
+                                        하이웍스 승인&반려 TEST
+                                    </a>
+
+                                    <a onclick="poDelete()" type="button" class="btn btn-sm btn-danger">
                                         삭제
                                     </a>
                                 </div>
@@ -252,6 +260,63 @@
     function poDetail(idx) {
         var focusPopup = window.open('/po/poPop/' + idx, 'poDetail', 'width=' + screen.width, 'height=' + screen.height, 'left=' + screenX, 'top=' +screenY,'scrollbars=yes', 'resizable=yes');
         focusPopup.focus();
+    }
+
+    function poHiworksApply() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poHiworks.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+
+    function poHiworksResponse() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poHiworksResponse.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+
+    function poDelete() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poDelete.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
     }
 </script>
 </html>

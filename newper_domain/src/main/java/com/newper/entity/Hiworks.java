@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -28,9 +30,9 @@ public class Hiworks {
     private String hwType;
     @Enumerated(EnumType.STRING)
     private HwState hwState;
-    private String hwReqDate;
-    private String hwReqTime;
+    private LocalDate hwReqDate;
+    private LocalTime hwReqTime;
+    private LocalDate hwAprvDate;
+    private LocalTime hwAprvTime;
     private String hwAprvId;
-    private String hwAprvDate;
-    private String hwAprvTime;
 }

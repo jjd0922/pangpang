@@ -176,6 +176,8 @@
         <where>
             <include refid="includePoDataTable"></include>
         </where>
+        ORDER BY
+            PO_IDX DESC
         <if test="length!=-1">
         LIMIT
             #{start},#{length}
@@ -222,11 +224,11 @@
     </sql>
     <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
         SELECT
-            *
+            PO_IDX,
+            PO_STATE
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX = HW_IDX
         <where>
             <include refid="includePoApprovedDatatable"></include>
         </where>

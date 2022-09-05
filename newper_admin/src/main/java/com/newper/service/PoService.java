@@ -1,24 +1,23 @@
 package com.newper.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.component.SessionInfo;
+import com.newper.constant.HwState;
 import com.newper.constant.PoState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
-import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -38,6 +37,7 @@ public class PoService {
     private final SpecItemRepo specItemRepo;
     private final SpecMapper specMapper;
     private final CompanyContractRepo companyContractRepo;
+    private final HiworksRepo hiworksRepo;
 
 
 
@@ -83,7 +83,7 @@ public class PoService {
         List<Long> ppProcessCost = paramMap.getListLong("poProductProcess");
         List<Long> ppFixCost = paramMap.getListLong("poProductFix");
         List<Long> ppPaintCost = paramMap.getListLong("poProductPaint");
-        List<Long> ppProfitTarget = paramMap.getListLong("poProductProfitTarget");
+        List<Float> ppProfitTarget = paramMap.getListFloat("poProductProfitTarget");
         List<Long> ppCount = paramMap.getListLong("poProductCount");
         List<Long> pIdx = paramMap.getListLong("poProduct");
         List<String> ppOption1 = paramMap.getList("poProductOption1");
@@ -135,13 +135,6 @@ public class PoService {
                     specParam.put("SPECL_IDX", specList.getSpeclIdx());
                     specParam.put("SPECI_ORDER", j);
                     specMapper.insertSpecItem(specParam);
-
-//                    SpecItem specItem = SpecItem.builder()
-//                                        .spec(spec_buy)
-//                                        .specList(specList)
-//                                        .specIOrder(j)
-//                                        .build();
-//                    specItemRepo.save(specItem);
                 }
 
 
@@ -179,47 +172,34 @@ public class PoService {
                     specParam.put("SPECL_IDX", specList.getSpeclIdx());
                     specParam.put("SPECI_ORDER", j);
                     specMapper.insertSpecItem(specParam);
-
-//                    SpecItem specItem = SpecItem.builder()
-//                            .spec(spec_sell)
-//                            .specList(specList)
-//                            .specIOrder(j)
-//                            .build();
-//                    specItemRepo.save(specItem);
                 }
 
 
             }
             poProduct.setSpec2(spec_sell);
 
+            List<Map<String, Object>> ppOption = new ArrayList<>();
 
-            String ppOption = "[";
             if (!ppOption1.get(i).equals("")) {
-                String [] option1 = ppOption1.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option1[0] + "\"" + ",\"values\":" + "\"" + option1[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption1.get(i));
             }
 
             if (!ppOption2.get(i).equals("")) {
-                String [] option2 = ppOption2.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option2[0] + "\"" + ",\"values\":" + "\"" + option2[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption2.get(i));
             }
 
             if (!ppOption3.get(i).equals("")) {
-                String [] option3 = ppOption3.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option3[0] + "\"" + ",\"values\":" + "\"" + option3[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption3.get(i));
             }
-
-            ppOption += "]";
-            ppOption = ppOption.replace("}{", "},{");
 
             poProduct.setPpOption(ppOption);
             poProduct.setPpCost(ppCost.get(i).intValue());
-            poProduct.setPpSellPrice((int) Long.parseLong(ppSellPrice.get(i).toString()));
-            poProduct.setPpProcessCost((int) Long.parseLong(ppProcessCost.get(i).toString()));
-            poProduct.setPpFixCost((int) Long.parseLong(ppFixCost.get(i).toString()));
-            poProduct.setPpPaintCost((int) Long.parseLong(ppPaintCost.get(i).toString()));
-            poProduct.setPpProfitTarget((int) Long.parseLong(ppProfitTarget.get(i).toString()));
-            poProduct.setPpCount((int) Long.parseLong(ppCount.get(i).toString()));
+            poProduct.setPpSellPrice(ppSellPrice.get(i).intValue());
+            poProduct.setPpProcessCost(ppProcessCost.get(i).intValue());
+            poProduct.setPpFixCost(ppFixCost.get(i).intValue());
+            poProduct.setPpPaintCost(ppPaintCost.get(i).intValue());
+            poProduct.setPpProfitTarget(ppProfitTarget.get(i));
+            poProduct.setPpCount(ppCount.get(i).intValue());
             poProduct.setPpMemo(ppMemo.get(i));
             poProduct.setPpPaintMemo(ppPaintMemo.get(i));
             poProduct.setPpFixMemo(ppFixMemo.get(i));
@@ -274,7 +254,7 @@ public class PoService {
         List<Long> ppProcessCost = paramMap.getListLong("poProductProcess");
         List<Long> ppFixCost = paramMap.getListLong("poProductFix");
         List<Long> ppPaintCost = paramMap.getListLong("poProductPaint");
-        List<Long> ppProfitTarget = paramMap.getListLong("poProductProfitTarget");
+        List<Float> ppProfitTarget = paramMap.getListFloat("poProductProfitTarget");
         List<Long> ppCount = paramMap.getListLong("poProductCount");
         List<Long> pIdx = paramMap.getListLong("poProduct");
         List<String> ppOption1 = paramMap.getList("poProductOption1");
@@ -327,12 +307,6 @@ public class PoService {
                     specParam.put("SPECI_ORDER", j);
                     specMapper.insertSpecItem(specParam);
 
-//                    SpecItem specItem = SpecItem.builder()
-//                            .spec(spec_buy)
-//                            .specList(specList)
-//                            .specIOrder(j)
-//                            .build();
-//                    specItemRepo.save(specItem);
                 }
 
 
@@ -371,46 +345,34 @@ public class PoService {
                     specParam.put("SPECI_ORDER", j);
                     specMapper.insertSpecItem(specParam);
 
-//                    SpecItem specItem = SpecItem.builder()
-//                            .spec(spec_sell)
-//                            .specList(specList)
-//                            .specIOrder(j)
-//                            .build();
-//                    specItemRepo.save(specItem);
                 }
 
 
             }
             poProduct.setSpec2(spec_sell);
 
+            List<Map<String, Object>> ppOption = new ArrayList<>();
 
-            String ppOption = "[";
             if (!ppOption1.get(i).equals("")) {
-                String [] option1 = ppOption1.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option1[0] + "\"" + ",\"values\":" + "\"" + option1[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption1.get(i));
             }
 
             if (!ppOption2.get(i).equals("")) {
-                String [] option2 = ppOption2.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option2[0] + "\"" + ",\"values\":" + "\"" + option2[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption2.get(i));
             }
 
             if (!ppOption3.get(i).equals("")) {
-                String [] option3 = ppOption3.get(i).split(":");
-                ppOption += "{\"title\":" + "\"" + option3[0] + "\"" + ",\"values\":" + "\"" + option3[1] + "\"" + "}";
+                Common.putOption(ppOption, ppOption3.get(i));
             }
-
-            ppOption += "]";
-            ppOption = ppOption.replace("}{", "},{");
 
             poProduct.setPpOption(ppOption);
             poProduct.setPpCost(ppCost.get(i).intValue());
-            poProduct.setPpSellPrice((int) Long.parseLong(ppSellPrice.get(i).toString()));
-            poProduct.setPpProcessCost((int) Long.parseLong(ppProcessCost.get(i).toString()));
-            poProduct.setPpFixCost((int) Long.parseLong(ppFixCost.get(i).toString()));
-            poProduct.setPpPaintCost((int) Long.parseLong(ppPaintCost.get(i).toString()));
-            poProduct.setPpProfitTarget((int) Long.parseLong(ppProfitTarget.get(i).toString()));
-            poProduct.setPpCount((int) Long.parseLong(ppCount.get(i).toString()));
+            poProduct.setPpSellPrice(ppSellPrice.get(i).intValue());
+            poProduct.setPpProcessCost(ppProcessCost.get(i).intValue());
+            poProduct.setPpFixCost(ppFixCost.get(i).intValue());
+            poProduct.setPpPaintCost(ppPaintCost.get(i).intValue());
+            poProduct.setPpProfitTarget(ppProfitTarget.get(i));
+            poProduct.setPpCount(ppCount.get(i).intValue());
             poProduct.setPpMemo(ppMemo.get(i));
             poProduct.setPpPaintMemo(ppPaintMemo.get(i));
             poProduct.setPpFixMemo(ppFixMemo.get(i));
@@ -533,6 +495,106 @@ public class PoService {
         Po po = poRepo.findPoByPoIdx(poIdx);
         po.setPoState(PoState.APPROVAL);
         poRepo.save(po);
+    }
+
+    /** 발주 하이웍스 승인 요청 */
+    @Transactional
+    public String poHiworks(ParamMap paramMap, SessionInfo sessionInfo) {
+        User user = User
+                .builder()
+                .uIdx(sessionInfo.getIdx())
+                .build();
+
+        String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
+        int count = 0;
+        for (int i = 0; i < poIdxs.length; i++) {
+            Optional<Po> po = poRepo.findById(Integer.parseInt(poIdxs[i]));
+
+            if (po.get().getHiworks() == null) {
+                Hiworks hiworks = Hiworks
+                        .builder()
+                        .hwState(HwState.REQ)
+                        .hwType("PO")
+                        .hwReqDate(LocalDate.now())
+                        .hwReqTime(LocalTime.now())
+                        .hwAprvId("")
+                        .user(user)
+                        .build();
+
+                hiworksRepo.save(hiworks);
+
+                po.get().setHiworks(hiworks);
+
+                poRepo.save(po.get());
+                count++;
+            }
+        }
+        return "총 " + count + "개의 발주건을 승인요청했습니다.";
+    }
+
+    /** 발주 하이웍스 승인 요청 응답 (반려 & 승인)*/
+    @Transactional
+    public void poHiworksResponse(ParamMap paramMap) {
+        String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
+        for (int i = 0; i < poIdxs.length; i++) {
+            Po po = poRepo.findPoByPoIdx(Integer.parseInt(poIdxs[i]));
+            if (po.getHiworks() != null) {
+                Optional<Hiworks> hiworks = hiworksRepo.findById(po.getHiworks().getHwIdx());
+                hiworks.get().setHwAprvDate(LocalDate.now());
+                hiworks.get().setHwAprvTime(LocalTime.now());
+                hiworks.get().setHwAprvId("TEST");
+                hiworks.get().setHwState(HwState.APPROVED);
+
+                hiworksRepo.save(hiworks.get());
+                poRepo.save(po);
+            }
+        }
+    }
+
+
+    /** 발주 삭제 */
+    @Transactional
+    public String poDelete(ParamMap paramMap) {
+        String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
+        int count = 0;
+
+        for (int i = 0; i < poIdxs.length; i++) {
+            Po po = poRepo.findPoByPoIdx(Integer.parseInt(poIdxs[i]));
+            if (po.getHiworks() == null) {
+                List<PoProduct> poProducts = poProductRepo.findPoProductByPo_PoIdx(po.getPoIdx());
+                for (int j = 0; j < poProducts.size(); j++) {
+                    poProductRepo.deleteById(poProducts.get(i).getPpIdx());
+                }
+                poRepo.deleteById(po.getPoIdx());
+
+                count++;
+            }
+        }
+        return "총 " + count + "개의 발주건을 삭제했습니다.";
+    }
+
+    public String poStateUpdate(ParamMap paramMap) {
+        String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
+        int count = 0;
+        String state_msg = "";
+        for (int i = 0; i < poIdxs.length; i++) {
+            Optional<Po> po = poRepo.findById(Integer.parseInt(poIdxs[i]));
+            if (po.get().getPoState().equals(PoState.WAITING)) {
+                String state = paramMap.get("state").toString();
+                if (state.equals("comp")) {
+                    po.get().setPoState(PoState.APPROVAL);
+                    state_msg = "완료";
+                } else {
+                    po.get().setPoState(PoState.CANCEL);
+                    state_msg = "취소";
+                }
+
+                count++;
+                poRepo.save(po.get());
+            }
+        }
+        return "총 " + count + "개의 발주건을 " + state_msg + " 처리했습니다.";
+
     }
 }
 

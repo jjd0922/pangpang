@@ -1,13 +1,14 @@
 package com.newper.component;
 
-import com.newper.dto.ParamMap;
 import com.newper.exception.MsgException;
 import com.newper.storage.NewperBucket;
 import com.newper.storage.NewperStorage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Common {
@@ -39,4 +40,12 @@ public class Common {
         return content;
     }
 
+    /** 발주품의 옵션값 map에 넣기  */
+    public static void putOption(List<Map<String, Object>> optionList, String optionStr) {
+        String [] option_str = optionStr.split(":");
+        Map<String, Object> option = new HashMap<>();
+        option.put("title", option_str[0]);
+        option.put("values", option_str[1]);
+        optionList.add(option);
+    }
 }

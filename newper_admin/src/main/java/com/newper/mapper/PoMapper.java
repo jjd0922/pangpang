@@ -1,5 +1,6 @@
 package com.newper.mapper;
 
+import com.newper.dto.ParamMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,11 +45,6 @@ public interface PoMapper {
 
     /** 발주서에 상품idx조회 */
     List<Integer> selectPoProductIdxList(@Param("poIdx") int poIdx);
-
-
-
-
-
 
     /** 입고등록 팝업 발주상품 자산 조회 쿼리문 **/
     List<Map<String, Object>> selectInPpDatatable(Map<String, Object> param);

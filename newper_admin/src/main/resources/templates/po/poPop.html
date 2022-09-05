@@ -618,7 +618,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="productTbody">
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:class="|productPoTr_${i.P_IDX}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:class="|productPoTr_${iStat.index} poProductTr|">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.PP_MEMO}"></td>
                                                         <input type="hidden" name="poProductMemo" th:value="${i.PP_MEMO}">
@@ -641,7 +641,7 @@
                                                         <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
                                                         <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
                                                         <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
-                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${i.P_IDX})|">삭제</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${iStat.index})|">삭제</button></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -679,7 +679,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody id="productTbody2">
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${i.P_IDX}|" th:class="|productPoTr_${i.P_IDX}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${iStat.index}|" th:class="|productPoTr_${iStat.index}|">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
                                                         <td th:text="${i.PP_COUNT}"></td>
@@ -687,22 +687,23 @@
                                                         <td th:text="${i.PP_FIX_COST}"></td>
                                                         <td th:text="${i.PP_PAINT_COST}"></td>
                                                         <td th:text="${(i.PP_PAINT_COST + i.PP_FIX_COST + i.PP_PROCESS_COST) * i.PP_COUNT}"></td>
-                                                        <td th:id="|buy_per_${i.P_IDX}|"></td>
+                                                        <td th:id="|buy_per_${iStat.index}|"></td>
                                                         <td th:text="${i.PP_COST}"></td>
-                                                        <input type="hidden" th:id="|poProductCost_${i.P_IDX}|" th:value="${i.PP_COST}">
-                                                        <input type="hidden" th:id="|poProductCount_${i.P_IDX}|" th:value="${i.PP_COUNT}">
+                                                        <input type="hidden" th:id="|poProductCost_${iStat.index}|" th:value="${i.PP_COST}">
+                                                        <input type="hidden" th:id="|poProductCount_${iStat.index}|" th:value="${i.PP_COUNT}">
                                                         <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
-                                                        <td><input type="text" class="form-control" th:id="|poProductSellPrice_${i.P_IDX}|" name="poProductSellPrice" th:value="${i.PP_SELL_PRICE}" th:onkeyup="|priceSetting(${i.P_IDX})|"></td>
-                                                        <td th:id="|poProductSellPriceTotal_${i.P_IDX}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
-                                                        <td th:id="|totalProfit_${i.P_IDX}|"></td>
-                                                        <td th:id="|profitPer_${i.P_IDX}|"></td>
+                                                        <td th:text="${i.PP_SELL_PRICE}"></td>
+                                                        <input type="hidden"th:id="|poProductSellPrice_${iStat.index}|" name="poProductSellPrice" th:value="${i.PP_SELL_PRICE}">
+                                                        <td th:id="|poProductSellPriceTotal_${iStat.index}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
+                                                        <td th:id="|totalProfit_${iStat.index}|"></td>
+                                                        <td th:id="|profitPer_${iStat.index}|"></td>
                                                         <td th:text="${i.PP_PROFIT_TARGET}"></td>
                                                         <input type="hidden" name="poProductProfitTarget" th:value="${i.PP_PROFIT_TARGET}">
-                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${i.P_IDX})|">삭제</button></td>
-                                                        <input type="hidden" name="poProduct" th:value="${i.P_IDX}">
-                                                        <input type="hidden" th:id="|poProductProcess_${i.P_IDX}|" name="poProductProcess" th:value="${i.PP_PROCESS_COST}">
-                                                        <input type="hidden" th:id="|poProductFix_${i.P_IDX}|" name="poProductFix" th:value="${i.PP_FIX_COST}">
-                                                        <input type="hidden" th:id="|poProductPaint_${i.P_IDX}|" name="poProductPaint" th:value="${i.PP_PAINT_COST}">
+                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${iStat.index})|">삭제</button></td>
+                                                        <input type="hidden" name="poProduct" th:value="${iStat.index}">
+                                                        <input type="hidden" th:id="|poProductProcess_${iStat.index}|" name="poProductProcess" th:value="${i.PP_PROCESS_COST}">
+                                                        <input type="hidden" th:id="|poProductFix_${iStat.index}|" name="poProductFix" th:value="${i.PP_FIX_COST}">
+                                                        <input type="hidden" th:id="|poProductPaint_${iStat.index}|" name="poProductPaint" th:value="${i.PP_PAINT_COST}">
                                                         <input type="hidden" name="poProductProcessMemo" th:value="${i.PP_PROCESS_MEMO}">
                                                         <input type="hidden" name="poProductFixMemo" th:value="${i.PP_FIX_MEMO}">
                                                         <input type="hidden" name="poProductPaintMemo" th:value="${i.PP_PAINT_MEMO}">
@@ -727,7 +728,7 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button th:if="${po?.hiworks == null}" type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
         <!-- /footer -->
     </div>
@@ -872,7 +873,7 @@
 </script>
 <script th:if="${poProduct != null}" th:each="i : ${poProduct}">
     $(function () {
-        priceSetting([[${i.P_IDX}]]);
+        priceSetting([[${iStat.index}]]);
     });
 </script>
 </body>

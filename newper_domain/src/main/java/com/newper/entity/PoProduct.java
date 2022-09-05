@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -33,7 +35,7 @@ public class PoProduct {
     @JoinColumn(name="PP_SPEC_IDX2", referencedColumnName = "specIdx")
     private Spec spec2;
 
-    private String ppOption;
+    private List<Map<String, Object>> ppOption;
     private int ppCost;
     private int ppCount;
     private int ppFixCost;

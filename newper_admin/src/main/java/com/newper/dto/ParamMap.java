@@ -56,6 +56,27 @@ public class ParamMap {
             return list;
         }
     }
+
+    public List<Float> getListFloat(String key) {
+        Object value=map.get(key);
+        if(value==null){
+            return Collections.EMPTY_LIST;
+        }
+        if(value instanceof List){
+            List<Object> list = (List) value;
+            List<Float> returnList = new ArrayList<>();
+            if (list != null) {
+                for (Object o : list) {
+                    returnList.add(Float.parseFloat(o + ""));
+                }
+            }
+            return returnList;
+        }else{
+            List<Float> list = new ArrayList<>();
+            list.add(Float.parseFloat(value+""));
+            return list;
+        }
+    }
     public int getInt(String key) {
         return Integer.parseInt( map.get(key)+"" );
     }
