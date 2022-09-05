@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @DynamicUpdate
@@ -21,7 +20,7 @@ public class OrderCancel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OC_O_IDX", referencedColumnName = "oIdx")
-    private Order order;
+    private Orders orders;
 
 
 
