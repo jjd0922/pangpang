@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/js/iamport.payment-1.1.8.js}"></script>
+</head>
+<body>
+
+</body>
+<script>
+    //결제팝업
+    var payRequestAvailable = true;
+    function payRequest(){
+        if(payRequestAvailable){
+            payRequestAvailable = false;
+            $.ajax({
+              url:'/order/iamport.ajax'
+              ,type:'post'
+              ,data: 'test=test1234'
+            }).done(function(res){
+
+            });
+        }
+    }
+    function requestPay() {
+        IMP.request_pay({ // param
+            pay_method: "card",
+            merchant_uid: "ORD20180131-0000011",
+            name: "노르웨이 회전 의자",
+            amount: 64900,
+            buyer_email: "gildong@gmail.com",
+            buyer_name: "홍길동",
+            buyer_tel: "010-4242-4242",
+            buyer_addr: "서울특별시 강남구 신사동",
+            buyer_postcode: "01181"
+        }, function (rsp) {
+            debugger;
+        });
+    }
+</script>
+<script>
+</script>
+</html>
