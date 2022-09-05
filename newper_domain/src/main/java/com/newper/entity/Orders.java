@@ -1,5 +1,9 @@
 package com.newper.entity;
 
+import com.newper.constant.OCancelState;
+import com.newper.constant.ODeliveryState;
+import com.newper.constant.OLocation;
+import com.newper.constant.OState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -37,24 +41,27 @@ public class Orders {
     @JoinColumn(name = "O_AD_IDX", referencedColumnName = "adIdx")
     private OrderAddress orderAddress;
 
-    private String oLocation;
+    @Enumerated(EnumType.STRING)
+    private OLocation oLocation;
 
     private String oCode;
 
-    private String oState;
-
-    private String oDeliveryState;
-
-    private String oCancelState;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private OState oState = OState.BEFORE;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private ODeliveryState oDeliveryState = ODeliveryState.BEFORE;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private OCancelState oCancelState = OCancelState.NONE;
 
     private String oName;
 
     private String oPhone;
 
-    @CreatedDate
     @Column(updatable = false)
     private LocalDate oDate;
-    @CreatedDate
     @Column(updatable = false)
     private LocalTime oTime;
 
@@ -65,4 +72,5 @@ public class Orders {
         this.payment = payment;
         payment.setOrders(this);
     }
+
 }

@@ -1,13 +1,12 @@
 package com.newper.entity;
 
+import com.newper.constant.PhType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -23,16 +22,31 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long phIdx;
 
-    private String phType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PH_PAY_IDX", referencedColumnName = "payIdx")
+    private Payment payment;
 
-    private String phRequest;
+    @Enumerated(EnumType.STRING)
+    private PhType phType;
 
-    private String phResponse;
-
-    private LocalDate phRequestDate;
-
-    private LocalTime phRequestTime;
-
+    private boolean phFlag;
+    private String phReq;
+    private String phRes;
+    private LocalDate phReqDate;
+    private LocalTime phReqTime;
     private String phCode;
 
+
+    /** 결제 고유 idx*/
+    public String getMerchantId(){
+        return getPhIdx()+"";
+    }
+
+    /** phReq세팅시 날짜시간도 세팅*/
+    public void setPhReq(String phReq) {
+        LocalDateTime now = LocalDateTime.now();
+        setPhReqDate(now.toLocalDate());
+        setPhReqTime(now.toLocalTime());
+        this.phReq = phReq;
+    }
 }

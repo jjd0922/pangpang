@@ -6,14 +6,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OLocation implements EnumOption {
+public enum ODeliveryState implements EnumOption {
 
-     SHOP("쇼핑몰")
-    ,OFFLINE("오프라인")
-    ,SABANG("사방넷")
+    BEFORE("")
     ;
 
     private String option;
-
-
 }
