@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.PayState;
+import com.newper.constant.PhType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -40,9 +41,44 @@ public class Payment {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
     private List<Orders> orders;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
+    @OrderBy(value = "phFlag desc, phIdx desc")
+    private List<PaymentHistory> paymentHistoryList;
+
     /** order에서 setPayment로 세팅할 때 호출되는 메서드*/
     void setOrders(Orders orders){
         this.orders = new ArrayList<>();
         this.orders.add(orders);
+    }
+
+    /** 결제 요청 가능한지 체크 후 return paymentHistory*/
+    public PaymentHistory createPayReq(){
+        List<PaymentHistory> paymentHistoryList = getPaymentHistoryList();
+        if (paymentHistoryList == null) {
+            paymentHistoryList = new ArrayList<>();
+            setPaymentHistoryList(paymentHistoryList);
+        }
+
+        findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
+            if (paymentHistory.isPhFlag()) {
+                //마지막 결제 요청 check
+                paymentHistory.setPhFlag(false);
+
+//                    paymentHistory.getPhCode();
+
+                break findFlag;
+            }
+        }
+
+        PaymentHistory paymentHistory = PaymentHistory.builder()
+                .payment(this)
+                .phType(PhType.PAY)
+                .phReq("")
+                .phRes("")
+                .phFlag(true)
+                .build();
+        paymentHistoryList.add(paymentHistory);
+
+        return  paymentHistory;
     }
 }
