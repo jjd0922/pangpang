@@ -6,10 +6,10 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -69,7 +69,8 @@ public class Customer {
     private String cuCi;
     private String cuDi;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "couponGroup")
+    private List<Coupon> couponList;
 
     /** 로그인 성공시 data update*/
     public void login(){

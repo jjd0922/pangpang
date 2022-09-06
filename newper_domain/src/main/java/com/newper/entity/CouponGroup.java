@@ -1,7 +1,6 @@
 package com.newper.entity;
 
 import com.newper.constant.CpgDiscountType;
-import com.newper.constant.CpgDuplicate;
 import com.newper.constant.CpgState;
 import com.newper.constant.CpgType;
 import com.newper.entity.common.CreatedEntity;
@@ -10,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -34,17 +34,16 @@ public class CouponGroup extends CreatedEntity {
 
     private String cpgName;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private CpgState cpgState;
-    @Enumerated
-    private CpgDuplicate cpgDuplicate;
-    @Enumerated
+    private boolean cpgDuplicate;
+    @Enumerated(EnumType.STRING)
     private CpgDiscountType cpgDiscountType;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private CpgType cpgType;
 
-    private LocalDate cpgStartDate;
     private LocalDate cpgEndDate;
+    private LocalTime cpgEndTime;
     private Integer cpgMin;
     private Integer cpgMax;
     private Float cpgMoney;

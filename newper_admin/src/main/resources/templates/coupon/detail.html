@@ -53,11 +53,12 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    쿠폰그룹명
+                                                                <span class="input-group-text d-flex justify-content-between">
+                                                                    분양몰<a class="badge badge-primary" id="searchShopBtn">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgName" class="form-control">
+                                                        <input type="text" name="shopName" class="form-control" th:value="${couponGroup?.shop?.shopName}" readonly>
+                                                        <input type="hidden" name="shopIdx" th:value="${couponGroup?.shop?.shopIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,12 +84,11 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text d-flex justify-content-between">
-                                                                    분양몰<a class="badge badge-primary" id="searchShopBtn">검색</a>
+                                                                <span class="input-group-text">
+                                                                    쿠폰그룹명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="shopName" class="form-control" readonly>
-                                                        <input type="hidden" name="shopIdx">
+                                                        <input type="text" name="cpgName" class="form-control" th:value="${couponGroup?.cpgName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,7 +101,8 @@
                                                                 <span class="input-group-text">중복사용</span>
                                                             </span>
                                                         <select name="cpgDuplicate" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.CpgDuplicate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(couponGroup?.cpgDuplicate) eq opt.name()}"></option>
+                                                            <option value="0" th:selected="${coupon?.cpgDuplicate eq 0}">중복사용불가</option>
+                                                            <option value="1" th:selected="${coupon?.cpgDuplicate eq 1}">중복사용가능</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -116,7 +117,7 @@
                                                                     쿠폰그룹코드
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgIdx" class="form-control" readonly>
+                                                        <input type="text" name="cpgIdx" class="form-control" th:value="${couponGroup?.cpgIdx}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -164,7 +165,7 @@
                                                             </span>
                                                         <select name="cateIdx" data-placeholder="중분류선택" class="form-control select-search">
                                                             <option></option>
-                                                            <option th:each="opt: ${category}" th:text="${opt.CATE_NAME}" th:value="${opt.CATE_IDX}" th:selected="${couponGroup?.cateIdx eq opt.CATE_IDX}"></option>
+                                                            <option th:each="opt: ${category}" th:text="${opt.CATE_NAME}" th:value="${opt.CATE_IDX}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -179,7 +180,7 @@
                                                                     할인액(할인율)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgMoney" class="form-control">
+                                                        <input type="text" name="cpgMoney" class="form-control" th:value="${couponGroup?.cpgMoney}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,7 +194,7 @@
                                                                     사용만료일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgEndDate" class="form-control daterange-single">
+                                                        <input type="text" name="cpgEndDate" class="form-control daterange-single" th:value="${couponGroup?.cpgEndDate}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,7 +208,7 @@
                                                                     사용만료시간
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control w-datarange daterange-time">
+                                                        <input type="text" name="cpgEndTime" class="form-control w-datarange daterange-time" th:value="${couponGroup?.cpgEndTime}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -221,7 +222,7 @@
                                                                     쿠폰생성수량
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgCnt" class="form-control">
+                                                        <input type="text" name="cpgCnt" class="form-control" th:value="${couponGroup?.cpgCnt}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,7 +236,7 @@
                                                                     최소사용금액
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgMin" class="form-control">
+                                                        <input type="text" name="cpgMin" class="form-control" th:value="${couponGroup?.cpgMin}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -249,7 +250,7 @@
                                                                     쿠폰잔여수량
                                                                 </span>
                                                             </span>
-                                                        <input type="text" th:value="${coupon != null} ? ${coupon.cpgCnt}-${coupon.cpgUsedCnt}" class="form-control" readonly>
+                                                        <input type="text" th:value="${couponGroup != null} ? (${couponGroup.cpgCnt}-${couponGroup.cpgUsedCnt})" class="form-control" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -276,10 +277,10 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    최대적용금액
+                                                                    최대할인금액
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="cpgMax" class="form-control">
+                                                        <input type="text" name="cpgMax" class="form-control" th:value="${couponGroup?.cpgMax}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -304,7 +305,7 @@
                         </div>
 
                         <div class="card">
-                            <div th:if="${giftGroup != null}" class="card-body popup-contents">
+                            <div th:if="${couponGroup != null}" class="card-body popup-contents">
                                 <table class="table table-hover" id="couponTable"></table>
                             </div>
                         </div>
@@ -409,7 +410,7 @@
             dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
             serverSide: true,
             ajax:{
-                url:'/gift/gift.dataTable?giftgIdx=' + [[${giftGroup?.giftgIdx}]],
+                url:'/coupon/coupon.dataTable?cpgIdx=' + [[${couponGroup?.cpgIdx}]],
                 type:'post'
             },
             select: {
@@ -420,12 +421,11 @@
                 {'title':'No','data':'No','render':function(data,type,full,meta){
                         return meta.settings._iDisplayStart+meta.row+1;
                     }}
-                ,{'title':'쿠폰코드','data':'','defaultContent':''}
-                ,{'title':'발급여부','data':'','defaultContent':''}
-                ,{'title':'수령여부','data':'','defaultContent':''}
+                ,{'title':'쿠폰코드','data':'CP_IDX','defaultContent':''}
+                ,{'title':'발급여부','data':'CP_ISRECIEVED','defaultContent':''}
                 ,{'title':'사용여부','data':'','defaultContent':''}
-                ,{'title':'ID','data':'','defaultContent':''}
-                ,{'title':'휴대폰번호','data':'','defaultContent':''}
+                ,{'title':'ID','data':'CU_ID','defaultContent':''}
+                ,{'title':'휴대폰번호','data':'CU_PHONE','defaultContent':''}
                 ,{'title':'사용일','data':'','defaultContent':''}
                 ,{'title':'수령일','data':'','defaultContent':''}
                 ,{'title':'취소일','data':'','defaultContent':''}
@@ -433,6 +433,7 @@
         });
     }
 
+    showCategory($('select[name="cpgType"]'));
     $("#saveBtn").on("click", saveAction);
     $("#searchShopBtn").on("click", showShopModal);
     $('#shopModalForm').on('keyup',function(event){

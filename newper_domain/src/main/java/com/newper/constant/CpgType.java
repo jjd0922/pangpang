@@ -9,8 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CpgType implements EnumOption {
 
-    /**배송비*/
-    DELIVERY("배송비"),
+    /**배송비형*/
+    DELIVERY("배송비형"),
     /**할인형*/
     DISCOUNT("할인형"),
     /**카테고리형*/

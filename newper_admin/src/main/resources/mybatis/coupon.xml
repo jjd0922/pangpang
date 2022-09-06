@@ -1,9 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.CouponMapper">
-    <insert id="insertGift">
+    <sql id="includeCouponGroupDatatable">
+        <if test="shopName != null and shopName != ''">AND SHOP_NAME LIKE CONCAT('%',#{shopName},'%')</if>
+        <if test="cpgState != null">
+            <foreach collection="cpgState" open="AND CPG_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cpgName != null and cpgName != ''">AND CPG_NAME LIKE CONCAT('%',#{cpgName},'%')</if>
+        <if test="cpgIdx != null and cpgIdx != ''">AND CPG_IDX LIKE CONCAT('%',#{cpgIdx},'%')</if>
+        <if test="cpgType != null">
+            <foreach collection="cpgType" open="AND CPG_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cpgDuplicate != null">
+            <foreach collection="cpgDuplicate" open="AND CPG_DUPLICATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='cpgEndDate != null and cpgEndDate != ""'>AND CPG_END_DATE BETWEEN SUBSTR(#{cpgEndDate}, 1, 10) AND SUBSTR(#{cpgEndDate}, 13)</if>
+    </sql>
+    
+    <select id="selectCouponGroupDatatable" resultType="map">
+        SELECT
+            SHOP_NAME,
+            CPG_STATE,
+            CPG_NAME,
+            CPG_IDX,
+            CPG_DISCOUNT_TYPE,
+            CPG_TYPE,
+            (CASE
+                WHEN CPG_DUPLICATE = 0 THEN '중복사용불가'
+                WHEN CPG_DUPLICATE = 1 THEN '중복사용가능'
+            END) AS CPG_DUPLICATE,
+            CPG_END_DATE,
+            CPG_END_TIME,
+            CPG_CNT,
+            (CPG_CNT-CPG_USED_CNT) AS CPG_LEFT_CNT,
+            CPG_MIN,
+            CPG_MAX,
+            CPG.CREATED_BY AS CREATED_BY,
+            CPG.CREATED_DATE AS CREATED_DATE
+        FROM
+            COUPON_GROUP AS CPG
+                LEFT JOIN SHOP ON CPG_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeCouponGroupDatatable"></include>
+        </where>
+        ORDER BY
+            CPG_IDX DESC
+        <if test="length != -1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countCouponGroupDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(CPG_IDX))
+        FROM
+            COUPON_GROUP
+                LEFT JOIN SHOP ON CPG_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeCouponGroupDatatable"></include>
+        </where>
+    </select>
+
+    <insert id="insertCoupon">
         CALL
             INSERT_COUPON
                 (#{cpgIdx}, #{cpgCnt})
     </insert>
+
+    <select id="selectCouponDatatable" resultType="map">
+        SELECT
+            CP_IDX,
+            IF(CP_CU_IDX IS NOT NULL, '고객발급', '고객미발급') AS CP_ISRECIEVED,
+            CU_ID,
+            CU_PHONE
+        FROM
+            COUPON
+                LEFT JOIN CUSTOMER ON CP_CU_IDX = CU_IDX
+        WHERE
+            CP_CPG_IDX = #{cpgIdx}
+        ORDER BY
+            CP_IDX DESC
+        <if test="length != -1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countCouponDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(CP_IDX))
+        FROM
+            COUPON
+                LEFT JOIN CUSTOMER ON CP_CU_IDX = CU_IDX
+        WHERE
+            CP_CPG_IDX = #{cpgIdx}
+    </select>
 </mapper>
