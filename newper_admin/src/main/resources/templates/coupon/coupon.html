@@ -43,57 +43,65 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">분양몰</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="shopName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">쿠폰그룹상태</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="cpgState" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">쿠폰그룹명</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="cpgName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">쿠폰그룹코드</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="cpgIdx" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">할인타입</label>
+                                                    <select name="cpgDiscountType" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CpgDiscountType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">쿠폰타입</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="cpgType" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CpgType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
-                                                <div class="form-group">
+                                                <!--<div class="form-group">
                                                     <label class="d-block">발급유형</label>
                                                     <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                        &lt;!&ndash;<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>&ndash;&gt;
                                                     </select>
-                                                </div>
+                                                </div>-->
 
                                                 <div class="form-group">
                                                     <label class="d-block">중복사용</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="cpgDuplicate" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option value="0">중복사용불가</option>
+                                                        <option value="1">중복사용가능</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="form-group">
+                                                <!--<div class="form-group">
                                                     <label class="d-block">사용가능 카테고리</label>
                                                     <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                        &lt;!&ndash;<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>&ndash;&gt;
                                                     </select>
-                                                </div>
+                                                </div>-->
 
                                                 <div class="form-group">
                                                     <label class="d-block">사용만료일</label>
-                                                    <input type="text" name="cuLastDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="cpgEndDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -166,12 +174,12 @@
 <script th:src="@{/assets/js/common.js}"></script>
 <script th:inline="javascript">
     function newCouponPop() {
-        var focusPopup = window.open('/coupon/detail/', 'newCoupon', 'width=1050, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/coupon/detail', 'newCoupon', 'width=1050, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
-    function couponDetailPop(cuIdx) {
-        var focusPopup = window.open('/coupon/detail/' + cuIdx, 'customerDetail', 'width=1050, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function couponDetailPop(cpgIdx) {
+        var focusPopup = window.open('/coupon/detail/' + cpgIdx, 'customerDetail', 'width=1050, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -189,7 +197,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/customer/customer.dataTable',
+            url:'/coupon/couponGroup.dataTable',
             type:'post'
         },
         columns : [
@@ -199,25 +207,25 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'분양몰','data':'', 'defaultContent':''}
-            ,{'title':'쿠폰그룹상태','data':'','defaultContent':''}
-            ,{'title':'쿠폰그룹명','data':'', 'render': function (data, type, full, meta) {
-                    return '<a class="badge badge-primary">상세</a>';
+            ,{'title':'분양몰','data':'SHOP_NAME', 'defaultContent':''}
+            ,{'title':'쿠폰그룹상태','data':'CPG_STATE_STR','defaultContent':''}
+            ,{'title':'쿠폰그룹명','data':'CPG_NAME', 'render': function (data, type, full, meta) {
+                    return '<a href="javascript: couponDetailPop('+full.CPG_IDX+')" class="badge badge-primary">'+full.CPG_NAME+'</a>';
                 }}
-            ,{'title':'쿠폰그룹코드','data':'','defaultContent':''}
-            ,{'title':'할인타입','data':'','defaultContent':''}
-            ,{'title':'쿠폰타입','data':'','defaultContent':''}
-            ,{'title':'발급유형','data':'','defaultContent':''}
-            ,{'title':'중복사용','data':'','defaultContent':''}
+            ,{'title':'쿠폰그룹코드','data':'CPG_IDX','defaultContent':''}
+            ,{'title':'할인타입','data':'CPG_DISCOUNT_TYPE_STR','defaultContent':''}
+            ,{'title':'쿠폰타입','data':'CPG_TYPE_STR','defaultContent':''}
+            /*,{'title':'발급유형','data':'','defaultContent':''}*/
+            ,{'title':'중복사용','data':'CPG_DUPLICATE','defaultContent':''}
             ,{'title':'사용가능 카테고리','data':'','defaultContent':''}
-            ,{'title':'사용만료일','data':'','defaultContent':''}
-            ,{'title':'사용만료시간','data':'','defaultContent':''}
-            ,{'title':'쿠폰생성수량','data':'','defaultContent':''}
-            ,{'title':'쿠폰잔여수량','data':'','defaultContent':''}
-            ,{'title':'최소사용금액','data':'','defaultContent':''}
-            ,{'title':'적용최대금액','data':'','defaultContent':''}
-            ,{'title':'등록자','data':'','defaultContent':''}
-            ,{'title':'등록일','data':'','defaultContent':''}
+            ,{'title':'사용만료일','data':'CPG_END_DATE','defaultContent':''}
+            ,{'title':'사용만료시간','data':'CPG_END_TIME','defaultContent':''}
+            ,{'title':'쿠폰생성수량','data':'CPG_CNT','defaultContent':''}
+            ,{'title':'쿠폰잔여수량','data':'CPG_LEFT_CNT','defaultContent':''}
+            ,{'title':'최소사용금액','data':'CPG_MIN','defaultContent':''}
+            ,{'title':'적용최대금액','data':'CPG_MAX','defaultContent':''}
+            ,{'title':'등록자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
         ]
     });
 

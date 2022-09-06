@@ -57,22 +57,8 @@
                                                                     분양몰<a class="badge badge-primary" id="searchShopBtn">검색</a>
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="shopName" class="form-control" readonly>
-                                                        <input type="hidden" name="shopIdx">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">중복사용</span>
-                                                            </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
-                                                        </select>
+                                                        <input type="text" name="shopName" class="form-control" th:value="${couponGroup?.shop?.shopName}" readonly>
+                                                        <input type="hidden" name="shopIdx" th:value="${couponGroup?.shop?.shopIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -86,24 +72,8 @@
                                                                     쿠폰그룹상태
                                                                 </span>
                                                             </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    사용가능 카테고리
-                                                                </span>
-                                                            </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
+                                                        <select name="cpgState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(couponGroup?.CpgState) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -118,7 +88,7 @@
                                                                     쿠폰그룹명
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="cpgName" class="form-control" th:value="${couponGroup?.cpgName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -128,11 +98,12 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    사용만료일
-                                                                </span>
+                                                                <span class="input-group-text">중복사용</span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control daterange-basic">
+                                                        <select name="cpgDuplicate" class="form-control select">
+                                                            <option value="0" th:selected="${coupon?.cpgDuplicate eq 0}">중복사용불가</option>
+                                                            <option value="1" th:selected="${coupon?.cpgDuplicate eq 1}">중복사용가능</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,51 +117,7 @@
                                                                     쿠폰그룹코드
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    사용만료시간
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="" class="form-control w-datarange daterange-time">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    할인타입
-                                                                </span>
-                                                            </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    쿠폰생성수량
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="cpgIdx" class="form-control" th:value="${couponGroup?.cpgIdx}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,8 +131,8 @@
                                                                     쿠폰타입
                                                                 </span>
                                                             </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
+                                                        <select name="cpgType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.CpgType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(couponGroup?.cpgType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -217,40 +144,29 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    쿠폰잔여수량
+                                                                    할인타입
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    발급유형
-                                                                </span>
-                                                            </span>
-                                                        <select name="" class="form-control select">
-                                                            <!--<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>-->
+                                                        <select name="cpgDiscountType" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.CpgDiscountType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(couponGroup?.cpgDiscountType) eq opt.name()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6 category gu-hide">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    최소사용금액
+                                                                    사용가능 카테고리
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <select name="cateIdx" data-placeholder="중분류선택" class="form-control select-search">
+                                                            <option></option>
+                                                            <option th:each="opt: ${category}" th:text="${opt.CATE_NAME}" th:value="${opt.CATE_IDX}"></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,7 +180,7 @@
                                                                     할인액(할인율)
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="cpgMoney" class="form-control" th:value="${couponGroup?.cpgMoney}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,16 +191,102 @@
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                    최대적용금액
+                                                                    사용만료일
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="cpgEndDate" class="form-control daterange-single" th:value="${couponGroup?.cpgEndDate}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    사용만료시간
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="cpgEndTime" class="form-control w-datarange daterange-time" th:value="${couponGroup?.cpgEndTime}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    쿠폰생성수량
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="cpgCnt" class="form-control" th:value="${couponGroup?.cpgCnt}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    최소사용금액
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="cpgMin" class="form-control" th:value="${couponGroup?.cpgMin}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    쿠폰잔여수량
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" th:value="${couponGroup != null} ? (${couponGroup.cpgCnt}-${couponGroup.cpgUsedCnt})" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <!--<div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    발급유형
+                                                                </span>
+                                                            </span>
+                                                        <select name="" class="form-control select">
+                                                            &lt;!&ndash;<option th:each="opt: ${T(com.newper.constant.GiftgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(giftGroup?.giftgState) eq opt.name()}"></option>&ndash;&gt;
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>--><!--추후 필요하면 추가-->
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    최대할인금액
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="cpgMax" class="form-control" th:value="${couponGroup?.cpgMax}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 memo">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
@@ -303,7 +305,7 @@
                         </div>
 
                         <div class="card">
-                            <div th:if="${giftGroup != null}" class="card-body popup-contents">
+                            <div th:if="${couponGroup != null}" class="card-body popup-contents">
                                 <table class="table table-hover" id="couponTable"></table>
                             </div>
                         </div>
@@ -375,11 +377,13 @@
 
 <script th:inline="javascript">
     function saveAction(){
-        $.ajax({
-            url: '/gift/giftPop',
-            type: 'post',
-            data: $('#regiForm').serialize()
-        });
+        if (confirm("등록하시겠습니까?")) {
+            $.ajax({
+                url: '/coupon/save.ajax',
+                type: 'post',
+                data: $('#regiForm').serialize()
+            });
+        }
     }
 
     function selectShop(row) {
@@ -389,6 +393,16 @@
         $('#regiForm input[name="shopName"]').val(rowData.SHOP_NAME);
         $('#regiForm input[name="shopIdx"]').val(rowData.SHOP_IDX);
     }
+
+    function showCategory(target) {
+        if (target.val() == [[${#strings.toString(T(com.newper.constant.CpgType).CATEGORY)}]]) {
+            $(".category").removeClass("gu-hide");
+            $(".memo").addClass("col-md-6");
+        } else {
+            $(".category").addClass("gu-hide");
+            $(".memo").removeClass("col-md-6");
+        }
+    }
 </script>
 <script th:inline="javascript">
     if ($('#couponTable')) {
@@ -396,7 +410,7 @@
             dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
             serverSide: true,
             ajax:{
-                url:'/gift/gift.dataTable?giftgIdx=' + [[${giftGroup?.giftgIdx}]],
+                url:'/coupon/coupon.dataTable?cpgIdx=' + [[${couponGroup?.cpgIdx}]],
                 type:'post'
             },
             select: {
@@ -407,12 +421,11 @@
                 {'title':'No','data':'No','render':function(data,type,full,meta){
                         return meta.settings._iDisplayStart+meta.row+1;
                     }}
-                ,{'title':'쿠폰코드','data':'','defaultContent':''}
-                ,{'title':'발급여부','data':'','defaultContent':''}
-                ,{'title':'수령여부','data':'','defaultContent':''}
+                ,{'title':'쿠폰코드','data':'CP_IDX','defaultContent':''}
+                ,{'title':'발급여부','data':'CP_ISRECIEVED','defaultContent':''}
                 ,{'title':'사용여부','data':'','defaultContent':''}
-                ,{'title':'ID','data':'','defaultContent':''}
-                ,{'title':'휴대폰번호','data':'','defaultContent':''}
+                ,{'title':'ID','data':'CU_ID','defaultContent':''}
+                ,{'title':'휴대폰번호','data':'CU_PHONE','defaultContent':''}
                 ,{'title':'사용일','data':'','defaultContent':''}
                 ,{'title':'수령일','data':'','defaultContent':''}
                 ,{'title':'취소일','data':'','defaultContent':''}
@@ -420,10 +433,14 @@
         });
     }
 
+    showCategory($('select[name="cpgType"]'));
     $("#saveBtn").on("click", saveAction);
     $("#searchShopBtn").on("click", showShopModal);
     $('#shopModalForm').on('keyup',function(event){
         if(event.keyCode==13){searchShopDataTable();return false;}
+    });
+    $('select[name="cpgType"]').on("change", function () {
+        showCategory($(this));
     });
 </script>
 </body>

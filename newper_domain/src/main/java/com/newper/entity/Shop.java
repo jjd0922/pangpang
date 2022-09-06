@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,10 +57,7 @@ public class Shop extends BaseEntity{
     @OrderBy(value = "hmOrder asc")
     private List<HeaderMenu> headerMenulist = new ArrayList<>();
 
-
-
-
-
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
+    private List<CouponGroup> couponGroups;
 
 }

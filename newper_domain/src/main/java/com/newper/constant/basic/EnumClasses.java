@@ -30,6 +30,9 @@ public class EnumClasses {
         enumClasses.put("ci_type","CiType");
         enumClasses.put("com_state","ComState");
         enumClasses.put("com_type","ComType");
+        enumClasses.put("cpg_discount_type","CpgDiscountType");
+        enumClasses.put("cpg_state","CpgState");
+        enumClasses.put("cpg_type","CpgType");
         enumClasses.put("cr_type","CrType");
         enumClasses.put("cs_delivery_cal","CsDeliveryCal");
         enumClasses.put("cs_type","CsType");

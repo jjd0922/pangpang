@@ -44,3 +44,25 @@ BEGIN
 
 	SET returnStr = randomStr;
 END $$
+
+-- 쿠폰 등록 procedure (insert_coupon)
+DROP PROCEDURE IF EXISTS insert_coupon;
+DELIMITER $$
+CREATE PROCEDURE `insert_coupon` (
+            IN cpgIdx BIGINT,
+            IN cpgCnt INTEGER
+         )
+BEGIN
+    DECLARE i INTEGER DEFAULT 0;
+
+    WHILE i < cpgCnt DO
+
+        INSERT IGNORE INTO
+            coupon (CP_CPG_IDX)
+        VALUES
+            (cpgIdx);
+
+        SET i = i+1;
+    END WHILE;
+
+END $$
