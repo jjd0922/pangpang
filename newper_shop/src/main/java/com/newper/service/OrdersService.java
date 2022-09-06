@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopSession;
@@ -19,6 +20,8 @@ import com.newper.repository.PaymentHistoryRepo;
 import com.newper.repository.PaymentRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +41,7 @@ public class OrdersService {
 
     /** insert order*/
     @Transactional
-    public IamportReq insertOrder(ParamMap paramMap){
+    public JSONObject insertOrder(ParamMap paramMap){
         LocalDateTime now = LocalDateTime.now();
 
         Orders orders = Orders.builder()
@@ -64,19 +67,26 @@ public class OrdersService {
 
 
         PaymentHistory paymentHistory = payment.createPayReq();
+        paymentHistoryRepo.save(paymentHistory);
 
-        IamportReq iamportReq = new IamportReq(IamPortPayMethod.CARD, paymentHistory.getMerchantId(), payment.getPayPrice(), orders.getOPhone());
+        //merchant_uid ph_idx사용
+        IamportReq iamportReq = new IamportReq(IamPortPayMethod.CARD, "ph"+paymentHistory.getPhIdx(), payment.getPayPrice(), orders.getOPhone());
         iamportReq.setPg(IamPortPg.BLUEWALNUT.getPg());
         iamportReq.setName("test주문");
+        iamportReq.setBuyer_name("구매자");
 
         try{
-            String phReq = new ObjectMapper().writeValueAsString(iamportReq);
-            System.out.println(phReq);
+            ObjectMapper om = new ObjectMapper();
+            om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+            String phReq = om.writeValueAsString(iamportReq);
             paymentHistory.setPhReq(phReq);
+
+            return (JSONObject) new JSONParser().parse(phReq);
+        }catch (ParseException jpe){
+            throw new MsgException("parsing error");
         }catch (JsonProcessingException jpe){
             throw new MsgException("parsing error");
         }
 
-        return iamportReq;
     }
 }

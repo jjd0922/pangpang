@@ -2,6 +2,7 @@ package com.newper.entity;
 
 import com.newper.constant.PhType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -35,12 +37,6 @@ public class PaymentHistory {
     private LocalDate phReqDate;
     private LocalTime phReqTime;
     private String phCode;
-
-
-    /** 결제 고유 idx*/
-    public String getMerchantId(){
-        return getPhIdx()+"";
-    }
 
     /** phReq세팅시 날짜시간도 세팅*/
     public void setPhReq(String phReq) {

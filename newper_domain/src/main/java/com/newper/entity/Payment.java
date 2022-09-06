@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,8 @@ public class Payment {
     private String payMethod;
 
     private int payMileage;
-    private Map<String,Object> payJson;
+    @Builder.Default
+    private Map<String,Object> payJson = new HashMap<>();
 
     /** OneToOne */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)

@@ -17,13 +17,30 @@
         if(payRequestAvailable){
             payRequestAvailable = false;
             $.ajax({
-              url:'/orders/iamport.ajax'
+              url:'/orders/iamport/pay.ajax'
               ,type:'post'
-              ,data: 'test=test1234'
             }).done(function(res){
+                var IMP = window.IMP;
                 IMP.init(res.data.id);
                 IMP.request_pay(res.data.req, function (rsp) {
-                    debugger;
+
+                    $.ajax({
+                        url:'/orders/iamport/result.ajax'
+                        ,type:'post'
+                        ,contentType: 'application/json'
+                        ,data: JSON.stringify(rsp)
+                        ,async:false
+                    });
+
+                    if(rsp.success){
+                        //결제 성공 페이지로 이동
+
+                    }else{
+                        alert(rsp.error_msg);
+                    }
+
+
+
                 });
 
             }).always(function(){
