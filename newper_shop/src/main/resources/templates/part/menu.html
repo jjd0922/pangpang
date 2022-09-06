@@ -90,18 +90,41 @@
 
 <!--메뉴 : 박스형 탭 메뉴 : 하단 라인-->
 <th:block th:fragment="boxTab">
-    <div class="container">
-        <div class="page-title">
-            <h2 class="section-title">박스형 탭 자리</h2>
-        </div>
+    <ul class="container">
+        <ul class="event-tab semi-bold">
+            <li class="on">진행 중인 이벤트</li>
+            <li>종료 된 이벤트</li>
+        </ul>
     </div>
 </th:block>
 
 <!--메뉴 : 버튼형 탭 메뉴 : 사각 외각선-->
 <th:block th:fragment="buttonTab">
     <div class="container">
-        <div class="page-title">
-            <h2 class="section-title">버튼형 탭 자리</h2>
-        </div>
+        <ul class="event-content">
+            <!-- 진행중인 이벤트 -->
+            <li class="on">
+                <ul class="button-tab font-lg">
+                    <li class="on">전체</li>
+                    <li>IT</li>
+                    <li>가전</li>
+                    <li>생활</li>
+                </ul>
+                <ul class="button-tab-content">
+                    <!-- 전체 -->
+                    <li class="on" th:insert="part/banner :: banner_2">
+                        <!--배너 : 이미지 배너 2-->
+                    </li>
+                    <!-- IT -->
+                    <li>IT만</li>
+                    <!-- 가전 -->
+                    <li>가전만</li>
+                    <!-- 생활 -->
+                    <li>생활만</li>
+                </ul>
+            </li>
+            <!-- 종료 된 이벤트 -->
+            <li></li>
+        </ul>
     </div>
 </th:block>
