@@ -61,6 +61,6 @@ public class CalculatepGroup {
 
     private LocalDate cgCancelDate;
 
-    private LocalDate cgLog;
+    private LocalDate modifiedDate;
 
 }

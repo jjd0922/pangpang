@@ -42,11 +42,11 @@ public class CalculateSetting {
 
     private String csRealPrice;
 
-    private String csCal;
+   /* private String csCal;*/
 
     private String csMemo;
 
-    private LocalDate csLog;
+    private LocalDate modifiedDate;
 
     private LocalDate createdDate;
 }

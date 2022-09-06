@@ -61,6 +61,11 @@
                                         </a>
                                     </div>
                                     <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="deleteBtn">
+                                            <i class="icon-popout mr-1"></i>삭제
+                                        </a>
+                                    </div>
+                                    <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" id="calBtn">
                                             <i class="icon-popout mr-1"></i>정산처리
                                         </a>
@@ -80,7 +85,7 @@
         </div>
     </div>
 </div>
-</div>
+
 
 </body>
 
@@ -113,7 +118,6 @@
 
 
 
-<script>
 
 
 </script>
@@ -124,9 +128,34 @@
         table.page('first').ajax.url('/purchaseCal/vendor.dataTable?' + $('#vendorForm').serialize()).load(null, false);
     }
 
-    function vendorPop() {
-        var focusPopup = window.open('vendorPop/', 'vendorPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+    function vendorPop(csIdx) {
+        var focusPopup = window.open('vendorPop/' + csIdx, 'vendorPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
+    }
+
+
+    function deleteVendor() {
+        var param = dataTableGetSelectedDataArray('vendorTable', 'CS_IDX');
+        if (param.length == 0) {
+            alert('선택된 팝업창이 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택된 템플릿을 일괄삭제하시겠습니까?")){
+                $.ajax({
+                    url: '/purchaseCal/deleteVendor.ajax',
+                    type: 'post',
+                    data: {
+                        csIdxs : param
+                    },
+                    success: function (res) {
+                        $('#vendorTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
     }
 
 </script>
@@ -152,22 +181,32 @@
         }],
 
         "columns": [
-            {'title': '등록일', 'data': 'createdDate', 'defaultContent':''}
-            , {
-                'title': '거래처판매처', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="javascript:vendorPop(' + full.COM_IDX + ')" class="badge badge-primary" data-placeholder="상세">' + full.COM_NAME + '</a>';
+            {
+                'class': 'select-checkbox',
+                'title': '선택',
+                'data': 'SP_IDX',
+                'defaultContent': '',
+                'render': function (data, type, full, meta) {
+                    return '';
                 }
             }
-            , {'title': '타입', 'data': 'cs_type_str', 'defaultContent':''}
-            , {'title': '배송비별도정산', 'data': 'cs_delivery_cal_str','defaultContent':''}
-            , {'title': '주문번호 기준열', 'data': 'cs_order', 'defaultContent':''}
-            , {'title': '상품번호 기준열', 'data': 'cs_product', 'defaultContent':''}
-            , {'title': '판매금액 기준열', 'data': 'cs_price', 'defaultContent':''}
-            , {'title': '배송비 기준열', 'data': 'cs_delivery_cost', 'defaultContent':''}
-            , {'title': '수수료 기준열', 'data': 'cs_fee', 'defaultContent':''}
-            , {'title': '정산금액 기준열', 'data': 'cs_real_price', 'defaultContent':''}
-            , {'title': '전시몰 정산계산', 'data': 'cs_cal', 'defaultContent':''}
-            , {'title': '메모', 'data': 'cs_memo', 'defaultContent':''}
+            ,{'title': '등록일', 'data': 'CREATEDDATE', 'defaultContent':''}
+            , {
+                'title': '거래처판매처', 'data': null, 'render': function (data, type, full, meta) {
+                    return '<a href="javascript:vendorPop(' + data['CS_IDX'] + ')" class="badge badge-primary" >' +   data['COM_NAME']
+                        + '</a>';
+                }
+            }
+            , {'title': '타입', 'data': 'CS_TYPE_STR', 'defaultContent':''}
+            , {'title': '배송비별도정산', 'data': 'CS_DELIVERY_CAL_STR','defaultContent':''}
+            , {'title': '주문번호 기준열', 'data': 'CS_ORDER', 'defaultContent':''}
+            , {'title': '상품번호 기준열', 'data': 'CS_PRODUCT', 'defaultContent':''}
+            , {'title': '판매금액 기준열', 'data': 'CS_PRICE', 'defaultContent':''}
+            , {'title': '배송비 기준열', 'data': 'CS_DELIVERY_COST', 'defaultContent':''}
+            , {'title': '수수료 기준열', 'data': 'CS_FEE', 'defaultContent':''}
+            , {'title': '정산금액 기준열', 'data': 'CS_REAL_PRICE', 'defaultContent':''}
+          /*  , {'title': '전시몰 정산계산', 'data': 'CS_CAL', 'defaultContent':''}*/
+            , {'title': '메모', 'data': 'CS_MEMO', 'defaultContent':''}
         ]
     });
 
@@ -184,6 +223,7 @@
         focusPopup.focus();
     });
 
+    $('#deleteBtn').on('click', deleteVendor);
 
 </script>
 </html>

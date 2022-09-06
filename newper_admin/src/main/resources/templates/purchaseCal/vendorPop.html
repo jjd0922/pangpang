@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>벤더사 정산 설정 등록</title>
+    <title th:text="${calculateSetting != null} ? '벤더사 정산 상세/수정'">벤더사 정산 설정 등록</title>
 
     <th:block th:replace="common/css.html"></th:block>
 
@@ -46,7 +46,6 @@
                                             </span>
                                             <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${calculateSetting != null} ? ${calculateSetting.company.comName}">
                                             <input type="hidden" name="COM_IDX" th:value="${calculateSetting != null} ? ${calculateSetting.company.comIdx}">
-                                            <input type="hidden" name="csIdx" >
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +67,7 @@
                                                    판매금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csPrice" class="form-control">
+                                            <input type="text" name="csPrice" class="form-control"  th:value="${calculateSetting?.csPrice}">
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +89,7 @@
                                                    배송비 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csDeliveryCost" class="form-control">
+                                            <input type="text" name="csDeliveryCost" class="form-control" th:value="${calculateSetting?.csDeliveryCost}">
                                         </div>
                                     </div>
                                 </div>
@@ -104,13 +103,13 @@
                                                    주문번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csOrder" class="form-control">
+                                            <input type="text" name="csOrder" class="form-control" th:value="${calculateSetting?.csOrder}" >
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    수수료 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csFee" class="form-control">
+                                            <input type="text" name="csFee" class="form-control" th:value="${calculateSetting?.csFee}">
                                         </div>
                                     </div>
                                 </div>
@@ -124,13 +123,13 @@
                                                    상품번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csProduct" class="form-control">
+                                            <input type="text" name="csProduct" class="form-control" th:value="${calculateSetting?.csProduct}">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    정산금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csRealprice" class="form-control">
+                                            <input type="text" name="csRealPrice" class="form-control" th:value="${calculateSetting?.csRealPrice}">
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +143,8 @@
                                                    메모
                                                </span>
                                             </span>
-                                            <input type="text" name="csMemo" class="form-control">
+                                            <input type="text" name="csMemo" class="form-control" th:value="${calculateSetting?.csMemo}">
+                                            <input type="hidden" name="CS_IDX" th:value="${calculateSetting?.csIdx}">
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </form>
-        </div>1
+        </div>
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
             <button onclick="vendorCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="vendorCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
@@ -210,18 +210,18 @@
 
 
     function vendorCreate(){
-        $.ajax({
+       $.ajax({
             url:[[@{/purchaseCal/vendorCreate.ajax}]],
-        data: $('#vendorForm').serialize(),
+            data: $('#vendorForm').serialize(),
             type:'POST',
             success:function(data){
             console.log(data);
             window.close();
             opener.location.reload();
-        }
-    ,error: function(){
-        }
-    });
+            }
+        ,error: function(){
+            }
+        });
     }
 
 </script>
