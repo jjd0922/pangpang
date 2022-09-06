@@ -1,7 +1,11 @@
 package com.newper.controller.view;
 
+import com.newper.entity.ConsultationResult;
 import com.newper.entity.Customer;
+import com.newper.entity.FooterMenu;
+import com.newper.entity.SmsHistory;
 import com.newper.repository.CustomerRepo;
+import com.newper.repository.SmsHistoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,8 @@ public class CustomerController {
 
     private final CustomerRepo customerRepo;
 
+    private final SmsHistoryRepo smsHistoryRepo;
+
     /**회원관리 페이지*/
     @GetMapping(value = "")
     public ModelAndView customer() {
@@ -28,6 +34,26 @@ public class CustomerController {
     public ModelAndView sendingHistory(){
         ModelAndView mav = new ModelAndView("customer/sendingHistory");
 
+        return mav;
+    }
+
+    /**발송내역 상세조회팝업*/
+    @GetMapping(value = "sendingHistoryPop")
+    public ModelAndView sendingHistoryPop(){
+        ModelAndView mav = new ModelAndView("customer/sendingHistoryPop");
+
+        return mav;
+    }
+    /**
+     * 발송내역 상세조회페이지
+     */
+    @GetMapping("sendingHistoryPop/{shIdx}")
+    public ModelAndView sendingDetailPop(@PathVariable Long shIdx) {
+        ModelAndView mav = new ModelAndView("customer/sendingHistoryPop");
+
+       SmsHistory smsHistory = smsHistoryRepo.findSmsHistoryByShIdx(shIdx);
+
+        mav.addObject("smsHistory", smsHistory);
         return mav;
     }
     

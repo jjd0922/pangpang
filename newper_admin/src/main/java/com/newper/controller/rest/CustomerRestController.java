@@ -95,8 +95,9 @@ public class CustomerRestController {
     @PostMapping("sendingHistory.dataTable")
     public ReturnDatatable sendingHistory(ParamMap paramMap, HttpServletResponse response) {
         ReturnDatatable rd = new ReturnDatatable("발송내역");
-        System.out.println(paramMap.getMap());
 
+        rd.setData(customerMapper.selectSendingHistoryDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(customerMapper.countSendingHistoryDatatable(paramMap.getMap()));
         return rd;
     }
 

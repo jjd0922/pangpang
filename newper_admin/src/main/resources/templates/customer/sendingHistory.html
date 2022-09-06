@@ -38,22 +38,22 @@
                                                 <div class="form-group">
                                                     <label class="d-block">발신타입</label>
                                                     <select name="" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                       <!-- <option th:each="opt: ${T(com.newper.constant.).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                        <option th:each="opt: ${T(com.newper.constant.ShType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">고객명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="SH_NAME">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">수신전화번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="SH_TO">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">발신전화번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="SH_FROM">
                                                 </div>
-                                                <div class="form-group">
+                             <!--                   <div class="form-group">
                                                     <label class="d-block">주문번호</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
@@ -64,7 +64,7 @@
                                                 <div class="form-group">
                                                     <label class="d-block">발신번호</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </form>
@@ -120,6 +120,10 @@
         table.page('first').ajax.url('/customer/sendingHistory.dataTable?' + $('#sendingForm').serialize()).load(null, false);
     }
 
+    function sendingDetailPop(shIdx) {
+        var focusPopup = window.open('sendingHistoryPop/' + shIdx, 'sendingHistoryPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 
 </script>
 <script>
@@ -144,16 +148,16 @@
 
 
         "columns" : [
-            {'title':'발신타입','data':''}
-            ,{'title':'고객명','data':''}
-            ,{'title':'수신전화번호','data':''}
-            ,{'title':'발신전화번호','data':''}
-            ,{'title':'내용','data':''}
-            ,{'title':'주문번호','data':'',"render" : function(data, type, full, meta){
-                    return '<button type="button"  class="badge badge-primary" onclick="smsDetailPop('+full.TF_IDX+')">'+data+'</button>';}}
-            ,{'title':'발송일','data':''}
-            ,{'title':'발송자','data':''}
-            ,{'title':'발송결과','data':''}
+            {'title':'발신타입','data':'SH_TYPE_STR','defaultContent':''}
+           /* ,{'title':'고객명','data':''}*/
+            ,{'title':'수신전화번호','data':'SH_TO','defaultContent':''}
+            ,{'title':'발신전화번호','data':'SH_FROM','defaultContent':''}
+            ,{'title':'내용','data':'SH_CONTENT','defaultContent':''}
+            ,{'title':'주문번호','data':null,"render" : function(data, type, full, meta){
+                    return '<a href="javascript: sendingDetailPop(' + data['SH_IDX'] + ')" class="badge badge-primary">' + data['SH_TO'] + '</a>';}}
+            ,{'title':'발송일','data':'SH_DATE','defaultContent':''}
+            ,{'title':'발송자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'발송결과','data':'SH_CODE_STR','defaultContent':''}
 
         ]
     });
