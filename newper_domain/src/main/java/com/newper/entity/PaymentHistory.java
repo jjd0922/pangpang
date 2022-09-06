@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.PhResult;
 import com.newper.constant.PhType;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -36,7 +37,10 @@ public class PaymentHistory {
     private String phRes;
     private LocalDate phReqDate;
     private LocalTime phReqTime;
-    private String phCode;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PhResult phResult = PhResult.WAIT;
 
     /** phReq세팅시 날짜시간도 세팅*/
     public void setPhReq(String phReq) {

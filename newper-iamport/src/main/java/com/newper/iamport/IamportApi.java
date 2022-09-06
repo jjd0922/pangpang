@@ -59,14 +59,14 @@ public class IamportApi {
             }catch (Exception e){}
         }
     }
-    /** 결제 확인*/
-    public String checkPay(String imp_key, String imp_secret, String imp_uid) throws Exception{
+    /** merchant id 로 결제 확인*/
+    public String checkPay(String imp_key, String imp_secret, String merchant_id) throws Exception{
         String token = getToken(imp_key, imp_secret);
         if (token == null) {
             return null;
         }
 
-        String url = URL +"/payments/"+imp_uid;
+        String url = URL +"/payments/find/"+merchant_id+"/";
 
         Request req = new Request.Builder()
                 .url(url)

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopSession;
 import com.newper.constant.OLocation;
-import com.newper.constant.PayState;
 import com.newper.constant.etc.IamPortPayMethod;
 import com.newper.constant.etc.IamPortPg;
 import com.newper.dto.IamportReq;

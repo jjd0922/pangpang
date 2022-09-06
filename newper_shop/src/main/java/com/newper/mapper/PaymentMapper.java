@@ -6,5 +6,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface PaymentMapper {
 
-    void updatePaymentHistoryResult(@Param("ph_idx") String ph_idx, @Param("ph_res") String ph_res);
+    /** uid만 업데이트 후 결제 결과는 따로 조회*/
+    void updatePaymentHistoryUid(@Param("ph_idx") String ph_idx, @Param("ph_uid") String ph_uid);
+
+
 }
