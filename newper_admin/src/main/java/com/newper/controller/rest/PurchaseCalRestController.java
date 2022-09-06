@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RequestMapping(value = "/purchaseCal/")
 @RestController
@@ -43,6 +44,18 @@ public class PurchaseCalRestController {
 
         rm.setMessage("등록이 완료되었습니다.");
 
+        return rm;
+    }
+
+    /**벤더정산팝업 삭제*/
+    @PostMapping(value = "deleteVendor.ajax")
+    public ReturnMap deleteVendor (ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        List<String> csIdxs = paramMap.getList("csIdxs[]");
+        for(String csIdx : csIdxs){
+            purchaseCalService.deleteVendor(Integer.parseInt(csIdx));
+        }
+        rm.setMessage("삭제 완료");
         return rm;
     }
 

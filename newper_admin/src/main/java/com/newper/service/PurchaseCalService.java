@@ -36,74 +36,47 @@ public class PurchaseCalService {
             throw new MsgException("거래처(판매처)를 선택해 주세요");
         }
 
-        try {
-            String createdDate = paramMap.getString("createdDate");
-            calculateSetting.setCreatedDate(calculateSetting.getCreatedDate());
-        } catch (NumberFormatException nfe) {
-            throw new MsgException("날짜를 입력해 주세요");
-        }
-
-        try {
-            String csType = paramMap.getString("cs_type");
-            calculateSetting.setCsType(csType);
-        } catch (NumberFormatException nfe) {
+        String csType = paramMap.getString("csType");
+        if (csType == null || csType.equals("")) {
             throw new MsgException("타입을 선택해주세요");
         }
-        try {
-            String csDeliveryCal = paramMap.getString("cs_delivery_cal");
-            calculateSetting.setCsDeliveryCal(csDeliveryCal);
-        } catch (NumberFormatException nfe) {
 
-            throw new MsgException("배송비별도정산 타입을 선택해주세요");
-        }
-        try {
-            String csOrder = paramMap.getString("cs_order");
-            calculateSetting.setCsOrder(csOrder);
-        } catch (NumberFormatException nfe) {
+//        숫자 = try catech
+//        문자열 = if null || ""
 
-            throw new MsgException("주문번호기준열을 입력해주세요.");
-        }
-        try {
-            String csProduct = paramMap.getString("cs_product");
-            calculateSetting.setCsProduct(csProduct);
-        } catch (NumberFormatException nfe) {
-
-            throw new MsgException("상품번호기준열을 입력해주세요.");
-        }
-        try {
-            String csPrice = paramMap.getString("cs_price");
-            calculateSetting.setCsPrice(csPrice);
-        } catch (NumberFormatException nfe) {
-
-            throw new MsgException("판매번호기준열을 입력해주세요.");
-        }
-        try {
-            String csDeliveryCost = paramMap.getString("cs_delivery_cost");
-            calculateSetting.setCsDeliveryCost(csDeliveryCost);
-        } catch (NumberFormatException nfe) {
-
-            throw new MsgException("배송비기준열을 입력해주세요.");
-        }
-        try {
-            String csFee = paramMap.getString("cs_fee");
-            calculateSetting.setCsFee(csFee);
-        } catch (NumberFormatException nfe) {
-
-            throw new MsgException("수수료기준열을 입력해주세요.");
-        }
-        try {
-            String csRealPrice = paramMap.getString("cs_real_price");
-            calculateSetting.setCsRealPrice(csRealPrice);
-        } catch (NumberFormatException nfe) {
-
-            throw new MsgException("정산금액기준열을 입력해주세요.");
-        }
 
         calculateSettingRepo.save(calculateSetting);
         return calculateSetting.getCsIdx();
     }
+    /**벤더정산 팝업삭제*/
+    @Transactional
+    public void deleteVendor(Integer cs_idx){
+        calculateSettingRepo.deleteById(cs_idx);
+    }
 
+    /**
+     * 벤더정산 업데이트
+     */
+    @Transactional
+    public Integer updateVendor(ParamMap paramMap,Integer csIdx){
+        CalculateSetting  cal = calculateSettingRepo.findById(csIdx).get();
+        CalculateSetting calculateSetting = paramMap.mapParam(CalculateSetting.class);
+        Company company = paramMap.mapParam(Company.class);
 
+        System.out.println("cal.getCsType() = " + cal.getCsType());
+        System.out.println("cal.getCsDeliveryCal() = " + cal.getCsDeliveryCal());
 
+      /*  cal.setCsCal(calculateSetting.getCsCal());*/
+        cal.setCompany(company);
+        cal.setCsPrice(calculateSetting.getCsPrice());
+        cal.setCsDeliveryCost(calculateSetting.getCsDeliveryCost());
+        cal.setCsOrder(calculateSetting.getCsOrder());
+        cal.setCsFee(calculateSetting.getCsFee());
+        cal.setCsRealPrice(calculateSetting.getCsRealPrice());
+        cal.setCsProduct(calculateSetting.getCsProduct());
+        cal.setCsMemo(calculateSetting.getCsMemo());
 
+        calculateSettingRepo.save(cal);
+        return cal.getCsIdx();
+    }
 }

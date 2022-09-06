@@ -48,6 +48,7 @@ public class TemplateFormService {
      */
     @Transactional
     public void deleteTemplate(Integer tf_idx) {
+
         templateFormRepo.deleteById(tf_idx);
     }
 
