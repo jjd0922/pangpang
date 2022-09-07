@@ -47,6 +47,19 @@
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
+                                                  도메인
+                                                </span>
+                                            </span>
+                                            <input type="text" name="domUrl" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
                                                     운영 상태
                                                 </span>
                                             </span>
@@ -56,31 +69,16 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                  모델명
+                                                    쇼핑몰 타입
                                                 </span>
                                             </span>
-                                            <input type="text" name="P_MODEL" class="form-control" th:value="${product?.pModel}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    브랜드
-                                                </span>
-                                            </span>
-                                            <select class="form-control select " data-placeholder="선택" name="P_CATE_IDX2">
-                                                <option></option>
-                                                <option th:each="brand:${brand}" th:text="${brand.CATE_NAME}" th:value="${brand.CATE_IDX}" th:selected="${product?.brand?.cateIdx == brand.CATE_IDX}"></option>
+                                            <select name="shopType" class="form-control-sm select" data-container-css-class="select-sm">
+                                                <option th:each="opt:${T(com.newper.constant.ShopType).values()}" th:value="${opt}" th:text="${opt.option}" th:selected="${shop?.shopType eq opt}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -91,277 +89,354 @@
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                  재고관리
+                                                    PG 결제 사이트코드
                                                 </span>
                                             </span>
-                                            <select class="form-control select" data-placeholder="선택" name="P_USE_STOCK">
+                                            <select name="" class="form-control-sm select" data-container-css-class="select-sm">
                                                 <option></option>
-                                                <option value="true" th:selected="${product?.pUseStock eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pUseStock eq false}">N</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  카테고리 대분류
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX1" onchange="category1()">
                                                 <option></option>
-                                                <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
-                                            </select>
-                                            <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    카테고리 중분류
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX2" onchange="category2()">
-                                                <option></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  카테고리 소분류
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX3" onchange="category3()">
                                                 <option></option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  정산구분(품목구분1)
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" name="P_TYPE1" data-placeholder="선택">
-                                                <option></option>
-                                                <option th:each="ptype:${T(com.newper.constant.PType1).values()}" th:text="${ptype.option}" th:value="${ptype}" th:selected="${product?.pType1 eq ptype}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    상품분류(품목구분2)
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" name="P_TYPE2" data-placeholder="선택">
-                                                <option></option>
-                                                <option th:each="ptype2:${T(com.newper.constant.PType2).values()}" th:text="${ptype2.option}" th:value="${ptype2}" th:selected="${product?.pType2 eq ptype2}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  물류타입(품목자산구분)
-                                                </span>
-                                            </span>
-                                            <select class="form-control select" name="P_TYPE3" data-placeholder="선택">
-                                                <option></option>
-                                                <option th:each="ptype3:${T(com.newper.constant.PType3).values()}" th:text="${ptype3.option}" th:value="${ptype3}" th:selected="${product?.pType3 eq ptype3}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset class="mb-0">
-                            <legend class="">2.거래처정보<span class="small ml-2"></span></legend>
+                            <legend class="">2.분양몰 기본정보<span class="small ml-2"></span></legend>
                             <div class="row">
-                                <!-- 입력필드 -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  입점사 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal('STORE')">검색</a>
-                                                </span>
-                                            </span>
-                                            <input type="text" name="P_COM_NAME" class="form-control" th:value="${com?.storeName}" readonly>
-                                            <input type="hidden" name="P_COM_IDX" th:value="${product?.storeName?.comIdx}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  제조사 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal()">검색</a>
-                                                </span>
-                                            </span>
-                                            <input type="text" name="P_COM_NAME2" class="form-control" th:value="${com?.manufactureName}" readonly>
-                                            <input type="hidden" name="P_COM_IDX2" th:value="${product?.manufactureName?.comIdx}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    AS업체 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal('REPAIRING')">검색</a>
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control "  name="P_COM_NAME3" th:value="${com?.afterServiceName}" readonly>
-                                            <input type="hidden" name="P_COM_IDX3" th:value="${product?.afterServiceName?.comIdx}">
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                 외주 제조사 AS번호
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      배경화면 파일
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input type="text" name="asNum" class="form-control" readonly>
+                                            <input type="file" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      상호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      제휴정보
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      대표자
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      연락처
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      FAX
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      이메일
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      주소
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      사업자등록번호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      통신판매업번호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      COPYRIGHT
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      개인정보관리자
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      개인정보관리자 이메일
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      고객센터 연락처
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      고객센터 운영시간
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      개인정보처리방침일
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      스크립트
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset class="mb-0">
                             <legend class="">3.관리정보<span class="small ml-2"></span></legend>
                             <div class="row">
-                                <!-- 입력필드 -->
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일1
-                                                </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile1)}" type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile1)}">
-                                                <img th:src="${product?.pThumbFile1}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE1" th:value="${product?.pThumbFile1}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일2
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      로고
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile2)}" type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile2)}">
-                                                <img th:src="${product?.pThumbFile2}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE2" th:value="${product?.pThumbFile2}">
-                                            </div>
+                                            <input type="file" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일3
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      파비콘
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile3)}" type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile3)}">
-                                                <img th:src="${product?.pThumbFile3}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE3" th:value="${product?.pThumbFile3}">
-                                            </div>
+                                            <input type="file" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일4
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 TITLE
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile4)}" type="file" name="P_THUMB_FILE4" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile4)}">
-                                                <img th:src="${product?.pThumbFile4}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE4" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE4" th:value="${product?.pThumbFile4}">
-                                            </div>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일5
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 DESCRIPTION
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile5)}" type="file" name="P_THUMB_FILE5" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile5)}">
-                                                <img th:src="${product?.pThumbFile5}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE5" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE5" th:value="${product?.pThumbFile5}">
-                                            </div>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
-                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                  썸네일6
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 KEYWORDS
+                                                    </span>
                                                 </span>
-                                            </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile6)}" type="file" name="P_THUMB_FILE6" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile6)}">
-                                                <img th:src="${product?.pThumbFile6}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE6" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE6" th:value="${product?.pThumbFile6}">
-                                            </div>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 OG_TYPE
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 OG_TITLE
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 OG_DESCRIPTION
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 OG_IMG
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      메타태그 OG_URL
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control form-control-plaintext">
                                         </div>
                                     </div>
                                 </div>
@@ -369,82 +444,34 @@
                         </fieldset>
                         <br>
                         <fieldset class="mb-0">
-                            <span class="input-group-text w-100 mb--1">상세이미지</span>
-                            <textarea id="summerNote1" name="P_CONTENT1" th:text="${content1}"></textarea>
-
-
-
-                            <span class="input-group-text w-100 mb--1">공통이미지</span>
-                            <textarea id="summerNote2" name="P_CONTENT2" th:text="${content2}"></textarea>
-
-
-
-                            <span class="input-group-text w-100 mb--1">공통이미지_영문자판 표기 여부</span>
-                            <textarea id="summerNote3" name="P_CONTENT3" th:text="${content3}"></textarea>
-
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">상품메모</span>
+                            <legend class="">4.분양몰 메인 키워드 정보<span class="small ml-2"></span></legend>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                              키워드
                                             </span>
-                                            <input type="text" name="P_MEMO" class="form-control" th:value="${product?.pMemo}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">태그</span>
-                                            </span>
-                                            <input type="text" name="P_TAG" class="form-control" th:value="${product?.pTag}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">블로그링크</span>
-                                            </span>
-                                            <input type="text" name="P_BLOG_URL" class="form-control" th:value="${product?.pBlogUrl}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">가격비교 링크</span>
-                                            </span>
-                                            <input type="text" name="P_PRICE_URL" class="form-control" th:value="${product?.pPriceUrl}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">유투브 링크</span>
-                                            </span>
-                                            <input type="text" name="P_YOUTUBE_URL" class="form-control" th:value="${product?.pYoutubeUrl}">
-                                        </div>
+                                        </span>
+                                        <input type="text" name="" class="form-control">
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset class="mb-0">
-                            <legend class="">4.가격,판매정보<span class="small ml-2"></span></legend>
+                            <legend class="">5.분양몰 약관정보<span class="small ml-2"></span></legend>
                             <div class="row">
+
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">기준매입원가</span>
+                                                <span class="input-group-text">
+                                                  개인정보 수집이용 동의
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_COST" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -452,9 +479,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">유통가</span>
+                                                <span class="input-group-text">
+                                                  개인정보처리방침
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_RETAIL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -462,9 +491,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">기준판매가</span>
+                                                <span class="input-group-text">
+                                                  결제취소 및 환불 관련 동의
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_SELL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -472,9 +503,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">배송비</span>
+                                                <span class="input-group-text">
+                                                  서비스 이용 약관
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_DEL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -482,13 +515,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">배송주체</span>
+                                                <span class="input-group-text">
+                                                  전자금융거래약관
+                                                </span>
                                             </span>
-                                            <select class="form-control select" data-placeholder="선택" name="P_DEL_COMPANY">
-                                                <option></option>
-                                                <option value="true" th:selected="${product?.pDelCompany eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pDelCompany eq false}">N</option>
-                                            </select>
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -496,190 +527,15 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">합배송기준수량</span>
+                                                <span class="input-group-text">
+                                                  제 3자 정보제공 동의
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_DEL_TOGETHER" class="form-control" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="file" name="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">무이자할부여부</span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="P_FREE_INTEREST">
-                                                <option></option>
-                                                <option value="true" th:selected="${product?.pFreeInterest eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pFreeInterest eq false}">N</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">무료배송여부</span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="P_DEL_FREE">
-                                                <option></option>
-                                                <option value="true" th:selected="${product?.pDelFree eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pDelFree eq false}">N</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset class="mb-0">
-                            <legend class="">5.네이버연동정보<span class="small ml-2"></span> <a class="btn btn-sm badge-indigo legitRipple" onclick="">연동</a></legend>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 지식쇼핑 최저가</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER1" class="form-control" th:value="${product?.pNaver?.P_NAVER1}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 가격비교API 호출여부</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER2" class="form-control" th:value="${product?.pNaver?.P_NAVER2}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">N:미체크, Y:추천, S:동일스펙, M:동일모델</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER3" class="form-control" th:value="${product?.pNaver?.P_NAVER3}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 가격비교 API 호출시간</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER4" class="form-control" th:value="${product?.pNaver?.P_NAVER4}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 가격비교 API 이미지경로</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER5" class="form-control" th:value="${product?.pNaver?.P_NAVER5}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 가격비교 API 타이틀</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER6" class="form-control" th:value="${product?.pNaver?.P_NAVER6}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">입점시스템 네이버URL 입력여부</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER7" class="form-control" th:value="${product?.pNaver?.P_NAVER7}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버 가격비교 검색어</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER8" class="form-control" th:value="${product?.pNaver?.P_NAVER8}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">네이버쇼핑 연동 여부 (스마트스토어 등록 여부)</span>
-                                            </span>
-                                            <input type="text" name="P_NAVER9" class="form-control" th:value="${product?.pNaver?.P_NAVER9}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset class="mb-0">
-                            <legend class="">6.고시정보<span class="small ml-2"></span></legend>
-                            <div class="row">
-                                <table class="table table-bordered">
-                                    <thead id="inpo_head">
-                                    <tr class="alpha-brown text-bold">
-                                        <th>no</th>
-                                        <th>고시정보 항목</th>
-                                        <th>고시정보 내용</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="inpo_area">
-                                    <tr>
-                                        <td>1</td>
-                                        <td><input type="text" class="form-control" name="P_INFO_KEY1" th:value="${product?.pInfo?.P_INFO_KEY1}"></td>
-                                        <td><input type="text" class="form-control" name="P_INFO_VALUE1" th:value="${product?.pInfo?.P_INFO_VALUE1}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td><input type="text" class="form-control" name="P_INFO_KEY2" th:value="${product?.pInfo?.P_INFO_KEY2}"></td>
-                                        <td><input type="text" class="form-control" name="P_INFO_VALUE2" th:value="${product?.pInfo?.P_INFO_VALUE2}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td><input type="text" class="form-control" name="P_INFO_KEY3" th:value="${product?.pInfo?.P_INFO_KEY3}"></td>
-                                        <td><input type="text" class="form-control" name="P_INFO_VALUE3" th:value="${product?.pInfo?.P_INFO_VALUE3}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </fieldset>
-                        <fieldset class="mb-0">
-                            <legend class="">7.OPTION(MAX3개)<span class="small ml-2"></span> <a class="btn btn-sm badge-indigo legitRipple" onclick="optionAdd()">추가</a></legend>
-                            <div class="row">
-                                <input type="hidden" id="optCnt" th:value="${optionSize}==null? 0:${optionSize}">
-                                <table class="table table-bordered">
-                                    <thead id="option_head">
-                                    <tr class="alpha-brown text-bold">
-                                        <th>no</th>
-                                        <th>옵션명</th>
-                                        <th>옵션속성</th>
-                                        <th>삭제</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="option_area">
-                                    <tr th:if="${product}!=null" th:each="option:${product?.pOption}" th:id="'option_'+${optionStat.count}">
-                                        <td th:id="'opCnt'+${optionStat.count}" th:text="${optionStat.count}"></td>
-                                        <td><input type="text" class="form-control" th:name="'p_option_key'+${optionStat.count}" th:value="${option?.title}"></td>
-                                        <td><input type="text" class="form-control" th:name="'p_option_value'+${optionStat.count}" th:value="${product.getOptionValues(option?.title)}"></td>
-                                        <td><a class="btn btn-sm badge-indigo" th:id="'optionBtn'+${optionStat.count}" th:onclick="'deleteOption('+${optionStat.count}+')'">삭제</a></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+
                             </div>
                         </fieldset>
                     </div>
@@ -707,15 +563,6 @@
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 <script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
 
-<!-- 데이터테이블 -->
-<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
-<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
-<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
-
-<!-- 드래그&드랍 -->
-<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
-<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
-
 <!-- 멀티 선택 (숫자) -->
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
@@ -724,18 +571,7 @@
 <script th:src="@{/assets/js/app.js}"></script>
 <script th:src="@{/assets/js/common.js}"></script>
 
-<!-- 에디터 -->
-<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
-<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
-
-<!-- 에디터 -->
-<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
-<!-- 메뉴 호버 -->
-<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
 </body>
-
-
-<!--<th:block th:replace="modal/summernoteImageModal.html"></th:block>-->
 
 <script th:inline="javascript">
     //저장
@@ -748,16 +584,14 @@
                 type: 'post',
                 data: new FormData($('#shopForm')[0])
             }).done(function(res){
-
+                opener.refreshTable('#shopTable');
+                location.reload();
             });
-          }
+        }
     }
 </script>
 <script th:inline="javascript">
     window.onload=function(){
-        smImage('#summerNote1');
-        smImage('#summerNote2');
-        smImage('#summerNote3');
 
         if([[${cg?.depth}]]!=null){
             if([[${cg?.depth}]]==1){

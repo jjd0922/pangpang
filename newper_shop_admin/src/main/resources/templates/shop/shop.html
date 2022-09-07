@@ -40,16 +40,6 @@
                     <div class="row">
                       <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
-<!--                        <div class="form-group">-->
-<!--                          <label class="d-block">발행 상품 등록 여부</label>-->
-<!--                          <select class="form-control form-control-sm select" name="p_exist" data-placeholder="전체" data-container-css-class="select-sm">-->
-<!--                            <option value="all">전체</option>-->
-<!--                            <option selected>Y</option>-->
-<!--                            <option>N</option>-->
-<!--                          </select>-->
-<!--                        </div>-->
-
-
                         <div class="form-group end">
                           <button type="button" class="btn btn-secondary" onclick="searchBtn()">
                             <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
@@ -72,10 +62,10 @@
               <div class="card-header bg-white header-elements-inline justify-content-start">
                 <h6 class="card-title" th:text="${subTitle}"></h6>
                 <a class="btn btn-sm btn-primary ml-1" onclick="shopNewPop()">신규등록</a>
+                <a class="btn btn-sm btn-primary ml-1" onclick="deleteAllShop()">일괄 삭제</a>
               </div>
 
               <table class="table" id="shopTable"></table>
-
 
             </div>
           </div>
@@ -121,24 +111,73 @@
       var focusPopup = window.open('/shop/new', 'shopNew', 'width=1000, height=800, scrollbars=yes, resizable=yes');
       focusPopup.focus();
   }
+  //분양몰 디자인관리 팝업
+  function updateDesignPop(shopIdx){
+    var focusPopup = window.open('/shop/pop/design/'+shopIdx, 'shopDesign', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+    focusPopup.focus();
+  }
+  // 분양몰 일괄변경
+  function deleteAllShop(){
+    var param = dataTableGetSelectedDataArray('shopTable', 'SHOP_IDX');
+    var state = dataTableGetSelectedDataArray('shopTable', 'SHOP_STATE');
+
+    if(param.length == 0){
+      alert('선택된 내역이 없습니다.');
+      return false;
+    }else{
+      if(window.confirm('분양몰을 삭제하시겠습니까?')){
+        $.ajax({
+          url:'/shop/delete.ajax',
+          type: 'post',
+          data: {
+            shopIdxs: param,
+            states: state
+        },
+        success: function(res){
+          $('#shopTable').DataTable().ajax.reload();
+        },
+        error: function(){
+        }
+      });
+      }
+    }
+  }
 </script>
 <script>
   $('#shopTable').DataTable({
-    buttons: buttonsSelect(false),
+    dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+    select: {
+      style: 'multi',
+      selector: 'td:first-child'
+    },
+    columnDefs: [ {
+      orderable: false,
+      targets:   [0]
+    } ],
+    ordering: false,
     serverSide: true,
     ajax:{
       url:'/shop/shop.dataTable?'+$('#searchForm').serialize(),
       type:'post'
     },
     "columns" : [
+      {'class':'select-checkbox m-w-2', 'title':'선택','data':'SHOP_IDX','render': function(data,type,full,meta){
+        return '';
+      }},
       {'title':'No','data':'No','render':function(data,type,full,meta){
-          return meta.settings._iDisplayStart+meta.row+1;
-        }}
-      ,{'title':'선택','data':'SHOP_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-          return '<a class="btn btn-sm btn-primary" onClick="shopDetailPop('+full.SHOP_IDX+')">'+full.SHOP_NAME+'</a>';
-        }}
-      ,{'title':'등록일','data':'CREATED_DATE', 'defaultContent':''}
-      ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
+        return meta.settings._iDisplayStart+meta.row+1;
+      }}
+      ,{'title':'분양몰코드','data':'SHOP_IDX', 'defaultContent':''}
+      ,{'title':'분양몰명','data':'SHOP_NAME','defaultContent':'', 'render':function(data,type,full,meta){
+        return '<a class="btn btn-sm btn-primary" onClick="shopDetailPop('+full.SHOP_IDX+')">'+ellipsisStr(full.SHOP_NAME)+'</a>';
+      }}
+      ,{'title':'디자인설정','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
+        return '<a class="btn btn-sm btn-primary" onClick="updateDesignPop('+full.SHOP_IDX+')">관리</a>';
+      }}
+      ,{'title':'운영 상태','data':'SHOP_STATE_STR', 'defaultContent':''}
+      ,{'title':'분양몰 타입','data':'SHOP_TYPE_STR', 'defaultContent':''}
+      ,{'title':'분양몰 등록일','data':'CREATED_DATE_TIME', 'defaultContent':''}
+      // ,{'title':'등록시간','data':'CREATED_TIME', 'defaultContent':''}
     ]
   });
 </script>

@@ -31,8 +31,11 @@ public class MainSection extends BaseEntity {
     private int msDan;
 
 
-
-
-
-
+    public void updateMainsectionOrder(int msDislay) {
+        if(getMsDislay() < 0){
+            setMsDislay(msDislay * -1);
+        }else{
+            setMsDislay(msDislay);
+        }
+    }
 }

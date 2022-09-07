@@ -1,5 +1,8 @@
 package com.newper.controller.view;
 
+import com.newper.entity.Shop;
+import com.newper.exception.MsgException;
+import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class ShopController {
 
-
+    private final ShopRepo shopRepo;
 
 
     /**분양몰 관리*/
@@ -29,11 +32,26 @@ public class ShopController {
 
         //상세
         if(shopIdx != null){
-
+            Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
+            mav.addObject("shop", shop);
         }
 
         return mav;
     }
+    @GetMapping(value = "pop/design/{shopIdx}")
+    public ModelAndView shopDesign(@PathVariable Integer shopIdx){
+        ModelAndView mav = new ModelAndView("shop/design");
+
+
+        return mav;
+    }
+    @GetMapping("mainsection")
+    public ModelAndView mainSection(){
+        ModelAndView mav = new ModelAndView("mainsection/mainsection");
+
+        return mav;
+    }
+
 
 
 

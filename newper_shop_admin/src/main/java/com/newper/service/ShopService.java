@@ -1,25 +1,17 @@
 package com.newper.service;
 
 
-import com.newper.constant.CtType;
-import com.newper.constant.UState;
-import com.newper.constant.UType;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Auth;
-import com.newper.entity.Company;
+import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
-import com.newper.entity.User;
-import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
+import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,21 +21,65 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepo shopRepo;
+    private final MainSectionRepo mainSectionRepo;
 
     /**분양몰 추가*/
     @Transactional
-    public int shopSave(ParamMap paramMap){
+    public void shopSave(ParamMap paramMap){
         Shop shop = paramMap.mapParam(Shop.class);
         shop.setShopMileage(0F);
         shop.setShopBasket("Y");
-        Calendar cal = Calendar.getInstance();
-        shop.setShopName("test_"+cal.getTime());
+
+//        shopDesign
+//        shop.setShopDesign();
+
         shopRepo.save(shop);
-        return shop.getShopIdx();
+    }
+    /** 분양몰 수정*/
+    @Transactional
+    public void shopUpdate(ParamMap paramMap){
+        Shop shop = shopRepo.findById(paramMap.getInt("shopIdx")).orElseThrow(() -> new MsgException("존재하지 않는 분양몰입니다."));
+
+        paramMap.printEntrySet();
+        Shop shopParam = paramMap.mapParam(Shop.class);
+
+        shop.setShopName(shopParam.getShopName());
+        shop.setShopState(shopParam.getShopState());
+        shop.setShopType(shopParam.getShopType());
+
     }
 
 
+    /** 상태 변경*/
+    @Transactional(noRollbackFor = MsgException.class)
+    public void changeShopState(Integer shopIdx) {
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(() -> new MsgException("존재하지 않는 분양몰입니다."));
+        List<Integer> deleteShopIdxs = new ArrayList<>();
 
+        // 삭제 조건 추가
+        if(shop.getPg() != null && shop.getPg().getPgState().equals("N")){
+           deleteShopIdxs.add(shopIdx);
+        }
+
+        shopRepo.deleteAllByIdInBatch(deleteShopIdxs);
+    }
+
+    /** 분양몰 디자인 update*/
+    public void shopDesignUpdate(Integer shopIdx, ParamMap paramMap) {
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(() -> new MsgException("존재하지 않는 분양몰입니다."));
+
+    }
+    /** mainsection 순서 변경*/
+    public void mainsectionOrder(List<String> msIdxs) {
+        for(int i=0; i<msIdxs.size() -1; i++){
+            MainSection mainSection = mainSectionRepo.findById(Integer.parseInt(msIdxs.get(i))).orElseThrow(()->new MsgException("존재하지 않는 메인섹션 입니다."));
+            mainSection.updateMainsectionOrder(i+1);
+        }
+    }
+
+    public void mainsectionDelete(ParamMap paramMap) {
+
+    }
 }
 
 

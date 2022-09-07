@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>메인섹션관리</title>
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .group{
+            background:aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+
+<th:block th:replace="common/header.html">Header</th:block>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="collapse show">
+                                <div class="card-body pt-0">
+                                    <form id="shopCategoryForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">분양몰</label>
+                                                    <select class="form-control form-control-sm select-search" name="CATE_DISPLAY" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">섹션명</label>
+                                                    <input class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="shopCategory()">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <form id="mainsectionTableForm">
+                                <table class="table" id="mainsectionTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    $('#mainsectionTable').DataTable({
+        buttons: {
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-dark opacity-60',
+                    text: '<i class="icon-file-excel mr-1"></i>엑셀'
+                },
+                {
+                    text: '새로고침',
+                    className: 'btn btn-sm btn-secondary',
+                    action: function (e, dt, node, config) {
+                        dt.ajax.reload();
+                    }
+                }
+            ]
+        },
+        dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        serverSide: true,
+        ajax:{
+            url:'/shop/mainsection.dataTable',
+            type:'post'
+        },
+        "columns" : [
+            {'class':'dragula-handle m-w-3', 'title':'순서변경','data':'','defaultContent':''}
+            ,{'class':'m-w-16 w-55', 'title':'노출상태','data':'','defaultContent':''}
+            ,{'class':'m-w-8 w-15', 'title':'메인섹션타입','data':'CNT','defaultContent':''}
+            ,{'title':'섹션명','data':'','defaultContent':'', 'render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-primary" onclick="test()">상세</a>';
+            }}
+            ,{'title':'도메인','data':'CREATED_DATE','defaultContent':''}
+            ,{'class':'m-w-8 w-15', 'title':'삭제','data':'','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-danger" onclick="deleteShopCategory('+data+')">삭제</a>';
+            }}
+            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+        ]
+        ,initComplete: function( settings, json ){
+            var table_id=settings.sTableId;
+            dragula([settings.nTBody], {
+                mirrorContainer: settings.nTBody,
+                moves: function (el, container, handle) {
+                    return handle.classList.contains('dragula-handle');
+                }
+            }).on('drop', function(el, target, source, sibling){
+                $.ajax({
+                    url:'/shop/mainsection.ajax'
+                    ,type:'post'
+                    ,data:$('#'+table_id+'Form').serialize()
+                }).always(function(res){
+                    $('#'+table_id).DataTable().ajax.reload();
+                });
+            });
+        }
+
+    });
+
+</script>
+
+<script>
+    function test(){
+        alert('준비중');
+    }
+
+    function deleteShopCategory(msIdx){
+        if(confirm("메인섹션을 삭제하시겠습니까?")){
+            $.ajax({
+                url:'/product/shopCategory/delete.ajax',
+                type:'post',
+                data:{
+                    msIdx: msIdx
+                },
+                success:function(res){
+                    $('#shopTable').DataTable().ajax.reload();
+                }
+                ,error:function(){}
+            })
+        }
+    }
+</script>
+</body>
+</html>
