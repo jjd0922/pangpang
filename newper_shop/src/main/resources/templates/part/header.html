@@ -136,46 +136,24 @@
     </nav>
     <th:block th:replace="part/header :: js"></th:block>
 </header>
-<!--메인헤더 끝-->
 
 <!--회원가입 헤더-->
-<header th:fragment="main-header-join">
-    <div class="header-top">
+<header id="header-join" th:fragment="main-header-join">
+    <div class="header-top-join">
         <div class="container">
-            <div class="header-top-inner">
+            <div class="header-top-inner center">
                 <h1 class="logo">
                     <a th:href="@{/}">
                         <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
                     </a>
                 </h1>
-                <div class="userMenu">
-                    <ul>
-                        <li>
-                            <a href="javascript:;"><i class="login"></i>로그인</a> <!--모달-->
-                            <!-- 로그인 한 경우
-                            <a href="javascript:;"><i class="logout"></i>로그아웃</a>
-                            -->
-                        </li>
-                        <li>
-                            <a th:href="@{/join}" class="color-blue"><i class="signUp"></i>회원가입</a>
-                            <!-- 로그인 한 경우
-                            <a th:href="@{/myPage}" ><i class="myShopping"></i>마이쇼핑</a>
-                            -->
-                        </li>
-                        <li>
-                            <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
-                        </li>
-                        <li th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
-                            <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
     <th:block th:replace="part/header :: js"></th:block>
 </header>
-<!--회원가입 끝-->
+
+
 <th:block th:fragment="js">
 <script>
     function logout(){
