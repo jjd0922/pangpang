@@ -47,15 +47,7 @@ public class CategoryService {
     @Transactional
     public int categoryInsert(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail) {
         Category category = paramMap.mapParam(Category.class);
-        List list = paramMap.getList("list");
-        System.out.println("list : "+ list);
-        List<Map<String, Object>> cateSpecList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            Map<String, Object> map2 = new HashMap<>();
-            map2.put("list", list.get(i));
-            cateSpecList.add(map2);
-            System.out.println("cateSpecList : " + cateSpecList);
-        }
+
         int cate_depth = Integer.parseInt(paramMap.get("CATE_DEPTH") + "");
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("CATE_DEPTH", cate_depth);
@@ -88,6 +80,12 @@ public class CategoryService {
         }
         category.setCateIcon(iconFilePath);
         category.setCateThumbnail(thumbnailFilePath);
+
+        String list[] = paramMap.getString("list").split(",");
+        List<String> cateSpecList = new ArrayList<>();
+        for (int i = 0; i < list.length; i++) {
+            cateSpecList.add(list[i]);
+        }
         category.setCateSpecList(cateSpecList);
 
         categoryRepo.saveAndFlush(category);
@@ -123,17 +121,13 @@ public class CategoryService {
             thumbnailFilePath = Common.uploadFilePath(thumbnail, "category/thumbnail/",AdminBucket.OPEN);
         }
 
-        List list = paramMap.getList("list");
-        System.out.println("list : "+ list);
-        List<Map<String, Object>> cateSpecList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("list", list.get(i));
-            cateSpecList.add(map);
-            System.out.println("cateSpecList : " + cateSpecList);
+        String list[] = paramMap.getString("list").split(",");
+        List<String> cateSpecList = new ArrayList<>();
+        for (int i = 0; i < list.length; i++) {
+            cateSpecList.add(list[i]);
         }
-
         categoryParam.setCateSpecList(cateSpecList);
+
         categoryParam.setCateIcon(iconFilePath);
         categoryParam.setCateThumbnail(thumbnailFilePath);
         categoryRepo.saveAndFlush(categoryParam);

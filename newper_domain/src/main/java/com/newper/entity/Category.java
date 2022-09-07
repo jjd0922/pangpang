@@ -47,8 +47,7 @@ public class Category extends BaseEntity {
 
 
     @Builder.Default
-    @Convert(converter = ConvertList.class)
-    private List<Map<String, Object>> cateSpecList = new ArrayList<>();
+    private List<String> cateSpecList = new ArrayList<>();
 
    /* private List<String> cateSpecList;*/
 
@@ -57,7 +56,6 @@ public class Category extends BaseEntity {
      * 중분류에서 사용하는 고시정보 json
      */
     @Builder.Default
-    @Convert(converter = ConvertList.class)
     private List<Map<String, Object>> cateInfo = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.DETACH)
