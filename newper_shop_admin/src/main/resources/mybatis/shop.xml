@@ -7,8 +7,10 @@
     <select id="selectShopDatatable" resultType="map">
         SELECT
             SHOP.*
+            ,CONCAT(CREATED_DATE,' ',CREATED_TIME) CREATED_DATE_TIME
         FROM
             SHOP
+        ORDER BY SHOP_IDX DESC
         <where>
             <include refid="includeShopDatatable"></include>
         </where>
