@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +80,35 @@ public class ShopRestController {
         rd.setRecordsTotal(shopMapper.countShopDatatable(paramMap.getMap()));
         return rd;
     }
+    /** mainseciont DataTable*/
+    @PostMapping("mainsection.dataTable")
+    public ReturnDatatable mainsection(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("메인섹션 관리");
+        List<Map<String,Object>> list = new ArrayList<>();
+        for(int i=0; i<11;i++){
+            Map<String,Object> map = new HashMap<>();
+            list.add(map);
+        }
+        rd.setData(list);
+        rd.setRecordsTotal(list.size());
+        return rd;
+    }
+    /** mainsection 순서 변경*/
+    @PostMapping("mainsection.ajax")
+    public ReturnMap mainsectionOrder(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        List<String> msIdxs = paramMap.getList("msIdxs[]");
 
+        shopService.mainsectionOrder(msIdxs);
 
+        return rm;
+    }
+    /** mainsection delete*/
+    @PostMapping
+    public ReturnMap mainsectionDelete(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        shopService.mainsectionDelete(paramMap);
+        return rm;
+    }
 
 }

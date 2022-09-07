@@ -53,7 +53,7 @@ public class Shop extends BaseEntity{
     /** 로그인그룹 디스플레이 항목*/
 //    private String shopHdLoginGroup;
     /** 분양몰 디자인 (JSON MAP)*/
-    @Convert(converter = ConvertMap.class)
+//    @Convert(converter = ConvertMap.class)
     @Builder.Default
     private Map<String,Object> shopDesign = new HashMap<>();
 

@@ -2,8 +2,10 @@ package com.newper.service;
 
 
 import com.newper.dto.ParamMap;
+import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepo shopRepo;
+    private final MainSectionRepo mainSectionRepo;
 
     /**분양몰 추가*/
     @Transactional
@@ -65,7 +68,16 @@ public class ShopService {
     public void shopDesignUpdate(Integer shopIdx, ParamMap paramMap) {
         Shop shop = shopRepo.findById(shopIdx).orElseThrow(() -> new MsgException("존재하지 않는 분양몰입니다."));
 
+    }
+    /** mainsection 순서 변경*/
+    public void mainsectionOrder(List<String> msIdxs) {
+        for(int i=0; i<msIdxs.size() -1; i++){
+            MainSection mainSection = mainSectionRepo.findById(Integer.parseInt(msIdxs.get(i))).orElseThrow(()->new MsgException("존재하지 않는 메인섹션 입니다."));
+            mainSection.updateMainsectionOrder(i+1);
+        }
+    }
 
+    public void mainsectionDelete(ParamMap paramMap) {
 
     }
 }

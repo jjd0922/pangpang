@@ -45,6 +45,13 @@ public class ShopController {
 
         return mav;
     }
+    @GetMapping("mainsection")
+    public ModelAndView mainSection(){
+        ModelAndView mav = new ModelAndView("mainsection/mainsection");
+
+        return mav;
+    }
+
 
 
 
