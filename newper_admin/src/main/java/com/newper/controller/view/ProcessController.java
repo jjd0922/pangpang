@@ -14,7 +14,7 @@ public class ProcessController {
 
     /**공정관리 공정보드 페이지**/
     @GetMapping(value = "board")
-    public ModelAndView process() {
+    public ModelAndView board() {
         ModelAndView mav = new ModelAndView("process/board");
 
         return mav;

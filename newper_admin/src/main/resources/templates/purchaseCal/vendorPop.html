@@ -31,13 +31,20 @@
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
                             <div class="row">
-                                <div class="col-sm-12 ">
+                                <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">등록일</span>
                                             </span>
-                                            <input type="text" name="createdDate">
+                                            <input type="text"  class="form-control "  name="createdDate">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     거래처(판매처)
@@ -49,9 +56,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
+
+                                <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
@@ -62,6 +68,13 @@
                                             <select name="csType" class="form-control select">
                                                 <option th:each="opt: ${T(com.newper.constant.CsType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csType) eq opt.name()}"></option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    판매금액 기준열
@@ -71,9 +84,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
+
+                                <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
@@ -84,6 +96,13 @@
                                             <select name="csDeliveryCal" class="form-control select">
                                                 <option th:each="opt: ${T(com.newper.constant.CsDeliveryCal).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csDeliveryCal) eq opt.name()}"></option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    배송비 기준열
@@ -93,9 +112,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
+
+                                <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
@@ -104,6 +122,14 @@
                                                </span>
                                             </span>
                                             <input type="text" name="csOrder" class="form-control" th:value="${calculateSetting?.csOrder}" >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    수수료 기준열
@@ -113,9 +139,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
+
+                                <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
@@ -124,6 +149,13 @@
                                                </span>
                                             </span>
                                             <input type="text" name="csProduct" class="form-control" th:value="${calculateSetting?.csProduct}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    정산금액 기준열
@@ -133,8 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
