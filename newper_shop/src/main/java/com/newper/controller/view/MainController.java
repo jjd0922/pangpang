@@ -90,8 +90,14 @@ public class MainController {
         ModelAndView mav = new ModelAndView("orderProcess/order");
         return mav;
     }
+    /* auth - 회원가입 안내 */
+    @GetMapping(value = "joinWelcome")
+    public ModelAndView joinWelcome(){
+        ModelAndView mav = new ModelAndView("auth/joinWelcome");
+        return mav;
+    }
 
-    /* auth - 회원가입 */
+    /* auth - 회원가입 정보입력 */
     @GetMapping(value = "join")
     public ModelAndView join(){
         ModelAndView mav = new ModelAndView("auth/join");
