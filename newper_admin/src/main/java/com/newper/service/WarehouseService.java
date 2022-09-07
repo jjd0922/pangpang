@@ -156,17 +156,17 @@ public class WarehouseService {
                     locForm = LocForm.valueOf(row.getCell(1).getStringCellValue());
                 }
                 String locZone = row.getCell(2).getStringCellValue();
-                String locRow = ExcelDownload.getStringCellValueOfExcelRow(row, 3); // 숫자형태면 String으로 변환
-                String locColumn = ExcelDownload.getStringCellValueOfExcelRow(row, 4);
-                String locCode = locZone + locRow + locColumn;
+                String locColumn = ExcelDownload.getStringCellValueOfExcelRow(row, 3); // 숫자형태면 String으로 변환
+                String locRow = ExcelDownload.getStringCellValueOfExcelRow(row, 4);
+                String locCode = locZone + locColumn + locRow;
 
                 Location location = Location.builder()
                         .warehouse(warehouse)
                         .locType(locType)
                         .locForm(locForm)
                         .locZone(locZone)
-                        .locRow(locRow)
                         .locColumn(locColumn)
+                        .locRow(locRow)
                         .locCode(locCode)
                         .build();
 

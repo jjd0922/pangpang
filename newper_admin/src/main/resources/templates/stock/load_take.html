@@ -258,7 +258,7 @@
             '   <td>'+data.LOC_COLUMN+'</td>' +
             '   <td>'+data.LOC_ROW+'</td>' +
             '   <td>'+data.LOC_CODE+'</td>' +
-            '   <td>'+data.LOC_CODE+'</td>' +
+            '   <td>'+data.LOC_BARCODE+'</td>' +
             '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
             '</tr>'
         );
@@ -271,6 +271,7 @@
 
         // 바코드 input시 ajax로 해당 바코드 로케이션 가져오기(추후에 작업~)
         var barcodeInput = $('input[name="barcode"]');
+        barcodeInput.val("").focus();
         barcodeInput.on('input', function () {
             $.ajax({
                 url: '',
