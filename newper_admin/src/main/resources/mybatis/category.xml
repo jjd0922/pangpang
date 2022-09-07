@@ -22,7 +22,7 @@
             P.CATE_PARENT_IDX IS NULL
             AND CATE_TYPE='CATEGORY'
         GROUP BY CATE_IDX
-        orders by CATE_ORDER
+        order by CATE_ORDER
     </select>
 
     <select id="selectCategoryDatatableByChildren" resultType="map">
@@ -46,7 +46,7 @@
             P.CATE_PARENT_IDX = #{CATE_PARENT_IDX}
             AND CATE_TYPE='CATEGORY'
         GROUP BY CATE_IDX
-        orders by CATE_ORDER
+        order by CATE_ORDER
     </select>
 
 
@@ -113,7 +113,7 @@
         where
             CATE_TYPE='BRAND'
             <include refid="includeCategoryDatatableByBrand"></include>
-        orders by CATE_ORDER asc
+        order by CATE_ORDER asc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
