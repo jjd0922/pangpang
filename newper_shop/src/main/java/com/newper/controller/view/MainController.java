@@ -104,6 +104,13 @@ public class MainController {
         return mav;
     }
 
+    /* auth - 회원가입 완료 */
+    @GetMapping(value = "joinComplete")
+    public ModelAndView joinComplete(){
+        ModelAndView mav = new ModelAndView("auth/joinComplete");
+        return mav;
+    }
+
 
     /*테스트용 페이지*/
     @GetMapping(value = "mainMenu/index")
