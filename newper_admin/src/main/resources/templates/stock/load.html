@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>적재관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <!--<span class="breadcrumb-item font-weight-bold text-secondary">
+                                             <i class="mr-1" th:classappend="${subIcon}"></i>
+                                             <th:block th:text="${subTitle}"></th:block>
+                                        </span>-->
+                                    </div>
+                                </h6>
+                            </div>
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="serachForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산상태</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산처리담당자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산처리일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품명</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">판매스펙확정일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">IMEI</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">시리얼</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">발주코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고검수코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">도색코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수리코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재검수코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정항목</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정상태</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정처리담당자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">공정처리일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">도색</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수리</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재검수</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공항목(예정)</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수상태</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수담당자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">영업검수처리일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품명</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">판매채널</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등급</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션1</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션2</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">옵션3</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">기준판매가(재고)확정여부</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">창고</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">데크</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">베이</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label">조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="stockWaitingBtn">
+                                            <i class="icon-popout mr-1"></i>재고인수대기
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="stockTakingBtn">
+                                            <i class="icon-box mr-1"></i>재고인수(적재)
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="stockBarcodeBtn">
+                                            <i class="icon-barcode2 mr-1"></i>바코드_재고인수(적재)
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover" id="stockTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<script th:inline="javascript">
+    function popStockWaiting() {
+        var focusPopup = window.open('/stock/load/wait', 'stockWaiting', 'width=950, height=300, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function popStockTaking(str) {
+        var focusPopup = window.open('/stock/load/take'+str, 'stockTaking', 'width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function searchBtn(){
+        $('#stockTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#serachForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    $('#stockTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/coupon/couponGroup.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'자산상태','data':'', 'defaultContent':''}
+            ,{'title':'자산처리담당자','data':'','defaultContent':''}
+            ,{'title':'자산처리일','data':'','defaultContent':''}
+            ,{'title':'자산코드','data':'','defaultContent':''}
+            ,{'title':'상품코드','data':'','defaultContent':''}
+            ,{'title':'상품명','data':'','defaultContent':''}
+            ,{'title':'입고SPEC(예정)','data':'','defaultContent':''}
+            ,{'title':'입고SPEC(확정)','data':'','defaultContent':''}
+            ,{'title':'판매SPEC(예정)','data':'','defaultContent':''}
+            ,{'title':'판매SPEC(확정)','data':'','defaultContent':''}
+            ,{'title':'가공SPEC(예정)','data':'','defaultContent':''}
+            ,{'title':'가공SPEC(확정)','data':'','defaultContent':''}
+            ,{'title':'판매스펙확정일','data':'','defaultContent':''}
+            ,{'title':'IMEI','data':'','defaultContent':''}
+            ,{'title':'시리얼','data':'','defaultContent':''}
+            ,{'title':'발주코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'발주INDEX','data':'','defaultContent':''}
+            ,{'title':'입고검수코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'가공코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'도색코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'수리코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'재검수코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'공정항목','data':'','defaultContent':''}
+            ,{'title':'공정상태','data':'','defaultContent':''}
+            ,{'title':'공정처리담당자','data':'','defaultContent':''}
+            ,{'title':'공정처리일','data':'','defaultContent':''}
+            ,{'title':'자산공정이력','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'공정결과','data':'','defaultContent':''}
+            ,{'title':'가공','data':'','defaultContent':''}
+            ,{'title':'도색','data':'','defaultContent':''}
+            ,{'title':'수리','data':'','defaultContent':''}
+            ,{'title':'재검수','data':'','defaultContent':''}
+            ,{'title':'가공비(예정)','data':'','defaultContent':''}
+            ,{'title':'수리항목(예정)','data':'','defaultContent':''}
+            ,{'title':'수리비(예정)','data':'','defaultContent':''}
+            ,{'title':'도색항목(예정)','data':'','defaultContent':''}
+            ,{'title':'도색비(예정)','data':'','defaultContent':''}
+            ,{'title':'공정예정비합계','data':'','defaultContent':''}
+            ,{'title':'생산원가(품의)','data':'','defaultContent':''}
+            ,{'title':'영업검수상태','data':'','defaultContent':''}
+            ,{'title':'영업검수담당자','data':'','defaultContent':''}
+            ,{'title':'영업검수처리일','data':'','defaultContent':''}
+            ,{'title':'재고상품코드','data':'', 'render': function (data, type, full, meta) {
+                    return '<a class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'재고상품명','data':'','defaultContent':''}
+            ,{'title':'판매채널','data':'','defaultContent':''}
+            ,{'title':'등급','data':'','defaultContent':''}
+            ,{'title':'옵션1','data':'','defaultContent':''}
+            ,{'title':'옵션2','data':'','defaultContent':''}
+            ,{'title':'옵션3','data':'','defaultContent':''}
+            ,{'title':'기준판매가(재고)확정여부','data':'','defaultContent':''}
+            ,{'title':'기준판매가(재고)','data':'','defaultContent':''}
+            ,{'title':'매입원가','data':'','defaultContent':''}
+            ,{'title':'소모품비','data':'','defaultContent':''}
+            ,{'title':'입고검수비','data':'','defaultContent':''}
+            ,{'title':'재검수비','data':'','defaultContent':''}
+            ,{'title':'가공비','data':'','defaultContent':''}
+            ,{'title':'수리비','data':'','defaultContent':''}
+            ,{'title':'도색비','data':'','defaultContent':''}
+            ,{'title':'매입원가합계','data':'','defaultContent':''}
+            ,{'title':'창고','data':'','defaultContent':''}
+            ,{'title':'데크','data':'','defaultContent':''}
+            ,{'title':'베이','data':'','defaultContent':''}
+            ,{'title':'창고코드(바코드)','data':'','defaultContent':''}
+        ]
+    });
+
+    $('#serachForm').on('keyup', function (event) {
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+    $('#stockWaitingBtn').on('click',popStockWaiting);
+    $('#stockTakingBtn').on('click', function () {
+        popStockTaking('');
+    });
+    $('#stockBarcodeBtn').on('click',function () {
+        popStockTaking('/barcode');
+    });
+</script>
+</body>
+</html>

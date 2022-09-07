@@ -2,7 +2,6 @@ package com.newper.entity;
 
 import com.newper.constant.LocForm;
 import com.newper.constant.LocType;
-import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -36,8 +35,8 @@ public class Location {
     private LocForm locForm;
 
     private String locZone;
-    private String locRow;
     private String locColumn;
+    private String locRow;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LOC_U_IDX", referencedColumnName = "uIdx")

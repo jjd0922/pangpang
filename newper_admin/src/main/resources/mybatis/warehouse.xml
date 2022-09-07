@@ -71,13 +71,15 @@
         <if test="locRow != null and locRow != ''">AND LOC_ROW LIKE CONCAT('%',#{locRow},'%')</if>
         <if test="locColumn != null and locColumn != ''">AND LOC_COLUMN LIKE CONCAT('%',#{locColumn},'%')</if>
         <if test="location != null and location != ''">AND CONCAT(LOC_ZONE,LOC_ROW,LOC_COLUMN) LIKE CONCAT('%',#{location},'%')</if>
-        <if test="uName != null and uName != ''">AND U_NAME CONCAT('%',#{uName},'%')</if>
+        <if test="uName != null and uName != ''">AND U_NAME LIKE CONCAT('%',#{uName},'%')</if>
+        <if test="whIdx != null and whIdx != ''">AND WH_IDX LIKE CONCAT('%',#{whIdx},'%')</if>
     </sql>
 
     <select id="selectLocationDatatable" resultType="map">
         SELECT
             LOC_IDX,
             WH_IDX,
+            WH_NAME,
             LOC_TYPE,
             LOC_CODE,
             LOC_FORM,
@@ -89,9 +91,9 @@
             LOCATION
                 LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
-        WHERE
-            LOC_WH_IDX = #{whIdx}
+        <where>
             <include refid="includeLocationDatatable"></include>
+        </where>
         <if test="length != -1">
             LIMIT #{start},#{length}
         </if>
@@ -104,9 +106,9 @@
             LOCATION
                 LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
                 LEFT JOIN USER ON LOC_U_IDX = U_IDX
-        WHERE
-            LOC_WH_IDX = #{whIdx}
+        <where>
             <include refid="includeLocationDatatable"></include>
+        </where>
     </select>
 
     <update id="changeAllLocType">
