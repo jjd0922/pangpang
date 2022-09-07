@@ -2,6 +2,7 @@ package com.newper.entity;
 
 import com.newper.constant.LocForm;
 import com.newper.constant.LocType;
+import com.newper.entity.common.CreatedEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Location {
+public class Location extends CreatedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer locIdx;
@@ -37,6 +38,8 @@ public class Location {
     private String locZone;
     private String locColumn;
     private String locRow;
+    private String locBarcode;
+    private String locMemo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LOC_U_IDX", referencedColumnName = "uIdx")
@@ -66,7 +69,7 @@ public class Location {
         setLocCode(location.getLocCode());
         setLocForm(location.getLocForm());
         setLocZone(location.getLocZone());
-        setLocRow(location.getLocRow());
         setLocColumn(location.getLocColumn());
+        setLocRow(location.getLocRow());
     }
 }

@@ -116,7 +116,7 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">로케이션코드</label>
+                                                        <label class="d-block">로케이션</label>
                                                         <input type="text" name="locCode" class="form-control form-control-sm w-120px">
                                                     </div>
 
@@ -133,19 +133,19 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">행</label>
-                                                        <input type="text" name="locRow" class="form-control form-control-sm w-120px">
-                                                    </div>
-
-                                                    <div class="form-group">
                                                         <label class="d-block">열</label>
                                                         <input type="text" name="locColumn" class="form-control form-control-sm w-120px">
                                                     </div>
 
                                                     <div class="form-group">
+                                                        <label class="d-block">행</label>
+                                                        <input type="text" name="locRow" class="form-control form-control-sm w-120px">
+                                                    </div>
+
+                                                    <!--<div class="form-group">
                                                         <label class="d-block">로케이션</label>
                                                         <input type="text" name="location" class="form-control form-control-sm w-120px">
-                                                    </div>
+                                                    </div>-->
 
                                                     <div class="form-group">
                                                         <label class="d-block">담당자</label>
@@ -366,13 +366,13 @@
                         return meta.settings._iDisplayStart+meta.row+1;
                     }}
                 ,{'title':'구분','data':'LOC_TYPE_STR', 'defaultContent':''}
-                ,{'title':'로케이션코드','data':'LOC_CODE', 'defaultContent':'', 'render': function (data,type,full,meta) {
+                ,{'title':'로케이션','data':'LOC_CODE', 'defaultContent':'', 'render': function (data,type,full,meta) {
                         return '<a href="#" onclick="popLocationDetail('+full.WH_IDX+'\,'+full.LOC_IDX+')" class="badge badge-primary">' + full.LOC_CODE + '</a>';
                     }}
                 ,{'title':'형태','data':'LOC_FORM_STR', 'defaultContent':''}
                 ,{'title':'존','data':'LOC_ZONE', 'defaultContent':''}
-                ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
                 ,{'title':'열','data':'LOC_COLUMN', 'defaultContent':''}
+                ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
                 ,{'title':'담당자','data':'U_NAME', 'defaultContent':''}
             ]
         });

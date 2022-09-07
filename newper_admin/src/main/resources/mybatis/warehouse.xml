@@ -70,7 +70,7 @@
         <if test="locZone != null and locZone != ''">AND LOC_ZONE LIKE CONCAT('%',#{locZone},'%')</if>
         <if test="locRow != null and locRow != ''">AND LOC_ROW LIKE CONCAT('%',#{locRow},'%')</if>
         <if test="locColumn != null and locColumn != ''">AND LOC_COLUMN LIKE CONCAT('%',#{locColumn},'%')</if>
-        <if test="location != null and location != ''">AND CONCAT(LOC_ZONE,LOC_ROW,LOC_COLUMN) LIKE CONCAT('%',#{location},'%')</if>
+        <if test="location != null and location != ''">AND CONCAT(LOC_ZONE,LOC_COLUMN,LOC_ROW) LIKE CONCAT('%',#{location},'%')</if>
         <if test="uName != null and uName != ''">AND U_NAME LIKE CONCAT('%',#{uName},'%')</if>
         <if test="whIdx != null and whIdx != ''">AND WH_IDX LIKE CONCAT('%',#{whIdx},'%')</if>
     </sql>
@@ -84,8 +84,9 @@
             LOC_CODE,
             LOC_FORM,
             LOC_ZONE,
-            LOC_ROW,
             LOC_COLUMN,
+            LOC_ROW,
+            LOC_BARCODE,
             U_NAME
         FROM
             LOCATION

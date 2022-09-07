@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${location != null} ? '로케이션 조회/수정'">로케이션 등록</title>
     <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .table-hover {
+            width: 100%!important;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,104 +45,164 @@
                                         <legend class="">1. 등록정보</legend>
 
                                         <div class="row">
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
+                                            <div class="col-md-6 pr-0">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">로케이션구분</span>
                                                             </span>
-                                                        <select name="locType" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.LocType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(location?.locType) eq opt.name()}"></option>
-                                                        </select>
+                                                            <select name="locType" class="form-control select">
+                                                                <option th:each="opt: ${T(com.newper.constant.LocType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(location?.locType) eq opt.name()}"></option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">로케이션형태</span>
                                                             </span>
-                                                        <select name="locForm" class="form-control select">
-                                                            <option th:each="opt: ${T(com.newper.constant.LocForm).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(location?.locForm) eq opt.name()}"></option>
-                                                        </select>
+                                                            <select name="locForm" class="form-control select">
+                                                                <option th:each="opt: ${T(com.newper.constant.LocForm).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"
+                                                                        th:selected="${#strings.toString(location?.locForm) eq opt.name()}"></option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                     존
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="locZone" class="form-control location" th:value="${location?.locZone}">
+                                                            <input type="text" name="locZone" class="form-control location" th:value="${location?.locZone}">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    로케이션코드
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="locCode" class="form-control" th:value="${location?.locCode}" tabindex="-1" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
-                                                                    행
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="locRow" class="form-control location" th:value="${location?.locRow}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
-                                                                    담당자<a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1" tabindex="-1">검색</a>
-                                                                </span>
-                                                            </span>
-                                                        <input type="text" name="uName" class="form-control" th:value="${location?.user?.uName}" tabindex="-1" readonly>
-                                                        <input type="hidden" name="uIdx" th:value="${location?.user?.uIdx}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">
                                                                     열
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="locColumn" class="form-control location" th:value="${location?.locColumn}">
+                                                            <input type="text" name="locColumn" class="form-control location" th:value="${location?.locColumn}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    행
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="locRow" class="form-control location" th:value="${location?.locRow}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 pl-0">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    로케이션
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="locCode" class="form-control" th:value="${location?.locCode}" tabindex="-1" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    바코드
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="locBarcode" class="form-control location" th:value="${location?.locBarcode}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested d-flex justify-content-between">
+                                                                    담당자<a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1" tabindex="-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="uName" class="form-control" th:value="${location?.user?.uName}" tabindex="-1" readonly>
+                                                            <input type="hidden" name="uIdx" th:value="${location?.user?.uIdx}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    등록일
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" class="form-control location" th:value="${location?.createdDate}" tabindex="-1" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    등록자
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" class="form-control location" th:value="${location?.createdBy}" tabindex="-1" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    메모
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="locMemo" class="form-control" th:value="${location?.locMemo}">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,14 +300,13 @@
 
     function selectUser(row) {
         var rowData = getDatatablemap('userModalTable', row);
-
         $('#searchUserModal').modal('hide');
         $('#regiForm input[name="uName"]').val(rowData.U_NAME);
         $('input[name="uIdx"]').val(rowData.U_IDX);
     }
 
     function setLocation() {
-        var location = $('input[name="locZone"]').val()+$('input[name="locRow"]').val()+$('input[name="locColumn"]').val();
+        var location = $('input[name="locZone"]').val()+$('input[name="locColumn"]').val()+$('input[name="locRow"]').val();
         $('input[name="locCode"]').val(location);
     }
 </script>
