@@ -84,10 +84,17 @@ public class MainController {
         return mav;
     }
 
-    /* order 주문프로세서 - 주문완료*/
+    /* order 주문프로세서 - 주문완료 */
     @GetMapping(value = "order")
     public ModelAndView order(){
         ModelAndView mav = new ModelAndView("orderProcess/order");
+        return mav;
+    }
+
+    /* auth - 회원가입 */
+    @GetMapping(value = "join")
+    public ModelAndView join(){
+        ModelAndView mav = new ModelAndView("auth/join");
         return mav;
     }
 
