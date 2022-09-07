@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @DynamicUpdate
@@ -12,20 +11,22 @@ import java.math.BigInteger;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
-public class MainSectionOrder {
+public class MainSectionBanner {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long msoIdx;
+    private Long msbnIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MSO_MS_IDX", referencedColumnName = "msIdx")
+    @JoinColumn(name = "MSSP_MS_IDX", referencedColumnName = "msIdx")
     private MainSection mainSection;
 
-    private String msoType;
-
-    private Integer msoOrder;
-
-
-
+    /** 순서*/
+    private int msbnOrder;
+    /** 배너이미지 (WEB)*/
+    private String msbnImage;
+    /** 배너이미지 (MOBILE)*/
+    private String msbnImageMobile;
+    /** 링크*/
+    private String msbnUrl;
 }
