@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum OState implements EnumOption {
 
-    BEFORE("")
+     BEFORE("입금대기")
+    ,DONE("주문완료")
     ;
 
     private String option;

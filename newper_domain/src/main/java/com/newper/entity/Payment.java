@@ -29,6 +29,7 @@ public class Payment {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payCancelState = PayState.BEFORE;
+    /** 결제 금액*/
     private int payPrice;
     private int payProductPrice;
     private int payDelivery;

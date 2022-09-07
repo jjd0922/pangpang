@@ -13,6 +13,9 @@ public enum PayState implements EnumOption {
     ,REQ("요청")
     ,SUCCESS("완료")
     ,FAIL("실패")
+
+    /** 결제 금액이 일치하는 않는 경우 확인 필요*/
+    ,ERROR("확인중")
     ;
 
     private String option;

@@ -59,6 +59,7 @@ public class OrdersRestController {
         return rm;
     }
 
+    /** 결제 결과 확인 후 저장*/
     @PostMapping("iamport/check.ajax")
     public void iamportCheck(long ph_idx){
 

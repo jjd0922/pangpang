@@ -1,6 +1,8 @@
 package com.newper.service;
 
+import com.newper.constant.PayState;
 import com.newper.constant.PhResult;
+import com.newper.entity.Payment;
 import com.newper.entity.PaymentHistory;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
@@ -46,10 +48,27 @@ public class PaymentService {
                     JSONObject jo_response = (JSONObject)jo.get("response");
 
                     String status = jo_response.get("status")+"";
-                    if(status.equals("paid") || status.equals("cancelled")){
+                    if(status.equals("paid")){
                         paymentHistory.setPhResult(PhResult.DONE);
 
-//                        amount (number): 주문(결제)금액
+                        Payment payment = paymentHistory.getPayment();
+                        payment.setPayState(PayState.SUCCESS);
+
+                        //amount (number): 주문(결제)금액
+                        int amount = Integer.parseInt(jo_response.get("amount") + "");
+                        //결제 금액 맞는지 확인
+                        if (payment.getPayPrice() != amount) {
+
+                            throw new MsgException("결제 금액이 일치하지 않습니다.");
+                        }
+
+
+                    }else if(status.equals("cancelled")){
+                        paymentHistory.setPhResult(PhResult.DONE);
+
+                        Payment payment = paymentHistory.getPayment();
+                        payment.setPayCancelState(PayState.SUCCESS);
+
                     } else if (status.equals("failed")) {
                         paymentHistory.setPhResult(PhResult.FAIL);
 

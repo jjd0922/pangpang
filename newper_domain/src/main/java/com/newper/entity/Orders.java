@@ -45,6 +45,8 @@ public class Orders {
     private OLocation oLocation;
 
     private String oCode;
+    /**임시여부. false인 경우 고객에게 노출X*/
+    private boolean oTemp;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
