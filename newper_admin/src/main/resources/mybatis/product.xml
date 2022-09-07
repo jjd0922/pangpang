@@ -67,17 +67,16 @@
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
 
-           ,CONCAT_WS(', ', TRIM(BOTH '"' from p_option->'$[0].title') ,TRIM(BOTH '"' from p_option->'$[1].title') ,TRIM(BOTH '"' from p_option->'$[2].title') ) P_OPTION_DT
+           ,CONCAT_WS(', ', p_option->>'$[0].title',p_option->>'$[1].title',p_option->>'$[2].title') P_OPTION_DT
         FROM
             product
                 LEFT JOIN (SELECT
                                category1.CATE_NAME AS CATE_NAME1,
                                category1.CATE_IDX AS CATE_IDX1,
                                category1.CATE_DEPTH,
-                               category1.CATE_SPEC_LIST AS CATE_SPEC_LIST,
                                category2.CATE_NAME AS CATE_NAME2,
                                category2.CATE_IDX AS CATE_IDX2,
-                               IF(category2.CATE_SPEC ='Y', category2.CATE_SPEC_LIST, '') AS CATE_SPEC_LIST2,
+                               IF(category2.CATE_SPEC ='Y', category2.CATE_SPEC_LIST, '') AS CATE_SPEC_LIST,
                                category3.CATE_NAME AS CATE_NAME3,
                                category3.CATE_IDX AS CATE_IDX3
 
