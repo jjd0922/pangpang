@@ -77,9 +77,9 @@ public class ProductController {
     }
 
     /**카테고리 상세 팝업*/
-    @GetMapping("category/categoryDetail/{cateIdx}")
-    public ModelAndView categoryDetail(@PathVariable int cateIdx){
-        ModelAndView mav = new ModelAndView("product/category/categoryDetail");
+    @GetMapping("category/{idx}")
+    public ModelAndView categoryDetail(@PathVariable(value = "idx") int cateIdx){
+        ModelAndView mav = new ModelAndView("product/category_idx");
         Category category = categoryRepo.findById(cateIdx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         int depth = category.getCateDepth();
@@ -90,16 +90,15 @@ public class ProductController {
             mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(2));
         }
 
-        List<Map<String,Object>> list = category.getCateSpecList();
-//        System.out.println("SPEC : "+list);
-//        System.out.println(list.size());
-//        System.out.println(list.get(0));
-//        System.out.println(list.get(0).get("list"));
-        if(list.size()!=0){
-            mav.addObject("spec",list.get(0).get("list"));
-        }else{
-            mav.addObject("spec","");
+        List<String> list = category.getCateSpecList();
+        String spec = "";
+        for (int i = 0; i < list.size(); i++) {
+            spec += list.get(i);
+            if (i + 1 != list.size()) {
+                spec += ", ";
+            }
         }
+        mav.addObject("spec",spec);
 
         String image = category.getCateImage();
         image=Common.summernoteContent(image);
@@ -110,13 +109,13 @@ public class ProductController {
     }
 
     /**카테고리 수정*/
-    @PostMapping("category/categoryDetail/{cateIdx}")
+    @PostMapping("category/{cateIdx}")
     public ModelAndView categoryDetailPost(@PathVariable int cateIdx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
         paramMap.put("CATE_IDX",cateIdx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/category/categoryDetail/"+cateIdx);
+        mav.addObject("loc","/product/category/"+cateIdx);
         return mav;
     }
 

@@ -41,7 +41,6 @@ public class Schedule extends CreatedEntity {
     private SType sType;
 
     @Builder.Default
-    @Convert(converter = ConvertList.class)
     private List<Map<String, String>> sCheck  = new ArrayList<>();
 
     private String sTitle;
