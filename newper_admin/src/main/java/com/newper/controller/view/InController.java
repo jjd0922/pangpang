@@ -54,4 +54,11 @@ public class InController {
 
         return mav;
     }
+    /** 영업검수 페이지*/
+    @GetMapping("sale")
+    public ModelAndView sale(){
+        ModelAndView mav = new ModelAndView("in/sale");
+
+        return mav;
+    }
 }
