@@ -6,20 +6,38 @@
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
             CU_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, PAY_PRODUCT_PRICE,
-            PAY_COUPON, PAY_USE_MILEAGE, PAY_POINT, PAY_DELIVERY, PAY_PRICE,
+            PAY_DELIVERY, PAY_PRICE,
             if(PAY_STATE='결제취소',PAY_PRICE,0) AS PAY_CANCEL_PRICE,
             PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
-            ADDR4, AD_ENTRANCE, O_DATE, O_TIME
+            ADDR4, AD_ENTRANCE, O_DATE, O_TIME,
+            O_POINT, O_COUPON, O_MILEAGE, O_PRICE, O_GS_PRICE,
+            (O_GS_PRICE - O_PRICE) O_EVENT,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_DATE'),'"',''),'') PAY_DATE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CODE'),'"',''),'') PAY_CODE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_DATE'),'"',''),'') PAY_CANCEL_DATE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),'') PAY_CANCEL_CODE
+
         FROM
-            `orders`
+            orders
                 LEFT JOIN customer
-                          ON CU_IDX=O_CU_IDX
+                    ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
-                          ON O_SHOP_IDX=SHOP_IDX
+                    ON O_SHOP_IDX=SHOP_IDX
                 LEFT JOIN order_address
-                          ON O_AD_IDX=AD_IDX
+                    ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
-                          ON O_PAY_IDX=PAY_IDX
+                    ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN (SELECT
+                                OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
+                                SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                            FROM
+                                order_gs
+                                LEFT JOIN shop_product_option
+                                ON OG_SPO_IDX=SPO_IDX
+                                LEFT JOIN goods_stock
+                                ON SPO_GS_IDX=GS_IDX
+                                GROUP BY OG_O_IDX)dt
+                    ON O_IDX=dt.OG_O_IDX
 
         order by O_IDX desc
         <if test="length!=-1">
@@ -30,7 +48,7 @@
         SELECT
             count(*)
         FROM
-            `orders`
+            orders
                 LEFT JOIN customer
                           ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
@@ -39,6 +57,96 @@
                           ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN (SELECT
+                               OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
+                               SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                           FROM
+                               order_gs
+                                   LEFT JOIN shop_product_option
+                                             ON OG_SPO_IDX=SPO_IDX
+                                   LEFT JOIN goods_stock
+                                             ON SPO_GS_IDX=GS_IDX
+                           GROUP BY OG_O_IDX)dt
+                            ON O_IDX=dt.OG_O_IDX
     </select>
+
+    <select id="selectOrderDetail" resultType="map">
+        SELECT
+            O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME, CU_IDX,
+            CU_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, PAY_PRODUCT_PRICE,
+            PAY_DELIVERY, PAY_PRICE,
+            if(PAY_STATE='결제취소',PAY_PRICE,0) AS PAY_CANCEL_PRICE,
+            PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
+            ADDR1, ADDR2, ADDR3,
+            ADDR4, AD_ENTRANCE, O_DATE, O_TIME, AD_MEMO,
+            O_POINT, O_COUPON, O_MILEAGE, O_PRICE, O_GS_PRICE,
+            (O_GS_PRICE - O_PRICE) O_EVENT,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_DATE'),'"',''),'') PAY_DATE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CODE'),'"',''),'') PAY_CODE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_DATE'),'"',''),'') PAY_CANCEL_DATE,
+            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),'') PAY_CANCEL_CODE
+
+        FROM
+            orders
+                LEFT JOIN customer
+                          ON CU_IDX=O_CU_IDX
+                LEFT JOIN shop
+                          ON O_SHOP_IDX=SHOP_IDX
+                LEFT JOIN order_address
+                          ON O_AD_IDX=AD_IDX
+                LEFT JOIN payment
+                          ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN (SELECT
+                               OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
+                               SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                           FROM
+                               order_gs
+                                   LEFT JOIN shop_product_option
+                                             ON OG_SPO_IDX=SPO_IDX
+                                   LEFT JOIN goods_stock
+                                             ON SPO_GS_IDX=GS_IDX
+                           GROUP BY OG_O_IDX)dt
+                          ON O_IDX=dt.OG_O_IDX
+        where
+            O_IDX=#{O_IDX}
+    </select>
+
+    <select id="selectGoodsStockDetailByOIdx" resultType="map">
+        SELECT
+            P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,
+            GS_CODE, ifnull(G_AJ_BARCODE,'') as G_AJ_BARCODE, P_NAME, SP_NAME,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
+            OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0) AS DELIVERY,
+            (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0)) AS TOTAL,
+            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE
+        FROM
+            orders
+                LEFT JOIN order_gs
+                          ON OG_O_IDX=O_IDX
+                LEFT JOIN shop_product_option
+                          ON OG_SPO_IDX=SPO_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN delivery_num
+                          ON OG_DN_IDX=DN_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+                LEFT JOIN payment
+                          ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN shop_product_add
+                          ON SPO_SPA_IDX=SPA_IDX
+                LEFT JOIN shop_product
+                          ON SPA_SP_IDX=SP_IDX
+                LEFT JOIN goods
+                          ON G_GS_IDX=GS_IDX
+        where
+            O_IDX=#{O_IDX}
+
+    </select>
+
+
 
 </mapper>

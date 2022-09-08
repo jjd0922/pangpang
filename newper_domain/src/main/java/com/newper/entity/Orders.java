@@ -11,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -23,7 +24,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long oIdx;
+    private Long OIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "O_CU_IDX", referencedColumnName = "cuIdx")
@@ -68,6 +69,9 @@ public class Orders {
     private LocalTime oTime;
 
     private String oMemo;
+
+    @OneToMany(mappedBy = "ogIdx")
+    private List<OrderGs> orderGs;
 
     public void setPayment(Payment payment){
         System.out.println("pay!!!");

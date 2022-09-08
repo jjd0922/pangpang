@@ -27,7 +27,7 @@ public class ShopProductOption {
 
     private String spoName;
 
-    private Integer spoMoney;
+    private Integer spoPrice;
 
 
 }
