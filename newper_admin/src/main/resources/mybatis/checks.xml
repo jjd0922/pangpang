@@ -20,14 +20,17 @@
         SELECT
             *
         FROM
-            CHECKS
-
+            CHECKS, CHECK_GROUP
+        WHERE
+            CG_CHECK_IDX = CHECK_IDX
     </select>
     <select id="countChecksDatatable"  parameterType="map" resultType="Long">
         SELECT
             COUNT(*)
         FROM
-            CHECKS
+            CHECKS, CHECK_GROUP
+        WHERE
+            CG_CHECK_IDX = CHECK_IDX
     </select>
 
 </mapper>
