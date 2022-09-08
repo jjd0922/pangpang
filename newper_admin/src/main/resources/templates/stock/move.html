@@ -2,35 +2,23 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>재고자산상세</title>
+    <title>창고이동관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
-    <style>
-        .modal-dialog {
-            max-width: 80%;
-        }
-    </style>
 </head>
 <body>
+<th:block th:replace="common/header.html"></th:block>
 
 <!-- 본문 영역 시작 -->
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content-inner">
-            <div class="page-header page-header-dark">
-                <div class="page-header-content container-fluid header-elements-md-inline px-3">
-                    <div class="d-flex">
-                        <div class="page-title">
-                            <h4 class="font-weight-semibold"><i class="icon-box mr-1"></i>재고 자산 상세</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Content area -->
             <div class="content container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+
                         <div class="card">
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
@@ -49,79 +37,64 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <div class="popup-contents pt-0">
-                                        <legend>창고명, 로케이션</legend>
-                                    </div>
                                     <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
-                                                    <label class="d-block">정산구분(품목구분1)</label>
+                                                    <label class="d-block">창고이동상태</label>
                                                     <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
                                                         <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">상품분류(품목구분2)</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">물류타입(품목자산구분)</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">상품코드</label>
+                                                    <label class="d-block">창고이동작업코드</label>
                                                     <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">상품명</label>
+                                                    <label class="d-block">요청자</label>
                                                     <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">자산코드</label>
+                                                    <label class="d-block">처리자</label>
                                                     <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">재고코드</label>
+                                                    <label class="d-block">창고이동요청일</label>
                                                     <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">등급</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
+                                                    <label class="d-block">창고이동출고일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">옵션1</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
+                                                    <label class="d-block">창고이동입고일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">옵션2</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
+                                                    <label class="d-block">출고창고</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">옵션3</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
-                                                    </select>
+                                                    <label class="d-block">출고로케이션</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고창고</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고로케이션</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -129,31 +102,38 @@
                                                         <span class="ladda-label">조회하기</span>
                                                     </button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </form>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table table-hover" id="goodsTable"></table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="newStockMoveBtn">
+                                            <i class="icon-home7 mr-1"></i>창고이동등록
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover" id="stockMoveTable"></table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-        </div>
-        <!-- /footer -->
     </div>
 </div>
-
-<th:block th:replace="stock/modal/goodsSpecModal.html"></th:block>
-<th:block th:replace="stock/modal/processHistoryModal.html"></th:block>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -182,18 +162,28 @@
 <script th:src="@{/assets/js/common.js}"></script>
 <script th:inline="javascript">
     function searchBtn(){
-        $('#stockTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#searchForm').serialize()).load();
+        $('#stockMoveTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#searchForm').serialize()).load();
+    }
+
+    function popNewStockMove() {
+        var focusPopup = window.open('/stock/move/pop','stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function popStockMoveDetail(idx) {
+        var focusPopup = window.open('/stock/move/pop/'+idx,'stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 <script th:inline="javascript">
-    $('#goodsTable').DataTable({
+    $('#stockMoveTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
             style: 'multi',
             selector: 'td:first-child'
         },
-        buttons : buttonsSelect(false),
+        buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
             url:'/coupon/couponGroup.dataTable',
@@ -206,32 +196,29 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'정산구분(품목구분1)','data':'','defaultContent':''}
-            ,{'title':'상품분류(품목구분2)','data':'','defaultContent':''}
-            ,{'title':'물류타입(품목자산구분)','data':'','defaultContent':''}
-            ,{'title':'상품코드','data':'','defaultContent':''}
-            ,{'title':'상품명','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','defaultContent':''}
-            ,{'title':'재고코드','data':'','defaultContent':''}
-            ,{'title':'판매채널','data':'','defaultContent':''}
-            ,{'title':'등급','data':'','defaultContent':''}
-            ,{'title':'옵션1','data':'','defaultContent':''}
-            ,{'title':'옵션2','data':'','defaultContent':''}
-            ,{'title':'옵션3','data':'','defaultContent':''}
-            ,{'title':'IMEI','data':'','defaultContent':''}
-            ,{'title':'시리얼','data':'','defaultContent':''}
-            ,{'title':'SPEC이력','data':'','render': function () {
-                return '<a onclick="openGoodsSpecModal()" class="badge badge-primary">조회</a>';
+            ,{'title':'창고이동상태','data':'','defaultContent':''}
+            ,{'title':'창고이동작업코드','data':'','render': function () {
+                return '<a onclick="popStockMoveDetail(0)" class="badge badge-primary">조회</a>';
             }}
-            ,{'title':'공정이력','data':'','render': function () {
-                return '<a onclick="openProcessHistoryModal()" class="badge badge-primary">조회</a>';
-            }}
+            ,{'title':'요청자','data':'','defaultContent':''}
+            ,{'title':'처리자','data':'','defaultContent':''}
+            ,{'title':'창고이동요청일','data':'','defaultContent':''}
+            ,{'title':'창고이동출고일','data':'','defaultContent':''}
+            ,{'title':'창고이동입고일','data':'','defaultContent':''}
+            ,{'title':'출고창고','data':'','defaultContent':''}
+            ,{'title':'출고적재형태','data':'','defaultContent':''}
+            ,{'title':'출고로케이션','data':'','defaultContent':''}
+            ,{'title':'입고창고','data':'','defaultContent':''}
+            ,{'title':'입고적재형태','data':'','defaultContent':''}
+            ,{'title':'입고로케이션','data':'','defaultContent':''}
+            ,{'title':'수량','data':'','defaultContent':''}
         ]
     });
 
     $('#searchForm').on('keyup', function (event) {
         if(event.keyCode==13){searchBtn();return false;}
     });
+    $('#newStockMoveBtn').on('click', popNewStockMove);
 </script>
 </body>
 </html>

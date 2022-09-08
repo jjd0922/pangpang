@@ -27,7 +27,13 @@
 </div>
 
 <script th:inline="javascript">
-  function openBarcodeModal() {
+  /**바코드 모달 열고 modal-title 설정*/
+  function openBarcodeModal(modalTitle) {
     $('#barcodeModal').modal('show');
+    $('#barcodeModal .modal-title').text(modalTitle);
+
+    var barcodeInput = $('input[name="barcode"]');
+    barcodeInput.val("").focus();
+    return barcodeInput;
   }
 </script>
