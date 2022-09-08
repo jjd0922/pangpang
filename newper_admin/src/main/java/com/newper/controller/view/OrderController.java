@@ -1,6 +1,8 @@
 package com.newper.controller.view;
 
 import com.newper.constant.OLocation;
+import com.newper.entity.Order;
+import com.newper.entity.OrderGs;
 import com.newper.mapper.OrderMapper;
 import com.newper.repository.OrderRepo;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,6 +50,18 @@ public class OrderController {
         map.put("O_LOCATION",o_location);
         mav.addObject("order", map);
 
+        List<Map<String, Object>> gs = orderMapper.selectGoodsStockDetailByOIdx(oIdx);
+
+        mav.addObject("gs",gs);
+
+
+
+        return mav;
+    }
+
+    @GetMapping("shop/order")
+    public ModelAndView shopOrder(){
+        ModelAndView mav = new ModelAndView("order/shop_order");
         return mav;
     }
 

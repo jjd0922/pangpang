@@ -120,7 +120,7 @@
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="approvalRequest">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="sabang()">
                                             <i class="icon-popout mr-1"></i>사방넷전송
                                         </a>
                                     </div>
@@ -188,6 +188,34 @@
         focusPopup.focus();
     }
 
+    function sabang(){
+        var param = '';
+        var leng = $("#goodsStockTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#goodsStockTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("사방넷 전송하시겠습니까?")){
+                $.ajax({
+                    url:"/product/sabang.ajax",
+                    data: "gsIdxs="+param,
+                    type:"POST",
+                    success:function() {
+                        // $('#goodsStockTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
 
 </script>
 
@@ -209,7 +237,7 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'GS_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '<input type="hidden" name="GS_IDX" value="'+data+'">';
                 }}
             ,{'title':'재고대표썸네일','data':'GS_THUMB_FILE1','render':function(data,type,full,meta){

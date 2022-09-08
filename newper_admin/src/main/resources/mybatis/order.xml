@@ -18,7 +18,7 @@
             if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),'') PAY_CANCEL_CODE
 
         FROM
-            `order`
+            orders
                 LEFT JOIN customer
                     ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
@@ -48,7 +48,7 @@
         SELECT
             count(*)
         FROM
-            `order`
+            orders
                 LEFT JOIN customer
                           ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
@@ -87,7 +87,7 @@
             if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),'') PAY_CANCEL_CODE
 
         FROM
-            `order`
+            orders
                 LEFT JOIN customer
                           ON CU_IDX=O_CU_IDX
                 LEFT JOIN shop
@@ -110,5 +110,43 @@
         where
             O_IDX=#{O_IDX}
     </select>
+
+    <select id="selectGoodsStockDetailByOIdx" resultType="map">
+        SELECT
+            P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,
+            GS_CODE, ifnull(G_AJ_BARCODE,'') as G_AJ_BARCODE, P_NAME, SP_NAME,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
+            OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0) AS DELIVERY,
+            (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0)) AS TOTAL,
+            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE
+        FROM
+            orders
+                LEFT JOIN order_gs
+                          ON OG_O_IDX=O_IDX
+                LEFT JOIN shop_product_option
+                          ON OG_SPO_IDX=SPO_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN delivery_num
+                          ON OG_DN_IDX=DN_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+                LEFT JOIN payment
+                          ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN shop_product_add
+                          ON SPO_SPA_IDX=SPA_IDX
+                LEFT JOIN shop_product
+                          ON SPA_SP_IDX=SP_IDX
+                LEFT JOIN goods
+                          ON G_GS_IDX=GS_IDX
+        where
+            O_IDX=#{O_IDX}
+
+    </select>
+
+
 
 </mapper>

@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -20,7 +21,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long oIdx;
+    private Long OIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "O_CU_IDX", referencedColumnName = "cuIdx")
@@ -58,5 +59,8 @@ public class Order {
     private LocalTime oTime;
 
     private String oMemo;
+
+    @OneToMany(mappedBy = "ogIdx")
+    private List<OrderGs> orderGs;
 
 }

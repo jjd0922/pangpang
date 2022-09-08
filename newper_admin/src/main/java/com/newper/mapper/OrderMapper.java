@@ -15,4 +15,7 @@ public interface OrderMapper {
     /**통합주문관리 상세*/
     Map<String, Object> selectOrderDetail(int O_IDX);
 
+    /**통합주문관리 주문상품*/
+    List<Map<String, Object>> selectGoodsStockDetailByOIdx(int O_IDX);
+
 }
