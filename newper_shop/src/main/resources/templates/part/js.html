@@ -228,6 +228,14 @@
     });
 
     /*** 카테고리 탭 메뉴 (ex: MD 추천 카테고리, 베스트 100) ***/
+    var headerHeight = $('header').height();
+
+    $(window).scroll(function(event) {
+        if ($(window).scrollTop() > headerHeight) {
+            $('.sticky').css({top:headerHeight, padding:'0'});
+        };
+    });
+
     $('.ctg-tab>li').click(function(){
         $(this).addClass('on');
         $(this).siblings().removeClass('on');
