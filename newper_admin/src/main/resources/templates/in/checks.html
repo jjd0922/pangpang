@@ -84,11 +84,11 @@
 <script>
     function searchBtn() {
         var table = $('#searchTable').DataTable();
-        table.page('first').ajax.url('/in/sale.dataTable?' + $('#searchForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/in/checks.dataTable?' + $('#searchForm').serialize()).load(null, false);
     }
 
-    function incheckPop(idx){
-        var focusPopup = window.open('/in/incheckManagePop','incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+    function checksPop(idx){
+        var focusPopup = window.open('/','incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -99,7 +99,7 @@
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/in/sale.dataTable?'+$('#searchForm').serialize(),
+            url:'/in/checks.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         "columns" : [

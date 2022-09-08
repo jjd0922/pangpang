@@ -55,9 +55,9 @@ public class InController {
         return mav;
     }
     /** 영업검수 페이지*/
-    @GetMapping("sale")
-    public ModelAndView sale(){
-        ModelAndView mav = new ModelAndView("in/sale");
+    @GetMapping("checks")
+    public ModelAndView checks(){
+        ModelAndView mav = new ModelAndView("in/checks");
 
         return mav;
     }

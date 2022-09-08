@@ -160,7 +160,7 @@ public class InRestController {
 
     }
     /** 영업검수 조회*/
-    @PostMapping("sale.dataTable")
+    @PostMapping("checks.dataTable")
     public ReturnDatatable sale(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
 
