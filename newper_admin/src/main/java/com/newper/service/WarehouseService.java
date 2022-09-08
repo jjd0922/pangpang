@@ -65,6 +65,14 @@ public class WarehouseService {
 
         Warehouse warehouse = warehouseRepo.findById(whIdx).orElseThrow(() -> new MsgException("존재하지 않는 창고입니다."));
         Warehouse newWh = paramMap.mapParam(Warehouse.class);
+
+        if (newWh.getWhState() == WhState.DISUSE && warehouse.getWhState() != newWh.getWhState()) {
+            int stockCnt = warehouseMapper.countGoodsInWarehouse(whIdx);
+            if (stockCnt > 0) {
+                throw new MsgException("현재 재고가 있는 창고는 미사용상태로 변경할 수 없습니다");
+            }
+        }
+
         warehouse.setWhName(newWh.getWhName());
         warehouse.setWhState(newWh.getWhState());
         warehouse.setCompany(Company.builder().comIdx(paramMap.getInt("comIdx")).build());
@@ -75,14 +83,19 @@ public class WarehouseService {
     @Transactional
     public void changeWhState(ParamMap paramMap) {
         String dataList = paramMap.getString("dataList");
-        String[] dataArr = dataList.substring(0, (dataList.length() - 1)).split(",");
+        String[] idxArr = dataList.substring(0, (dataList.length() - 1)).split(",");
 
-        // 정상에서 미사용으로 전환시 해당 창고에 재고가 없어야 함(추후~)
+        // 정상에서 미사용으로 전환시 해당 창고에 재고가 없어야 함
         WhState paramState = WhState.valueOf(paramMap.getString("state"));
         if (paramState == WhState.DISUSE) {
-
+            for (String idxStr : idxArr) {
+                int stockCnt = warehouseMapper.countGoodsInWarehouse(Integer.parseInt(idxStr));
+                if (stockCnt > 0) {
+                    throw new MsgException("현재 재고가 있는 창고는 미사용창고로 변경할 수 없습니다");
+                }
+            }
         }
-        warehouseMapper.changeAllWhState(dataArr, paramState);
+        warehouseMapper.changeAllWhState(idxArr, paramState);
     }
 
     /** 창고관리 > 로케이션 등록 */
@@ -108,6 +121,12 @@ public class WarehouseService {
         }
         Location location = locationRepo.findById(locIdx).orElseThrow(() -> new MsgException("존재하지 않는 로케이션입니다."));
         Location locationParam = paramMap.mapParam(Location.class);
+        if (locationParam.getLocType() != LocType.NORMAL && location.getLocType() != locationParam.getLocType()) {
+            int stockCnt = warehouseMapper.countGoodsInLocation(locIdx);
+            if (stockCnt > 0) {
+                throw new MsgException("현재 재고가 있는 로케이션은 가상/불용상태로 변경할 수 없습니다");
+            }
+        }
         location.updateLocation(locationParam);
         location.setUser(User.builder().uIdx(paramMap.getInt("uIdx")).build());
     }
@@ -116,8 +135,19 @@ public class WarehouseService {
     @Transactional
     public void changeLocType(ParamMap paramMap) {
         String dataList = paramMap.getString("dataList");
-        String[] dataArr = dataList.substring(0, (dataList.length() - 1)).split(",");
-        warehouseMapper.changeAllLocType(dataArr, LocType.valueOf(paramMap.getString("locType")));
+        String[] idxArr = dataList.substring(0, (dataList.length() - 1)).split(",");
+
+        // '불용'상태로 변경시 로케이션 안에 재고가 없어야함
+        LocType paramType = LocType.valueOf(paramMap.getString("locType"));
+        if (paramType != LocType.NORMAL) {
+            for (String idxStr : idxArr) {
+                int stockCnt = warehouseMapper.countGoodsInLocation(Integer.parseInt(idxStr));
+                if (stockCnt > 0) {
+                    throw new MsgException("현재 재고가 있는 로케이션은 가상/불용상태로 변경할 수 없습니다");
+                }
+            }
+        }
+        warehouseMapper.changeAllLocType(idxArr, LocType.valueOf(paramMap.getString("locType")));
     }
 
     /**로케이션 엑셀업로드*/
