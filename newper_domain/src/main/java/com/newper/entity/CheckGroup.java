@@ -29,7 +29,7 @@ public class CheckGroup extends CreatedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CG_CHECK_IDX", referencedColumnName = "checkIdx")
-    private Check check;
+    private Checks checks;
 
     private String cgState;
 

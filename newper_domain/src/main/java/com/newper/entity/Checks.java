@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Check {
+public class Checks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer checkIdx;

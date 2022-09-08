@@ -4,13 +4,12 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 
-import com.newper.mapper.CheckMapper;
+import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.service.GoodsService;
 import com.newper.service.InService;
 import com.newper.service.PoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +27,7 @@ public class InRestController {
     private final GoodsService goodsService;
     private final InService inService;
     private final PoService poService;
-    private final CheckMapper checkMapper;
+    private final ChecksMapper checksMapper;
 
 
     /**
@@ -90,9 +89,9 @@ public class InRestController {
     public ReturnDatatable incheck(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("입고검수");
 
-        List<Map<String, Object>> list = checkMapper.selectCheckGroupDatatable(paramMap.getMap());
+        List<Map<String, Object>> list = checksMapper.selectCheckGroupDatatable(paramMap.getMap());
         rd.setData(list);
-        rd.setRecordsTotal(checkMapper.countCheckGroupDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
 
         return rd;
     }
@@ -159,6 +158,17 @@ public class InRestController {
 
         return rm;
 
+    }
+    /** 영업검수 조회*/
+    @PostMapping("sale.dataTable")
+    public ReturnDatatable sale(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+
+        List<Map<String, Object>> list = checksMapper.selectChecksDatatable(paramMap.getMap());
+        rd.setData(list);
+        rd.setRecordsTotal(checksMapper.countChecksDatatable(paramMap.getMap()));
+
+        return rd;
     }
 }
 
