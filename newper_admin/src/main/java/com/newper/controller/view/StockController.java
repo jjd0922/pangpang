@@ -40,5 +40,19 @@ public class StockController {
         return mav;
     }
 
+    /**재고현황 메인페이지 > 로케이션별 재고현황 조회*/
+    @GetMapping("")
+    public ModelAndView stock() {
+        ModelAndView mav = new ModelAndView("/stock/stock");
+        return mav;
+    }
+    
+    /**재고현황 > 해당 로케이션의 재고자산 상세*/
+    @GetMapping("goods")
+    public ModelAndView goodsInLocation() {
+        ModelAndView mav = new ModelAndView("/stock/goods");
+        return mav;
+    }
+    
 
 }

@@ -76,7 +76,13 @@ public class WarehouseService {
     public void changeWhState(ParamMap paramMap) {
         String dataList = paramMap.getString("dataList");
         String[] dataArr = dataList.substring(0, (dataList.length() - 1)).split(",");
-        warehouseMapper.changeAllWhState(dataArr, WhState.valueOf(paramMap.getString("state")));
+
+        // 정상에서 미사용으로 전환시 해당 창고에 재고가 없어야 함(추후~)
+        WhState paramState = WhState.valueOf(paramMap.getString("state"));
+        if (paramState == WhState.DISUSE) {
+
+        }
+        warehouseMapper.changeAllWhState(dataArr, paramState);
     }
 
     /** 창고관리 > 로케이션 등록 */
