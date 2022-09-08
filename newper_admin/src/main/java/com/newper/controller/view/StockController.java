@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,5 +55,26 @@ public class StockController {
         return mav;
     }
     
+    /**창고이동관리 메인페이지*/
+    @GetMapping("move")
+    public ModelAndView stockMove() {
+        ModelAndView mav = new ModelAndView("/stock/move");
+        return mav;
+    }
+
+    /**창고이동관리 > 창고이동등록 페이지*/
+    @GetMapping("move/pop")
+    public ModelAndView stockMovePop() {
+        ModelAndView mav = new ModelAndView("/stock/move_pop");
+        return mav;
+    }
+
+    /**창고이동관리 > 창고이동 조회/수정 페이지*/
+    @GetMapping("move/pop/{idx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
+    public ModelAndView stockMovePopDetail(@PathVariable Integer idx) {
+        ModelAndView mav = new ModelAndView("/stock/move_pop");
+        mav.addObject("tempObject", " ");
+        return mav;
+    }
 
 }
