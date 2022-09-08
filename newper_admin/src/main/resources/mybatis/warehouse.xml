@@ -137,4 +137,26 @@
                  #{item.locColumn})
             </foreach>
     </insert>
+
+    <select id="countGoodsInWarehouse" resultType="int">
+        SELECT
+            COUNT(DISTINCT(G_IDX))
+        FROM
+            GOODS,
+            WAREHOUSE
+                LEFT JOIN LOCATION ON LOC_WH_IDX = WH_IDX
+        WHERE
+            G_LOC_IDX = LOC_IDX
+            AND WH_IDX = #{whIdx}
+    </select>
+
+    <select id="countGoodsInLocation" resultType="int">
+        SELECT
+            COUNT(DISTINCT(G_IDX))
+        FROM
+            GOODS, LOCATION
+        WHERE
+            G_LOC_IDX = LOC_IDX
+            AND LOC_IDX = #{locIdx}
+    </select>
 </mapper>

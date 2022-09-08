@@ -31,4 +31,10 @@ public interface WarehouseMapper {
 
     /**로케이션 엑셀 업로드*/
     void insertLocationByExcel(List<Location> locations);
+
+    /**창고 내 재고자산 개수*/
+    int countGoodsInWarehouse(Integer whIdx);
+    
+    /**로케이션 내 재고자산 개수*/
+    int countGoodsInLocation(Integer locIdx);
 }
