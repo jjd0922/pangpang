@@ -374,8 +374,8 @@
 
 
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','render':function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'G_IDX','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
@@ -385,20 +385,19 @@
             ,{'title':'자산<br>처리일','data':'G_IDX'}
             ,{'title':'자산<br>코드','data':'G_IDX'}
             ,{'title':'상품<br>코드','data':'G_IDX'}
-            ,{'title':'상품명','data':'G_IDX'}
-            ,{'title':'입고SPEC<br>(예정)','data':'G_IDX'}
-            ,{'title':'입고SPEC<br>(확정)','data':'G_IDX'}
-            ,{'title':'판매SPEC<br>(예정)','data':'G_IDX'}
-            ,{'title':'판매SPEC<br>(확정)','data':'G_IDX'}
-            ,{'title':'가공SPEC<br>(예정)','data':'G_IDX'}
-            ,{'title':'가공SPEC<br>(확정)','data':'G_IDX'}
+            ,{'title':'상품명','data':'P_NAME'}
+            ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1'}
+            ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2'}
+            ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1'}
+            ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2'}
+            ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1'}
+            ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2'}
             ,{'title':'판매스펙<br>확정일','data':'G_IDX'}
             ,{'title':'IMEI','data':'G_IDX'}
             ,{'title':'시리얼','data':'G_IDX'}
             ,{title:'', 'data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
-            // ,{'title':'발주<br>INDEX','data':'G_IDX'}
             ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
@@ -414,9 +413,6 @@
             ,{'title':'재검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
-
-
-
         ]
     });
 

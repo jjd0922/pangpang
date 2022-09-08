@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.CgState;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -31,7 +32,8 @@ public class CheckGroup extends CreatedEntity {
     @JoinColumn(name="CG_CHECK_IDX", referencedColumnName = "checkIdx")
     private Checks checks;
 
-    private String cgState;
+    @Enumerated(EnumType.STRING)
+    private CgState cgState;
 
     private LocalDate cgRequestDate;
 
@@ -48,6 +50,10 @@ public class CheckGroup extends CreatedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CG_U_IDX", referencedColumnName = "uIdx")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="CG_U_IDX2", referencedColumnName = "uIdx")
+    private User user2;
 
 
 }

@@ -170,6 +170,31 @@ public class InRestController {
 
         return rd;
     }
+
+    /** 입고검수 작업요청취소 */
+    @PostMapping("checkGroupStateUpdate.ajax")
+    public ReturnMap checkGroupStateUpdate(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        inService.checkGroupStateUpdate(paramMap);
+        return rm;
+    }
+
+    /** 입고검수 자산 검색 */
+    @PostMapping("checkGoods.dataTable")
+    public ReturnDatatable checkGoods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(checksMapper.selectCheckGoodsByCG_IDX(paramMap.getMap()));
+        rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
+
+        return rd;
+    }
+
+    /** 자산 상세 검색 */
+    @PostMapping("selectCheckGoods.ajax")
+    public Map<String, Object> selectCheckGoods(ParamMap paramMap) {
+        return checksMapper.selectCheckGoodsByCGS_IDX(paramMap.getInt("cgsIdx"));
+    }
+
 }
 
 

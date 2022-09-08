@@ -114,10 +114,8 @@ public class ProcessRestController {
     @PostMapping("incheckPop.ajax")
     public ReturnMap incheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-
         checkService.insertCheckGroup(paramMap);
-
-
+        rm.setMessage("입고검수 요청 완료");
         return rm;
     }
 }

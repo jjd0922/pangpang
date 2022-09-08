@@ -105,6 +105,8 @@ public class PoService {
             product.setPIdx((int) Long.parseLong(pIdx.get(i).toString()));
             poProduct.setProduct(product);
 
+
+
             Spec spec_buy = specRepo.findSpecBySpecConfirm(poProductSpec.get(i));
             if (spec_buy == null) {
                 spec_buy = Spec.builder()
@@ -113,6 +115,7 @@ public class PoService {
                         .build();
                 specRepo.save(spec_buy);
 
+                String specConfirm = "";
                 String spec = poProductSpec.get(i);
                 String[] specArr = spec.split("/");
                 for (int j = 0; j < specArr.length; j++) {
@@ -129,6 +132,9 @@ public class PoService {
                                 .build();
                         specListRepo.save(specList);
                     }
+
+                    specConfirm += specList.getSpeclIdx() + ",";
+
 
                     Map<String, Object> specParam = new HashMap<>();
                     specParam.put("SPEC_IDX", spec_buy.getSpecIdx());
