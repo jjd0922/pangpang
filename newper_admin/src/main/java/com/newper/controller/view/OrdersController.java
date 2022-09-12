@@ -40,7 +40,7 @@ public class OrdersController {
 
     @GetMapping("detail/{oIdx}")
     public ModelAndView detail(@PathVariable int oIdx){
-        ModelAndView mav = new ModelAndView("order/detail");
+        ModelAndView mav = new ModelAndView("orders/detail");
 
         Map<String, Object> map = ordersMapper.selectOrderDetail(oIdx);
         String o_location = OLocation.valueOf(map.get("O_LOCATION")+"").getOption();

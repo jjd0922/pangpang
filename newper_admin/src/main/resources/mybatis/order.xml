@@ -41,7 +41,7 @@
 
         order by O_IDX desc
         <if test="length!=-1">
-            LIMIT #{start},#{length}
+            limit #{start},#{length}
         </if>
     </select>
     <select id="countOrderDatatable" resultType="Integer">
@@ -67,7 +67,7 @@
                                    LEFT JOIN goods_stock
                                              ON SPO_GS_IDX=GS_IDX
                            GROUP BY OG_O_IDX)dt
-                            ON O_IDX=dt.OG_O_IDX
+                          ON O_IDX=dt.OG_O_IDX
     </select>
 
     <select id="selectOrderDetail" resultType="map">

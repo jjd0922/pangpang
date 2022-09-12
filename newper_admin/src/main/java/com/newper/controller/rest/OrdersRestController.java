@@ -22,7 +22,7 @@ public class OrdersRestController {
     private final OrderService orderService;
 
     /**통합주문관리 데이터테이블*/
-    @PostMapping("order.dataTable")
+    @PostMapping("orders.dataTable")
     public ReturnDatatable order(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
         List<Map<String, Object>> order = ordersMapper.selectOrderDatatable(paramMap.getMap());
