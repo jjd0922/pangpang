@@ -116,4 +116,13 @@ public class PoRestController {
         rm.setMessage(poService.poStateUpdate(paramMap));
         return rm;
     }
+
+    /** 발주 상품 조회 */
+    @PostMapping("selectPoProduct.dataTable")
+    public ReturnDatatable selectPoProduct(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(poMapper.selectPoProductByPoIdx(paramMap.getInt("poIdx")));
+        return rd;
+    }
+
 }

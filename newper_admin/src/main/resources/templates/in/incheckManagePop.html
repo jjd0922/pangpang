@@ -204,8 +204,7 @@
                                             </a>
 
 
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="mappingBtn"
-                                               onclick="mappingBtn()">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openMappingModal()">
                                                 <i class="icon-popout mr-1"></i>(2)발주코드 맵핑
                                             </a>
 
@@ -223,12 +222,7 @@
                                                         <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                             <div class="form-group">
                                                                 <label class="d-block">발주코드</label>
-                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label class="d-block">발주INDEX</label>
-                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                                <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="poIdx">
                                                             </div>
 
                                                             <div class="form-group">
@@ -307,7 +301,10 @@
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
+
 <th:block th:replace="product/modal/productModal_checkGroup.html"/>
+<th:block th:replace="po/modal/poModal_checkGroup.html"/>
 
 
 <script th:inline="javascript">
@@ -361,7 +358,6 @@
         var table = $('#goodsTable').DataTable();
         table.page('first').ajax.url('/in/checkGoods.dataTable?' + $('#goodsForm').serialize()).load(null, false);
     }
-
 </script>
 
 
@@ -404,11 +400,11 @@
             , {'title': 'IMEI', 'data': '', 'defaultContent': ''}
             , {'title': '시리얼', 'data': '', 'defaultContent': ''}
             , {'title': '입고SPEC(예정)', 'data': '', 'defaultContent': ''}
-            , {'title': '입고SPEC(확정)', 'data': 'CGS_SPEC_IDX', 'defaultContent': '', 'render': function (data, type, full, meta) {
+            , {'title': '입고SPEC(확정)', 'data': 'SPEC1', 'defaultContent': '', 'render': function (data, type, full, meta) {
                     if (data == null) {
-                        return '<a href="javascript: openSpecModal_CGS(' + full.CGS_IDX + ')" class="badge badge-primary">등록</a>';
+                        return '<a href="javascript: openSpecModal_CGS(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
                     } else {
-                        return data;
+                        return '<a href="javascript: openSpecModal_CGS(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
                     }
                 }}
             , {'title': '판매SPEC(예정)', 'data': '', 'defaultContent': ''}

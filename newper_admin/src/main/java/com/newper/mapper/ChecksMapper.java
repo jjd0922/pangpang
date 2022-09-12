@@ -20,11 +20,8 @@ public interface ChecksMapper {
     /** 영업검수 조회*/
     long countChecksDatatable(Map<String, Object> map);
 
-    /** 입고검수 해당 자산 조희 */
-    List selectCheckGoodsByCG_IDX(Map<String, Object> map);
-
-    /** 입고검수 자산 상세 조회 */
-    Map<String, Object> selectCheckGoodsByCGS_IDX(int cgsIdx);
+    /** 입고검수 자산 조희 */
+    List selectCheckGoods(Map<String, Object> map);
 
     /** 해당 자산 공정 회차 */
     int countCheckGroupByGoods(@Param("gIdx") Long gIdx);

@@ -33,4 +33,39 @@
             CG_CHECK_IDX = CHECK_IDX
     </select>
 
+    <select id="selectCheckGroupExpectedCostTotal" resultType="Integer">
+        SELECT
+            SUM(CGS_COUNT * CGS_EXPECTED_COST)
+        FROM
+            CHECK_GOODS
+        WHERE
+            CGS_CG_IDX = #{cgIdx}
+        GROUP BY
+            CGS_CG_IDX
+    </select>
+
+    <sql id="includeCheckGoodsDataTable">
+        <if test="cgIdx != '' and cgIdx != null">AND CG_IDX = #{cgIdx}</if>
+        <if test="poIdx != '' and poIdx != null">AND PO_IDX = #{poIdx}</if>
+        <if test="gState != '' and gState != null">AND G_STATE = #{gState}</if>
+    </sql>
+    <select id="selectCheckGoods" resultType="Map">
+        SELECT
+            *,
+            SPEC1.SPEC_LOOKUP AS SPEC1,
+            SPEC2.SPEC_LOOKUP AS SPEC2
+        FROM
+            CHECK_GOODS
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
+                LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN SPEC AS SPEC1 ON CGS_SPEC_IDX = SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS SPEC2 ON CGS_SPEC_IDX2 = SPEC2.SPEC_IDX
+        <where>
+            <include refid="includeCheckGoodsDataTable"></include>
+        </where>
+    </select>
+
 </mapper>

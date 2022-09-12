@@ -1,0 +1,240 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="poModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">발주코드 매핑</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="poDiv">
+                    <div class="card mb-1">
+                        <div class="card-body popup-contents mb-1">
+                            <fieldset class="mb-0">
+                                <legend class="">1. 등록정보</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주상태</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poState" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">입고예정창고(발주)</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="whName" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주담당자</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="uName" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주완료일</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="hwAprvDate" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">거래처담당자</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="uName2" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주서</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poFile" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주메모</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poMemo" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="card mb-1">
+                        <div class="card-body popup-contents mb-1">
+                            <fieldset class="mb-0">
+                                <legend class="">2. 발주상품 정보</legend>
+                                <div class="row">
+                                    <table class="table" id="poProductTable"></table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+                    <div class="card mb-1">
+                        <div class="card-body popup-contents mb-1">
+                            <fieldset class="mb-0">
+                                <legend class="">3. 입고완료 자산 정보</legend>
+                                <div class="row">
+                                    <table class="table" id="poGoodsTable"></table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnpoModal" onclick="poMapping()">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function openMappingModal() {
+        var poIdx = $('input[name=poIdx]').val();
+        if (isNaN(poIdx) || poIdx == '') {
+            alert('발주코드를 확인해주세요');
+            return false;
+        }
+
+        getProduct();
+        getGoods();
+
+        $('#poModal').show();
+    }
+
+    function poMapping() {
+        var gIdxs = dataTableGetSelectedData('poGoodsTable','G_IDX');
+        var ppIdxs = dataTableGetSelectedData('poProductTable','PP_IDX');
+
+        $.ajax({
+            url:'/in/poCheckMapping.ajax'
+            ,type:'post'
+            ,data: {
+                "gIdxs" : gIdxs,
+                "ppIdxs" : ppIdxs
+            }
+            ,async: false
+        }).done(function(res){
+
+        }).fail(function(){
+            return false;
+        });
+
+    }
+</script>
+
+<script>
+    function getProduct() {
+        //발주상품정보
+        var poProductTable = $('#poProductTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering: false,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax: {
+                url: '/po/selectPoProduct.dataTable?' + $('#goodsForm').serialize(),
+                type: 'post'
+            },
+            columnDefs: [{
+                orderable: false,
+                targets: [0]
+            }],
+            "columns": [
+                {
+                    'class': 'select-checkbox m-w-2',
+                    'title': '선택',
+                    'data': 'PP',
+                    'defaultContent': '',
+                    'render': function (data, type, full, meta) {
+                        return '';
+                    }
+                }
+                , {'title': '상품코드', 'data': 'P_IDX'}
+                , {'title': '발주코드', 'data': 'PO_IDX'}
+            ]
+        });
+    }
+</script>
+
+<script>
+    //입고검수완료 자산 정보
+    function getGoods() {
+        var poGoodsTable = $('#poGoodsTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering: false,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax: {
+                url: '/in/checkGoods.dataTable?gState=CHECK',
+                type: 'post'
+            },
+            columnDefs: [{
+                orderable: false,
+                targets: [0]
+            }],
+            "columns": [
+                {
+                    'class': 'select-checkbox m-w-2',
+                    'title': '선택',
+                    'data': 'G_IDX',
+                    'defaultContent': '',
+                    'render': function (data, type, full, meta) {
+                        return '';
+                    }
+                }
+                , {'title': '상품코드', 'data': 'P_IDX'}
+                , {'title': '자산코드', 'data': 'G_IDX'}
+                , {'title': '자산상태', 'data': 'G_STATE_STR'}
+            ]
+        });
+    }
+</script>
+</html>
