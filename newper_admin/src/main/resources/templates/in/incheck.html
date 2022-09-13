@@ -166,22 +166,26 @@
             {'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
-            ,{'title':'입고검수코드','data':null, 'render': function (data,type,full,meta) {
+            ,{'title':'입고검수코드','data':'CG_IDX', 'render': function (data,type,full,meta) {
                     return '<a href="javascript: incheckPop('+ full.CG_IDX +')" class="badge badge-primary">' + full.CG_IDX + '</a>';
                 }}
-            ,{'title':'입고검수<br>작업상태값','data':"CG_STATE"}
-            ,{'title':'입고검수<br>업체','data':'COM_NAME'}
-            ,{'title':'입고검수<br>담당자','data':'U_NAME3'}
+            ,{'title':'입고검수<br>작업상태값','data':"CG_STATE_STR"}
+            ,{'title':'입고검수<br>업체','data':'COM_NAME', defaultContent:''}
+            ,{'title':'입고검수<br>담당자','data':'U_NAME3', defaultContent:''}
             ,{'title':'요청자','data':'CREATED_BY'}
-            ,{'title':'작업지시자','data':'U_NAME1'}
-            ,{'title':'완료처리자','data':'U_NAME2'}
+            ,{'title':'작업지시자','data':'U_NAME1', defaultContent:''}
+            ,{'title':'완료처리자','data':'U_NAME2', defaultContent:''}
             ,{'title':'요청일','data':'CG_REQUEST_DATE'}
             ,{'title':'작업시작일','data':'CG_START_DATE'}
             ,{'title':'작업종료일','data':'CG_END_DATE'}
-            ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
-            ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST'}
-            ,{'title':'공정완료/<br>작업요청건','data':''}
-            ,{'title':'공정비<br>합계','data':'CGS_REAL_COST'}
+            // ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
+            ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST', class : 'text-right', render: function (data, type, full, meta) {
+                return comma(data);
+            }}
+            //,{'title':'공정완료/<br>작업요청건','data':''}
+            ,{'title':'공정비<br>합계','data':'CGS_REAL_COST', class : 'text-right', render: function (data, type, full, meta) {
+                return comma(data);
+            }}
         ]
     });
 

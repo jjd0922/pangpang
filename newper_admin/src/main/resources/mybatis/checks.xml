@@ -4,9 +4,14 @@
 
     <select id="selectCheckGroupDatatable" parameterType="map" resultType="map">
         SELECT
-            *
+            CHECK_GROUP.*
+            ,SUM(CGS_EXPECTED_COST) CGS_EXPECTED_COST
+            ,SUM(CGS_REAL_COST) CGS_REAL_COST
         FROM
-            CHECK_GROUP
+            CHECK_GROUP, CHECK_GOODS
+        WHERE
+            CG_IDX = CGS_CG_IDX
+        GROUP BY CG_IDX
         ORDER BY CG_IDX
         <if test="length!=-1">
             LIMIT #{start},#{length}
