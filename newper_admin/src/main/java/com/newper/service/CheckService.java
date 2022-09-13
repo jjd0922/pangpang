@@ -3,6 +3,7 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.GState;
+import com.newper.constant.PnType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +28,8 @@ public class CheckService {
     private final SpecRepo specRepo;
     private final CheckGoodsRepo checkGoodsRepo;
     private final GoodsRepo goodsRepo;
+    private final PoReceivedRepo poReceivedRepo;
+    private final ProcessNeedRepo processNeedRepo;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -77,17 +77,17 @@ public class CheckService {
 
     /** 입고검수 자산 입고 확정 스팩 */
     @Transactional
-    public void updateCheckGoodsSpec(ParamMap paramMap, MultipartFile cgsFile) {
+    public void updateCheckGoodsSpec(ParamMap paramMap, MultipartFile[] paintFile, MultipartFile[] fixFile, MultipartFile[] processFile) {
         // 자산 상태 체크
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
         if (!goods.getGState().equals(GState.RECEIVED)) {
             throw new MsgException("영업검수 요청되어 수정이 불가능합니다.");
         }
 
-        CheckGoods checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
+        PoReceived poReceived = PoReceived.builder().build();
 
-        List<String> cgsSpec1 = paramMap.getList("cgsSpec1");
-        List<String> cgsSpec2 = paramMap.getList("cgsSpec2");
+        List<String> cgsSpec1 = paramMap.getList("porSpec1");
+        List<String> cgsSpec2 = paramMap.getList("porSpec2");
         List<String> specName = paramMap.getList("specName");
 
         String specConfirm = "";
@@ -130,7 +130,7 @@ public class CheckService {
                 specRepo.save(spec);
             }
 
-            checkGoods.setSpec(spec);
+            poReceived.setSpec(spec);
 
             specConfirm = "";
             specLookUp = "";
@@ -172,20 +172,121 @@ public class CheckService {
                 specRepo.save(spec);
             }
 
-            checkGoods.setSpec2(spec);
+            poReceived.setSpec2(spec);
         }
 
-        // 첨부 파일
-        if (cgsFile == null || cgsFile.isEmpty()) {
-            checkGoods.setCgsFile("");
-            checkGoods.setCgsFileName("");
-        } else {
-            String cgsFilePath = Common.uploadFilePath(cgsFile, "in/check_goods/", AdminBucket.SECRET);
-            checkGoods.setCgsFile(cgsFilePath);
-            checkGoods.setCgsFileName(cgsFile.getOriginalFilename());
+        // 상품setting
+        Product product = Product
+                .builder()
+                .pIdx(paramMap.getInt("pIdx"))
+                .build();
+        poReceived.setProduct(product);
+        poReceivedRepo.save(poReceived);
+
+        // PROCESS_NEED
+        //도색
+        if (!paramMap.get("paintCost").equals("")) {
+            ProcessNeed processNeed = ProcessNeed
+                    .builder()
+                    .goods(goods)
+                    .pnContent(paramMap.get("paintMemo").toString())
+                    .pnExpectedCost(paramMap.getInt("paintCost"))
+                    .pnType(PnType.PAINT)
+                    .pnCount(0)
+                    .build();
+
+            if (paintFile.length != 0) {
+                Map<String, Object> pnLookUp = new HashMap<>();
+                List<String> paintFileStr = new ArrayList<>();
+                List<String> paintFileName = new ArrayList<>();
+
+                for (int i = 0; i < paintFile.length; i++) {
+                    if (paintFile[i] == null || paintFile[i].isEmpty()) {
+                        continue;
+                    } else {
+                        paintFileStr.add(Common.uploadFilePath(paintFile[i], "goods/" + goods.getGIdx() + "/", AdminBucket.SECRET));
+                        paintFileName.add(paintFile[i].getOriginalFilename());
+                    }
+                }
+
+                pnLookUp.put("paintFile", paintFileStr);
+                pnLookUp.put("paintFileName", paintFileName);
+
+                processNeed.setPnLookup(pnLookUp);
+            }
+
+            processNeedRepo.save(processNeed);
         }
 
-        checkGoodsRepo.save(checkGoods);
+        //수리
+        if (!paramMap.get("fixCost").equals("")) {
+            ProcessNeed processNeed = ProcessNeed
+                    .builder()
+                    .goods(goods)
+                    .pnContent(paramMap.get("fixMemo").toString())
+                    .pnExpectedCost(paramMap.getInt("fixCost"))
+                    .pnType(PnType.PAINT)
+                    .pnCount(0)
+                    .build();
+
+            if (fixFile.length != 0) {
+                Map<String, Object> pnLookUp = new HashMap<>();
+                List<String> fixFileStr = new ArrayList<>();
+                List<String> fixFileName = new ArrayList<>();
+
+                for (int i = 0; i < fixFile.length; i++) {
+                    if (fixFile[i] == null || fixFile[i].isEmpty()) {
+                        continue;
+                    } else {
+                        fixFileStr.add(Common.uploadFilePath(fixFile[i], "goods/" + goods.getGIdx() + "/", AdminBucket.SECRET));
+                        fixFileName.add(fixFile[i].getOriginalFilename());
+                    }
+                }
+
+                pnLookUp.put("fixFile", fixFileStr);
+                pnLookUp.put("fixFileName", fixFileName);
+
+                processNeed.setPnLookup(pnLookUp);
+            }
+
+            processNeedRepo.save(processNeed);
+        }
+
+        //가공
+        if (!paramMap.get("processCost").equals("")) {
+            ProcessNeed processNeed = ProcessNeed
+                    .builder()
+                    .goods(goods)
+                    .pnContent(paramMap.get("processMemo").toString())
+                    .pnExpectedCost(paramMap.getInt("processCost"))
+                    .pnType(PnType.PAINT)
+                    .pnCount(0)
+                    .build();
+
+            if (processFile.length != 0) {
+                Map<String, Object> pnLookUp = new HashMap<>();
+                List<String> processFileStr = new ArrayList<>();
+                List<String> processFileName = new ArrayList<>();
+
+                for (int i = 0; i < processFile.length; i++) {
+                    if (processFile[i] == null || processFile[i].isEmpty()) {
+                        continue;
+                    } else {
+                        processFileStr.add(Common.uploadFilePath(processFile[i], "goods/" + goods.getGIdx() + "/", AdminBucket.SECRET));
+                        processFileName.add(processFile[i].getOriginalFilename());
+                    }
+                }
+
+                pnLookUp.put("processFile", processFileStr);
+                pnLookUp.put("processFileName", processFileName);
+
+                processNeed.setPnLookup(pnLookUp);
+            }
+
+            processNeedRepo.save(processNeed);
+        }
+
+
 
         // 자산 상태 변경
         goods.setGState(GState.CHECK_NEED);

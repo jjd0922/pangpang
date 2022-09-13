@@ -5,6 +5,7 @@ import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.GoodsMapper;
+import com.newper.mapper.ProcessMapper;
 import com.newper.mapper.UserMapper;
 import com.newper.service.CheckService;
 import com.newper.service.GoodsService;
@@ -28,6 +29,7 @@ public class ProcessRestController {
     private final GoodsMapper goodsMapper;
     private final GoodsService goodsService;
     private final CheckService checkService;
+    private final ProcessMapper processMapper;
 
     /** 공정보드 조회 */
     @PostMapping("board.dataTable")
@@ -117,5 +119,13 @@ public class ProcessRestController {
         checkService.insertCheckGroup(paramMap);
         rm.setMessage("입고검수 요청 완료");
         return rm;
+    }
+
+    /** 공정필요 자산 select */
+    @PostMapping("selectProcessNeed.ajax")
+    public ReturnDatatable selectProcessNeed(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(processMapper.selectProcessNeed(paramMap.getMap()));
+        return rd;
     }
 }

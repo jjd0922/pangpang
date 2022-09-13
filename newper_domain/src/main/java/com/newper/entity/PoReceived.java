@@ -33,6 +33,16 @@ public class PoReceived {
     @JoinColumn(name = "POR_PO_IDX", referencedColumnName = "poIdx")
     private Po po;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POR_IN_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec spec;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POR_PROCESS_SPEC_IDX2", referencedColumnName = "specIdx")
+    private Spec spec2;
+
+
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "poReceived", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
 }

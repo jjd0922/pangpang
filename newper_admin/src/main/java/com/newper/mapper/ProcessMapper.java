@@ -8,4 +8,6 @@ import java.util.Map;
 @Mapper
 public interface ProcessMapper {
 
+    /** 공정필요 조회 */
+    List selectProcessNeed(Map<String, Object> map);
 }

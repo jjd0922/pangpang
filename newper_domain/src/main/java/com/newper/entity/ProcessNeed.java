@@ -1,10 +1,12 @@
 package com.newper.entity;
 
+import com.newper.constant.PnType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -27,9 +29,11 @@ public class ProcessNeed {
     @JoinColumn(name="PN_PG_IDX", referencedColumnName = "pgIdx")
     private ProcessGroup processGroup;
 
-    private String pnType;
+    private PnType pnType;
 
     private Integer pnCount;
+
+    private String pnContent;
 
     private Integer pnExpectedCost;
 
@@ -39,7 +43,7 @@ public class ProcessNeed {
 
     private String pnProcess;
 
-    private String pnLookup;
+    private Map<String, Object> pnLookup;
 
 
 }
