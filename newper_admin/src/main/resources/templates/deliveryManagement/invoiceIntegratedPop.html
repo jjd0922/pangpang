@@ -72,11 +72,22 @@
 
 <script>
     var invoiceIntegratedPopTable = $('#invoiceIntegratedPopTable').DataTable({
+        dom: '<"datatable-header"ip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
         ajax: {
-            url: '/deliveryManagement/invoiceIntegratedPop.dataTable?' + $('#invoiceIntegratedPopForm').serialize(),
+            url: '/deliveryManagement/invoiceIntegrated.dataTable?' + $('#invoiceIntegratedPopForm').serialize(),
             type: 'post'
         },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
 
+        }],
 
         "columns": [
             {
@@ -98,7 +109,8 @@
             , {'title': '자산코드', 'data': 'U_PHONE'}
             , {'title': '상품명', 'data': 'U_PHONE'}
             , {'title': '수량', 'data': 'U_PHONE'}
-            , {'title': '상품명', 'data': 'U_PHONE'}
+            , {'title': '택배사', 'data': 'U_PHONE'}
+            , {'title': '송장번호', 'data': 'U_PHONE'}
         ]
     });
 

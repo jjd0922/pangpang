@@ -181,6 +181,10 @@
     function Btn1(){
         $('#invoiceUploadModal').modal('show');
     }
+    function deliveryDetailPop() {
+        var focusPopup = window.open('deliveryDetailPop/', 'deliveryDetailPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
 <script>
@@ -221,7 +225,7 @@
             , {'title': '자산상태', 'data': 'U_PHONE'}
             , {
                 'title': '주문코드<br>사방넷통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
+                    return '<a href="#" onclick="deliveryDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
                 }}
             , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
             , {'title': '쇼핑몰명', 'data': 'U_PHONE'}
@@ -244,7 +248,13 @@
         var focusPopup = window.open('invoiceUploadPop', 'invoiceUploadPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     });
-
-
+    $('#Btn3').on('click', function () {
+        var focusPopup = window.open('invoiceIntegratedPop', 'invoiceIntegratedPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+    $('#Btn4').on('click', function () {
+        var focusPopup = window.open('releasePop', 'releasePop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
 </script>
 </html>

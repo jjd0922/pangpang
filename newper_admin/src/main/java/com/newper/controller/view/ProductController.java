@@ -250,11 +250,11 @@ public class ProductController {
         }else{
             com.put("storeName","");
         }
-        if (product.getManufactureName() != null) {
+/*        if (product.getManufactureName() != null) {
             com.put("manufactureName",companyRepo.findById(product.getManufactureName().getComIdx()).get().getComName());
         }else{
             com.put("manufactureName","");
-        }
+        }*/
         if (product.getAfterServiceName() != null) {
             com.put("afterServiceName",companyRepo.findById(product.getAfterServiceName().getComIdx()).get().getComName());
         }else{

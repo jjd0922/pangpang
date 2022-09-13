@@ -1,9 +1,6 @@
 package com.newper.entity;
 
-import com.newper.constant.PState;
-import com.newper.constant.PType1;
-import com.newper.constant.PType2;
-import com.newper.constant.PType3;
+import com.newper.constant.*;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
@@ -53,19 +50,22 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PType3 pType3;
 
+    @Enumerated(EnumType.STRING)
+    private PDelType pDelType;
+
     /** 입점사 idx */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "P_COM_IDX", referencedColumnName = "comIdx")
     private Company storeName;
 
-    /** 제조사 idx */
+/*    *//** 제조사 idx *//*
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx")
-    private Company manufactureName;
+    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx")*/
+    private String pComManufacturer;
 
     /** A/S업체 idx */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_COM_IDX3", referencedColumnName = "comIdx")
+    @JoinColumn(name = "P_COM_IDX2", referencedColumnName = "comIdx")
     private Company afterServiceName;
 
     private String pThumbFile1;
@@ -137,7 +137,9 @@ public class Product extends BaseEntity {
         if (getPType3() == null) {
             throw new MsgException("물류타입(품목자산구분)을 선택해주세요.");
         }
-
+        if (getPDelType() == null) {
+            throw new MsgException("배송타입을 선택해주세요.");
+        }
     }
 
     /** 해당 옵션 문자로 return*/
