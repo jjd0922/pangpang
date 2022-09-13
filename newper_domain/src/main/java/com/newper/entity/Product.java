@@ -125,6 +125,9 @@ public class Product extends BaseEntity {
         if (!StringUtils.hasText(getPName())) {
             throw new MsgException("상품명을 입력해주세요.");
         }
+        if (getCategory() == null) {
+            throw new MsgException("카테고리 소분류를 선택해주세요.");
+        }
         if (getPType1() == null) {
             throw new MsgException("정산구분(품목구분1)을 선택해주세요.");
         }

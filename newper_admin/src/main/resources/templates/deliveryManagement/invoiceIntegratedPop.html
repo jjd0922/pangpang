@@ -2,12 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>배송관리</title>
+    <title>송장통합</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
 <body>
-<th:block th:replace="common/header.html"></th:block>
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content-inner">
@@ -17,9 +16,9 @@
                         <div class="card">
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="deliveryPopForm">
+                                    <form id="invoiceIntegratedPopForm">
                                         <div class="row">
-                                            <table class="table" id="deliveryPopTable"></table>
+                                            <table class="table" id="invoiceIntegratedPopTable"></table>
                                         </div>
                                     </form>
                                 </div>
@@ -72,24 +71,34 @@
 </script>
 
 <script>
-    var deliveryPopTable = $('#deliveryPopTable').DataTable({
+    var invoiceIntegratedPopTable = $('#invoiceIntegratedPopTable').DataTable({
         ajax: {
-            url: '/salesManagement/deliveryPop.dataTable?' + $('#deliveryPopForm').serialize(),
+            url: '/deliveryManagement/invoiceIntegratedPop.dataTable?' + $('#invoiceIntegratedPopForm').serialize(),
             type: 'post'
         },
 
 
         "columns": [
-
-              {'title': '배송자(설치자)이름', 'data': ''}
-            , {'title': '배송자(설치자)연락처1', 'data': 'U_PHONE'}
-            , {'title': '배송자(설치자)연락처2', 'data': 'U_PHONE'}
-            , {'title': '우편번호', 'data': 'U_PHONE'}
-            , {'title': '주소', 'data': 'U_PHONE'}
-            , {'title': '배송(설치)메세지', 'data': 'U_PHONE'}
-            , {'title': '출하창고', 'data': 'U_PHONE'}
-            , {'title': '출고택배사', 'data': 'U_PHONE'}
-            , {'title': '출고송장번호', 'data': 'U_PHONE'}
+            {
+                'class': 'select-checkbox',
+                'title': '선택',
+                'data': 'SP_IDX',
+                'defaultContent': '',
+                'render': function (data, type, full, meta) {
+                    return '';
+                }
+            }
+            , {'title': '출고구분', 'data': ''}
+            , {'title': '주문상태', 'data': 'U_PHONE'}
+            , {'title': '자산상태', 'data': 'U_PHONE'}
+            , {'title': '주문코드<br>(사방넷 통합주문번호)', 'data': 'U_PHONE'}
+            , {'title': '주문상품코드<br>(사방넷 주문번호)', 'data': 'U_PHONE'}
+            , {'title': '쇼핑몰명', 'data': 'U_PHONE'}
+            , {'title': '상품코드', 'data': 'U_PHONE'}
+            , {'title': '자산코드', 'data': 'U_PHONE'}
+            , {'title': '상품명', 'data': 'U_PHONE'}
+            , {'title': '수량', 'data': 'U_PHONE'}
+            , {'title': '상품명', 'data': 'U_PHONE'}
         ]
     });
 
