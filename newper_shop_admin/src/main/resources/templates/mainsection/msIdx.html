@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>메인섹션</title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>메인섹션</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <form id="mainSectionForm" method="post" th:with="maxColumn=1">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 분양몰 등록정보</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">분양몰</span>
+                                                        </span>
+                                                        <input type="hidden" name="shopIdx">
+                                                        <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
+                                                        <span class="input-group-append" onclick="openShopModal()">
+                                                            <a class="input-group-text"><i class="icon-home"></i></a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">섹션 타이틀</span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="msName">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메인 섹션 타입</span>
+                                                        </span>
+                                                        <select class="form-control select" name="msType">
+                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출 상태</span>
+                                                        </span>
+                                                        <select class="form-control select" name="msOrder">
+                                                            <option value="-1">미노출</option>
+                                                            <option value="1">노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6" id="msColumnForm" style="display: none;">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">단수</span>
+                                                        </span>
+                                                        <select class="form-control select" name="msColumn">
+                                                            <option th:each="i :${#numbers.sequence(1, maxColumn)}" th:text="${i}+'단'" th:value="${i}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="d-flex justify-content-between">
+                                            <span>2. 섹션 상세 정보</span>
+                                            <div>
+                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertBanner()">배너 그룹 생성</a>
+                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertProduct()">상품 그룹 생성</a>
+                                            </div>
+                                        </legend>
+                                        <div class="row" th:each="i :${#numbers.sequence(1, maxColumn)}" th:classappend="'ms_section'+${i}">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메인 섹션 타입</span>
+                                                        </span>
+                                                        <input type="hidden" name="msoType" readonly>
+                                                        <input type="text" class="form-control" name="msTypeStr" readonly>
+                                                        <span class="input-group-append msoType" th:attr="onclick=|openSectionModalIndex(${i})|">
+                                                          <a class="input-group-text"><i class="icon-store"></i></a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">이름</span>
+                                                        </span>
+                                                        <input class="form-control" name="section_name" readonly>
+                                                        <input type="hidden" name="section_idx">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+    </div>
+    <!-- /main content -->
+
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class=" w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"><i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+</body>
+
+<!--shop modal-->
+<th:block th:replace="shop/modal/shopModal.html"></th:block>
+
+<script th:inline="javascript">
+    function popInsertBanner(){
+        var focusPopup = window.open('/shop/mainsection/banner/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+    function popInsertProduct(){
+        var focusPopup = window.open('/shop/mainsection/shopProduct/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+    function saveBtn(){
+        if(window.confirm('저장하시겠습니까?')){
+            $.ajax({
+                url: location.pathname + '.ajax',
+                type: 'post',
+                data: $('#mainSectionForm').serialize(),
+                success: function(res){
+                    opener.refreshTable('#mainsectionTable');
+                    location.reload();
+                },
+                error: function(){}
+            });
+        }
+
+    }
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+    }
+</script>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>메인섹션관리</title>
@@ -12,10 +12,8 @@
         }
     </style>
 </head>
-
 <body>
-
-<th:block th:replace="common/header.html">Header</th:block>
+<th:block th:replace="common/header.html"></th:block>
 <!-- 본문 영역 시작 -->
 <div class="page-content">
     <div class="content-wrapper">
@@ -30,23 +28,17 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                        <span class="breadcrumb-item">
-                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                            <th:block th:text="${mainTitle}"></th:block>
-                                        </span>
                                     </div>
                                 </h6>
+                                <div class="header-elements text-right">
+                                    <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
+                                        <div class="list-icons ml-2">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 카드 2열 레이아웃 -->
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div class="card">
                             <div class="collapse show">
                                 <div class="card-body pt-0">
                                     <form id="shopCategoryForm">
@@ -60,7 +52,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">섹션명</label>
-                                                    <input class="form-control form-control-sm w-120px">
+                                                    <input class="form-control form-control-sm w-120px" data-placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -74,23 +66,22 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
-                                    <div class="btn-group">
-                                        <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="shopCategory()">
-                                            <i class="icon-popout mr-1"></i>신규등록
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <form id="mainsectionTableForm">
-                                <table class="table" id="mainsectionTable">
-                                </table>
-                            </form>
                         </div>
                     </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline justify-content-start">
+                                <h6 class="card-title" th:text="${subTitle}"></h6>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="insertMainSectionPop()">신규등록</a>
+                            </div>
+
+                            <table class="table" id="mainsectionTable"></table>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,14 +115,27 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
-    $('#mainsectionTable').DataTable({
+$(document).ready(function(){
+    $.extend( $.fn.dataTable.defaults, {
         buttons: {
             buttons: [
                 {
                     extend: 'excelHtml5',
                     className: 'btn btn-sm btn-dark opacity-60',
-                    text: '<i class="icon-file-excel mr-1"></i>엑셀'
+                    action: function (e, dt, node, config) {
+                        var dtId = e.target.parentNode.getAttribute('aria-controls');
+                        downloadAllExcel(dtId);
+                    },
+                    text: '<i class="icon-file-excel mr-1"></i>엑셀',
                 },
+                {
+                    extend: 'pageLength',
+                    className: 'btn btn-sm btn-dark opacity-50'
+                    ,text: function(dt, button, config){
+                        return '분양몰 '+dt.page.len()+'개';
+                    }
+                }
+                ,
                 {
                     text: '새로고침',
                     className: 'btn btn-sm btn-secondary',
@@ -141,7 +145,18 @@
                 }
             ]
         },
-        dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
+        'pageLength':3,
+        'lengthMenu': [
+            [1, 2, 3, 5]
+            , ['1개', '2개', '3개', '5개']
+        ],
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ]
+    });
+
+    $('#mainsectionTable').DataTable({
+        dom: '<"datatable-header"Bp><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
         ajax:{
@@ -149,17 +164,46 @@
             type:'post'
         },
         "columns" : [
-            {'class':'dragula-handle m-w-3', 'title':'순서변경','data':'','defaultContent':''}
-            ,{'class':'m-w-16 w-55', 'title':'노출상태','data':'','defaultContent':''}
-            ,{'class':'m-w-8 w-15', 'title':'메인섹션타입','data':'CNT','defaultContent':''}
-            ,{'title':'섹션명','data':'','defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-primary" onclick="test()">상세</a>';
+            {'title':'분양몰','data':'SHOP_NAME'},
+            {'class':'m-w-4 dragula-handle', 'title':'순서변경','data':'MS_ORDER', 'render':function(data,type,full,meta){
+                if(data == null){
+                    return '';
+                }else{
+                    return '<i class="icon-menu-open">'+Math.abs(data)+'</i><input type="hidden" name="MS_IDX" shop="'+full.MS_SHOP_IDX+'" value="'+full.MS_IDX+'">';
+                }
             }}
-            ,{'title':'도메인','data':'CREATED_DATE','defaultContent':''}
-            ,{'class':'m-w-8 w-15', 'title':'삭제','data':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-danger" onclick="deleteShopCategory('+data+')">삭제</a>';
+            ,{'class':'m-w-5 w-10', 'title':'노출상태','data':'MS_ORDER','defaultContent':'','render':function(data,type,full,meta){
+                if(data == null){
+                    return '';
+                }else{
+                    var btnClass;
+                    var state;
+                    if((data+"").charAt(0) == '-'){
+                        state = '미노출';
+                        btnClass='btn-secondary';
+                    }else{
+                        state = '노출';
+                        btnClass='btn-primary';
+                    }
+                    return '<a class="btn btn-sm '+btnClass+'" onclick="toggleMainSectionDisplay('+full.MS_IDX+')">'+state+'</a>';
+                }
             }}
-            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+            ,{'class':'m-w-7 w-20', 'title':'메인섹션타입','data':'MS_TYPE_STR','defaultContent':''}
+            ,{'class':'m-w-max w-20','title':'섹션명','data':'MS_NAME','defaultContent':'', 'render':function(data,type,full,meta){
+                if(data == null){
+                    return '데이터 없음';
+                }else{
+                    return '<a class="btn btn-sm badge-primary" onclick="test('+full.MS_IDX+')">'+data+'</a>';
+                }
+            }}
+            ,{'class':'m-w-4 w-10', 'title':'삭제','data':'MS_IDX','render':function(data,type,full,meta){
+                if(data == null){
+                    return '';
+                }else{
+                    return '<a class="btn btn-sm badge-danger" onclick="deleteMainsection('+data+')">삭제</a>';
+                }
+            }}
+            ,{'class':'m-w-6 w-20','title':'등록일','data':'CREATED_DATE','defaultContent':''}
         ]
         ,initComplete: function( settings, json ){
             var table_id=settings.sTableId;
@@ -169,35 +213,61 @@
                     return handle.classList.contains('dragula-handle');
                 }
             }).on('drop', function(el, target, source, sibling){
+                var groupList=$('input[name=MS_IDX][shop='+$(el).find('input[name=MS_IDX]').attr('shop')+']');
+                var param='param=param';
+                for(var i=0;i<groupList.length;i++){
+                    param+='&idxs='+$(groupList[i]).val();
+                }
+
                 $.ajax({
                     url:'/shop/mainsection.ajax'
                     ,type:'post'
-                    ,data:$('#'+table_id+'Form').serialize()
+                    ,data:param
                 }).always(function(res){
                     $('#'+table_id).DataTable().ajax.reload();
                 });
             });
         }
-
+        ,"drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var colLength=api.columns()[0].length-1;
+            var row_cnt=0;
+            var last_shop_idx=-1;
+            api.ajax.json().data.forEach(function(full){
+                if(last_shop_idx!=full.MS_SHOP_IDX){
+                    $(rows).eq(row_cnt).before(
+                        '<tr class="group"><th colspan="'+(colLength)+'">'+full.SHOP_NAME+'</th>'
+                        +'</tr>'
+                    );
+                }
+                last_shop_idx=full.MS_SHOP_IDX;
+                row_cnt++;
+            });
+        }
     });
-
+});
 </script>
 
 <script>
+    function insertMainSectionPop(){
+        var focusPopup = window.open('/shop/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
     function test(){
         alert('준비중');
     }
 
-    function deleteShopCategory(msIdx){
+    function deleteMainsection(msIdx){
         if(confirm("메인섹션을 삭제하시겠습니까?")){
             $.ajax({
-                url:'/product/shopCategory/delete.ajax',
+                url:'/shop/mainsection/delete.ajax',
                 type:'post',
                 data:{
                     msIdx: msIdx
                 },
                 success:function(res){
-                    $('#shopTable').DataTable().ajax.reload();
+                    $('#mainsectionTable').DataTable().ajax.reload();
                 }
                 ,error:function(){}
             })

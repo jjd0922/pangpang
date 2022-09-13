@@ -2,8 +2,10 @@ package com.newper.entity;
 
 import com.newper.constant.MsType;
 import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -36,6 +38,23 @@ public class MainSection extends BaseEntity {
     private MsType msType;
     /** 섹션 정보*/
     private Map<String,Object> msJson = new HashMap<>();
+
+    @PreUpdate
+    @PrePersist
+    public void preSave(){
+        if(getShop().getShopIdx() == null){
+            throw new MsgException("분양몰을 선택해주세요;");
+        }else if(!StringUtils.hasText(getMsName())){
+            throw new MsgException("섹션 타이틀을 입력해주세요;");
+        }
+
+        if(msOrder == 0){
+            msOrder =1;
+        }
+        if(msColumn == 0){
+            msColumn = 1;
+        }
+    }
 
     public void updateMainsectionOrder(int msOrder) {
         if(getMsOrder() < 0){

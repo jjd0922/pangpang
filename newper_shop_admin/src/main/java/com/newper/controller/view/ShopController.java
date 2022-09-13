@@ -38,6 +38,7 @@ public class ShopController {
 
         return mav;
     }
+    /** 분양몰 디자인*/
     @GetMapping(value = "pop/design/{shopIdx}")
     public ModelAndView shopDesign(@PathVariable Integer shopIdx){
         ModelAndView mav = new ModelAndView("shop/design");
@@ -45,9 +46,31 @@ public class ShopController {
 
         return mav;
     }
+    /** 메인섹션*/
     @GetMapping("mainsection")
     public ModelAndView mainSection(){
         ModelAndView mav = new ModelAndView("mainsection/mainsection");
+
+        return mav;
+    }
+    /** 메인섹션 신규, 상세*/
+    @GetMapping(value = {"mainsection/{msIdx}","mainsection/new"})
+    public ModelAndView mainSection(@PathVariable(required = false) Integer msIdx){
+        ModelAndView mav = new ModelAndView("mainsection/msIdx");
+
+        return mav;
+    }
+    /** 메인섹션 배너 신규, 상세*/
+    @GetMapping(value = {"mainsection/banner/{msbnIdx}","mainsection/banner/new"})
+    public ModelAndView mainSectionBanner(@PathVariable(required = false) Long msbnIdx){
+        ModelAndView mav = new ModelAndView("mainsection/msbnIdx");
+
+        return mav;
+    }
+    /** 메인섹션 배너 신규, 상세*/
+    @GetMapping(value = {"mainsection/shopProduct/{msspIdx}","mainsection/shopProduct/new"})
+    public ModelAndView mainSectionShopProduct(@PathVariable(required = false) Long msspIdx){
+        ModelAndView mav = new ModelAndView("mainsection/msspIdx");
 
         return mav;
     }
