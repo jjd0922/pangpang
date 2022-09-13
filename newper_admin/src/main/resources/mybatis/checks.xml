@@ -21,13 +21,25 @@
         SELECT COUNT(*) FROM CHECK_GROUP
     </select>
 
+    <sql id="includeChecksDatatable">
+
+    </sql>
     <select id="selectChecksDatatable"  parameterType="map" resultType="map">
         SELECT
             *
         FROM
-            CHECKS, CHECK_GROUP
+            CHECKS, CHECK_GROUP,CHECK_GOODS
+            ,GOODS
         WHERE
             CG_CHECK_IDX = CHECK_IDX
+            AND CG_IDX = CGS_CG_IDX
+            AND G_IDX = CGS_G_IDX
+
+
+            <include refid="includeChecksDatatable"></include>
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
     <select id="countChecksDatatable"  parameterType="map" resultType="Long">
         SELECT
@@ -36,6 +48,7 @@
             CHECKS, CHECK_GROUP
         WHERE
             CG_CHECK_IDX = CHECK_IDX
+            <include refid="includeChecksDatatable"></include>
     </select>
 
     <select id="selectCheckGroupExpectedCostTotal" resultType="Integer">

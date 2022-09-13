@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>배송상품 반품관리</title>
+    <title>설치상품 반품관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -115,13 +115,13 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn1()">
-                                           수거송장업로드
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn1">
+                                            수거업체배정
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
-                                            수거송장등록
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn2()">
+                                            수거정보등록
                                         </a>
                                     </div>
                                 </div>
@@ -138,7 +138,7 @@
 
 </body>
 
-<th:block th:replace="salesManagement/modal/deliveryReturnInvoiceUploadModal.html"/>
+<th:block th:replace="/deliveryManagement/modal/returnInvoiceInformationModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -175,11 +175,11 @@
 <script>
     function searchBtn() {
         var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/salesManagement/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/deliveryManagement/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 
-    function Btn1(){
-        $('#deliveryReturnInvoiceUploadModal').modal('show');
+    function Btn2(){
+        $('#returnInvoiceInformationModal').modal('show');
     }
     /*    function userDetailPop(uIdx) {
             var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
@@ -198,7 +198,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/salesManagement/return.dataTable?' + $('#returnForm').serialize(),
+            url: '/deliveryManagement/return.dataTable?' + $('#returnForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -219,7 +219,9 @@
             }
             , {'title': '주문완료일', 'data': 'U_PHONE'}
             , {'title': '출고요청일', 'data': 'U_PHONE'}
-            , {'title': '배송출고일', 'data': 'U_PHONE'}
+            , {'title': '출고일', 'data': 'U_PHONE'}
+            , {'title': '설치예정일', 'data': 'U_PHONE'}
+            , {'title': '설치완료일', 'data': 'U_PHONE'}
             , {'title': '배송완료일', 'data': 'U_PHONE'}
             , {'title': '출고구분', 'data': 'U_PHONE'}
             , {'title': '주문상태', 'data': 'U_PHONE'}
@@ -235,8 +237,7 @@
             , {'title': '자산코드', 'data': 'U_DEPART'}
             , {'title': '상품명', 'data': 'U_POSITION'}
             , {'title': '수량', 'data': 'U_PERSON_MAIL'}
-            , {'title': '주문자명', 'data': 'U_COMPANY_TEL'}
-            , {'title': '주문자연락처', 'data': 'U_STATE_STR', 'defaultContent':''}
+
         ]
     });
 

@@ -12,6 +12,7 @@
         .summernote-top {
             border-bottom: 0!important;
         }
+
     </style>
 </head>
 
@@ -145,13 +146,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
-                                <div class="col-lg-12 col-md-12">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-text w-inherit summernote-top" >내용</span>
-                                            <textarea class="summernote" name="SH_CONTENT" th:value="${smsHistory?.shContent}"></textarea>
+                                            <span class="input-group-text w-100 mb--1">내용</span>
+                                            <textarea id="summerNote" name="SH_CONTENT" th:text="${shContent}"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -218,10 +218,9 @@
 
 </script>
 
-<script>
-
-    window.onload=function(){
-        smImage('.summernote');
+<script th:inline="javascript">
+    window.onload=function() {
+        smImage('#summerNote');
     }
 </script>
 </body>

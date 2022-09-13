@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>설치상품 반품관리</title>
+    <title>설치관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -19,7 +19,7 @@
                         <div class="card">
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="returnForm">
+                                    <form id="installationForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
@@ -116,18 +116,18 @@
                                 <div class="btn-group">
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn1">
-                                            수거업체배정
+                                            설치업체배정
                                         </a>
                                     </div>
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn2()">
-                                            수거정보등록
+                                            설치정보등록
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table class="table" id="returnTable"></table>
+                        <table class="table" id="installationTable"></table>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
 
 </body>
 
-<th:block th:replace="salesManagement/modal/returnInvoiceInformationModal.html"/>
+<th:block th:replace="/deliveryManagement/modal/installationModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -174,22 +174,22 @@
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/salesManagement/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        var table = $('#installationTable').DataTable();
+        table.page('first').ajax.url('/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()).load(null, false);
     }
 
     function Btn2(){
-        $('#returnInvoiceInformationModal').modal('show');
+        $('#installationModal').modal('show');
     }
-    /*    function userDetailPop(uIdx) {
-            var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
-            focusPopup.focus();
-        }*/
+/*    function userDetailPop(uIdx) {
+        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }*/
 </script>
 
 
 <script>
-    var returnTable = $('#returnTable').DataTable({
+    var installationTable = $('#installationTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering: false,
         select: {
@@ -198,7 +198,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/salesManagement/return.dataTable?' + $('#returnForm').serialize(),
+            url: '/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -231,28 +231,27 @@
                     return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
                 }
             }
-            , {'title': '주문코드<br>사방넷 주문번호', 'data': 'U_PHONE'}
+            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
             , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
             , {'title': '상품코드', 'data': 'U_ID'}
             , {'title': '자산코드', 'data': 'U_DEPART'}
             , {'title': '상품명', 'data': 'U_POSITION'}
             , {'title': '수량', 'data': 'U_PERSON_MAIL'}
-
         ]
     });
 
-    $('#returnForm').on('keyup', function (event) {
+    $('#installationForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
             return false;
         }
     });
 
-    /*
-        $('#popNewBtn').on('click', function () {
-            var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
-            focusPopup.focus();
-        });*/
+/*
+    $('#popNewBtn').on('click', function () {
+        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });*/
 
 
 </script>

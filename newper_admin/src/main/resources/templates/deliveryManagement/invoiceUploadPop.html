@@ -2,12 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>배송관리</title>
+    <title>송장등록</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
 <body>
-<th:block th:replace="common/header.html"></th:block>
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content-inner">
@@ -17,9 +16,9 @@
                         <div class="card">
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="deliveryPopForm">
+                                    <form id="invoiceUploadPopForm">
                                         <div class="row">
-                                            <table class="table" id="deliveryPopTable"></table>
+                                            <table class="table" id="invoiceUploadPopTable"></table>
                                         </div>
                                     </form>
                                 </div>
@@ -72,11 +71,23 @@
 </script>
 
 <script>
-    var deliveryPopTable = $('#deliveryPopTable').DataTable({
+    var invoiceUploadPopTable = $('#invoiceUploadPopTable').DataTable({
+        dom: '<"datatable-header"ip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
         ajax: {
-            url: '/salesManagement/deliveryPop.dataTable?' + $('#deliveryPopForm').serialize(),
+            url: '/deliveryManagement/invoiceUpload.dataTable?' + $('#invoiceUploadPopForm').serialize(),
             type: 'post'
         },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
+
+        }],
 
 
         "columns": [

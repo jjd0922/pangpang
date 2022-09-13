@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>배송관리</title>
+    <title>배송상품 반품관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -19,27 +19,27 @@
                         <div class="card">
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="deliveryForm">
+                                    <form id="returnForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">주문완료일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">출고요청일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">출고(배송중)일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">배송완료일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
                                                 </div>
 
                                                 <div class="form-group">
@@ -64,18 +64,23 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">주문상품코드<br>사방넷 주문번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <label class="d-block">주문코드<br>(사방넷통합주문번호)</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_AUTH_IDX">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문상품코드<br>(사방넷주문번호)</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">수취인명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">출하창고</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
@@ -87,7 +92,7 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">출고송장번호</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -111,28 +116,18 @@
                                 <div class="btn-group">
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn1()">
-                                            <i class="icon-popout mr-1"></i>택배송장 업로드
+                                           수거송장업로드
                                         </a>
                                     </div>
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
-                                            <i class="icon-popout mr-1"></i>송장등록
-                                        </a>
-                                    </div>
-                                    <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3">
-                                            <i class="icon-popout mr-1"></i>송장통합
-                                        </a>
-                                    </div>
-                                    <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn4">
-                                            <i class="icon-popout mr-1"></i>출고등록
+                                            수거송장등록
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <table class="table" id="deliveryTable"></table>
+                        <table class="table" id="returnTable"></table>
                     </div>
                 </div>
             </div>
@@ -143,9 +138,9 @@
 
 </body>
 
-<th:block th:replace="/salesManagement/modal/invoiceUploadModal.html"/>
-
+<th:block th:replace="/deliveryManagement/modal/deliveryReturnInvoiceUploadModal.html"/>
 <!-- 공통 js -->
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -171,20 +166,30 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
+
+
 <script>
 
-    function searchBtn() {
-        var table = $('#deliveryTable').DataTable();
-        table.page('first').ajax.url('/salesManagement/delivery.dataTable?' + $('#deliveryForm').serialize()).load(null, false);
-    }
-
-    function Btn1(){
-        $('#invoiceUploadModal').modal('show');
-    }
 </script>
 
 <script>
-    var deliveryTable = $('#deliveryTable').DataTable({
+    function searchBtn() {
+        var table = $('#returnTable').DataTable();
+        table.page('first').ajax.url('/deliveryManagement/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
+    }
+
+    function Btn1(){
+        $('#deliveryReturnInvoiceUploadModal').modal('show');
+    }
+    /*    function userDetailPop(uIdx) {
+            var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        }*/
+</script>
+
+
+<script>
+    var returnTable = $('#returnTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering: false,
         select: {
@@ -193,7 +198,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/salesManagement/delivery.dataTable?' + $('#deliveryForm').serialize(),
+            url: '/deliveryManagement/return.dataTable?' + $('#returnForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -220,32 +225,33 @@
             , {'title': '주문상태', 'data': 'U_PHONE'}
             , {'title': '자산상태', 'data': 'U_PHONE'}
             , {
-                'title': '주문코드<br>사방넷통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
+                'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
                     return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
-                }}
-            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
-            , {'title': '쇼핑몰명', 'data': 'U_PHONE'}
-            , {'title': '상품코드', 'data': 'U_PHONE'}
-            , {'title': '자산코드', 'data': 'U_PHONE'}
-            , {'title': '상품명', 'data': 'U_PHONE'}
-            , {'title': '수량', 'data': 'U_PHONE'}
+                }
+            }
+            , {'title': '주문코드<br>사방넷 주문번호', 'data': 'U_PHONE'}
+            , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
+            , {'title': '상품코드', 'data': 'U_ID'}
+            , {'title': '자산코드', 'data': 'U_DEPART'}
+            , {'title': '상품명', 'data': 'U_POSITION'}
+            , {'title': '수량', 'data': 'U_PERSON_MAIL'}
+            , {'title': '주문자명', 'data': 'U_COMPANY_TEL'}
+            , {'title': '주문자연락처', 'data': 'U_STATE_STR', 'defaultContent':''}
         ]
     });
 
-    $('#deliveryForm').on('keyup', function (event) {
+    $('#returnForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
             return false;
         }
     });
 
-/*
-
-    $('#popNewBtn').on('click', function () {
-        var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-*/
+    /*
+        $('#popNewBtn').on('click', function () {
+            var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        });*/
 
 
 </script>
