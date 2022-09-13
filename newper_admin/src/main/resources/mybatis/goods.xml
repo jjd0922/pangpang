@@ -19,16 +19,32 @@
             warehouse
     </select>
     <sql id="includeProcessBoardDatatable">
-
+        <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
     </sql>
+
     <select id="selectProcessBoardDatatable" resultType="map" parameterType="map">
         SELECT
-            *
+            G_IDX,
+            G_STATE,
+            P_NAME,
+            G_BARCODE,
+            IN_SPEC1.SPEC_LOOKUP IN_SPEC1,
+            SELL_SPEC1.SPEC_LOOKUP SELL_SPEC1
         FROM
             GOODS
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX AND P_IDX = PP_P_IDX
+                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
+                LEFT JOIN SPEC AS IN_SPEC1 ON PP_SPEC_IDX = IN_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC1 ON PP_SPEC_IDX2 = SELL_SPEC1.SPEC_IDX
         <where>
             <include refid="includeProcessBoardDatatable"></include>
         </where>
+        ORDER BY
+            G_IDX DESC
         <if test="length!=-1">
             LIMIT #{start},#{length}
         </if>
@@ -52,7 +68,7 @@
     </insert>
     <select id="selectGoodsTempDatatable" parameterType="map" resultType="map">
         SELECT
-            G_IDX, G_BARCODE
+            G_IDX, G_BARCODE, GGT_IDX
         FROM
             GOODS, GOODS_TEMP, GOODS_GROUP_TEMP
         WHERE
@@ -67,4 +83,31 @@
     <select id="countGoodsTempDatatable" parameterType="map" resultType="Long">
         SELECT COUNT(*) FROM GOODS_TEMP WHERE GT_GGT_IDX = #{ggt_idx}
     </select>
+
+    <delete id="deleteGoodsGroupTempByGIdxAndGgtIdx">
+        DELETE FROM
+            GOODS_TEMP
+        WHERE
+            GT_GGT_IDX = #{ggtIdx}
+        AND
+            GT_G_IDX = #{gIdx}
+    </delete>
+
+    <select id="selectGoodsByG_IDX" resultType="Map">
+        SELECT
+            PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST TOTAL_PROCESS_COST
+        FROM
+            PO
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
+                LEFT JOIN GOODS ON PO_IDX = G_PO_IDX AND G_P_IDX = PP_P_IDX
+        WHERE
+            G_IDX = #{gIdx}
+    </select>
+
+    <delete id="deleteGoodsGroupTempByGGT_IDX">
+        DELETE FROM
+            GOODS_GROUP_TEMP
+        WHERE
+            GGT_IDX = #{ggtIdx}
+    </delete>
 </mapper>

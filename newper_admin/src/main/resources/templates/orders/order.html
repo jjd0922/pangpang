@@ -191,7 +191,10 @@
         table.page('first').ajax.url('/orders/orders.dataTable?'+$('#orderTableForm').serialize()).load(null, false);
     }
 
-
+    function orderDetail(oIdx){
+        var focusPopup = window.open('/orders/detail/'+oIdx, 'orderDetail', 'width=1600, height=1200, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 
 </script>
 
@@ -218,7 +221,7 @@
                 }}
             ,{'title':'주문일','data':'O_DATE'}
             ,{'title':'주문코드','data':'O_CODE','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="orderDetail('+full.O_IDX+')">'+data+'</a>';
                 }}
             ,{'title':'주문쇼핑몰/판매처','data':'SHOP_NAME','defaultContent':''}
             ,{'title':'주문자 ID','data':'CU_ID','defaultContent':''}
@@ -227,15 +230,15 @@
             ,{'title':'주문경로','O_LOCATION':'null','defaultContent':''}
             ,{'title':'결제상태','data':'PAY_STATE','defaultContent':''}
             ,{'title':'결제방식','data':'PAY_METHOD','defaultContent':''}
-            // ,{'title':'PG결제승인코드','data':'PH_CODE1','defaultContent':''}
-            // ,{'title':'결제일','data':'PH_RESPONSE1','defaultContent':''}
-            // ,{'title':'카드결제취소코드','data':'PH_CODE2','defaultContent':''}
-            // ,{'title':'카드결제취소일','data':'PH_RESPONSE2','defaultContent':''}
-            ,{'title':'판매가 합(+)','data':'PAY_PRODUCT_PRICE','defaultContent':''}
+            ,{'title':'PG결제승인코드','data':'PAY_CODE','defaultContent':''}
+            ,{'title':'결제일','data':'PAY_DATE','defaultContent':''}
+            ,{'title':'카드결제취소코드','data':'PAY_CANCEL_CODE','defaultContent':''}
+            ,{'title':'카드결제취소일','data':'PAY_CANCEL_DATE','defaultContent':''}
+            ,{'title':'판매가 합(+)','data':'O_GS_PRICE','defaultContent':''}
             ,{'title':'이벤트할인가 합(-)','data':'PAY_EVENT','defaultContent':''}
-            ,{'title':'쿠폰할인가 합(-)','data':'PAY_COUPON','defaultContent':''}
-            ,{'title':'사용적립금(마일리지) 합(-)','data':'PAY_USE_MILEAGE','defaultContent':''}
-            ,{'title':'사용적립금(예치금) 합(-)','data':'PAY_POINT','defaultContent':''}
+            ,{'title':'쿠폰할인가 합(-)','data':'O_COUPON','defaultContent':''}
+            ,{'title':'사용적립금(마일리지) 합(-)','data':'O_MILEAGE','defaultContent':''}
+            ,{'title':'사용적립금(예치금) 합(-)','data':'O_POINT','defaultContent':''}
             ,{'title':'배송비(설치비)(+)','data':'PAY_DELIVERY','defaultContent':''}
             ,{'title':'최종결제금액','data':'PAY_PRICE','defaultContent':''}
             ,{'title':'결제취소금액','data':'PAY_CANCEL_PRICE','defaultContent':''}

@@ -35,5 +35,20 @@ public class SalesManagementController {
         return mav;
     }
 
+    /**주문관리 배송상품반품관리 페이지*/
+    @GetMapping("deliveryReturnManagement")
+    public ModelAndView deliveryReturnManagement(){
+        ModelAndView mav = new ModelAndView("salesManagement/deliveryReturnManagement");
+
+        return mav;
+    }
+
+    /**주문관리 설치상품반품관리 페이지*/
+    @GetMapping("installationReturnManagement")
+    public ModelAndView installationReturnManagement(){
+        ModelAndView mav = new ModelAndView("salesManagement/installationReturnManagement");
+
+        return mav;
+    }
 
 }

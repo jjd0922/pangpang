@@ -44,7 +44,8 @@
     </sql>
     <select id="selectProductDataTable" resultType="Map">
         SELECT
-            dt.CATE_SPEC_LIST AS 'CATE_SPEC_LIST',
+            dt.CATE_SPEC_LIST_DT,
+            dt.CATE_SPEC_LIST,
             product.*,
             FORMAT(P_SELL_PRICE , 0) AS 'P_SELL_PRICE',
             (case
@@ -67,27 +68,29 @@
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
 
-           ,CONCAT_WS(', ', TRIM(BOTH '"' from p_option->'$[0].title') ,TRIM(BOTH '"' from p_option->'$[1].title') ,TRIM(BOTH '"' from p_option->'$[2].title') ) P_OPTION_DT
+           ,CONCAT_WS(', ', p_option->>'$[0].title',p_option->>'$[1].title',p_option->>'$[2].title') P_OPTION_DT
         FROM
             product
-                LEFT JOIN (SELECT
-                               category1.CATE_NAME AS CATE_NAME1,
-                               category1.CATE_IDX AS CATE_IDX1,
-                               category1.CATE_DEPTH,
-                               category1.CATE_SPEC_LIST AS CATE_SPEC_LIST,
-                               category2.CATE_NAME AS CATE_NAME2,
-                               category2.CATE_IDX AS CATE_IDX2,
-                               IF(category2.CATE_SPEC ='Y', category2.CATE_SPEC_LIST, '') AS CATE_SPEC_LIST2,
-                               category3.CATE_NAME AS CATE_NAME3,
-                               category3.CATE_IDX AS CATE_IDX3
+                LEFT JOIN (
+                    SELECT
+                           category1.CATE_NAME AS CATE_NAME1,
+                           category1.CATE_IDX AS CATE_IDX1,
+                           category1.CATE_DEPTH,
+                           category2.CATE_NAME AS CATE_NAME2,
+                           category2.CATE_IDX AS CATE_IDX2,
+                           IF(category2.CATE_SPEC ='Y', JSON_ARR_TO_STR(category2.CATE_SPEC_LIST), '') AS CATE_SPEC_LIST_DT,
+                           IF(category2.CATE_SPEC ='Y', category2.CATE_SPEC_LIST, '') AS CATE_SPEC_LIST,
+                           category3.CATE_NAME AS CATE_NAME3,
+                           category3.CATE_IDX AS CATE_IDX3
 
-                           FROM
-                               category AS category1
-                                   LEFT JOIN category AS category2
-                                             ON category1.CATE_PARENT_IDX = category2.CATE_IDX
-                                   LEFT JOIN category AS category3
-                                             ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
-                          ON dt.CATE_IDX1=P_CATE_IDX
+                       FROM
+                           category AS category1
+                               LEFT JOIN category AS category2
+                                     ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+                               LEFT JOIN category AS category3
+                                     ON category2.CATE_PARENT_IDX = category3.CATE_IDX
+                )dt
+                      ON dt.CATE_IDX1=P_CATE_IDX
 
                 LEFT JOIN category AS brand
                     ON P_CATE_IDX2 = brand.CATE_IDX

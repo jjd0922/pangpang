@@ -83,7 +83,7 @@ public class DataTableAop {
                 }
             }else if(key.indexOf("_LIST") != -1){
                 //제외
-                if(key.equals("CATE_SPEC_LIST")){
+                if(key.indexOf("CATE_SPEC") != -1){
                     continue;
                 }
 

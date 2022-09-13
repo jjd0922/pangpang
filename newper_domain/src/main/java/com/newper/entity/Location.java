@@ -55,12 +55,8 @@ public class Location extends CreatedEntity {
             throw new MsgException("로케이션 형태를 입력해주세요");
         } else if (getLocType() == null) {
             throw new MsgException("로케이션 구분을 입력해주세요");
-        } else if (!StringUtils.hasText(getLocZone())) {
-            throw new MsgException("로케이션 존을 입력해주세요");
-        } else if (!StringUtils.hasText(getLocRow())) {
-            throw new MsgException("로케이션 행을 입력해주세요");
-        } else if (!StringUtils.hasText(getLocColumn())) {
-            throw new MsgException("로케이션 열을 입력해주세요");
+        } else if (!StringUtils.hasText(getLocCode())) {
+            throw new MsgException("로케이션을 입력해주세요");
         }
     }
     
@@ -71,5 +67,7 @@ public class Location extends CreatedEntity {
         setLocZone(location.getLocZone());
         setLocColumn(location.getLocColumn());
         setLocRow(location.getLocRow());
+        setLocBarcode(location.getLocBarcode());
+        setLocMemo(location.getLocMemo());
     }
 }

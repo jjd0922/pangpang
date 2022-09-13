@@ -54,6 +54,9 @@ public interface PoMapper {
     /** 발주품의 상품 조회 쿼리문 */
     List<Map<String, Object>> selectPoProductByPoIdx(@Param("poIdx") long poIdx);
 
+    /** 발주품의 상품 개수 조회 쿼리문 */
+    long countPoProductByPoIdx(@Param("poIdx") long poIdx);
+
     /** 발주품의 스펙 조회 */
     List<Map<String, Object>> selectPoSpec(@Param("poIdx") long poIdx);
 

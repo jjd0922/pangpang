@@ -4,17 +4,18 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 
-import com.newper.mapper.CheckMapper;
+import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.PoMapper;
+import com.newper.service.CheckService;
 import com.newper.service.GoodsService;
 import com.newper.service.InService;
 import com.newper.service.PoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,8 @@ public class InRestController {
     private final GoodsService goodsService;
     private final InService inService;
     private final PoService poService;
-    private final CheckMapper checkMapper;
+    private final ChecksMapper checksMapper;
+    private final CheckService checkService;
 
 
     /**
@@ -90,9 +92,9 @@ public class InRestController {
     public ReturnDatatable incheck(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("입고검수");
 
-        List<Map<String, Object>> list = checkMapper.selectCheckGroupDatatable(paramMap.getMap());
+        List<Map<String, Object>> list = checksMapper.selectCheckGroupDatatable(paramMap.getMap());
         rd.setData(list);
-        rd.setRecordsTotal(checkMapper.countCheckGroupDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
 
         return rd;
     }
@@ -100,7 +102,8 @@ public class InRestController {
     @PostMapping("goods.dataTable")
     public ReturnDatatable goods(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
-
+        
+        
         return rd;
     }
 
@@ -159,6 +162,52 @@ public class InRestController {
 
         return rm;
 
+    }
+    /** 영업검수 조회*/
+    @PostMapping("checks.dataTable")
+    public ReturnDatatable sale(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+
+        List<Map<String, Object>> list = checksMapper.selectChecksDatatable(paramMap.getMap());
+        rd.setData(list);
+        rd.setRecordsTotal(checksMapper.countChecksDatatable(paramMap.getMap()));
+
+        return rd;
+    }
+
+    /** 입고검수 작업요청취소 */
+    @PostMapping("checkGroupStateUpdate.ajax")
+    public ReturnMap checkGroupStateUpdate(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        inService.checkGroupStateUpdate(paramMap);
+        return rm;
+    }
+
+    /** 입고검수 자산 검색 */
+    @PostMapping("checkGoods.dataTable")
+    public ReturnDatatable checkGoods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(checksMapper.selectCheckGoods(paramMap.getMap()));
+        rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
+
+        return rd;
+    }
+
+    /** 입고검수 자산 SPEC 세팅 */
+    @PostMapping("checkGoodsSpecSet.ajax")
+    public ReturnMap checkGoodsSpecSet(ParamMap paramMap, MultipartFile cgsFile) {
+        ReturnMap rm = new ReturnMap();
+        checkService.updateCheckGoodsSpec(paramMap, cgsFile);
+        rm.setMessage("등록완료");
+        return rm;
+    }
+
+    /** 발주매핑 */
+    @PostMapping("poCheckMapping.ajax")
+    public ReturnMap poCheckMapping(ParamMap paramMap, MultipartFile cgsFile) {
+        ReturnMap rm = new ReturnMap();
+        System.out.println("param: " + paramMap.getMap().entrySet());
+        return rm;
     }
 }
 

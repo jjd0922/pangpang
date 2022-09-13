@@ -294,12 +294,12 @@
             var process = $('#poProductProcess_' + row).val();
             var fix = $('#poProductFix_' + row).val();
 
-            console.log(buy);
-            console.log(sell);
-            console.log(count);
-            console.log(paint);
-            console.log(process);
-            console.log(fix);
+            // console.log(buy);
+            // console.log(sell);
+            // console.log(count);
+            // console.log(paint);
+            // console.log(process);
+            // console.log(fix);
 
             // 예상판매가 총액
             $('#poProductSellPriceTotal_' + row).text(comma(sell * count));
@@ -505,7 +505,6 @@
 
         if(dataMap.CATE_SPEC_LIST != null){
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
-            specList = specList[0].list.split(',');
             $('#poModalProductSpecList').empty();
             for (var i = 0; i < specList.length; i++) {
                 var specTr
@@ -630,6 +629,7 @@
                 ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
                 ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
                 ,{'title':'사용 옵션','data':'P_OPTION_DT', 'defaultContent':''}
+                ,{'title':'사용 스펙','data':'CATE_SPEC_LIST_DT', 'defaultContent':''}
                 ,{'title':'기준매입가','data':'P_SELL_PRICE', 'defaultContent':''}
                 ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
                         return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="poProductChoose(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">선택</button>'

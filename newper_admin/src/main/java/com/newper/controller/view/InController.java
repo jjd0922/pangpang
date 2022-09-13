@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
-import com.newper.constant.GState;
+import com.newper.mapper.ChecksMapper;
+import com.newper.repository.CheckGroupRepo;
 import com.newper.repository.InGroupRepo;
 import com.newper.repository.PoRepo;
 import com.newper.service.InService;
@@ -19,6 +20,8 @@ public class InController {
     private final PoRepo poRepo;
     private final InGroupRepo inGroupRepo;
     private final InService inService;
+    private final CheckGroupRepo checkGroupRepo;
+    private final ChecksMapper checksMapper;
 
 
 
@@ -48,9 +51,17 @@ public class InController {
     }
 
     /** 입고검수 입고검수코드 팝업*/
-    @GetMapping("incheckManagePop")
-    public ModelAndView incheckManagePop(){
+    @GetMapping("incheckManagePop/{cgIdx}")
+    public ModelAndView inCheckManagePop(@PathVariable int cgIdx){
         ModelAndView mav = new ModelAndView("in/incheckManagePop");
+        mav.addObject("check", checkGroupRepo.findCheckGroupByCgIdx(cgIdx));
+        mav.addObject("totalPrice", checksMapper.selectCheckGroupExpectedCostTotal(cgIdx));
+        return mav;
+    }
+    /** 영업검수 페이지*/
+    @GetMapping("checks")
+    public ModelAndView checks(){
+        ModelAndView mav = new ModelAndView("in/checks");
 
         return mav;
     }

@@ -1,26 +1,44 @@
 package com.newper.controller.rest;
 
+import com.github.underscore.U;
 import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Category;
+import com.newper.entity.GoodsStock;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
+import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RequestMapping(value = "/product/")
@@ -34,6 +52,7 @@ public class ProductRestController {
     private final ProductService productService;
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
+    private final GoodsStockRepo goodsStockRepo;
 
 
     /**category 대분류 dataTable*/
@@ -378,5 +397,20 @@ public class ProductRestController {
         return rd;
 
     }
+
+    /**사방넷 상품 등록 api*/
+    @PostMapping("sabang.ajax")
+    public ReturnMap sabang(String gsIdxs){
+        ReturnMap rm = new ReturnMap();
+
+        String res = productService.sabang(gsIdxs);
+
+
+
+
+        return rm;
+    }
+
+
 
 }

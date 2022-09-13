@@ -1,0 +1,57 @@
+<div class="modal" tabindex="-1" role="dialog" id="goodsSpecModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">자산 SPEC정보 조회</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="collapse show" id="collapse-button-collapsed">
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table table-hover" id="specModalTable"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  function openGoodsSpecModal() {
+    $('#goodsSpecModal').modal('show');
+    selectGoodsSpecDataTable();
+  }
+
+  function selectGoodsSpecDataTable(){
+    destroyDatatable('specModalTable');
+    $('#specModalTable').DataTable({
+      dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+      ordering: false,
+      buttons: buttonsSelect(false),
+      serverSide: true,
+      ajax:{
+        url:'/warehouse/location.dataTable',
+        type:'post'
+      },
+      columns : [
+        {'title':'No','data':'No','render':function(data,type,full,meta){
+            return meta.settings._iDisplayStart+meta.row+1;
+          }}
+        ,{'title':'스펙명','data':'', 'defaultContent':''}
+        ,{'title':'입고SPEC(예정)','data':'', 'defaultContent':''}
+        ,{'title':'입고SPEC(확정)','data':'', 'defaultContent':''}
+        ,{'title':'판매SPEC(예정)','data':'', 'defaultContent':''}
+        ,{'title':'가공SPEC(예정)','data':'', 'defaultContent':''}
+        ,{'title':'가공SPEC(확정)','data':'', 'defaultContent':''}
+      ]
+    });
+  }
+</script>

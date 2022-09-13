@@ -398,6 +398,7 @@ function dataTableGetSelectedData(id,name){
     for(idx in getData_arr){
         param+=getData_table.data()[getData_arr[idx]][name]+',';
     }
+    param = param.slice(0, -1);
     return param;
 }
 //datatable 선택된 값 가져오기

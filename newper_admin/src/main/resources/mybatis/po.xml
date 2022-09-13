@@ -261,7 +261,7 @@
             SELL.SPEC_CONFIRM SPEC_SELL
         FROM
             PO
-                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_IDX
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
                 LEFT JOIN PRODUCT ON PP_P_IDX = P_IDX
                 LEFT JOIN SPEC AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
                 LEFT JOIN SPEC AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
@@ -310,6 +310,8 @@
 
     <select id="selectPoProductByPoIdx" resultType="Map">
         SELECT
+            PP_IDX,
+            PO_IDX,
             P_IDX,
             PP_MEMO,
             P_NAME,
@@ -330,6 +332,20 @@
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
+        FROM
+            po_product
+                LEFT JOIN PO ON PP_PO_IDX = PO_IDX
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+                LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN spec AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN spec AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="countPoProductByPoIdx" resultType="Integer">
+        SELECT
+            COUNT(*)
         FROM
             po_product
                 LEFT JOIN product ON PP_P_IDX = P_IDX

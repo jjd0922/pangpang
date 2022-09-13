@@ -266,12 +266,9 @@
 
     /**창고바코드 모달*/
     function showWarehouseBarcodeModal() {
-        openBarcodeModal();
-        $('#barcodeModal .modal-title').text('창고등록(바코드)');
+        var barcodeInput = openBarcodeModal('창고등록(바코드)');
 
         // 바코드 input시 ajax로 해당 바코드 로케이션 가져오기(추후에 작업~)
-        var barcodeInput = $('input[name="barcode"]');
-        barcodeInput.val("").focus();
         barcodeInput.on('input', function () {
             $.ajax({
                 url: '',
@@ -286,8 +283,7 @@
 
     /**자산바코드 모달*/
     function showGoodsBarcodeModal() {
-        openBarcodeModal();
-        $('#barcodeModal .modal-title').text('자산등록(바코드)');
+        var barcodeInput = openBarcodeModal('자산등록(바코드)');
     }
 </script>
 <script th:inline="javascript">

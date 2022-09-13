@@ -25,4 +25,12 @@ public interface GoodsMapper {
     List<Map<String, Object>> selectGoodsTempDatatable(Map<String, Object> map);
     /** 자산 임시 테이블 조회*/
     Long countGoodsTempDatatable(Map<String, Object> map);
+
+    /** 입고검수 임시 테이블 제거 **/
+    void deleteGoodsGroupTempByGIdxAndGgtIdx(Map<String, Object> map);
+
+    Map<String, Object> selectGoodsByG_IDX(Long aLong);
+
+    /** 입고검수 임시 테이블 삭제 **/
+    void deleteGoodsGroupTempByGGT_IDX(@Param("ggtIdx") long ggt_idx);
 }

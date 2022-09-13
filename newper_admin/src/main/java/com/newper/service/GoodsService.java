@@ -1,6 +1,7 @@
 package com.newper.service;
 
 import com.newper.constant.GgtType;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
 import com.newper.entity.GoodsGroupTemp;
 import com.newper.entity.Po;
@@ -85,5 +86,11 @@ public class GoodsService {
         goodsMapper.insertGoodsTemp(idx, gIdxs);
 
         return idx;
+    }
+
+    /** 입고검수 임시 그룹 삭제 **/
+    @Transactional
+    public void deleteGGTGoods(ParamMap paramMap) {
+        goodsMapper.deleteGoodsGroupTempByGIdxAndGgtIdx(paramMap.getMap());
     }
 }

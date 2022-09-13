@@ -198,7 +198,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/salesManagement/installation.dataTable?' + $('#installation').serialize(),
+            url: '/salesManagement/installation.dataTable?' + $('#installationForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -228,29 +228,15 @@
             , {'title': '자산상태', 'data': 'U_PHONE'}
             , {
                 'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
                 }
             }
-            , {'title': '휴대폰번호', 'data': 'U_PHONE'}
-            , {'title': '상호법인명<br>(소속)', 'data': 'COM_NAME'}
-            , {'title': '로그인ID', 'data': 'U_ID'}
-            , {'title': '부서', 'data': 'U_DEPART'}
-            , {'title': '직급(직책)', 'data': 'U_POSITION'}
-            , {'title': '이메일(개인)', 'data': 'U_PERSON_MAIL'}
-            , {'title': '전화번호(사무실번호)', 'data': 'U_COMPANY_TEL'}
-            , {'title': '상태', 'data': 'U_STATE_STR', 'defaultContent':''}
-            , {'title': '권한', 'data': 'AUTH_IDX'}
-            , {'title': '등록자', 'data': 'CREATED_BY'}
-            , {'title': '등록일', 'data': 'CREATED_DATE'}
-            , {'title': '수정자', 'data': 'MODIFIED_BY'}
-            , {'title': '수정일', 'data': 'MODIFIED_DATE'}
-            , {
-                'title': '수정이력', 'data': '', 'render': function (data) {
-                    return '<a href="#" class="badge badge-primary">보기</a>';
-                }
-            }
-
-
+            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
+            , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
+            , {'title': '상품코드', 'data': 'U_ID'}
+            , {'title': '자산코드', 'data': 'U_DEPART'}
+            , {'title': '상품명', 'data': 'U_POSITION'}
+            , {'title': '수량', 'data': 'U_PERSON_MAIL'}
         ]
     });
 

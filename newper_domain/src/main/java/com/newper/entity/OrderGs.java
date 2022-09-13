@@ -21,15 +21,19 @@ public class OrderGs {
     private Long ogIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OG_O_IDX", referencedColumnName = "OIdx")
+    private Orders orders;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_SPO_IDX", referencedColumnName = "spoIdx")
     private ShopProductOption shopProductOption;
 
     private String ogType;
-
     private Integer ogPrice;
-
+    private Integer ogPoint;
+    private Integer ogMileage;
+    private Integer ogCoupon;
     private LocalDate ogDate;
-
     private LocalTime ogTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
