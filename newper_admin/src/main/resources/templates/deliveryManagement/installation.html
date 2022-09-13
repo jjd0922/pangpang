@@ -138,7 +138,7 @@
 
 </body>
 
-<th:block th:replace="salesManagement/modal/installationModal.html"/>
+<th:block th:replace="/deliveryManagement/modal/installationModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -175,7 +175,7 @@
 <script>
     function searchBtn() {
         var table = $('#installationTable').DataTable();
-        table.page('first').ajax.url('/salesManagement/installation.dataTable?' + $('#installationForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()).load(null, false);
     }
 
     function Btn2(){
@@ -198,7 +198,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/salesManagement/installation.dataTable?' + $('#installationForm').serialize(),
+            url: '/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize(),
             type: 'post'
         },
         columnDefs: [{

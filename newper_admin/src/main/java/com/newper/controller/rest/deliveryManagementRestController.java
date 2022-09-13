@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
-@RequestMapping(value = "/salesManagement/")
+@RequestMapping(value = "/deliveryManagement/")
 @RequiredArgsConstructor
 @RestController
-public class SalesManagementRestController {
+public class deliveryManagementRestController {
 
     /**주문관리 배송관리 데이터테이블*/
     @PostMapping("delivery.dataTable")
