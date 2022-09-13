@@ -38,6 +38,12 @@ public class OrdersController {
         return mav;
     }
 
+    @GetMapping("bulkOrder")
+    public ModelAndView bulkOrder(){
+        ModelAndView mav = new ModelAndView("orders/bulkOrder");
+        return mav;
+    }
+
     @GetMapping("detail/{oIdx}")
     public ModelAndView detail(@PathVariable int oIdx){
         ModelAndView mav = new ModelAndView("orders/detail");
