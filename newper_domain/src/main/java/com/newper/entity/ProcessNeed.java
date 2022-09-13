@@ -43,7 +43,7 @@ public class ProcessNeed {
 
     private String pnProcess;
 
-    private Map<String, Object> pnLookup;
+    private Map<String, Object> pnJson;
 
 
 }

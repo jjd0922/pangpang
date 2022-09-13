@@ -404,4 +404,38 @@
             <include refid="includeInProductDatatable"></include>
         </where>
     </select>
+
+    <select id="selectPoProductByOptionAndInSpecAndPidx" resultType="com.newper.entity.PoProduct">
+        SELECT
+            *
+        FROM
+            PO_PRODUCT
+                LEFT JOIN SPEC ON PP_SPEC_IDX = SPEC_IDX
+                LEFT JOIN PRODUCT ON PP_P_IDX = P_IDX
+        WHERE
+            SPEC_IDX = #{specIdx}
+        AND
+            P_IDX = #{pIdx}
+        AND
+            PP_OPTION = #{option}
+    </select>
+
+    <select id="selectPoReceivedByProductAndPoAndSpecAndOption" resultType="com.newper.entity.PoReceived">
+        SELECT
+            *
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO ON POR_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON POR_P_IDX = P_IDX
+                LEFT JOIN SPEC ON POR_IN_SPEC_IDX = SPEC_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX AND PP_COUNT - POR_COUNT > 0
+        WHERE
+            SPEC_IDX = #{specIdx}
+        AND
+            P_IDX = #{pIdx}
+        AND
+            POR_OPTION = #{option}
+        AND
+            PO_IDX = #{poIdx}
+    </select>
 </mapper>

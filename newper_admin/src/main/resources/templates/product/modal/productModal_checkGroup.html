@@ -24,6 +24,7 @@
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
                                                     <input type="text" class="form-control" name="pIdx" id="pIdx" readonly>
+                                                    <input type="hidden" name="poIdx" id="poIdx">
                                                 </div>
                                             </div>
                                         </div>
@@ -94,7 +95,6 @@
                                                     <th>공정구분</th>
                                                     <th>예상공정항목</th>
                                                     <th>예상비용</th>
-                                                    <th>이미지 사진</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,22 +102,78 @@
                                                     <td>도색</td>
                                                     <td><input type="text" name="paintMemo" class="form-control"></td>
                                                     <td><input type="text" name="paintCost" class="form-control"></td>
-                                                    <td><input type="file" name="paintFile" class="form-control" multiple></td>
                                                 </tr>
                                                 <tr>
                                                     <td>수리</td>
                                                     <td><input type="text" name="fixMemo" class="form-control"></td>
                                                     <td><input type="text" name="fixCost" class="form-control"></td>
-                                                    <td><input type="file" name="fixFile" class="form-control" multiple></td>
                                                 </tr>
                                                 <tr>
                                                     <td>가공</td>
                                                     <td><input type="text" name="processMemo" class="form-control"></td>
                                                     <td><input type="text" name="processCost" class="form-control"></td>
-                                                    <td><input type="file" name="processFile" class="form-control" multiple></td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend class="">4. 옵션</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션1</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption1" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션2</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption2" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션3</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption3" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend class="">5. 첨부파일</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">첨부파일</span>
+                                                    </span>
+                                                    <input type="file" class="form-control" name="gFile" multiple>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </fieldset>
                             </div>
@@ -193,7 +249,6 @@
                     specValue2 = dataMap.SPEC2.split("/")[i].split(":")[1]
                 }
 
-
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
@@ -223,20 +278,22 @@
                 });
             }
 
-            $.ajax({
-                type: "POST",
-                url:"/process/selectProcessNeed.ajax",
-                data: {
-                    "gIdx" : dataMap.G_IDX
-                },
-                async: false,
-                success : function(result){
+            var options = JSON.parse(dataMap.P_OPTION);
+            for (var i = 0; i < 3; i++) {
+                var num = parseInt(i) + 1;
+                $('#productOption' + num).empty();
+                $('#productOption' + num).append('<option value="">없음</option>');
+            }
 
-                    $.each(result.data, function (index, value) {
-
-                    });
+            for (var i = 0; i < options.length; i++) {
+                var text = '';
+                for (var j = 0; j < options[i].values.length; j++) {
+                    text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
                 }
-            });
+                var num = parseInt(i) + 1;
+                $('#productOption' + num).empty();
+                $('#productOption' + num).append(text);
+            }
 
 
 
@@ -245,6 +302,7 @@
             $('#pName').val(dataMap.P_NAME);
             $('#gIdx').val(dataMap.G_IDX);
             $('#cgsIdx').val(dataMap.CGS_IDX);
+            $('#poIdx').val(dataMap.PO_IDX);
         }
     }
 </script>

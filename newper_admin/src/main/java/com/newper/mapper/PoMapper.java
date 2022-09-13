@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
-import com.newper.dto.ParamMap;
+import com.newper.entity.PoProduct;
+import com.newper.entity.PoReceived;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +66,10 @@ public interface PoMapper {
 
     /** 발주 판매 예정 스팩 **/
     List<String> selectPoSpecSell(@Param("ppIdx") long poIdx);
+
+    /** 발주상품 실입고상품 비교 */
+    PoProduct selectPoProductByOptionAndInSpecAndPidx(@Param("option") String option, @Param("specIdx") Integer specIdx, @Param("pIdx") int pIdx);
+
+    /** 검수리포트 실입고 상품 있는지 확인 */
+    PoReceived selectPoReceivedByProductAndPoAndSpecAndOption(@Param("pIdx") int pIdx, @Param("poIdx") int poIdx, @Param("specIdx") int specIdx, @Param("option") String option);
 }

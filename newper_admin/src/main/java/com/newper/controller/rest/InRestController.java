@@ -195,9 +195,9 @@ public class InRestController {
 
     /** 입고검수 자산 SPEC 세팅 */
     @PostMapping("checkGoodsSpecSet.ajax")
-    public ReturnMap checkGoodsSpecSet(ParamMap paramMap, MultipartFile[] paintFile, MultipartFile[] fixFile, MultipartFile[] processFile) {
+    public ReturnMap checkGoodsSpecSet(ParamMap paramMap, MultipartFile[] gFile) {
         ReturnMap rm = new ReturnMap();
-        checkService.updateCheckGoodsSpec(paramMap, paintFile, fixFile, processFile);
+        checkService.updateCheckGoodsSpec(paramMap, gFile);
         rm.setMessage("등록완료");
         return rm;
     }

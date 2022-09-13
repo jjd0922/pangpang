@@ -85,7 +85,7 @@ public class Goods {
 
 
     @Builder.Default
-    private Map<String, Object> gDt = new HashMap<>();
+    private Map<String, Object> gJson = new HashMap<>();
     private String gImei;
 
 

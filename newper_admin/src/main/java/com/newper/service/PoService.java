@@ -45,7 +45,6 @@ public class PoService {
     @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
         Po po = paramMap.mapParam(Po.class);
-        System.out.println("po: " + paramMap.getMap().entrySet());
 
         int buyerIdx = paramMap.getInt("comIdx_buy", "매입처 선택 부탁드립니다");
         po.setCompany(companyRepo.getReferenceById(buyerIdx));

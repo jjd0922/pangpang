@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -20,9 +21,13 @@ public class PoReceived {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer porIdx;
     private Integer porCount;
+    private Integer porCost;
     private String porMemo;
-    private LocalDate porDate;
-    private LocalTime porTime;
+    private Integer porSellPrice;
+    private float porProfitTarget;
+    private List<Map<String, Object>> porOption;
+//    private LocalDate porDate;
+//    private LocalTime porTime;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,13 +39,12 @@ public class PoReceived {
     private Po po;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POR_IN_SPEC_IDX", referencedColumnName = "specIdx")
-    private Spec spec;
+    @JoinColumn(name = "POR_PP_IDX", referencedColumnName = "ppIdx")
+    private PoProduct poProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POR_PROCESS_SPEC_IDX2", referencedColumnName = "specIdx")
-    private Spec spec2;
-
+    @JoinColumn(name = "POR_IN_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec spec;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "poReceived", cascade = CascadeType.DETACH)
