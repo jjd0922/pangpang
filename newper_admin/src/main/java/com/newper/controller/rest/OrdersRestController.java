@@ -33,6 +33,13 @@ public class OrdersRestController {
         return returnDatatable;
     }
 
+    @PostMapping("bulk.dataTable")
+    public ReturnDatatable bulk(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+
+        return returnDatatable;
+    }
+
     /**사방넷 주문수집*/
     @PostMapping("sabangOrder.ajax")
     public ReturnMap sabangOrder(String startDate, String endDate){
