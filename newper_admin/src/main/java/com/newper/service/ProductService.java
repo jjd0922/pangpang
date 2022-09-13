@@ -55,9 +55,6 @@ public class ProductService {
     @Transactional
     public int productSave(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
         Product product = paramMap.mapParam(Product.class);
-
-
-
         if(!paramMap.get("P_CATE_IDX").equals("")){
             Category category = categoryRepo.getReferenceById(paramMap.getInt("P_CATE_IDX"));
             product.setCategory(category);
@@ -70,12 +67,12 @@ public class ProductService {
             Company store = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX"));
             product.setStoreName(store);
         }
-        if(!paramMap.get("P_COM_IDX2").equals("")){
+/*        if(!paramMap.get("P_COM_IDX2").equals("")){
             Company manufacture = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             product.setManufactureName(manufacture);
-        }
-        if(!paramMap.get("P_COM_IDX3").equals("")){
-            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX3"));
+        }*/
+        if(!paramMap.get("P_COM_IDX2").equals("")){
+            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             product.setAfterServiceName(afterService);
         }
 
@@ -144,6 +141,7 @@ public class ProductService {
         Product product = paramMap.mapParam(Product.class);
         Product ori = productRepo.findById(paramMap.getInt("P_IDX")).get();
 
+        ori.setPComManufacturer(product.getPComManufacturer());
         ori.setPName(product.getPName());
         ori.setPState(product.getPState());
         ori.setPModel(product.getPModel());
@@ -151,6 +149,7 @@ public class ProductService {
         ori.setPType1(product.getPType1());
         ori.setPType2(product.getPType2());
         ori.setPType3(product.getPType3());
+        ori.setPDelType(product.getPDelType());
         ori.setPContent1(product.getPContent1());
         ori.setPContent2(product.getPContent2());
         ori.setPContent3(product.getPContent3());
@@ -184,12 +183,12 @@ public class ProductService {
             Company store = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX"));
             ori.setStoreName(store);
         }
-        if(!paramMap.get("P_COM_IDX2").equals("")){
+/*        if(!paramMap.get("P_COM_IDX2").equals("")){
             Company manufacture = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             ori.setManufactureName(manufacture);
-        }
-        if(!paramMap.get("P_COM_IDX3").equals("")){
-            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX3"));
+        }*/
+        if(!paramMap.get("P_COM_IDX2").equals("")){
+            Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             ori.setAfterServiceName(afterService);
         }
 
