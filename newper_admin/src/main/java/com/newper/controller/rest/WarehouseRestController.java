@@ -3,6 +3,7 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.mapper.LocationMapper;
 import com.newper.mapper.WarehouseMapper;
 import com.newper.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class WarehouseRestController {
 
     private final WarehouseMapper warehouseMapper;
     private final WarehouseService warehouseService;
+    private final LocationMapper locationMapper;
 
     /**창고 데이터테이블 조회*/
     @PostMapping("warehouse.dataTable")
@@ -70,8 +72,8 @@ public class WarehouseRestController {
         paramMap.multiSelect("locType");
         paramMap.multiSelect("locForm");
 
-        rd.setData(warehouseMapper.selectLocationDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(warehouseMapper.countLocationDatatable(paramMap.getMap()));
+        rd.setData(locationMapper.selectLocationDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(locationMapper.countLocationDatatable(paramMap.getMap()));
         return rd;
     }
 

@@ -10,6 +10,7 @@ import com.newper.entity.User;
 import com.newper.entity.Warehouse;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
+import com.newper.mapper.LocationMapper;
 import com.newper.mapper.WarehouseMapper;
 import com.newper.repository.LocationRepo;
 import com.newper.repository.WarehouseRepo;
@@ -36,6 +37,7 @@ public class WarehouseService {
     private final WarehouseRepo warehouseRepo;
     private final WarehouseMapper warehouseMapper;
     private final LocationRepo locationRepo;
+    private final LocationMapper locationMapper;
 
     /** 창고정보 등록 */
     @Transactional
@@ -147,7 +149,7 @@ public class WarehouseService {
                 }
             }
         }
-        warehouseMapper.changeAllLocType(idxArr, LocType.valueOf(paramMap.getString("locType")));
+        locationMapper.changeAllLocType(idxArr, LocType.valueOf(paramMap.getString("locType")));
     }
 
     /**로케이션 엑셀업로드*/
@@ -216,7 +218,7 @@ public class WarehouseService {
                 locationList.add(location);
             }
 
-            warehouseMapper.insertLocationByExcel(locationList);
+            locationMapper.insertLocationByExcel(locationList);
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
