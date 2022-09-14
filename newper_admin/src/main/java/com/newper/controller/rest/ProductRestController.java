@@ -302,6 +302,8 @@ public class ProductRestController {
     @PostMapping("goodsStock.dataTable")
     public ReturnDatatable goodsStock(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("재고상품관리");
+        paramMap.multiSelect("GS_RANK");
+        paramMap.multiSelect("P_STATE");
         returnDatatable.setData(productMapper.selectGoodsStockDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countGoodsStockDataTable(paramMap.getMap()));
         return returnDatatable;

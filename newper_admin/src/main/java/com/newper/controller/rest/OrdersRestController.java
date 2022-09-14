@@ -32,7 +32,7 @@ public class OrdersRestController {
 
         return returnDatatable;
     }
-
+    /**통합주문관리 대량주문등록 팝업 2.대량발주 데이터 테이블 */
     @PostMapping("bulk.dataTable")
     public ReturnDatatable bulk(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
