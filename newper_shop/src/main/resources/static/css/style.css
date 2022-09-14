@@ -2562,6 +2562,7 @@ select {
     display: flex;
     flex-direction: column;
     width: 100%;
+    position: relative;
 }
 .addr-input {
     display: flex;
@@ -2579,7 +2580,7 @@ select {
     align-items: center;
     font-size: 13px;
 }
-.addr-txt {
+.addr-text {
     width: 50%;
 }
 .verticalAlign {
@@ -2598,6 +2599,10 @@ select {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+}
+.point>div {
+    display: flex;
+    align-items: center;
 }
 .point:nth-last-of-type(1) {
     margin-bottom: 0;
@@ -2689,6 +2694,9 @@ input[type="number"]::-webkit-inner-spin-button {
     .order-table li {
         flex-direction: column;
     }
+    .order-table li:first-child .infoInput-content {
+        font-weight: 400;
+    }
     .order-item>ul {
         flex-wrap: wrap;
     }
@@ -2713,7 +2721,17 @@ input[type="number"]::-webkit-inner-spin-button {
         flex-wrap: wrap;
         width: 100%;
     }
-    .point
+    .point>div {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .point>p {
+        margin-left: 90px;
+        margin-top: 5px;
+    }
+    #point1, #point2 {
+        width: calc(100% - 80px);
+    }
     .order-btn {
         border-radius: 30px;
         padding: 7px 30px;
@@ -2779,6 +2797,28 @@ input[type="number"]::-webkit-inner-spin-button {
     .point-wrap>p, .generalPayment>p {
         align-items: initial;
     }
+    .addr-info {
+        padding-bottom: 30px;
+    }
+    .addr-text {
+        width: 100%;
+        margin-right: 0!important;
+    }
+    .addr-input:nth-of-type(1) input {
+        width: calc(100% - 150px);
+        margin-right: 10px;
+    }
+    .addr-input:nth-of-type(2)>*:not(input) {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    .addr-input:nth-of-type(3)>*:not(input) {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
 }
 /** 배송지 목록 **/
 .addrListModal {
