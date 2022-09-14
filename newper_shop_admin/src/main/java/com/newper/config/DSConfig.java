@@ -29,7 +29,7 @@ public class DSConfig {
 
         DataSource dataSource = DataSourceBuilder.create()
                 /*.url("jdbc:mysql://"+aesEncrypt.decrypt(url))*/
-                .url("jdbc:mysql://localhost:3306/newpermarket?serverTimezone=UT")
+                .url("jdbc:mysql://db-atqo0.vpc-cdb.ntruss.com:3306/newpermarket?serverTimezone=UT")
                 .username(aesEncrypt.decrypt(username))
                 .password(aesEncrypt.decrypt(password))
                 .driverClassName(driver)
