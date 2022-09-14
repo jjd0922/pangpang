@@ -28,7 +28,8 @@ public class DSConfig {
         AesEncrypt aesEncrypt = new AesEncrypt();
 
         DataSource dataSource = DataSourceBuilder.create()
-                .url("jdbc:mysql://"+aesEncrypt.decrypt(url))
+               /* .url("jdbc:mysql://"+aesEncrypt.decrypt(url))*/
+                .url("jdbc:mysql://localhost:3306/newpermarket?serverTimezone=UT")
                 .username(aesEncrypt.decrypt(username))
                 .password(aesEncrypt.decrypt(password))
                 .driverClassName(driver)
