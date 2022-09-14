@@ -18,7 +18,7 @@ public class MainSectionBanner {
     private Long msbnIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MSSP_MS_IDX", referencedColumnName = "msIdx")
+    @JoinColumn(name = "MSBN_MS_IDX", referencedColumnName = "msIdx")
     private MainSection mainSection;
 
     /** 순서*/

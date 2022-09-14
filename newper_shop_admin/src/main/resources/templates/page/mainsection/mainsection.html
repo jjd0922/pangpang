@@ -46,13 +46,13 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">분양몰</label>
-                                                    <select class="form-control form-control-sm select-search" name="CATE_DISPLAY" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control form-control-sm select-search" name="SHOP_IDX" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="shop : ${shopList}" th:text="${shop.shopName}" th:value="${shop.shopIdx}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">섹션명</label>
-                                                    <input class="form-control form-control-sm w-120px" data-placeholder="검색">
+                                                    <input class="form-control form-control-sm w-120px" name="MS_NAME" data-placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -160,7 +160,7 @@ $(document).ready(function(){
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/shop/mainsection.dataTable',
+            url:'/page/mainsection.dataTable',
             type:'post'
         },
         "columns" : [
@@ -220,7 +220,7 @@ $(document).ready(function(){
                 }
 
                 $.ajax({
-                    url:'/shop/mainsection.ajax'
+                    url:'/page/mainsection.ajax'
                     ,type:'post'
                     ,data:param
                 }).always(function(res){
@@ -251,7 +251,7 @@ $(document).ready(function(){
 
 <script>
     function insertMainSectionPop(){
-        var focusPopup = window.open('/shop/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/page/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
     function test(){
@@ -261,7 +261,7 @@ $(document).ready(function(){
     function deleteMainsection(msIdx){
         if(confirm("메인섹션을 삭제하시겠습니까?")){
             $.ajax({
-                url:'/shop/mainsection/delete.ajax',
+                url:'/page/mainsection/delete.ajax',
                 type:'post',
                 data:{
                     msIdx: msIdx
