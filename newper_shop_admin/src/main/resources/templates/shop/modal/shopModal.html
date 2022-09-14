@@ -1,0 +1,59 @@
+<div class="modal" tabIndex="-1" role="dialog" id="shopModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">분양몰</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table w-100" id="shopModalTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function openShopModal() {
+        $('#shopModal').modal('show');
+        initShopModalTable();
+    }
+
+    function chooseShop(id, rowIdx) {
+        var dataMap = getDatatablemap(id, rowIdx);
+
+        $('input[name=shopIdx]').val(dataMap['SHOP_IDX']);
+        $('input[name=shopName]').val(dataMap['SHOP_NAME']);
+        $('#shopModal').modal('hide');
+    }
+
+</script>
+<script th:inline="javascript">
+    function initShopModalTable() {
+        if ( !$.fn.DataTable.isDataTable( '#shopModalTable') ) {
+            $('#shopModalTable').DataTable({
+                dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+                ordering: false,
+                buttons : buttonsSelect(false),
+                autoWidth: true,
+                serverSide: true,
+                ajax:{
+                    url:'/shop/shop.dataTable',
+                    type:'post'
+                },
+                columns : [
+                    {'title':'No','data':'No','render':function(data,type,full,meta){
+                        return meta.settings._iDisplayStart+meta.row+1;
+                    }}
+                    ,{'title':'분양몰', 'data':'SHOP_NAME'}
+                    ,{'title':'','render':function(data,type,full,meta){
+                        return '<a class="btn btn-primary btn-sm" onclick="chooseShop(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
+                    }}
+                ]
+            });
+        }
+    }
+
+</script>

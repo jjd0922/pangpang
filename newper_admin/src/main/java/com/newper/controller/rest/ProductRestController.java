@@ -302,6 +302,8 @@ public class ProductRestController {
     @PostMapping("goodsStock.dataTable")
     public ReturnDatatable goodsStock(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("재고상품관리");
+        paramMap.multiSelect("GS_RANK");
+        paramMap.multiSelect("P_STATE");
         returnDatatable.setData(productMapper.selectGoodsStockDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countGoodsStockDataTable(paramMap.getMap()));
         return returnDatatable;
@@ -400,10 +402,10 @@ public class ProductRestController {
 
     /**사방넷 상품 등록 api*/
     @PostMapping("sabang.ajax")
-    public ReturnMap sabang(String gsIdxs){
+    public ReturnMap sabang(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-
-        String res = productService.sabang(gsIdxs);
+        System.out.println(paramMap.getMap());
+        String res = productService.sabang(paramMap);
 
 
 

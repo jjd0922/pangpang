@@ -373,9 +373,19 @@ public class ProductService {
     }
 
     @Transactional
-    public String sabang(String gsIdxs){
+    public String sabang(ParamMap paramMap){
+        String gsIdxs = paramMap.get("gsIdxs")+"";
         System.out.println(gsIdxs);
         String[] gsIdx = gsIdxs.split(",");
+
+        String ORIGIN_STR = paramMap.get("ORIGIN")+"";
+        String STATUS_STR = paramMap.get("STATUS")+"";
+        String DELV_COST_STR = paramMap.onlyNumber("DELV_COST")+"";
+        String GOODS_PRICE_STR = paramMap.onlyNumber("GOODS_PRICE")+"";
+        String DELV_TYPE_STR = paramMap.get("DELV_TYPE")+"";
+        String GOODS_COST_STR = paramMap.onlyNumber("GOODS_COST")+"";
+        String GOODS_CONSUMER_PRICE_STR = paramMap.onlyNumber("GOODS_CONSUMER_PRICE")+"";
+
         String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         try {
         System.out.println("length : "+gsIdx.length);
@@ -388,7 +398,7 @@ public class ProductService {
         Element exInformation = doc.createElement("SABANG_GOODS_REGI");
         doc.appendChild(exInformation);
         Element header = doc.createElement("HEADER");
-        Element data = doc.createElement("DATA");
+
 
         Element SEND_COMPAYNY_ID = doc.createElement("SEND_COMPAYNY_ID");
         Element SEND_AUTH_KEY = doc.createElement("SEND_AUTH_KEY");
@@ -412,6 +422,7 @@ public class ProductService {
 
 
             for(int i=0; i<gsIdx.length; i++){
+                Element data = doc.createElement("DATA");
                 System.out.println("idx : " + gsIdx[i]);
                 int gs_idx = Integer.parseInt(gsIdx[i]);
                 GoodsStock goodsStock = goodsStockRepo.getReferenceById(gs_idx);
@@ -549,12 +560,12 @@ public class ProductService {
                     if(cate!=null){
                         Map<String, Object> category = categoryMapper.selectCategoryDetail(cate.getCateIdx());
                         if(category!=null){
-                            if(Integer.parseInt(category.get("CATE_DEPT")+"")==1){
+                            if(Integer.parseInt(category.get("CATE_DEPTH")+"")==1){
                                 CLASS_CD1.appendChild(doc.createTextNode(category.get("ori_cate_name")+""));
-                            }else if (Integer.parseInt(category.get("CATE_DEPT")+"")==2){
+                            }else if (Integer.parseInt(category.get("CATE_DEPTH")+"")==2){
                                 CLASS_CD1.appendChild(doc.createTextNode(category.get("per_cate_name1")+""));
                                 CLASS_CD2.appendChild(doc.createTextNode(category.get("ori_cate_name")+""));
-                            }else if(Integer.parseInt(category.get("CATE_DEPT")+"")==3){
+                            }else if(Integer.parseInt(category.get("CATE_DEPTH")+"")==3){
                                 CLASS_CD1.appendChild(doc.createTextNode(category.get("per_cate_name2")+""));
                                 CLASS_CD2.appendChild(doc.createTextNode(category.get("per_cate_name1")+""));
                                 CLASS_CD3.appendChild(doc.createTextNode(category.get("ori_cate_name")+""));
@@ -562,14 +573,14 @@ public class ProductService {
                         }
                     }
                     MAKER.appendChild(doc.createTextNode(""));
-                    ORIGIN.appendChild(doc.createTextNode("대한민국"));
+                    ORIGIN.appendChild(doc.createTextNode(ORIGIN_STR));
                     GOODS_SEASON.appendChild(doc.createTextNode("7"));
                     SEX.appendChild(doc.createTextNode("4"));
-                    STATUS.appendChild(doc.createTextNode("5"));
+                    STATUS.appendChild(doc.createTextNode(STATUS_STR));
                     TAX_YN.appendChild(doc.createTextNode("1"));
-                    GOODS_COST.appendChild(doc.createTextNode("700"));
-                    GOODS_PRICE.appendChild(doc.createTextNode("1000"));
-                    GOODS_CONSUMER_PRICE.appendChild(doc.createTextNode("1000"));
+                    GOODS_COST.appendChild(doc.createTextNode(GOODS_COST_STR));
+                    GOODS_PRICE.appendChild(doc.createTextNode(GOODS_PRICE_STR));
+                    GOODS_CONSUMER_PRICE.appendChild(doc.createTextNode(GOODS_CONSUMER_PRICE_STR));
                     IMG_PATH.appendChild(doc.createTextNode(product.getPThumbFile1()+""));
                     IMG_PATH1.appendChild(doc.createTextNode(product.getPThumbFile1()+""));
                     IMG_PATH2.appendChild(doc.createTextNode(product.getPThumbFile2()+""));
@@ -581,6 +592,9 @@ public class ProductService {
                     IMG_PATH8.appendChild(doc.createTextNode(goodsStock.getGsThumbFile2()+""));
                     IMG_PATH9.appendChild(doc.createTextNode(goodsStock.getGsThumbFile3()+""));
                     GOODS_REMARKS.appendChild(doc.createTextNode(Common.summernoteContent(goodsStock.getGsContent()).replace("<p><img src=\"","").replace("\">","").replace("</p>","").trim()+"]]>"));
+
+                DELV_TYPE.appendChild(doc.createTextNode(DELV_TYPE_STR));
+                DELV_COST.appendChild(doc.createTextNode(DELV_COST_STR));
 
                     STOCK_USE_YN.appendChild(doc.createTextNode("Y"));
                     CHAR_1_NM.appendChild(doc.createTextNode("단품"));
@@ -705,26 +719,26 @@ public class ProductService {
 
                     exInformation.appendChild(data);
 
-                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                    Transformer transformer = transformerFactory.newTransformer();
-                    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4"); //정렬 스페이스4칸
-                    transformer.setOutputProperty(OutputKeys.ENCODING, "EUC-KR");
-                    transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //들여쓰기
-                    transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "yes"); //doc.setXmlStandalone(true); 했을때 붙어서 출력되는부분 개행
-                    DOMSource source = new DOMSource(doc);
 
-                    StreamResult result = new StreamResult(new FileOutputStream(new File("D://product.xml")));
-
-                    transformer.transform(source, result);
 
             }
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4"); //정렬 스페이스4칸
+            transformer.setOutputProperty(OutputKeys.ENCODING, "EUC-KR");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //들여쓰기
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "yes"); //doc.setXmlStandalone(true); 했을때 붙어서 출력되는부분 개행
+            DOMSource source = new DOMSource(doc);
+
+            StreamResult result = new StreamResult(new FileOutputStream(new File("D://product.xml")));
+
+            transformer.transform(source, result);
 
             File file = new File("D://product.xml");
             InputStream input = new FileInputStream(file);
             Path path = Paths.get("D://product.xml");
 
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            System.out.println(file.length() + " / " + file.length());
             String fileXml = "xml/"+file.getName()+"_"+now;
             String loc=NewperStorage.uploadFile(AdminBucket.OPEN, fileXml, new FileInputStream(file), file.length(), Files.probeContentType(file.toPath()));
 

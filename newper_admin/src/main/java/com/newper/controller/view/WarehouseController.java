@@ -54,9 +54,4 @@ public class WarehouseController {
         mav.addObject("location", locationRepo.findLocationByLocIdx(locIdx));
         return mav;
     }
-
-    
-    
-
-
 }

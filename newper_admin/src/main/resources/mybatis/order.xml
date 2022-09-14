@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.OrdersMapper">
-
     <select id="selectOrderDatatable" resultType="map">
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
@@ -118,7 +117,8 @@
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
-            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
+            G_STATE
+            , GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
             OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0) AS DELIVERY,
             (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0)) AS TOTAL,
             truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE
