@@ -110,4 +110,33 @@
         WHERE
             GGT_IDX = #{ggtIdx}
     </delete>
+
+    <sql id="includeGoodsDatatable">
+        <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
+    </sql>
+
+    <select id="selectGoodsDataTable" resultType="Map">
+        SELECT
+            G_IDX,
+            G_BARCODE,
+            P_NAME
+        FROM
+            GOODS
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
+    </select>
+
+    <select id="countGoodsDataTable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+               LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
+    </select>
 </mapper>

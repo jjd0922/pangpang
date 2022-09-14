@@ -69,4 +69,13 @@ public class GoodsRestController {
         rm.setMessage("삭제완료");
         return rm;
     }
+
+    /** 자산 조회 */
+    @PostMapping("goods.dataTable")
+    public ReturnDatatable goodsDataTable(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
+        return rd;
+    }
 }

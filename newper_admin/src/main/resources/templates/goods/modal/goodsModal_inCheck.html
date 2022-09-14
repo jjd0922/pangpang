@@ -1,0 +1,118 @@
+<div class="modal" tabindex="-1" role="dialog" id="goodsModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">자산 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="card mb-1">
+                        <div class="card-body popup-contents mb-1">
+                            <form id="goodsModalForm" onkeypress="if(event.keyCode==13){searchGoodsModal();return false;}">
+                                <fieldset class="mb-0">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산상태</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" value="입고검수대기" readonly>
+                                                    <input type="hidden" name="gState" value="RECEIVED">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pName" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">바코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="barcode" placeholder="검색">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                            <div class="justify-content-end mt-2 mb-2">
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="searchGoodsModal()">
+                                    <i class="icon-search4 mr-1"></i>조회
+                                </button>
+                            </div>
+
+                            <table class="table" id="goodsModalTable">
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1">자산 추가</button>
+                <button type="button" class="btn btn-primary" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기 </button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function openGoodsModal() {
+        $('#goodsModal').show();
+        selectGoodsDataTable()
+    }
+
+    <!-- 상품 검색 -->
+    function searchGoodsModal(){
+        $('#goodsModalTable').DataTable().page("first").ajax.url("/goods/goods.dataTable?" + $('#goodsModalForm').serialize()).load(null, false);
+    }
+
+    function selectGoodsDataTable(){
+        var goodsTable = $('#goodsModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+            ordering:false,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax:{
+                url:'/goods/goods.dataTable?'+$('#goodsModalForm').serialize(),
+                type:'post'
+            },
+            columnDefs: [ {
+                orderable: false,
+                targets:   [0]
+
+            } ],
+
+            "columns" : [
+                {'title':'선택','data':'G_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
+                        return '';
+                    }}
+                ,{'title':'자산코드','data':'G_IDX', 'defaultContent':''}
+                ,{'title':'바코드','data':'G_BARCODE', 'defaultContent':''}
+                ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+            ]
+        });
+    }
+</script>

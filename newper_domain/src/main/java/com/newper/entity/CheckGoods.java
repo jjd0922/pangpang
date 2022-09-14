@@ -49,7 +49,6 @@ public class CheckGoods {
 
     private int cgsRealCost;
 
-    private String cgsFile;
-    private String cgsFileName;
+    private String porSpec;
 
 }

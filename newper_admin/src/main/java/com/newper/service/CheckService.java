@@ -224,12 +224,6 @@ public class CheckService {
                     .build();
         }
 
-        // 같은 상품 같은 옵션 같은 스펙일 경우 자동 매핑
-        PoProduct poProduct = poMapper.selectPoProductByOptionAndInSpecAndPidx(option.toString(), specIdx, pIdx);
-        if (poProduct != null) {
-            poReceived.setPoProduct(poProduct);
-        }
-
         poReceivedRepo.save(poReceived);
 
         // PROCESS_NEED
@@ -297,7 +291,7 @@ public class CheckService {
 
             for (int i = 0; i < gFile.length; i++) {
                 if (gFile[i] != null || !gFile[i].isEmpty()) {
-                    file.add(Common.uploadFilePath(gFile[i], "goods/Photo/" + goods.getGIdx(), AdminBucket.SECRET));
+                    file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGIdx(), AdminBucket.SECRET));
                     fileName.add(gFile[i].getOriginalFilename());
                 }
             }

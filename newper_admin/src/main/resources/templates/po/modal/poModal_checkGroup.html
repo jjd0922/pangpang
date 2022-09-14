@@ -96,34 +96,13 @@
                         </div>
                     </div>
 
-                    <div class="card mb-1">
-                        <div class="card-body popup-contents mb-1">
-                            <fieldset class="mb-0">
-                                <legend class="">2. 발주상품 정보</legend>
-                                <div class="row">
-                                    <table class="table" id="poProductTable"></table>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-
-                    <div class="card mb-1">
-                        <div class="card-body popup-contents mb-1">
-                            <fieldset class="mb-0">
-                                <legend class="">3. 입고완료 자산 정보</legend>
-                                <div class="row">
-                                    <table class="table" id="poGoodsTable"></table>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
+                    <table class="table" id="poReceivedTable"></table>
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnpoModal" onclick="poMapping()">저장</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnpoModal" onclick="poReceivedMapping()">저장</button>
             </div>
             <!-- /footer -->
         </div>
@@ -131,109 +110,23 @@
 </div>
 
 <script>
-    function openMappingModal() {
-        var poIdx = $('input[name=poIdx]').val();
-        if (isNaN(poIdx) || poIdx == '') {
-            alert('발주코드를 확인해주세요');
-            return false;
-        }
+    function setGoods(data) {
 
-        getProduct();
-        getGoods();
-
-        $('#poModal').show();
     }
 
-    function poMapping() {
-        var gIdxs = dataTableGetSelectedData('poGoodsTable','G_IDX');
-        var ppIdxs = dataTableGetSelectedData('poProductTable','PP_IDX');
-
+    function selectReceived() {
+        var poIdx = $('input[name=poIdx]').val()
+        var cgIdx = $('input[name=cgIdx]').val()
         $.ajax({
-            url:'/in/poCheckMapping.ajax'
-            ,type:'post'
-            ,data: {
-                "gIdxs" : gIdxs,
-                "ppIdxs" : ppIdxs
+            url: '/in/selectReceivedByPo.ajax',
+            data: {
+                "poIdx" : poIdx,
+                "cgIdx" : cgIdx
+            },
+            type: 'post',
+            success(result) {
+                setGoods(result);
             }
-            ,async: false
-        }).done(function(res){
-
-        }).fail(function(){
-            return false;
-        });
-
-    }
-</script>
-
-<script>
-    function getProduct() {
-        //발주상품정보
-        var poProductTable = $('#poProductTable').DataTable({
-            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-            ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
-            },
-            serverSide: true,
-            ajax: {
-                url: '/po/selectPoProduct.dataTable?' + $('#goodsForm').serialize(),
-                type: 'post'
-            },
-            columnDefs: [{
-                orderable: false,
-                targets: [0]
-            }],
-            "columns": [
-                {
-                    'class': 'select-checkbox m-w-2',
-                    'title': '선택',
-                    'data': 'PP',
-                    'defaultContent': '',
-                    'render': function (data, type, full, meta) {
-                        return '';
-                    }
-                }
-                , {'title': '상품코드', 'data': 'P_IDX'}
-                , {'title': '발주코드', 'data': 'PO_IDX'}
-            ]
-        });
-    }
-</script>
-
-<script>
-    //입고검수완료 자산 정보
-    function getGoods() {
-        var poGoodsTable = $('#poGoodsTable').DataTable({
-            dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
-            ordering: false,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child'
-            },
-            serverSide: true,
-            ajax: {
-                url: '/in/checkGoods.dataTable?gState=CHECK',
-                type: 'post'
-            },
-            columnDefs: [{
-                orderable: false,
-                targets: [0]
-            }],
-            "columns": [
-                {
-                    'class': 'select-checkbox m-w-2',
-                    'title': '선택',
-                    'data': 'G_IDX',
-                    'defaultContent': '',
-                    'render': function (data, type, full, meta) {
-                        return '';
-                    }
-                }
-                , {'title': '상품코드', 'data': 'P_IDX'}
-                , {'title': '자산코드', 'data': 'G_IDX'}
-                , {'title': '자산상태', 'data': 'G_STATE_STR'}
-            ]
         });
     }
 </script>

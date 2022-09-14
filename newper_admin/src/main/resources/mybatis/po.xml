@@ -144,6 +144,10 @@
         <if test="hwAprvDate != null and hwAprvDate != ''">
             AND HW_APRV_DATE BETWEEN SUBSTR(#{hwAprvDate}, 1, 10) AND SUBSTR(#{hwAprvDate}, 13)
         </if>
+
+        <if test="poState != null and poState != ''">
+            AND PO_STATE = #{poState}
+        </if>
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
@@ -405,21 +409,6 @@
         </where>
     </select>
 
-    <select id="selectPoProductByOptionAndInSpecAndPidx" resultType="com.newper.entity.PoProduct">
-        SELECT
-            *
-        FROM
-            PO_PRODUCT
-                LEFT JOIN SPEC ON PP_SPEC_IDX = SPEC_IDX
-                LEFT JOIN PRODUCT ON PP_P_IDX = P_IDX
-        WHERE
-            SPEC_IDX = #{specIdx}
-        AND
-            P_IDX = #{pIdx}
-        AND
-            PP_OPTION = #{option}
-    </select>
-
     <select id="selectPoReceivedByProductAndPoAndSpecAndOption" resultType="com.newper.entity.PoReceived">
         SELECT
             *
@@ -438,4 +427,5 @@
         AND
             PO_IDX = #{poIdx}
     </select>
+
 </mapper>

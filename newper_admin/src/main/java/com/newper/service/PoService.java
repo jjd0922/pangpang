@@ -601,5 +601,8 @@ public class PoService {
         return "총 " + count + "개의 발주건을 " + state_msg + " 처리했습니다.";
 
     }
+
+    public void selectReceivedByPo(ParamMap paramMap) {
+    }
 }
 

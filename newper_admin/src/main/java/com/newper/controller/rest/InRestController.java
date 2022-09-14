@@ -163,7 +163,7 @@ public class InRestController {
         return rm;
 
     }
-    /** 영업검수 조회*/
+    /** 영업검수 조회 (발주단위) */
     @PostMapping("checks.dataTable")
     public ReturnDatatable sale(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
@@ -202,11 +202,21 @@ public class InRestController {
         return rm;
     }
 
-    /** 발주매핑 */
-    @PostMapping("poCheckMapping.ajax")
-    public ReturnMap poCheckMapping(ParamMap paramMap, MultipartFile cgsFile) {
+
+    /** 입고검수 자산 검색 */
+    @PostMapping("selectReceived.dataTable")
+    public ReturnDatatable selectReceived(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        return rd;
+    }
+
+    /** 해당 발주의 실입고 상품 select */
+    @PostMapping("selectReceivedByPo.ajax")
+    public ReturnMap insertPoReceivedByPo(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        System.out.println("param: " + paramMap.getMap().entrySet());
+        poMapper.selectReceivedByPo(paramMap.getMap());
+
         return rm;
     }
 }

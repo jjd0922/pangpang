@@ -122,6 +122,7 @@ public class PoRestController {
     public ReturnDatatable selectPoProduct(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
         rd.setData(poMapper.selectPoProductByPoIdx(paramMap.getInt("poIdx")));
+        rd.setRecordsTotal(poMapper.countPoProductByPoIdx(paramMap.getInt("poIdx")));
         return rd;
     }
 
