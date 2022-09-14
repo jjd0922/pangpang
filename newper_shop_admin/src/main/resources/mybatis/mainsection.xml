@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.MainsectionMapper">
+    <sql id="includeMainsectionDatatable">
+    </sql>
+    <select id="selectMainSectionDatatable" resultType="map">
+        SELECT
+            *
+        FROM (
+            SELECT
+                SHOP_IDX, SHOP_NAME
+            FROM SHOP
+            ORDER BY SHOP_IDX
+            <if test="length!=-1">
+                limit #{start},#{length}
+            </if>
+        ) SHOP LEFT JOIN MAIN_SECTION ON MS_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeMainsectionDatatable"></include>
+        </where>
+        ORDER BY SHOP_IDX
+    </select>
+    <select id="countMainSectionDatatable" resultType="map">
+        SELECT
+            COUNT(DISTINCT(SHOP_IDX)) CNT
+        FROM
+            SHOP LEFT JOIN MAIN_SECTION ON MS_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeMainsectionDatatable"></include>
+        </where>
+    </select>
+</mapper>

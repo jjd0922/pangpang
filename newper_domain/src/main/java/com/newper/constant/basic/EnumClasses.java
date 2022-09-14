@@ -77,6 +77,7 @@ public class EnumClasses {
         enumClasses.put("u_state","UState");
         enumClasses.put("u_type","UType");
         enumClasses.put("wh_state","WhState");
+        enumClasses.put("ms_type","MsType");
 
         return enumClasses;
     }
