@@ -17,9 +17,12 @@
 <div class="container">
     <section id="orderProcess-route">
         <div th:insert="part/title :: pageTitle_2('주문완료')"></div>
-        <p class="font-sm">01 장바구니<i class="route-icon"></i>02 주문&#183;결제정보입력<i class="route-icon"></i><span class="color-blue">03 주문완료</span></p>
+        <p class="font-sm semi-bold">
+            <span class="color-indigo">01 장바구니</span><i class="route-icon pass"></i><span class="color-indigo">02 주문&#183;결제정보입력</span><i class="route-icon pass"></i><span class="color-blue">03 주문완료</span>
+        </p>
     </section>
 </div>
+
 
 <!-- 주문 정상 완료 문구 -->
 <div class="container">
@@ -31,13 +34,14 @@
 
 <section id="orderComplete">
     <div class="container">
-        <!-- 주문정보 테이블 -->
+        <!--******************** 01.주문정보 ***************************-->
         <div class="orderNum">
             <h2 class="orderPage-title font-lg">주문정보</h2>
             <span class="div-line"></span>
             <p class="font-md">주문번호 <span class="font-lg semi-bold">1660538453548</span></p>
         </div>
-        <div class="order-info-wrap">
+        <!-- 주문정보 테이블 -->
+        <div class="order-info-wrap mo-display-none">
             <!-- 주문정보 테이블 제목 -->
             <ul class="order-header font-xsm">
                 <li>상품코드</li>
@@ -48,8 +52,10 @@
             </ul>
             <!-- 주문정보 상품 리스트 -->
             <ul class="order-item-list">
+                <!-- 상품 1 -->
                 <li class="order-item">
                     <ul>
+                        <!-- 상품코드 -->
                         <li>
                             <div class="order-item-thumb">
                                 <a href="javascript:;">
@@ -58,6 +64,7 @@
                                 </a>
                             </div>
                         </li>
+                        <!-- 상품명 -->
                         <li>
                             <div class="order-item-info-wrap">
                                 <div>
@@ -73,20 +80,24 @@
                                 <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
                             </div>
                         </li>
+                        <!-- 수량 -->
                         <li>
                             <p class="font-sm semi-bold">1개</p>
                         </li>
+                        <!-- 합계 -->
                         <li>
                             <p class="font-sm semi-bold">299,000<span class="won">원</span></p>
                         </li>
+                        <!-- 배송구분 -->
                         <li>
                             <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
                         </li>
                     </ul>
-                    <i class="option-close"></i>
                 </li>
+                <!-- 상품 2 -->
                 <li class="order-item">
                     <ul>
+                        <!-- 상품코드 -->
                         <li>
                             <div class="order-item-thumb">
                                 <a href="javascript:;">
@@ -95,6 +106,7 @@
                                 </a>
                             </div>
                         </li>
+                        <!-- 상품명 -->
                         <li>
                             <div class="order-item-info-wrap">
                                 <div>
@@ -110,26 +122,166 @@
                                 <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
                             </div>
                         </li>
+                        <!-- 수량 -->
                         <li>
                             <p class="font-sm semi-bold">1개</p>
                         </li>
+                        <!-- 합계 -->
                         <li>
                             <p class="font-sm semi-bold">299,000<span class="won">원</span></p>
                         </li>
+                        <!-- 배송구분 -->
                         <li>
                             <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
                         </li>
                     </ul>
-                    <i class="option-close"></i>
                 </li>
             </ul>
+            <!-- 총 상품 금액 -->
             <div class="order-totalPrice">
                 <p>총 상품 금액</p>
                 <p class="color-blue font-xxlg semi-bold">598,000<span class="won">원</span></p>
             </div>
         </div>
 
-        <!-- 배송지정보  -->
+        <!-- 주문정보 (모바일 ver) -->
+        <div class="order-info-wrap pc-display-none">
+            <!-- 뉴퍼마켓 직배송 상품 -->
+            <div>
+                <div class="deliveryDivision-title-wrap">
+                    <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
+                </div>
+                <!-- 뉴퍼마켓 직배송 상품 리스트 -->
+                <ul class="mo-order-item-list pc-display-none">
+                    <!-- 상품 1 -->
+                    <li class="mo-order-item">
+                        <div class="mo-order-item-innerWrap mo-order-item-innerWrap-thumb">
+                            <!-- 상품번호(썸네일) -->
+                            <div class="mo-order-item-thumb">
+                                <a href="javascript:;">
+                                    <div class="basket-item-thumb-img">
+                                        <img src="https://dummyimage.com/125x125/eeeeee/777777" alt="상품이미지">
+                                    </div>
+                                    <p class="font-sm">상품번호</p>
+                                    <p class="font-sm">001762984</p>
+                                </a>
+                            </div>
+                            <!-- 상품평 -->
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm bold">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>컬러 : 스페이스그레이</p>
+                                </div>
+                                <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
+                            </div>
+                        </div>
+                        <div class="mo-order-item-price-wrap">
+                            <!-- 수량 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">수량</p>
+                                <p>1개</p>
+                            </div>
+                            <!-- 판매가 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">판매가</p>
+                                <p>305,000원</p>
+                            </div>
+                            <!-- 에누리 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">에누리금액</p>
+                                <p>-6,000원</p>
+                            </div>
+                            <!-- 합계 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p>합계금액</p>
+                                <p class="font-xlg bold">299,000<span class="won">원</span></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 협력업체 직배송 상품 -->
+            <div>
+                <div class="deliveryDivision-title-wrap">
+                    <div class="deliveryDivision-title deliveryDivision-title-2"><span>협력업체</span> 직배송 상품</div>
+                </div>
+                <!-- 협력업체 직배송 상품 리스트 -->
+                <ul class="mo-order-item-list pc-display-none">
+                    <!-- 상품 1 -->
+                    <li class="mo-order-item">
+                        <div class="mo-order-item-innerWrap mo-order-item-innerWrap-thumb">
+                            <!-- 상품번호(썸네일) -->
+                            <div class="mo-order-item-thumb">
+                                <a href="javascript:;">
+                                    <div class="basket-item-thumb-img">
+                                        <img src="https://dummyimage.com/125x125/eeeeee/777777" alt="상품이미지">
+                                    </div>
+                                    <p class="font-sm">상품번호</p>
+                                    <p class="font-sm">001762984</p>
+                                </a>
+                            </div>
+                            <!-- 상품평 -->
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm bold">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>컬러 : 스페이스그레이</p>
+                                </div>
+                                <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
+                            </div>
+                        </div>
+                        <div class="mo-order-item-price-wrap">
+                            <!-- 수량 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">수량</p>
+                                <p>1개</p>
+                            </div>
+                            <!-- 판매가 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">판매가</p>
+                                <p>305,000원</p>
+                            </div>
+                            <!-- 에누리 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">에누리금액</p>
+                                <p>-6,000원</p>
+                            </div>
+                            <!-- 합계 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p>합계금액</p>
+                                <p class="font-xlg bold">299,000<span class="won">원</span></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 주문 상품 총 금액 (모바일 ver) -->
+            <div class="mo-order-total-wrap pc-display-none">
+                <!-- 주문 상품 수량 -->
+                <p class="font-lg">주문 상품 <span>1</span>개</p>
+                <!-- 주문 상품 금액 -->
+                <div class="mo-order-totalPrice">
+                    <p class="font-lg bold">주문 상품 금액</p>
+                    <p class="color-blue font-xxlg bold">598,000<span class="won">원</span></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!--******************** 02.배송지정보 ***************************-->
         <h2 class="orderPage-title">배송지정보</h2>
         <ul class="order-table font-xsm">
             <!-- 받으시는 분 -->
@@ -159,44 +311,41 @@
             </li>
         </ul>
 
-        <!-- 결제정보  -->
+        <!--******************** 03.결제정보 ***************************-->
         <h2 class="orderPage-title">결제정보</h2>
         <ul class="order-table font-xsm">
             <!-- 결제수단 -->
             <li>
                 <div class="infoInput-title">결제수단</div>
                 <div class="infoInput-content paymentType">
+                    <!-- 가상계좌일 경우 -->
                     <div>
                         <p>가상계좌</p>
                     </div>
                     <!-- 신용카드일 경우
                     <div>
                         <p>신용카드</p>
-                        <a href="javascript:;">
-                            <div class="btn receipt-btn">
-                                영수증조회
-                            </div>
-                        </a>
+                        <div class="btn btn5 receipt-btn">
+                            <a href="javascript:;">영수증조회</a>
+                        </div>
                     </div> -->
                 </div>
             </li>
             <!-- 결제상태 -->
             <li>
                 <div class="infoInput-title">결제상태</div>
-                <div class="infoInput-content paymentType">
+                <div class="infoInput-content paymentStatus">
                     <!-- 결제수단 : 가상계좌일 경우 -->
                     <div>
                         <p>입금대기<span class="div-line"></span>입금계좌 : 국민은행 1234567832131 에이제이전시몰</p>
-                        <a href="javascript:;">
-                            <div class="btn orderCancel-btn">
-                                주문취소
-                            </div>
-                        </a>
+                        <div class="btn btn5 orderCancel-btn">
+                            <a href="javascript:;">주문취소</a>
+                        </div>
                     </div>
                     <!-- 결제수단 : 신용카드일 경우
                     <div>
                         <p>결제완료</p>
-                    </div>-->
+                    </div> -->
                 </div>
             </li>
             <!-- 상품금액 -->
@@ -218,7 +367,7 @@
 
         <!-- 버튼 -->
         <div class="order-button-group">
-            <div class="btn-blue order-btn semi-bold">
+            <div class="btn btn2 order-btn semi-bold">
                 <a href="javascript:;">메인으로</a>
             </div>
         </div>
