@@ -12,58 +12,109 @@
                 <div class="collapse show" id="collapse-button-collapsed">
                     <div class="card-body pt-0">
                         <div class="row">
+                            <div class="col-lg-12">
                             <form id="sabangModalForm">
-                                <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-                                    <div class="form-group">
-                                        <label class="d-block">원산지</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" name="ORIGIN">
+
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  원산지
+                                                </span>
+                                            </span>
+                                                <input type="text" class="form-control" name="ORIGIN">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      상품상태
+                                                    </span>
+                                                </span>
+                                                <select name="STATUS" class="form-control">
+                                                    <option value="1">대기중</option>
+                                                    <option value="2">공급중</option>
+                                                    <option value="3">일시중지</option>
+                                                    <option value="4">완전품절</option>
+                                                    <option value="5">미사용</option>
+                                                    <option value="6">삭제</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      배송비구분
+                                                    </span>
+                                                </span>
+                                                <select name="DELV_TYPE" class="form-control">
+                                                    <option value="1">무료</option>
+                                                    <option value="2">착불</option>
+                                                    <option value="3">선결제</option>
+                                                    <option value="4">착불/선결제</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  배송비
+                                                </span>
+                                            </span>
+                                                <input type="text" class="form-control" name="DELV_COST" onkeyup="numCommaKeyUp()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  원가
+                                                </span>
+                                            </span>
+                                                <input type="text" class="form-control" name="GOODS_COST" onkeyup="numCommaKeyUp()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  판매가
+                                                </span>
+                                            </span>
+                                                <input type="text" class="form-control" name="GOODS_PRICE" onkeyup="numCommaKeyUp()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                  TAG가(소비자가)
+                                                </span>
+                                            </span>
+                                                <input type="text" class="form-control" name="GOODS_CONSUMER_PRICE" onkeyup="numCommaKeyUp()">
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="d-block">상품상태</label>
-                                        <select name="STATUS" class="form-control">
-                                            <option value="1">대기중</option>
-                                            <option value="2">공급중</option>
-                                            <option value="3">일시중지</option>
-                                            <option value="4">완전품절</option>
-                                            <option value="5">미사용</option>
-                                            <option value="6">삭제</option>
-                                        </select>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="d-block">배송비구분</label>
-                                        <select name="DELV_TYPE" class="form-control">
-                                            <option value="1">무료</option>
-                                            <option value="2">착불</option>
-                                            <option value="3">선결제</option>
-                                            <option value="4">착불/선결제</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="d-block">배송비</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" name="DELV_COST">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="d-block">원가</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" name="GOODS_COST">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="d-block">판매가</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" name="GOODS_PRICE">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="d-block">TAG가(소비자가)</label>
-                                        <input type="text" class="form-control form-control-sm w-120px" name="GOODS_CONSUMER_PRICE">
-                                    </div>
-
-
-
-                                </div>
                             </form>
-
+                            </div>
 
                         </div>
                     </div>
@@ -71,6 +122,7 @@
             </div>
 
             <div class="modal-footer">
+                <button type="button" class="btn btn-light" onclick="sabangSave()"></i>등록</button>
                 <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
             </div>
         </div>
@@ -79,6 +131,7 @@
 
 <script th:inline="javascript">
     function showSabangModal() {
+        $('#sabangModalForm')[0].reset();
         $('#sabangModal').modal('show');
     }
 

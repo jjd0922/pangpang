@@ -189,32 +189,36 @@
     }
 
     function sabang(){
-        // var param = '';
-        // var leng = $("#goodsStockTable .selected").find("input").length;
-        // if(leng == 0) {
-        //     alert("선택한 데이터가 없습니다.");
-        //     return ;
-        // } else {
-        //     $.each($("#goodsStockTable .selected").find("input"), function(key, val){
-        //         var idx = $(this).val();
-        //         if(leng == (key+1)){
-        //             param = param + idx;
-        //         }else{
-        //             param = param + idx + ",";
-        //         }
-        //     });
-        //     if(confirm("사방넷 전송하시겠습니까?")){
-        //         $.ajax({
-        //             url:"/product/sabang.ajax",
-        //             data: "gsIdxs="+param,
-        //             type:"POST",
-        //             success:function() {
-        //                 // $('#goodsStockTable').DataTable().ajax.reload();
-        //             }
-        //         });
-        //     }
-        // }
+
         showSabangModal();
+    }
+
+    function sabangSave(){
+        var param = '';
+        var leng = $("#goodsStockTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#goodsStockTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("사방넷 전송하시겠습니까?")){
+                $.ajax({
+                    url:"/product/sabang.ajax",
+                    data: "gsIdxs="+param+"&"+$('#sabangModalForm').serialize(),
+                    type:"POST",
+                    success:function() {
+                        // $('#goodsStockTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import com.newper.constant.OLocation;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.OrdersRepo;
+import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class OrdersController {
 
     private final OrdersMapper ordersMapper;
     private final OrdersRepo ordersRepo;
+    private final ShopRepo shopRepo;
 
 
 
@@ -35,6 +37,7 @@ public class OrdersController {
     @GetMapping("detail")
     public ModelAndView detail(){
         ModelAndView mav = new ModelAndView("orders/detail");
+        mav.addObject("shop", shopRepo.findAll());
         return mav;
     }
 

@@ -13,8 +13,7 @@ public class EnumClasses {
         enumClasses.put("gs_rank","GRank");
         enumClasses.put("pay_cancel_state","PayState");
 
-        //54개
-
+        //65개
         enumClasses.put("cate_display","CateDisplay");
         enumClasses.put("cate_spec","CateSpec");
         enumClasses.put("cate_type","CateType");
@@ -25,6 +24,7 @@ public class EnumClasses {
         enumClasses.put("cc_type","CcType");
         enumClasses.put("cf_type","CfType");
         enumClasses.put("cg_state","CgState");
+        enumClasses.put("cgs_type","CgsType");
         enumClasses.put("channel","Channel");
         enumClasses.put("ci_insurance_state","CiInsuranceState");
         enumClasses.put("ci_type","CiType");
@@ -52,9 +52,14 @@ public class EnumClasses {
         enumClasses.put("loc_state","LocState");
         enumClasses.put("loc_type","LocType");
         enumClasses.put("menu_type","MenuType");
+        enumClasses.put("o_cancel_state","OCancelState");
+        enumClasses.put("o_delivery_state","ODeliveryState");
         enumClasses.put("o_location","OLocation");
+        enumClasses.put("o_state","OState");
         enumClasses.put("pay_state","PayState");
         enumClasses.put("pe_state","PeState");
+        enumClasses.put("ph_result","PhResult");
+        enumClasses.put("ph_type","PhType");
         enumClasses.put("pn_process","PnProcess");
         enumClasses.put("po_state","PoState");
         enumClasses.put("po_type","PoType");
@@ -62,8 +67,10 @@ public class EnumClasses {
         enumClasses.put("p_type1","PType1");
         enumClasses.put("p_type2","PType2");
         enumClasses.put("p_type3","PType3");
+        enumClasses.put("sh_code","ShCode");
         enumClasses.put("shop_state","ShopState");
         enumClasses.put("shop_type","ShopType");
+        enumClasses.put("sh_type","ShType");
         enumClasses.put("s_state","SState");
         enumClasses.put("s_type","SType");
         enumClasses.put("tf_type","TfType");

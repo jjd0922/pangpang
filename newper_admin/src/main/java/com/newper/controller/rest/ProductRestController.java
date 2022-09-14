@@ -400,10 +400,10 @@ public class ProductRestController {
 
     /**사방넷 상품 등록 api*/
     @PostMapping("sabang.ajax")
-    public ReturnMap sabang(String gsIdxs){
+    public ReturnMap sabang(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-
-        String res = productService.sabang(gsIdxs);
+        System.out.println(paramMap.getMap());
+        String res = productService.sabang(paramMap);
 
 
 
