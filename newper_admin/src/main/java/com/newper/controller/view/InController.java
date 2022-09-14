@@ -1,8 +1,11 @@
 package com.newper.controller.view;
 
+import com.newper.entity.PoProduct;
 import com.newper.mapper.ChecksMapper;
+import com.newper.mapper.PoMapper;
 import com.newper.repository.CheckGroupRepo;
 import com.newper.repository.InGroupRepo;
+import com.newper.repository.PoProductRepo;
 import com.newper.repository.PoRepo;
 import com.newper.service.InService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,8 @@ public class InController {
     private final InService inService;
     private final CheckGroupRepo checkGroupRepo;
     private final ChecksMapper checksMapper;
+    private final PoMapper poMapper;
+
 
 
 
@@ -63,6 +68,16 @@ public class InController {
     public ModelAndView checks(){
         ModelAndView mav = new ModelAndView("in/checks");
 
+        return mav;
+    }
+
+    /** 영업검수 페이지 발주단위 */
+    @GetMapping("checksPoPop/{poIdx}")
+    public ModelAndView checksPoPop(@PathVariable int poIdx){
+        ModelAndView mav = new ModelAndView("in/checks_poPop");
+        mav.addObject("ig", inGroupRepo.findInGroupByPoPoIdx(poIdx));
+        mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
+//        mav.addObject("poReceived", poMapper.selectPoReceivedByPoIdx(poIdx));
         return mav;
     }
 }

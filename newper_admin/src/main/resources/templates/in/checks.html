@@ -34,8 +34,8 @@
                                                 <div class="form-group">
                                                     <label class="d-block">발주코드</label>
                                                     <input type="text" name="poIdx" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                    <input type="hidden" name="igState" value="DONE">
                                                 </div>
-                                                <input type="hidden" name="poState" value="APPROVAL">
 
 
                                                 <div class="form-group end">
@@ -93,8 +93,8 @@
         table.page('first').ajax.url('/in/checks.dataTable?' + $('#searchForm').serialize()).load(null, false);
     }
 
-    function checksPop(idx){
-        var focusPopup = window.open('/','checksPop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+    function checks_poPop(idx){
+        var focusPopup = window.open('/in/checksPoPop/' + idx,  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -112,9 +112,11 @@
             {'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
+            ,{'title':'입고상태','data': 'IG_STATE_STR'}
             ,{'title':'발주 코드','data': 'PO_IDX', 'render': function (data,type,full,meta) {
-                return '<a href="#" onclick="checksPop('+ data +')" class="badge badge-primary">' + data + '</a>';
+                return '<a onclick="checks_poPop('+ data +')" class="badge badge-primary">' + data + '</a>';
             }}
+
         ]
     });
 

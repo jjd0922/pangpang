@@ -64,4 +64,7 @@ public interface PoMapper {
 
     /** 해당 발주의 실입고 상품 select */
     void selectReceivedByPo(Map<String, Object> map);
+
+    /** 발주품의 실입고상품 조회 쿼리문 */
+    List<Map<String, Object>> selectPoReceivedByPoIdx(int poIdx);
 }

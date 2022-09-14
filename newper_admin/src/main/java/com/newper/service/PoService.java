@@ -491,11 +491,6 @@ public class PoService {
         }
     }
 
-    public List<Map<String, Object>> selectPoProduct(long poIdx) {
-        List<Map<String, Object>> product = poMapper.selectPoProductByPoIdx(poIdx);
-        return product;
-    }
-
     public void productComp(int poIdx) {
         Po po = poRepo.findPoByPoIdx(poIdx);
         po.setPoState(PoState.APPROVAL);

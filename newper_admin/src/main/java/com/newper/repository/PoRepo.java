@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PoRepo extends JpaRepository<Po, Integer> {
 
-    @EntityGraph(attributePaths = {"company", "company_sell", "contract", "warehouse", "hiworks", "hiworks.user"})
+    @EntityGraph(attributePaths = {"company", "company_sell", "contract", "warehouse", "hiworks", "hiworks.user", "inGroup"})
     public Po findPoByPoIdx(Integer poIdx);
 }

@@ -380,6 +380,13 @@
                     dt.ajax.reload();
                 }
             }
+            ,{
+                text: '새상품등록',
+                className: 'btn btn-sm btn-primary',
+                action: function (e, dt, node, config) {
+                    openInModalNewProduct();
+                }
+            }
         ],
         "columns" : [
             {'title':'No','data':'No','render':function(data,type,full,meta){
@@ -388,10 +395,10 @@
             ,{'title':'상품코드','data':'P_IDX'}
             ,{'title':'상품명','data':'P_NAME'}
             ,{'title':'모델명','data':'P_MODEL'}
-            ,{'title':'매입수량','data':'PP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'매입수량','data':'PP_COUNT','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'입고 수량','data':'IP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'입고 수량','data':'IP_COUNT','render':function(data,type,full,meta){
                 return comma(data);
             }}
             ,{'title':'자산코드','data':'','render':function(data,type,full,meta){
@@ -425,17 +432,19 @@
             }}
             ,{'title':'상품코드','data':'P_IDX'}
             ,{'title':'상품명','data':'P_NAME'}
-            ,{'title':'옵션','data':'PP_OPTION'}
-            ,{'title':'기준 매입가','data':'P_SELL_PRICE', 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'옵션 매입가','data':'','render':function(data,type,full,meta){
+                    return full.OPTION1 + ' ' + full.OPTION2 + ' ' + full.OPTION3
+                }}
+            ,{'title':'기준 매입가','data':'P_SELL_PRICE','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'구매단가','data':'PP_COST', 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'구매단가','data':'PP_COST','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'매입수량','data':'PP_COUNT', 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'매입수량','data':'PP_COUNT','render':function(data,type,full,meta){
                 return comma(data);
             }}
-            ,{'title':'매입총액','data':'PP_TOTAL' , 'class':'text-right','render':function(data,type,full,meta){
+            ,{'title':'매입총액','data':'PP_TOTAL' ,'render':function(data,type,full,meta){
                 return comma(data);
             }}
             ,{'title':'입고 SPEC(예정)','data':'SPEC_BUY','defaultContent':''}

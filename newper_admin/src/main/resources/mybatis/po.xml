@@ -148,6 +148,10 @@
         <if test="poState != null and poState != ''">
             AND PO_STATE = #{poState}
         </if>
+
+        <if test="igState != null and igState != ''">
+            AND IG_STATE = #{igState}
+        </if>
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
@@ -170,13 +174,15 @@
             hiworks.HW_APRV_ID AS 'HW_APRV_ID',
             hiworks.HW_APRV_DATE AS 'HW_APRV_DATE',
             po.MODIFIED_BY AS 'MODIFIED_BY',
-            po.MODIFIED_DATE AS 'MODIFIED_DATE'
+            po.MODIFIED_DATE AS 'MODIFIED_DATE',
+            IG_STATE
         FROM
             po
                 LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
                 LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
                 LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
                 LEFT JOIN user ON HW_U_IDX = U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
@@ -192,6 +198,11 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
+                LEFT JOIN user ON HW_U_IDX = U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
@@ -256,13 +267,15 @@
         SELECT
             P_IDX,
             P_NAME,
-            PP_OPTION,
+            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3,
             P_SELL_PRICE,
             PP_COST,
             PP_COUNT,
             PP_COST * PP_COUNT PP_TOTAL,
-            BUY.SPEC_CONFIRM SPEC_BUY,
-            SELL.SPEC_CONFIRM SPEC_SELL
+            BUY.SPEC_LOOKUP SPEC_BUY,
+            SELL.SPEC_LOOKUP SPEC_SELL
         FROM
             PO
                 LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
@@ -311,6 +324,42 @@
             AND IP_P_IDX=#{p_idx}
     </update>
 
+    <select id="selectPoReceivedByPoIdx" resultType="Map">
+        SELECT
+            *,
+            PP_IDX,
+            PO_IDX,
+            P_IDX,
+            PP_MEMO,
+            P_NAME,
+            CATE_NAME,
+            P_COST,
+            PP_COST,
+            PP_COUNT,
+            BUY.SPEC_LOOKUP SPEC_BUY,
+            SELL.SPEC_LOOKUP SPEC_SELL,
+            PP_FIX_MEMO,
+            PP_FIX_COST,
+            PP_PAINT_MEMO,
+            PP_PAINT_COST,
+            PP_PROCESS_MEMO,
+            PP_PROCESS_COST,
+            PP_SELL_PRICE,
+            PP_PROFIT_TARGET,
+            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO ON POR_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON POER_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN SPEC AS IN_SPEC ON POR_IN_SPEC_IDX = IN_SPEC.SPEC_IDX
+                LEFT JOIN PROCESS_NEDD ON POR_IDX
+                LEFT JOIN SPEC AS PROCESS_SPEC ON POR_SPEC_IDX2 = PROCESS_SPEC.SPEC_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
 
     <select id="selectPoProductByPoIdx" resultType="Map">
         SELECT
@@ -323,8 +372,8 @@
             P_COST,
             PP_COST,
             PP_COUNT,
-            BUY.SPEC_CONFIRM SPEC_BUY,
-            SELL.SPEC_CONFIRM SPEC_SELL,
+            BUY.SPEC_LOOKUP SPEC_BUY,
+            SELL.SPEC_LOOKUP SPEC_SELL,
             PP_FIX_MEMO,
             PP_FIX_COST,
             PP_PAINT_MEMO,
@@ -333,9 +382,9 @@
             PP_PROCESS_COST,
             PP_SELL_PRICE,
             PP_PROFIT_TARGET,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
+            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3
         FROM
             po_product
                 LEFT JOIN PO ON PP_PO_IDX = PO_IDX

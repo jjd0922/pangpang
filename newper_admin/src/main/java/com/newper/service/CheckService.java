@@ -62,6 +62,7 @@ public class CheckService {
             Goods goods = Goods
                     .builder()
                     .gIdx(gIdx.get(i))
+                    .gState(GState.CHECK_NEED)
                     .build();
 
             CheckGoods checkGoods = CheckGoods
@@ -73,6 +74,8 @@ public class CheckService {
                     .cgsType(paramMap.get("cgsType").toString())
                     .cgsCount(checkMapper.countCheckGroupByGoods(gIdx.get(i)) + 1)
                     .build();
+
+            checkGoodsRepo.save(checkGoods);
         }
 
         long ggt_idx = paramMap.getLong("ggt_idx");
@@ -281,7 +284,7 @@ public class CheckService {
         goods.setPoReceived(poReceived);
 
         // 자산 상태 변경
-        goods.setGState(GState.CHECK_NEED);
+        goods.setGState(GState.CHECK);
 
         // 자산 이미지 업로드
         if (gFile != null) {
