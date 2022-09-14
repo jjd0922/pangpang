@@ -289,7 +289,7 @@
                         <div class="card-body popup-contents mb-4">
                             <fieldset class="mb-0">
                                 <legend class="">3. 배송/설치정보 <span class="small ml-2"></span>
-                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">배송지정보변경</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="daum_address1()">배송지정보변경</button>
                                 </legend>
                             </fieldset>
                             <div class="row">
@@ -328,38 +328,38 @@
                                                배송자(설치자) 우편번호
                                             </span>
                                         </span>
-                                        <input type="text" name="POST" class="form-control" th:value="${order?.POST}" readonly>
+                                        <input type="text" name="POST" class="form-control"  th:value="${orders != null} ? ${orders.address.post}" readonly>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-
+                                                배송자(설치자) 주소(시,도)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="ADDR1" class="form-control" th:value="${orders != null} ? ${orders.address.addr1}" readonly>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-                                               배송자(설치자) 주소
+                                               배송자(설치자) 주소(시,군,구)
                                             </span>
                                         </span>
-                                        <input type="text" name="ADDRS" class="form-control" th:value="${order?.ADDRS}" readonly>
-                                        <input type="hidden" name="ADDR1" class="form-control" th:value="${order?.ADDR1}">
+                                        <input type="text" name="ADDR2" class="form-control" th:value="${orders != null} ? ${orders.address.addr2}" readonly>
+<!--                                        <input type="hidden" name="ADDR1" class="form-control" th:value="${order?.ADDR1}">
                                         <input type="hidden" name="ADDR2" class="form-control" th:value="${order?.ADDR2}">
-                                        <input type="hidden" name="ADDR3" class="form-control" th:value="${order?.ADDR3}">
+                                        <input type="hidden" name="ADDR3" class="form-control" th:value="${order?.ADDR3}">-->
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-
+                                                 배송자(설치자) 주소(도로명)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="ADDR3" class="form-control" th:value="${orders != null} ? ${orders.address.addr3}" readonly>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-                                               배송자(설치자) 상세주소
+                                               배송자(설치자) 주소(상세주소)
                                             </span>
                                         </span>
-                                        <input type="text" name="ADDR4" class="form-control" th:value="${order?.ADDR4}">
+                                        <input type="text" name="ADDR4" class="form-control" th:value="${orders != null} ? ${orders.address.addr4}">
                                     </div>
                                 </div>
                             </div>
@@ -371,7 +371,7 @@
                         <div class="card-body popup-contents mb-4">
                             <fieldset class="mb-0">
                                 <legend class="">4. 반품/수거정보 <span class="small ml-2"></span>
-                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="">배송지정보변경</button>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="daum_address2()">배송지정보변경</button>
                                 </legend>
                             </fieldset>
                             <div class="row">
@@ -410,27 +410,27 @@
                                                (수거)배송자(설치자) 우편번호
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="OPOST" class="form-control"  th:value="${orders != null} ? ${orders.address.oPost}" readonly>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-
+                                                (수거)배송자(설치자) 주소(시,도)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="OADDR1" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr1}" readonly>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-                                               (수거)배송자(설치자) 주소
+                                               (수거)배송자(설치자) 주소(시,군,구)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="OADDR2" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr2}" readonly>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
-
+                                                (수거)배송자(설치자) 주소(도로명)
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="OADDR3" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr3}" readonly>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -438,7 +438,7 @@
                                                (수거)배송자(설치자) 상세주소
                                             </span>
                                         </span>
-                                        <input type="text" name="" class="form-control">
+                                        <input type="text" name="OADDR4" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr4}">
                                     </div>
                                 </div>
                             </div>
@@ -780,6 +780,85 @@
         }
     }
 
+    /** 다음 주소 api사용 , 3. 배송/설치정보 배송지 변경*/
+    function daum_address1() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if (extraAddr !== '') {
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=POST]').val(data.zonecode).attr("readonly", true);
+                $('input[name=ADDR1]').val(data.sido).attr("readonly", true);
+                $('input[name=ADDR2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=ADDR3]').val(addr + extraAddr).attr("readonly", true);
+            }
+        }).open();
+    }
+
+    /** 다음 주소 api사용 , 4. 반품/수거정보 배송지 변경*/
+    function daum_address2() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if (extraAddr !== '') {
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=OPOST]').val(data.zonecode).attr("readonly", true);
+                $('input[name=OADDR1]').val(data.sido).attr("readonly", true);
+                $('input[name=OADDR2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=OADDR3]').val(addr + extraAddr).attr("readonly", true);
+            }
+        }).open();
+    }
 </script>
 <script th:inline="javascript">
     window.onload=function(){

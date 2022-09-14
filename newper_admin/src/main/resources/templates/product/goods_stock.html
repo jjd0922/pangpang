@@ -44,12 +44,12 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품코드</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_CODE">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="P_IDX">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">상품상태</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="P_STATE" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.PState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -62,21 +62,21 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">재고코드</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="GS_CODE">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">재고상품명</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="GS_NAME">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">등급</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="GS_RANK" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option th:each="opt: ${T(com.newper.constant.GRank).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">일일재고 마감 관리</label>
-                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="GS_DAILY" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -272,7 +272,7 @@
                     return comma(data);
                 }}
             ,{'title':'판매채널(품목운영구분)','data':'GS_SALE'}
-            ,{'title':'등급','data':'GS_RANK'}
+            ,{'title':'등급','data':'GS_RANK_STR'}
             ,{'title':'옵션1','data':'OPTION1'}
             ,{'title':'옵션2','data':'OPTION2'}
             ,{'title':'옵션3','data':'OPTION3'}
