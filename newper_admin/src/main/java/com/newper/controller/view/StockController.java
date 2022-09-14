@@ -77,4 +77,10 @@ public class StockController {
         return mav;
     }
 
+    /**재고관리 피킹관리 페이지*/
+    @GetMapping("picking")
+    public ModelAndView picking() {
+        ModelAndView mav = new ModelAndView("/stock/picking");
+        return mav;
+    }
 }
