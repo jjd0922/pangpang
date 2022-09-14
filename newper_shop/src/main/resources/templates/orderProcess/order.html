@@ -17,14 +17,17 @@
 <div class="container">
     <section id="orderProcess-route">
         <div th:insert="part/title :: pageTitle_2('주문&#183;결제정보입력')"></div>
-        <p class="font-sm">01 장바구니<i class="route-icon"></i><span class="color-blue">02 주문&#183;결제정보입력</span><i class="route-icon on"></i>03 주문완료</p>
+        <p class="font-sm semi-bold">
+            <span class="color-indigo">01 장바구니</span><i class="route-icon pass"></i><span class="color-blue">02 주문&#183;결제정보입력</span><i class="route-icon on"></i>03 주문완료
+        </p>
     </section>
 </div>
 
-<section>
+<section id="order">
     <div class="container">
-        <!-- 주문정보 테이블 -->
+        <!--******************** 01.주문정보 **************************-->
         <h2 class="orderPage-title">01. 주문정보</h2>
+        <!-- 주문정보 테이블 -->
         <div class="order-info-wrap mo-display-none">
             <!-- 주문정보 테이블 제목 -->
             <ul class="order-header font-xsm">
@@ -169,29 +172,21 @@
 
         <!-- 주문정보 (모바일 ver) -->
         <div class="order-info-wrap pc-display-none">
-            <div class="cart-basket-list">
             <!-- 뉴퍼마켓 직배송 상품 -->
             <div>
-                <div class="cart-deliveryDivision-title">
+                <div class="deliveryDivision-title-wrap">
                     <div class="deliveryDivision-title deliveryDivision-title-1"><span>뉴퍼마켓</span> 직배송 상품</div>
                 </div>
                 <!-- 뉴퍼마켓 직배송 상품 리스트 -->
-                <ul class="mo-cart-basket-item-list pc-display-none">
-                    <!-- 상품 1 (품절) -->
-                    <li class="mo-basket-item">
-                        <!--  상품 상태 -->
-                        <div class="item-bedge">
-                            <span class="item-condition item-conditionA-2">A급리퍼</span>
-                            <span class="item-condition item-conditionB-1">스크래치</span>
-                        </div>
-                        <div class="mo-basket-item-innerWrap">
+                <ul class="mo-order-item-list pc-display-none">
+                    <!-- 상품 1 -->
+                    <li class="mo-order-item">
+                        <div class="mo-order-item-innerWrap mo-order-item-innerWrap-thumb">
                             <!-- 상품번호(썸네일) -->
-                            <div class="basket-item-thumb">
+                            <div class="mo-order-item-thumb">
                                 <a href="javascript:;">
                                     <div class="basket-item-thumb-img">
                                         <img src="https://dummyimage.com/125x125/eeeeee/777777" alt="상품이미지">
-                                        <!-- 품절이 아닌 상품은 아래 <div>태그 삭제 -->
-                                        <div class="soldOut-thumb">품절</div>
                                     </div>
                                     <p class="font-sm">상품번호</p>
                                     <p class="font-sm">001762984</p>
@@ -212,54 +207,44 @@
                                 <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
                             </div>
                         </div>
-                        <div class="mo-basket-item-price-wrap">
-                            <!-- 에누리금액 -->
-                            <div class="mo-basket-item-innerWrap">
-                                <p>에누리금액</p>
-                                <p>-6,000<span class="won">원</span></p>
+                        <div class="mo-order-item-price-wrap">
+                            <!-- 수량 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">수량</p>
+                                <p>1개</p>
                             </div>
-                            <!-- 배송비 -->
-                            <div class="mo-basket-item-innerWrap">
-                                <p>배송비</p>
-                                <p>무료</p>
+                            <!-- 판매가 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">판매가</p>
+                                <p>305,000원</p>
                             </div>
-                            <!-- 가격 -->
-                            <div class="mo-basket-item-innerWrap">
+                            <!-- 에누리 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">에누리금액</p>
+                                <p>-6,000원</p>
+                            </div>
+                            <!-- 합계 -->
+                            <div class="mo-order-item-innerWrap">
                                 <p>합계금액</p>
                                 <p class="font-xlg bold">299,000<span class="won">원</span></p>
                             </div>
-                            <!-- 주문 -->
-                            <div>
-                                <!-- 품절 -->
-                                <div class="soldout-text">품절</div>
-                                <!-- 바로구매
-                                <div class="nowBuy-text">바로구매</div>
-                                -->
-                            </div>
                         </div>
-                        <i class="option-close"></i>
-                        <!-- 품절인 경우에 <input> 태그 삭제
-                        <input type="checkbox" id="itemAll-select" class="custom-checkbox" title="장바구니 상품 선택"> -->
                     </li>
                 </ul>
             </div>
 
             <!-- 협력업체 직배송 상품 -->
             <div>
-                <div class="cart-deliveryDivision-title">
+                <div class="deliveryDivision-title-wrap">
                     <div class="deliveryDivision-title deliveryDivision-title-2"><span>협력업체</span> 직배송 상품</div>
                 </div>
                 <!-- 협력업체 직배송 상품 리스트 -->
-                <ul class="mo-cart-basket-item-list pc-display-none">
+                <ul class="mo-order-item-list pc-display-none">
                     <!-- 상품 1 -->
-                    <li class="mo-basket-item">
-                        <!--  상품 상태 -->
-                        <div class="item-bedge">
-                            <span class="item-condition item-conditionA-2">A급리퍼</span>
-                        </div>
-                        <div class="mo-basket-item-innerWrap">
+                    <li class="mo-order-item">
+                        <div class="mo-order-item-innerWrap mo-order-item-innerWrap-thumb">
                             <!-- 상품번호(썸네일) -->
-                            <div class="basket-item-thumb">
+                            <div class="mo-order-item-thumb">
                                 <a href="javascript:;">
                                     <div class="basket-item-thumb-img">
                                         <img src="https://dummyimage.com/125x125/eeeeee/777777" alt="상품이미지">
@@ -283,58 +268,49 @@
                                 <p class="font-xxsm">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
                             </div>
                         </div>
-                        <div class="mo-basket-item-price-wrap">
-                            <!-- 에누리금액 -->
-                            <div class="mo-basket-item-innerWrap">
-                                <p>에누리금액</p>
-                                <p>-6,000<span class="won">원</span></p>
+                        <div class="mo-order-item-price-wrap">
+                            <!-- 수량 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">수량</p>
+                                <p>1개</p>
                             </div>
-                            <!-- 배송비 -->
-                            <div class="mo-basket-item-innerWrap">
-                                <p>배송비</p>
-                                <p>무료</p>
+                            <!-- 판매가 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">판매가</p>
+                                <p>305,000원</p>
                             </div>
-                            <!-- 가격 -->
-                            <div class="mo-basket-item-innerWrap">
+                            <!-- 에누리 -->
+                            <div class="mo-order-item-innerWrap">
+                                <p class="color-grey666">에누리금액</p>
+                                <p>-6,000원</p>
+                            </div>
+                            <!-- 합계 -->
+                            <div class="mo-order-item-innerWrap">
                                 <p>합계금액</p>
                                 <p class="font-xlg bold">299,000<span class="won">원</span></p>
                             </div>
-                            <!-- 주문 -->
-                            <div>
-                                <!-- 품절
-                                <div class="soldout-text">품절</div>
-                                -->
-                                <!-- 바로구매 -->
-                                <div class="nowBuy-text">바로구매</div>
-                            </div>
                         </div>
-                        <i class="option-close"></i>
-                        <!-- 품절인 경우에 <input> 태그 삭제 -->
-                        <input type="checkbox" id="itemAll-select" class="custom-checkbox" title="장바구니 상품 선택">
                     </li>
                 </ul>
             </div>
-            <div class="order-total-wrap mo-display-none">
+
+            <!-- 주문 상품 총 금액 (모바일 ver) -->
+            <div class="mo-order-total-wrap pc-display-none">
                 <!-- 주문 상품 수량 -->
-                <div class="order-totalCount">
-                    <p class="font-lg semi-bold">주문 상품 <span>1</span>개</p>
-                </div>
-                <span class="div-line"></span>
+                <p class="font-lg">주문 상품 <span>1</span>개</p>
                 <!-- 주문 상품 금액 -->
-                <div class="order-totalPrice">
-                    <p class="font-lg semi-bold">주문 상품 금액</p>
+                <div class="mo-order-totalPrice">
+                    <p class="font-lg bold">주문 상품 금액</p>
                     <p class="color-blue font-xxlg bold">598,000<span class="won">원</span></p>
                 </div>
             </div>
 
         </div>
-        </div>
 
-
-
+        <!--******************** 02.정보입력 ***************************-->
         <h2 class="orderPage-title">02. 정보입력</h2>
         <!-- 주문자 정보  -->
-        <ul class="order-table font-xsm">
+        <ul class="order-table">
             <!-- 주문자 -->
             <li>
                 <div class="infoInput-title">주문자</div>
@@ -351,14 +327,16 @@
                 <div class="infoInput-content">
                     <span>010-123-4567</span>
                     <span class="smsGuide">입력하신 휴대전화번호로 주문완료 메세지를 보내드릴까요?</span>
-                    <span class="radioSet">
-                        <input type="radio" name="radio" id="01" value="01">
-                        <label for="01">예</label>
-                    </span>
-                    <span class="radioSet">
-                        <input type="radio" name="radio" id="02" value="02">
-                        <label for="02">아니오</label>
-                    </span>
+                    <div>
+                        <span class="radioSet">
+                            <input type="radio" name="radio" id="01" value="01">
+                            <label for="01">예</label>
+                        </span>
+                        <span class="radioSet">
+                            <input type="radio" name="radio" id="02" value="02">
+                            <label for="02">아니오</label>
+                        </span>
+                    </div>
                 </div>
             </li>
             <!-- 이메일 -->
@@ -437,14 +415,14 @@
                             </div>
                         </div>
                         <div class="addr-input">
-                            <input type="text" title="상세 주소 입력" class="form-control addr-txt" readonly="" value="">
+                            <input type="text" title="상세 주소 입력" class="form-control addr-text" readonly="" value="">
                             <label for="no-addr">
                                 <input type="checkbox" id="no-addr" title="나머지 주소 없음">
                                 <p>&nbsp;&nbsp;나머지 주소 없음</p>
                             </label>
                         </div>
                         <div class="addr-input">
-                            <input type="text" title="나머지 주소 입력" class="form-control addr-txt" name="addr2" value="">
+                            <input type="text" title="나머지 주소 입력" class="form-control addr-text" name="addr2" value="">
                             <p>*&nbsp;&nbsp;나머지 주소 입력</p>
                         </div>
                     </div>
@@ -496,7 +474,7 @@
             </li>
         </ul>
 
-        <!-- 할인적용 -->
+        <!--******************** 03.할인적용 ***************************-->
         <h2 class="orderPage-title">03. 할인적용</h2>
         <ul class="order-table font-xsm">
             <li>
@@ -517,16 +495,24 @@
                 <div class="infoInput-content verticalAlign point-wrap">
                     <!-- 적립금 -->
                     <div class="point">
-                        <input type="radio" id="point1" name="pointCheck" value="">
-                        <label for="point1">적립금</label>
-                        <input type="number" id="" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        <div>
+                            <div>
+                                <input type="radio" id="pointCheck1" name="" value="">
+                                <label for="pointCheck1">적립금</label>
+                            </div>
+                            <input type="number" id="point1" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        </div>
                         <p>사용가능&nbsp;&nbsp;<span>806,060<span>원</p>
                     </div>
                     <!-- 예치금 -->
                     <div class="point">
-                        <input type="radio" id="point2" name="pointCheck" value="">
-                        <label for="point2">예치금</label>
-                        <input type="number" id="" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        <div>
+                            <div>
+                                <input type="radio" id="pointCheck2" name="" value="">
+                                <label for="pointCheck2">예치금</label>
+                            </div>
+                            <input type="number" id="point2" name="" class="form-control" maxlength="10" title="적립금" value="" oninput="maxLengthCheck(this)">
+                        </div>
                         <p>사용가능&nbsp;&nbsp;<span>76,060<span>원</p>
                     </div>
                     <p><span class="font-sm">※&nbsp;</span>적립금을 사용하시는 경우, 차액은 신용카드 결제만 가능합니다.</p>
@@ -534,7 +520,7 @@
             </li>
         </ul>
 
-        <!-- 결제수단 -->
+        <!--******************** 04.결제수단 ***************************-->
         <h2 class="orderPage-title">04. 결제수단</h2>
         <ul class="order-table font-xsm">
             <!-- 일반결제 -->
@@ -542,12 +528,18 @@
                 <div class="infoInput-title">일반결제</div>
                 <div class="infoInput-content verticalAlign generalPayment">
                     <div>
-                        <input type="radio" id="generalPayment1" name="paymentCheck" value="">
-                        <label  for="generalPayment1">신용카드</label>
-                        <input type="radio" id="generalPayment2" name="paymentCheck" value="">
-                        <label  for="generalPayment2">무통장입금</label>
-                        <input type="radio" id="generalPayment3" name="paymentCheck" value="">
-                        <label for="generalPayment3">실시간계좌이체(에스크로)</label>
+                        <div>
+                            <input type="radio" id="generalPayment1" name="paymentCheck" value="">
+                            <label  for="generalPayment1">신용카드</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="generalPayment2" name="paymentCheck" value="">
+                            <label  for="generalPayment2">무통장입금</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="generalPayment3" name="paymentCheck" value="">
+                            <label for="generalPayment3">실시간계좌이체(에스크로)</label>
+                        </div>
                     </div>
                     <p><span class="font-sm">※&nbsp;</span>신용카드의 경우, 국세청에 자동 등록이 되기 때문에 현금영수증 또는 세금계산서 발행이 불가합니다. (부가가치세법 제 32조의 제3항, 동법 시행령 제57조 제2항)</p>
                 </div>
@@ -577,7 +569,7 @@
         </ul>
 
         <!-- 버튼 -->
-        <div class="order-button-group">
+        <div class="order-button-group mo-display-none">
             <div class="btn btn3 order-btn semi-bold">
                 <a href="javascript:;">이전으로</a>
             </div>
@@ -585,10 +577,20 @@
                 <a href="javascript:;">결제하기</a>
             </div>
         </div>
+    </div>
 
+    <!-- 버튼 (모바일 ver) -->
+    <div class="mo-order-button-group pc-display-none">
+        <div class="btn semi-bold">
+            <a href="javascript:;">이전으로</a>
+        </div>
+        <div class="btn semi-bold">
+            <a href="javascript:;">결제하기</a>
+        </div>
+    </div>
 
-        <!-- 배송지 목록 모달창 -->
-        <th:block th:replace="part/modal :: addrList-modal"></th:block>
+    <!-- 배송지 목록 모달창 -->
+    <th:block th:replace="part/modal :: addrList-modal"></th:block>
 
 </section>
 
