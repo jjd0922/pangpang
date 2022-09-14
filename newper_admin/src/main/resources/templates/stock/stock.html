@@ -40,63 +40,63 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산구분(품목구분1)</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="pType1" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType1).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품분류(품목구분2)</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="pType2" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType2).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">물류타입(품목자산구분)</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <!--<option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    <select name="pType3" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <option th:each="opt: ${T(com.newper.constant.PType3).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품코드</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="pIdx" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">상품명</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="pName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">재고코드</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="gsIdx" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">창고</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="whName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">존</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="locZone" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">열</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="locColumn" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">행</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="locRow" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">로케이션</label>
-                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="locCode" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -164,7 +164,7 @@
 <script th:src="@{/assets/js/common.js}"></script>
 <script th:inline="javascript">
     function searchBtn(){
-        $('#stockTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#searchForm').serialize()).load();
+        $('#stockTable').DataTable().page('first').ajax.url('/stock/stock.dataTable?'+$('#searchForm').serialize()).load();
     }
 
     function popstockGoods() {
@@ -183,7 +183,7 @@
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/coupon/couponGroup.dataTable',
+            url:'/stock/stock.dataTable',
             type:'post'
         },
         columns : [
@@ -193,22 +193,22 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'정산구분(품목구분1)','data':'','defaultContent':''}
-            ,{'title':'상품분류(품목구분2)','data':'','defaultContent':''}
-            ,{'title':'물류타입(품목자산구분)','data':'','defaultContent':''}
-            ,{'title':'상품코드','data':'','defaultContent':''}
-            ,{'title':'상품명','data':'','defaultContent':''}
-            ,{'title':'재고코드','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','defaultContent':''}
-            ,{'title':'창고','data':'','defaultContent':''}
-            ,{'title':'존','data':'','defaultContent':''}
-            ,{'title':'열','data':'','defaultContent':''}
-            ,{'title':'행','data':'','defaultContent':''}
-            ,{'title':'로케이션','data':'','defaultContent':''}
-            ,{'title':'수량','data':'','render': function () {
-                    return '<a onclick="popstockGoods()" class="badge badge-primary">조회</a>';
+            ,{'title':'정산구분(품목구분1)','data':'P_TYPE1_STR','defaultContent':''}
+            ,{'title':'상품분류(품목구분2)','data':'P_TYPE2_STR','defaultContent':''}
+            ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3_STR','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'재고코드','data':'G_GS_IDX','defaultContent':''}
+            ,{'title':'자산코드','data':'G_IDX','defaultContent':''}
+            ,{'title':'창고','data':'WH_NAME','defaultContent':''}
+            ,{'title':'존','data':'LOC_ZONE','defaultContent':''}
+            ,{'title':'열','data':'LOC_COLUMN','defaultContent':''}
+            ,{'title':'행','data':'LOC_ROW','defaultContent':''}
+            ,{'title':'로케이션','data':'LOC_CODE','defaultContent':''}
+            ,{'title':'수량','data':'G_CNT','render': function (data, type, full, meta) {
+                    return '<a onclick="popstockGoods()" class="badge badge-primary">'+full.G_CNT+'개</a>';
                 }}
-            ,{'title':'매입원가','data':'','defaultContent':''}
+            ,{'title':'매입원가','data':'P_COST','defaultContent':''}
         ]
     });
 

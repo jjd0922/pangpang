@@ -20,18 +20,6 @@ public interface WarehouseMapper {
     void changeAllWhState(@Param("whIdxs") String[] whIdxs,
                           @Param("whState") WhState whState);
 
-    /**로케이션 데이터테이블 조회*/
-    List<Map<String,Object>> selectLocationDatatable(Map<String, Object> map);
-    long countLocationDatatable(Map<String, Object> map);
-
-    /**로케이션 구분 일괄변경*/
-    void changeAllLocType(@Param("locIdxs") String[] locIdxs,
-                          @Param("locType") LocType locType);
-
-
-    /**로케이션 엑셀 업로드*/
-    void insertLocationByExcel(List<Location> locations);
-
     /**창고 내 재고자산 개수*/
     int countGoodsInWarehouse(Integer whIdx);
     
