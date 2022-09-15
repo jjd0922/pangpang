@@ -10,6 +10,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -45,6 +46,10 @@ public class OrderService {
     private final ShopProductOptionRepo shopProductOptionRepo;
     private final OrdersGsRepo ordersGsRepo;
     private final PaymentRepo paymentRepo;
+
+    private final ProductRepo productRepo;
+
+    private final DeliveryNumRepo deliveryNumRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -161,6 +166,7 @@ public class OrderService {
         Long o_idx = orders.getOIdx();
         int price = 0;
         int delivery = 0;
+        int mileage = 0;
         for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
             if(entry.getKey().contains("OG_COUPON_")) {
                 String spoIdx = entry.getKey().replace("OG_COUPON_", "");
@@ -178,6 +184,8 @@ public class OrderService {
                 price = price + shopProductOption.getSpoPrice();
                 delivery = delivery + shopProductOption.getGoodsStock().getProduct().getPDelPrice();
                 ordersGsRepo.save(orderGs);
+
+                mileage = mileage + (int)((shopProductOption.getSpoPrice()*shopProductOption.getShopProductAdd().getShopProduct().getSpPercent())/100);
             }
         }
 
@@ -185,7 +193,7 @@ public class OrderService {
         payment.setPayPrice(0);
         payment.setPayProductPrice(price);
         payment.setPayDelivery(delivery);
-        payment.setPayMileage(0);// 수정요
+        payment.setPayMileage(mileage);
         payment.setPayJson(null);
         paymentRepo.save(payment);
 
@@ -210,5 +218,32 @@ public class OrderService {
         ordersAddressRepo.save(orderAddress);
         return orderAddress.getAdIdx();
     }
+
+
+    /** 송장등록 */
+    @Transactional
+    public String insertInvoice(ParamMap paramMap) {
+        List<Integer> list = paramMap.getList("ogIdxs[]");
+        System.out.println(list);
+        for(int i=0; i<list.size(); i++){
+            DeliveryNum dn = DeliveryNum.builder().build();
+            dn.setRandomInvoice(12);
+            dn.setDnState("");
+            dn.setDnCompany("우체국");
+            dn.setCreatedDate(LocalDate.now());
+
+            deliveryNumRepo.save(dn);
+
+            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
+            orderGs.setDeliveryNum(dn);
+            ordersGsRepo.save(orderGs);
+
+            //1 insert delivery_num
+            //2 생성된 dn_idx order_gs update
+        }
+
+        return "" ;
+    }
+
 
 }

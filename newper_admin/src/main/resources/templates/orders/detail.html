@@ -498,7 +498,7 @@
                                     <button type="button" class="btn btn-xs badge-danger" onclick="">관리자교환완료</button>
                                     <button type="button" class="btn btn-xs badge-danger" onclick="">AS요청</button>
                                     <button type="button" class="btn btn-xs badge-danger" onclick="">환불처리</button>
-                                    <button type="button" class="btn btn-xs badge-danger" onclick="">송장등록</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="insertInvoice()">송장등록</button>
                                 </div>
                             </div>
                         </div>
@@ -751,6 +751,30 @@
         $('input[name="TOTAL_'+spoIdx+'"]').val(comma(res));
     }
 
+
+    function insertInvoice(ogIdx){
+        var param = dataTableGetSelectedDataArray('orderGoodsStockTable', 'OG_IDX');
+        if (param.length == 0) {
+            alert('선택된 주문번호코드가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 주문번호코드를 송장등록 하시겠습니까?")) {
+                $.ajax({
+                    url: '/orders/insertInvoice.ajax',
+                    type: 'post',
+                    data: {
+                        ogIdxs : param
+                    },
+                    success: function (res) {
+                        $('#orderGoodsStockTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
 
 </script>
 <script th:inline="javascript">

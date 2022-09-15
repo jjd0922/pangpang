@@ -18,4 +18,11 @@ public interface OrdersMapper {
     /**통합주문관리 주문상품*/
     List<Map<String, Object>> selectGoodsStockDetailByOIdx(Map<String, Object> map);
 
+
+    /**SHOP주문관리 데이터테이블*/
+    List<Map<String, Object>> selectOrderShopDatatable(Map<String, Object> map);
+
+    Integer countOrderShopDatatable(Map<String, Object> map);
+
+
 }

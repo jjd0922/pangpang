@@ -4,6 +4,8 @@ import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +22,13 @@ public class BoardController {
         ModelAndView mav = new ModelAndView("board/notice");
 
         mav.addObject("shopList", shopRepo.findAll());
+
+        return mav;
+    }
+    /** 공지사항 신규,상세*/
+    @GetMapping(value = {"notice/new", "notice/{ntIdx}"})
+    public ModelAndView ntIdx(@PathVariable(required = false) Long ntIdx){
+        ModelAndView mav = new ModelAndView("board/ntIdx");
 
         return mav;
     }

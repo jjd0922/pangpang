@@ -418,7 +418,7 @@ public class ProductRestController {
         System.out.println(paramMap.getMap());
         String res = productService.sabang(paramMap);
 
-
+        rm.setMessage(res);
 
 
         return rm;

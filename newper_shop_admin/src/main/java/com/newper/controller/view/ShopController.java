@@ -40,13 +40,6 @@ public class ShopController {
 
         return mav;
     }
-    /** 분양몰 디자인*/
-    @GetMapping(value = "pop/design/{shopIdx}")
-    public ModelAndView shopDesign(@PathVariable Integer shopIdx){
-        ModelAndView mav = new ModelAndView("shop/design");
-
-        return mav;
-    }
 
     /**PG사이트코드 관리*/
     @GetMapping("pg")

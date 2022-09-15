@@ -94,7 +94,33 @@ public class OrdersRestController {
         }
         return rm;
     }
+    /**SHOP주문관리 데이터테이블*/
+    @PostMapping("shopOrder.dataTable")
+    public ReturnDatatable shopOrder(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
 
+        returnDatatable.setData(ordersMapper.selectOrderShopDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(ordersMapper.countOrderShopDatatable(paramMap.getMap()));
 
+        return returnDatatable;
+    }
+
+    /**주문통합관리 팝업 송장등록*/
+    @PostMapping("insertInvoice.ajax")
+    public ReturnMap insertInvoice(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        paramMap.put("ogIdx", paramMap.getList("ogIdxList[]"));
+
+/*        System.out.println("paramMap = " + paramMap);*/
+
+        String insertInvoice = orderService.insertInvoice(paramMap);
+
+        rm.put("insertInvoice", insertInvoice);
+
+        rm.setMessage("등록되었습니다.");
+
+        return rm;
+    }
 
 }

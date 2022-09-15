@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>공지사항</title>
+    <title th:text="${ntIdx != null?'공지사항 상세':'공지사항 신규등록'}"></title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>공지사항 상세</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="noticeForm">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 공지사항 정보 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="선택한 크기를 기준으로 다른 요소들의 크기도 비례해서 커지거나 작아집니다."></i></legend>
+                                        <div class="row">
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">분양몰</span>
+                                                            </span>
+                                                            <input type="hidden" name="shopIdx">
+                                                            <input class="form-control" name="shopName" readonly  placeholder="분양몰 선택" onclick="showShopModal()" style="cursor:pointer;">
+                                                            <span class="input-group-append" onclick="showShopModal()">
+                                                                <a class="input-group-text"><i class="icon-home"></i></a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">2. 색 설정</legend>
+                                        <div class="row">
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메뉴 & 본문 검정색 </span>
+                                                        </span>
+                                                        <input type="text" name="scBlack" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">어두운 배경 글자색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="어두운 배경에 쓰이는 본문 글자의 색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scWhite" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">포인트색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="디자인 포인트에 쓰이거나 구입, 저장 등의 액션을 유도하는 버튼의 색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scPoint" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">포인트색 배경 글자색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="포인트색이 배경으로 쓰일 때 위에 놓이는 글자의 색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scPointFont" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메뉴 현위치색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="메인메뉴가 선택되었을 때 활성화된 메뉴를 표시하는 색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scMenu" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">현위치색 배경 글자색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="메뉴 현위치색이 배경으로 쓰일 때 위에 놓이는 글자의 색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scMenuFont" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">타이틀 글자색 </span>
+                                                        </span>
+                                                        <input type="text" name="scTitle" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">옅은 배경색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="섹션, 텍스트 상자, 테이블 등 '본문 검정색'의 배경으로 쓰이는 옅은 배경색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scBack" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">기본 라인색 <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="테이블, 입력필드, 구분선 등의 외각선에 적용되는 라인색입니다."></i></span>
+                                                        </span>
+                                                        <input type="text" name="scLine" class="form-control colorpicker-show-input" data-preferred-format="hex" data-fouc>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">3. 기타 디자인 설정</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">썸네일 타입</span>
+                                                        </span>
+                                                        <select class="form-control select" name="scThumbnail" placeholder="없음">
+                                                            <option value="">없음</option>
+                                                            <option value="body-thumb-bg">배경형</option>
+                                                            <option value="ani-thumb-bg">배경형(애니메이션)</option>
+                                                            <option value="body-thumb-border">테두리형</option>
+                                                            <option value="ani-thumb-shadow">테두리 그림자형(애니메이션)</option>
+                                                            <option value="body-thumb-shadow">테두리 그림자형</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">푸터그룹</span>
+                                                        </span>
+                                                        <select class="form-control select" name="scFooter">
+                                                            <option value="footer-type-a">타입 A - 옅은 배경색 + 그림자</option>
+                                                            <option value="footer-type-b">타입 B - 옅은 배경색 + 테두리</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">상품상세 정보상자</span>
+                                                        </span>
+                                                        <select class="form-control select" name="scSearchBrand">
+                                                            <option value="prd-search-bl-sq">A타입</option>
+                                                            <option value="prd-search-bl-qu">B타입</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <!-- /footer -->
+    </div>
+    <!-- /main content -->
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class="w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();">
+            <i class="icon-cross2 mr-1"></i>닫기
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/demo_pages/picker_color.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+</body>
+
+<!--shop modal-->
+<th:block th:replace="shop/modal/shopModal.html"></th:block>
+
+<script th:inline="javascript">
+    function saveBtn(){
+        if(window.confirm('저장 하시겠습니까?')){
+            if(window.confirm('저장하시겠습니까?')){
+                $.ajax({
+                    url: location.pathname + '.ajax',
+                    processData: false,
+                    contentType: false,
+                    type: 'post',
+                    data: new FormData($('#colorForm')[0])
+                }).done(function(res){
+                    opener.refreshTable('#shopTable');
+                    location.reload();
+                });
+            }
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+
+    }
+
+</script>
+</html>

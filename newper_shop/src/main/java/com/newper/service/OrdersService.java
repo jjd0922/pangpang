@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopSession;
 import com.newper.constant.OLocation;
+import com.newper.constant.PayMethod;
 import com.newper.constant.etc.IamPortPayMethod;
 import com.newper.constant.etc.IamPortPg;
 import com.newper.dto.IamportReq;
@@ -54,7 +55,7 @@ public class OrdersService {
                 .build();
 
         Payment payment = Payment.builder()
-                .payMethod("test")
+                .payMethod(PayMethod.CARD)
                 .payPrice(1000)
                 .payProductPrice(1000)
                 .build();

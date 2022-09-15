@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title th:text="${po != null ? '발주품의 상세/수정' : '발주품의 신규 등록'}"></title>
     <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .w-200 {
+            width: 200px!important;
+        }
+    </style>
 </head>
 <body>
 <!-- 본문 영역 시작 -->
@@ -36,7 +41,7 @@
                                         <legend class="">1. 등록 정보</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -48,7 +53,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -60,31 +65,55 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의등록일(등록일)</span>
+                                                            <span class="input-group-text">품의작성일(등록일)</span>
                                                         </span>
                                                         <input type="text" name="createdDate" class="form-control" th:value="${po != null ? po?.createdDate : #calendars.format(#calendars.createNow(),'yyyy-MM-dd')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의 승인/반려일</span>
+                                                            <span class="input-group-text">품의요청일</span>
                                                         </span>
-                                                        <input type="text" name="hwAprvDate" class="form-control" th:value="${po?.hiworks?.hwAprvDate}" readonly>
+                                                        <input type="text" name="poRequestDate" class="form-control" th:value="${po?.poRequestDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text d-flex justify-content-between">구매담당자<a onclick="showUserModal();" class="badge badge-sm badge-primary">검색</a></span>
+                                                        </span>
+                                                        <input type="text" name="uName" class="form-control" readonly>
+                                                        <input type="hidden" name="uIdx">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">품의상태</span>
+                                                        </span>
+                                                        <input name="poState" class="form-control" readonly th:value="${po?.poState?.option}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -96,33 +125,22 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의상태</span>
+                                                            <span class="input-group-text">품의 승인/반려일</span>
                                                         </span>
-                                                        <input name="poState" class="form-control" readonly th:value="${po?.poState?.option}">
+                                                        <input type="text" name="hwAprvDate" class="form-control" th:value="${po?.hiworks?.hwAprvDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의요청일</span>
-                                                        </span>
-                                                        <input type="text" name="poRequestDate" class="form-control" th:value="${po?.poRequestDate}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">첨부파일<a th:if="${po != null}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                            <span class="input-group-text d-flex justify-content-between">첨부파일<a th:if="${po != null && po?.poFile != ''}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                         </span>
                                                         <input type="file" name="poFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                         <input type="hidden" name="poFileOri" th:if="${po != null}" th:value="${po?.poFile}">
@@ -132,32 +150,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">구매담당자<a onclick="showUserModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
-                                                        </span>
-                                                        <input type="text" name="uName" class="form-control" readonly>
-                                                        <input type="hidden" name="uIdx">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의메모</span>
-                                                        </span>
-                                                        <input type="text" name="poMemo" class="form-control" placeholder="입력" th:value="${po?.poMemo}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -169,30 +162,39 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
 
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">2. 구매개요</legend>
-                                        <div class="row">
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">매입처<a onclick="openCompanyModal_flag('PURCHASE');" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text">품의메모</span>
                                                         </span>
-                                                        <input type="text" name="comName_buy" class="form-control" th:value="${po?.company?.comName}" readonly>
-                                                        <input type="hidden" name="comIdx_buy" th:value="${po?.company?.comIdx}">
+                                                        <input type="text" name="poMemo" class="form-control" th:value="${po?.poMemo}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <legend class="mt-3">2. 구매개요</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text d-flex justify-content-between">매입처<a onclick="openCompanyModal_flag('PURCHASE');" class="badge badge-sm badge-primary">검색</a></span>
+                                                        </span>
+                                                        <input type="text" name="comNameBuy" class="form-control" th:value="${po?.company?.comName}" readonly>
+                                                        <input type="hidden" name="comIdxBuy" th:value="${po?.company?.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -206,31 +208,31 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미수대금</span>
                                                         </span>
-                                                        <input type="text" name="poBuyReceiveAmount" class="form-control" placeholder="입력" th:value="${po?.poBuyReceiveAmount}">
+                                                        <input type="text" name="poBuyReceiveAmount" class="form-control" th:value="${po?.poBuyReceiveAmount}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미지급대금</span>
                                                         </span>
-                                                        <input type="text" name="poBuyUnpaidAmount" class="form-control" placeholder="입력" th:value="${po?.poBuyUnpaidAmount}">
+                                                        <input type="text" name="poBuyUnpaidAmount" class="form-control" th:value="${po?.poBuyUnpaidAmount}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -242,19 +244,19 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">원사용처</span>
                                                         </span>
-                                                        <input type="text" name="poBuyOriUse" class="form-control" placeholder="입력" th:value="${po?.poBuyOriUse}">
+                                                        <input type="text" name="poBuyOriUse" class="form-control"th:value="${po?.poBuyOriUse}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -268,7 +270,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -279,31 +281,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">3. 판매개요</legend>
+                                        <legend class="pt-3">3. 판매개요</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">판매처<a href="javascript: openCompanyModal_flag('SELL');" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text d-flex justify-content-between">판매처<a href="javascript: openCompanyModal_flag('SELL');" class="badge badge-sm badge-primary">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="comName_sell" class="form-control" placeholder="검색" th:value="${po?.company_sell?.comIdx}" readonly>
-                                                        <input type="hidden" name="comIdx_sell" th:value="${po?.company_sell?.comIdx}">
+                                                        <input type="text" name="comNameSell" class="form-control" th:value="${po?.company_sell?.comIdx}" readonly>
+                                                        <input type="hidden" name="comIdxSell" th:value="${po?.company_sell?.comIdx}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -317,31 +312,31 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미수대금</span>
                                                         </span>
-                                                        <input type="text" name="poSellReceiveAmount" class="form-control" placeholder="입력" th:value="${po?.poSellReceiveAmount}">
+                                                        <input type="text" name="poSellReceiveAmount" class="form-control" th:value="${po?.poSellReceiveAmount}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미지급대금</span>
                                                         </span>
-                                                        <input type="text" name="poUnpaidAmount" class="form-control" placeholder="입력" th:value="${po?.poSellUnpaidAmount}">
+                                                        <input type="text" name="poUnpaidAmount" class="form-control" th:value="${po?.poSellUnpaidAmount}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -353,7 +348,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -365,7 +360,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -377,29 +372,22 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">사용용도</span>
                                                         </span>
-                                                        <input type="text" name="poSellUse" class="form-control" placeholder="입력" th:value="${po?.poSellUse}">
+                                                        <input type="text" name="poSellUse" class="form-control" th:value="${po?.poSellUse}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">4. 계약조건</legend>
+                                        <legend class="mt-3">4. 계약조건</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -411,7 +399,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -423,7 +411,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -435,7 +423,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -447,7 +435,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -462,62 +450,62 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text requested">입고예정창고<a href="javascript:openWarehouseModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text requested d-flex justify-content-between">입고예정창고<a href="javascript:openWarehouseModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="whName" class="form-control" placeholder="검색" th:value="${po?.warehouse?.whName}">
+                                                        <input type="text" name="whName" class="form-control" th:value="${po?.warehouse?.whName}" readonly>
                                                         <input type="hidden" name="whIdx" th:value="${po?.warehouse?.whIdx}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">매입운송비 주체</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryMain" class="form-control" placeholder="입력" th:value="${po?.poDeliveryMain}">
+                                                        <input type="text" name="poDeliveryMain" class="form-control" th:value="${po?.poDeliveryMain}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">매입운송비</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryCost" class="form-control" placeholder="입력" th:value="${po?.poDeliveryCost}">
+                                                        <input type="text" name="poDeliveryCost" class="form-control" th:value="${po?.poDeliveryCost}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">계산서발행월</span>
                                                         </span>
-                                                        <input type="text" name="poTaxMonth" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${po?.poTaxMonth}" readonly>
+                                                        <input type="text" name="poTaxMonth" class="form-control w-datarange daterange-single" th:value="${po?.poTaxMonth}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">지급예정일</span>
                                                         </span>
-                                                        <input type="text" name="poPayDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${po?.poPayDate}" readonly>
+                                                        <input type="text" name="poPayDate" class="form-control w-datarange daterange-single" th:value="${po?.poPayDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -529,26 +517,26 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">입금계좌정보</span>
                                                         </span>
-                                                        <input type="text" name="poPayAccount" class="form-control" placeholder="입력" th:value="${po?.poPayAccount}">
+                                                        <input type="text" name="poPayAccount" class="form-control" th:value="${po?.poPayAccount}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">계약정보<a onclick="openContractModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text d-flex justify-content-between">계약정보<a onclick="openContractModal();" class="badge badge-sm badge-primary">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="ccName" class="form-control" placeholder="검색" th:value="${po?.contract?.ccName}" readonly>
+                                                        <input type="text" name="ccName" class="form-control" th:value="${po?.contract?.ccName}" readonly>
                                                         <input type="hidden" name="ccIdx" th:value="${po?.contract?.ccIdx}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -560,7 +548,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -572,7 +560,7 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -583,15 +571,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">5. 상품정보
+                                        <legend class="mt-3">5. 상품정보
                                             <a onclick="openProductModal()" class="btn btn-sm btn-primary ml-1">검색</a>
                                         </legend>
                                         <div class="row overflow-x-scroll">
@@ -599,8 +580,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>상품코드</th>
-                                                        <th>외부상품코드</th>
                                                         <th>상품명</th>
+                                                        <th>외부상품코드</th>
                                                         <th>브랜드</th>
                                                         <th>옵션1</th>
                                                         <th>옵션2</th>
@@ -609,63 +590,50 @@
                                                         <th>구매단가<br>(실매입가)</th>
                                                         <th>매입수량</th>
                                                         <th>매입총액</th>
+                                                        <th>목표수익률</th>
                                                         <th>입고SPEC(예정)</th>
                                                         <th>판매SPEC(예정)</th>
-                                                        <th>수리</th>
-                                                        <th>도색</th>
-                                                        <th>가공</th>
                                                         <th>삭제</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="productTbody">
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:class="|productPoTr_${iStat.index} poProductTr|">
+                                                    <tr class="defaultRow" th:unless="${poProduct != null}">
+                                                        <td colspan="15">
+                                                            발주품의할 상품을 선택하십시오.
+                                                            <input type="hidden" name="cnt">
+                                                        </td>
+                                                    </tr>
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}"><!--th:class="|productPoTr_${iStat.index} poProductTr|"-->
                                                         <td th:text="${i.P_IDX}"></td>
-                                                        <td th:text="${i.PP_MEMO}"></td>
-                                                        <input type="hidden" name="poProductMemo" th:value="${i.PP_MEMO}">
                                                         <td th:text="${i.P_NAME}"></td>
+                                                        <td th:text="${i.PP_MEMO}"></td>
                                                         <td th:text="${i.CATE_NAME}"></td>
                                                         <td th:text="${i.OPTION1}"></td>
-                                                        <input type="hidden" name="poProductOption1" th:value="${i.OPTION1}">
                                                         <td th:text="${i.OPTION2}"></td>
-                                                        <input type="hidden" name="poProductOption2" th:value="${i.OPTION2}">
                                                         <td th:text="${i.OPTION3}"></td>
-                                                        <input type="hidden" name="poProductOption3" th:value="${i.OPTION3}">
                                                         <td th:text="${i.P_COST}"></td>
                                                         <td th:text="${i.PP_COST}"></td>
                                                         <td th:text="${i.PP_COUNT}"></td>
                                                         <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
+                                                        <td th:text="${i.PP_PROFIT_TARGET}"></td>
                                                         <td th:text="${i.SPEC_BUY}"></td>
-                                                        <input type="hidden" name="poProductSpec" th:value="${i.SPEC_BUY}">
                                                         <td th:text="${i.SPEC_SELL}"></td>
-                                                        <input type="hidden" name="poProductSpec2" th:value="${i.SPEC_SELL}">
-                                                        <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
-                                                        <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
-                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
-                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${iStat.index})|">삭제</button></td>
+                                                        <td><a onclick="deleteRow($(this))" class="btn btn-sm btn-warning">삭제</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </fieldset>
-                                    <!-- 타이틀 구분 끝-->
-                                </div>
-                            </div>
 
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <!-- 타이틀 -->
-                                    <fieldset class="mb-0">
-                                        <legend class="">6. 수익률</legend>
+                                        <legend class="mt-3">6. 상품수익률</legend>
                                         <div class="row overflow-x-scroll">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
                                                         <th>상품코드</th>
                                                         <th>상품명</th>
-                                                        <th>매입수량</th>
-                                                        <th>예상가공비용</th>
-                                                        <th>예상수리비</th>
-                                                        <th>예상도색비</th>
+                                                        <th class="w-200">예상수리비용</th>
+                                                        <th class="w-200">예상도색비용</th>
+                                                        <th class="w-200">예상가공비용</th>
                                                         <th>생산원가합</th>
                                                         <th>생산원가율</th>
                                                         <th>구매단가</th>
@@ -674,39 +642,26 @@
                                                         <th>예상판매가총액</th>
                                                         <th>총이익</th>
                                                         <th>수익률</th>
-                                                        <th>목표수익률</th>
-                                                        <th>삭제</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="productTbody2">
+                                                <tbody id="rateTbody">
+                                                    <tr class="defaultRow" th:unless="${poProduct != null}">
+                                                        <td colspan="18">발주품의할 상품을 선택하십시오.</td>
+                                                    </tr>
                                                     <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${iStat.index}|" th:class="|productPoTr_${iStat.index}|">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
-                                                        <td th:text="${i.PP_COUNT}"></td>
-                                                        <td th:text="${i.PP_PROCESS_COST}"></td>
-                                                        <td th:text="${i.PP_FIX_COST}"></td>
-                                                        <td th:text="${i.PP_PAINT_COST}"></td>
+                                                        <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
+                                                        <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
+                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
                                                         <td th:text="${(i.PP_PAINT_COST + i.PP_FIX_COST + i.PP_PROCESS_COST) * i.PP_COUNT}"></td>
                                                         <td th:id="|buy_per_${iStat.index}|"></td>
                                                         <td th:text="${i.PP_COST}"></td>
-                                                        <input type="hidden" th:id="|poProductCost_${iStat.index}|" th:value="${i.PP_COST}">
-                                                        <input type="hidden" th:id="|poProductCount_${iStat.index}|" th:value="${i.PP_COUNT}">
                                                         <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
                                                         <td th:text="${i.PP_SELL_PRICE}"></td>
-                                                        <input type="hidden"th:id="|poProductSellPrice_${iStat.index}|" name="poProductSellPrice" th:value="${i.PP_SELL_PRICE}">
                                                         <td th:id="|poProductSellPriceTotal_${iStat.index}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
                                                         <td th:id="|totalProfit_${iStat.index}|"></td>
                                                         <td th:id="|profitPer_${iStat.index}|"></td>
-                                                        <td th:text="${i.PP_PROFIT_TARGET}"></td>
-                                                        <input type="hidden" name="poProductProfitTarget" th:value="${i.PP_PROFIT_TARGET}">
-                                                        <td><button type="button" class="btn btn-sm btn-secondary ml-1" th:onclick="|productPoDelete(${iStat.index})|">삭제</button></td>
-                                                        <input type="hidden" name="poProduct" th:value="${iStat.index}">
-                                                        <input type="hidden" th:id="|poProductProcess_${iStat.index}|" name="poProductProcess" th:value="${i.PP_PROCESS_COST}">
-                                                        <input type="hidden" th:id="|poProductFix_${iStat.index}|" name="poProductFix" th:value="${i.PP_FIX_COST}">
-                                                        <input type="hidden" th:id="|poProductPaint_${iStat.index}|" name="poProductPaint" th:value="${i.PP_PAINT_COST}">
-                                                        <input type="hidden" name="poProductProcessMemo" th:value="${i.PP_PROCESS_MEMO}">
-                                                        <input type="hidden" name="poProductFixMemo" th:value="${i.PP_FIX_MEMO}">
-                                                        <input type="hidden" name="poProductPaintMemo" th:value="${i.PP_PAINT_MEMO}">
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -779,7 +734,7 @@
     }
 
     function saveAction(){
-        if ($('hidden[name=comIdx_buy]').val() == '') {
+        /*if ($('hidden[name=comIdx_buy]').val() == '') {
             alert('매입처를 선택해 주세요.');
             return false;
         }
@@ -802,7 +757,7 @@
         if ($('input[name=poProductCost]').length == 0) {
             alert('상품을 추가해주세요');
             return false;
-        }
+        }*/
 
         var poTotalAmount = $('input[name=poTotalAmount]').val().replace(/,/gi,'');
         $('input[name=poTotalAmount]').val(poTotalAmount);
@@ -835,11 +790,11 @@
         if (companyFlag == 'PURCHASE') {
             $('input[name=uName]').val(rowData.U_NAME);
             $('input[name=uIdx]').val(rowData.U_IDX);
-            $('input[name=comIdx_buy]').val(rowData.COM_IDX);
-            $('input[name=comName_buy]').val(rowData.COM_NAME);
+            $('input[name=comIdxBuy]').val(rowData.COM_IDX);
+            $('input[name=comNameBuy]').val(rowData.COM_NAME);
         } else {
-            $('input[name=comIdx_sell]').val(rowData.COM_IDX);
-            $('input[name=comName_sell]').val(rowData.COM_NAME);
+            $('input[name=comIdxSell]').val(rowData.COM_IDX);
+            $('input[name=comNameSell]').val(rowData.COM_NAME);
         }
         $('#companyModal').modal('hide');
     }
@@ -855,12 +810,137 @@
         $('input[name=ccNum]').val(rowData.CC_NUM);
         $('#contractModal').modal('hide');
     }
+
+    /** 테이블 행 삭제*/
+    function deleteRow(el) {
+        var target = el.closest('tr');
+        var rowIdx = target.index();
+        target.remove();
+        $('#rateTbody tr')[rowIdx].remove();
+
+        // 기본행 보여주기
+        if ($('#rateTbody tr').length < 2) {
+            $('.defaultRow').attr('hidden', false);
+        }
+    }
+
+    var cnt = 0;
+    /** product테이블 새로운 행 더하기*/
+    function appendRowToProductTable(data) {
+        var brandName = '';
+        if (data.BRAND_NAME != null && data.BRAND_NAME != '') {
+            brandName = data.BRAND_NAME;
+        }
+        // product테이블 행추가
+        $('#productTbody').append(
+            '<tr>' +
+            '   <td><input type="hidden" name="pIdx_'+cnt+'" value="'+data.P_IDX+'">'+data.P_IDX+'</td>' +
+            '   <td>'+data.P_NAME+'</td>' +
+            '   <td><input type="text" name="ppMemo_'+cnt+'" class="form-control"></td>' +
+            '   <td>'+brandName+'</td>' +
+            '   <td id="ppOption1_'+cnt+'"></td>' +
+            '   <td id="ppOption2_'+cnt+'"></td>' +
+            '   <td id="ppOption3_'+cnt+'"></td>' +
+            '   <td>'+data.P_COST+'</td>' +
+            '   <td><input type="text" name="ppCost_'+cnt+'" class="form-control"></td>' +
+            '   <td><input type="text" name="ppCount_'+cnt+'" class="form-control"></td>' +
+            '   <td id="ppCostAll_'+cnt+'"></td>' + // 매입총액
+            '   <td><input type="text" name="ppProfitTarget_'+cnt+'" class="form-control"></td>' +
+            '   <td id="poBuySpec_'+cnt+'"></td>' +
+            '   <td id="poSellSpec_'+cnt+'"></td>' +
+            '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
+            '</tr>'
+        );
+
+        //option selectBox 추가
+        var options = JSON.parse(data.P_OPTION);
+        for (var i = 0; i < options.length; i++) {
+            var selectName = 'ppOption'+(i+1)+'_'+cnt;
+            var optVal = options[i].values;
+            $('#'+selectName).append(
+                '<input type="hidden" name="title_'+selectName+'" value="'+options[i].title+'"><select name="'+selectName+'" class="form-control"></select>'
+            );
+
+
+            for (var ov of optVal) {
+                $('select[name="'+selectName+'"]').append(
+                    '<option value="'+ov+'">'+ov+'</option>'
+                );
+            }
+        }
+
+        // spec input 추가
+        var cateSpecList = data.CATE_SPEC_LIST;
+        if (cateSpecList != null && cateSpecList != '') {
+            var specList = JSON.parse(data.CATE_SPEC_LIST);
+            var specCnt = 0;
+            for (var i = 0; i < specList.length; i++) {
+                $('#poBuySpec_'+cnt).append(
+                    '<div class="d-flex">' +
+                    '   <input type="text" name="buySpeclName_'+cnt+'" class="form-control mb--1 mr--1 specl-name" value="'+specList[i]+'" readonly tabindex="-1">' +
+                    '   <input type="text" name="buySpeclValue_'+cnt+'" spec-list="'+specCnt+'" class="form-control mb--1">' +
+                    '</div>'
+                );
+                $('#poSellSpec_'+cnt).append(
+                    '<div class="d-flex">' +
+                    '   <input type="text" name="sellSpeclName_'+cnt+'" class="form-control mb--1 mr--1" value="'+specList[i]+'" readonly tabindex="-1">' +
+                    '   <input type="text" name="sellSpeclValue_'+cnt+'" spec-list="'+specCnt+'" class="form-control mb--1">' +
+                    '</div>'
+                );
+                specCnt++;
+            }
+        }
+
+        // spec input auto complete
+        var specNames = $('.specl-name');
+        debugger;
+        for (var i = 0; i < specNames.length; i++) {
+            $.ajax({
+                type: "GET",
+                url:"/goods/specList.ajax?speclName=" + specNames[i].value,
+                async:false,
+                success : function(result){
+                    $('input[spec-list='+i+']').autocomplete({
+                        source: result
+                        ,minLength: 0
+                    });
+                }
+            });
+        }
+        // 이미 추가된 행 중복으로 검색하지 않도록 속성 제거
+        specNames.removeClass('specl-name');
+        $('input[spec-list]').removeAttr('spec-list');
+
+
+        // 수익률테이블 행추가
+        $('#rateTbody').append(
+            '<tr>' +
+            '   <td>'+data.P_IDX+'</td>' +
+            '   <td>'+data.P_NAME+'</td>' +
+            '   <td>' +
+            '       <span class="d-flex align-items-center mb--1"><label class="w-20">항목</label><input type="text" name="ppFixMemo_'+cnt+'" class="form-control"></span>' +
+            '       <span class="d-flex align-items-center"><label class="w-20">비용</label><input type="text" name="ppFixCost_'+cnt+'" class="form-control"></span>' +
+            '   </td>' +
+            '   <td>' +
+            '       <span class="d-flex align-items-center mb--1"><label class="w-20">항목</label><input type="text" name="ppPaintMemo_'+cnt+'" class="form-control"></span>' +
+            '       <span class="d-flex align-items-center"><label class="w-20">비용</label><input type="text" name="ppPaintCost_'+cnt+'" class="form-control"></span>' +
+            '   </td>' +
+            '   <td>' +
+            '       <span class="d-flex align-items-center mb--1"><label class="w-20">항목</label><input type="text" name="ppProcessMemo_'+cnt+'" class="form-control"></span>' +
+            '       <span class="d-flex align-items-center"><label class="w-20">비용</label><input type="text" name="ppProcessCost_'+cnt+'" class="form-control"></span>' +
+            '   </td>' +
+            '</tr>'
+        );
+
+        cnt++;
+        $('input[name="cnt"]').val(cnt);
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
 
     function openContractModal() {
-        var comIdx = $('input[name=comIdx_buy]').val();
+        var comIdx = $('input[name=comIdxBuy]').val();
         if (comIdx == '') {
             alert('매입처를 선택해 주세요.');
             return false;
