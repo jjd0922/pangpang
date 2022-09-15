@@ -10,4 +10,6 @@ public interface GoodsStockRepo extends JpaRepository<GoodsStock, Integer> {
     @EntityGraph(attributePaths = {"product"})
     public GoodsStock findGoodsStockByGsIdx(Integer gsIdx);
 
+    public GoodsStock findGoodsStockByGsCode(String gsCode);
+
 }

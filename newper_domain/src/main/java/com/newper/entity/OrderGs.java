@@ -42,7 +42,7 @@ public class OrderGs {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_DN_IDX", referencedColumnName = "dnIdx")
-    private DeliveryNumber deliveryNumber;
+    private DeliveryNum deliveryNum;
 
 
 

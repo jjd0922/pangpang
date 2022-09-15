@@ -16,8 +16,16 @@ import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -373,9 +381,12 @@ public class ProductService {
     }
 
     @Transactional
+    /**사방넷 상품전송*/
     public String sabang(ParamMap paramMap){
+        String	code = "";
         String gsIdxs = paramMap.get("gsIdxs")+"";
         System.out.println(gsIdxs);
+        int cnt = 0;
         String[] gsIdx = gsIdxs.split(",");
 
         String ORIGIN_STR = paramMap.get("ORIGIN")+"";
@@ -742,40 +753,60 @@ public class ProductService {
             String fileXml = "xml/"+file.getName()+"_"+now;
             String loc=NewperStorage.uploadFile(AdminBucket.OPEN, fileXml, new FileInputStream(file), file.length(), Files.probeContentType(file.toPath()));
 
-            URL url = null;
-            String readLine = null;
-            StringBuilder buffer = null;
-            BufferedReader bufferedReader = null;
-            BufferedWriter bufferedWriter = null;
-            HttpURLConnection urlConnection = null;
+            Response response = null;
 
-            url = new URL("http://r.sabangnet.co.kr/RTL_API/xml_goods_info.html?xml_url="+loc);
-            System.out.println("http://r.sabangnet.co.kr/RTL_API/xml_goods_info.html?xml_url="+loc);
-            urlConnection = (HttpURLConnection)url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setConnectTimeout(5000);
-            urlConnection.setReadTimeout(3000);
-            urlConnection.setRequestProperty("Accept", "application/json;");
+            try {
+                OkHttpClient client1 = new OkHttpClient.Builder().build();
+                FormBody.Builder fb = new FormBody.Builder();
 
-            buffer = new StringBuilder();
-            if(urlConnection.getResponseCode()==HttpURLConnection.HTTP_OK){
-                bufferedReader=new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"EUC-KR"));
-                while((readLine=bufferedReader.readLine())!=null){
-                    buffer.append(readLine).append("\n");
+                Request req = new Request.Builder().url("http://r.sabangnet.co.kr/RTL_API/xml_goods_info.html?xml_url="+loc).post(fb.build()).build();
+                response = client1.newCall(req).execute();
+                String str = response.body().string().toString();
+                JSONObject json = XML.toJSONObject(str);
+                JSONObject sabang_result = json.getJSONObject("SABANG_RESULT");
+                JSONArray data = sabang_result.getJSONArray("DATA");
+
+                for(int i=0; i<data.length(); i++) {
+                    JSONObject json_product = data.getJSONObject(i);
+                    if(json_product.get("RESULT").equals("SUCCESS")){
+                        cnt++;
+                        String GS_CODE = json_product.getString("COMPAYNY_GOODS_CD");
+                        String GS_SABANG = json_product.getString("PRODUCT_ID");
+                        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsCode(GS_CODE);
+                        goodsStock.setGsSabang(GS_SABANG);
+                        goodsStockRepo.save(goodsStock);
+                    }else{
+                        code+=json_product.getString("COMPAYNY_GOODS_CD")+",";
+                    }
                 }
-            }else{
-                buffer.append("code : ");
-                buffer.append(urlConnection.getResponseCode()).append("\n");
-                buffer.append("message : ");
-                buffer.append(urlConnection.getResponseMessage()).append("\n");
+                System.out.println(data);
+
+            } catch (Exception e) {
+
+            }finally {
+                try {
+                    if (response != null)
+                        response.close();
+                } catch (Exception ee) {
+                }
             }
 
-            System.out.println(buffer);
         }catch (Exception e) {
-            e.printStackTrace();
+        }
+        String res = "";
+        res = cnt + " 건 등록성공\n";
+        if(code.trim().length()>0){
+            String codes[] = code.split(",");
+
+            if(codes.length>0){
+                res=res+"등록실패 재고코드 :\n";
+                for(int y=0; y<codes.length; y++){
+                    res+=codes[y]+"\n";
+                }
+            }
         }
 
-        return "";
+        return res;
     }
 
 
