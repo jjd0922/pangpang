@@ -264,25 +264,26 @@ public class OrderService {
     @Transactional
     public String insertInvoice(ParamMap paramMap) {
         List<Integer> list = paramMap.getList("ogIdxs[]");
-        System.out.println(list);
+        int cnt = 0;
         for(int i=0; i<list.size(); i++){
-            DeliveryNum dn = DeliveryNum.builder().build();
-            dn.setRandomInvoice(12);
-            dn.setDnState("");
-            dn.setDnCompany("우체국");
-            dn.setCreatedDate(LocalDate.now());
-
-            deliveryNumRepo.save(dn);
-
             OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
-            orderGs.setDeliveryNum(dn);
-            ordersGsRepo.save(orderGs);
+            if(orderGs.getDeliveryNum()==null){
+                DeliveryNum dn = DeliveryNum.builder().build();
+                dn.setRandomInvoice(12);
+                dn.setDnState("");
+                dn.setDnCompany("우체국");
+                dn.setCreatedDate(LocalDate.now());
 
-            //1 insert delivery_num
-            //2 생성된 dn_idx order_gs update
+                deliveryNumRepo.save(dn);
+
+                orderGs.setDeliveryNum(dn);
+                ordersGsRepo.save(orderGs);
+                cnt++;
+            }
+
         }
 
-        return "" ;
+        return cnt+" 건 등록 완료";
     }
 
 

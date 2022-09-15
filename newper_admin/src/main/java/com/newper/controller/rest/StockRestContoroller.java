@@ -33,14 +33,16 @@ public class StockRestContoroller {
 
 
     /**재고관리 픽킹관리 재고코드 클릭시 데이터 조회테이블**/
-    @PostMapping("children.dataTable")
+    @PostMapping("picking2.dataTable")
     public ReturnDatatable picking2(ParamMap paramMap) {
         ReturnDatatable returnDatatable = new ReturnDatatable();
-        Integer GS_IDX=null;
-        if(paramMap.get("GS_IDX")!=null&&!paramMap.get("GS_IDX").equals("")){
-            GS_IDX=Integer.parseInt(paramMap.get("GS_IDX")+"");
+
+        Integer gs_idx = null;
+        if(paramMap.get("GS_IDX")!=null){
+            gs_idx=paramMap.getInt("GS_IDX");
         }
-        List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(GS_IDX);
+
+        List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(gs_idx);
         returnDatatable.setData(cList);
         returnDatatable.setRecordsTotal(cList.size());
 

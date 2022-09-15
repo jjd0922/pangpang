@@ -176,9 +176,9 @@
             ,{'class':'m-w-8 w-15', 'title':'재고코드','data':'GS_CODE','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm btn-outline-dark ml-1" onclick="childrenCategory('+full.GS_IDX+')">'+data+'</a>';
                 }}
-            ,{'title':'적재재고','data':'null','defaultContent':''}
+            ,{'title':'적재재고','data':'loc_cnt','defaultContent':''}
             ,{'title':'픽킹요청수량','data':'cnt','defaultContent':''}
-            ,{'title':'출고전검수<br>요청수량','data':'null','defaultContent':''}
+            ,{'title':'출고전검수<br>요청수량','data':'check_cnt','defaultContent':''}
 
         ]
 
@@ -197,30 +197,33 @@
                 }
             ]
         },
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
         dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/stock/children.dataTable',
+            url:'/stock/picking2.dataTable',
             type:'post'
         },
         "columns" : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="G_IDX" value="'+data+'">';
                 }}
             ,{'title':'번호','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'상품명','data':'GS_STOCK','defaultContent':''}
-            ,{'title':'상품명','data':'GS_STOCK','defaultContent':''}
-            ,{'title':'상품코드','data':'GS_P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'title':'재고코드','data':'GS_CODE','defaultContent':''}
-            ,{'title':'자산코드', 'data':'GS_CODE','defaultContent':''}
-            ,{'title':'창고', 'data':'GS_LOCATION','defaultContent':''}
-            ,{'title':'형태', 'data':'GS_LOCATION','defaultContent':''}
-            ,{'title':'로케이션', 'data':'GS_LOCATION','defaultContent':''}
-            /*                ,{'title':'담당자', 'data':'CF_MONEY','defaultContent':''}
-                            ,{'title':'등록일', 'data':'CF_MONEY','defaultContent':''}*/
+            ,{'title':'자산코드', 'data':'G_BARCODE','defaultContent':''}
+            ,{'title':'창고', 'data':'WH_NAME','defaultContent':''}
+            ,{'title':'형태', 'data':'LOC_FORM','defaultContent':''}
+            ,{'title':'로케이션', 'data':'LOC_CODE','defaultContent':''}
+            ,{'title':'담당자', 'data':'U_NAME','defaultContent':''}
+            ,{'title':'등록일', 'data':'CREATED_DATE','defaultContent':''}
         ]
 
     });
@@ -230,7 +233,7 @@
 <script>
     function childrenCategory(GS_IDX){
         var table = $('#secondTable').DataTable();
-        table.ajax.url('stock/picking2.dataTable?GS_IDX='+GS_IDX).load(null,false);
+        table.ajax.url('/stock/picking2.dataTable?GS_IDX='+GS_IDX).load(null,false);
     }
 
 
