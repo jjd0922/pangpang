@@ -10,6 +10,7 @@ import com.newper.entity.*;
 import com.newper.mapper.PoMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
+import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,7 @@ public class PoService {
 
         String comIdxSell = paramMap.onlyNumber("comIdxSell");
         if (StringUtils.hasText(comIdxSell)) {
-            po.setCompanySell(companyRepo.getReferenceById(Integer.parseInt(comIdxSell)));
+            po.setCompany_sell(companyRepo.getReferenceById(Integer.parseInt(comIdxSell)));
         }
 
         String whIdx = paramMap.onlyNumber("whIdx");
@@ -80,174 +81,51 @@ public class PoService {
         // poProduct setting
         List<Map<String,Object>> ppList = new ArrayList<>();
         for (int i = 0; i < paramMap.getInt("cnt"); i++) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("pIdx",paramMap.getInt("pIdx_"+i));
-            map.put("ppMemo",paramMap.getString("ppMemo_"+i));
-            map.put("ppOption1",paramMap.getString("ppOption1_"+i));
-            map.put("ppOption2",paramMap.getString("ppOption2_"+i));
-            map.put("ppOption3",paramMap.getString("ppOption3_"+i));
-            map.put("ppCost",paramMap.replaceComma("ppCost_"+i));
-            map.put("ppCount",paramMap.getInt("ppCount_"+i));
-            map.put("ppProfitTarget",paramMap.onlyNumber("ppProfitTarget_"+i));
-            map.put("ppFixMemo",paramMap.getString("ppFixMemo_"+i));
-            map.put("ppFixCost",paramMap.replaceComma("ppFixCost_"+i));
-            map.put("ppPaintMemo",paramMap.getString("ppPaintMemo_"+i));
-            map.put("ppPaintCost",paramMap.replaceComma("ppPaintCost_"+i));
-            map.put("ppProcessMemo",paramMap.getString("ppProcessMemo_"+i));
-            map.put("ppProcessCost",paramMap.replaceComma("ppProcessCost_"+i));
+            ParamMap ppParam = new ParamMap();
+            ppParam.put("pIdx",paramMap.getString("pIdx_"+i));
+            ppParam.put("ppMemo",paramMap.getString("ppMemo_"+i));
+            ppParam.put("ppCost",paramMap.replaceComma("ppCost_"+i));
+            ppParam.put("ppCount",paramMap.getString("ppCount_"+i));
+            ppParam.put("ppProfitTarget",paramMap.onlyNumber("ppProfitTarget_"+i));
+            ppParam.put("ppFixMemo",paramMap.getString("ppFixMemo_"+i));
+            ppParam.put("ppFixCost",paramMap.replaceComma("ppFixCost_"+i));
+            ppParam.put("ppPaintMemo",paramMap.getString("ppPaintMemo_"+i));
+            ppParam.put("ppPaintCost",paramMap.replaceComma("ppPaintCost_"+i));
+            ppParam.put("ppProcessMemo",paramMap.getString("ppProcessMemo_"+i));
+            ppParam.put("ppProcessCost",paramMap.replaceComma("ppProcessCost_"+i));
 
-            ppList.add(map);
-        }
+            PoProduct poProduct = ppParam.mapParam(PoProduct.class);
 
-        // 입고예정spec setting
+            // option List setting
+            List<Map<String, Object>> optionList = new ArrayList<>();
+            for (int j = 1; j <= 3; j++) {
+                Map<String, Object> map = new HashMap<>();
+                if (StringUtils.hasText(paramMap.getString("ppOption" + j + "_" + i))) {
+                    map.put("values", paramMap.getString("ppOption" + j + "_" + i));
+                    map.put("title", paramMap.getString("title_ppOption"+j+"_"+i));
+                    optionList.add(map);
+                }
+            }
+            poProduct.setPpOption(optionList);
 
-        // 판매예정spec setting
+            // 입고예정spec setting
+            SpecFinder sf = new SpecFinder(specMapper,specListRepo,specRepo);
+            List<String> buySpecNameList = paramMap.getList("buySpeclName_"+i);
+            List<String> buySpecValueList = paramMap.getList("buySpeclValue_"+i);
+            Spec buySpec = sf.findSpec(buySpecNameList, buySpecValueList);
+            poProduct.setSpec(buySpec);
 
-
-
-        System.out.println("po = " + po);
-        /*
-
-
-
-        List<Long> ppCost = paramMap.getListLong("poProductCost");
-        List<Long> ppSellPrice = paramMap.getListLong("poProductSellPrice");
-        List<Long> ppProcessCost = paramMap.getListLong("poProductProcess");
-        List<Long> ppFixCost = paramMap.getListLong("poProductFix");
-        List<Long> ppPaintCost = paramMap.getListLong("poProductPaint");
-        List<Float> ppProfitTarget = paramMap.getListFloat("poProductProfitTarget");
-        List<Long> ppCount = paramMap.getListLong("poProductCount");
-        List<Long> pIdx = paramMap.getListLong("poProduct");
-        List<String> ppOption1 = paramMap.getList("poProductOption1");
-        List<String> ppOption2 = paramMap.getList("poProductOption2");
-        List<String> ppOption3 = paramMap.getList("poProductOption3");
-        List<String> ppMemo = paramMap.getList("poProductMemo");
-        List<String> ppFixMemo = paramMap.getList("poProductFixMemo");
-        List<String> ppPaintMemo = paramMap.getList("poProductPaintMemo");
-        List<String> ppProcessMemo = paramMap.getList("poProductProcessMemo");
-        List<String> poProductSpec = paramMap.getList("poProductSpec");
-        List<String> poProductSpec2 = paramMap.getList("poProductSpec2");
-
-
-        for (int i = 0; i < pIdx.size(); i++) {
-            PoProduct poProduct = paramMap.mapParam(PoProduct.class);
+            // 판매예정spec setting
+            List<String> sellSpecNameList = paramMap.getList("sellSpeclName_"+i);
+            List<String> sellSpecValueList = paramMap.getList("sellSpeclValue_"+i);
+            Spec sellSpec = sf.findSpec(sellSpecNameList, sellSpecValueList);
+            poProduct.setSpec2(sellSpec);
             poProduct.setPo(po);
+            poProduct.setProduct(Product.builder().pIdx(paramMap.getInt("pIdx_"+i, "유효한 상품이 아닙니다.")).build());
 
-            Product product = paramMap.mapParam(Product.class);
-            product.setPIdx((int) Long.parseLong(pIdx.get(i).toString()));
-            poProduct.setProduct(product);
-
-
-
-            Spec spec_buy = specRepo.findSpecBySpecConfirm(poProductSpec.get(i));
-            if (spec_buy == null) {
-                spec_buy = Spec.builder()
-                        .specConfirm(poProductSpec.get(i))
-                        .specLookup(poProductSpec.get(i))
-                        .build();
-                specRepo.save(spec_buy);
-
-                String specConfirm = "";
-                String spec = poProductSpec.get(i);
-                String[] specArr = spec.split("/");
-                for (int j = 0; j < specArr.length; j++) {
-                    String speclName = specArr[j].split(":")[0];
-                    String speclValue = specArr[j].split(":")[1];
-
-                    SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(speclName, speclValue);
-
-                    if (specList == null) {
-                        specList = SpecList
-                                .builder()
-                                .speclValue(speclValue)
-                                .speclName(speclName)
-                                .build();
-                        specListRepo.save(specList);
-                    }
-
-                    specConfirm += specList.getSpeclIdx() + ",";
-
-
-                    Map<String, Object> specParam = new HashMap<>();
-                    specParam.put("SPEC_IDX", spec_buy.getSpecIdx());
-                    specParam.put("SPECL_IDX", specList.getSpeclIdx());
-                    specParam.put("SPECI_ORDER", j);
-                    specMapper.insertSpecItem(specParam);
-                }
-
-
-            }
-            poProduct.setSpec(spec_buy);
-
-            Spec spec_sell = specRepo.findSpecBySpecConfirm(poProductSpec2.get(i));
-            if (spec_sell == null) {
-                spec_sell = Spec.builder()
-                        .specConfirm(poProductSpec2.get(i))
-                        .specLookup(poProductSpec2.get(i))
-                        .build();
-
-                specRepo.save(spec_sell);
-
-                String spec = poProductSpec.get(i);
-                String[] specArr = spec.split("/");
-                for (int j = 0; j < specArr.length; j++) {
-                    String speclName = specArr[j].split(":")[0];
-                    String speclValue = specArr[j].split(":")[1];
-
-                    SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(speclName, speclValue);
-
-                    if (specList == null) {
-                        specList = SpecList
-                                .builder()
-                                .speclValue(speclValue)
-                                .speclName(speclName)
-                                .build();
-                        specListRepo.save(specList);
-                    }
-
-                    Map<String, Object> specParam = new HashMap<>();
-                    specParam.put("SPEC_IDX", spec_sell.getSpecIdx());
-                    specParam.put("SPECL_IDX", specList.getSpeclIdx());
-                    specParam.put("SPECI_ORDER", j);
-                    specMapper.insertSpecItem(specParam);
-                }
-
-
-            }
-            poProduct.setSpec2(spec_sell);
-
-            List<Map<String, Object>> ppOption = new ArrayList<>();
-
-            if (!ppOption1.get(i).equals("")) {
-                Common.putOption(ppOption, ppOption1.get(i));
-            }
-
-            if (!ppOption2.get(i).equals("")) {
-                Common.putOption(ppOption, ppOption2.get(i));
-            }
-
-            if (!ppOption3.get(i).equals("")) {
-                Common.putOption(ppOption, ppOption3.get(i));
-            }
-
-            poProduct.setPpOption(ppOption);
-            poProduct.setPpCost(ppCost.get(i).intValue());
-            poProduct.setPpSellPrice(ppSellPrice.get(i).intValue());
-            poProduct.setPpProcessCost(ppProcessCost.get(i).intValue());
-            poProduct.setPpFixCost(ppFixCost.get(i).intValue());
-            poProduct.setPpPaintCost(ppPaintCost.get(i).intValue());
-            poProduct.setPpProfitTarget(ppProfitTarget.get(i));
-            poProduct.setPpCount(ppCount.get(i).intValue());
-            poProduct.setPpMemo(ppMemo.get(i));
-            poProduct.setPpPaintMemo(ppPaintMemo.get(i));
-            poProduct.setPpFixMemo(ppFixMemo.get(i));
-            poProduct.setPpProcessMemo(ppProcessMemo.get(i));
             poProductRepo.save(poProduct);
         }
-
-
-        return po.getPoIdx();*/
-        return null;
+        return po.getPoIdx();
     }
 
     /** 발주품의 수정 */

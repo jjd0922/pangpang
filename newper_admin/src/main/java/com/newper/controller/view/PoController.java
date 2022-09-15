@@ -52,9 +52,9 @@ public class PoController {
 
     /** 발주품의 상세 & 수정 페이지 */
     @GetMapping(value = "poPop/{poIdx}")
-    public ModelAndView poPopDetail(@PathVariable long poIdx){
+    public ModelAndView poPopDetail(@PathVariable Integer poIdx){
         ModelAndView mav = new ModelAndView("po/poPop");
-        mav.addObject("po", poRepo.findPoByPoIdx((int) poIdx));
+        mav.addObject("po", poRepo.findPoByPoIdx(poIdx));
         mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
         return mav;
     }
