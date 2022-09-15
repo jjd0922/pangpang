@@ -1,7 +1,11 @@
 package com.newper.controller.rest;
 
+import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
+import com.newper.service.DesignService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +20,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DesignRestController {
 
+    private final DesignService designService;
+
     @PostMapping(value = "test.dataTable")
     public ReturnDatatable testDt(){
         ReturnDatatable rd = new ReturnDatatable();
@@ -29,4 +35,19 @@ public class DesignRestController {
         rd.setRecordsTotal(testList.size());
         return rd;
     }
+    /** 디자인 update*/
+    @PostMapping(value = "pop/design/{shopIdx}.ajax")
+    public ReturnMap shopDesignUpdate(@PathVariable Integer shopIdx, ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        paramMap.put("shopIdx", shopIdx);
+
+        designService.shopDesignUpdate(paramMap);
+
+        rm.setMessage("수정 완료");
+        rm.put("loc", "/design/pop/design/"+shopIdx);
+
+        return rm;
+    }
+
+
 }
