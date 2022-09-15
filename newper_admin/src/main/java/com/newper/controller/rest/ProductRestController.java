@@ -400,6 +400,17 @@ public class ProductRestController {
 
     }
 
+    /**신규 주문 구성상품 datatable*/
+    @PostMapping("ordersAddProduct.dataTable")
+    public ReturnDatatable ordersAddProduct(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+
+        List<Map<String,Object>> list = productMapper.selectShopProductByOrdersModalDataTable(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+        return returnDatatable;
+    }
+
     /**사방넷 상품 등록 api*/
     @PostMapping("sabang.ajax")
     public ReturnMap sabang(ParamMap paramMap){

@@ -4,10 +4,11 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.CateType;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Category;
+import com.newper.entity.*;
+import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
-import com.newper.repository.CategoryRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
+
+    private final OrdersRepo ordersRepo;
+    private final OrdersAddressRepo ordersAddressRepo;
+    private final CustomerRepo customerRepo;
+    private final ShopProductOptionRepo shopProductOptionRepo;
+    private final OrdersGsRepo ordersGsRepo;
+    private final PaymentRepo paymentRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -106,14 +116,95 @@ public class OrderService {
             transformer.transform(source, result);
 
 
-
-
-
         }catch (Exception e) {
 
         }
 
-
         return "";
     }
+
+
+
+    /**주문통합관리 등록*/
+    @Transactional
+    public Long orderSave(ParamMap paramMap){
+        System.out.println(paramMap.getMap());
+        OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
+        Address address = paramMap.mapParam(Address.class);
+        orderAddress.setAddress(address);
+        orderAddress.setAdEntrance("");
+        ordersAddressRepo.save(orderAddress);
+
+        Orders orders = paramMap.mapParam(Orders.class);
+        orders.setOrderAddress(orderAddress);
+        orders.setPayment(null);
+        if(!paramMap.get("CU_IDX").equals("")){
+            orders.setCustomer(null);
+        }else{
+            Customer customer = customerRepo.getReferenceById(paramMap.getLong("CU_IDX"));
+            orders.setCustomer(customer);
+        }
+        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        orders.setOCode("code"+formatDate);
+        String o_date = paramMap.get("O_DATE")+"";
+        if(!o_date.equals("")){
+            LocalDate oDate = LocalDate.parse(o_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalTime oTime = LocalTime.now();
+            orders.setODate(oDate);
+            orders.setOTime(oTime);
+        }
+        ordersRepo.save(orders);
+        Long o_idx = orders.getOIdx();
+        int price = 0;
+        int delivery = 0;
+        for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            if(entry.getKey().contains("OG_COUPON_")) {
+                String spoIdx = entry.getKey().replace("OG_COUPON_", "");
+                int spo_idx = Integer.parseInt(spoIdx);
+                ShopProductOption shopProductOption = shopProductOptionRepo.getReferenceById(spo_idx);
+                OrderGs orderGs = paramMap.mapParam(OrderGs.class);
+                orderGs.setOrders(orders);
+                orderGs.setShopProductOption(shopProductOption);
+                orderGs.setOgType(shopProductOption.getGoodsStock().getProduct().getPDelType()+"");
+                orderGs.setOgPrice(shopProductOption.getSpoPrice());
+                orderGs.setOgPoint(Integer.parseInt(paramMap.onlyNumber("OG_POINT_"+spo_idx)));
+                orderGs.setOgMileage(Integer.parseInt(paramMap.onlyNumber("OG_MILEAGE_"+spo_idx)));
+                orderGs.setOgCoupon(Integer.parseInt(paramMap.onlyNumber("OG_COUPON_"+spo_idx)));
+
+                price = price + shopProductOption.getSpoPrice();
+                delivery = delivery + shopProductOption.getGoodsStock().getProduct().getPDelPrice();
+                ordersGsRepo.save(orderGs);
+            }
+        }
+
+        Payment payment = paramMap.mapParam(Payment.class);
+        payment.setPayPrice(0);
+        payment.setPayProductPrice(price);
+        payment.setPayDelivery(delivery);
+        payment.setPayMileage(0);// 수정요
+        payment.setPayJson(null);
+        paymentRepo.save(payment);
+
+        orders.setPayment(payment);
+        ordersRepo.save(orders);
+
+
+
+        return o_idx;
+    }
+
+    /**주문통합관리 상세 수정*/
+    @Transactional
+    public Long orderUpdate(ParamMap paramMap){
+        OrderAddress oriOrderAddress = ordersRepo.getReferenceById(paramMap.getLong("O_IDX")).getOrderAddress();
+        OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
+        Address address = paramMap.mapParam(Address.class);
+        orderAddress.setAdIdx(oriOrderAddress.getAdIdx());
+        orderAddress.setAddress(address);
+        orderAddress.setAdEntrance(oriOrderAddress.getAdEntrance());
+
+        ordersAddressRepo.save(orderAddress);
+        return orderAddress.getAdIdx();
+    }
+
 }

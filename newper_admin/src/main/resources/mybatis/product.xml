@@ -215,4 +215,27 @@
             goods_stock
         order by GS_IDX desc limit 1
     </select>
+    
+    <select id="selectShopProductByOrdersModalDataTable" resultType="map">
+        SELECT
+            P_IDX, P_NAME, SP_IDX, GS_CODE, GS_IDX,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, P_DEL_PRICE, truncate(SPO_PRICE * SP_PERCENT / 100,0) AS MILEAGE,
+            SPO_IDX
+        FROM
+            shop_product
+                LEFT JOIN shop_product_add
+                          ON SP_IDX=SPA_SP_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_SPA_IDX=SPA_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
 </mapper>
