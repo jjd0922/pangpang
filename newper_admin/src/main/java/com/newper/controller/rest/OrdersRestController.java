@@ -111,14 +111,15 @@ public class OrdersRestController {
         ReturnMap rm = new ReturnMap();
 
         paramMap.put("ogIdx", paramMap.getList("ogIdxList[]"));
-//        ordersMapper.insertInvoice(paramMap.getMap());
 
-        System.out.println("paramMap = " + paramMap);
+/*        System.out.println("paramMap = " + paramMap);*/
 
-//        long ogIdx = paramMap.getLong("OG_IDX");
         String insertInvoice = orderService.insertInvoice(paramMap);
 
         rm.put("insertInvoice", insertInvoice);
+
+        rm.setMessage("등록되었습니다.");
+
         return rm;
     }
 
