@@ -47,7 +47,7 @@ public class OrdersRestController {
     @PostMapping("sabangOrder.ajax")
     public ReturnMap sabangOrder(String startDate, String endDate){
         ReturnMap rm = new ReturnMap();
-        orderService.sabangOrder("20220815", "20220815");
+        orderService.sabangOrder("20220816", "20220816");
 
         return  rm;
     }

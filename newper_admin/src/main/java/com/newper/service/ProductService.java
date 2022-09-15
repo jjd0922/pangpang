@@ -746,8 +746,6 @@ public class ProductService {
             transformer.transform(source, result);
 
             File file = new File("D://product.xml");
-            InputStream input = new FileInputStream(file);
-            Path path = Paths.get("D://product.xml");
 
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             String fileXml = "xml/"+file.getName()+"_"+now;
