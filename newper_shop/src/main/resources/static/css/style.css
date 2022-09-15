@@ -301,8 +301,8 @@ section {
 }
 .section-title {
     text-align: center;
-    font-weight: 600;
-    font-size: 28px;
+    font-weight: 500;
+    font-size: 36px;
 }
 .section-sub-title {
     text-align: center;
@@ -310,7 +310,7 @@ section {
     color: #999;
 }
 .section-title2 {
-    font-size: 38px;
+    font-size: 36px;
     font-weight: 500;
 }
 .swiper-thumbnail {
@@ -320,7 +320,7 @@ section {
     section {
         padding: 20px 0;
     }
-    .section-title2 {
+    .section-title, .section-title2 {
         font-size: 25px;
     }
 }
@@ -1003,6 +1003,9 @@ section {
     display: flex;
     padding: 50px;
 }
+.co-gr2 {
+    color: #747c89;
+}
 .questions {
     width: 20%;
     display: flex;
@@ -1405,12 +1408,19 @@ section {
         flex-direction: column;
         height: auto;
     }
-
+    .cc-header h2 {
+        height: auto;
+        padding: 10px 0;
+        font-size: 17px;
+    }
     .cc-header > li > div {
         height: auto;
     }
 
-    .cc-header-left, .cc-header-right {
+    .cc-header-left {
+        display: none;
+    }
+    .cc-header-right {
         width: 100%;
     }
 
@@ -1419,47 +1429,18 @@ section {
         border-left: none;
     }
 
-    .cc-header-left-content {
-        flex-direction: column;
-        padding: 10px;
-    }
     .cc-header-right-content>div {
         padding: 10px;
+        background-color: #fff;
     }
-
     .cc-header-right-content>div:nth-child(2) {
         height: auto;
     }
-    .questions {
-        width: 100%;
-        flex-direction: initial;
-        border-bottom: 1px solid #c6c6c6;
-    }
-    .questions li {
-        padding-bottom: 10px;
-    }
-
-    .answer {
-        width: 100%;
-        padding-top: 30px;
-    }
-
-    .answer-title {
-        font-size: 16px;
-    }
-
-    .answer-content {
-        padding: 25px 0;
-    }
-    .answer-content p {
-        margin: 7px 0;
-    }
-
     .cc-header-right-content h3 {
-        font-size: 16px;
+        font-size: 14px;
     }
     .cc-phone-num {
-        font-size: 31px !important;
+        font-size: 27px!important;
     }
     .cc-menu-tab {
         flex-wrap: wrap;
@@ -1478,12 +1459,21 @@ section {
     }
     .cc-content-title {
         padding-bottom: 10px;
+        flex-direction: column;
+        align-items: center;
+        border-bottom: none;
     }
     .cc-content-title h2 {
         font-size: 17px;
     }
     .cc-content-title p {
         font-size: 13px;
+    }
+    .cc-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #000;
     }
     .cc-btn>div a {
         padding: 5px 17px;
@@ -1533,6 +1523,32 @@ section {
     }
     .faq>ul {
         width: 100%;
+    }
+    .mo-questionsTop4 h3 {
+        background-color: #eaeef4;
+        color: #5e6577;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 17px;
+    }
+    .mo-questionsTop4 .cc-table {
+        margin: 0;
+        border: 1px solid #c6c6c6;
+    }
+    .mo-questionsTop4 .cc-table-open {
+        flex-direction: column;
+    }
+    .mo-questionsTop4 .cc-table-title {
+        position: relative;
+    }
+    .questionsTop4-open-icon {
+        width: 15px;
+        height: 15px;
+        background: url("../image/arrow/down-arrow.png") no-repeat center/contain;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
     }
 
 }
@@ -2039,7 +2055,7 @@ section {
 
 }
 
-/*** 주문 프로세서 ***/
+/*** 주문 프로세서 - 장바구니 ***/
 #orderProcess-route {
     display: flex;
     justify-content: space-between;
@@ -2323,6 +2339,9 @@ section {
         flex-direction: column;
         align-items: center;
     }
+    .mo-order-item-thumb .font-sm {
+        font-size: 12px;
+    }
     .mo-order-item .basket-item-thumb-img {
         width: 100px;
         height: 100px;
@@ -2330,7 +2349,10 @@ section {
     }
     .mo-order-item>div {
         margin-bottom: 10px;
-        padding: 0 20px;
+        padding: 0 15px;
+    }
+    #cart .mo-order-item>div {
+        padding: 0 10px 0 20px;
     }
     .mo-order-item>div:nth-last-of-type(1) {
         margin-bottom: 0;
@@ -3017,7 +3039,7 @@ input[type="number"]::-webkit-inner-spin-button {
     }
     #orderComplete .order-btn a {
         padding: 10px 45px;
-        font-size: 15px;
+        font-size: 17px;
     }
     .paymentStatus>div {
         flex-direction: column;
