@@ -11,6 +11,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
+import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CheckService {
     private final PoReceivedRepo poReceivedRepo;
     private final ProcessNeedRepo processNeedRepo;
     private final PoMapper poMapper;
-    private final PoProductRepo poProductRepo;
+    private final SpecMapper specMapper;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -62,6 +63,7 @@ public class CheckService {
             Goods goods = Goods
                     .builder()
                     .gIdx(gIdx.get(i))
+                    .gState(GState.CHECK_NEED)
                     .build();
 
             CheckGoods checkGoods = CheckGoods
@@ -73,6 +75,8 @@ public class CheckService {
                     .cgsType(paramMap.get("cgsType").toString())
                     .cgsCount(checkMapper.countCheckGroupByGoods(gIdx.get(i)) + 1)
                     .build();
+
+            checkGoodsRepo.save(checkGoods);
         }
 
         long ggt_idx = paramMap.getLong("ggt_idx");
@@ -109,6 +113,11 @@ public class CheckService {
             }
         }
 
+
+
+
+
+
         // 입고(확정) SPEC 세팅
         if (porSpec1 != null) {
             for (int i = 0; i < porSpec1.size(); i++) {
@@ -123,15 +132,16 @@ public class CheckService {
                     specListRepo.save(specList);
                 }
                 specConfirmList.add(specList.getSpeclIdx());
+
+                specLookUp += specName.get(i) + ":" + porSpec1.get(i) + "/";
             }
+            specLookUp = specLookUp.substring(0, specLookUp.length() - 1);
             Collections.sort(specConfirmList);
 
             for (int i = 0; i < porSpec1.size(); i++) {
                 specConfirm += specConfirmList.get(i) + ", ";
-                specLookUp += specName.get(i) + ":" + porSpec1.get(i) + "/";
             }
             specConfirm = specConfirm.substring(0, specConfirm.length() - 2);
-            specLookUp = specLookUp.substring(0, specLookUp.length() - 1);
 
             Spec spec = specRepo.findSpecBySpecConfirm(specConfirm);
             if (spec == null) {
@@ -281,7 +291,7 @@ public class CheckService {
         goods.setPoReceived(poReceived);
 
         // 자산 상태 변경
-        goods.setGState(GState.CHECK_NEED);
+        goods.setGState(GState.CHECK);
 
         // 자산 이미지 업로드
         if (gFile != null) {

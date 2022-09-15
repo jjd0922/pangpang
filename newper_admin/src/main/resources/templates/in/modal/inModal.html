@@ -62,7 +62,7 @@
                                             상품 정보
                                         </legend>
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-6" id="inModalPnameSpan">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
@@ -128,13 +128,19 @@
     function openInModal(row){
         var rowData = getDatatablemap('inProductTable', row);
 
-
         $('#inModalPname').val(rowData.P_NAME);
         $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
 
         initInProductModalTable();
         $('#inProductModal').modal('show');
     }
+
+    function openInModalNewProduct() {
+
+        $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
+        $('#inProductModal').modal('show');
+    }
+
     function toggleBarcodeForm(){
         $('#inModalForm').toggle(500);
         focusOnBarcode();

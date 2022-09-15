@@ -67,7 +67,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1">자산 추가</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="setGoods();">자산 추가</button>
                 <button type="button" class="btn btn-primary" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기 </button>
             </div>
             <!-- /footer -->
@@ -77,7 +77,7 @@
 
 <script th:inline="javascript">
     function openGoodsModal() {
-        $('#goodsModal').show();
+        $('#goodsModal').modal('show');
         selectGoodsDataTable()
     }
 
@@ -87,7 +87,7 @@
     }
 
     function selectGoodsDataTable(){
-        var goodsTable = $('#goodsModalTable').DataTable({
+        $('#goodsModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
             ordering:false,
             select: {
@@ -100,14 +100,20 @@
                 type:'post'
             },
             columnDefs: [ {
+                width: '40px',
                 orderable: false,
+                autoWidth: false,
+                className: 'select-checkbox',
                 targets:   [0]
-
-            } ],
+            },
+                {
+                    width: '40px',
+                    targets:    [1]
+                }],
 
             "columns" : [
                 {'title':'선택','data':'G_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
-                        return '';
+                        return '<input type="hidden" name="gIdx" value="' + full.G_IDX + '">';
                     }}
                 ,{'title':'자산코드','data':'G_IDX', 'defaultContent':''}
                 ,{'title':'바코드','data':'G_BARCODE', 'defaultContent':''}

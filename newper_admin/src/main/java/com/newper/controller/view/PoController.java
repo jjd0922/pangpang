@@ -3,6 +3,7 @@ package com.newper.controller.view;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
+import com.newper.mapper.PoMapper;
 import com.newper.repository.*;
 import com.newper.service.PoService;
 import com.newper.service.ProductService;
@@ -32,6 +33,7 @@ public class PoController {
 
     private final EstimateRepo estimateRepo;
     private final ProductService productService;
+    private final PoMapper poMapper;
 
     /** 발주품의 페이지 **/
     @GetMapping(value = "")
@@ -53,7 +55,7 @@ public class PoController {
     public ModelAndView poPopDetail(@PathVariable long poIdx){
         ModelAndView mav = new ModelAndView("po/poPop");
         mav.addObject("po", poRepo.findPoByPoIdx((int) poIdx));
-        mav.addObject("poProduct", poService.selectPoProduct(poIdx));
+        mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
         return mav;
     }
 

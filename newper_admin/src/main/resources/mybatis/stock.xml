@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.StockMapper">
+    <select id="selectStockDatatableByParent" resultType="map">
+        SELECT
+            P_NAME, P_IDX, GS_CODE
+        FROM
+            ORDERS
+                LEFT JOIN ORDER_GS
+                          ON OG_O_IDX=O_IDX
+                LEFT JOIN delivery_num
+                          ON OG_DN_IDX=DN_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_IDX=OG_SPO_IDX
+                LEFT JOIN GOODS_STOCK
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN PRODUCT
+                          ON P_IDX=GS_P_IDX
+        WHERE
+            P_IDX IS NOT NULL
+    </select>
+
+    <select id="selectStockDatatableByChildren" resultType="map">
+        SELECT
+            P.*,
+            if(C.CNT IS NULL,0,C.CNT) CNT
+        FROM
+            goods_stock P
+                LEFT JOIN
+            (
+                SELECT
+                    GS_CODE,COUNT(GS_CODE) CNT
+                FROM
+                    goods_stock
+                where
+                    GS_CODE is not null
+                GROUP BY GS_CODE
+            ) C
+            ON P.GS_IDX = C.GS_CODE
+        WHERE
+            P.GS_CODE = #{GS_CODE}
+        GROUP BY GS_IDX
+        order by GS_P_IDX
+    </select>
+    <select id="selectStockDataTable" resultType="map" parameterType="map">
+        select
+        *
+        from
+        goods_stock
+    </select>
+
+    <select id="countStockDataTable" resultType="integer">
+        select
+            count(*)
+        from
+        goods_stock
+    </select>
+
+
+
+</mapper>
