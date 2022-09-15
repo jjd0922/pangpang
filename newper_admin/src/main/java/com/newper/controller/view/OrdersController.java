@@ -56,9 +56,9 @@ public class OrdersController {
         map.put("O_LOCATION",o_location);
         mav.addObject("order", map);
 
-        List<Map<String, Object>> gs = ordersMapper.selectGoodsStockDetailByOIdx(oIdx);
-
-        mav.addObject("gs",gs);
+//        List<Map<String, Object>> gs = ordersMapper.selectGoodsStockDetailByOIdx(oIdx);
+//
+//        mav.addObject("gs",gs);
 
 
 
@@ -67,7 +67,7 @@ public class OrdersController {
 
     @GetMapping("shop/order")
     public ModelAndView shopOrder(){
-        ModelAndView mav = new ModelAndView("order/shop_order");
+        ModelAndView mav = new ModelAndView("orders/shop_order");
         return mav;
     }
 

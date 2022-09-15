@@ -65,6 +65,12 @@
                                                     <label class="d-block">발신번호</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>-->
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label">조회하기</span>
+                                                    </button>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </form>
@@ -116,7 +122,7 @@
 <script th:inline="javascript">
 
     function searchBtn() {
-        var table = $('#smsSendingTable').DataTable();
+        var table = $('#sendingTable').DataTable();
         table.page('first').ajax.url('/customer/sendingHistory.dataTable?' + $('#sendingForm').serialize()).load(null, false);
     }
 

@@ -96,6 +96,8 @@ public class CustomerRestController {
     public ReturnDatatable sendingHistory(ParamMap paramMap, HttpServletResponse response) {
         ReturnDatatable rd = new ReturnDatatable("발송내역");
 
+        paramMap.multiSelect("SH_TYPE");
+
         rd.setData(customerMapper.selectSendingHistoryDatatable(paramMap.getMap()));
         rd.setRecordsTotal(customerMapper.countSendingHistoryDatatable(paramMap.getMap()));
         return rd;

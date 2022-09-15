@@ -25,6 +25,16 @@
         <if test="cuJoinDate != null and cuJoinDate != ''">AND CU_JOIN_DATE BETWEEN SUBSTR(#{cuJoinDate}, 1, 10) AND SUBSTR(#{cuJoinDate}, 13)</if>
     </sql>
 
+    <sql id="includeSendingHistoryDatatable">
+        <if test="SH_TYPE != null">
+            <foreach collection="SH_TYPE" open="AND SH_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="SH_TO != null and SH_TO != ''">AND SH_TO LIKE CONCAT('%',#{SH_TO},'%')</if>
+        <if test="SH_FROM != null and SH_FROM != ''">AND SH_FROM LIKE CONCAT('%',#{SH_FROM},'%')</if>
+    </sql>
+
     <select id="selectCustomerDatatable" resultType="map">
         SELECT
             CU_IDX,
@@ -67,11 +77,21 @@
         </where>
     </select>
 
-    <select id="selectSendingHistoryDatatable" resultType="map">
+    <select id="selectSendingHistoryDatatable" resultType="map" parameterType="map">
         SELECT
-            *
+            SH_IDX,
+            SH_TYPE,
+            SH_TO,
+            SH_FROM,
+            SH_CONTENT,
+            SH_DATE,
+            CREATED_BY,
+            SH_CODE
         FROM
             sms_history
+        WHERE
+            SH_IDX IS NOT NULL
+            <include refid="includeSendingHistoryDatatable"></include>
     </select>
 
     <select id="countSendingHistoryDatatable" resultType="long">
@@ -79,5 +99,8 @@
             COUNT(*)
         FROM
             sms_history
+        WHERE
+            SH_IDX IS NOT NULL
+            <include refid="includeSendingHistoryDatatable"></include>
     </select>
 </mapper>
