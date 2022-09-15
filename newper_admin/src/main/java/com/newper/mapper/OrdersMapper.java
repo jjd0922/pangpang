@@ -24,7 +24,5 @@ public interface OrdersMapper {
 
     Integer countOrderShopDatatable(Map<String, Object> map);
 
-    /** 송장 등록 */
-    void insertInvoice(Map<String, Object> map);
 
 }

@@ -234,19 +234,15 @@ public class OrderService {
 
             deliveryNumRepo.save(dn);
 
-           OrderGs orderGs = ordersGsRepo.findById(list.get(i).longValue()).get();
-           orderGs.setDeliveryNum(dn);
+            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
+            orderGs.setDeliveryNum(dn);
             ordersGsRepo.save(orderGs);
 
             //1 insert delivery_num
             //2 생성된 dn_idx order_gs update
         }
 
-/*        DeliveryNumber dn = DeliveryNumber.builder().build();
-        dn.setRandomInvoice(12);
-        dn.setDnIdx(dn.getDnIdx());*/
-
-        return "등록되었습니다." ;
+        return "" ;
     }
 
 

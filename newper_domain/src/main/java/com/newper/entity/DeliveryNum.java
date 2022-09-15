@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DeliveryNum extends BaseEntity {
+public class DeliveryNum {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +29,12 @@ public class DeliveryNum extends BaseEntity {
     private String dnNum;
     private String dnCompany;
     private Date dnDate;
+    private LocalDate createdDate;
 
     /** 랜덤 문자열 생성 (숫자,특수문자,대소문자)*/
     public void setRandomInvoice(int size) {
-        char[] charSet = new char[]{
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',};
+        char[] charSet = new char[]
+                {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',};
         StringBuffer sb = new StringBuffer();
         SecureRandom sr = new SecureRandom();
         sr.setSeed(new Date().getTime());
