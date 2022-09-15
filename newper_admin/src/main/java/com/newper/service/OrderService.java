@@ -161,6 +161,7 @@ public class OrderService {
         Long o_idx = orders.getOIdx();
         int price = 0;
         int delivery = 0;
+        int mileage = 0;
         for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
             if(entry.getKey().contains("OG_COUPON_")) {
                 String spoIdx = entry.getKey().replace("OG_COUPON_", "");
@@ -178,6 +179,8 @@ public class OrderService {
                 price = price + shopProductOption.getSpoPrice();
                 delivery = delivery + shopProductOption.getGoodsStock().getProduct().getPDelPrice();
                 ordersGsRepo.save(orderGs);
+
+                mileage = mileage + (int)((shopProductOption.getSpoPrice()*shopProductOption.getShopProductAdd().getShopProduct().getSpPercent())/100);
             }
         }
 
@@ -185,7 +188,7 @@ public class OrderService {
         payment.setPayPrice(0);
         payment.setPayProductPrice(price);
         payment.setPayDelivery(delivery);
-        payment.setPayMileage(0);// 수정요
+        payment.setPayMileage(mileage);
         payment.setPayJson(null);
         paymentRepo.save(payment);
 

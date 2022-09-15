@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -18,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DeliveryNumber extends BaseEntity {
+public class DeliveryNum extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

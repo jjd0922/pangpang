@@ -58,6 +58,7 @@ public class GoodsStock{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
+    private String gsSabang;
 
     @PrePersist
     @PreUpdate
