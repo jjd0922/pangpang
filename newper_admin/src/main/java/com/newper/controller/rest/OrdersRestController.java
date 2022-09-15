@@ -3,6 +3,8 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.OrderGs;
+import com.newper.entity.ShopProductOption;
 import com.newper.mapper.OrdersMapper;
 import com.newper.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +67,16 @@ public class OrdersRestController {
     @PostMapping("orderSave.ajax")
     public ReturnMap orderSave(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-
+        boolean check = false;
+        for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            if(entry.getKey().contains("OG_COUPON_")) {
+                check=true;
+            }
+        }
+        if(!check){
+            rm.setMessage("상품을 추가해주세요.");
+            return rm;
+        }
         Long res = orderService.orderSave(paramMap);
         if(res>0){
             rm.setMessage("저장되었습니다.");

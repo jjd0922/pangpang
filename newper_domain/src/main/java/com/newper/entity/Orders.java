@@ -84,7 +84,9 @@ public class Orders {
     @PrePersist
     @PreUpdate
     public void ordersSave(){
-
+        if (getODate() == null) {
+            throw new MsgException("주문완료일을 입력해주세요.");
+        }
         if (getShop() == null) {
             throw new MsgException("주문분양몰을 선택해주세요.");
         }
@@ -94,8 +96,8 @@ public class Orders {
         if (!StringUtils.hasText(getOPhone())) {
             throw new MsgException("주문자 연락처를 입력해주세요.");
         }
-        if (getOrderAddress() == null) {
-            throw new MsgException("물류타입(품목자산구분)을 선택해주세요.");
+        if (getOLocation() == null){
+            throw new MsgException("주문경로를 입력해주세요.");
         }
 
     }
