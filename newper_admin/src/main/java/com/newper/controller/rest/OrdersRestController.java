@@ -112,13 +112,10 @@ public class OrdersRestController {
 
         paramMap.put("ogIdx", paramMap.getList("ogIdxList[]"));
 
-/*        System.out.println("paramMap = " + paramMap);*/
 
         String insertInvoice = orderService.insertInvoice(paramMap);
 
-        rm.put("insertInvoice", insertInvoice);
-
-        rm.setMessage("등록되었습니다.");
+        rm.setMessage(insertInvoice);
 
         return rm;
     }

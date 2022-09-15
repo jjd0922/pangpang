@@ -3,7 +3,8 @@
 <mapper namespace="com.newper.mapper.StockMapper">
     <select id="selectStockDatatableByParent" resultType="map">
         SELECT
-            P_NAME, P_IDX, GS_CODE, count(GS_IDX) as cnt, GS_IDX
+            P_NAME, P_IDX, GS_CODE, count(GS_IDX) as cnt, GS_IDX,ifnull(dt.loc_cnt,0) loc_cnt,ifnull(ct.check_cnt,0) check_cnt
+
         FROM
             ORDERS
                 LEFT JOIN ORDER_GS
@@ -16,6 +17,33 @@
                           ON SPO_GS_IDX=GS_IDX
                 LEFT JOIN PRODUCT
                           ON P_IDX=GS_P_IDX
+                LEFT JOIN (SELECT
+                               G_GS_IDX,COUNT(*) loc_cnt
+                           FROM
+                               goods
+                                   LEFT JOIN location
+                                             ON G_LOC_IDX=LOC_IDX
+                           WHERE
+                               G_LOC_IDX IS NOT NULL
+                           GROUP BY G_GS_IDX
+                           HAVING G_GS_IDX IS NOT null) dt
+                          ON dt.G_GS_IDX=SPO_GS_IDX
+                LEFT JOIN (SELECT
+                               GS_IDX AS GS_IDX1,COUNT(*) check_cnt
+                           FROM
+                               goods_stock
+                                   LEFT JOIN goods
+                                             ON GS_IDX=G_GS_IDX
+                                   LEFT JOIN check_goods
+                                             ON G_IDX=CGS_G_IDX
+                                   LEFT JOIN check_group
+                                             ON CGS_CG_IDX=CG_IDX
+                           WHERE
+                               CGS_TYPE='출고검수'
+                             AND CG_END_DATE IS NULL
+                           GROUP BY GS_IDX
+            )ct
+                          ON ct.GS_IDX1=SPO_GS_IDX
         WHERE
             DN_IDX IS NOT NULL
         group by GS_IDX
@@ -23,25 +51,24 @@
 
     <select id="selectStockDatatableByChildren" resultType="map">
         SELECT
-            P.*,
-            if(C.CNT IS NULL,0,C.CNT) CNT
+            P_NAME,P_IDX,GS_CODE,G_BARCODE,WH_NAME,
+            LOC_TYPE,LOC_CODE,LOC_FORM,LOC_ZONE,location.CREATED_DATE,
+            U_NAME, G_IDX
         FROM
-            goods_stock P
-                LEFT JOIN
-            (
-                SELECT
-                    GS_CODE,COUNT(GS_CODE) CNT
-                FROM
-                    goods_stock
-                where
-                    GS_CODE is not null
-                GROUP BY GS_CODE
-            ) C
-            ON P.GS_IDX = C.GS_CODE
+            goods
+                LEFT JOIN location
+                          ON G_LOC_IDX=LOC_IDX
+                LEFT JOIN warehouse
+                          ON LOC_WH_IDX=WH_IDX
+                LEFT JOIN product
+                          ON G_P_IDX=P_IDX
+                LEFT JOIN goods_stock
+                          on G_GS_IDX=GS_IDX
+                left join user
+                          on LOC_U_IDX=U_IDX
         WHERE
-            P.GS_CODE = #{GS_CODE}
-        GROUP BY GS_IDX
-        order by GS_P_IDX
+            G_LOC_IDX IS NOT NULL
+            and G_GS_IDX=#{GS_IDX}
     </select>
     <select id="selectStockDataTable" resultType="map" parameterType="map">
         select
