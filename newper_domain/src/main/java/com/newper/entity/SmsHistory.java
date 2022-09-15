@@ -1,12 +1,11 @@
 package com.newper.entity;
 
+import com.newper.constant.ShType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -22,7 +21,8 @@ public class SmsHistory extends CreatedEntity {
     @GeneratedValue
     private Long shIdx;
 
-    private String shType;
+    @Enumerated(EnumType.STRING)
+    private ShType shType;
 
     private String shTo;
 

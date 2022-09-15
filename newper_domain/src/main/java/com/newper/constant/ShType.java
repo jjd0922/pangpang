@@ -10,7 +10,7 @@ public enum ShType {
     /**SMS*/
     SMS("SMS"),
     /**KAKAO*/
-    KAKAO("KAAKAO"),
+    KAKAO("KAKAO"),
     /**PUSH*/
     PUSH("PUSH");
 
