@@ -10,6 +10,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -45,6 +46,8 @@ public class OrderService {
     private final ShopProductOptionRepo shopProductOptionRepo;
     private final OrdersGsRepo ordersGsRepo;
     private final PaymentRepo paymentRepo;
+
+    private final ProductRepo productRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -206,5 +209,29 @@ public class OrderService {
         ordersAddressRepo.save(orderAddress);
         return orderAddress.getAdIdx();
     }
+
+
+    /** 송장등록 */
+    @Transactional
+    public String insertInvoice(ParamMap paramMap) {
+        List<Integer> list = paramMap.getList("ogIdxs[]");
+        System.out.println(list);
+        for(int i=0; i<list.size(); i++){
+            DeliveryNumber dn = DeliveryNumber.builder().build();
+            dn.setRandomInvoice(12);
+            dn.setDnIdx(dn.getDnIdx());
+
+
+            //1 insert delivery_num
+            //2 생성된 dn_idx order_gs update
+        }
+
+        DeliveryNumber dn = DeliveryNumber.builder().build();
+        dn.setRandomInvoice(12);
+        dn.setDnIdx(dn.getDnIdx());
+
+        return dn.getDnNum();
+    }
+
 
 }
