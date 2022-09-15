@@ -221,7 +221,7 @@
 <th:block th:fragment="addrList-modal">
     <div class="modal-wrap addrListModal-wrap">
         <div class="modal addrListModal">
-            <h2 class="font-xxxlg">배송지 목록</h2>
+            <h2 class="font-xxxlg semi-bold">배송지 목록</h2>
             <!-- 배송지 테이블 제목 -->
             <ul class="addrList-table-title font-sm">
                 <li>배송지명</li>
@@ -241,6 +241,7 @@
                     <p>15205</p>
                     <p class="bold">서울특별시 송파구 법원로 11길 11</p>
                     <p>901호</p>
+                    <p class="mo-addr-phone pc-display-none">010-1234-1234</p>
                 </li>
                 <li class="font-sm">010-1234-1234</li>
                 <li>
@@ -263,10 +264,15 @@
                     <div class="btn-white select-btn font-xsm">선택</div>
                 </li>
             </ul>
+            <!-- 팝업 하단 닫기 버튼 -->
             <div class="order-button-group">
                 <div class="btn-blue addrListClose-btn semi-bold">
                     <a href="javascript:;">닫기</a>
                 </div>
+            </div>
+            <!-- 팝업 상단 닫기 버튼 -->
+            <div class="addrModal-close">
+                <img src="/image/close.png" title="모달창닫기" alt="창닫기">
             </div>
         </div>
 
@@ -281,6 +287,10 @@
         });
         // 모달 창 닫기
         $(".addrListClose-btn").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
+        });
+        $(".addrModal-close").click(function(){
             $('body').removeClass('no-scroll');
             addrListModal.hide();
         });
