@@ -1,9 +1,8 @@
 package com.newper.repository;
 
-import com.newper.entity.Auth;
-import com.newper.entity.DeliveryNumber;
+import com.newper.entity.DeliveryNum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DeliveryNumRepo extends JpaRepository<DeliveryNumber, Long> {
+public interface DeliveryNumRepo extends JpaRepository<DeliveryNum, Long> {
 
 }

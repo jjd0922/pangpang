@@ -226,7 +226,7 @@ public class OrderService {
         List<Integer> list = paramMap.getList("ogIdxs[]");
         System.out.println(list);
         for(int i=0; i<list.size(); i++){
-            DeliveryNumber dn = DeliveryNumber.builder().build();
+            DeliveryNum dn = DeliveryNum.builder().build();
             dn.setRandomInvoice(12);
             dn.setDnState("");
             dn.setDnCompany("우체국");
@@ -235,7 +235,7 @@ public class OrderService {
             deliveryNumRepo.save(dn);
 
            OrderGs orderGs = ordersGsRepo.findById(list.get(i).longValue()).get();
-           orderGs.setDeliveryNumber(dn);
+           orderGs.setDeliveryNum(dn);
             ordersGsRepo.save(orderGs);
 
             //1 insert delivery_num
