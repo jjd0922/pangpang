@@ -4,9 +4,11 @@ import com.newper.constant.OCancelState;
 import com.newper.constant.ODeliveryState;
 import com.newper.constant.OLocation;
 import com.newper.constant.OState;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -24,7 +26,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long OIdx;
+    private Long oIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "O_CU_IDX", referencedColumnName = "cuIdx")
@@ -73,10 +75,29 @@ public class Orders {
     @OneToMany(mappedBy = "ogIdx")
     private List<OrderGs> orderGs;
 
-    public void setPayment(Payment payment){
-        System.out.println("pay!!!");
-        this.payment = payment;
-        payment.setOrders(this);
+//    public void setPayment(Payment payment){
+//        System.out.println("pay!!!");
+//        this.payment = payment;
+//        payment.setOrders(this);
+//    }
+
+    @PrePersist
+    @PreUpdate
+    public void ordersSave(){
+
+        if (getShop() == null) {
+            throw new MsgException("주문분양몰을 선택해주세요.");
+        }
+        if (!StringUtils.hasText(getOName())) {
+            throw new MsgException("주문자 이름을 입력해주세요.");
+        }
+        if (!StringUtils.hasText(getOPhone())) {
+            throw new MsgException("주문자 연락처를 입력해주세요.");
+        }
+        if (getOrderAddress() == null) {
+            throw new MsgException("물류타입(품목자산구분)을 선택해주세요.");
+        }
+
     }
 
 }

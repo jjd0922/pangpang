@@ -117,11 +117,11 @@
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
-            G_STATE
-            , GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
+            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
             OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0) AS DELIVERY,
             (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0)) AS TOTAL,
-            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE
+            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE,
+            OG_IDX
         FROM
             orders
                 LEFT JOIN order_gs
@@ -144,7 +144,9 @@
                           ON G_GS_IDX=GS_IDX
         where
             O_IDX=#{O_IDX}
-
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
 

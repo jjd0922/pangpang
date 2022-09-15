@@ -16,6 +16,6 @@ public interface OrdersMapper {
     Map<String, Object> selectOrderDetail(int O_IDX);
 
     /**통합주문관리 주문상품*/
-    List<Map<String, Object>> selectGoodsStockDetailByOIdx(int O_IDX);
+    List<Map<String, Object>> selectGoodsStockDetailByOIdx(Map<String, Object> map);
 
 }

@@ -6,6 +6,7 @@ import com.newper.dto.ReturnMap;
 import com.newper.mapper.OrdersMapper;
 import com.newper.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,9 +45,45 @@ public class OrdersRestController {
     @PostMapping("sabangOrder.ajax")
     public ReturnMap sabangOrder(String startDate, String endDate){
         ReturnMap rm = new ReturnMap();
-        orderService.sabangOrder("20220801", "20220815");
+        orderService.sabangOrder("20220815", "20220815");
 
         return  rm;
     }
+
+    /**주문통합관리 상세 상품 데이터테이블*/
+    @PostMapping("orderGoodsStock.dataTable")
+    public ReturnDatatable a(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String,Object>> list = ordersMapper.selectGoodsStockDetailByOIdx(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+
+        return returnDatatable;
+    }
+
+    /**주문상세 저장*/
+    @PostMapping("orderSave.ajax")
+    public ReturnMap orderSave(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+
+        Long res = orderService.orderSave(paramMap);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }
+        return rm;
+    }
+
+    /**주문상세 수정*/
+    @PostMapping("orderUpdate.ajax")
+    public ReturnMap orderUpdate(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        Long res = orderService.orderUpdate(paramMap);
+        if(res>0){
+            rm.setMessage("수정되었습니다.");
+        }
+        return rm;
+    }
+
+
 
 }
