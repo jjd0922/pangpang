@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <table class="table" id="testTable"></table>
+                            <table class="table" id="shopTable"></table>
                         </div>
                     </div>
                 </div>
@@ -110,10 +110,12 @@
 
 <script>
 function popDesign(shopIdx){
-    alert("준비중! + shopIdx==" + shopIdx);
+    var focusPopup = window.open('/design/pop/design/'+shopIdx, 'shopDesign', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+    focusPopup.focus();
 }
 function popHeader(shopIdx){
-    alert("준비중! + shopIdx==" + shopIdx);
+    var focusPopup = window.open('/design/pop/header/'+shopIdx, 'shopHeader', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+    focusPopup.focus();
 }
 function popFooter(shopIdx){
     alert("준비중! + shopIdx==" + shopIdx);
@@ -131,7 +133,7 @@ function popCommonImage(shopIdx){
 </script>
 <script>
 $(function(){
-    $('#testTable').DataTable({
+    $('#shopTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t>',
         buttons: buttonsSelect(false),
         columnDefs: [ {
