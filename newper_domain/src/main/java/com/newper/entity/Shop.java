@@ -52,10 +52,8 @@ public class Shop extends BaseEntity{
 //    private String shopHdMeta;
     /** 로그인그룹 디스플레이 항목*/
 //    private String shopHdLoginGroup;
-    /** 분양몰 디자인 (JSON MAP)*/
-//    @Convert(converter = ConvertMap.class)
-    @Builder.Default
-    private Map<String,Object> shopDesign = new HashMap<>();
+    /** 분양몰 디자인 (JsonString)*/
+    private String shopDesign;
 
     /** 도메인 리스트*/
     @Builder.Default

@@ -13,5 +13,6 @@ public interface ShopMapper {
     List<Map<String, Object>> selectShopDatatable(Map<String, Object> map);
     Integer countShopDatatable(Map<String, Object> map);
 
-
+    /** shopDesign Json 조회*/
+    Map<String, Object> selectShopDesignJson(@Param("shopIdx") Integer shopIdx);
 }

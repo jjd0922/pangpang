@@ -6,6 +6,7 @@ import com.newper.constant.PType1;
 import com.newper.constant.PoState;
 import com.newper.constant.PoType;
 import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,11 +29,11 @@ public class Po extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_COM_IDX", referencedColumnName = "comIdx")
-    private Company company;
+    private Company company; //매입처
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_SELL_COM_IDX", referencedColumnName = "comIdx")
-    private Company company_sell;
+    private Company companySell; //판매처
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_WH_IDX", referencedColumnName = "whIdx")
@@ -90,5 +91,13 @@ public class Po extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "po", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if (getCompany() == null) {
+            throw new MsgException("매입처를 선택해 주세요");
+        }
+    }
 
 }

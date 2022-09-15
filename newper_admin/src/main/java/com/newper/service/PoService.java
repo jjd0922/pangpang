@@ -44,38 +44,71 @@ public class PoService {
     /** 발주(po) 생성 */
     @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
+        System.out.println("paramMap = " + paramMap);
         Po po = paramMap.mapParam(Po.class);
+        po.setPoState(PoState.WAITING);
 
-        int buyerIdx = paramMap.getInt("comIdx_buy", "매입처 선택 부탁드립니다");
-        po.setCompany(companyRepo.getReferenceById(buyerIdx));
+        int comIdxBuy = paramMap.getInt("comIdxBuy", "매입처를 선택해주세요");
+        po.setCompany(companyRepo.getReferenceById(comIdxBuy));
 
-        String comIdx_sell = paramMap.getString("comIdx_sell").replaceAll("[^0-9]","");
-        if(StringUtils.hasText(comIdx_sell)){
-            po.setCompany_sell(companyRepo.getReferenceById(Integer.parseInt(comIdx_sell)));
+        String comIdxSell = paramMap.onlyNumber("comIdxSell");
+        if (StringUtils.hasText(comIdxSell)) {
+            po.setCompanySell(companyRepo.getReferenceById(Integer.parseInt(comIdxSell)));
         }
 
-        String whIdx = paramMap.getString("whIdx").replaceAll("[^0-9]","");
-        if(StringUtils.hasText(whIdx)){
+        String whIdx = paramMap.onlyNumber("whIdx");
+        if (StringUtils.hasText(whIdx)) {
             po.setWarehouse(warehouseRepo.getReferenceById(Integer.parseInt(whIdx)));
         }
 
-        String ccIdx = paramMap.getString("ccIdx").replaceAll("[^0-9]","");
-        if(StringUtils.hasText(ccIdx)){
+        String ccIdx = paramMap.onlyNumber("ccIdx");
+        if (StringUtils.hasText(ccIdx)) {
             po.setContract(companyContractRepo.getReferenceById(Integer.parseInt(ccIdx)));
         }
-
 
         if (poFile == null || poFile.isEmpty()) {
             po.setPoFile("");
             po.setPoFileName("");
-        }else{
+        } else {
             String poFilePath = Common.uploadFilePath(poFile, "po/po/", AdminBucket.SECRET);
             po.setPoFile(poFilePath);
             po.setPoFileName(poFile.getOriginalFilename());
         }
 
-        po.setPoState(PoState.WAITING);
         poRepo.save(po);
+
+        // poProduct setting
+        List<Map<String,Object>> ppList = new ArrayList<>();
+        for (int i = 0; i < paramMap.getInt("cnt"); i++) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("pIdx",paramMap.getInt("pIdx_"+i));
+            map.put("ppMemo",paramMap.getString("ppMemo_"+i));
+            map.put("ppOption1",paramMap.getString("ppOption1_"+i));
+            map.put("ppOption2",paramMap.getString("ppOption2_"+i));
+            map.put("ppOption3",paramMap.getString("ppOption3_"+i));
+            map.put("ppCost",paramMap.replaceComma("ppCost_"+i));
+            map.put("ppCount",paramMap.getInt("ppCount_"+i));
+            map.put("ppProfitTarget",paramMap.onlyNumber("ppProfitTarget_"+i));
+            map.put("ppFixMemo",paramMap.getString("ppFixMemo_"+i));
+            map.put("ppFixCost",paramMap.replaceComma("ppFixCost_"+i));
+            map.put("ppPaintMemo",paramMap.getString("ppPaintMemo_"+i));
+            map.put("ppPaintCost",paramMap.replaceComma("ppPaintCost_"+i));
+            map.put("ppProcessMemo",paramMap.getString("ppProcessMemo_"+i));
+            map.put("ppProcessCost",paramMap.replaceComma("ppProcessCost_"+i));
+
+            ppList.add(map);
+        }
+
+        // 입고예정spec setting
+
+        // 판매예정spec setting
+
+
+
+        System.out.println("po = " + po);
+        /*
+
+
 
         List<Long> ppCost = paramMap.getListLong("poProductCost");
         List<Long> ppSellPrice = paramMap.getListLong("poProductSellPrice");
@@ -213,13 +246,14 @@ public class PoService {
         }
 
 
-        return po.getPoIdx();
+        return po.getPoIdx();*/
+        return null;
     }
 
     /** 발주품의 수정 */
     @Transactional
     public void updatePo(long poIdx, ParamMap paramMap, MultipartFile poFile) {
-        Po po = paramMap.mapParam(Po.class);
+        /*Po po = paramMap.mapParam(Po.class);
         System.out.println("po: " + paramMap.getMap().entrySet());
 
         int buyerIdx = paramMap.getInt("comIdx_buy", "매입처 선택 부탁드립니다");
@@ -383,7 +417,7 @@ public class PoService {
             poProduct.setPpFixMemo(ppFixMemo.get(i));
             poProduct.setPpProcessMemo(ppProcessMemo.get(i));
             poProductRepo.save(poProduct);
-        }
+        }*/
     }
 
     /** 견적서(po_estimate), 견적서-상품 관계테이블(po_estimate_product) 생성 */

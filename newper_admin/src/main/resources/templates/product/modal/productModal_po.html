@@ -312,8 +312,6 @@
             var profitPer = totalProfit/((parseInt(buy) + parseInt(fix) + parseInt(process) + parseInt(paint)) * count) * 100
             $('#profitPer_' + row).text(Math.round(profitPer) + '%');
 
-
-
             totalSell += sell * count
             totalAmount += buy * count;
             poSellProfit += profitPer
@@ -338,166 +336,15 @@
         priceSetting();
     }
 
-    function settingProduct (id, rowIdx) {
-        var dataMap=getDatatablemap(id, rowIdx);
-
-        var row = $('.poProductTr').length;
-
-        var ppCount = $('#ppCount').val();
-        if (ppCount == '') {
-            alert('매입수량을 입력해 주세요.');
-            return false;
-        }
-
-        var ppCost = $('#ppCost').val();
-        if (ppCost == '') {
-            alert('구매단가를 입력해 주세요.');
-            return false;
-        }
-
-        var ppSellCost = $('#ppSellCost').val();
-        if (ppSellCost == '') {
-            alert('판매단가를 입력해 주세요.');
-            return false;
-        }
-
-        var ppProfitTarget = $('#ppProfitTarget').val();
-        if (ppProfitTarget == '') {
-            alert('목표수익률을 입력해 주세요.');
-            return false;
-        }
-
-        var paintCost = $('#paintCost').val();
-        if (paintCost == '') {
-            alert('예상비용 도색 부분을 확인해주세요.');
-            return false;
-        }
-
-        var fixCost = $('#fixCost').val();
-        if (fixCost == '') {
-            alert('예상비용 수리 부분을 확인해주세요.');
-            return false;
-        }
-
-        var processCost = $('#processCost').val();
-        if (processCost == '') {
-            alert('예상비용 가공 부분을 확인해주세요.');
-            return false;
-        }
-
-        var spec_check = 0;
-        $.each($('input[name=ppSpec1]'), function (index, value) {
-            if($(this).val() == '') {
-                alert('상품 예상 입고SPEC 정보를 확인해주세요.');
-                spec_check = 1;
-                return false;
-            }
-
-            var ppSpec2 = $(this).parent().next().children('input').val();
-            if(ppSpec2 == '') {
-                alert('상품 예상 판매SPEC 정보를 확인해주세요.');
-                spec_check = 1;
-                return false;
-            }
-        });
-
-        if (spec_check == 1) {
-            return false;
-        }
-
+    /** 구성상품 하나 선택*/
+    function selectProduct(row) {
+        var data = getDatatablemap('productModalTable',row);
+        $('.defaultRow').attr('hidden', true);
+        appendRowToProductTable(data);
         $('#productModal').modal('hide');
-        $('#productPoDiv').css('display', 'none');
-        $('#setBtnProductPoModal').css('display', 'none')
-        var buy_spec = '';
-        var sell_spec = '';
-        $.each($('.specListTd'), function (index, value) {
-            buy_spec += $(this).text() + ':' + $(this).siblings('td').children('input[name=ppSpec1]').val() + '/';
-            sell_spec += $(this).text() + ':' + $(this).siblings('td').children('input[name=ppSpec2]').val() + '/';
-        });
-
-        buy_spec = buy_spec.slice(0, -1);
-        sell_spec = sell_spec.slice(0, -1);
-
-
-        var product5 = '<tr class="productPoTr_' + row + ' poProductTr">';
-        product5 += '<td>' + dataMap.P_IDX + '</td>'
-        product5 += '<td>' + $('#ajCode').val() + '</td>';
-        product5 += '<input type="hidden" name="poProductMemo" value="' + $('#ajCode').val() + '">'
-        product5 += '<td>' + dataMap.P_NAME + '</td>';
-        product5 += '<td>' + dataMap.BRAND_NAME + '</td>';
-        product5 += '<td>' + $('#productOption1 option:selected').val() + '</td>';
-        product5 += '<input type="hidden" name="poProductOption1" value="' + $('#productOption1 option:selected').val() + '">';
-        product5 += '<td>' + $('#productOption2 option:selected').val() + '</td>';
-        product5 += '<input type="hidden" name="poProductOption2" value="' + $('#productOption2 option:selected').val() + '">';
-        product5 += '<td>' + $('#productOption3 option:selected').val() + '</td>';
-        product5 += '<input type="hidden" name="poProductOption3" value="' + $('#productOption3 option:selected').val() + '">';
-        product5 += '<td>' + dataMap.P_COST + '</td>';
-        product5 += '<td>' + comma($('#ppCost').val()) + '</td>';
-        product5 += '<td>' + comma($('#ppCount').val()) + '</td>';
-        product5 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product5 += '<td>' + buy_spec + '</td>';
-        product5 += '<input type="hidden" name="poProductSpec" value="'+buy_spec+'">'
-        product5 += '<td>' + sell_spec + '</td>';
-        product5 += '<input type="hidden" name="poProductSpec2" value="'+sell_spec+'">'
-        product5 += '<td>' + $('#fixMemo').val() +'/' + comma($('#fixCost').val()) + '</td>';
-        product5 += '<td>' + $('#paintMemo').val() +'/' + comma($('#paintCost').val()) + '</td>';
-        product5 += '<td>' + $('#processMemo').val() +'/' + comma($('#processCost').val()) + '</td>';
-        product5 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + row + ')">삭제</button></td>'
-        product5 += '</tr>'
-        $('#productTbody').append(product5);
-
-        var product6 = '<tr class="productPoTr_' + row + '">';
-        product6 += '<td>' + row + '</td>';
-        product6 += '<td>' + dataMap.P_NAME + '</td>';
-        product6 += '<td>' + $('#ppCount').val() +'</td>';
-        product6 += '<td>' + comma($('#processCost').val()) + '</td>';
-        product6 += '<td>' + comma($('#fixCost').val()) + '</td>';
-        product6 += '<td>' + comma($('#paintCost').val()) + '</td>';
-        product6 += '<td>' + comma($('#ppCount').val() * (parseInt($('#processCost').val()) + parseInt($('#paintCost').val()) + parseInt($('#fixCost').val()))) + '</td>';
-        product6 += '<td id="buy_per_' + row + '">0%</td>';
-        product6 += '<td>' + comma($('#ppCost').val()) + '</td>';
-        product6 += '<input type="hidden" id="poProductCost_' + row + '" name="poProductCost" value="' + $('#ppCost').val() + '">'
-        product6 += '<input type="hidden" id="poProductCount_' + row + '" name="poProductCount" value="' + $('#ppCount').val() + '">'
-        product6 += '<td>' + comma($('#ppCost').val() * $('#ppCount').val()) + '</td>';
-        product6 += '<td>' + comma($('#ppSellCost').val()) + '</td>';
-        product6 += '<input type="hidden" id="poProductSellPrice_' + row + '" name="poProductSellPrice" value="' + $('#ppSellCost').val() + '">';
-        product6 += '<td id="poProductSellPriceTotal_' + row + '">' +  + '</td>';
-        product6 += '<td id="totalProfit_' + row + '">' +  + '</td>';
-        product6 += '<td id="profitPer_' + row + '">' +  + '</td>';
-        product6 += '<td>' + $('#ppProfitTarget').val() + '%</td>';
-        product6 += '<input type="hidden" name="poProductProfitTarget" value="' + $('#ppProfitTarget').val() + '">'
-        product6 += '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="productPoDelete(' + row + ')">삭제</button></td>'
-        product6 += '<input type="hidden" name="poProduct" value="' + dataMap.P_IDX + '">';
-        product6 += '<input type="hidden" id="poProductProcess_' + row + '" name="poProductProcess" value="' + $('#processCost').val() + '">';
-        product6 += '<input type="hidden" id="poProductFix_' + row + '" name="poProductFix" value="' + $('#fixCost').val() + '">';
-        product6 += '<input type="hidden" id="poProductPaint_' + row + '" name="poProductPaint" value="' + $('#paintCost').val() + '">';
-        product6 += '<input type="hidden" name="poProductProcessMemo" value="' + $('#processMemo').val() + '">';
-        product6 += '<input type="hidden" name="poProductFixMemo" value="' + $('#fixMemo').val() + '">';
-        product6 += '<input type="hidden" name="poProductPaintMemo" value="' + $('#paintMemo').val() + '">';
-        product6 += '</tr>';
-        $('#productTbody2').append(product6);
-
-        priceSetting(row);
-
-        $('#ppCount').val('')
-        $('#ppCost').val('');
-        $('#ppProfitTarget').val('');
-        $('#paintMemo').val('');
-        $('#paintCost').val('');
-        $('#fixMemo').val('');
-        $('#fixCost').val('');
-        $('#processMemo').val('');
-        $('#processCost').val('');
-        $('#ppSellCost').val('');
-
-        $.each($('input[name=ppSpec1]'), function (index, value) {
-            $(this).val('');
-            $(this).parent().next().children('input').val('');
-        });
     }
 
-    function poProductChoose (id, rowIdx) {
-        $('#productPoDiv').css('display', 'block');
+/*    function poProductChoose (rowIdx) {
         $('#setBtnProductPoModal').css('display', 'block');
         var dataMap=getDatatablemap(id, rowIdx);
 
@@ -550,7 +397,7 @@
             $('#productOption' + num).empty();
             $('#productOption' + num).append(text);
         }
-    }
+    }*/
 
     function openProductModal(){
         $('#productModal').modal('show');
@@ -601,10 +448,6 @@
         $('#productModalTable').DataTable({
             dom: '<"datatable-header"Bip><"datatable-scroll"t>',
             ordering: false,
-            // select: {
-            //     style: 'multi',
-            //     selector: 'td:first-child'
-            // },
             serverSide: true,
             ajax:{
                 url:'/product/product.dataTable',
@@ -621,10 +464,10 @@
                 width: '40px',
                 targets:    [1]
             }],
-            "columns" : [
+            columns : [
                 {'title':'상품코드','data':'P_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
-                        return data + '<input type="hidden" id="productSpecList" value="' + full.CATE_SPEC_LIST + '">';
-                    }}
+                    return data + '<input type="hidden" id="productSpecList" value="'+full.CATE_SPEC_LIST+'">';
+                }}
                 ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
                 ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
                 ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
@@ -632,8 +475,9 @@
                 ,{'title':'사용 스펙','data':'CATE_SPEC_LIST_DT', 'defaultContent':''}
                 ,{'title':'기준매입가','data':'P_SELL_PRICE', 'defaultContent':''}
                 ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="poProductChoose(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">선택</button>'
-                    }}
+                    return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectProduct('+meta.row+');">선택</button>'
+                }}
+
             ]
         });
     }
