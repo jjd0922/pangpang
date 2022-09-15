@@ -150,7 +150,7 @@
                                                주문자 이름
                                             </span>
                                         </span>
-                                        <input type="text" name="CU_NAME" class="form-control" th:value="${order?.CU_NAME}" th:disabled="${order!=null}">
+                                        <input type="text" name="O_NAME" class="form-control" th:value="${order?.O_NAME}" th:disabled="${order!=null}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                카드결제취소일
@@ -164,13 +164,17 @@
                                                주문자 연락처
                                             </span>
                                         </span>
-                                        <input type="text" name="CU_PHONE" class="form-control" th:value="${order?.CU_PHONE}" th:disabled="${order!=null}">
+                                        <input type="text" name="O_PHONE" class="form-control" th:value="${order?.O_PHONE}" th:disabled="${order!=null}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                주문경로
                                             </span>
                                         </span>
-                                        <input type="text" name="O_LOCATION" class="form-control" th:value="${order?.O_LOCATION}" th:disabled="${order!=null}">
+                                        <select th:if="${order==null}" class="form-control form-control-sm select-search" name="O_LOCATION" data-placeholder="선택" data-container-css-class="select-sm">
+                                            <option></option>
+                                            <option th:each="opt: ${T(com.newper.constant.OLocation).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                        </select>
+                                        <input type="text" name="O_LOCATION" class="form-control" th:value="${order?.O_LOCATION}" th:unless="${order==null}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -689,8 +693,8 @@
         var rowData = getDatatablemap('customerModalTable', row);
         $('input[name="CU_IDX"]').val(rowData.CU_IDX);
         $('input[name="CU_ID"]').val(rowData.CU_ID);
-        $('input[name="CU_NAME"]').val(rowData.CU_NAME);
-        $('input[name="CU_PHONE"]').val(rowData.CU_PHONE);
+        $('input[name="O_NAME"]').val(rowData.CU_NAME);
+        $('input[name="O_PHONE"]').val(rowData.CU_PHONE);
         $('#CU_TYPE').val("회원");
         $('#customerModal').modal('hide');
     }

@@ -129,16 +129,19 @@ public class OrderService {
     @Transactional
     public Long orderSave(ParamMap paramMap){
         System.out.println(paramMap.getMap());
+        if(paramMap.get("O_SHOP_IDX").equals("")){
+            paramMap.remove("O_SHOP_IDX");
+        }
         OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
         Address address = paramMap.mapParam(Address.class);
         orderAddress.setAddress(address);
         orderAddress.setAdEntrance("");
         ordersAddressRepo.save(orderAddress);
-
         Orders orders = paramMap.mapParam(Orders.class);
+        paramMap.remove("O_IDX");
         orders.setOrderAddress(orderAddress);
         orders.setPayment(null);
-        if(!paramMap.get("CU_IDX").equals("")){
+        if(paramMap.get("CU_IDX").equals("")){
             orders.setCustomer(null);
         }else{
             Customer customer = customerRepo.getReferenceById(paramMap.getLong("CU_IDX"));
@@ -153,6 +156,7 @@ public class OrderService {
             orders.setODate(oDate);
             orders.setOTime(oTime);
         }
+        orders.setOMemo("");
         ordersRepo.save(orders);
         Long o_idx = orders.getOIdx();
         int price = 0;

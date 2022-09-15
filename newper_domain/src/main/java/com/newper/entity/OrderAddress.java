@@ -44,7 +44,7 @@ public class OrderAddress{
         if (!StringUtils.hasText(getAdPhone())) {
             throw new MsgException("배송자(설치자) 연락처를 입력해주세요.");
         }
-        if (getAddress() == null) {
+        if (!StringUtils.hasText(getAddress().getPost())) {
             throw new MsgException("배송지를 입력해주세요.");
         }
 
