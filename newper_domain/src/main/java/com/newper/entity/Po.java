@@ -33,7 +33,7 @@ public class Po extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_SELL_COM_IDX", referencedColumnName = "comIdx")
-    private Company companySell; //판매처
+    private Company company_sell; //판매처
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PO_WH_IDX", referencedColumnName = "whIdx")
