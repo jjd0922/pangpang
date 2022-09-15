@@ -118,7 +118,7 @@ public class OrdersRestController {
 //        long ogIdx = paramMap.getLong("OG_IDX");
         String insertInvoice = orderService.insertInvoice(paramMap);
 
-//        rm.put("insertInvoice", insertInvoice);
+        rm.put("insertInvoice", insertInvoice);
         return rm;
     }
 
