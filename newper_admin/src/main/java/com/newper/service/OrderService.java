@@ -49,6 +49,8 @@ public class OrderService {
 
     private final ProductRepo productRepo;
 
+    private final DeliveryNumRepo deliveryNumRepo;
+
     @Transactional
     public String sabangOrder(String startDate, String endDate){
 
@@ -226,18 +228,25 @@ public class OrderService {
         for(int i=0; i<list.size(); i++){
             DeliveryNumber dn = DeliveryNumber.builder().build();
             dn.setRandomInvoice(12);
-            dn.setDnIdx(dn.getDnIdx());
+            dn.setDnState("");
+            dn.setDnCompany("우체국");
+            dn.setCreatedDate(LocalDate.now());
 
+            deliveryNumRepo.save(dn);
+
+           OrderGs orderGs = ordersGsRepo.findById(list.get(i).longValue()).get();
+           orderGs.setDeliveryNumber(dn);
+            ordersGsRepo.save(orderGs);
 
             //1 insert delivery_num
             //2 생성된 dn_idx order_gs update
         }
 
-        DeliveryNumber dn = DeliveryNumber.builder().build();
+/*        DeliveryNumber dn = DeliveryNumber.builder().build();
         dn.setRandomInvoice(12);
-        dn.setDnIdx(dn.getDnIdx());
+        dn.setDnIdx(dn.getDnIdx());*/
 
-        return dn.getDnNum();
+        return "등록되었습니다." ;
     }
 
 
