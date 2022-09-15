@@ -9,8 +9,16 @@ import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.repository.*;
+import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.hibernate.criterion.Order;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,7 +34,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -117,8 +127,38 @@ public class OrderService {
             transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "yes"); //doc.setXmlStandalone(true); 했을때 붙어서 출력되는부분 개행
             DOMSource source = new DOMSource(doc);
 
-            StreamResult result = new StreamResult(new FileOutputStream(new File("D://test2.xml")));
+            StreamResult result = new StreamResult(new FileOutputStream(new File("D://order.xml")));
             transformer.transform(source, result);
+
+            File file = new File("D://order.xml");
+
+            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String fileXml = "xml/"+file.getName()+"_"+now;
+            String loc= NewperStorage.uploadFile(AdminBucket.OPEN, fileXml, new FileInputStream(file), file.length(), Files.probeContentType(file.toPath()));
+
+            Response response = null;
+
+            try {
+                OkHttpClient client1 = new OkHttpClient.Builder().build();
+                FormBody.Builder fb = new FormBody.Builder();
+
+                Request req = new Request.Builder().url("http://r.sabangnet.co.kr/RTL_API/xml_order_info.html?xml_url="+loc).post(fb.build()).build();
+                response = client1.newCall(req).execute();
+                String str = response.body().string().toString();
+                JSONObject json = XML.toJSONObject(str);
+
+
+                System.out.println(json);
+
+            } catch (Exception e) {
+
+            }finally {
+                try {
+                    if (response != null)
+                        response.close();
+                } catch (Exception ee) {
+                }
+            }
 
 
         }catch (Exception e) {
