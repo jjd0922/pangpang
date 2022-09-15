@@ -75,10 +75,10 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="popNewNotice()">신규등록</a>
                             </div>
 
-                            <table class="table" id="mainsectionTable"></table>
+                            <table class="table" id="noticeTable"></table>
 
                         </div>
                     </div>
@@ -115,9 +115,51 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
+    // 공지사항 신규등록
+    function popNewNotice(){
+        var focusPopup = window.open('/board/notice/new', 'noticeNew', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+    function popNoticeDetail(idx){
+        var focusPopup = window.open('/board/notice/'+idx, 'noticeNew', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
-
 <script>
+$(function(){
+    $('#noticeTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        ordering: false,
+        serverSide: true,
+        ajax:{
+            url:'/board/notice.dataTable?'+$('#searchForm').serialize(),
+            type:'post'
+        },
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SHOP_IDX','render': function(data,type,full,meta){
+                    return '';
+                }},
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'TOP','data':'NT_IDX', 'defaultContent':''}
+            ,{'title':'분양몰코드','data':'NT_IDX', 'defaultContent':''}
+            ,{'title':'공지사항명','data':'NT_NAME','defaultContent':'', 'render':function(data,type,full,meta){
+                return '<a class="btn btn-sm btn-primary" onClick="popNoticeDetail('+full.NT_IDX+')">'+ellipsisStr(full.NT_NAME)+'</a>';
+            }}
+            ,{'title':'등록자','data':'CREATED_BY', 'defaultContent':''}
+            ,{'title':'등록일','data':'CREATED_DATE_TIME', 'defaultContent':''}
+        ]
+    });
+})
 </script>
 </body>
 </html>
