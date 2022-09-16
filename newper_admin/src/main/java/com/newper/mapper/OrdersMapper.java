@@ -24,5 +24,8 @@ public interface OrdersMapper {
 
     Integer countOrderShopDatatable(Map<String, Object> map);
 
+    /**주문코드,재고코드,자산코드로 주문구성상품 조회*/
+    Long selectOrderGsDetailByOCodeAndGsCode(Map<String, Object> map);
+
 
 }

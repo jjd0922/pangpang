@@ -181,6 +181,18 @@
         WHERE
             G_LOC_IDX IS NOT NULL
           AND G_STATE='STOCK'
+          and GS_IDX in (SELECT
+                             GS_IDX
+                         FROM
+                             order_gs
+                                 LEFT JOIN shop_product_option
+                                           ON SPO_IDX=OG_SPO_IDX
+                                 LEFT JOIN GOODS_STOCK
+                                           ON SPO_GS_IDX=GS_IDX
+                                 LEFT JOIN delivery_num
+                                           ON OG_DN_IDX=DN_IDX
+                         WHERE DN_IDX IS NOT null
+                         GROUP BY GS_IDX)
     </select>
 
 </mapper>

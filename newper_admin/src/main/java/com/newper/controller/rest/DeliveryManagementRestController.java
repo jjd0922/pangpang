@@ -6,10 +6,12 @@ import com.newper.dto.ReturnMap;
 import com.newper.mapper.DeliveryMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.service.OrderService;
+import com.newper.service.DeliverytService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class DeliveryManagementRestController {
 
     private final DeliveryMapper deliveryMapper;
+    private final DeliverytService deliverytService;
+
 
     private final OrderService orderService;
 
@@ -120,4 +124,17 @@ public class DeliveryManagementRestController {
     }
 
 
+
+    /**송장 업로드*/
+    @PostMapping("deliveryUpload.ajax")
+    public ReturnMap deliveryUpload(ParamMap paramMap, MultipartFile deliveryFile){
+        ReturnMap rm = new ReturnMap();
+        String res = deliverytService.deliveryUpload(paramMap, deliveryFile);
+        if (res == "") {
+            rm.put("result","송장등록 업로드 완료");
+        } else {
+            rm.put("result", res);
+        }
+        return rm;
+    }
 }

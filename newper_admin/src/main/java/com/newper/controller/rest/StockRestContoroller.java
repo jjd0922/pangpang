@@ -68,7 +68,6 @@ public class StockRestContoroller {
     @PostMapping("beforeRelease.ajax")
     public ReturnMap beforeRelease(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        System.out.println(paramMap.getMap());
         rm.setMessage(stockService.beforeRelease(paramMap));
         return rm;
     }

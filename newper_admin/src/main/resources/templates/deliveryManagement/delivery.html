@@ -139,6 +139,7 @@
 </body>
 
 <th:block th:replace="/deliveryManagement/modal/invoiceUploadModal.html"/>
+<th:block th:replace="/deliveryManagement/modal/deliveryUploadModal.html"/>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -174,7 +175,9 @@
     }
 
     function Btn1(){
-        $('#invoiceUploadModal').modal('show');
+        $('input[name="deliveryFile"]').val("");
+        $('#result').html("");
+        $('#deliveryUploadModal').modal('show');
     }
     function deliveryDetailPop() {
         var focusPopup = window.open('deliveryDetailPop/', 'deliveryDetailPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
@@ -244,29 +247,27 @@
                 }
             }
             , {'title': '주문완료일', 'data': 'O_DATE','defaultContent':''}
-            , {'title': '출고요청일', 'data': 'null','defaultContent':''}
-            , {'title': '배송출고일', 'data': 'null','defaultContent':''}
+            , {'title': '출고요청일', 'data': 'REQ_DATE','defaultContent':''}
+            , {'title': '배송출고일', 'data': 'DN_RELEASE','defaultContent':''}
             , {'title': '배송완료일', 'data': 'DN_DATE','defaultContent':''}
-            , {'title': '출고구분', 'data': null,'defaultContent':''}
-            , {'title': '주문상태', 'data': 'O_STATE','defaultContent':''}
+            , {'title': '출고구분', 'data': 'G_TYPE','defaultContent':''}
+            , {'title': '주문상태', 'data': 'O_STATE_STR','defaultContent':''}
             , {'title': '자산상태', 'data': 'G_STATE','defaultContent':''}
             , {
                 'title': '주문코드<br>사방넷통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                   return  '<a ' + 'onclick="orderShopPop(' + data['O_CODE'] + ')" class="badge badge-primary">' + data['O_IDX'] + '</a>';
+                   return  '<a ' + 'onclick="orderShopPop(' + data['O_CODE'] + ')" class="badge badge-primary">' + data['O_CODE'] + '</a>';
                 }}
             , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'O_IDX','defaultContent':''}
             , {'title': '쇼핑몰명', 'data': 'SHOP_NAME','defaultContent':''}
-            , {'title': '상품코드', 'data': 'P_CODE','defaultContent':''}
-            , {'title': '자산코드', 'data': 'G_IDX','defaultContent':''}
+            , {'title': '상품코드', 'data': 'P_IDX','defaultContent':''}
+            , {'title': '자산코드', 'data': 'G_BARCODE','defaultContent':''}
             , {'title': '상품명', 'data': 'P_NAME','defaultContent':''}
-            , {'title': '수량', 'data': 'P_DEL_TOGETHER','defaultContent':''}
-            , {'title': '주문자명', 'data': 'CU_NAME','defaultContent':''}
-            , {'title': '주문자연락처', 'data': 'CU_PHONE','defaultContent':''}
-            , {'title': '배송자(설치자)이름', 'data': null,'defaultContent':''}
-            , {'title': '배송자(설치자)연락처1', 'data': null,'defaultContent':''}
-            /*, {'title': '배송자(설치자)연락처2', 'data': 'AD_PHONE'}*/
+            , {'title': '주문자명', 'data': 'O_NAME','defaultContent':''}
+            , {'title': '주문자연락처', 'data': 'O_PHONE','defaultContent':''}
+            , {'title': '배송자(설치자)이름', 'data': 'AD_NAME','defaultContent':''}
+            , {'title': '배송자(설치자)연락처', 'data': 'AD_PHONE','defaultContent':''}
             , {'title': '우편번호', 'data': 'POST','defaultContent':''}
-            , {'title': '주소', 'data': 'ADDR1','defaultContent':''}
+            , {'title': '주소', 'data': 'ADDRS','defaultContent':''}
             , {'title': '배송(설치)메세지', 'data': 'AD_MEMO','defaultContent':''}
             , {'title': '출하창고', 'data': 'WH_NAME','defaultContent':''}
             , {'title': '출고택배사', 'data': 'DN_COMPANY','defaultContent':''}
