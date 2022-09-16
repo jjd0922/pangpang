@@ -83,7 +83,14 @@ public class SpecFinder {
                     .specLookup(specLookup)
                     .build();
             specRepo.save(spec);
+            saveSpecItem(spec);
         }
         return spec;
+    }
+
+    /**spec_item 저장*/
+    public void saveSpecItem(Spec spec) {
+        String[] speclIdxs = spec.getSpecConfirm().split("_");
+        specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
     }
 }

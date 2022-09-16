@@ -22,4 +22,14 @@
             #{SPECL_IDX}
         )
     </insert>
+
+    <insert id="insertSpecItemAll">
+        INSERT INTO
+            SPEC_ITEM
+                (SPECI_ORDER, SPECI_SPEC_IDX, SPECI_SPECL_IDX)
+        VALUES
+            <foreach collection="speclIdxs" separator="," item="item" index="i">
+                (#{i}, #{specIdx}, #{item})
+            </foreach>
+    </insert>
 </mapper>
