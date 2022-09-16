@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -38,13 +39,26 @@ public class PoProduct {
     private List<Map<String, Object>> ppOption;
     private int ppCost;
     private int ppCount;
-    private int ppFixCost;
+    @Builder.Default
+    private int ppFixCost = 0;
     private String ppFixMemo;
-    private int ppPaintCost;
+    @Builder.Default
+    private int ppPaintCost = 0;
     private String ppPaintMemo;
-    private int ppProcessCost;
+    @Builder.Default
+    private int ppProcessCost = 0;
     private String ppProcessMemo;
     private String ppMemo;
     private int ppSellPrice;
     private float ppProfitTarget;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave() {
+        if (getPpCost() <= 0) {
+            throw new MsgException("구매단가를 입력해주세요");
+        } else if (getPpCount() <= 0) {
+            throw new MsgException("매입수량을 입력해주세요");
+        }
+    }
 }
