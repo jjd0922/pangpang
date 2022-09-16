@@ -113,9 +113,7 @@ public class InRestController {
     @PostMapping("po/barcode.ajax")
     public ReturnMap poBarcode(int p_idx, int po_idx, String barcode) {
         ReturnMap rm = new ReturnMap();
-
         goodsService.insertGoods(p_idx, po_idx, barcode);
-
         return rm;
     }
 

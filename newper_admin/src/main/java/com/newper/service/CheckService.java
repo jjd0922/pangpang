@@ -13,6 +13,7 @@ import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
+import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,7 +84,7 @@ public class CheckService {
         goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);
     }
 
-    /** 입고검수 자산 입고 확정 스팩 */
+    /** 입고검수 자산 입고검수 정보 자산에 UPDATE */
     @Transactional
     public void updateCheckGoodsSpec(ParamMap paramMap, MultipartFile[] gFile) {
         // 자산 상태 체크
@@ -92,210 +93,25 @@ public class CheckService {
             throw new MsgException("영업검수 요청되어 수정이 불가능합니다.");
         }
 
-        //실입고 상품
-        List<String> porSpec1 = paramMap.getList("porSpec1");
-        List<String> porSpec2 = paramMap.getList("porSpec2");
-        List<String> specName = paramMap.getList("specName");
+        //IMEI 저장
+        goods.setGImei(paramMap.getString("gImei"));
 
-        String specConfirm = "";
-        String specLookUp = "";
-        List<Integer> specConfirmList = new ArrayList<>();
-
-        int pIdx = paramMap.getInt("pIdx");
-        int specIdx = 0;
-        int specIdx2 = 0;
-        List<Map<String, Object>> option = new ArrayList<>();
         //옵션 세팅
+        List<Map<String, Object>> option = new ArrayList<>();
         List<String> optionList = paramMap.getList("productOption");
         for (int i = 0; i < optionList.size(); i++) {
             if (!optionList.get(i).equals("")) {
                 Common.putOption(option, optionList.get(i));
             }
         }
+        goods.setGOption(option);
 
+        //메모 저장
+        goods.setGMemo(paramMap.getString("gMemo"));
 
-
-
-
-
-        // 입고(확정) SPEC 세팅
-        if (porSpec1 != null) {
-            for (int i = 0; i < porSpec1.size(); i++) {
-                SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(specName.get(i), porSpec1.get(i));
-
-                if (specList == null) {
-                    specList = SpecList
-                            .builder()
-                            .speclName(specName.get(i))
-                            .speclValue(porSpec1.get(i))
-                            .build();
-                    specListRepo.save(specList);
-                }
-                specConfirmList.add(specList.getSpeclIdx());
-
-                specLookUp += specName.get(i) + ":" + porSpec1.get(i) + "/";
-            }
-            specLookUp = specLookUp.substring(0, specLookUp.length() - 1);
-            Collections.sort(specConfirmList);
-
-            for (int i = 0; i < porSpec1.size(); i++) {
-                specConfirm += specConfirmList.get(i) + ", ";
-            }
-            specConfirm = specConfirm.substring(0, specConfirm.length() - 2);
-
-            Spec spec = specRepo.findSpecBySpecConfirm(specConfirm);
-            if (spec == null) {
-                spec = Spec
-                        .builder()
-                        .specConfirm(specConfirm)
-                        .specLookup(specLookUp)
-                        .build();
-                specRepo.save(spec);
-            } else {
-                specIdx = spec.getSpecIdx();
-            }
-
-            specConfirm = "";
-            specLookUp = "";
-            specConfirmList.clear();
-        }
-
-        // 가공(예정) SPEC 세팅
-        if (porSpec2 != null) {
-            for (int i = 0; i < porSpec2.size(); i++) {
-                SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(specName.get(i), porSpec2.get(i));
-
-                if (specList == null) {
-                    specList = SpecList
-                            .builder()
-                            .speclName(specName.get(i))
-                            .speclValue(porSpec2.get(i))
-                            .build();
-                    specListRepo.save(specList);
-                }
-                specConfirmList.add(specList.getSpeclIdx());
-            }
-            Collections.sort(specConfirmList);
-
-            for (int i = 0; i < porSpec2.size(); i++) {
-                specConfirm += specConfirmList.get(i) + ", ";
-                specLookUp += specName.get(i) + ":" + porSpec2.get(i) + "/";
-            }
-
-            specConfirm = specConfirm.substring(0, specConfirm.length() - 2);
-            specLookUp = specLookUp.substring(0, specLookUp.length() - 1);
-
-            Spec spec = specRepo.findSpecBySpecConfirm(specConfirm);
-            if (spec == null) {
-                spec = Spec
-                        .builder()
-                        .specConfirm(specConfirm)
-                        .specLookup(specLookUp)
-                        .build();
-                specRepo.save(spec);
-            }
-            specIdx2 = spec.getSpecIdx();
-        }
-
-        // 이미 있는 실입고 상품인지 조회
-        PoReceived poReceived = poMapper.selectPoReceivedByProductAndPoAndSpecAndOption(pIdx, paramMap.getInt("poIdx"), specIdx, option.toString());
-        if (poReceived == null) {
-            Po po = Po
-                    .builder()
-                    .poIdx(paramMap.getInt("poIdx"))
-                    .build();
-
-            Product product = Product
-                    .builder()
-                    .pIdx(paramMap.getInt("pIdx"))
-                    .build();
-
-            Spec spec = Spec
-                    .builder()
-                    .specIdx(specIdx)
-                    .build();
-
-            poReceived = PoReceived
-                    .builder()
-                    .po(po)
-                    .product(product)
-                    .porOption(option)
-                    .spec(spec)
-                    .porCost(0)
-                    .porCount(0)
-                    .porMemo("")
-                    .porSellPrice(0)
-                    .porProfitTarget(0)
-                    .build();
-        } else {
-            poReceived = PoReceived
-                    .builder()
-                    .porCount(poReceived.getPorCount() + 1)
-                    .build();
-        }
-
-        poReceivedRepo.save(poReceived);
-
-        // PROCESS_NEED
-        //도색
-        if (!paramMap.get("paintCost").equals("")) {
-            ProcessNeed processNeed = ProcessNeed
-                    .builder()
-                    .goods(goods)
-                    .pnContent(paramMap.get("paintMemo").toString())
-                    .pnExpectedCost(paramMap.getInt("paintCost"))
-                    .pnType(PnType.PAINT)
-                    .pnCount(0)
-                    .build();
-
-            processNeedRepo.save(processNeed);
-        }
-
-        //수리
-        if (!paramMap.get("fixCost").equals("")) {
-            ProcessNeed processNeed = ProcessNeed
-                    .builder()
-                    .goods(goods)
-                    .pnContent(paramMap.get("fixMemo").toString())
-                    .pnExpectedCost(paramMap.getInt("fixCost"))
-                    .pnType(PnType.PAINT)
-                    .pnCount(0)
-                    .build();
-
-            processNeedRepo.save(processNeed);
-        }
-
-        //가공
-        if (!paramMap.get("processCost").equals("")) {
-            ProcessNeed processNeed = ProcessNeed
-                    .builder()
-                    .goods(goods)
-                    .pnContent(paramMap.get("processMemo").toString())
-                    .pnExpectedCost(paramMap.getInt("processCost"))
-                    .pnType(PnType.PAINT)
-                    .pnCount(0)
-                    .build();
-
-            processNeedRepo.save(processNeed);
-
-            ProcessSpec processSpec = ProcessSpec
-                    .builder()
-                    .processNeed(processNeed)
-                    .psType(PsType.EXPECTED)
-                    .psExpectedCost(paramMap.getInt("processCost"))
-                    .psRealCost(0)
-                    .build();
-        }
-
-        // 실입고상품 자산 인덱스 매핑
-        goods.setPoReceived(poReceived);
-
-        // 자산 상태 변경
-        goods.setGState(GState.CHECK);
-
+        Map<String, Object> gJson = new HashMap<>();
         // 자산 이미지 업로드
         if (gFile != null) {
-            Map<String, Object> gJson = new HashMap<>();
             List<String> file = new ArrayList<>();
             List<String> fileName = new ArrayList<>();
 
@@ -308,8 +124,33 @@ public class CheckService {
 
             gJson.put("gFile", file);
             gJson.put("gFileName", fileName);
-            goods.setGJson(gJson);
         }
+
+        // 예상 공정 항목
+        // 도색
+        gJson.put("paintMemo", paramMap.getString("paintMemo"));
+        gJson.put("paintCost", paramMap.getString("paintCost"));
+        // 수리
+        gJson.put("fixMemo", paramMap.getString("fixMemo"));
+        gJson.put("fixCost", paramMap.getString("fixCost"));
+        // 가공
+        gJson.put("processMemo", paramMap.getString("processMemo"));
+        gJson.put("processCost", paramMap.getString("processCost"));
+
+        goods.setGJson(gJson);
+
+        // 입고SPEC(확정)
+        SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+        List<String> specName = paramMap.getList("specName");
+        List<String> specValue1 = paramMap.getList("porSpec1");
+        goods.setInSpec(specFinder.findSpec(specName, specValue1));
+
+        //가공SPEC(예정)
+        List<String> specValue2 = paramMap.getList("porSpec2");
+        goods.setProcessSpec(specFinder.findSpec(specName, specValue2));
+
+        // 자산 상태 변경
+        goods.setGState(GState.CHECK);
 
         goodsRepo.save(goods);
     }

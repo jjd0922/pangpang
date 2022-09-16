@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 

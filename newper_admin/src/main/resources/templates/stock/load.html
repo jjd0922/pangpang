@@ -36,9 +36,8 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">자산상태</label>
-                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
-                                                        <option th:each="opt: ${T(com.newper.constant.CpgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
+                                                    <input type="text" class="form-control" th:value="${T(com.newper.constant.GState).STOCK_REQ.getOption()}" readonly>
+                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).STOCK_REQ}">
                                                 </div>
 
                                                 <div class="form-group">
@@ -334,12 +333,12 @@
     }
 
     function popStockTaking(str) {
-        var focusPopup = window.open('/stock/load/take'+str, 'stockTaking', 'width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/stock/load/take?gIdxs='+str, 'stockTaking', 'width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
     function searchBtn(){
-        $('#stockTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#serachForm').serialize()).load();
+        $('#stockTable').DataTable().page('first').ajax.url('/goods/goods.dataTable?'+$('#serachForm').serialize()).load();
     }
 </script>
 <script th:inline="javascript">
@@ -352,22 +351,22 @@
         },
         serverSide: true,
         ajax:{
-            url:'/coupon/couponGroup.dataTable',
+            url:'/goods/goods.dataTable?' + $('#serachForm').serialize(),
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox', 'title':'선택','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'자산상태','data':'', 'defaultContent':''}
+            ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent':''}
             ,{'title':'자산처리담당자','data':'','defaultContent':''}
             ,{'title':'자산처리일','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','defaultContent':''}
-            ,{'title':'상품코드','data':'','defaultContent':''}
-            ,{'title':'상품명','data':'','defaultContent':''}
+            ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'입고SPEC(예정)','data':'','defaultContent':''}
             ,{'title':'입고SPEC(확정)','data':'','defaultContent':''}
             ,{'title':'판매SPEC(예정)','data':'','defaultContent':''}
@@ -449,11 +448,26 @@
     });
 
     $('#stockWaitingBtn').on('click',popStockWaiting);
+
     $('#stockTakingBtn').on('click', function () {
-        popStockTaking('');
+        var gIdxs = '';
+
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해 주세요');
+            return false;
+        }
+
+        $.each($('.selected'), function (index, value) {
+            gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        gIdxs = gIdxs.slice(0, -1);
+
+        popStockTaking(gIdxs);
     });
+
     $('#stockBarcodeBtn').on('click',function () {
-        popStockTaking('/barcode');
+        var focusPopup = window.open('/stock/load/take/barcode', 'stockTaking', 'width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     });
 </script>
 </body>

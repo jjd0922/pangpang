@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.dto.ParamMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +29,17 @@ public class StockController {
 
     /**적재관리 > 재고인수(적재) 버튼 > 재고적재 페이지*/
     @GetMapping("load/take")
-    public ModelAndView stockTaking() {
+    public ModelAndView stockTaking(ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("/stock/load_take");
+        mav.addObject("gIdxs", paramMap.getString("gIdxs"));
+        mav.addObject("count", paramMap.getString("gIdxs").split(",").length);
         return mav;
     }
 
     /**적재관리 > 바코드_재고인수(적재) 버튼 > 재고적재 페이지*/
     @GetMapping("load/take/barcode")
     public ModelAndView stockTakingByBarcode() {
-        ModelAndView mav = new ModelAndView("/stock/load_take");
+        ModelAndView mav = new ModelAndView("/stock/load_take_barcode");
         mav.addObject("barcode", " ");
         return mav;
     }

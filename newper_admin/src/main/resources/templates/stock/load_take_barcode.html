@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>재고적재</title>
+    <title th:text="${barcode != null} ? '재고적재(바코드)'">재고적재</title>
     <th:block th:replace="common/css.html"></th:block>
     <style>
         .table {
@@ -23,7 +23,7 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold"><i class="icon-box mr-1"></i>재고적재</h4>
+                            <h4 class="font-weight-semibold"><i class="icon-box mr-1"></i>재고적재(바코드)</h4>
                         </div>
                     </div>
                 </div>
@@ -130,6 +130,30 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
+                                        <div class="mt-2">
+                                            <legend class="d-flex justify-content-between align-items-center">
+                                                3. 자산정보<a class="badge badge-primary mr-1" id="searchGoodsByBarcode">자산바코드</a>
+                                            </legend>
+
+                                            <table class="table table-hover" id="goodsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <td>자산코드</td>
+                                                        <td>상품코드</td>
+                                                        <td>상품명</td>
+                                                        <td>가공SPEC(확정)</td>
+                                                        <td>IMEI</td>
+                                                        <td>시리얼</td>
+                                                        <td>발주코드</td>
+                                                        <td>삭제</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="locationGoodsTbody">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -146,7 +170,6 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn" onclick="stockLoadTake()"><i class="icon-floppy-disk mr-1"></i>저장</button>
         </div>
         <!-- /footer -->
     </div>
@@ -204,6 +227,7 @@
     /** 테이블 행 삭제*/
     function deleteRow(el) {
         el.closest('tr').remove();
+        $('#locationGoodsTbody').empty();
     }
 
     /**데이터테이블에서 창고선택*/
@@ -228,6 +252,42 @@
             '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
             '</tr>'
         );
+
+        selectLocGoods(data.LOC_IDX);
+    }
+
+    /** 창고 검색시 해당 창고에 있는 자산 조회 */
+    function selectLocGoods() {
+        $.ajax({
+            url: '/stock/locGoods.ajax',
+            data: {
+                'locIdx' : $('input[name=locIdx]').val()
+            },
+            type: 'post',
+            success: function (res) {
+                appendLocGoods(res.data);
+            }
+        });
+    }
+
+    function appendLocGoods(data) {
+        $('#locationGoodsTbody').empty();
+
+        var html = '';
+        $.each(data, function (index, value) {
+            html += '<tr>' +
+                '<td>' + value.G_BARCODE + '</td>' +
+                '<td>' + value.P_IDX + '</td>' +
+                '<td>' + value.P_NAME + '</td>' +
+                '<td>' + value.G_BARCODE + '</td>' +
+                '<td>' + value.G_IMEI + '</td>' +
+                '<td></td>' +
+                '<td>' + value.G_PO_IDX + '</td>' +
+                '<td><a onclick="deleteLocGoods(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +
+                '</tr>';
+        })
+
+        $('#locationGoodsTbody').append(html);
     }
 
     /**창고바코드 모달*/
@@ -252,22 +312,17 @@
         var barcodeInput = openBarcodeModal('자산등록(바코드)');
     }
 
-    function stockLoadTake() {
-        if ($('input[name=locIdx]').val() == null) {
-            alert('적재창고를 선택해 주세요');
-            return false;
-        }
-
+    function locBarcode(data) {
         $.ajax({
-            url: location.pathname + '.ajax',
+            url: '/stock/load/barcode.ajax',
             data: {
-                'gIdxs' : [[${gIdxs}]],
+                'barcode' : $(data).val(),
                 'locIdx' : $('input[name=locIdx]').val()
             },
             type: 'post',
             success: function (res) {
-                window.opener.searchBtn();
-                window.close();
+                selectLocGoods();
+                $('input[name="barcode"]').val("").focus();
             }
         });
     }

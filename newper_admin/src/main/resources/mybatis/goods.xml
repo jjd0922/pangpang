@@ -114,19 +114,39 @@
     <sql id="includeGoodsDatatable">
         <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
         <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
+        <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+        <if test="poIdx != null and poIdx != ''">AND PO_IDX = #{poIdx}</if>
+        <if test="gState != null and gState != ''">
+            <foreach collection="gState" open="AND G_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+<!--        <if test="option1 != null and option1 != ''">AND G_OPTION LIKE CONCAT ('%', #{option1}, '%')</if>-->
+<!--        <if test="option2 != null and option2 != ''">AND G_OPTION LIKE CONCAT ('%', #{option2}, '%')</if>-->
+<!--        <if test="option3 != null and option3 != ''">AND G_OPTION LIKE CONCAT ('%', #{option3}, '%')</if>-->
+        <!--<if test="inSpec != null and inSpec != ''">AND IN_SPEC.SPEC_LOOKUP LIKE CONCAT ('%', #{inSpec}, '%')</if>-->
     </sql>
 
     <select id="selectGoodsDataTable" resultType="Map">
         SELECT
             G_IDX,
             G_BARCODE,
-            P_NAME
+            P_NAME,
+            IG_IDX,
+            G_STATE,
+            P_IDX
         FROM
             GOODS
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
         <where>
             <include refid="includeGoodsDatatable"></include>
         </where>
+        <if test="length != -1">
+            LIMIT
+                #{start},#{length}
+        </if>
     </select>
 
     <select id="countGoodsDataTable" resultType="Long">
@@ -134,7 +154,8 @@
             COUNT(*)
         FROM
             GOODS
-               LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
         <where>
             <include refid="includeGoodsDatatable"></include>
         </where>

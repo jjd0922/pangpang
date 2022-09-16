@@ -26,4 +26,6 @@ public interface LocationMapper {
     List<Map<String, Object>> selectStockInLocationDatatable(Map<String, Object> map);
     long countStockInLocationDatatable(Map<String, Object> map);
 
+    /** 로케이션에 있는 자산들 조회 */
+    List<Map<String,Object>> selectGoodsByLocation(Map<String, Object> map);
 }

@@ -77,7 +77,7 @@ public class InController {
         ModelAndView mav = new ModelAndView("in/checks_poPop");
         mav.addObject("ig", inGroupRepo.findInGroupByPoPoIdx(poIdx));
         mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
-//        mav.addObject("poReceived", poMapper.selectPoReceivedByPoIdx(poIdx));
+        mav.addObject("poReceived", poMapper.selectPoReceivedByPoIdx(poIdx));
         return mav;
     }
 }

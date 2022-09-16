@@ -16,6 +16,7 @@ public enum GState implements EnumOption {
     ,STOCK_REQ("재고인계요청")
     ,STOCK("적재")
     ,CANCEL_NEED("반품필요")
+    ,CANCEL_REQ("반품요청")
     ,CANCEL("반품")
     ,LOSS("망실")
     ;

@@ -67,4 +67,7 @@ public interface PoMapper {
 
     /** 발주품의 실입고상품 조회 쿼리문 */
     List<Map<String, Object>> selectPoReceivedByPoIdx(int poIdx);
+
+    /** 상품 타입이 정상품일경우 자동매핑을 위한 실입고상품 조회문 */
+    PoReceived selectPoReceivedByPoIdxAndPpIdx(@Param("poIdx") int po_idx, @Param("ppIdx") Integer ppIdx);
 }
