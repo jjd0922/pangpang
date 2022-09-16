@@ -2,20 +2,29 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.DeliveryMapper;
+import com.newper.mapper.OrdersMapper;
+import com.newper.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/deliveryManagement/")
 @RequiredArgsConstructor
 @RestController
-public class deliveryManagementRestController {
+public class DeliveryManagementRestController {
 
     private final DeliveryMapper deliveryMapper;
+
+    private final OrderService orderService;
+
+    private final OrdersMapper ordersMapper;
     /**배송관리 데이터테이블*/
     @PostMapping("delivery.dataTable")
     public ReturnDatatable delivery (ParamMap paramMap, HttpServletResponse response) {
@@ -82,4 +91,33 @@ public class deliveryManagementRestController {
         rd.setRecordsTotal(consultationResultMapper.countConsultationResultDatatable(paramMap.getMap()));*/
         return rd;
     }
+
+
+    /**배송관리 팝업 송장등록*/
+    @PostMapping("insertInvoice.ajax")
+    public ReturnMap insertInvoice(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        paramMap.put("ogIdx", paramMap.getList("ogIdxList[]"));
+        System.out.println("~~~~~~~~~~~~~~"+paramMap.getMap());
+        String insertInvoice = orderService.insertInvoice(paramMap);
+
+        rm.setMessage(insertInvoice);
+
+        return rm;
+    }
+
+
+    /**주문통합관리 상세 상품 데이터테이블*/
+    @PostMapping("orderGoodsStock.dataTable")
+    public ReturnDatatable a(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String,Object>> list = ordersMapper.selectGoodsStockDetailByOIdx(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+
+        return returnDatatable;
+    }
+
+
 }
