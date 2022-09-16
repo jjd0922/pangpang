@@ -952,7 +952,7 @@
             '   <td id="ppProdCostRate_'+cnt+'"></td>' +
             '   <td><input type="text" name="ppSellPrice_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" placeholder="0"></td>' +
             '   <td id="ppTotalSellPrice_'+cnt+'"></td>' + //예상판매가총액
-            '   <td></td>' +
+            '   <td id="ppTotalProfit_'+cnt+'"></td>' + //총이익
             '   <td id="ppReturnRate_'+cnt+'"></td>' +
             '</tr>'
         );
@@ -1002,6 +1002,10 @@
         var ppSellPrice = getNumberInInput("ppSellPrice_"+rowCnt);
         var ppTotalSellPrice = ppSellPrice * ppCount;
         $('#ppTotalSellPrice_'+rowCnt).text(comma(ppTotalSellPrice));
+
+        // 총이익 계산
+        var ppTotalProfit = ppTotalSellPrice - ppTotalProdCost;
+        $('#ppTotalProfit_'+rowCnt).text(comma(ppTotalProfit));
 
         //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
         if (ppTotalSellPrice != 0) {
