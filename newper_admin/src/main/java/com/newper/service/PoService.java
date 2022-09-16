@@ -96,6 +96,7 @@ public class PoService {
                 ppParam.put("ppPaintCost", paramMap.replaceComma("ppPaintCost_" + i));
                 ppParam.put("ppProcessMemo", paramMap.getString("ppProcessMemo_" + i));
                 ppParam.put("ppProcessCost", paramMap.replaceComma("ppProcessCost_" + i));
+                ppParam.put("ppSellPrice", paramMap.replaceComma("ppSellPrice_"+i));
 
                 PoProduct poProduct = ppParam.mapParam(PoProduct.class);
 

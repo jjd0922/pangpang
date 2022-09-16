@@ -628,14 +628,15 @@
                                                     <tr>
                                                         <th class="w-5">상품코드</th>
                                                         <th class="w-10">상품명</th>
-                                                        <th>예상수리비용</th>
-                                                        <th>예상도색비용</th>
-                                                        <th>예상가공비용</th>
+                                                        <th>예상수리비용(1단위)</th>
+                                                        <th>예상도색비용(1단위)</th>
+                                                        <th>예상가공비용(1단위)</th>
+                                                        <th>총예상공정비용(1단위)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="processTbody">
                                                     <tr class="defaultRow" th:unless="${poProduct != null}">
-                                                        <td colspan="5">발주품의할 상품을 선택하십시오.</td>
+                                                        <td colspan="6">발주품의할 상품을 선택하십시오.</td>
                                                     </tr>
                                                     <tr th:if="${poProduct != null}" th:each="i : ${poProduct}">
                                                         <td th:text="${i.P_IDX}"></td>
@@ -643,6 +644,7 @@
                                                         <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
                                                         <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
                                                         <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
+                                                        <td th:text="${i.PP_FIX_COST}+${i.PP_PAINT_COST}+${i.PP_PROCESS_COST}"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -661,7 +663,7 @@
                                                         <th class="w-7">목표수익률</th>
                                                         <th>생산원가합</th>
                                                         <th>생산원가율</th>
-                                                        <th>예상판매가</th>
+                                                        <th class="w-7">예상판매가</th>
                                                         <th>예상판매가총액</th>
                                                         <th>총이익</th>
                                                         <th>수익률</th>
@@ -747,6 +749,18 @@
 
 
 <script>
+    function openContractModal() {
+        var comIdx = $('input[name=comIdxBuy]').val();
+        if (comIdx == '') {
+            alert('매입처를 선택해 주세요.');
+            return false;
+        }
+
+        $('#contractModalComIdx').val(comIdx);
+        $('#contractModal').modal('show');
+        selectContractDataTable();
+    }
+
     function selectUser(row) {
         var rowData = getDatatablemap('userModalTable', row);
 
@@ -756,31 +770,6 @@
     }
 
     function saveAction(){
-        /*if ($('hidden[name=comIdx_buy]').val() == '') {
-            alert('매입처를 선택해 주세요.');
-            return false;
-        }
-
-        if ($('hidden[name=uIdx]').val() == '') {
-            alert('구매담당자를 선택해 주세요.');
-            return false;
-        }
-
-        if ($('hidden[name=ccIdx]').val() == '') {
-            alert('계약서를 선택해 주세요.');
-            return false;
-        }
-
-        if ($('input[name=whIdx]').val() == '') {
-            alert('입고예정창고를 선택해 주세요.');
-            return false;
-        }
-
-        if ($('input[name=poProductCost]').length == 0) {
-            alert('상품을 추가해주세요');
-            return false;
-        }*/
-
         var poTotalAmount = $('input[name=poTotalAmount]').val().replace(/,/gi,'');
         $('input[name=poTotalAmount]').val(poTotalAmount);
 
@@ -864,7 +853,7 @@
             '   <td id="ppOption1_'+cnt+'"></td>' +
             '   <td id="ppOption2_'+cnt+'"></td>' +
             '   <td id="ppOption3_'+cnt+'"></td>' +
-            '   <td>'+data.P_COST+'</td>' +
+            '   <td>'+comma(data.P_COST)+'</td>' +
             '   <td id="poBuySpec_'+cnt+'"></td>' +
             '   <td id="poSellSpec_'+cnt+'"></td>' +
             '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
@@ -936,16 +925,17 @@
             '   <td>'+data.P_NAME+'</td>' +
             '   <td class="pr-5">' +
             '       <span class="d-flex align-items-center mb--1"><label class="w-10">항목</label><input type="text" name="ppFixMemo_'+cnt+'" class="form-control"></span>' +
-            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppFixCost_'+cnt+'" class="form-control"></span class="d-flex align-items-center">' +
+            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppFixCost_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'"></span class="d-flex align-items-center">' +
             '   </td>' +
             '   <td class="pr-5">' +
             '       <span class="d-flex align-items-center mb--1"><label class="w-10">항목</label><input type="text" name="ppPaintMemo_'+cnt+'" class="form-control"></span>' +
-            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppPaintCost_'+cnt+'" class="form-control"></span>' +
+            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppPaintCost_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'"></span>' +
             '   </td>' +
             '   <td class="pr-5">' +
             '       <span class="d-flex align-items-center mb--1"><label class="w-10">항목</label><input type="text" name="ppProcessMemo_'+cnt+'" class="form-control"></span>' +
-            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppProcessCost_'+cnt+'" class="form-control"></span>' +
+            '       <span class="d-flex align-items-center"><label class="w-10">비용</label><input type="text" name="ppProcessCost_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'"></span>' +
             '   </td>' +
+            '   <td id="ppTotalProcCost_'+cnt+'"></td>' + // 총예상공정비용
             '</tr>'
         );
 
@@ -954,36 +944,81 @@
             '<tr>' +
             '   <td>'+data.P_IDX+'</td>' +
             '   <td>'+data.P_NAME+'</td>' +
-            '   <td><input type="text" name="ppCost_'+cnt+'" class="form-control"></td>' +
-            '   <td><input type="text" name="ppCount_'+cnt+'" class="form-control"></td>' +
-            '   <td id="ppCostAll_'+cnt+'"></td>' + // 매입총액
+            '   <td><input type="text" name="ppCost_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" value="'+comma(data.P_COST)+'"></td>' +
+            '   <td><input type="text" name="ppCount_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" placeholder="0"></td>' +
+            '   <td id="ppTotalCost_'+cnt+'">0</td>' + // 매입총액
             '   <td><input type="text" name="ppProfitTarget_'+cnt+'" class="form-control"></td>' +
+            '   <td id="ppTotalProdCost_'+cnt+'"></td>' + // 생산원가합
+            '   <td id="ppProdCostRate_'+cnt+'"></td>' +
+            '   <td><input type="text" name="ppSellPrice_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" placeholder="0"></td>' +
+            '   <td id="ppTotalSellPrice_'+cnt+'"></td>' + //예상판매가총액
+            '   <td></td>' +
+            '   <td id="ppReturnRate_'+cnt+'"></td>' +
             '</tr>'
         );
+
+        // 숫자만 입력되도록
+        $('.text-won').on("input", function (event) {
+            inputOnlyNumber($(event.target))
+        });
+
+        // 계산식들 계산
+        $('.calculate').on("keyup", function (event) {
+            calculateAll($(event.target));
+        });
 
         cnt++;
         $('input[name="cnt"]').val(cnt);
     }
+
+    /**숫자로 입력되어야하는 input들 처리*/
+    function inputOnlyNumber(el) {
+        var value = comma(el.val().replace(/[^0-9]/g, ""));
+        el.val(value);
+    }
+
+    /**계산할것들 계산*/
+    function calculateAll(el) {
+        var rowCnt = el.attr("row-cnt");
+
+        //pp별 매입총액 계산
+        var ppCost = getNumberInInput("ppCost_"+rowCnt);
+        var ppCount = getNumberInInput("ppCount_"+rowCnt);
+        var ppTotalCost = ppCost * ppCount;
+        $('#ppTotalCost_'+rowCnt).text(comma(ppTotalCost));
+
+        //pp별 총예상공정비용 계산
+        var ppFixCost = getNumberInInput("ppFixCost_"+rowCnt);
+        var ppPaintCost = getNumberInInput("ppPaintCost_"+rowCnt);
+        var ppProcessCost = getNumberInInput("ppProcessCost_"+rowCnt);
+        var ppTotalProcCost = ppFixCost + ppPaintCost + ppProcessCost;
+        $('#ppTotalProcCost_'+rowCnt).text(comma(ppTotalProcCost));
+
+        //pp별 생산원가합 계산 => 매입총액+(상품예상공정비용합*매입수량)
+        var ppTotalProdCost = ppTotalCost+(ppTotalProcCost*ppCount);
+        $('#ppTotalProdCost_'+rowCnt).text(comma(ppTotalProdCost));
+
+        //예상판매가총액 계산 => 예상판매가*매입수량
+        var ppSellPrice = getNumberInInput("ppSellPrice_"+rowCnt);
+        var ppTotalSellPrice = ppSellPrice * ppCount;
+        $('#ppTotalSellPrice_'+rowCnt).text(comma(ppTotalSellPrice));
+
+        //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
+        if (ppTotalSellPrice != 0) {
+            var ppProdCostRate = Math.round((ppTotalProdCost/ppTotalSellPrice)*100)/100;
+            var ppReturnRate = Math.round((1-ppProdCostRate)*100)/100;
+            $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate*100)+'%');
+            $('#ppReturnRate_'+rowCnt).text(comma(ppReturnRate*100)+'%');
+        }
+    }
+
+    /**input value에서 특수문자를 제외하고 숫자형태로 return*/
+    function getNumberInInput(name) {
+        return Number($('input[name="'+name+'"]').val().replace(/[^0-9]/g,""));
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
-
-    function openContractModal() {
-        var comIdx = $('input[name=comIdxBuy]').val();
-        if (comIdx == '') {
-            alert('매입처를 선택해 주세요.');
-            return false;
-        }
-
-        $('#contractModalComIdx').val(comIdx);
-        $('#contractModal').modal('show');
-        selectContractDataTable();
-    }
-</script>
-<script th:if="${poProduct != null}" th:each="i : ${poProduct}">
-    $(function () {
-        priceSetting([[${iStat.index}]]);
-    });
 </script>
 </body>
 </html>
