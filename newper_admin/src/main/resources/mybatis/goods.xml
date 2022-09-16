@@ -160,4 +160,27 @@
             <include refid="includeGoodsDatatable"></include>
         </where>
     </select>
+
+    <select id="selectBarcodeDataTable" resultType="Map">
+        SELECT
+            P_NAME,P_IDX,GS_CODE,G_BARCODE,WH_NAME,
+            LOC_TYPE,LOC_CODE,LOC_FORM,LOC_ZONE,location.CREATED_DATE,
+            U_NAME, G_IDX
+        FROM
+            goods
+                LEFT JOIN location
+                          ON G_LOC_IDX=LOC_IDX
+                LEFT JOIN warehouse
+                          ON LOC_WH_IDX=WH_IDX
+                LEFT JOIN product
+                          ON G_P_IDX=P_IDX
+                LEFT JOIN goods_stock
+                          on G_GS_IDX=GS_IDX
+                left join user
+                          on LOC_U_IDX=U_IDX
+        WHERE
+            G_LOC_IDX IS NOT NULL
+          AND G_STATE='STOCK'
+    </select>
+
 </mapper>

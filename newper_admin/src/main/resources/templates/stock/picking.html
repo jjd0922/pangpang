@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${subTitle}"></title>
+    <title>픽킹관리</title>
     <th:block th:replace="common/css.html"></th:block>
     <style>
         .group{
@@ -124,7 +124,7 @@
     </div>
 </div>
 
-<th:block th:replace="stock/modal/barcodeModal.html"/>
+<th:block th:replace="stock/modal/inModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -170,7 +170,9 @@
             url:'/stock/parent.dataTable' +$('#pickingForm').serialize(),
             type:'post'
         },
+
         "columns" : [
+
             {'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'class':'m-w-8 w-15', 'title':'재고코드','data':'GS_CODE','render':function(data,type,full,meta){
@@ -246,7 +248,7 @@
 
 
     function barcode(){
-        $('#barcodeModal').modal('show');
+        $('#inModal').modal('show');
     }
 
     function testBefore(){
