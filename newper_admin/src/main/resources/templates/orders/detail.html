@@ -801,8 +801,14 @@
                 }}
             ,{'title':'주문상품코드','data':'P_IDX'}
             ,{'title':'출고구분','data':'null','defaultContent':''}
-            ,{'title':'주문상태','data':'O_STATE'}
-            ,{'title':'환불상태','data':'PAY_CANCEL_STATE_STR','defaultContent':''}
+            ,{'title':'주문상태','data':'O_STATE_STR'}
+            ,{'title':'환불상태','data':'PAY_CANCEL_STATE_STR','defaultContent':'', 'render':function(data,type,full,meta){
+                if(data=='요청전'){
+                    return '';
+                }else{
+                    return data;
+                }
+                }}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'SHOP상품코드','data':'SP_IDX','defaultContent':''}
