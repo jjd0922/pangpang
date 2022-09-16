@@ -265,6 +265,7 @@ public class OrderService {
     public String insertInvoice(ParamMap paramMap) {
         List<Integer> list = paramMap.getList("ogIdxs[]");
         int cnt = 0;
+        System.out.println(list);
         for(int i=0; i<list.size(); i++){
             OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
             if(orderGs.getDeliveryNum()==null){

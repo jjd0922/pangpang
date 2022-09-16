@@ -115,12 +115,12 @@
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="insertInvoice()">
                                             <i class="icon-popout mr-1"></i>송장등록
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="orderDetail()">
                                             <i class="icon-popout mr-1"></i>송장통합/출고등록
                                         </a>
                                     </div>
@@ -180,6 +180,38 @@
         var focusPopup = window.open('deliveryDetailPop/', 'deliveryDetailPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function insertInvoice(){
+        var param = dataTableGetSelectedDataArray('deliveryTable', 'OG_IDX');
+        console.log(param)
+        if (param.length == 0) {
+            alert('선택된 주문번호코드가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 주문번호코드를 송장등록 하시겠습니까?")) {
+                $.ajax({
+                    url: '/deliveryManagement/insertInvoice.ajax',
+                    type: 'post',
+                    data: {
+                        ogIdxs : param
+                    },
+                    success: function (res) {
+                        $('#deliveryTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
+
+    function orderDetail(){
+        var focusPopup = window.open('/deliveryManagement/integratedDetail/', 'integratedDetail', 'width=1600, height=1200, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+
 </script>
 
 <script>
@@ -205,10 +237,10 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'O_IDX',
+                'data': 'OG_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
-                    return '';
+                    return '<input type="hidden" name="O_IDX" value="'+data+'">';
                 }
             }
             , {'title': '주문완료일', 'data': 'O_DATE','defaultContent':''}
@@ -242,6 +274,7 @@
         ]
     });
 
+
     $('#deliveryForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
@@ -250,10 +283,10 @@
     });
 
 
-    $('#Btn2').on('click', function () {
+/*    $('#Btn2').on('click', function () {
         var focusPopup = window.open('invoiceUploadPop', 'invoiceUploadPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
-    });
+    });*/
     $('#Btn3').on('click', function () {
         var focusPopup = window.open('invoiceIntegratedPop', 'invoiceIntegratedPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>출고등록(자산등록)</title>
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .group{
+            background:aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">주문코드</h6>
+                            </div>
+                            <form id="orderTableForm">
+                                <table class="table" id="orderTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">1.주문내역</h6>
+                            </div>
+                            <form id="categorySecondTableForm">
+                                <table class="table" id="orderGoodsStockTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">2.자산내역</h6>
+                            </div>
+
+                            <div class="collapse show">
+                                <div class="table-responsive">
+                                    <form id="categoryThirdTableForm">
+                                        <table class="table" id="categoryThirdTable" >
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+    </div>
+</div>
+</div>
+</div>
+
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    var orderTable = $('#orderTable').DataTable({
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/orders/orders.dataTable?'+$('#orderTableForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+
+            {'title':'주문코드','data':'O_CODE','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.O_IDX+')">'+data+'</a>';
+                }}
+
+        ]
+    });
+
+
+    var o_idx = $('input[name="O_IDX"]').val();
+    $('#orderGoodsStockTable').DataTable({
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/orders/orderGoodsStock.dataTable?O_IDX='+o_idx,
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'O_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="O_IDX" value="'+data+'">';
+                }}
+            ,{'title':'주문상품코드','data':'P_IDX'}
+            ,{'title':'쇼핑몰명','data':null,'defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'수량','data':null,'defaultContent':''}
+            ,{'title':'주문자명','data':'null','defaultContent':''}
+            ,{'title':'주문자연락처','data':'null','defaultContent':''}
+            ,{'title':'출고택배사','data':'null','defaultContent':''}
+            ,{'title':'출고송장번호','data':'null','defaultContent':''}
+        ]
+    });
+
+
+    $('#categoryThirdTable').DataTable({
+        buttons: {
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-dark opacity-60',
+                    text: '<i class="icon-file-excel mr-1"></i>엑셀'
+                },
+                {
+                    text: '새로고침',
+                    className: 'btn btn-sm btn-secondary',
+                    action: function (e, dt, node, config) {
+                        dt.ajax.reload();
+                    }
+                }
+            ]
+        },
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        serverSide: true,
+        ajax:{
+            url:'/product/category/youngest.dataTable',
+            type:'post'
+        },
+        "columns" : [
+            {'class':'dragula-handle m-w-2', 'title':'순서','data':'CATE_ORDER', 'render':function(data,type,full,meta){
+                    return '<i class="icon-menu-open">'+Math.abs(full.CATE_ORDER)+'</i><input type="hidden" name="CATE_IDX" value="'+full.CATE_IDX+'">';
+                }}
+            ,{'class':'m-w-16 w-55', 'title':'소분류명','data':'CATE_NAME','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="categoryDetail('+full.CATE_IDX+')">'+data+'</a>';
+                }}
+            ,{'class':'m-w-16 w-15', 'title':'삭제','data':'CATE_IDX','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-danger" onclick="deleteCategory('+data+')">삭제</a>';
+                }}
+        ]
+
+    });
+
+
+
+
+
+</script>
+
+<script>
+    function categoryDetail(O_IDX){
+        var table = $('#orderGoodsStockTable').DataTable();
+        table.ajax.url('/orders/orderGoodsStock.dataTable?O_IDX='+O_IDX).load(null,false);
+        $('#categoryThirdTable').DataTable().ajax.url('/product/category/youngest.dataTable').load(null,false);
+    }
+
+    function youngestCategory(CATE_IDX){
+        console.log(CATE_IDX);
+        var table = $('#categoryThirdTable').DataTable();
+        table.ajax.url('/orders/orderGoodsStock.dataTable?O_IDX=+o_idxCATE_IDX='+CATE_IDX).load(null,false);
+    }
+
+
+    function popCategory(dept){
+        var focusPopup = window.open('/product/category/categoryCreate/'+dept,'categoryCreate', 'width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function orderDetail(o_idx){
+        var cd = window.open('/product/category/'+o_idx,'categoryDetail','width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        cd.focus();
+    }
+</script>
+
+
+</body>
+
+
+
+</html>
