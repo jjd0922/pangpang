@@ -1,6 +1,6 @@
 package com.newper.entity;
 
-import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -48,4 +48,14 @@ public class PoProduct {
     private String ppMemo;
     private int ppSellPrice;
     private float ppProfitTarget;
+
+    @PrePersist
+    @PreUpdate
+    public void preSave() {
+        if (getPpCost() <= 0) {
+            throw new MsgException("구매단가를 입력해주세요");
+        } else if (getPpCount() <= 0) {
+            throw new MsgException("매입수량을 입력해주세요");
+        }
+    }
 }
