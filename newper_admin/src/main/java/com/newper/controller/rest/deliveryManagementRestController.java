@@ -2,11 +2,14 @@ package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.DeliveryMapper;
+import com.newper.service.DeliverytService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 public class deliveryManagementRestController {
 
     private final DeliveryMapper deliveryMapper;
+    private final DeliverytService deliverytService;
+
     /**배송관리 데이터테이블*/
     @PostMapping("delivery.dataTable")
     public ReturnDatatable delivery (ParamMap paramMap, HttpServletResponse response) {
@@ -81,5 +86,18 @@ public class deliveryManagementRestController {
 /*        rd.setData(consultationResultMapper.selectConsultationResultDatatable(paramMap.getMap()));
         rd.setRecordsTotal(consultationResultMapper.countConsultationResultDatatable(paramMap.getMap()));*/
         return rd;
+    }
+
+    /**송장 업로드*/
+    @PostMapping("deliveryUpload.ajax")
+    public ReturnMap deliveryUpload(ParamMap paramMap, MultipartFile deliveryFile){
+        ReturnMap rm = new ReturnMap();
+        String res = deliverytService.deliveryUpload(paramMap, deliveryFile);
+        if (res == "") {
+            rm.put("result","송장등록 업로드 완료");
+        } else {
+            rm.put("result", res);
+        }
+        return rm;
     }
 }
