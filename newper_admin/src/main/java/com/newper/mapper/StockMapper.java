@@ -17,6 +17,6 @@ public interface StockMapper {
     List<Map<String, Object>> selectStockDatatableByParent();
 
     /**재고코드로 조회 */
-    List<Map<String, Object>> selectStockDatatableByChildren(Integer GS_IDX);
+    List<Map<String, Object>> selectStockDatatableByChildren(Map<String,Object> param);
 
 }

@@ -113,7 +113,7 @@
     <select id="selectGoodsStockDetailByOIdx" resultType="map">
         SELECT
             P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,
-            GS_CODE, ifnull(G_AJ_BARCODE,'') as G_AJ_BARCODE, P_NAME, SP_NAME,
+            GS_CODE, ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,

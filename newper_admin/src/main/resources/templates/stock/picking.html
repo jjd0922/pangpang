@@ -88,7 +88,7 @@
                             <div class="card-header bg-white header-elements-inline">
                           <!--      <h6 class="card-title">카테고리 대분류</h6>-->
                                 <div class="btn-group">
-                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="popCategory(1)">
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="">
                                     <i class="icon-popout mr-1"></i>정렬BTN1
                                 </a>
                                 <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="barcode()">
@@ -106,7 +106,7 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline">
                              <!--   <h6 class="card-title">카테고리 중분류</h6>-->
-                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="popCategory(2)">
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" onclick="testBefore()">
                                     <i class="icon-popout mr-1"></i>출고전검수요청
                                 </a>
 
@@ -174,11 +174,13 @@
             {'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'class':'m-w-8 w-15', 'title':'재고코드','data':'GS_CODE','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm btn-outline-dark ml-1" onclick="childrenCategory('+full.GS_IDX+')">'+data+'</a>';
+                    return '<a class="btn btn-sm btn-outline-dark ml-1" onclick="goodsStock('+full.GS_IDX+')">'+data+'</a>';
                 }}
             ,{'title':'적재재고','data':'loc_cnt','defaultContent':''}
             ,{'title':'픽킹요청수량','data':'cnt','defaultContent':''}
-            ,{'title':'출고전검수<br>요청수량','data':'check_cnt','defaultContent':''}
+            ,{'title':'출고전검수<br>요청수량','data':'check_cnt','defaultContent':'','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="releaseReq('+full.GS_IDX+')">'+data+'</a>'
+            }}
 
         ]
 
@@ -231,9 +233,14 @@
 </script>
 
 <script>
-    function childrenCategory(GS_IDX){
+    function goodsStock(GS_IDX){
         var table = $('#secondTable').DataTable();
         table.ajax.url('/stock/picking2.dataTable?GS_IDX='+GS_IDX).load(null,false);
+    }
+
+    function releaseReq(GS_IDX){
+        var table = $('#secondTable').DataTable();
+        table.ajax.url('/stock/picking2.dataTable?GS_IDX='+GS_IDX+'&release=release').load(null,false);
     }
 
 
@@ -241,6 +248,36 @@
     function barcode(){
         $('#barcodeModal').modal('show');
     }
+
+    function testBefore(){
+        var param = '';
+        var leng = $("#secondTable .selected").find("input").length;
+        if(leng == 0) {
+            alert("선택한 데이터가 없습니다.");
+            return ;
+        } else {
+            $.each($("#secondTable .selected").find("input"), function(key, val){
+                var idx = $(this).val();
+                if(leng == (key+1)){
+                    param = param + idx;
+                }else{
+                    param = param + idx + ",";
+                }
+            });
+            if(confirm("체크된 자산을 출고전검수요청 하시겠습니까?")){
+                $.ajax({
+                    url:"/stock/beforeRelease.ajax",
+                    data: "GOODS_IDXS="+param,
+                    type:"POST",
+                    success:function() {
+                        $('#firstTable').DataTable().ajax.reload();
+                        $('#secondTable').DataTable().ajax.reload();
+                    }
+                });
+            }
+        }
+    }
+
 </script>
 
 

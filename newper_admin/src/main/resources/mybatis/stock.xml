@@ -25,6 +25,7 @@
                                              ON G_LOC_IDX=LOC_IDX
                            WHERE
                                G_LOC_IDX IS NOT NULL
+                               and G_STATE='STOCK'
                            GROUP BY G_GS_IDX
                            HAVING G_GS_IDX IS NOT null) dt
                           ON dt.G_GS_IDX=SPO_GS_IDX
@@ -34,13 +35,8 @@
                                goods_stock
                                    LEFT JOIN goods
                                              ON GS_IDX=G_GS_IDX
-                                   LEFT JOIN check_goods
-                                             ON G_IDX=CGS_G_IDX
-                                   LEFT JOIN check_group
-                                             ON CGS_CG_IDX=CG_IDX
                            WHERE
-                               CGS_TYPE='출고검수'
-                             AND CG_END_DATE IS NULL
+                              G_STATE in ('BEFORE_RELEASE_REQ','BEFORE_RELEASE_OUT','BEFORE_RELEASE_IN')
                            GROUP BY GS_IDX
             )ct
                           ON ct.GS_IDX1=SPO_GS_IDX
@@ -68,8 +64,14 @@
                           on LOC_U_IDX=U_IDX
         WHERE
             G_LOC_IDX IS NOT NULL
+            and G_STATE in
+                <foreach collection="G_STATES" item="gState" index="index" open="(" separator="," close=")">
+                    #{gState}
+                </foreach>
             and G_GS_IDX=#{GS_IDX}
     </select>
+
+
     <select id="selectStockDataTable" resultType="map" parameterType="map">
         select
         *
