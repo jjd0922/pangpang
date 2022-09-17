@@ -95,11 +95,32 @@
 
     <select id="selectGoodsByG_IDX" resultType="Map">
         SELECT
-            PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST TOTAL_PROCESS_COST
+            G_IDX,
+            PRODUCT1.P_IDX AS P_IDX,
+            PRODUCT1.P_NAME AS P_NAME,
+            CATE_SPEC_LIST,
+            G_BARCODE,
+            G_IMEI,
+            IN_SPEC1.SPEC_LOOKUP AS IN_SPEC1,
+            IN_SPEC2.SPEC_LOOKUP AS IN_SPEC2,
+            SELL_SPEC1.SPEC_LOOKUP AS SELL_SPEC1,
+            SELL_SPEC2.SPEC_LOOKUP AS SELL_SPEC2,
+            PROCESS_SPEC1.SPEC_LOOKUP AS PROCESS_SPEC1,
+            PRODUCT2.P_COST AS P_COST,
+            PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST AS TOTAL_PROCESS_COST
         FROM
-            PO
-                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
-                LEFT JOIN GOODS ON PO_IDX = G_PO_IDX AND G_P_IDX = PP_P_IDX
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PRODUCT AS PRODUCT1 ON G_P_IDX = PRODUCT1.P_IDX
+                LEFT JOIN CATEGORY ON PRODUCT1.P_CATE_IDX = CATE_IDX
+                LEFT JOIN GOODS_STOCK ON G_GS_IDX = GS_IDX
+                LEFT JOIN PRODUCT AS PRODUCT2 ON GS_P_IDX = PRODUCT2.P_IDX
+                LEFT JOIN SPEC AS IN_SPEC1 ON PP_SPEC_IDX = IN_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC1 ON PP_SPEC_IDX2 = SELL_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS IN_SPEC2 ON POR_IN_SPEC_IDX = IN_SPEC2.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC2 ON G_SELL_SPEC_IDX = SELL_SPEC2.SPEC_IDX
+                LEFT JOIN SPEC AS PROCESS_SPEC1 ON POR_PROCESS_SPEC_IDX = PROCESS_SPEC1.SPEC_IDX
         WHERE
             G_IDX = #{gIdx}
     </select>
@@ -121,10 +142,6 @@
                 #{item}
             </foreach>
         </if>
-<!--        <if test="option1 != null and option1 != ''">AND G_OPTION LIKE CONCAT ('%', #{option1}, '%')</if>-->
-<!--        <if test="option2 != null and option2 != ''">AND G_OPTION LIKE CONCAT ('%', #{option2}, '%')</if>-->
-<!--        <if test="option3 != null and option3 != ''">AND G_OPTION LIKE CONCAT ('%', #{option3}, '%')</if>-->
-        <!--<if test="inSpec != null and inSpec != ''">AND IN_SPEC.SPEC_LOOKUP LIKE CONCAT ('%', #{inSpec}, '%')</if>-->
     </sql>
 
     <select id="selectGoodsDataTable" resultType="Map">
@@ -159,5 +176,55 @@
         <where>
             <include refid="includeGoodsDatatable"></include>
         </where>
+    </select>
+
+    <select id="goodsProductCheck" resultType="Map">
+        SELECT
+            P_IDX,
+            P_OPTION,
+            CATE_SPEC_LIST,
+            G_PO_IDX,
+            P_STATE,
+            P_COST,
+            P_SELL_PRICE,
+            P_MEMO,
+            P_MODEL
+        FROM
+            GOODS
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+        WHERE
+            <foreach collection="gIdxs" open="G_IDX IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        GROUP BY
+            G_P_IDX
+    </select>
+
+    <select id="checkGoodsReceived" resultType="Map">
+        SELECT
+            P_IDX,
+            POR_OPTION,
+            CATE_SPEC_LIST,
+            G_PO_IDX,
+            P_STATE,
+            P_COST,
+            P_SELL_PRICE,
+            P_MEMO,
+            P_MODEL,
+            SPEC_LOOKUP,
+            POR_IDX
+        FROM
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN SPEC ON POR_PROCESS_SPEC_IDX = SPEC_IDX
+        WHERE
+        <foreach collection="gIdxs" open="G_IDX IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        GROUP BY
+            POR_IDX
     </select>
 </mapper>

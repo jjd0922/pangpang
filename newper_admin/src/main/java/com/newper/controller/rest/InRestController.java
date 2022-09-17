@@ -200,18 +200,9 @@ public class InRestController {
         return rm;
     }
 
-
-    /** 입고검수 자산 검색 */
-    @PostMapping("selectReceived.dataTable")
-    public ReturnDatatable selectReceived(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
-
-        return rd;
-    }
-
     /** 해당 발주의 실입고 상품 select */
     @PostMapping("selectReceivedByPo.ajax")
-    public ReturnMap insertPoReceivedByPo(ParamMap paramMap) {
+    public ReturnMap selectReceivedByPo(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         poMapper.selectReceivedByPo(paramMap.getMap());
 

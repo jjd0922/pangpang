@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.PgType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -23,11 +24,19 @@ public class ProcessGroup extends CreatedEntity {
     @JoinColumn(name="PG_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PG_U_IDX", referencedColumnName = "uIdx")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PG_U_IDX2", referencedColumnName = "uIdx")
+    private User user2;
+
     private String pgType;
 
     private String pgLastState;
 
-    private LocalDate pgRequestDate;
+    private String pgRequestDate;
 
     private String pgReqMemo;
 
@@ -35,10 +44,7 @@ public class ProcessGroup extends CreatedEntity {
 
     private String pgDoneMemo;
 
-    private LocalDate pgStartDate;
+    private String pgStartDate;
 
-    private LocalDate pgEndDate;
-
-    private Integer pgUIdx;
-
+    private String pgEndDate;
 }

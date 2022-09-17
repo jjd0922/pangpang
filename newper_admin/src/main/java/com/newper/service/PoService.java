@@ -4,7 +4,9 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.component.SessionInfo;
 import com.newper.constant.HwState;
+import com.newper.constant.PnType;
 import com.newper.constant.PoState;
+import com.newper.constant.PsType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.mapper.PoMapper;
@@ -12,6 +14,7 @@ import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -39,8 +42,10 @@ public class PoService {
     private final SpecMapper specMapper;
     private final CompanyContractRepo companyContractRepo;
     private final HiworksRepo hiworksRepo;
-
-
+    private final GoodsRepo goodsRepo;
+    private final PoReceivedRepo poReceivedRepo;
+    private final ProcessNeedRepo processNeedRepo;
+    private final ProcessSpecRepo processSpecRepo;
 
     /** 발주(po) 생성 */
     @Transactional
@@ -509,7 +514,118 @@ public class PoService {
 
     }
 
-    public void selectReceivedByPo(ParamMap paramMap) {
+    /** 영업검수 실입고상품 등록 */
+    @Transactional
+    public void insertPoReceived(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gIdxs").split(",");
+
+        // SPEC setting
+        List<String> spec1 = paramMap.getList("porSpec1");
+        List<String> spec2 = paramMap.getList("porSpec2");
+        List<String> specName = paramMap.getList("specName");
+        SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+
+        Spec inSpec = specFinder.findSpec(specName, spec1);
+        Spec processSpec = specFinder.findSpec(specName, spec2);
+
+
+        //option Setting
+        List<Map<String, Object>> option = new ArrayList<>();
+        List<String> options = paramMap.getList("goodsOption");
+        Common common = new Common();
+        common.putOption(option, options);
+
+        // 예상공정 set
+        // 도색
+        if (!paramMap.get("paintCost").equals("")) {
+            ProcessNeed processPaint = ProcessNeed
+                    .builder()
+                    .pnContent(paramMap.getString("paintMemo"))
+                    .pnExpectedCost(paramMap.getInt("paintCost"))
+                    .pnProcess(paramMap.getString("paintYn"))
+                    .pnCount(0)
+                    .pnType(PnType.PAINT.name())
+                    .build();
+            processNeedRepo.save(processPaint);
+        }
+
+        //수리
+        if (!paramMap.get("fixCost").equals("")) {
+            ProcessNeed processFix = ProcessNeed
+                    .builder()
+                    .pnContent(paramMap.getString("fixMemo"))
+                    .pnExpectedCost(paramMap.getInt("fixCost"))
+                    .pnProcess(paramMap.getString("fixYn"))
+                    .pnCount(0)
+                    .pnType(PnType.FIX.name())
+                    .build();
+            processNeedRepo.save(processFix);
+        }
+
+        //가공
+        if (!paramMap.get("processCost").equals("")) {
+            ProcessNeed process = ProcessNeed
+                    .builder()
+                    .pnContent(paramMap.getString("processMemo"))
+                    .pnExpectedCost(paramMap.getInt("processCost"))
+                    .pnProcess(paramMap.getString("processYn"))
+                    .pnCount(0)
+                    .pnType(PnType.PROCESS.name())
+                    .build();
+            processNeedRepo.save(process);
+
+            for (int i = 0; i < spec2.size(); i++) {
+                SpecList specList = specFinder.findSpecList(specName.get(i), spec2.get(i));
+                ProcessSpec processSpec_entitiy = ProcessSpec
+                        .builder()
+                        .specList(specList)
+                        .processNeed(process)
+                        .psType(PsType.EXPECTED)
+                        .build();
+                processSpecRepo.save(processSpec_entitiy);
+            }
+        }
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("pIdx", paramMap.getInt("pIdx"));
+        param.put("poIdx", paramMap.get("poIdx"));
+        param.put("specIdx", inSpec.getSpecIdx());
+        param.put("option", option.toString());
+
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+
+            //같은 실입고 상품 데이터 조회(상품, 발주, 입고확정, 옵션)
+            PoReceived poReceived = poMapper.selectPoReceivedByProductAndPoAndSpecAndOption(param);
+            if (poReceived == null) {
+                Product product = Product.builder().pIdx(paramMap.getInt("pIdx")).build();
+                poReceived.setPorCount(0);
+                poReceived.setPorCost(paramMap.getInt("porCost"));
+                poReceived.setPorMemo(paramMap.getString("porMemo"));
+                poReceived.setProduct(product);
+            } else {
+                poReceived.setPorCount(poReceived.getPorCount() + 1);
+            }
+
+            poReceived.setProcessSpec(processSpec);
+            poReceived.setInSpec(inSpec);
+            poReceived.setPorOption(option);
+
+
+
+            PoProduct poProduct = null;
+            if (paramMap.get("ppIdx") != null) {
+                poProduct = poProductRepo.findById(paramMap.getInt("ppIdx")).get();
+            }
+
+            poReceived.setPoProduct(poProduct);
+
+            poReceivedRepo.save(poReceived);
+
+            goods.setPoReceived(poReceived);
+            goods.setGOption(option);
+            goodsRepo.save(goods);
+        }
     }
 }
 

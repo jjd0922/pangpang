@@ -2,9 +2,7 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
-import com.newper.constant.GState;
-import com.newper.constant.PnType;
-import com.newper.constant.PsType;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
@@ -32,10 +30,9 @@ public class CheckService {
     private final SpecRepo specRepo;
     private final CheckGoodsRepo checkGoodsRepo;
     private final GoodsRepo goodsRepo;
-    private final PoReceivedRepo poReceivedRepo;
-    private final ProcessNeedRepo processNeedRepo;
-    private final PoMapper poMapper;
     private final SpecMapper specMapper;
+    private final ProcessGroupRepo processGroupRepo;
+    private final ProcessNeedRepo processNeedRepo;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -47,12 +44,6 @@ public class CheckService {
 
         User user = paramMap.mapParam(User.class);
         checkGroup.setUser(user);
-
-        User user2 = User
-                .builder()
-                .uIdx(paramMap.getInt("uIdx2"))
-                .build();
-        checkGroup.setUser2(user2);
 
         checkGroupRepo.save(checkGroup);
 
@@ -99,11 +90,8 @@ public class CheckService {
         //옵션 세팅
         List<Map<String, Object>> option = new ArrayList<>();
         List<String> optionList = paramMap.getList("productOption");
-        for (int i = 0; i < optionList.size(); i++) {
-            if (!optionList.get(i).equals("")) {
-                Common.putOption(option, optionList.get(i));
-            }
-        }
+        Common.putOption(option, optionList);
+
         goods.setGOption(option);
 
         //메모 저장
@@ -153,5 +141,45 @@ public class CheckService {
         goods.setGState(GState.CHECK);
 
         goodsRepo.save(goods);
+    }
+
+    /** 공정필요 데이터 생성 (가공, 수리, 도색) */
+    @Transactional
+    public void insertProcessGroup(ParamMap paramMap) {
+        ProcessGroup processGroup = paramMap.mapParam(ProcessGroup.class);
+
+        Company company = paramMap.mapParam(Company.class);
+        processGroup.setCompany(company);
+
+        User user = paramMap.mapParam(User.class);
+        processGroup.setUser(user);
+
+        processGroup.setPgType(paramMap.getString("pgType"));
+        processGroup.setPgDoneMemo("");
+        processGroup.setPgLastState("");
+        processGroupRepo.save(processGroup);
+
+        //check goods
+        List<Long> gIdx = paramMap.getListLong("gIdx");
+
+        for (int i = 0; i < gIdx.size(); i++) {
+            Goods goods = Goods
+                    .builder()
+                    .gIdx(gIdx.get(i))
+                    .gState(GState.PROCESS)
+                    .build();
+
+
+            ProcessNeed processNeed = processNeedRepo.findTopByGoods_gIdxAndPnProcessAndPnTypeAndProcessGroup_pgIdxIsNullOrderByPnIdxDesc(goods.getGIdx(), "Y", paramMap.getString("pgType"));
+            if (processNeed == null) {
+                continue;
+            }
+            processNeed.setProcessGroup(processGroup);
+
+            processNeedRepo.save(processNeed);
+        }
+
+        long ggt_idx = paramMap.getLong("ggt_idx");
+        goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);
     }
 }

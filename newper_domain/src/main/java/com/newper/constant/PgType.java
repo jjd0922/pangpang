@@ -6,13 +6,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum GgtType implements EnumOption {
+/** 공정필요 PROCESS_GROPU.PG_TYPE */
+public enum PgType implements EnumOption {
 
-    IN_CHECK("입고검수"),
-    PROCESS("가공"),
+    PAINT("도색"),
     FIX("수리"),
-    PAINT("도색")
-    ;
+    PROCESS("가공");
+
 
     private String option;
 }

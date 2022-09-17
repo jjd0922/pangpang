@@ -126,4 +126,19 @@ public class PoRestController {
         return rd;
     }
 
+    /** 발주 상품 상세 조회 */
+    @PostMapping("poProduct.ajax")
+    public Map<String, Object> poProduct(ParamMap paramMap){
+        return poMapper.selectPoProductByPpIdx(paramMap.getInt("ppIdx"));
+    }
+
+    /** 영업검수 실입고상품 등록 */
+    @PostMapping("insertPoReceived.ajax")
+    public ReturnMap insertPoReceived(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        poService.insertPoReceived(paramMap);
+        rm.setMessage("매핑완료");
+        return rm;
+    }
+
 }

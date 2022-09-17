@@ -354,6 +354,7 @@
                                                     </span>
                                                         <input type="text" class="form-control" name="pIdx">
                                                         <input type="hidden" name="poIdx" th:value="${ig.po.poIdx}">
+                                                        <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -486,10 +487,15 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <th:block th:replace="in/modal/goodsModal.html"/>
+<th:block th:replace="in/modal/checksModal.html"/>
 
 <script>
     function goodsStateUpdate(gState) {
         var gIdxs = '';
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해 주세요');
+            return false;
+        }
         $.each($('.selected'), function (index, value) {
             gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
         });

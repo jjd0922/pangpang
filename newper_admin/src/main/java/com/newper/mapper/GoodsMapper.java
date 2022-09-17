@@ -39,4 +39,10 @@ public interface GoodsMapper {
 
     /** 자산 개수 조회 */
     long countGoodsDataTable(Map<String, Object> map);
+
+    /** 자산으로 같은 상품의 데이터 체크 */
+    List<Map<String, Object>> goodsProductCheck(Map<String, Object> map);
+
+    /** 자산으로 같은 입고그룹의 데이터체크 */
+    List<Map<String, Object>> checkGoodsReceived(Map<String, Object> map);
 }

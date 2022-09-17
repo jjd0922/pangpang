@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.GgtType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
@@ -55,12 +56,10 @@ public class ProcessRestController {
 
     /**가공관리 페이지 조회테이블**/
     @PostMapping("processing.dataTable")
-    public ReturnDatatable processing(ParamMap paramMap, HttpServletResponse response) {
+    public ReturnDatatable processing(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("가공관리");
-
-        //임의로 userMapper 사용
-        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        rd.setData(processMapper.selectProcessGroupDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countProcessGroupDatatable(paramMap.getMap()));
         return rd;
     }
 
@@ -108,9 +107,11 @@ public class ProcessRestController {
     /** 입고검수 임시 테이블. return ggt_idx*/
     @PostMapping("in/temp.ajax")
     public String inTemp(ParamMap paramMap){
+        System.out.println(paramMap.getMap().entrySet());
         String idx = paramMap.getString("idx");
         String g_idxs = paramMap.getString("g_idxs");
-        return goodsService.insertGoodsTemp(idx, g_idxs.split(","));
+        GgtType ggtType = GgtType.valueOf(paramMap.getString("type"));
+        return goodsService.insertGoodsTemp(idx, g_idxs.split(","), ggtType);
     }
     /**입고검수 그룹 등록*/
     @PostMapping("incheckPop.ajax")
@@ -121,6 +122,14 @@ public class ProcessRestController {
         return rm;
     }
 
+    @PostMapping("needPop.ajax")
+    public ReturnMap process(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        checkService.insertProcessGroup(paramMap);
+        rm.setMessage("가공 요청 완료");
+        return rm;
+    }
+
     /** 공정필요 자산 select */
     @PostMapping("selectProcessNeed.ajax")
     public ReturnDatatable selectProcessNeed(ParamMap paramMap){
@@ -128,4 +137,5 @@ public class ProcessRestController {
         rd.setData(processMapper.selectProcessNeed(paramMap.getMap()));
         return rd;
     }
+
 }

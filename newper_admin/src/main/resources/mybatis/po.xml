@@ -326,39 +326,30 @@
 
     <select id="selectPoReceivedByPoIdx" resultType="Map">
         SELECT
-            *,
-            PP_IDX,
-            PO_IDX,
             P_IDX,
-            PP_MEMO,
+            POR_IDX,
+            POR_MEMO,
             P_NAME,
             CATE_NAME,
+            IN_SPEC.SPEC_LOOKUP AS INSPEC,
+            PROCESS_SPEC.SPEC_LOOKUP AS PROCESSSPEC,
             P_COST,
-            PP_COST,
-            PP_COUNT,
-            BUY.SPEC_LOOKUP SPEC_BUY,
-            SELL.SPEC_LOOKUP SPEC_SELL,
-            PP_FIX_MEMO,
-            PP_FIX_COST,
-            PP_PAINT_MEMO,
-            PP_PAINT_COST,
-            PP_PROCESS_MEMO,
-            PP_PROCESS_COST,
-            PP_SELL_PRICE,
-            PP_PROFIT_TARGET,
-            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
-            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
-            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3
+            POR_COST,
+            POR_COUNT,
+            POR_SELL_PRICE,
+            P_TYPE1,
+            IFNULL(CONCAT (POR_OPTION ->> '$[0].title', ':', POR_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (POR_OPTION ->> '$[1].title', ':', POR_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (POR_OPTION ->> '$[2].title', ':', POR_OPTION ->> '$[2].values'), '') AS OPTION3
         FROM
             PO_RECEIVED
                 LEFT JOIN PO ON POR_PO_IDX = PO_IDX
-                LEFT JOIN PRODUCT ON POER_P_IDX = P_IDX
+                LEFT JOIN PRODUCT ON POR_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX2 = CATE_IDX
                 LEFT JOIN SPEC AS IN_SPEC ON POR_IN_SPEC_IDX = IN_SPEC.SPEC_IDX
-                LEFT JOIN PROCESS_NEDD ON POR_IDX
-                LEFT JOIN SPEC AS PROCESS_SPEC ON POR_SPEC_IDX2 = PROCESS_SPEC.SPEC_IDX
+                LEFT JOIN SPEC AS PROCESS_SPEC ON POR_PROCESS_SPEC_IDX = PROCESS_SPEC.SPEC_IDX
         WHERE
-            PP_PO_IDX = #{poIdx}
+            POR_PO_IDX = #{poIdx}
     </select>
 
     <select id="selectPoProductByPoIdx" resultType="Map">
@@ -382,6 +373,8 @@
             PP_PROCESS_COST,
             PP_SELL_PRICE,
             PP_PROFIT_TARGET,
+            P_TYPE1,
+            (PP_COST + PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST) * PP_COUNT AS CREATE_PRICE,
             IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
             IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
             IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3
@@ -465,7 +458,7 @@
             PO_RECEIVED
                 LEFT JOIN PO ON POR_PO_IDX = PO_IDX
                 LEFT JOIN PRODUCT ON POR_P_IDX = P_IDX
-                LEFT JOIN SPEC ON POR_IN_SPEC_IDX = SPEC_IDX
+                LEFT JOIN SPEC ON POR_PROCESS_SPEC_IDX = SPEC_IDX
                 LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX AND PP_COUNT - POR_COUNT > 0
         WHERE
             SPEC_IDX = #{specIdx}
@@ -477,4 +470,24 @@
             PO_IDX = #{poIdx}
     </select>
 
+    <select id="selectPoReceivedByPoIdxAndPpIdx" resultType="com.newper.entity.PoReceived">
+        SELECT
+            *
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX AND PP_COUNT - POR_COUNT > 0
+        WHERE
+            POR_PP_IDX = #{ppIdx}
+          AND
+            POR_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoProductByPpIdx" resultType="Map">
+        SELECT
+            *
+        FROM
+            PO_PRODUCT
+        WHERE
+            PP_IDX = #{ppIdx}
+    </select>
 </mapper>

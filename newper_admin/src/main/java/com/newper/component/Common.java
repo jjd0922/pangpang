@@ -41,11 +41,15 @@ public class Common {
     }
 
     /** 발주품의 옵션값 map에 넣기  */
-    public static void putOption(List<Map<String, Object>> optionList, String optionStr) {
-        String [] option_str = optionStr.split(":");
-        Map<String, Object> option = new HashMap<>();
-        option.put("title", option_str[0]);
-        option.put("values", option_str[1]);
-        optionList.add(option);
+    public static void putOption(List<Map<String, Object>> optionList, List<String> optionStr) {
+        for (int i = 0; i < optionStr.size(); i++) {
+            if (!optionStr.get(i).equals("")) {
+                String [] option_str = optionStr.get(i).split(":");
+                Map<String, Object> option = new HashMap<>();
+                option.put("title", option_str[0]);
+                option.put("values", option_str[1]);
+                optionList.add(option);
+            }
+        }
     }
 }

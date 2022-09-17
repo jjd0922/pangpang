@@ -122,3 +122,165 @@
         });
     }
 </script>
+
+<script th:inline="javascript">
+    var userFlag = '';
+    function inOperationModal(flag){
+        $('#operationModal').modal('show');
+        userFlag = flag;
+    }
+
+    function selectUser(obj, u_idx) {
+        if (userFlag == 'JISI') {
+            $('input[name=uName]').val(obj.innerText);
+            $('input[name=uIdx]').val(u_idx);
+        } else {
+            $('input[name=uName2]').val(obj.innerText);
+            $('input[name=uIdx2]').val(u_idx);
+        }
+        $('#operationModal').modal('hide');
+    }
+
+    function selectCompany(row) {
+        var rowData = getDatatablemap('comModalTable', row);
+        $('input[name=comIdx]').val(rowData.COM_IDX);
+        $('input[name=comName]').val(rowData.COM_NAME)
+        $('input[name=uName3]').val(rowData.U_NAME);
+        $('#searchComModal').modal('hide');
+    }
+
+    function saveBtn() {
+        if ($('input[name=uIdx]').val() == '') {
+            alert('작업지시자(내부)를 선택해주세요');
+            return false;
+        }
+
+        if ($('input[name=comIdx]').val() == '') {
+            alert('업체를 선택해주세요');
+            return false;
+        }
+
+        if (window.confirm('저장하시겠습니까?')) {
+            $.ajax({
+                url: location.pathname + '.ajax' + location.search
+                , type: 'post'
+                , data: $('#tempForm').serialize()
+            }).done(function (res) {
+                window.close();
+            });
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    $('#userTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/process/user.dataTable?'+$('#userForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
+                    return '<a class="btn btn-secondary" onclick="selectUser(this, '+full.U_IDX+')">'+data+'</a>';
+                }}
+            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
+            ,{'class':'m-w-max', 'title':'직급','data':'U_POSITION'}
+            ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL', 'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'class':'m-w-max', 'title':'전화번호','data':' U_PHONE' ,'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+        ]
+    });
+
+    //자산 임시 테이블
+    $('#goodsTempTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        serverSide: true,
+        ajax:{
+            url:'/goods/temp.dataTable?ggt_idx='+[[${param.ggt_idx}]],
+            type:'post'
+        },
+        buttons: buttonsSelect(false),
+        "columns" : [
+            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1 + '<input type="hidden" name="gIdx" value="' + full.G_IDX + '">';
+                }}
+            ,{'class':'m-w-max', 'title':'바코드','data':'G_BARCODE'}
+            ,{'class':'m-w-max', 'title':'삭제','data':' G_IDX' ,'render': function (data,type,full,meta){
+                    return '<a class="btn btn-sm badge-danger" onclick="deleteGgtGoods(' + full.G_IDX + ',' + full.GGT_IDX + ')">삭제</a>';
+                }}
+        ]
+    });
+
+
+
+    $('#userForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+    function deleteGgtGoods (gIdx, ggtIdx) {
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                url:'/goods/ggtGoodsDelete.ajax',
+                type:'post',
+                data: {
+                    'ggtIdx' : ggtIdx,
+                    'gIdx' : gIdx
+                },
+                success:function(){
+                    location.reload();
+                }
+            })
+        }
+    }
+
+    function setGoods () {
+        var ggtIdx = [[${param.ggt_idx}]];
+        var gIdx = '';
+
+        $.each($('.selected'), function (index, value) {
+            gIdx += $(this).children('td').children('input').val() + ',';
+        });
+        gIdx = gIdx.slice(0, -1);
+
+        if(confirm("추가하시겠습니까?")){
+            $.ajax({
+                url:'/goods/ggtGoodsInsert.ajax',
+                type:'post',
+                data: {
+                    'ggtIdx' : ggtIdx[0],
+                    'gIdx' : gIdx
+                },
+                success:function(){
+                    location.reload();
+                    // $('#goodsTempTable').DataTable().ajax.reload();
+                }
+            })
+        }
+    }
+</script>

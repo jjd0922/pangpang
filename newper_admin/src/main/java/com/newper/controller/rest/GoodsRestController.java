@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.GgtType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/goods/")
 @RestController
@@ -33,8 +35,8 @@ public class GoodsRestController {
     }
     /** 스펙리스트 조회 */
     @GetMapping("specList.ajax")
-    public List<String> specList(String speclName) {
-        return specMapper.selectSpecListValueList(speclName);
+    public List<String> specList(String specName) {
+        return specMapper.selectSpecListValueList(specName);
     }
 
     /** 자산 임시 테이블 조회 */
@@ -55,7 +57,7 @@ public class GoodsRestController {
         ReturnMap rm = new ReturnMap();
         String ggtIdx = paramMap.get("ggtIdx").toString();
         String[] gIdxs = paramMap.get("gIdx").toString().split(",");
-        goodsService.insertGoodsTemp(ggtIdx, gIdxs);
+        goodsService.insertGoodsTemp(ggtIdx, gIdxs, GgtType.IN_CHECK);
         return rm;
     }
 
@@ -74,8 +76,50 @@ public class GoodsRestController {
     @PostMapping("goods.dataTable")
     public ReturnDatatable goodsDataTable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
+        paramMap.multiSelect("gState");
         rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
         rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
         return rd;
     }
+
+    /** 영업검수에서 반품요청 & 반품반려 처리 */
+    @PostMapping("goodsStateUpdateByCheck.ajax")
+    public ReturnMap goodsStateUpdateByCheck(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        rm.setMessage(goodsService.goodsStateUpdateByCheck(paramMap));
+        return rm;
+    }
+
+    /** 영업검수 자산-상품 관계 체크 */
+    @PostMapping("checkGoodsProduct.ajax")
+    public ReturnDatatable checkGoodsProduct(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(goodsService.checkGoodsProduct(paramMap));
+        return rd;
+    }
+
+
+    /** 영업검수 자산-실입고 상품 관계 체크 */
+    @PostMapping("checkGoodsReceived.ajax")
+    public ReturnDatatable checkGoodsReceived(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(goodsService.checkGoodsReceived(paramMap));
+        return rd;
+    }
+
+
+    /** 영업검수 확정 */
+    @PostMapping("checkGoods.ajax")
+    public ReturnMap checkGoods(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.checkGoods(paramMap);
+        return rm;
+    }
+
+    /** 자산 상세 조회 */
+    @PostMapping("selectGoods.ajax")
+    public Map<String, Object> selectGoods(ParamMap paramMap) {
+        return goodsMapper.selectGoodsByG_IDX(paramMap.getLong("gIdx"));
+    }
+
 }

@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>가공관리</title>
+    <title th:text="|${type.option} 관리|"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -34,24 +34,25 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                                 <div class="form-group">
-                                                    <label class="d-block">가공코드</label>
+                                                    <label class="d-block">공정코드</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="hidden" name="pgType" th:value="${type}">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">가공 작업 상태값</label>
+                                                    <label class="d-block">공정 작업 상태값</label>
                                                     <select class="form-control form-control-sm select-search"  data-placeholder="선택" data-container-css-class="select-sm" name="">
                                                         <option></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">가공업체</label>
+                                                    <label class="d-block">공정업체</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">가공담당자</label>
+                                                    <label class="d-block">공정담당자</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
 
@@ -138,6 +139,17 @@
         var table = $('#returnTable').DataTable();
         table.page('first').ajax.url('/process/processing.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
+
+    function pgDetail(idx, type) {
+        if (type == 'PROCESS') {
+            var focusPopup = window.open('/process/processGroupPop_process/' + idx, 'processGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        } else {
+            var focusPopup = window.open('/process/processGroupPop/' + idx, 'processGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        }
+
+    }
 </script>
 
 <script>
@@ -164,28 +176,27 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'가공코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: needPop('+ data[''] +')" class="badge badge-primary">' + data[''] + '</a>';
+            ,{'title':'공정코드','data':'PG_IDX', 'render': function (data,type,full,meta) {
+                    return '<a onclick="pgDetail('+data+',\''+full.PG_TYPE+'\')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{ 'title':'가공<br>작업 상태값','data':''}
-            ,{ 'title':'가공업체','data':''}
-            ,{ 'title':'가공담당자','data':''}
-            ,{ 'title':'요청자','data':''}
-            ,{ 'title':'작업지시자','data':''}
-            ,{ 'title':'완료처리자','data':''}
-            ,{ 'title':'요청일','data':''}
-            ,{ 'title':'작업시작일','data':''}
-            ,{ 'title':'작업종료일','data':''}
-            ,{ 'title':'작업<br>소요시간','data':''}
-            ,{ 'title':'공정예정비<br>합계','data':''}
-            ,{ 'title':'공정완료/작업요청건','data':''}
-            ,{ 'title':'공정비 합계','data':''}
+            ,{ 'title':'공정<br>작업 상태값','data':'','defaultContent':''}
+            ,{ 'title':'공정업체','data':'','defaultContent':''}
+            ,{ 'title':'공정담당자','data':'','defaultContent':''}
+            ,{ 'title':'요청자','data':'','defaultContent':''}
+            ,{ 'title':'작업지시자','data':'','defaultContent':''}
+            ,{ 'title':'완료처리자','data':'','defaultContent':''}
+            ,{ 'title':'요청일','data':'','defaultContent':''}
+            ,{ 'title':'작업시작일','data':'','defaultContent':''}
+            ,{ 'title':'작업종료일','data':'','defaultContent':''}
+            ,{ 'title':'작업<br>소요시간','data':'','defaultContent':''}
+            ,{ 'title':'공정예정비<br>합계','data':'','defaultContent':''}
+            ,{ 'title':'공정완료/작업요청건','data':'','defaultContent':''}
+            ,{ 'title':'공정비 합계','data':'','defaultContent':''}
         ]
     });
 
     $('#returnForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
-
 </script>
 </html>

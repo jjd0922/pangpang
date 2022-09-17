@@ -70,18 +70,37 @@
             G_LOC_IDX IS NOT NULL
             and G_GS_IDX=#{GS_IDX}
     </select>
+
+
+    <sql id="includeStockDataTable">
+        <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+        <if test="pType2 != null and pType2 != ''">AND P_TYPE2 = #{pType2}</if>
+        <if test="pName != null and pName != ''">AND P_IDX LIKE CONCAT('%', #{pName}, '%')</if>
+        <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+    </sql>
+
     <select id="selectStockDataTable" resultType="map" parameterType="map">
-        select
-        *
-        from
-        goods_stock
+        SELECT
+            *
+        FROM
+            GOODS_STOCK
+                LEFT JOIN GOODS ON GS_IDX = G_GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+        <where>
+            <include refid="includeStockDataTable"></include>
+        </where>
     </select>
 
     <select id="countStockDataTable" resultType="integer">
-        select
-            count(*)
-        from
-        goods_stock
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS_STOCK
+                LEFT JOIN GOODS ON GS_IDX = G_GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+        <where>
+            <include refid="includeStockDataTable"></include>
+        </where>
     </select>
 
 

@@ -29,7 +29,7 @@ public class ProcessNeed {
     @JoinColumn(name="PN_PG_IDX", referencedColumnName = "pgIdx")
     private ProcessGroup processGroup;
 
-    private PnType pnType;
+    private String pnType;
 
     private Integer pnCount;
 

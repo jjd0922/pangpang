@@ -37,9 +37,9 @@ public class StockController {
     }
 
     /**적재관리 > 바코드_재고인수(적재) 버튼 > 재고적재 페이지*/
-    @GetMapping("load/take/barcode")
-    public ModelAndView stockTakingByBarcode() {
-        ModelAndView mav = new ModelAndView("/stock/load_take_barcode");
+    @GetMapping("load/barcode")
+    public ModelAndView stockBarcode() {
+        ModelAndView mav = new ModelAndView("/stock/load_barcode");
         mav.addObject("barcode", " ");
         return mav;
     }

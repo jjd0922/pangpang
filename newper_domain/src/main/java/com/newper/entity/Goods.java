@@ -83,6 +83,7 @@ public class Goods {
 
 
      private String gMemo;
+     private String gVendor;
 
 
 

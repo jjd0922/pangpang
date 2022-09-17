@@ -54,20 +54,23 @@ public interface PoMapper {
     int countInPpDatatable(Map<String, Object> param);
 
     /** 발주품의 상품 조회 쿼리문 */
-    List<Map<String, Object>> selectPoProductByPoIdx(@Param("poIdx") long poIdx);
+    List<Map<String, Object>> selectPoProductByPoIdx(@Param("poIdx") int poIdx);
 
     /** 발주품의 상품 개수 조회 쿼리문 */
-    long countPoProductByPoIdx(@Param("poIdx") long poIdx);
+    Integer countPoProductByPoIdx(@Param("poIdx") int poIdx);
 
     /** 검수리포트 실입고 상품 있는지 확인 */
-    PoReceived selectPoReceivedByProductAndPoAndSpecAndOption(@Param("pIdx") int pIdx, @Param("poIdx") int poIdx, @Param("specIdx") int specIdx, @Param("option") String option);
+    PoReceived selectPoReceivedByProductAndPoAndSpecAndOption(Map<String, Object> param);
 
     /** 해당 발주의 실입고 상품 select */
     void selectReceivedByPo(Map<String, Object> map);
 
     /** 발주품의 실입고상품 조회 쿼리문 */
-    List<Map<String, Object>> selectPoReceivedByPoIdx(int poIdx);
+    List<Map<String, Object>> selectPoReceivedByPoIdx(@Param("poIdx") int poIdx);
 
     /** 상품 타입이 정상품일경우 자동매핑을 위한 실입고상품 조회문 */
     PoReceived selectPoReceivedByPoIdxAndPpIdx(@Param("poIdx") int po_idx, @Param("ppIdx") Integer ppIdx);
+
+    /** 발주 상품 조회 */
+    Map<String, Object> selectPoProductByPpIdx(int ppIdx);
 }

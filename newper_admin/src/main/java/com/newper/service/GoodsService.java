@@ -1,15 +1,14 @@
 package com.newper.service;
 
-import com.newper.constant.GRank;
-import com.newper.constant.GState;
-import com.newper.constant.GgtType;
-import com.newper.constant.PType1;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
+import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
+import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +32,10 @@ public class GoodsService {
     private final GoodsMapper goodsMapper;
     private final PoReceivedRepo poReceivedRepo;
     private final PoProductRepo poProductRepo;
+    private final SpecMapper specMapper;
+    private final SpecListRepo specListRepo;
+    private final SpecRepo specRepo;
+    private final ProcessNeedRepo processNeedRepo;
 
 
     /** 자산 등록. 상품코드와 바코드만 먼저 등록. 입고검수가 되어야 입고확정스펙 나옴 */
@@ -107,12 +110,12 @@ public class GoodsService {
 
     /**입고검수 임시 그룹 생성 및 바코드 추가.*/
     @Transactional
-    public String insertGoodsTemp(String idx, String[] gIdxs){
+    public String insertGoodsTemp(String idx, String[] gIdxs, GgtType ggtType){
 
         //임시그룹 생성
         if (idx == null) {
             GoodsGroupTemp goodsGroupTemp = GoodsGroupTemp.builder()
-                    .ggtType(GgtType.IN_CHECK)
+                    .ggtType(ggtType)
                     .build();
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
@@ -160,5 +163,61 @@ public class GoodsService {
         }
 
         return msg;
+    }
+
+    /** 영업검수 자산-상품 관계 체크 */
+    public List<Map<String, Object>> checkGoodsProduct(ParamMap paramMap) {
+        paramMap.put("gIdxs", paramMap.getString("gIdxs").split(","));
+        List<Map<String, Object>> goods = goodsMapper.goodsProductCheck(paramMap.getMap());
+        if (goods.size() != 1) {
+            throw new MsgException("같은 상품의 자산만 선택해 주세요");
+        }
+
+        return goods;
+    }
+
+    public List checkGoodsReceived(ParamMap paramMap) {
+        paramMap.put("gIdxs", paramMap.getString("gIdxs").split(","));
+        List<Map<String, Object>> goods = goodsMapper.checkGoodsReceived(paramMap.getMap());
+        if (goods.size() != 1) {
+            throw new MsgException("같은 입고그룹의 자산만 선택해 주세요");
+        }
+
+        return goods;
+    }
+
+    /** 영업검수 확정 */
+    public void checkGoods(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gidxs").split(",");
+
+        List<String> specName = paramMap.getList("specName");
+        List<String> specValue = paramMap.getList("spec");
+
+        SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+        Spec spec = specFinder.findSpec(specName, specValue);
+
+        String gMemo = paramMap.getString("gMemo");
+        GRank gRank = GRank.valueOf(paramMap.getString("gRank"));
+        String gVendor = paramMap.getString("gVendor");
+
+        PoReceived poReceived = poReceivedRepo.findById(paramMap.getLong("porIdx")).get();
+
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+            goods.setSellSpec(spec);
+            goods.setGRank(gRank);
+            goods.setGMemo(gMemo);
+            goods.setGVendor(gVendor);
+
+            // 공정여부중 하나라도 Y가 있을경우 자산 상태값 Y 아니면 재고인계요청
+            List<ProcessNeed> processNeed = processNeedRepo.findByGoods_gIdxAndPnType(goods.getGIdx(), PnProcess.Y);
+            if (processNeed.size() != 0) {
+                goods.setGState(GState.PROCESS);
+            } else {
+                goods.setGState(GState.STOCK_REQ);
+            }
+
+            goodsRepo.save(goods);
+        }
     }
 }
