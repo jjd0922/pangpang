@@ -9,6 +9,7 @@ import com.newper.constant.PoState;
 import com.newper.constant.PsType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
+import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -38,10 +38,12 @@ public class PoService {
     private final WarehouseRepo warehouseRepo;
     private final SpecListRepo specListRepo;
     private final SpecRepo specRepo;
-    private final SpecItemRepo specItemRepo;
     private final SpecMapper specMapper;
     private final CompanyContractRepo companyContractRepo;
     private final HiworksRepo hiworksRepo;
+    private final ProductRepo productRepo;
+
+
     private final GoodsRepo goodsRepo;
     private final PoReceivedRepo poReceivedRepo;
     private final ProcessNeedRepo processNeedRepo;
@@ -51,27 +53,29 @@ public class PoService {
     @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
         System.out.println("paramMap = " + paramMap);
+        // setDate
+        paramMap.parseLocalDate("poSellPayDate");
+        paramMap.parseLocalDate("poInDate", "입고예정일을 입력해주세요");
+        paramMap.parseLocalDate("poDueDate", "납기일을 입력해주세요");
+        paramMap.parseLocalDate("poRefundDate");
+        paramMap.parseLocalDate("poAsDate");
+        paramMap.parseLocalDate("poTaxMonth", "계산서발행월을 입력해주세요");
+        paramMap.parseLocalDate("poPayDate", "지급예정일을 입력해주세요");
+
         Po po = paramMap.mapParam(Po.class);
         po.setPoState(PoState.WAITING);
 
-        int comIdxBuy = paramMap.getInt("comIdxBuy", "매입처를 선택해주세요");
-        po.setCompany(companyRepo.getReferenceById(comIdxBuy));
+        // set many to one 친구들
+        po.setCompany(companyRepo.getReferenceById(paramMap.getInt("comIdxBuy", "매입처를 선택해주세요")));
+        po.setCompany_sell(companyRepo.getReferenceById(paramMap.getInt("comIdxSell", "판매처를 선택해주세요")));
+        po.setWarehouse(warehouseRepo.getReferenceById(paramMap.getInt("whIdx", "입고예정창고를 선택해주세요")));
 
-        String comIdxSell = paramMap.onlyNumber("comIdxSell");
-        if (StringUtils.hasText(comIdxSell)) {
-            po.setCompany_sell(companyRepo.getReferenceById(Integer.parseInt(comIdxSell)));
-        }
-
-        String whIdx = paramMap.onlyNumber("whIdx");
-        if (StringUtils.hasText(whIdx)) {
-            po.setWarehouse(warehouseRepo.getReferenceById(Integer.parseInt(whIdx)));
-        }
-
-        String ccIdx = paramMap.onlyNumber("ccIdx");
+        String ccIdx = paramMap.getString("ccIdx").replaceAll("[^0-9]", "");
         if (StringUtils.hasText(ccIdx)) {
             po.setContract(companyContractRepo.getReferenceById(Integer.parseInt(ccIdx)));
         }
 
+        // set poFile
         if (poFile == null || poFile.isEmpty()) {
             po.setPoFile("");
             po.setPoFileName("");
@@ -84,51 +88,61 @@ public class PoService {
         poRepo.save(po);
 
         // poProduct setting
-        List<Map<String,Object>> ppList = new ArrayList<>();
-        for (int i = 0; i < paramMap.getInt("cnt"); i++) {
+        int productCnt = paramMap.getInt("cnt");
+        int errCnt = 0;
+        for (int i = 0; i < productCnt; i++) {
             ParamMap ppParam = new ParamMap();
-            ppParam.put("pIdx",paramMap.getString("pIdx_"+i));
-            ppParam.put("ppMemo",paramMap.getString("ppMemo_"+i));
-            ppParam.put("ppCost",paramMap.replaceComma("ppCost_"+i));
-            ppParam.put("ppCount",paramMap.getString("ppCount_"+i));
-            ppParam.put("ppProfitTarget",paramMap.onlyNumber("ppProfitTarget_"+i));
-            ppParam.put("ppFixMemo",paramMap.getString("ppFixMemo_"+i));
-            ppParam.put("ppFixCost",paramMap.replaceComma("ppFixCost_"+i));
-            ppParam.put("ppPaintMemo",paramMap.getString("ppPaintMemo_"+i));
-            ppParam.put("ppPaintCost",paramMap.replaceComma("ppPaintCost_"+i));
-            ppParam.put("ppProcessMemo",paramMap.getString("ppProcessMemo_"+i));
-            ppParam.put("ppProcessCost",paramMap.replaceComma("ppProcessCost_"+i));
+            try {
+                ppParam.put("ppMemo", paramMap.getString("ppMemo_" + i));
+                ppParam.put("ppCost", paramMap.replaceComma("ppCost_" + i));
+                ppParam.put("ppCount", paramMap.getString("ppCount_" + i));
+                ppParam.put("ppProfitTarget", paramMap.onlyNumber("ppProfitTarget_" + i));
+                ppParam.put("ppFixMemo", paramMap.getString("ppFixMemo_" + i));
+                ppParam.put("ppFixCost", paramMap.replaceComma("ppFixCost_" + i));
+                ppParam.put("ppPaintMemo", paramMap.getString("ppPaintMemo_" + i));
+                ppParam.put("ppPaintCost", paramMap.replaceComma("ppPaintCost_" + i));
+                ppParam.put("ppProcessMemo", paramMap.getString("ppProcessMemo_" + i));
+                ppParam.put("ppProcessCost", paramMap.replaceComma("ppProcessCost_" + i));
+                ppParam.put("ppSellPrice", paramMap.replaceComma("ppSellPrice_"+i));
 
-            PoProduct poProduct = ppParam.mapParam(PoProduct.class);
+                PoProduct poProduct = ppParam.mapParam(PoProduct.class);
 
-            // option List setting
-            List<Map<String, Object>> optionList = new ArrayList<>();
-            for (int j = 1; j <= 3; j++) {
-                Map<String, Object> map = new HashMap<>();
-                if (StringUtils.hasText(paramMap.getString("ppOption" + j + "_" + i))) {
-                    map.put("values", paramMap.getString("ppOption" + j + "_" + i));
-                    map.put("title", paramMap.getString("title_ppOption"+j+"_"+i));
-                    optionList.add(map);
+                // option List setting
+                List<Map<String, Object>> optionList = new ArrayList<>();
+                for (int j = 1; j <= 3; j++) {
+                    Map<String, Object> map = new HashMap<>();
+                    if (StringUtils.hasText(paramMap.getString("ppOption" + j + "_" + i))) {
+                        map.put("values", paramMap.getString("ppOption" + j + "_" + i));
+                        map.put("title", paramMap.getString("title_ppOption" + j + "_" + i));
+                        optionList.add(map);
+                    }
+                }
+                poProduct.setPpOption(optionList);
+
+                // 입고예정spec setting
+                SpecFinder sf = new SpecFinder(specMapper, specListRepo, specRepo);
+                List<String> buySpecNameList = paramMap.getList("buySpeclName_" + i);
+                List<String> buySpecValueList = paramMap.getList("buySpeclValue_" + i);
+                Spec buySpec = sf.findSpec(buySpecNameList, buySpecValueList);
+                poProduct.setSpec(buySpec);
+
+                // 판매예정spec setting
+                List<String> sellSpecNameList = paramMap.getList("sellSpeclName_" + i);
+                List<String> sellSpecValueList = paramMap.getList("sellSpeclValue_" + i);
+                Spec sellSpec = sf.findSpec(sellSpecNameList, sellSpecValueList);
+                poProduct.setSpec2(sellSpec);
+                poProduct.setPo(po);
+                poProduct.setProduct(productRepo.getReferenceById(paramMap.getInt("pIdx_" + i, "유효한 상품이 아닙니다.")));
+
+                poProductRepo.save(poProduct);
+            } catch (NullPointerException ne) {
+                errCnt++;
+                continue;
+            } finally {
+                if (errCnt == productCnt) {
+                    throw new MsgException("상품을 선택해주세요");
                 }
             }
-            poProduct.setPpOption(optionList);
-
-            // 입고예정spec setting
-            SpecFinder sf = new SpecFinder(specMapper,specListRepo,specRepo);
-            List<String> buySpecNameList = paramMap.getList("buySpeclName_"+i);
-            List<String> buySpecValueList = paramMap.getList("buySpeclValue_"+i);
-            Spec buySpec = sf.findSpec(buySpecNameList, buySpecValueList);
-            poProduct.setSpec(buySpec);
-
-            // 판매예정spec setting
-            List<String> sellSpecNameList = paramMap.getList("sellSpeclName_"+i);
-            List<String> sellSpecValueList = paramMap.getList("sellSpeclValue_"+i);
-            Spec sellSpec = sf.findSpec(sellSpecNameList, sellSpecValueList);
-            poProduct.setSpec2(sellSpec);
-            poProduct.setPo(po);
-            poProduct.setProduct(Product.builder().pIdx(paramMap.getInt("pIdx_"+i, "유효한 상품이 아닙니다.")).build());
-
-            poProductRepo.save(poProduct);
         }
         return po.getPoIdx();
     }

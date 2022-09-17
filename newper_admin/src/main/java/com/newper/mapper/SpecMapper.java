@@ -3,6 +3,7 @@ package com.newper.mapper;
 import com.newper.entity.SpecList;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,7 @@ public interface SpecMapper {
 
     /** spec_item insert **/
     void insertSpecItem(Map<String, Object> specParam);
+
+    void insertSpecItemAll(@Param("specIdx") Integer specIdx,
+                           @Param("speclIdxs") String[] speclIdxs);
 }

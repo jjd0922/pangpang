@@ -3,7 +3,9 @@ package com.newper.dto;
 import com.newper.exception.MsgException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ParamMap {
@@ -217,5 +219,30 @@ public class ParamMap {
         String value=getString(key).replaceAll("\\,", "");
         map.put(key, value);
         return value;
+    }
+
+    /**LocalDate필수값 아닌경우 String -> LocalDate*/
+    public LocalDate parseLocalDate(String key) {
+        return parseLocalDate(key, true, null);
+    }
+
+    /**LocalDate필수값인경우 String -> LocalDate*/
+    public LocalDate parseLocalDate(String key, String exceptionMsg) {
+        return parseLocalDate(key, false, exceptionMsg);
+    }
+
+    /**paramMap의 String value -> LocalDate로*/
+    public LocalDate parseLocalDate(String key, boolean isNullable, String exceptionMsg) {
+        if (StringUtils.hasText(getString(key))) {
+            String value = getString(key);
+            map.put(key, LocalDate.parse(value));
+            return LocalDate.parse(value);
+        } else {
+            if (isNullable) {
+                return null;
+            } else {
+                throw new MsgException(exceptionMsg);
+            }
+        }
     }
 }

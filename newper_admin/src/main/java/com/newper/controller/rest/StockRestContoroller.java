@@ -4,14 +4,17 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.LocationMapper;
+import com.newper.dto.ReturnMap;
 import com.newper.mapper.StockMapper;
 import com.newper.service.LocationService;
+import com.newper.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +26,7 @@ public class StockRestContoroller {
     private final StockMapper stockMapper;
     private final LocationMapper locationMapper;
     private final LocationService locationService;
+    private final StockService stockService;
 
     /**재고관리 픽킹관리 조회테이블**/
     @PostMapping("parent.dataTable")
@@ -46,13 +50,33 @@ public class StockRestContoroller {
         if(paramMap.get("GS_IDX")!=null){
             gs_idx=paramMap.getInt("GS_IDX");
         }
-
-        List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(gs_idx);
+        String[] G_STATES = new String[3];
+        Map<String, Object> map = new HashMap<>();
+        map.put("GS_IDX", gs_idx);
+        if(paramMap.get("release")==null){
+            G_STATES[0]="STOCK";
+            map.put("G_STATES",G_STATES);
+        }else{
+            G_STATES[0]="BEFORE_RELEASE_REQ";
+            G_STATES[1]="BEFORE_RELEASE_IN";
+            G_STATES[2]="BEFORE_RELEASE_OUT";
+            map.put("G_STATES",G_STATES);
+        }
+        List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(map);
         returnDatatable.setData(cList);
         returnDatatable.setRecordsTotal(cList.size());
 
         return returnDatatable;
     }
+
+    /**출고전검수요청*/
+    @PostMapping("beforeRelease.ajax")
+    public ReturnMap beforeRelease(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        rm.setMessage(stockService.beforeRelease(paramMap));
+        return rm;
+    }
+
 
     /** 재고상품 조회 */
     @PostMapping("stockGoods.dataTable")

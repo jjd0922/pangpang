@@ -115,18 +115,13 @@
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="insertInvoice()">
                                             <i class="icon-popout mr-1"></i>송장등록
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3">
-                                            <i class="icon-popout mr-1"></i>송장통합
-                                        </a>
-                                    </div>
-                                    <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn4">
-                                            <i class="icon-popout mr-1"></i>출고등록
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="orderDetail()">
+                                            <i class="icon-popout mr-1"></i>송장통합/출고등록
                                         </a>
                                     </div>
                                 </div>
@@ -144,6 +139,7 @@
 </body>
 
 <th:block th:replace="/deliveryManagement/modal/invoiceUploadModal.html"/>
+<th:block th:replace="/deliveryManagement/modal/deliveryUploadModal.html"/>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -179,12 +175,46 @@
     }
 
     function Btn1(){
-        $('#invoiceUploadModal').modal('show');
+        $('input[name="deliveryFile"]').val("");
+        $('#result').html("");
+        $('#deliveryUploadModal').modal('show');
     }
     function deliveryDetailPop() {
         var focusPopup = window.open('deliveryDetailPop/', 'deliveryDetailPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function insertInvoice(){
+        var param = dataTableGetSelectedDataArray('deliveryTable', 'OG_IDX');
+        console.log(param)
+        if (param.length == 0) {
+            alert('선택된 주문번호코드가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 주문번호코드를 송장등록 하시겠습니까?")) {
+                $.ajax({
+                    url: '/deliveryManagement/insertInvoice.ajax',
+                    type: 'post',
+                    data: {
+                        ogIdxs : param
+                    },
+                    success: function (res) {
+                        $('#deliveryTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
+
+    function orderDetail(){
+        var focusPopup = window.open('/deliveryManagement/integratedDetail/', 'integratedDetail', 'width=1600, height=1200, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+
 </script>
 
 <script>
@@ -210,31 +240,41 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'SP_IDX',
+                'data': 'OG_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
-                    return '';
+                    return '<input type="hidden" name="O_IDX" value="'+data+'">';
                 }
             }
-            , {'title': '주문완료일', 'data': 'U_PHONE'}
-            , {'title': '출고요청일', 'data': 'U_PHONE'}
-            , {'title': '배송출고일', 'data': 'U_PHONE'}
-            , {'title': '배송완료일', 'data': 'U_PHONE'}
-            , {'title': '출고구분', 'data': 'U_PHONE'}
-            , {'title': '주문상태', 'data': 'U_PHONE'}
-            , {'title': '자산상태', 'data': 'U_PHONE'}
+            , {'title': '주문완료일', 'data': 'O_DATE','defaultContent':''}
+            , {'title': '출고요청일', 'data': 'REQ_DATE','defaultContent':''}
+            , {'title': '배송출고일', 'data': 'DN_RELEASE','defaultContent':''}
+            , {'title': '배송완료일', 'data': 'DN_DATE','defaultContent':''}
+            , {'title': '출고구분', 'data': 'G_TYPE','defaultContent':''}
+            , {'title': '주문상태', 'data': 'O_STATE_STR','defaultContent':''}
+            , {'title': '자산상태', 'data': 'G_STATE','defaultContent':''}
             , {
                 'title': '주문코드<br>사방넷통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="#" onclick="deliveryDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
+                   return  '<a ' + 'onclick="orderShopPop(' + data['O_CODE'] + ')" class="badge badge-primary">' + data['O_CODE'] + '</a>';
                 }}
-            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
-            , {'title': '쇼핑몰명', 'data': 'U_PHONE'}
-            , {'title': '상품코드', 'data': 'U_PHONE'}
-            , {'title': '자산코드', 'data': 'U_PHONE'}
-            , {'title': '상품명', 'data': 'U_PHONE'}
-            , {'title': '수량', 'data': 'U_PHONE'}
+            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'O_IDX','defaultContent':''}
+            , {'title': '쇼핑몰명', 'data': 'SHOP_NAME','defaultContent':''}
+            , {'title': '상품코드', 'data': 'P_IDX','defaultContent':''}
+            , {'title': '자산코드', 'data': 'G_BARCODE','defaultContent':''}
+            , {'title': '상품명', 'data': 'P_NAME','defaultContent':''}
+            , {'title': '주문자명', 'data': 'O_NAME','defaultContent':''}
+            , {'title': '주문자연락처', 'data': 'O_PHONE','defaultContent':''}
+            , {'title': '배송자(설치자)이름', 'data': 'AD_NAME','defaultContent':''}
+            , {'title': '배송자(설치자)연락처', 'data': 'AD_PHONE','defaultContent':''}
+            , {'title': '우편번호', 'data': 'POST','defaultContent':''}
+            , {'title': '주소', 'data': 'ADDRS','defaultContent':''}
+            , {'title': '배송(설치)메세지', 'data': 'AD_MEMO','defaultContent':''}
+            , {'title': '출하창고', 'data': 'WH_NAME','defaultContent':''}
+            , {'title': '출고택배사', 'data': 'DN_COMPANY','defaultContent':''}
+            , {'title': '출고송장번호', 'data': 'DN_NUM','defaultContent':''}
         ]
     });
+
 
     $('#deliveryForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
@@ -244,10 +284,10 @@
     });
 
 
-    $('#Btn2').on('click', function () {
+/*    $('#Btn2').on('click', function () {
         var focusPopup = window.open('invoiceUploadPop', 'invoiceUploadPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
-    });
+    });*/
     $('#Btn3').on('click', function () {
         var focusPopup = window.open('invoiceIntegratedPop', 'invoiceIntegratedPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();

@@ -113,7 +113,7 @@
     <select id="selectGoodsStockDetailByOIdx" resultType="map">
         SELECT
             P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,
-            GS_CODE, ifnull(G_AJ_BARCODE,'') as G_AJ_BARCODE, P_NAME, SP_NAME,
+            GS_CODE, ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
@@ -141,7 +141,7 @@
                 LEFT JOIN shop_product
                           ON SPA_SP_IDX=SP_IDX
                 LEFT JOIN goods
-                          ON G_GS_IDX=GS_IDX
+                          ON OG_G_IDX=G_IDX
         where
             O_IDX=#{O_IDX}
         <if test="length!=-1">
@@ -208,5 +208,26 @@
         LEFT JOIN goods
         ON G_GS_IDX=GS_IDX
 
+    </select>
+    
+    <select id="selectOrderGsDetailByOCodeAndGsCode" resultType="Long">
+        SELECT
+            OG_IDX
+        FROM
+            order_gs
+                LEFT JOIN orders
+                          ON O_IDX=OG_O_IDX
+                LEFT JOIN goods
+                          ON OG_G_IDX=G_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_IDX=OG_SPO_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN delivery_num
+                          ON DN_IDX=OG_DN_IDX
+        WHERE
+            O_CODE=#{O_CODE}
+            AND GS_CODE=#{GS_CODE}
+            <if test="G_BARCODE!=''">and G_BARCODE=#{G_BARCODE}</if>
     </select>
 </mapper>

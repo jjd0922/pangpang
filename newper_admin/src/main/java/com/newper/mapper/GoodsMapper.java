@@ -40,6 +40,10 @@ public interface GoodsMapper {
     /** 자산 개수 조회 */
     long countGoodsDataTable(Map<String, Object> map);
 
+    /** 바코드 조회 */
+    List<Map<String, Object>> selectBarcodeDataTable(String barcode);
+
+
     /** 자산으로 같은 상품의 데이터 체크 */
     List<Map<String, Object>> goodsProductCheck(Map<String, Object> map);
 

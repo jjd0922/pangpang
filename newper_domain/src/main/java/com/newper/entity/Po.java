@@ -9,6 +9,7 @@ import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -97,6 +98,26 @@ public class Po extends BaseEntity {
     public void preSave(){
         if (getCompany() == null) {
             throw new MsgException("매입처를 선택해 주세요");
+        } else if (getCompany_sell() == null) {
+            throw new MsgException("판매처를 선택해 주세요");
+        } else if (getWarehouse() == null) {
+            throw new MsgException("입고예정창고를 선택해주세요");
+        } else if (getPoType() == null) {
+            throw new MsgException("긴급발주 여부를 선택해주세요");
+        } else if (getPoBuyProductType() == null) {
+            throw new MsgException("제품상태(품목구분1)을 선택해주세요");
+        } else if (getPoSellChannel() == null) {
+            throw new MsgException("판매채널유형을 선택해주세요");
+        } else if (getPoInDate().isBefore(LocalDate.now())) {
+            throw new MsgException("유효한 입고예정일을 입력해주세요");
+        } else if (getPoDueDate().isBefore(LocalDate.now())) {
+            throw new MsgException("유효한 납기일을 입력해주세요");
+        } else if (getPoPayDate().isBefore(LocalDate.now())) {
+            throw new MsgException("유효한 지급예정일을 입력해주세요");
+        } else if (!StringUtils.hasText(getPoPayAccount())) {
+            throw new MsgException("입금계좌정보를 입력해주세요");
+        } else if (getPoDeliveryCost() < 0) {
+            throw new MsgException("유효한 매입운송비를 입력해주세요");
         }
     }
 

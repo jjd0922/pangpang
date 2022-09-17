@@ -139,18 +139,37 @@
                                         <a type="button" class="btn btn-sm btn-primary ml-1" onclick="sabangOrder()">
                                             <i class="icon-popout mr-1"></i>사방넷 주문 불러오기
                                         </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <table class="table" id="shopOrderTable"></table>
-                        </div>
+
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn1">
+                                            <i class="icon-popout mr-1"></i>반품요청
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn2()">
+                                            <i class="icon-popout mr-1"></i>교환요청
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn3()">
+                                            <i class="icon-popout mr-1"></i>관리자반품<br>요청
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn4()">
+                                            <i class="icon-popout mr-1"></i>관리자교환<br>완료
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn5()">
+                                            <i class="icon-popout mr-1"></i>AS요청
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="insertInvoice()">
+                                            <i class="icon-popout mr-1"></i>송장등록
+                                        </a>
+
+                                    <table class="table" id="shopOrderTable"></table>
+                                  </div>
+                             </div>
+                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+</div>
 </body>
 
 <!-- 공통 js -->
@@ -182,24 +201,34 @@
 <script th:src="@{/assets/js/app.js}"></script>
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
-    function sabangOrder(){
-        $.ajax({
-            url:'/orders/sabangOrder.ajax',
-            type:'post',
-            data:'startDate=20220815&endDate=20220815',
-            success:function(data){
+<script th:inline="javascript">
 
+    function insertInvoice(ogIdx){
+        var param = dataTableGetSelectedDataArray('shopOrderTable', 'OG_IDX');
+        if (param.length == 0) {
+            alert('선택된 주문번호코드가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 주문번호코드를 송장등록 하시겠습니까?")) {
+                $.ajax({
+                    url: '/orders/insertInvoice.ajax',
+                    type: 'post',
+                    data: {
+                        ogIdxs : param
+                    },
+                    success: function (res) {
+                        $('#shopOrderTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
             }
-        })
+        }
     }
-
-    function orderShopPop(oIdx) {
-        var focusPopup = window.open('/orders/detail/' + oIdx, 'detail', 'width=1600, height=1200, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
-
 </script>
+
+
 
 <script>
     var shopOrderTable = $('#shopOrderTable').DataTable({
@@ -224,10 +253,10 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'O_IDX',
+                'data': 'OG_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
-                    return '';
+                    return '<input type="hidden" name="OG_IDX" value="'+data+'">';
                 }
             }
             , {
@@ -286,6 +315,24 @@
             , {'title': '자산픽킹<br>예정로케이션', 'data': 'null','defaultContent':''}
         ]
     });
+
+</script>
+<script>
+    function sabangOrder(){
+        $.ajax({
+            url:'/orders/sabangOrder.ajax',
+            type:'post',
+            data:'startDate=20220815&endDate=20220815',
+            success:function(data){
+
+            }
+        })
+    }
+
+    function orderShopPop(oIdx) {
+        var focusPopup = window.open('/orders/detail/' + oIdx, 'detail', 'width=1600, height=1200, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 
 </script>
 
