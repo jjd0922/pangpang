@@ -171,7 +171,7 @@
 
     function searchBtn() {
         var table = $('#deliveryTable').DataTable();
-        table.page('first').ajax.url('/deliveryManagement/delivery.dataTable?' + $('#deliveryForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/deliveryManagement/delivery.dataTable?' + $('#deliveryForm').serialize()+'&P_DEL_TYPE=DELIVERY').load(null, false);
     }
 
     function Btn1(){
@@ -181,6 +181,11 @@
     }
     function deliveryDetailPop() {
         var focusPopup = window.open('deliveryDetailPop/', 'deliveryDetailPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function orderShopPop(oIdx) {
+        var focusPopup = window.open('/orders/detail/' + oIdx, 'detail', 'width=1600, height=1200, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -227,7 +232,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/deliveryManagement/delivery.dataTable?' + $('#deliveryForm').serialize(),
+            url: '/deliveryManagement/delivery.dataTable?' + $('#deliveryForm').serialize()+'&P_DEL_TYPE=DELIVERY',
             type: 'post'
         },
         columnDefs: [{
@@ -254,8 +259,8 @@
             , {'title': '주문상태', 'data': 'O_STATE_STR','defaultContent':''}
             , {'title': '자산상태', 'data': 'G_STATE','defaultContent':''}
             , {
-                'title': '주문코드<br>사방넷통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                   return  '<a ' + 'onclick="orderShopPop(' + data['O_CODE'] + ')" class="badge badge-primary">' + data['O_CODE'] + '</a>';
+                'title': '주문코드<br>사방넷통합주문번호', 'data': 'O_CODE', 'render': function (data, type, full, meta) {
+                   return  '<a ' + 'onclick="orderShopPop(' + full.O_IDX + ')" class="badge badge-primary">' + data + '</a>';
                 }}
             , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'O_IDX','defaultContent':''}
             , {'title': '쇼핑몰명', 'data': 'SHOP_NAME','defaultContent':''}

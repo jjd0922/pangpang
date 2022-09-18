@@ -3,8 +3,10 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.DeliveryNum;
 import com.newper.mapper.DeliveryMapper;
 import com.newper.mapper.OrdersMapper;
+import com.newper.repository.DeliveryNumRepo;
 import com.newper.service.OrderService;
 import com.newper.service.DeliverytService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class DeliveryManagementRestController {
 
     private final DeliveryMapper deliveryMapper;
     private final DeliverytService deliverytService;
+    private final DeliveryNumRepo deliveryNumRepo;
 
 
     private final OrderService orderService;
@@ -52,8 +55,8 @@ public class DeliveryManagementRestController {
     public ReturnDatatable installation (ParamMap paramMap, HttpServletResponse response) {
         ReturnDatatable rd = new ReturnDatatable("설치관리");
 
-/*        rd.setData(consultationResultMapper.selectConsultationResultDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(consultationResultMapper.countConsultationResultDatatable(paramMap.getMap()));*/
+        rd.setData(deliveryMapper.selectDeliveryDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(deliveryMapper.countDeliveryDatatable(paramMap.getMap()));
         return rd;
     }
 
@@ -135,6 +138,45 @@ public class DeliveryManagementRestController {
         } else {
             rm.put("result", res);
         }
+        return rm;
+    }
+
+    /**설치확인서 등록*/
+    @PostMapping("saveInstall.ajax")
+    public ReturnMap saveInstall(ParamMap paramMap, MultipartFile DN_FILE){
+        ReturnMap rm = new ReturnMap();
+
+        System.out.println(paramMap.getMap());
+        int count = paramMap.getString("idxs").split(",").length;
+        int res = deliverytService.saveInstall(paramMap, DN_FILE);
+        if(res==count){
+            rm.setMessage("등록되었습니다.");
+        }else{
+            if(count==1){
+                rm.setMessage("등록실패");
+            }else{
+                rm.setMessage(count+" 건 중 "+ res + "건 등록완료");
+            }
+        }
+
+        return rm;
+    }
+
+    /**설치확인서 조회*/
+    @PostMapping("deliveryNum.ajax")
+    public ReturnMap deliveryNum(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        Long DN_IDX=paramMap.getLong("DN_IDX");
+        Long OG_IDX=paramMap.getLong("OG_IDX");
+        DeliveryNum deliveryNum = deliveryNumRepo.findById(DN_IDX).get();
+        rm.put("idxs", OG_IDX);
+        rm.put("DN_SCHEDULE", deliveryNum.getDnSchedule());
+        rm.put("DN_DATE", deliveryNum.getDnDate());
+        rm.put("DN_FILE_NAME", deliveryNum.getDnFileName());
+        rm.put("DN_FILE", deliveryNum.getDnFile());
+        rm.put("DN_COMPANY", deliveryNum.getDnCompany());
+        rm.put("DN_MEMO", deliveryNum.getDnMemo());
+
         return rm;
     }
 }
