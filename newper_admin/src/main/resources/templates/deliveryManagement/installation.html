@@ -120,7 +120,7 @@
                                         </a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn2()">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="installation()">
                                             설치정보등록
                                         </a>
                                     </div>
@@ -163,6 +163,7 @@
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 
@@ -175,16 +176,79 @@
 <script>
     function searchBtn() {
         var table = $('#installationTable').DataTable();
-        table.page('first').ajax.url('/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()).load(null, false);
+        table.page('first').ajax.url('/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL').load(null, false);
     }
 
-    function Btn2(){
+    function installation(){
+        var param = dataTableGetSelectedDataArray('installationTable', 'OG_IDX');
+        console.log(param)
+        if (param.length == 0) {
+            alert('선택된 데이터가 없습니다.');
+            return false;
+        } else {
+            $('input[name="idxs"]').val(param)
+            $('#DN_FILE_NAME').hide();
+            $('#DN_FILE_NAME').text('');
+            $('#DN_FILE_NAME').removeAttr("href");
+            $('input[name="DN_FILE"]').show();
+            $('#installationModal').modal('show');
+        }
+    }
+
+
+    function orderShopPop(oIdx) {
+        var focusPopup = window.open('/orders/detail/' + oIdx, 'detail', 'width=1600, height=1200, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function installCheck(ogIdx){
+        $('#installationModalForm')[0].reset();
+        $('input[name="idxs"]').val(ogIdx)
+        $('#DN_FILE_NAME').hide();
+        $('input[name="DN_FILE"]').show();
+        $('#DN_FILE_NAME').text('');
+        $('#DN_FILE_NAME').removeAttr("href");
         $('#installationModal').modal('show');
     }
-/*    function userDetailPop(uIdx) {
-        var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }*/
+
+    function check(dnIdx,ogIdx){
+        $.ajax({
+            url:'/deliveryManagement/deliveryNum.ajax',
+            data:'DN_IDX='+dnIdx+'&OG_IDX='+ogIdx,
+            type:'POST',
+            success:function(res){
+                $('input[name="idxs"]').val(res.data.idxs);
+                $('input[name="DN_SCHEDULE"]').val(res.data.DN_SCHEDULE);
+                $('input[name="DN_DATE"]').val(res.data.DN_DATE);
+                $('#DN_FILE_NAME').text(res.data.DN_FILE_NAME);
+                // $('#DN_FILE_NAME').attr("href",res.data.DN_FILE);
+                $('input[name="DN_COMPANY"]').val(res.data.DN_COMPANY);
+                $('input[name="DN_MEMO"]').val(res.data.DN_MEMO);
+                $('#DN_FILE_NAME').show();
+                $('input[name="DN_FILE"]').hide()
+                $('#installationModal').modal('show');
+            }
+        })
+    }
+
+    function saveInstall(){
+        if(confirm("저장하시겠습니까?")){
+            var param = new FormData($('#installationModalForm')[0]);
+            $.ajax({
+                url:'/deliveryManagement/saveInstall.ajax',
+                data: param,
+                processData:false,
+                contentType:false,
+                type:'post',
+                success:function(res) {
+                    if(res.message!=null){
+                        location.reload();
+                    }
+                }
+            })
+        }
+    }
+
 </script>
 
 
@@ -198,7 +262,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize(),
+            url: '/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL',
             type: 'post'
         },
         columnDefs: [{
@@ -211,32 +275,46 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'SP_IDX',
+                'data': 'OG_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
                     return '';
                 }
             }
-            , {'title': '주문완료일', 'data': 'U_PHONE'}
-            , {'title': '출고요청일', 'data': 'U_PHONE'}
-            , {'title': '출고일', 'data': 'U_PHONE'}
-            , {'title': '설치예정일', 'data': 'U_PHONE'}
-            , {'title': '설치완료일', 'data': 'U_PHONE'}
-            , {'title': '배송완료일', 'data': 'U_PHONE'}
-            , {'title': '출고구분', 'data': 'U_PHONE'}
-            , {'title': '주문상태', 'data': 'U_PHONE'}
-            , {'title': '자산상태', 'data': 'U_PHONE'}
+            , {'title': '주문완료일', 'data': 'O_DATE','defaultContent':''}
+            , {'title': '출고요청일', 'data': 'REQ_DATE','defaultContent':''}
+            , {'title': '출고일', 'data': 'DN_RELEASE','defaultContent':''}
+            , {'title': '설치예정일', 'data': 'DN_SCHEDULE','defaultContent':''}
+            , {'title': '설치완료일', 'data': 'DN_DATE','defaultContent':''}
+            , {'title': '출고구분', 'data': 'G_TYPE','defaultContent':''}
+            , {'title': '주문상태', 'data': 'O_STATE_STR','defaultContent':''}
+            , {'title': '자산상태', 'data': 'G_STATE','defaultContent':''}
             , {
-                'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
-                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
+                'title': '주문코드<br>사방넷 통합주문번호', 'data': 'O_CODE', 'render': function (data, type, full, meta) {
+                    return '<a ' + 'onclick="orderShopPop(' + full.O_IDX + ')" class="badge badge-primary">' + data+ '</a>';
                 }
             }
-            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'U_PHONE'}
-            , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
-            , {'title': '상품코드', 'data': 'U_ID'}
-            , {'title': '자산코드', 'data': 'U_DEPART'}
-            , {'title': '상품명', 'data': 'U_POSITION'}
-            , {'title': '수량', 'data': 'U_PERSON_MAIL'}
+            , {'title': '주문상품코드<br>사방넷주문번호', 'data': 'O_IDX','defaultContent':''}
+            , {'title': '쇼핑몰명', 'data': 'SHOP_NAME','defaultContent':''}
+            , {'title': '상품코드', 'data': 'P_IDX','defaultContent':''}
+            , {'title': '자산코드', 'data': 'G_BARCODE','defaultContent':''}
+            , {'title': '상품명', 'data': 'P_NAME','defaultContent':''}
+            , {'title': '주문자명', 'data': 'O_NAME','defaultContent':''}
+            , {'title': '주문자연락처', 'data': 'O_PHONE','defaultContent':''}
+            , {'title': '배송자(설치자)이름', 'data': 'AD_NAME','defaultContent':''}
+            , {'title': '배송자(설치자)연락처', 'data': 'AD_PHONE','defaultContent':''}
+            , {'title': '우편번호', 'data': 'POST','defaultContent':''}
+            , {'title': '주소', 'data': 'ADDRS','defaultContent':''}
+            , {'title': '배송(설치)메세지', 'data': 'AD_MEMO','defaultContent':''}
+            , {'title': '출하창고', 'data': 'WH_NAME','defaultContent':''}
+            , {'title': '설치업체', 'data': 'DN_COMPANY','defaultContent':''}
+            , {'title': '설치확인서', 'data': 'OG_DN_IDX','defaultContent':'','render':function(data, type, full, meta){
+                if(data==null){
+                    return '<a onclick="installCheck('+full.OG_IDX+')" class="badge badge-danger">설치확인서</a>'
+                }else{
+                    return '<a onclick="check('+data+','+full.OG_IDX+')" class="badge badge-primary">설치확인서</a>'
+                }
+                }}
         ]
     });
 
