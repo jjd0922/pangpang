@@ -123,7 +123,7 @@ public class MainController {
         return mav;
     }
 
-    /* auth - 회원가입 완료 */
+    /** auth - 회원가입 완료 */
     @GetMapping(value = "joinComplete")
     public ModelAndView joinComplete(){
         ModelAndView mav = new ModelAndView("auth/joinComplete");
@@ -147,5 +147,7 @@ public class MainController {
         ModelAndView mav = new ModelAndView("iamport/payment");
         return mav;
     }
+
+
 
 }
