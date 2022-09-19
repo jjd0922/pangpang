@@ -423,6 +423,37 @@
         $('.button-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     });
 
+    /*** 상품 카테고리 대분류/중분류 목록페이지 ***/
+    new Swiper('.swiper-itemCategory', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+            el: '.itemCategory-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            992: {
+                slidesPerView: 2,
+                spaceBetween: 35,
+            },
+        },
+    });
+    //상품 카테고리 옵션 접기 & 펼침
+    $('.filter-toggle').click(function() {
+        $(this).toggleClass('on');
+
+        if ($(this).children('.filter-text').text() == '접기') {
+            $(this).children('.filter-text').text('필터')
+        } else {
+            $(this).children('.filter-text').text('접기')
+        }
+
+        $('.cate-table2>li:not(:first-child)').toggleClass('active')
+        $('.cate-table2>li:first-child').toggleClass('on')
+
+    });
+
+
     /*** 마이쇼핑 ***/
     // 마이쇼핑 상단 tab 메뉴
     $('.my-menu-tab>li').click(function(){
@@ -433,5 +464,30 @@
 
         $('.my-menu-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     });
+    // "나의 쇼핑내역"의 tab 메뉴
+    $('.shoppingHistory-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        var $Idx = $(this).index();
+
+        $('.shoppingHistory-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+    // 기간조회
+    document.querySelector('#date1').value = new Date().toISOString().substring(0, 10);
+    document.querySelector('#date2').value = new Date().toISOString().substring(0, 10);
+
+    // "AS접수"의 tab 메뉴
+    $('.asApplication-tab>li').click(function(){
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+
+        var $Idx = $(this).index();
+
+        $('.asApplication-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
+    });
+
+
+
 
 </script>

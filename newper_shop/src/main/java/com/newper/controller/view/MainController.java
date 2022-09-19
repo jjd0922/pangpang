@@ -75,14 +75,21 @@ public class MainController {
         return mav;
     }
 
-    /* product 상품상세 */
+    /* product - 상품 상세페이지 */
     @GetMapping(value = "product")
     public ModelAndView product(){
         ModelAndView mav = new ModelAndView("product/product");
         return mav;
     }
 
-    /* cart 주문프로세서 - 장바구니 */
+    /* product - 카테고리 대분류/중분류 목록페이지 */
+    @GetMapping(value = "category")
+    public ModelAndView category(){
+        ModelAndView mav = new ModelAndView("product/category");
+        return mav;
+    }
+
+    /* order 주문프로세서 - 장바구니 */
     @GetMapping(value = "cart")
     public ModelAndView cart(){
         ModelAndView mav = new ModelAndView("orderProcess/cart");
