@@ -70,4 +70,7 @@ public interface PoMapper {
 
     /** 상품 타입이 정상품일경우 자동매핑을 위한 실입고상품 조회문 */
     PoReceived selectPoReceivedByPoIdxAndPpIdx(@Param("poIdx") int po_idx, @Param("ppIdx") Integer ppIdx);
+    
+    /**po수정시 연결되어있던 pp모두 삭제 > 그이후 다시 등록할 것*/
+    void deletePoProductBypoIdx(@Param("poIdx") Integer poIdx, @Param("ppIdxs") List<Integer> ppIdxs);
 }

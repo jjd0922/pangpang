@@ -121,4 +121,34 @@ public class Po extends BaseEntity {
         }
     }
 
+    public void updateAll(Po po) {
+        setPoType(po.getPoType());
+        setPoMemo(po.getPoMemo());
+        setPoRepurchase(po.poRepurchase);
+        setPoTotalAmount(po.getPoTotalAmount());
+        setPoTotalCount(po.getPoTotalCount());
+        setPoBuyChannel(po.getPoBuyChannel());
+        setPoBuyReceiveAmount(po.getPoBuyReceiveAmount());
+        setPoBuyUnpaidAmount(po.getPoBuyUnpaidAmount());
+        setPoBuyProductType(po.getPoBuyProductType());
+        setPoBuyOriUse(po.getPoBuyOriUse());
+        setPoBuySellPeriod(po.getPoBuySellPeriod());
+        setPoSellChannel(po.getPoSellChannel());
+        setPoSellReceiveAmount(po.getPoSellReceiveAmount());
+        setPoSellUnpaidAmount(po.getPoSellUnpaidAmount());
+        setPoSellPayDate(po.getPoSellPayDate());
+        setPoSellProfit(po.getPoSellProfit());
+        setPoSellUse(po.getPoSellUse());
+        setPoSellTotalAmount(po.getPoSellTotalAmount());
+        setPoInDate(po.getPoInDate());
+        setPoDueDate(po.getPoDueDate());
+        setPoRefundDate(po.getPoRefundDate());
+        setPoAsDate(po.getPoAsDate());
+        setPoDeliveryMain(po.getPoDeliveryMain());
+        setPoDeliveryCost(po.getPoDeliveryCost());
+        setPoTaxMonth(po.getPoTaxMonth());
+        setPoPayDate(po.getPoPayDate());
+        setPoPayAccount(po.getPoPayAccount());
+    }
+
 }
