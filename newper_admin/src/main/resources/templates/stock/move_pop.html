@@ -55,7 +55,7 @@
                                                                 </span>
                                                             </span>
                                                             <select name="" class="form-control select">
-                                                                <!--<option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>-->
+                                                                <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -70,7 +70,7 @@
                                                                       요청자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control">
+                                                            <input type="text" name="WM_U_IDX" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -84,7 +84,7 @@
                                                                       처리자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control">
+                                                            <input type="text" name="WM_U_IDX2" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -95,12 +95,10 @@
                                                         <div class="input-group">
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
-                                                                      창고이동방식
+                                                                    메모
                                                                 </span>
                                                             </span>
-                                                            <select name="" class="form-control select">
-                                                                <!--<option th:each="opt: ${T(com.newper.constant.ComState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>-->
-                                                            </select>
+                                                            <input type="text" name="WM_MEMO" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -116,7 +114,7 @@
                                                                       창고이동코드
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control">
+                                                            <input type="text" name="WM_CODE" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -130,7 +128,7 @@
                                                                       창고이동요청일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control daterange-single">
+                                                            <input type="text" name="WM_REQ_DATE" class="form-control daterange-single">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -144,7 +142,7 @@
                                                                       창고이동출고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control daterange-singlenull" readonly>
+                                                            <input type="text" name="WM_OUT_DATE" class="form-control daterange-singlenull" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -158,23 +156,7 @@
                                                                       창고이동입고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="" class="form-control daterange-singlenull" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <!-- 입력필드 -->
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">
-                                                                    메모
-                                                                </span>
-                                                            </span>
-                                                            <input type="text" name="" class="form-control">
+                                                            <input type="text" name="WM_IN_DATE" class="form-control daterange-singlenull" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -182,87 +164,98 @@
                                         </div>
 
                                         <legend class="mt-3 d-flex justify-content-between align-items-center">
-                                            2. 출고창고<a class="btn btn-sm btn-primary mr-1" id="searchOutWhByBarcode">창고등록</a>
+                                        2. 출고창고
+                                        <div class="mr-1">
+                                            <div class="btn-group">
+                                                <div class="header-elements">
+                                                    <a class="badge badge-primary" id="searchWarehouseBtn">로케이션검색</a>
+                                                    <a class="badge badge-primary" id="searchWhByBarcode">로케이션리딩</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                         </legend>
-
-                                        <table class="table" id="whOutTable">
+                                        <table class="table" id="warehouseTable">
                                             <thead>
-                                                <tr>
-                                                    <td>창고</td>
-                                                    <td>형태</td>
-                                                    <td>존</td>
-                                                    <td>열</td>
-                                                    <td>행</td>
-                                                    <td>로케이션</td>
-                                                    <td>바코드</td>
-                                                    <td>삭제</td>
-                                                </tr>
+                                            <td>창고</td>
+                                            <td>형태</td>
+                                            <td>존</td>
+                                            <td>열</td>
+                                            <td>행</td>
+                                            <td>로케이션</td>
+                                            <td>바코드</td>
+                                            <td>삭제</td>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td colspan="8">창고 정보가 없습니다.</td>
-                                                </tr>
+                                            <tr>
+                                                <td colspan="8">창고 정보가 없습니다.</td>
+                                            </tr>
                                             </tbody>
                                         </table>
 
                                         <legend class="mt-3 d-flex justify-content-between align-items-center">
-                                            3. 입고창고<a class="btn btn-sm btn-primary mr-1" id="searchInWhByBarcode">창고등록</a>
+                                            3. 입고창고<!--<a class="btn btn-sm btn-primary mr-1" id="searchInWhByBarcode">창고등록</a>-->
+                                            <div class="btn-group">
+                                                <div class="header-elements">
+                                                    <a class="badge badge-primary" id="searchWarehouseBtn2">로케이션검색</a>
+                                                    <a class="badge badge-primary" id="searchWhByBarcode2">로케이션리딩</a>
+                                                </div>
+                                            </div>
                                         </legend>
 
-                                        <table class="table" id="whInTable">
+                                        <table class="table" id="warehouseTable2">
                                             <thead>
-                                                <tr>
-                                                    <td>창고</td>
-                                                    <td>형태</td>
-                                                    <td>존</td>
-                                                    <td>열</td>
-                                                    <td>행</td>
-                                                    <td>로케이션</td>
-                                                    <td>바코드</td>
-                                                    <td>삭제</td>
-                                                </tr>
+                                            <td>창고</td>
+                                            <td>형태</td>
+                                            <td>존</td>
+                                            <td>열</td>
+                                            <td>행</td>
+                                            <td>로케이션</td>
+                                            <td>바코드</td>
+                                            <td>삭제</td>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td colspan="8">창고 정보가 없습니다.</td>
-                                                </tr>
+                                            <tr>
+                                                <td colspan="8">창고 정보가 없습니다.</td>
+                                            </tr>
                                             </tbody>
                                         </table>
 
-                                        <legend class="mt-3 d-flex justify-content-between align-items-center">
-                                            4. 자산정보<a class="btn btn-sm btn-primary mr-1" id="searchGoodsByBarcode">자산등록</a>
-                                        </legend>
+                                        <div class="mt-2">
+                                            <legend class="d-flex justify-content-between align-items-center">
+                                                4. 자산정보
+                                                <div class="btn-group">
+                                                    <div class="header-elements">
+                                                        <a class="badge badge-primary mr-1" id="searchGoodsByBarcode">자산등록</a>
+                                                        <a class="badge badge-primary" id="deleteGoods">자산일괄삭제</a>
+                                                    </div>
+                                                </div>
+                                            </legend>
 
-                                        <table class="table" id="goodsTable">
-                                            <thead>
+                                            <table class="table table-hover" id="goodsTable">
+                                                <thead>
                                                 <tr>
                                                     <td>자산상태</td>
                                                     <td>자산코드</td>
                                                     <td>상품코드</td>
                                                     <td>상품명</td>
-                                                    <td>가공SPEC</td>
+                                                    <td>가공SPEC(확정)</td>
+                                                    <td>창고</td>
+                                                    <td>형태</td>
+                                                    <td>존</td>
+                                                    <td>열</td>
+                                                    <td>행</td>
+                                                    <td>로케이션</td>
                                                     <td>IMEI</td>
                                                     <td>시리얼</td>
                                                     <td>발주코드</td>
                                                     <td>삭제</td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                <tr th:each="i: ${#numbers.sequence(1,4)}">
-                                                    <td>state</td>
-                                                    <td>as_code</td>
-                                                    <td>p_code</td>
-                                                    <td>p_name</td>
-                                                    <td>spec...spec</td>
-                                                    <td>#####</td>
-                                                    <td>#####</td>
-                                                    <td>o-code</td>
-                                                    <td><a onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>
-                                                </tr>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody id="locationGoodsTbody">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -277,16 +270,15 @@
         <!-- /inner content -->
 
         <!-- Footer -->
-        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <div>
-                <button type="button" class="btn btn-sm btn-secondary ml-1" th:unless="${tempObject} == null"><i class="icon-barcode2 mr-1"></i>바코드</button>
-                <button type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
             </div>
-        </div>
+
         <!-- /footer -->
     </div>
 </div>
+<th:block th:replace="stock/modal/warehouseModal.html"/>
 
 <th:block th:replace="modal/barcodeModal.html"/>
 <!-- 공통 js -->
@@ -339,6 +331,161 @@
     /** 테이블 행 삭제*/
     function deleteRow(el) {
         el.closest('tr').remove();
+        $('#locationGoodsTbody').empty();
+    }
+
+    /**데이터테이블에서 출고창고선택*/
+    function selectWarehouse(rowIdx) {
+        $('#warehouseModal').modal('hide');
+        var dataMap=getDatatablemap('warehouseModalTable', rowIdx);
+        appendRowToWarehouseTable(dataMap);
+    }
+    /**데이터테이블에서 입고창고선택*/
+    function selectWarehouse2(rowIdx) {
+        $('#warehouseModal').modal('hide');
+        var dataMap=getDatatablemap('warehouseModalTable', rowIdx);
+        appendRowToWarehouseTable2(dataMap);
+    }
+
+    /**출고창고테이블에 데이터 추가*/
+    function appendRowToWarehouseTable(data) {
+        $('#warehouseTable tbody tr').remove();
+        $('#warehouseTable tbody').append(
+            '<tr>' +
+            '   <td><input type="hidden" name="locIdx" value="'+data.LOC_IDX+'">'+data.WH_NAME+'</td>' +
+            '   <td>'+data.LOC_FORM_STR+'</td>' +
+            '   <td>'+data.LOC_ZONE+'</td>' +
+            '   <td>'+data.LOC_COLUMN+'</td>' +
+            '   <td>'+data.LOC_ROW+'</td>' +
+            '   <td>'+data.LOC_CODE+'</td>' +
+            '   <td>'+data.LOC_BARCODE+'</td>' +
+            '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
+            '</tr>'
+        );
+
+        selectLocGoods(data.LOC_IDX);
+    }
+
+
+    /**입고창고테이블에 데이터 추가*/
+    function appendRowToWarehouseTable2(data) {
+        $('#warehouseTable2 tbody tr').remove();
+        $('#warehouseTable2 tbody').append(
+            '<tr>' +
+            '   <td><input type="hidden" name="locIdx" value="'+data.LOC_IDX+'">'+data.WH_NAME+'</td>' +
+            '   <td>'+data.LOC_FORM_STR+'</td>' +
+            '   <td>'+data.LOC_ZONE+'</td>' +
+            '   <td>'+data.LOC_COLUMN+'</td>' +
+            '   <td>'+data.LOC_ROW+'</td>' +
+            '   <td>'+data.LOC_CODE+'</td>' +
+            '   <td>'+data.LOC_BARCODE+'</td>' +
+            '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
+            '</tr>'
+        );
+    }
+
+
+    /** 창고 검색시 해당 창고에 있는 자산 조회 */
+    function selectLocGoods() {
+        $.ajax({
+            url: '/stock/locGoods.ajax',
+            data: {
+                'locIdx' : $('input[name=locIdx]').val()
+            },
+            type: 'post',
+            success: function (res) {
+                appendLocGoods(res.data);
+            }
+        });
+    }
+
+    function appendLocGoods(data) {
+        $('#locationGoodsTbody').empty();
+
+        var html = '';
+        $.each(data, function (index, value) {
+            html += '<tr>' +
+                '<td>' + value.G_STATE+ '</td>' +
+                '<td>' + value.G_BARCODE + '</td>' +
+                '<td>' + value.P_IDX + '</td>' +
+                '<td>' + value.P_NAME + '</td>' +
+                '<td>' + value.PS_TYPE + '</td>' +
+                '<td>' + value.LOC_WH_IDX + '</td>' +
+                '<td>' + value.LOC_FORM + '</td>' +
+                '<td>' + value.LOC_ZONE + '</td>' +
+                '<td>' + value.LOC_COLUMN + '</td>' +
+                '<td>' + value.LOC_ROW + '</td>' +
+                '<td>' + value.LOC_CODE + '</td>' +
+                '<td>' + value.G_IMEI + '</td>' +
+                '<td></td>' +
+                '<td>' + value.G_PO_IDX + '</td>' +
+                '<td><a onclick="deleteLocGoods(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +
+                '</tr>';
+        })
+
+        $('#locationGoodsTbody').append(html);
+    }
+
+    /**창고바코드 모달*/
+    function showWarehouseBarcodeModal() {
+        var barcodeInput = openBarcodeModal('창고등록(바코드)');
+
+        // 바코드 input시 ajax로 해당 바코드 로케이션 가져오기(추후에 작업~)
+        barcodeInput.on('input', function () {
+            $.ajax({
+                url: '',
+                data: data=barcodeInput.val(),
+                type: 'post',
+                success: function (res) {
+                    appendRowToWarehouseTable(res);
+                }
+            });
+        });
+    }
+
+    /**자산바코드 모달*/
+    function showGoodsBarcodeModal() {
+        var barcodeInput = openBarcodeModal('자산등록(바코드)');
+    }
+
+    /**자산삭제*/
+    function deleteLocGoods(g_idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                url:'/stock/goodsDelete.ajax',
+                type:'post',
+                data:'g_idx='+g_idx,
+                success:function(){
+                    $('#goodsTable').DataTable().ajax.reload();
+                }
+            })
+        }
+    }
+
+    function locBarcode(data) {
+        $.ajax({
+            url: '/stock/load/barcode.ajax',
+            data: {
+                'barcode' : $(data).val(),
+                'locIdx' : $('input[name=locIdx]').val()
+            },
+            type: 'post',
+            success: function (res) {
+                selectLocGoods();
+                $('input[name="barcode"]').val("").focus();
+            }
+        });
+    }
+</script>
+<script th:inline="javascript">
+    $('#searchWarehouseBtn').on('click', openWarehouseModal);
+    $('#searchWarehouseBtn2').on('click', openWarehouseModal2);
+    $('#searchGoodsByBarcode').on('click', showGoodsBarcodeModal);
+
+</script>
+  <!--  /** 테이블 행 삭제*/
+    function deleteRow(el) {
+        el.closest('tr').remove();
     }
 
 
@@ -381,14 +528,14 @@
         var barcodeInput = openBarcodeModal('자산등록(바코드)');
     }
 </script>
-<script th:inline="javascript">
-    $('#searchOutWhByBarcode').on('click', function () {
+<script th:inline="javascript">-->
+/*    $('#searchOutWhByBarcode').on('click', function () {
         showWarehouseBarcodeModal('whOutTable');
     });
     $('#searchInWhByBarcode').on('click', function () {
         showWarehouseBarcodeModal('whInTable');
     });
-    $('#searchGoodsByBarcode').on('click',showGoodsBarcodeModal);
-</script>
+    $('#searchGoodsByBarcode').on('click',showGoodsBarcodeModal);*/
+
 </body>
 </html>
