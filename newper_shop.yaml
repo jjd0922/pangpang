@@ -14,26 +14,26 @@ spec:
         app: newper-shop
     spec:
       containers:
-        - image: 'reg-dev-container.kr.ncr.ntruss.com/newper_shop:1.0'
+        - image: 'reg-dev-container.kr.ncr.ntruss.com/newper_admin:latest'
           imagePullPolicy: Always
           name: newper-shop
           ports:
-            - containerPort: 8080
+            - containerPort: 9100
       imagePullSecrets:
         - name: dev-registry
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: newper-shop-service
+  namespace: newper
 spec:
   type: NodePort
   selector:
-    app: newper
+    app: newper-shop
   ports:
-    - name: newper-shop-service
+    - name: http-port
       protocol: TCP
       port: 80
-      targetPort: http-web-svc
-      nodePort: 30009
+      targetPort: 9100
+      nodePort: 30007
