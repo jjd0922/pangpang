@@ -423,6 +423,37 @@
         $('.button-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     });
 
+    /*** 상품 카테고리 대분류/중분류 목록페이지 ***/
+    new Swiper('.swiper-itemCategory', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+            el: '.itemCategory-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            992: {
+                slidesPerView: 2,
+                spaceBetween: 35,
+            },
+        },
+    });
+    //상품 카테고리 옵션 접기 & 펼침
+    $('.filter-toggle').click(function() {
+        $(this).toggleClass('on');
+
+        if ($(this).children('.filter-text').text() == '접기') {
+            $(this).children('.filter-text').text('필터')
+        } else {
+            $(this).children('.filter-text').text('접기')
+        }
+
+        $('.cate-table2>li:not(:first-child)').toggleClass('active')
+        $('.cate-table2>li:first-child').toggleClass('on')
+
+    });
+
+
     /*** 마이쇼핑 ***/
     // 마이쇼핑 상단 tab 메뉴
     $('.my-menu-tab>li').click(function(){
@@ -455,6 +486,8 @@
 
         $('.asApplication-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     });
+
+
 
 
 </script>
