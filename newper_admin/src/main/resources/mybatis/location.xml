@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.LocationMapper">
+    <sql id="includeLocationDatatable">
+        <if test="locType != null">
+            <foreach collection="locType" open="AND LOC_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="locForm != null">
+            <foreach collection="locForm" open="AND LOC_FORM IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="locCode != null and locCode != ''">AND LOC_CODE LIKE CONCAT('%',#{locCode},'%')</if>
+        <if test="locZone != null and locZone != ''">AND LOC_ZONE LIKE CONCAT('%',#{locZone},'%')</if>
+        <if test="locRow != null and locRow != ''">AND LOC_ROW LIKE CONCAT('%',#{locRow},'%')</if>
+        <if test="locColumn != null and locColumn != ''">AND LOC_COLUMN LIKE CONCAT('%',#{locColumn},'%')</if>
+        <if test="location != null and location != ''">AND CONCAT(LOC_ZONE,LOC_COLUMN,LOC_ROW) LIKE CONCAT('%',#{location},'%')</if>
+        <if test="uName != null and uName != ''">AND U_NAME LIKE CONCAT('%',#{uName},'%')</if>
+        <if test="whIdx != null and whIdx != ''">AND WH_IDX LIKE CONCAT('%',#{whIdx},'%')</if>
+    </sql>
+
+    <select id="selectLocationDatatable" resultType="map">
+        SELECT
+            LOC_IDX,
+            WH_IDX,
+            WH_NAME,
+            LOC_TYPE,
+            LOC_CODE,
+            LOC_FORM,
+            LOC_ZONE,
+            LOC_COLUMN,
+            LOC_ROW,
+            LOC_BARCODE,
+            U_NAME
+        FROM
+            LOCATION
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+                LEFT JOIN USER ON LOC_U_IDX = U_IDX
+        <where>
+            <include refid="includeLocationDatatable"></include>
+        </where>
+        <if test="length != -1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countLocationDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(LOC_IDX))
+        FROM
+            LOCATION
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+                LEFT JOIN USER ON LOC_U_IDX = U_IDX
+        <where>
+            <include refid="includeLocationDatatable"></include>
+        </where>
+    </select>
+
+    <update id="changeAllLocType">
+        UPDATE
+            LOCATION
+        SET
+            LOC_TYPE = #{locType}
+        WHERE
+            <foreach collection="locIdxs" open="LOC_IDX IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+    </update>
+
+    <insert id="insertLocationByExcel" parameterType="List">
+        INSERT INTO
+            LOCATION (LOC_WH_IDX, LOC_CODE, LOC_TYPE, LOC_FORM, LOC_ZONE, LOC_ROW, LOC_COLUMN)
+        VALUES
+            <foreach collection="list" separator="," item="item">
+                (#{item.warehouse.whIdx},
+                #{item.locCode},
+                #{item.locType},
+                #{item.locForm},
+                #{item.locZone},
+                #{item.locRow},
+                #{item.locColumn})
+            </foreach>
+    </insert>
+
+    <select id="selectStockInLocationDatatable" resultType="map">
+        SELECT
+            P_TYPE1,
+            P_TYPE2,
+            P_TYPE3,
+            P_IDX,
+            P_NAME,
+            G_GS_IDX,
+            WH_NAME,
+            LOC_ZONE,
+            LOC_COLUMN,
+            LOC_ROW,
+            LOC_CODE,
+            COUNT(DISTINCT(G_IDX)) AS G_CNT,
+            P_COST
+        FROM
+            PRODUCT,
+            GOODS,
+            LOCATION
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+        WHERE
+            G_LOC_IDX = LOC_IDX
+            AND G_P_IDX = P_IDX
+        GROUP BY
+            LOC_IDX,
+            P_IDX
+        <if test="length != -1">
+            LIMIT #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countStockInLocationDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM (
+             SELECT
+                 P_IDX
+             FROM
+                 product,
+                 goods,
+                 LOCATION
+             WHERE
+                 G_LOC_IDX = LOC_IDX
+               AND G_P_IDX = P_IDX
+             GROUP BY LOC_IDX, P_IDX
+             ) AS DT
+    </select>
+
+    <select id="selectGoodsByLocation" resultType="Map">
+        SELECT
+            G_IDX,
+            G_BARCODE,
+            P_NAME,
+            P_IDX,
+            G_PO_IDX,
+            IFNULL(G_IMEI, '') AS G_IMEI
+        FROM
+            LOCATION
+                LEFT JOIN GOODS ON LOC_IDX = G_LOC_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        WHERE
+            LOC_IDX = #{locIdx}
+    </select>
+</mapper>

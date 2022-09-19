@@ -3,7 +3,9 @@ package com.newper.dto;
 import com.newper.exception.MsgException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ParamMap {
@@ -53,6 +55,27 @@ public class ParamMap {
         }else{
             List<Long> list = new ArrayList<>();
             list.add(Long.parseLong(value+""));
+            return list;
+        }
+    }
+
+    public List<Float> getListFloat(String key) {
+        Object value=map.get(key);
+        if(value==null){
+            return Collections.EMPTY_LIST;
+        }
+        if(value instanceof List){
+            List<Object> list = (List) value;
+            List<Float> returnList = new ArrayList<>();
+            if (list != null) {
+                for (Object o : list) {
+                    returnList.add(Float.parseFloat(o + ""));
+                }
+            }
+            return returnList;
+        }else{
+            List<Float> list = new ArrayList<>();
+            list.add(Float.parseFloat(value+""));
             return list;
         }
     }
@@ -196,5 +219,30 @@ public class ParamMap {
         String value=getString(key).replaceAll("\\,", "");
         map.put(key, value);
         return value;
+    }
+
+    /**LocalDate필수값 아닌경우 String -> LocalDate*/
+    public LocalDate parseLocalDate(String key) {
+        return parseLocalDate(key, true, null);
+    }
+
+    /**LocalDate필수값인경우 String -> LocalDate*/
+    public LocalDate parseLocalDate(String key, String exceptionMsg) {
+        return parseLocalDate(key, false, exceptionMsg);
+    }
+
+    /**paramMap의 String value -> LocalDate로*/
+    public LocalDate parseLocalDate(String key, boolean isNullable, String exceptionMsg) {
+        if (StringUtils.hasText(getString(key))) {
+            String value = getString(key);
+            map.put(key, LocalDate.parse(value));
+            return LocalDate.parse(value);
+        } else {
+            if (isNullable) {
+                return null;
+            } else {
+                throw new MsgException(exceptionMsg);
+            }
+        }
     }
 }

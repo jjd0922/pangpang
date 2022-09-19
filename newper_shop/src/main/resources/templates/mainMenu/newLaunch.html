@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="part/head :: head('신상입고')">
+</head>
+<body th:classappend="${@shopComp.getShopDesign()}">
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!--페이지 타이틀-->
+<section th:insert="part/title :: pageTitle('금주의 신상','')">
+</section>
+
+<!--썸네일 목록 - newLaunch-->
+<section th:insert="part/thumbnailList :: newLaunch">
+</section>
+
+<!--메뉴 : 썸네일 카테고리-->
+<section th:insert="part/menu :: thumbnailCategory" class="sticky">
+</section>
+
+<!--썸네일 목록 - best 100-->
+<section th:insert="part/thumbnailList :: best100">
+</section>
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+</html>

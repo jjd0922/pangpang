@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('공지사항')">
+</head>
+<body th:classappend="${@shopComp.getShopDesign()}">
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!--페이지 타이틀-->
+<section th:insert="part/title :: pageTitle('공지사항','')" class="pageTitle"></section>
+
+<section>
+    <div class="container">
+        <ul class="cc-menu-content">
+            <!-- 공지사항 상세페이지 -->
+            <section class="noticeView">
+                <div class="container">
+                    <div class="cc-content-title">
+                        <h2>공지사항</h2>
+                        <p>고객님의 모든 궁금증을 해결해 드립니다.</p>
+                    </div>
+                    <ul class="cc-table cc-notice-table">
+                        <li>
+                            <a href="javascript;:">
+                                <div class="cc-table-title">
+                                    <div class="cc-table-left">
+                                        <span>백원딜 발뮤다 뉴 토스터 당첨자</span>
+                                    </div>
+                                    <div class="cc-table-right">
+                                        2022-08-01
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="cc-content-img-wrap">
+                        <img th:attr="src=@{/image/noticeView.png},title='백원딜 이벤트 이미지',alt='백원딜 이벤트 이미지'">
+                    </div>
+                    <div class="cc-btn2">
+                        <a href="javascript:;">목록으로</a>
+                    </div>
+                </div>
+            </section>
+        </ul>
+    </div>
+</section>
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+
+<script>
+    function openNotice(){
+        $.ajax({
+            url:'/customer/notice.ajax',
+            type: 'get',
+            success: function(res){
+
+
+            },
+            error: function(){
+            }
+        });
+    }
+</script>
+</html>

@@ -105,7 +105,6 @@ public class MainController {
         for (MultipartFile multipartFile : summernoteImageFile) {
             String fileName = Common.uploadFilePath(multipartFile,"summernote/", AdminBucket.OPEN);
             nameList.add(fileName);
-            System.out.println(fileName);
         }
         mav.addObject("nameList", nameList);
         return mav;

@@ -63,7 +63,8 @@ public class RestAdvise {
     public ReturnMap noSessionException(){
         ReturnMap rm = new ReturnMap();
 
-        rm.setLocation("/index");
+        rm.setMessage("세션이 만료되었습니다");
+        rm.setLocation("/loginPop");
         rm.setPopup(true);
 
         return rm;

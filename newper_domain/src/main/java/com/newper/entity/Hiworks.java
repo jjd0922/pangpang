@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -15,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "hiworks")
-public class Hiworks extends BaseEntity {
+public class Hiworks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +30,9 @@ public class Hiworks extends BaseEntity {
     private String hwType;
     @Enumerated(EnumType.STRING)
     private HwState hwState;
-    private String hwReqDate;
-    private String hwReqTime;
+    private LocalDate hwReqDate;
+    private LocalTime hwReqTime;
+    private LocalDate hwAprvDate;
+    private LocalTime hwAprvTime;
     private String hwAprvId;
-    private String hwAprvDate;
-    private String hwAprvTime;
 }

@@ -9,11 +9,18 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PState implements EnumOption {
 
-     PROTO("등록대기")
+
+    /**등록대기*/
+    PROTO("등록대기")
+    /**승인요청*/
     ,REQUEST("승인요청")
+    /**승인반려*/
     ,REFUSAL("승인반려")
+    /**판매*/
     ,SELL("승인=판매")
+    /**판매중지*/
     ,STOP("판매중지")
+    /**폐기*/
     ,END("폐기")
     ;
 

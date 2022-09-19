@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>회원정보 상세</title>
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-user mr-1"></i>회원상세</h4>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-secondary" id="smsBtn"><i class="icon-bubble-dots4 mr-1"></i>문자발송</button>
+                        <button type="button" class="btn btn-sm btn-secondary" id="kakaoBtn"><i class="icon-bubbles3 mr-1"></i>카카오톡</button>
+                        <button type="button" class="btn btn-sm btn-secondary" id="appPushBtn"><i class="icon-notification2 mr-1"></i>APP PUSH</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body popup-contents mb-4">
+                    <fieldset class="mb-2">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <legend class=""><i class="icon-square mr-1"></i>계정, 인증정보</legend>
+                                <div class="row">
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">ID</span>
+                                                </span>
+                                                <input type="text" name="cuId" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">CI</span>
+                                                </span>
+                                                <input type="text" name="cuCi" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">휴대폰번호</span>
+                                                </span>
+                                                <input type="text" name="cuPhone" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">휴대폰번호</span>
+                                                </span>
+                                                <input type="text" name="cuDi" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">회원상태</span>
+                                                </span>
+                                                <input type="text" name="cuState" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">이름</span>
+                                                </span>
+                                                <input type="text" name="cuName" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">회원등급</span>
+                                                </span>
+                                                <input type="text" name="cuRate" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">통신사</span>
+                                                </span>
+                                                <input type="text" name="cuTelecom" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">싱글싸인온</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">생년월일</span>
+                                                </span>
+                                                <input type="text" name="cuBirth" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">가입한 분양몰</span>
+                                                </span>
+                                                <input type="text" name="shopName" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">성별</span>
+                                                </span>
+                                                <input type="text" name="cuGender" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <legend class=""><i class="icon-square mr-1"></i>회원등록정보</legend>
+                                <div class="row">
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">추천인코드(본인)</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">약관 1 ~ N 동의일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">추천인코드(등록)</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">마케팅 1 ~ N 동의일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">마케팅동의 1 ~ N</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">마지막접속일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">가입경로</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">등록일(회원가입일)</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">본인인증일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">휴면처리일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text"></span>
+                                                </span>
+                                                <input type="text" name="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">회원탈퇴일</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <legend class=""><i class="icon-square mr-1"></i>회원구매정보</legend>
+                                <div class="row">
+                                    <!-- 입력필드 -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적구매금액</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적적립금</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적구매건수</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">사용적립금</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적취소/환불금액</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적예치금</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">누적취소/환불건수</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">사용예치금</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text"></span>
+                                                </span>
+                                                <input type="text" name="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">사용가능적립금</span>
+                                                </span>
+                                                <input type="text" name="" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="mt-3">
+                        <legend><i class="icon-square mr-1"></i>고객 주문내역</legend>
+                        <!--일단 직접모양만 만들어둠-->
+                        <table class="table table-hover" id="orderTable">
+                            <thead>
+                                <tr>
+                                    <td>선택</td>
+                                    <td>No</td>
+                                    <td>주문코드</td>
+                                    <td>출고구분</td>
+                                    <td>주문상태</td>
+                                    <td>환불상태</td>
+                                    <td>상품코드</td>
+                                    <td>상품명</td>
+                                    <td>수량</td>
+                                    <td>재고코드</td>
+                                    <td>자산코드</td>
+                                    <td>자산상태</td>
+                                    <td>판매가</td>
+                                    <td>이벤트할인가</td>
+                                    <td>배송비(설치비)</td>
+                                    <td>최종결제금액</td>
+                                    <td>예정적립금</td>
+                                    <td>환불금액</td>
+                                    <td>출고택배사</td>
+                                    <td>출고송장번호</td>
+                                    <td>수거택배사</td>
+                                    <td>수거송장번호</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </fieldset>
+
+                    <fieldset class="mt-3">
+                        <legend><i class="icon-square mr-1"></i>적립금정보</legend>
+                        <table class="table table-hover" id="pointTable">
+                            <thead>
+                                <tr>
+                                    <td>선택</td>
+                                    <td>No</td>
+                                    <td>생성일</td>
+                                    <td>만료일</td>
+                                    <td>적립금구분</td>
+                                    <td>적립금상태</td>
+                                    <td>마일리지구분</td>
+                                    <td>적립,사용항목</td>
+                                    <td>상품코드</td>
+                                    <td>적립,사용금액</td>
+                                    <td>만료금액</td>
+                                    <td>누적적립금액</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </fieldset>
+
+                    <fieldset class="mt-3">
+                        <legend><i class="icon-square mr-1"></i>쿠폰정보</legend>
+                        <table class="table table-hover" id="couponTable">
+                            <thead>
+                                <tr>
+                                    <td>선택</td>
+                                    <td>No</td>
+                                    <td>쿠폰코드</td>
+                                    <td>발급여부</td>
+                                    <td>수령여부</td>
+                                    <td>사용여부</td>
+                                    <td>ID</td>
+                                    <td>휴대폰번호</td>
+                                    <td>사용일</td>
+                                    <td>수령일</td>
+                                    <td>취소일</td>
+                                    <td>주문정보</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </fieldset>
+
+                    <fieldset class="mt-3">
+                        <legend><i class="icon-square mr-1"></i>문의정보</legend>
+                        <table class="table table-hover" id="qnaTable">
+                            <thead>
+                                <tr>
+                                    <td>선택</td>
+                                    <td>No</td>
+                                    <td>CS타입</td>
+                                    <td>답변 여부</td>
+                                    <td>제목</td>
+                                    <td>등록일</td>
+                                    <td>수정일(답변일)</td>
+                                    <td>답변내용</td>
+                                    <td>답변</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function popQnaForAnswer() {
+        var focusPopup = window.open('/customer/detail/qna', 'popQnaForAnswer', 'width=1050, height=950, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function smsPopup() {
+        var focusPopup = window.open('/customer/pop/sms/', 'smsPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function kakaoPopup() {
+        var focusPopup = window.open('/customer/pop/kakao/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function appPushPopup() {
+        var focusPopup = window.open('/customer/pop/appPush/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+</script>
+<script>
+$(document).ready(function(){
+    $('#orderTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/customer/orders.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                return '';
+            }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'주문코드','data':'','defaultContent':''}
+            ,{'title':'출고구분','data':'','defaultContent':''}
+            ,{'title':'주문상태','data':'','defaultContent':''}
+            ,{'title':'환불상태','data':'','defaultContent':''}
+            ,{'title':'상품코드','data':'','defaultContent':''}
+            ,{'title':'상품명','data':'','defaultContent':''}
+            ,{'title':'수량','data':'','defaultContent':''}
+            ,{'title':'재고코드','data':'','defaultContent':''}
+            ,{'title':'자산코드','data':'','defaultContent':''}
+            ,{'title':'자산상태','data':'','defaultContent':''}
+            ,{'title':'판매가','data':'','defaultContent':''}
+            ,{'title':'이벤트할인가','data':'','defaultContent':''}
+            ,{'title':'배송비(설치비)','data':'','defaultContent':''}
+            ,{'title':'최종결제금액','data':'','defaultContent':''}
+            ,{'title':'예정적립금','data':'','defaultContent':''}
+            ,{'title':'환불금액','data':'','defaultContent':''}
+            ,{'title':'출고택배사','data':'','defaultContent':''}
+            ,{'title':'출고송장번호','data':'', 'render': function (data, type, full, meta) {
+                    return '<a href="#" class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'수거택배사','data':'','defaultContent':''}
+            ,{'title':'수거송장번호','data':'','render': function (data, type, full, meta) {
+                    return '<a href="#" class="badge badge-primary">조회</a>';
+            }}
+        ]
+    });
+
+    $('#pointTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/customer/point.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                return '';
+            }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'생성일','data':'','defaultContent':''}
+            ,{'title':'만료일','data':'','defaultContent':''}
+            ,{'title':'적립금구분','data':'','defaultContent':''}
+            ,{'title':'적립금상태','data':'','defaultContent':''}
+            ,{'title':'마일리지구분','data':'','defaultContent':''}
+            ,{'title':'적립,사용항목','data':'','defaultContent':''}
+            ,{'title':'상품코드','data':'','defaultContent':''}
+            ,{'title':'적립,사용금액','data':'','defaultContent':''}
+            ,{'title':'만료금액','data':'','defaultContent':''}
+            ,{'title':'누적적립금액','data':'','defaultContent':''}
+        ]
+    });
+
+    $('#couponTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/customer/coupon.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'쿠폰코드','data':'','defaultContent':''}
+            ,{'title':'발급여부','data':'','defaultContent':''}
+            ,{'title':'수령여부','data':'','defaultContent':''}
+            ,{'title':'사용여부','data':'','defaultContent':''}
+            ,{'title':'ID','data':'','defaultContent':''}
+            ,{'title':'휴대폰번호','data':'','defaultContent':''}
+            ,{'title':'사용일','data':'','defaultContent':''}
+            ,{'title':'수령일','data':'','defaultContent':''}
+            ,{'title':'취소일','data':'','defaultContent':''}
+            ,{'title':'주문정보','data':'','defaultContent':''}
+        ]
+    });
+
+    $('#qnaTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/customer/qna.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'CS타입','data':'','defaultContent':''}
+            ,{'title':'답변여부','data':'','defaultContent':''}
+            ,{'title':'제목','data':'','defaultContent':''}
+            ,{'title':'등록일','data':'','defaultContent':''}
+            ,{'title':'수정일(답변일)','data':'','defaultContent':''}
+            ,{'title':'답변내용','data':'','defaultContent':''}
+            ,{'title':'답변','data':'', 'render': function (data, type, full, meta) {
+                    return '<a href="#" onclick="popQnaForAnswer()" class="badge badge-primary">등록</a>'
+                }}
+        ]
+    });
+
+    $('#smsBtn').on('click', smsPopup);
+    $('#kakaoBtn').on('click', kakaoPopup);
+    $('#appPushBtn').on('click', appPushPopup);
+})
+</script>
+</body>
+</html>

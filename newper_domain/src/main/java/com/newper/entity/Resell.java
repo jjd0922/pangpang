@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -21,11 +21,11 @@ public class Resell {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer rsIdx;
+    private Integer rsIdx;
 
-    private Date rsDate;
+    private LocalDate rsDate;
 
-    private Time reTime;
+    private LocalTime reTime;
 
 
 }

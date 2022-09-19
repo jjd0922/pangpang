@@ -1,13 +1,14 @@
 package com.newper.component;
 
-import com.newper.dto.ParamMap;
 import com.newper.exception.MsgException;
 import com.newper.storage.NewperBucket;
 import com.newper.storage.NewperStorage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Common {
@@ -29,17 +30,6 @@ public class Common {
         }
     }
 
-    /** 배열 괄호 제거 */
-    public static void changeArr(ParamMap paramMap, String key) {
-        String value = paramMap.getMap().get(key).toString();
-        value = value.replace("[", "");
-        value = value.replace("]", "");
-
-        String[] value_arr = value.split(", ");
-
-        paramMap.getMap().put(key, value_arr);
-    }
-
     public static String summernoteContent(String content){
         content=content.replaceAll("&lt;","<");
         content=content.replaceAll("&#37;","%");
@@ -50,4 +40,16 @@ public class Common {
         return content;
     }
 
+    /** 발주품의 옵션값 map에 넣기  */
+    public static void putOption(List<Map<String, Object>> optionList, List<String> optionStr) {
+        for (int i = 0; i < optionStr.size(); i++) {
+            if (!optionStr.get(i).equals("")) {
+                String [] option_str = optionStr.get(i).split(":");
+                Map<String, Object> option = new HashMap<>();
+                option.put("title", option_str[0]);
+                option.put("values", option_str[1]);
+                optionList.add(option);
+            }
+        }
+    }
 }

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>고객상담관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item"></span>
+                                    </div>
+                                </h6>
+                            </div>
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="qnaForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">문의상태</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">ID</label>
+                                                    <input type="text" name="cuId" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">이름</label>
+                                                    <input type="text" name="cuName" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">휴대폰번호</label>
+                                                    <input type="text" name="cuPhone" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">유입경로</label>
+                                                    <select name="cuState" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">문의유형</label>
+                                                    <select name="cuRate" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuRate).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문코드</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">제목</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">이메일체크</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuGender).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">휴대폰번호 체크</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuGender).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상담결과코드</label>
+                                                    <select name="" data-placeholder="multi select" class="form-control multiselect" multiple="multiple">
+                                                        <!--<option th:each="opt: ${T(com.newper.constant.CuGender).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>-->
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정자</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-120px">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정일</label>
+                                                    <input type="text" name="" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label">조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popupBtn">
+                                            <i class="icon-popout mr-1"></i>등록
+                                        </a>
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="smsBtn">
+                                            <i class="icon-bubble-dots4 mr-1"></i>SMS발송
+                                        </a>
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="kakaoBtn">
+                                            <i class="icon-bubbles3 mr-1"></i>카카오톡
+                                        </a>
+
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" id="appPushBtn">
+                                            <i class="icon-notification2 mr-1"></i>APP PUSH
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover" id="qnaTable"></table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<script th:inline="javascript">
+    function qnaDetailPop() {
+        var focusPopup = window.open('/customer/qna/pop', 'customerDetail', 'width=1050, height=900, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function smsPopup() {
+        var focusPopup = window.open('/customer/pop/sms/', 'smsPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function kakaoPopup() {
+        var focusPopup = window.open('/customer/pop/kakao/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function appPushPopup() {
+        var focusPopup = window.open('/customer/pop/appPush/', 'kakaoPopup', 'width=850, height=550, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function searchBtn(){
+        $('#qnaTable').DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#qnaForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    $('#qnaTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/customer/customer.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'ID','data':'CU_ID', 'render': function (data,type,full,meta) {
+                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">'+full.CU_ID+'</a>';
+                }}
+            ,{'title':'이름','data':'CU_NAME','defaultContent':''}
+            ,{'title':'휴대폰번호','data':'CU_PHONE','defaultContent':''}
+            ,{'title':'유입경로','data':'','defaultContent':''}
+            ,{'title':'문의유형','data':'','defaultContent':''}
+            ,{'title':'상품코드','data':'','defaultContent':''}
+            ,{'title':'주문코드','data':'','defaultContent':''}
+            ,{'title':'제목','data':'', 'render': function (data, type, full, meta) {
+                    return '<a href="#" onclick="qnaDetailPop()" class="badge badge-primary">상세</a>';
+                }}
+            ,{'title':'휴대폰번호 체크','data':'','defaultContent':''}
+            ,{'title':'상담결과코드','data':'','defaultContent':''}
+            ,{'title':'등록자','data':'','defaultContent':''}
+            ,{'title':'등록일','data':'CU_LAST_DATE','defaultContent':''}
+            ,{'title':'수정자','data':'','defaultContent':''}
+            ,{'title':'수정일','data':'','defaultContent':''}
+            ,{'title':'발송타입','data':'','defaultContent':''}
+            ,{'title':'발송','data':'','defaultContent':''}
+        ]
+    });
+
+    $('#qnaForm').on('keyup', function (event) {
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+    $('#popupBtn').on('click', qnaDetailPop);
+    $('#smsBtn').on('click', smsPopup);
+    $('#kakaoBtn').on('click', kakaoPopup);
+    $('#appPushBtn').on('click', appPushPopup);
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${smsHistory != null} ? '발송내역'"></title>
+
+    <th:block th:replace="common/css.html"></th:block>
+
+    <style>
+        .summernote-top {
+            border-bottom: 0!important;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >발송상세정보</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="sendingForm">
+                <div class="card">
+                    <div class="card-body popup-contents">
+                        <fieldset class="mb-0">
+                            <legend class=""><span class="small ml-2">발송 정보</span></legend>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text requested">
+                                                       발신타입
+                                                    </span>
+                                                </span>
+                                            <select data-placeholder="선택" class="form-control select" data-fouc name="SH_TYPE">
+                                                <option readonly th:each="opt: ${T(com.newper.constant.ShType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(smsHistory?.shType) eq opt.name()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        고객명
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                            <input type="hidden" name="SH_IDX" th:value="${smsHistory?.shIdx}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        수신전화번호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="SH_TO" class="form-control" th:value="${smsHistory?.shTo}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      발신전화번호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="SH_FROM" class="form-control" th:value="${smsHistory?.shFrom}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                       주문번호
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        발신일
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="SH_DATE" class="form-control" th:value="${smsHistory?.shDate}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        발신자
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                     발신결과
+                                                    </span>
+                                                </span>
+                                            <select data-placeholder="선택" class="form-control select" data-fouc name="SH_CODE">
+                                                <option  readonly th:each="opt: ${T(com.newper.constant.ShCode).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(smsHistory?.shCode) eq opt.name()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-text w-100 mb--1">내용</span>
+                                            <textarea id="summerNote" name="SH_CONTENT" th:text="${shContent}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+    <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+</div>
+</div>
+</div>
+
+
+
+
+<th:block th:replace="modal/summernoteImageModal.html"></th:block>
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+
+<script th:inline="javascript">
+
+
+</script>
+
+<script th:inline="javascript">
+    window.onload=function() {
+        smImage('#summerNote');
+    }
+</script>
+</body>
+</html>

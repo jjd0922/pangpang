@@ -60,7 +60,6 @@
     <select id="selectEstimateProduct" resultType="Map">
         SELECT
             P_IDX,
-            P_CODE,
             P_NAME,
             brand.CATE_NAME AS 'BRAND',
             category.CATE_NAME AS 'CATEGORY',
@@ -82,18 +81,116 @@
     </select>
 
     <sql id="includePoDataTable">
+        <if test="poState != null and poState != ''">
+            <foreach collection="poState" open="AND PO_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="uName != null and uName != ''">
+            AND U_NAME = #{uName}
+        </if>
 
+        <if test="comName != null and comName != ''">
+            AND BUY.COM_NAME LIKE CONCAT ('%', #{comName}, '%')
+        </if>
+
+        <if test="poInDate != null and poInDate != ''">
+            AND PO_IN_DATE BETWEEN SUBSTR(#{poInDate}, 1, 10) AND SUBSTR(#{poInDate}, 13)
+        </if>
+        <if test="poDueDate != null and poDueDate != ''">
+            AND PO_DUE_DATE BETWEEN SUBSTR(#{poDueDate}, 1, 10) AND SUBSTR(#{poDueDate}, 13)
+        </if>
+
+        <if test="poRefundDate != null and poRefundDate != ''">
+            AND PO_REFUND_DATE BETWEEN SUBSTR(#{poRefundDate}, 1, 10) AND SUBSTR(#{poRefundDate}, 13)
+        </if>
+
+        <if test="poAsDate != null and poAsDate != ''">
+            AND PO_AS_DATE BETWEEN SUBSTR(#{poAsDate}, 1, 10) AND SUBSTR(#{poAsDate}, 13)
+        </if>
+
+        <if test="poRepurchase != null and poRepurchase != ''">
+            AND PO_REPURCHASE = #{poRepurchase}
+        </if>
+
+        <if test="createdBy != null and createdBy != ''">
+            AND po.CREATED_BY LIKE CONCAT ('%', #{createdBy}, '%')
+        </if>
+
+        <if test="createdDate != null and createdDate != ''">
+            AND PO.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)
+        </if>
+
+        <if test="createdBy != null and createdBy != ''">
+            AND po.CREATED_BY LIKE CONCAT ('%', #{createdBy}, '%')
+        </if>
+
+        <if test="createdDate != null and createdDate != ''">
+            AND PO.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)
+        </if>
+
+        <if test="modifiedBy != null and modifiedBy != ''">
+            AND po.MODIFIED_BY LIKE CONCAT ('%', #{modifiedBy}, '%')
+        </if>
+
+        <if test="modifiedDate != null and modifiedDate != ''">
+            AND PO.MODIFIED_DATE BETWEEN SUBSTR(#{modifiedDate}, 1, 10) AND SUBSTR(#{modifiedDate}, 13)
+        </if>
+
+        <if test="hwAprvId != null and hwAprvId != ''">
+            AND HW_APRV_ID LIKE CONCAT ('%', #{hwAprvId}, '%')
+        </if>
+
+        <if test="hwAprvDate != null and hwAprvDate != ''">
+            AND HW_APRV_DATE BETWEEN SUBSTR(#{hwAprvDate}, 1, 10) AND SUBSTR(#{hwAprvDate}, 13)
+        </if>
+
+        <if test="poState != null and poState != ''">
+            AND PO_STATE = #{poState}
+        </if>
+
+        <if test="igState != null and igState != ''">
+            AND IG_STATE = #{igState}
+        </if>
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
-            *
+            PO_IDX,
+            PO_STATE,
+            U_NAME,
+            BUY.COM_NUM,
+            PO_TOTAL_AMOUNT,
+            PO_SELL_PROFIT,
+            PO_SELL_TOTAL_AMOUNT,
+            PO_DELIVERY_MAIN,
+            PO_IN_DATE,
+            PO_DUE_DATE,
+            PO_REFUND_DATE,
+            PO_AS_DATE,
+            PO_BUY_SELL_PERIOD,
+            PO_REPURCHASE,
+            po.CREATED_BY AS 'CREATED_BY',
+            po.CREATED_BY AS 'CREATED_DATE',
+            hiworks.HW_APRV_ID AS 'HW_APRV_ID',
+            hiworks.HW_APRV_DATE AS 'HW_APRV_DATE',
+            po.MODIFIED_BY AS 'MODIFIED_BY',
+            po.MODIFIED_DATE AS 'MODIFIED_DATE',
+            IG_STATE
         FROM
-            PO
+            po
+                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
+                LEFT JOIN user ON HW_U_IDX = U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
+        ORDER BY
+            PO_IDX DESC
         <if test="length!=-1">
-        LIMIT #{start},#{length}
+        LIMIT
+            #{start},#{length}
         </if>
     </select>
     <select id="countPoDataTable" parameterType="map" resultType="Integer">
@@ -101,21 +198,26 @@
             COUNT(*)
         FROM
             PO
+                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
+                LEFT JOIN user ON HW_U_IDX = U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
     </select>
 
     <sql id="includeInDatatable">
-        AND (PO_TYPE = 'EMERGENCY' HW_STATE = 'APPROVED')
+        (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'APPROVAL')
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
             *
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
+                LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -125,8 +227,8 @@
             COUNT(*)
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
+                LEFT JOIN company ON PO_COM_IDX = COM_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -137,11 +239,11 @@
     </sql>
     <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
         SELECT
-            *
+            PO_IDX,
+            PO_STATE
         FROM
             PO
-                LEFT JOIN HIWORKS
-                    ON PO_HW_IDX=HW_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX = HW_IDX
         <where>
             <include refid="includePoApprovedDatatable"></include>
         </where>
@@ -161,6 +263,232 @@
             <include refid="includePoApprovedDatatable"></include>
         </where>
     </select>
+    <select id="selectInPoDatatable" resultType="map" parameterType="map">
+        SELECT
+            P_IDX,
+            P_NAME,
+            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3,
+            P_SELL_PRICE,
+            PP_COST,
+            PP_COUNT,
+            PP_COST * PP_COUNT PP_TOTAL,
+            BUY.SPEC_LOOKUP SPEC_BUY,
+            SELL.SPEC_LOOKUP SPEC_SELL
+        FROM
+            PO
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
+                LEFT JOIN PRODUCT ON PP_P_IDX = P_IDX
+                LEFT JOIN SPEC AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN SPEC AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
+        WHERE
+            PP_PO_IDX = #{po_idx}
+        ORDER BY
+            PP_IDX
+    </select>
+    <sql id="includeInPpDatatable">
+        PP_IDX = #{ppIdx}
+        AND PP_PO_IDX = POR_PO_IDX
+        AND G_POR_IDX = POR_IDX
+        AND POR_P_IDX = PP_P_IDX
+        AND ( POR_PP_IDX IS NULL OR POR_PP_IDX = PP_IDX)
+    </sql>
+    <select id="selectInPpDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            PO_PRODUCT, GOODS, PO_RECEIVED
+        <where>
+            <include refid="includeInPpDatatable"></include>
+        </where>
 
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countInPpDatatable" resultType="Integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM
+            PO_PRODUCT, GOODS, PO_RECEIVED
+        <where>
+            <include refid="includeInPpDatatable"></include>
+        </where>
+    </select>
+    <update id="updategoods">
+        UPDATE in_group,in_product
+        SET IP_COUNT = (SELECT COUNT(*) FROM goods WHERE g_po_idx=#{po_idx} AND g_p_idx=#{p_idx})
+        WHERE in_group.IG_IDX=in_product.IP_IG_IDX
+            AND ig_po_idx=#{po_idx}
+            AND IP_P_IDX=#{p_idx}
+    </update>
 
+    <select id="selectPoReceivedByPoIdx" resultType="Map">
+        SELECT
+            P_IDX,
+            POR_IDX,
+            POR_MEMO,
+            P_NAME,
+            CATE_NAME,
+            IN_SPEC.SPEC_LOOKUP AS INSPEC,
+            PROCESS_SPEC.SPEC_LOOKUP AS PROCESSSPEC,
+            P_COST,
+            POR_COST,
+            POR_COUNT,
+            POR_SELL_PRICE,
+            P_TYPE1,
+            IFNULL(CONCAT (POR_OPTION ->> '$[0].title', ':', POR_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (POR_OPTION ->> '$[1].title', ':', POR_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (POR_OPTION ->> '$[2].title', ':', POR_OPTION ->> '$[2].values'), '') AS OPTION3
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO ON POR_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON POR_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN SPEC AS IN_SPEC ON POR_IN_SPEC_IDX = IN_SPEC.SPEC_IDX
+                LEFT JOIN SPEC AS PROCESS_SPEC ON POR_PROCESS_SPEC_IDX = PROCESS_SPEC.SPEC_IDX
+        WHERE
+            POR_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoProductByPoIdx" resultType="Map">
+        SELECT
+            PP_IDX,
+            PO_IDX,
+            P_IDX,
+            P_TYPE1,
+            PP_MEMO,
+            P_NAME,
+            IFNULL(CATE_NAME, '') AS CATE_NAME,
+            P_COST,
+            PP_COST,
+            PP_COUNT,
+            BUY.SPEC_LOOKUP SPEC_BUY,
+            SELL.SPEC_LOOKUP SPEC_SELL,
+            PP_FIX_MEMO,
+            PP_FIX_COST,
+            PP_PAINT_MEMO,
+            PP_PAINT_COST,
+            PP_PROCESS_MEMO,
+            PP_PROCESS_COST,
+            PP_SELL_PRICE,
+            PP_PROFIT_TARGET,
+            P_TYPE1,
+            (PP_COST + PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST) * PP_COUNT AS CREATE_PRICE,
+            IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
+            IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
+            IFNULL(CONCAT (PP_OPTION ->> '$[2].title', ':', PP_OPTION ->> '$[2].values'), '') AS OPTION3
+        FROM
+            po_product
+                LEFT JOIN PO ON PP_PO_IDX = PO_IDX
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+                LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN spec AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN spec AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="countPoProductByPoIdx" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            po_product
+                LEFT JOIN product ON PP_P_IDX = P_IDX
+                LEFT JOIN category ON P_CATE_IDX2 = CATE_IDX
+                LEFT JOIN spec AS BUY ON PP_SPEC_IDX = BUY.SPEC_IDX
+                LEFT JOIN spec AS SELL ON PP_SPEC_IDX2 = SELL.SPEC_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
+        SELECT
+            P_IDX, P_NAME, P_MODEL
+             ,PP_COUNT
+             ,IP_COUNT
+        FROM
+            PRODUCT
+           ,IN_PRODUCT
+           ,IN_GROUP
+           ,(SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT WHERE PP_PO_IDX = #{po_idx} GROUP BY PP_P_IDX) PP
+        WHERE
+            IG_PO_IDX = #{po_idx}
+          AND IP_IG_IDX = IG_IDX
+          AND IP_P_IDX = P_IDX
+          AND P_IDX = PP_P_IDX
+    </select>
+    <select id="selectPoProductIdxList" resultType="Integer">
+        SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
+        WHERE PP_PO_IDX = #{poIdx}
+    </select>
+
+    <sql id="includeInProductDatatable">
+        G_PO_IDX = #{po_idx}
+        AND G_P_IDX = #{p_idx}
+    </sql>
+    <select id="selectInProductDatatable" resultType="map" parameterType="map">
+        SELECT
+            *
+        FROM
+            GOODS
+        <where>
+            <include refid="includeInProductDatatable"></include>
+        </where>
+        ORDER BY
+        G_IDX desc
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countInProductDatatable" resultType="Integer" parameterType="map">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+        <where>
+            <include refid="includeInProductDatatable"></include>
+        </where>
+    </select>
+
+    <select id="selectPoReceivedByProductAndPoAndSpecAndOption" resultType="com.newper.entity.PoReceived">
+        SELECT
+            *
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO ON POR_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON POR_P_IDX = P_IDX
+                LEFT JOIN SPEC ON POR_PROCESS_SPEC_IDX = SPEC_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX AND PP_COUNT - POR_COUNT > 0
+        WHERE
+            SPEC_IDX = #{specIdx}
+        AND
+            P_IDX = #{pIdx}
+        AND
+            POR_OPTION = #{option}
+        AND
+            PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoReceivedByPoIdxAndPpIdx" resultType="com.newper.entity.PoReceived">
+        SELECT
+            *
+        FROM
+            PO_RECEIVED
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX AND PP_COUNT - POR_COUNT > 0
+        WHERE
+            POR_PP_IDX = #{ppIdx}
+          AND
+            POR_PO_IDX = #{poIdx}
+    </select>
+
+    <select id="selectPoProductByPpIdx" resultType="Map">
+        SELECT
+            *
+        FROM
+            PO_PRODUCT
+        WHERE
+            PP_IDX = #{ppIdx}
+    </select>
 </mapper>

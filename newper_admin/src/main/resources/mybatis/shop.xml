@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.ShopMapper">
+    <sql id="includeShopDatatable">
+        <if test="shopIdx != null and shopIdx !=''">AND SHOP_IDX LIKE CONCAT('%',#{shopIdx},'%')</if>
+        <if test="shopName != null and shopName !=''">AND SHOP_NAME LIKE CONCAT('%',#{shopName},'%')</if>
+        <if test="shopState != null">
+            <foreach collection="shopState" open="AND SHOP_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="shopType != null">
+            <foreach collection="shopType" open="AND SHOP_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+    <select id="selectShopDatatable" resultType="map">
+        SELECT
+            SHOP_IDX,
+            SHOP_NAME,
+            DOM_URL,
+            SHOP_STATE,
+            SHOP_TYPE
+        FROM
+            SHOP
+                LEFT JOIN DOMAIN ON DOM_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeShopDatatable"></include>
+        </where>
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countShopDatatable" resultType="long">
+        SELECT
+            COUNT(DISTINCT(SHOP_IDX))
+        FROM
+            SHOP
+                LEFT JOIN DOMAIN ON DOM_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeShopDatatable"></include>
+        </where>
+    </select>
+</mapper>

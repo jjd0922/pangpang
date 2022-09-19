@@ -8,9 +8,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HwState {
 
-     BEFORE("요청전")
+    /**요청전*/
+    BEFORE("요청전")
+    /**요청*/
     ,REQ("요청")
+    /**반려*/
     ,REJECT("반려")
+    /**승인*/
     ,APPROVED("승인")
 
     ;

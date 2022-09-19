@@ -1,15 +1,12 @@
 package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
-import com.newper.entity.Estimate;
-import com.newper.entity.Hiworks;
-import com.newper.entity.PoProduct;
+import com.newper.entity.*;
 import com.newper.exception.MsgException;
-import com.newper.repository.EstimateRepo;
-import com.newper.repository.HiworksRepo;
-import com.newper.repository.PoProductRepo;
-import com.newper.repository.PoRepo;
+import com.newper.mapper.PoMapper;
+import com.newper.repository.*;
 import com.newper.service.PoService;
+import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 
 @RequestMapping(value = "/po/")
@@ -33,6 +32,8 @@ public class PoController {
     private final HiworksRepo hiworksRepo;
 
     private final EstimateRepo estimateRepo;
+    private final ProductService productService;
+    private final PoMapper poMapper;
 
     /** 발주품의 페이지 **/
     @GetMapping(value = "")
@@ -45,24 +46,16 @@ public class PoController {
     @GetMapping(value = "poPop")
     public ModelAndView poPop(){
         ModelAndView mav = new ModelAndView("po/poPop");
+
         return mav;
     }
 
     /** 발주품의 상세 & 수정 페이지 */
     @GetMapping(value = "poPop/{poIdx}")
-    public ModelAndView poPopDetail(@PathVariable long poIdx){
+    public ModelAndView poPopDetail(@PathVariable Integer poIdx){
         ModelAndView mav = new ModelAndView("po/poPop");
-
-        return mav;
-    }
-
-    /** 발주품의 수정 */
-    @PostMapping(value = "poPop/{poIdx}")
-    public ModelAndView poPopDetailPost(@PathVariable long poIdx, ParamMap paramMap, MultipartFile poFile){
-        ModelAndView mav = new ModelAndView("po/poPop");
-        mav.addObject("po", poRepo.findById((int) poIdx));
-        mav.addObject("poProduct", poProductRepo.findPoProductByPo_PoIdx((int) poIdx));
-
+        mav.addObject("po", poRepo.findPoByPoIdx(poIdx));
+        mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
         return mav;
     }
 

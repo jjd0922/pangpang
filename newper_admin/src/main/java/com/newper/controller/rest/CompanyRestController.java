@@ -135,9 +135,6 @@ public class CompanyRestController {
     public ReturnDatatable fee(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("카테고리별 입점사 수수료관리");
 
-        String comIdx = paramMap.get("comIdx").toString();
-        System.out.println("comIdx = " + comIdx);
-
         paramMap.multiSelect("cateIdx");
         paramMap.multiSelect("cfType");
 
@@ -213,15 +210,15 @@ public class CompanyRestController {
         return rd;
     }
 
-    /**comIdx로 거래처 조회*/
-    @PostMapping("companyByComIdx.ajax")
-    public ReturnMap companyByComIdx(int comIdx){
-        ReturnMap rm = new ReturnMap();
-        Company company = companyRepo.findCompanyByComIdx(comIdx);
-        rm.put("COM_NAME",company.getComName());
-        rm.put("COM_IDX",company.getComIdx());
-        return rm;
-    }
+//    /**comIdx로 거래처 조회*/
+//    @PostMapping("companyByComIdx.ajax")
+//    public ReturnMap companyByComIdx(int comIdx){
+//        ReturnMap rm = new ReturnMap();
+//        Company company = companyRepo.findCompanyByComIdx(comIdx);
+//        rm.put("COM_NAME",company.getComName());
+//        rm.put("COM_IDX",company.getComIdx());
+//        return rm;
+//    }
 
 
 }

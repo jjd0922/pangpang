@@ -23,20 +23,13 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                            <span class="breadcrumb-item">
-                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                <th:block th:text="${mainTitle}"></th:block>
-                                            </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                <th:block th:text="${subTitle}"></th:block>
-                                            </span>
+                                        <span class="breadcrumb-item"></span>
                                     </div>
                                 </h6>
                             </div>
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="returnForm">
+                                    <form id="incheckForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
@@ -111,8 +104,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <table class="table" id="returnTable"></table>
+                            <table class="table" id="incheckTable"></table>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -121,7 +115,7 @@
 </div>
 </body>
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -142,55 +136,53 @@
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        var table = $('#incheckTable').DataTable();
+        table.page('first').ajax.url('/in/incheck.dataTable?' + $('#incheckForm').serialize()).load(null, false);
+    }
+
+    function incheckPop(idx){
+        var focusPopup = window.open('/in/incheckManagePop/' + idx,'incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 
 <script>
-    var returnTable = $('#returnTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+    var incheckTable = $('#incheckTable').DataTable({
         ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/incheck/incheck.dataTable?'+$('#returnForm').serialize(),
+            url:'/in/incheck.dataTable?'+$('#incheckForm').serialize(),
             type:'post'
         },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-
-        } ],
-
-
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'입고검수코드','data':'CG_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: incheckPop('+ full.CG_IDX +')" class="badge badge-primary">' + full.CG_IDX + '</a>';
                 }}
-            ,{'title':'입고검수코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: returnManagePop('+ data[''] +')" class="badge badge-primary" >'+ data[''] + '</a>';
-                }}
-            ,{'title':'입고검수<br>작업상태값','data':"CG_STATE"}
-            ,{'title':'입고검수<br>업체','data':'CG_COM_IDX'}
-            ,{'title':'입고검수<br>담당자','data':'IG_U_IDX'}
-            ,{'title':'요청자','data':'HW_U_IDX'}
-            ,{'title':'작업지시자','data':'CG_U_IDX'}
-            ,{'title':'완료처리자','data':''}
+            ,{'title':'입고검수<br>작업상태값','data':"CG_STATE_STR"}
+            ,{'title':'입고검수<br>업체','data':'COM_NAME', defaultContent:''}
+            ,{'title':'입고검수<br>담당자','data':'U_NAME3', defaultContent:''}
+            ,{'title':'요청자','data':'CREATED_BY'}
+            ,{'title':'작업지시자','data':'U_NAME1', defaultContent:''}
+            ,{'title':'완료처리자','data':'U_NAME2', defaultContent:''}
             ,{'title':'요청일','data':'CG_REQUEST_DATE'}
-            ,{'title':'작업시작일','data':'CG_START-DATE'}
+            ,{'title':'작업시작일','data':'CG_START_DATE'}
             ,{'title':'작업종료일','data':'CG_END_DATE'}
-            ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
-            ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST'}
-            ,{'title':'공정완료/<br>작업요청건','data':''}
-            ,{'title':'공정비<br>합계','data':'CGS_REAL_COST'}
+            // ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
+            ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST', class : 'text-right', render: function (data, type, full, meta) {
+                return comma(data);
+            }}
+            //,{'title':'공정완료/<br>작업요청건','data':''}
+            ,{'title':'공정비<br>합계','data':'CGS_REAL_COST', class : 'text-right', render: function (data, type, full, meta) {
+                return comma(data);
+            }}
         ]
     });
 
-    $('#returnForm').on('keyup',function(event){
+    $('#incheckForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 

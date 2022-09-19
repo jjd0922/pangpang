@@ -147,7 +147,7 @@
 </body>
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -193,6 +193,7 @@
         }
     }
 
+    /**수정폼 보여주기*/
     function showUpdateForm(row) {
         if ($("#saveBtn").length > 0) {
             alert("수수료 생성을 먼저 완료해 주세요.");
@@ -202,41 +203,46 @@
             alert("이미 수정 중입니다.");
             return false;
         }
-        $('a[data-row="'+row+'"]').attr("id", "updateBtn").removeClass("badge-primary").addClass("badge-secondary").after('<a href="javascript: searchFee()" class="badge badge-light">취소</a>');
-        var targetRow = document.querySelectorAll("#feeTable tr")[row];
-        var targetCols = targetRow.childNodes;
-        var rowData = getDatatablemap('feeTable', row);
-        var cfType = rowData.CF_TYPE;
 
+        // 버튼 전환
+        $('a[data-row="'+row+'"]').attr("id", "updateBtn").removeClass("badge-primary").addClass("badge-secondary").after('<a href="javascript: searchFee()" class="badge badge-light">취소</a>');
+
+        // 수정창으로 전환
+        var targetCols = $("a[data-row="+row+"]").closest("tr").find("td");
         targetCols[1].innerHTML = '';
         targetCols[2].innerHTML = '<input type="text" name="cfPercent" value="">';
         targetCols[3].innerHTML = '<input type="text" name="cfMoney" value="">';
-        switchInput(cfType);
         var selectBox = $('select[name="cfType"]:first').clone();
         selectBox[0][0].remove();
         selectBox.appendTo(targetCols[1]);
 
+        // 필요한 데이터 가져오기
+        var rowData = getDatatablemap('feeTable', (row-1));
+        var cfType = rowData.CF_TYPE;
+
+        // 정액/정률 선택박스 옵션 세팅
         var opt = [[${T(com.newper.constant.CfType).values()}]];
         $.each(opt, function(index, item){
             if (item == cfType) {
                 selectBox.find('option[value="'+item+'"]').attr("selected",true);
+                switchInput($(selectBox));
             }
         });
 
-        selectBox.multiselect({
-            onChange: function (element) {
-                element.siblings().attr('selected', false);
-                element.attr('selected', true);
-                switchInput(element.val())
-            }}
-        );
+        $(selectBox).select2({
+            minimumResultsForSearch: Infinity
+        });
+        $(selectBox).on('input',function(){
+            switchInput($(this));
+        });
 
-        $('#updateBtn').attr('href', 'javascript: saveNewFee('+rowData.CF_IDX + ')');
+        $('#updateBtn').attr('href', 'javascript: updateFee('+rowData.CF_IDX + ')');
 
     }
 
-    function switchInput(cfType) {
-        if (cfType == 'R') {
+    /**등록, 수정창에서 정액/정률 선택시 input창 전환*/
+    function switchInput(selected) {
+        if (selected[0].options.selectedIndex == '1') {
             $('input[name="cfPercent"]').attr('disabled', false);
             $('input[name="cfMoney"]').val("").attr('disabled', true);
         } else {
@@ -245,22 +251,29 @@
         }
     }
 
-    function saveNewFee(cfIdx) {
-        var url = location.pathname;
-        if (cfIdx != null && cfIdx != "") {
-            url += '/' + cfIdx + '.ajax?' + $('#updateForm').serialize();
-        } else {
-            url += '.ajax?' + $('#updateForm').serialize() + '&comIdx=' + $('input[name="comIdx"]').val();
-        }
+    function saveNewFee() {
         $.ajax({
-            url:  url ,
+            url:  location.pathname+'.ajax?'+$('#updateForm').serialize()+'&comIdx='+$('input[name="comIdx"]').val(),
             type: 'post',
-            success: function (data) {
+            success: function () {
                 searchFee();
             }
         });
     }
 
+    function updateFee(cfIdx) {
+        if (confirm("해당 카테고리 수수료를 수정하시겠습니까?")) {
+            $.ajax({
+                url: location.pathname+'/'+cfIdx+'.ajax?'+$('#updateForm').serialize(),
+                type: 'post',
+                success: function () {
+                    searchFee();
+                }
+            });
+        }
+    }
+
+    /**수수료 등록폼 보여주기*/
     function showNewFeeForm() {
         if (!$.fn.DataTable.isDataTable('#feeTable')) {
             alert("거래처를 선택해주세요.");
@@ -274,8 +287,10 @@
             alert("이미 생성 중입니다.");
             return false;
         }
+
+        // 새로운 행 추가
         $('#feeTable tr:last').after('<tr><td>' +
-                                        '<select name="cateIdx" data-placeholder="카테고리중분류" class="form-control select"></select></td>' +
+                                        '<select name="cateIdx" data-placeholder="중분류선택" class="form-control"><option></option></select></td>' +
                                     '<td></td>' +
                                     '<td>' +
                                         '<input type="text" name="cfPercent" disabled>' +
@@ -288,16 +303,25 @@
                                         '<a href="javascript: saveNewFee()" id="saveBtn" class="badge badge-secondary">저장</a>' +
                                         '<a href="javascript: searchFee()" class="badge badge-light">취소</a>' +
                                     '</td></tr>');
-        $('select[name="cateIdx"]').append($('option.opt').clone()).multiselect();
+
+        //중분류 선택 박스 설정
+        $('select[name="cateIdx"]').append($('option.opt').clone());
+
+        $('select[name="cateIdx"]').select2({
+            width: 120,
+            allowClear: true
+        });
+
+        // 정액/정률 선택 박스 추가
         var selectBox = $('select[name="cfType"]:first').clone();
         selectBox[0][0].remove();
         $('tr:last td')[1].append(selectBox[0]);
-        selectBox.multiselect({
-            onChange: function (element) {
-                element.siblings().attr('selected', false);
-                element.attr('selected', true);
-                switchInput(element.val())
-            }});
+        $(selectBox).select2({
+            minimumResultsForSearch: Infinity
+        });
+        $(selectBox).on('input',function(){
+            switchInput($(this));
+        });
     }
 </script>
 <script th:inline="javascript">

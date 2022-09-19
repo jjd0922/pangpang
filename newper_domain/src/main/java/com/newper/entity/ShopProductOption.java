@@ -1,7 +1,9 @@
 package com.newper.entity;
 
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -27,7 +29,17 @@ public class ShopProductOption {
 
     private String spoName;
 
-    private Integer spoMoney;
+    private Integer spoPrice;
 
+    @PrePersist
+    @PreUpdate
+    public void spoSave(){
+
+        if (getGoodsStock() == null) {
+            throw new MsgException("재고상품을 선택해주세요.");
+        }
+
+
+    }
 
 }

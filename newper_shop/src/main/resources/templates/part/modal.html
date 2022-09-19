@@ -1,0 +1,318 @@
+<!--로그인 모달창-->
+<th:block th:fragment="login-modal">
+    <div class="modal-wrap loginModal-wrap">
+        <div class="modal loginModal">
+            <div class="loginModal-close">
+                <img th:attr="src=@{/image/close.png},title='모달창닫기',alt='창닫기'">
+            </div>
+            <div class="login-content-wrap">
+                <div class="login-left">
+                    <h2 class="font-lg semi-bold center">로그인</h2>
+                    <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
+                        <ul class="login-input-group">
+                            <li class="input-wrap">
+                                <input type="text" name="id" maxlength="10" placeholder="아이디">
+                            </li>
+                            <li class="input-wrap">
+                                <input type="password" name="pw" maxlength="15" placeholder="비밀번호">
+                            </li>
+                        </ul>
+                    </form>
+                    <div class="login-check-wrap">
+                        <label class="login-check">
+                            <input type="checkbox" class="custom-checkbox" id="" name="">
+                            자동로그인
+                        </label>
+                        <ul class="login-find-group">
+                            <li>
+                                <a href="javascript:;">아이디 찾기</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">비밀번호 찾기</a>
+                            </li>
+                            <li>
+                                <a href="@{/joinWelcome}">회원가입</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn btn7">
+                        <a href="javascript:login();">로그인</a>
+                    </div>
+                    <h2 class="font-sm semi-bold center">간편 로그인</h2>
+                    <ul class="sns-login-group">
+                        <li>
+                            <a href="javascript:;" class="naver-login">네이버</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="kakao-login">카카오</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="apple-login">애플</a>
+                        </li>
+                    </ul>
+                    <div class="dummy-line"></div>
+                    <p class="font-md semi-bold center">비회원 주문조회</p>
+                </div>
+                <div class="login-right">
+                    <img src="https://dummyimage.com/440x440/eee/777" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function login(){
+            $.ajax({
+              url:'login.ajax'
+              ,type:'post'
+              ,data:$('#loginForm').serialize()
+            }).done(function(res){
+                try{
+                    if(res.data.result == '200'){
+                        //로그인 성공
+                        modal.hide();
+                        $('.nosessionClass').hide();
+                        $('.sessionClass').show();
+                    }else{
+                        //로그인 실패
+                        console.log(res.data.result);
+                    }
+                }catch (e){
+                    alert('잠시 후 시도해주세요');
+                }
+            });
+        }
+    </script>
+    <script>
+        /*** 로그인 모달 창 ***/
+        var modal = $(".loginModal-wrap");
+
+        $(".login").click(function(){
+            $('body').addClass('no-scroll');
+            modal.show();
+            return false;
+        });
+        // 모달 창 닫기
+        $(".loginModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            modal.hide();
+        });
+        // 외부영역 클릭 시 팝업 닫기
+        $(document).mouseup(function (e){
+            if(modal.has(e.target).length === 0){
+                modal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+    </script>
+</th:block>
+
+<!--비회원 로그인 모달창-->
+<th:block th:fragment="nonMemberLogin-modal">
+    <div class="modal-wrap loginModal-wrap">
+        <div class="modal nonMemberLoginModal">
+            <div class="loginModal-close">
+                <img th:attr="src=@{/image/close.png},title='모달창닫기',alt='창닫기'">
+            </div>
+            <h2 class="font-lg semi-bold center">로그인</h2>
+            <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
+                <ul class="login-input-group">
+                    <li class="input-wrap">
+                        <input type="text" name="id" maxlength="10" placeholder="아이디">
+                    </li>
+                    <li class="input-wrap">
+                        <input type="password" name="pw" maxlength="15" placeholder="비밀번호">
+                    </li>
+                </ul>
+            </form>
+            <div class="login-check-wrap">
+                <label class="login-check">
+                    <input type="checkbox" class="custom-checkbox" id="" name="">
+                    자동로그인
+                </label>
+                <ul class="login-find-group">
+                    <li>
+                        <a href="javascript:;">아이디 찾기</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">비밀번호 찾기</a>
+                    </li>
+                    <li>
+                        <a href="@{/joinWelcome}">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn btn7">
+                <a href="javascript:login();">로그인</a>
+            </div>
+            <h2 class="font-sm semi-bold center">간편 로그인</h2>
+            <ul class="sns-login-group">
+                <li>
+                    <a href="javascript:;" class="naver-login">네이버</a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="kakao-login">카카오</a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="apple-login">애플</a>
+                </li>
+            </ul>
+            <div class="dummy-line"></div>
+            <div class="btn btn6">
+                <a href="javascript:;">비회원 구매</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function login(){
+            $.ajax({
+                url:'login.ajax'
+                ,type:'post'
+                ,data:$('#loginForm').serialize()
+            }).done(function(res){
+                try{
+                    if(res.data.result == '200'){
+                        //로그인 성공
+                        modal.hide();
+                        $('.nosessionClass').hide();
+                        $('.sessionClass').show();
+                    }else{
+                        //로그인 실패
+                        console.log(res.data.result);
+                    }
+                }catch (e){
+                    alert('잠시 후 시도해주세요');
+                }
+            });
+        }
+    </script>
+    <script>
+        /*** 로그인 모달 창 ***/
+        var modal = $(".loginModal-wrap");
+
+        $(".login").click(function(){
+            $('body').addClass('no-scroll');
+            modal.show();
+            return false;
+        });
+        // 모달 창 닫기
+        $(".loginModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            modal.hide();
+        });
+        // 외부영역 클릭 시 팝업 닫기
+        $(document).mouseup(function (e){
+            if(modal.has(e.target).length === 0){
+                modal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+    </script>
+</th:block>
+
+<!--배송지목록 모달창-->
+<th:block th:fragment="addrList-modal">
+    <div class="modal-wrap addrListModal-wrap">
+        <div class="modal addrListModal">
+            <h2 class="font-xxxlg semi-bold">배송지 목록</h2>
+            <!-- 배송지 테이블 제목 -->
+            <ul class="addrList-table-title font-sm">
+                <li>배송지명</li>
+                <li>주소</li>
+                <li>연락처</li>
+                <li>선택</li>
+            </ul>
+            <!-- 배송지 목록 리스트 1 -->
+            <ul class="addrList-table-cont font-md">
+                <li>
+                    <p>집</p>
+                    <p class="bold">홍길동</p>
+                    <!-- 기본배송지 아닐 경우 아래 <div>태그 삭제 -->
+                    <div class="defaultAddr font-xsm">기본배송지</div>
+                </li>
+                <li>
+                    <p>15205</p>
+                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
+                    <p>901호</p>
+                    <p class="mo-addr-phone pc-display-none">010-1234-1234</p>
+                </li>
+                <li class="font-sm">010-1234-1234</li>
+                <li>
+                    <div class="btn-white select-btn font-xsm">선택</div>
+                </li>
+            </ul>
+            <!-- 배송지 목록 리스트 1 -->
+            <ul class="addrList-table-cont font-md">
+                <li>
+                    <p>집</p>
+                    <p class="bold">홍길동</p>
+                </li>
+                <li>
+                    <p>15205</p>
+                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
+                    <p>901호</p>
+                    <p class="mo-addr-phone pc-display-none">010-1234-1234</p>
+                </li>
+                <li class="font-sm">010-1234-1234</li>
+                <li>
+                    <div class="btn-white select-btn font-xsm">선택</div>
+                </li>
+            </ul>
+            <!-- 팝업 하단 닫기 버튼 -->
+            <div class="order-button-group">
+                <div class="btn-blue addrListClose-btn semi-bold">
+                    <a href="javascript:;">닫기</a>
+                </div>
+            </div>
+            <!-- 팝업 상단 닫기 버튼 -->
+            <div class="addrModal-close">
+                <img src="/image/close.png" title="모달창닫기" alt="창닫기">
+            </div>
+        </div>
+
+    <script>
+        /*** 배송지목록 모달 창 ***/
+        var addrListModal = $(".addrListModal-wrap");
+
+        $(".addressConfirm .btn").click(function(){
+            $('body').addClass('no-scroll');
+            addrListModal.show();
+            return false;
+        });
+        // 모달 창 닫기
+        $(".addrListClose-btn").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
+        });
+        $(".addrModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
+        });
+        // 외부영역 클릭 시 팝업 닫기
+        $(document).mouseup(function (e){
+            if(addrListModal.has(e.target).length === 0){
+                addrListModal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+        // ESC 키 누를시 팝업 닫기
+        $(document).keydown(function(e){
+            //keyCode 구 브라우저, which 현재 브라우저
+            var code = e.keyCode || e.which;
+
+            if (code == 27) { // 27은 ESC 키번호
+                addrListModal.hide();
+                $('body').removeClass('no-scroll');
+            }
+        });
+    </script>
+</th:block>

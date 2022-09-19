@@ -138,7 +138,7 @@
 </body>
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -178,19 +178,16 @@
     $('#insuranceTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        buttons : buttonsSelect(false),
         serverSide: true,
         ajax:{
             url:'/company/insurance.dataTable',
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
-                }}
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
             ,{'title':'보증보험구분','data':'CI_TYPE_STR','defaultContent':''}
             ,{'title':'보증보험 발행상태','data':'CI_INSURANCE_STATE_STR','defaultContent':''}
             ,{'title':'거래처','data':'COM_NAME','defaultContent':''}
@@ -201,9 +198,9 @@
             ,{'title':'보증 시작일','data':'CI_START_DATE','defaultContent':''}
             ,{'title':'보증 종료일','data':'CI_END_DATE','defaultContent':''}
             ,{'title':'증권번호','data':'CI_NUM','defaultContent':''}
-            ,{'title':'보험가입금액','data':'CI_FEE','defaultContent':''}
+            ,{'class':'text-won','title':'보험가입금액','data':'CI_FEE','defaultContent':''}
             ,{'title':'보험요율','data':'CI_PERCENT','defaultContent':''}
-            ,{'title':'보험 가능 금액','data':'CI_MONEY','defaultContent':''}
+            ,{'class':'text-won','title':'보험 가능 금액','data':'CI_MONEY','defaultContent':''}
             ,{'title':'등록자','data':'CI_CREATED_BY','defaultContent':''}
             ,{'title':'등록일','data':'CI_CREATED_DATE','defaultContent':''}
             /*,{'title':'수정자','data':'COM_MODIFIED_BY','defaultContent':''}

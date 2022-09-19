@@ -1,14 +1,16 @@
 package com.newper.entity;
 
+import com.newper.constant.CgState;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.net.Inet4Address;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -28,11 +30,12 @@ public class CheckGroup extends CreatedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CG_CHECK_IDX", referencedColumnName = "checkIdx")
-    private Check check;
+    private Checks checks;
 
-    private String cgState;
+    @Enumerated(EnumType.STRING)
+    private CgState cgState;
 
-    private Date cgRequestDate;
+    private LocalDate cgRequestDate;
 
     private String cgReqMemo;
 
@@ -40,13 +43,17 @@ public class CheckGroup extends CreatedEntity {
 
     private String cgDoneMemo;
 
-    private Date cgStartDate;
+    private LocalDate cgStartDate;
 
-    private Date cgEndDate;
+    private LocalDate cgEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="CG_U_IDX", referencedColumnName = "uIdx")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="CG_U_IDX2", referencedColumnName = "uIdx")
+    private User user2;
 
 
 }

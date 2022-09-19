@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ProcessMapper">
+    <sql id="includeProcessNeedDataTable">
+        <if test="gIdx != null and gIdx != ''">AND PN_G_IDX = #{gIdx}</if>
+        <if test="pgIdx != null and pgIdx != ''">AND PN_PG_IDX = #{pgIdx}</if>
+    </sql>
+    <select id="selectProcessNeed" resultType="Map">
+        SELECT
+            *
+        FROM
+            PROCESS_NEED
+                LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+        <where>
+            <include refid="includeProcessNeedDataTable"></include>
+        </where>
+    </select>
 
+    <sql id="includeProcessGroupDataTable">
+        <if test="pgType != null and pgType != ''">AND PG_TYPE = #{pgType}</if>
+    </sql>
+    <select id="selectProcessGroupDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            PROCESS_GROUP
+        <where>
+            <include refid="includeProcessGroupDataTable"></include>
+        </where>
+    </select>
+
+    <select id="countProcessGroupDatatable" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_GROUP
+        <where>
+            <include refid="includeProcessGroupDataTable"></include>
+        </where>
+    </select>
 </mapper>

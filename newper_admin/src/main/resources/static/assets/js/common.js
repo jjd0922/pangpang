@@ -50,12 +50,12 @@ $(document).ajaxStart(function(event, xhr, settings){
 
         if(xhr.responseJSON.location!=null){
             if(xhr.responseJSON.popup){
-                window.open('/loginPop', 'loginPop', 'width=500, height=500');
+                window.open(xhr.responseJSON.location, '', 'width=500, height=500');
             }else{
                 //세션만료로 로그인 팝업 띄우는 경우
                 if(location.pathname == '/loginPop'){
                     //부모창 새로고침
-                    if(location.search.indexOf('refresh=true') != -1){
+                    if(location.search.indexOf('refresh=true') != -1 && window.opener != null){
                         window.opener.location.reload()
                     }
                     window.close();
@@ -96,8 +96,7 @@ function buttonsSelect(useSelect){
     {
         extend: 'pageLength',
             className: 'btn btn-sm btn-dark opacity-50'
-    }
-,
+    },
     {
         text: '새로고침',
             className: 'btn btn-sm btn-secondary',
@@ -155,10 +154,8 @@ if($.fn.dataTable !== undefined){
             infoFiltered: '(총 _MAX_개의 자료에서 재검색)',
             lengthMenu: '_MENU_',
             zeroRecords: '검색 결과가 없습니다.',
-        },
-        buttons: {
-            buttons: buttonsSelect(true)
         }
+        ,buttons: buttonsSelect(true)
         ,'footerCallback':function(tfoot, data, start, end, display){
             //init하기 전에 tfoot 태그 있어야함
             if(tfoot!=null){
@@ -401,6 +398,7 @@ function dataTableGetSelectedData(id,name){
     for(idx in getData_arr){
         param+=getData_table.data()[getData_arr[idx]][name]+',';
     }
+    param = param.slice(0, -1);
     return param;
 }
 //datatable 선택된 값 가져오기
@@ -476,6 +474,13 @@ function imageSizeCheck(obj){
                 return false;
             }
         }
+    }
+}
+function spanTag(text, className){
+    if(className != null){
+        return '<span class="'+className+'">'+text+'</span>';
+    }else{
+        return '<span>'+text+'</span>';
     }
 }
 //td tag return

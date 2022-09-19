@@ -9,8 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CcType implements EnumOption {
 
+    /**매입*/
     PURCHASE("매입")
-    ,SALES("매출");
+    /**매출*/
+    ,SALES("매출")
+    ;
 
     private String option;
 

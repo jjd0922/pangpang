@@ -1,0 +1,932 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${order != null}? '주문정보상세':'주문정보등록'"></title>
+
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .modal-dialog{
+            max-width: 950px;
+        }
+
+        .table-hover {
+            width: 100% !important;
+        }
+
+        .form-division{
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" >주문정보 상세</h4>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button type="button" class="" onclick="">문자발송</button>
+                        <button type="button" class="" onclick="">카카오톡</button>
+                        <button type="button" class="" onclick="">APP PUSH</button>
+                    </div>
+
+                </div>
+            </div>
+            <form id="ordersForm" class="form-division">
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">1. 주문, 결제정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs bg-danger pull-right" onclick="" th:if="${order!=null}">결제완료</button>
+                                    <button type="button" class="btn btn-xs bg-success pull-right legitRipple" onclick="" th:if="${order!=null}">결제취소</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문완료일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_DATE" class="form-control daterange-singlenull" th:value="${order?.O_DATE}" th:disabled="${order!=null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제상태
+                                            </span>
+                                        </span>
+                                        <select th:if="${order==null}" class="form-control form-control-sm select-search" name="PAY_STATE" data-placeholder="선택" data-container-css-class="select-sm">
+                                            <option></option>
+                                            <option th:each="opt: ${T(com.newper.constant.PayState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                        </select>
+                                        <input th:unless="${order==null}" type="text" name="PAY_STATE" class="form-control" th:value="${order?.PAY_STATE_STR}" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_CODE" class="form-control" th:value="${order?.O_CODE}" disabled>
+                                        <input type="hidden" name="O_IDX" th:value="${order?.O_IDX}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제방식
+                                            </span>
+                                        </span>
+                                        <select th:if="${order==null}" class="form-control form-control-sm select-search" name="PAY_METHOD" data-placeholder="선택" data-container-css-class="select-sm">
+                                            <option></option>
+                                            <option th:each="opt: ${T(com.newper.constant.PayMethod).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                        </select>
+                                        <input th:unless="${order==null}" type="text" name="PAY_METHOD" class="form-control" th:value="${order?.PAY_METHOD}" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문분양몰
+                                            </span>
+                                        </span>
+                                        <select th:if="${order==null}" class="form-control form-control-sm select-search" name="O_SHOP_IDX" data-placeholder="선택" data-container-css-class="select-sm">
+                                            <option></option>
+                                            <option th:each="i: ${shop}" th:text="${i.shopName}" th:value="${i.shopIdx}"></option>
+                                        </select>
+                                        <input th:unless="${order==null}" type="text" name="SHOP_NAME" class="form-control" th:value="${order?.SHOP_NAME}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               PG결제승인코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_CODE" class="form-control" th:if="${order==null}">
+                                        <input type="text" name="PAY_CODE" class="form-control" th:value="${order?.PAY_CODE}" disabled th:unless="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               회원구분
+                                            </span>
+                                        </span>
+                                        <input type="text" id="CU_TYPE" class="form-control" disabled th:if="${order==null}" value="비회원">
+                                        <input type="text" name="" class="form-control" th:value="${order?.CU_IDX}!=null? '회원':'비회원'" disabled th:unless="${order==null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_DATE" class="form-control daterange-singlenull" th:value="${order?.PAY_DATE}" th:disabled="${order!=null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문자 ID
+                                                <a onclick="user()" class="badge badge-sm badge-primary ml-1">검색</a>
+                                            </span>
+                                        </span>
+                                        <input type="text" name="CU_ID" class="form-control" readonly th:if="${order==null}">
+                                        <input type="hidden" name="CU_IDX" th:if="${order==null}">
+                                        <input type="text" name="CU_ID" class="form-control" th:value="${order?.CU_ID}" disabled th:unless="${order==null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               카드결제취소코드
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_CANCEL_CODE" class="form-control" th:value="${order?.PAY_CANCEL_CODE}" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문자 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_NAME" class="form-control" th:value="${order?.O_NAME}" th:disabled="${order!=null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               카드결제취소일
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_CANCEL_DATE" class="form-control" th:value="${order?.PAY_CANCEL_DATE}" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text ">
+                                               주문자 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_PHONE" class="form-control" th:value="${order?.O_PHONE}" th:disabled="${order!=null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               주문경로
+                                            </span>
+                                        </span>
+                                        <select th:if="${order==null}" class="form-control form-control-sm select-search" name="O_LOCATION" data-placeholder="선택" data-container-css-class="select-sm">
+                                            <option></option>
+                                            <option th:each="opt: ${T(com.newper.constant.OLocation).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                        </select>
+                                        <input type="text" name="O_LOCATION" class="form-control" th:value="${order?.O_LOCATION}" th:unless="${order==null}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">2. 주문, 결제정보 <span class="small ml-2"></span>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               판매가(뉴퍼마켓가) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_GS_PRICE" class="form-control" th:value="${order?.O_GS_PRICE}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불은행
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               할인가 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_EVENT" class="form-control" th:value="${order?.O_EVENT}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불계좌번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                쿠폰할인가 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_COUPON" class="form-control" th:value="${order?.O_COUPON}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불예금주
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               사용적립금(마일리지) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_MILEAGE" class="form-control" th:value="${order?.O_MILEAGE}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               환불처리금액합계
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               사용적립금(예치금)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="O_POINT" class="form-control" th:value="${order?.O_POINT}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송비(설치비) 합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_DELIVERY" class="form-control" th:value="${order?.PAY_DELIVERY}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               예정적립금합
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_MILEAGE" class="form-control" th:value="${order?.PAY_MILEAGE}" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text ">
+                                               최종결제금액
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_PRICE" class="form-control" th:value="${order?.PAY_PRICE}" disabled>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               결제취소금액
+                                            </span>
+                                        </span>
+                                        <input type="text" name="PAY_CANCEL_PRICE" class="form-control" th:value="${order?.PAY_CANCEL_PRICE}" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">3. 배송/설치정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="daum_address1()">배송지정보변경</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="AD_NAME" class="form-control" th:value="${order?.AD_NAME}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송/설치메세지
+                                            </span>
+                                        </span>
+                                        <input type="text" name="AD_MEMO" class="form-control" th:value="${order?.AD_MEMO}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="AD_PHONE" class="form-control" th:value="${order?.AD_PHONE}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 우편번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="POST" class="form-control"  th:value="${order?.POST}" readonly>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                배송자(설치자) 주소(시,도)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="ADDR1" class="form-control" th:value="${order?.ADDR1}" readonly>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 주소(시,군,구)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="ADDR2" class="form-control" th:value="${order?.ADDR2}" readonly>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                 배송자(설치자) 주소(도로명)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="ADDR3" class="form-control" th:value="${order?.ADDR3}" readonly>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               배송자(설치자) 주소(상세주소)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="ADDR4" class="form-control" th:value="${order?.ADDR4}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content col-xs-12 col-md-6">
+                    <div class="card">
+                        <div class="card-body popup-contents mb-4">
+                            <fieldset class="mb-0">
+                                <legend class="">4. 반품/수거정보 <span class="small ml-2"></span>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="daum_address2()">배송지정보변경</button>
+                                </legend>
+                            </fieldset>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 이름
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송/설치메세지
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 연락처
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" th:disabled="${order==null}">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+
+                                            </span>
+                                        </span>
+                                        <input type="text" name="" class="form-control" disabled>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 우편번호
+                                            </span>
+                                        </span>
+                                        <input type="text" name="OPOST" class="form-control"  th:value="${orders != null} ? ${orders.address.oPost}" readonly>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                (수거)배송자(설치자) 주소(시,도)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="OADDR1" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr1}" readonly>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 주소(시,군,구)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="OADDR2" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr2}" readonly>
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                (수거)배송자(설치자) 주소(도로명)
+                                            </span>
+                                        </span>
+                                        <input type="text" name="OADDR3" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr3}" readonly>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                               (수거)배송자(설치자) 상세주소
+                                            </span>
+                                        </span>
+                                        <input type="text" name="OADDR4" class="form-control" th:value="${orders != null} ? ${orders.address.oAddr4}" th:disabled="${order==null}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="content col-xs-12 overflow-x-hidden">
+                <div class="card">
+                    <div class="card-body popup-contents mb-4" th:if="${order==null}">
+                        <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                            <div class="btn-group">
+                                <div class="header-elements">
+                                    <button type="button" class="btn btn-xs badge-primary" onclick="productSelect()">상품선택</button>
+                                </div>
+                            </div>
+                        </div>
+                        <form id="ptForm">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>상품코드</th>
+                                    <th>상품명</th>
+                                    <th>SHOP상품코드</th>
+                                    <th>재고코드</th>
+                                    <th>옵션1</th>
+                                    <th>옵션2</th>
+                                    <th>옵션3</th>
+                                    <th>판매가(뉴퍼마켓가)</th>
+                                    <th>할인가</th>
+                                    <th>쿠폰할인가(-)</th>
+                                    <th>사용적립금(마일리지)(-)</th>
+                                    <th>사용적립금(예치금)(-)</th>
+                                    <th>배송비(설치비)</th>
+                                    <th>최종결제금액</th>
+                                    <th>예정적립금</th>
+                                    <th>삭제</th>
+                                </tr>
+                            </thead>
+                            <tbody id="goodsStockTable"></tbody>
+                        </table>
+                        </form>
+                    </div>
+                    <div class="card-body popup-contents mb-4" th:unless="${order==null}">
+                        <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                            <div class="btn-group">
+                                <div class="header-elements">
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">반품요청</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">교환요청</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">관리자반품완료</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">관리자교환완료</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">AS요청</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="">환불처리</button>
+                                    <button type="button" class="btn btn-xs badge-danger" onclick="insertInvoice()">송장등록</button>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table" id="orderGoodsStockTable"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button th:if="${order}==null" onclick="orderSave()" type="button" class="btn btn-sm btn-secondary ml-1"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button th:unless="${order}==null" onclick="orderUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>수정</button>
+        </div>
+    </div>
+
+</div>
+
+<th:block th:replace="orders/modal/customerModal.html"/>
+<th:block th:replace="orders/modal/productModal.html"/>
+<!-- 공통 js -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+</body>
+
+
+<th:block th:replace="modal/summernoteImageModal.html"></th:block>
+
+<script th:inline="javascript">
+
+
+
+
+    function orderSave(){
+        if(confirm("저장하시겠습니까?")){
+            var param = $('#ordersForm').serialize();
+            var param2 = $('#ptForm').serialize();
+            $.ajax({
+                url:'/orders/orderSave.ajax',
+                type:'post',
+                data:param+"&"+param2,
+                success: function(res){
+                    if(res.message!=null){
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    }
+
+    function orderUpdate(){
+        var o_idx = $('input[name="O_IDX"]').val();
+        if(confirm("수정하시겠습니까?")){
+            var param = $('#ordersForm').serialize();
+            $.ajax({
+                url:'/orders/orderUpdate.ajax',
+                type:'post',
+                data:param,
+                success: function(res){
+                    if(res.message!=null){
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    }
+
+    /** 다음 주소 api사용 , 3. 배송/설치정보 배송지 변경*/
+    function daum_address1() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if (extraAddr !== '') {
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=POST]').val(data.zonecode).attr("readonly", true);
+                $('input[name=ADDR1]').val(data.sido).attr("readonly", true);
+                $('input[name=ADDR2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=ADDR3]').val(addr + extraAddr).attr("readonly", true);
+            }
+        }).open();
+    }
+
+    /** 다음 주소 api사용 , 4. 반품/수거정보 배송지 변경*/
+    function daum_address2() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if (extraAddr !== '') {
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=OPOST]').val(data.zonecode).attr("readonly", true);
+                $('input[name=OADDR1]').val(data.sido).attr("readonly", true);
+                $('input[name=OADDR2]').val(data.sigungu).attr("readonly", true);
+                $('input[name=OADDR3]').val(addr + extraAddr).attr("readonly", true);
+            }
+        }).open();
+    }
+
+    function selectCustmer(row){
+        var rowData = getDatatablemap('customerModalTable', row);
+        $('input[name="CU_IDX"]').val(rowData.CU_IDX);
+        $('input[name="CU_ID"]').val(rowData.CU_ID);
+        $('input[name="O_NAME"]').val(rowData.CU_NAME);
+        $('input[name="O_PHONE"]').val(rowData.CU_PHONE);
+        $('#CU_TYPE').val("회원");
+        $('#customerModal').modal('hide');
+    }
+
+    function selectProductAdd(row){
+        var rowData = getDatatablemap('productModalTable', row);
+        if(document.getElementById("goodsStock_"+rowData.SPO_IDX)){
+            alert("이미 추가된 상품입니다.");
+        }else{
+            var total = rowData.GS_PRICE - rowData.DISCOUNT + rowData.P_DEL_PRICE;
+            var str ='';
+            str+='<tr id="goodsStock_'+rowData.SPO_IDX+'"><td>'+rowData.P_IDX+'</td>'
+            str+='<td>'+rowData.P_NAME+'</td>'
+            str+='<td>'+rowData.SP_IDX+'</td>'
+            str+='<td>'+rowData.GS_CODE+'</td>'
+            str+='<td>'+rowData.OPTION1+'</td>'
+            str+='<td>'+rowData.OPTION2+'</td>'
+            str+='<td>'+rowData.OPTION3+'</td>'
+            str+='<td id="price_'+rowData.SPO_IDX+'">'+comma(rowData.GS_PRICE)+'</td>'
+            str+='<td id="discount_'+rowData.SPO_IDX+'">'+comma(rowData.DISCOUNT)+'</td>'
+            str+='<td><input type="text" class="form-control text-right" name="OG_COUPON_'+rowData.SPO_IDX+'" onkeyup="numCommaKeyUp();totalPrice('+rowData.SPO_IDX+');" value="0"> </td>'
+            str+='<td><input type="text" class="form-control text-right" name="OG_MILEAGE_'+rowData.SPO_IDX+'" onkeyup="numCommaKeyUp();totalPrice('+rowData.SPO_IDX+');" value="0"></td>'
+            str+='<td><input type="text" class="form-control text-right" name="OG_POINT_'+rowData.SPO_IDX+'" onkeyup="numCommaKeyUp();totalPrice('+rowData.SPO_IDX+');" value="0"></td>'
+            str+='<td id="del_'+rowData.SPO_IDX+'">'+comma(rowData.P_DEL_PRICE)+'</td>'
+            str+='<td><input type="text" class="form-control text-right" name="TOTAL_'+rowData.SPO_IDX+'" value="'+comma(total)+'" disabled></td>'
+            str+='<td>'+comma(rowData.MILEAGE)+'</td><td><a class="btn btn-sm badge-danger" onclick="deleteGoodsStock('+rowData.SPO_IDX+')">삭제</a></td></tr>'
+            $('#goodsStockTable').append(str);
+            $('#productModal').modal('hide');
+        }
+    }
+
+    function deleteGoodsStock(spoIdx){
+        $('#goodsStock_'+spoIdx).remove()
+    }
+
+    function totalPrice(spoIdx){
+        var price = $('#price_'+spoIdx).html();
+        var discount = $('#discount_'+spoIdx).html();
+        var del = $('#del_'+spoIdx).html();
+        var coupon = $('input[name="OG_COUPON_'+spoIdx+'"]').val();
+        var mileage = $('input[name="OG_MILEAGE_'+spoIdx+'"]').val();
+        var point = $('input[name="OG_POINT_'+spoIdx+'"]').val();
+        price = price.replace(/[^0-9]/g,"");
+        discount = discount.replace(/[^0-9]/g,"");
+        del = del.replace(/[^0-9]/g,"");
+        del = parseInt(del);
+        coupon = coupon.replace(/[^0-9]/g,"");
+        mileage = mileage.replace(/[^0-9]/g,"");
+        point = point.replace(/[^0-9]/g,"");
+        var res = price - discount + del - coupon - mileage - point;
+        if(res<0){
+            alert("최종결제금액을 확인해주세요.");
+        }
+        $('input[name="TOTAL_'+spoIdx+'"]').val(comma(res));
+    }
+
+
+    function insertInvoice(ogIdx){
+        var param = dataTableGetSelectedDataArray('orderGoodsStockTable', 'OG_IDX');
+        if (param.length == 0) {
+            alert('선택된 주문번호코드가 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 주문번호코드를 송장등록 하시겠습니까?")) {
+                $.ajax({
+                    url: '/orders/insertInvoice.ajax',
+                    type: 'post',
+                    data: {
+                        ogIdxs : param
+                    },
+                    success: function (res) {
+                        $('#orderGoodsStockTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    var o_idx = $('input[name="O_IDX"]').val();
+    $('#orderGoodsStockTable').DataTable({
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/orders/orderGoodsStock.dataTable?O_IDX='+o_idx,
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'OG_IDX','defaultContent':'','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="OG_IDX" value="'+data+'">';
+                }}
+            ,{'title':'주문상품코드','data':'P_IDX'}
+            ,{'title':'출고구분','data':'null','defaultContent':''}
+            ,{'title':'주문상태','data':'O_STATE_STR'}
+            ,{'title':'환불상태','data':'PAY_CANCEL_STATE_STR','defaultContent':'', 'render':function(data,type,full,meta){
+                if(data=='요청전'){
+                    return '';
+                }else{
+                    return data;
+                }
+                }}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'SHOP상품코드','data':'SP_IDX','defaultContent':''}
+            ,{'title':'재고코드','data':'GS_CODE','defaultContent':''}
+            ,{'title':'자산코드','data':'G_AJ_BARCODE','defaultContent':''}
+            ,{'title':'옵션1','data':'OPTION1','defaultContent':''}
+            ,{'title':'옵션2','data':'OPTION2','defaultContent':''}
+            ,{'title':'옵션3','data':'OPTION3','defaultContent':''}
+            ,{'title':'자산상태','data':'G_STATE','defaultContent':''}
+            ,{'title':'판매가(뉴퍼마켓가)','data':'GS_PRICE','render':function(data,type,full,meta){
+                if(data!=null){
+                    return comma(data);
+                }else{
+                    return '';
+                }
+            }}
+            ,{'title':'할인가','data':'DISCOUNT','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'쿠폰할인가(-)','data':'OG_COUPON','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'사용적립금(마일리지)(-)','data':'OG_MILEAGE','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'사용적립금(예치금)(-)','data':'OG_POINT','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'배송비(설치비)','data':'DELIVERY','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'최종결제금액','data':'TOTAL','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'예정적립금','data':'MILEAGE','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'환불금액','data':'PAY_CANCEL_PRICE','render':function(data,type,full,meta){
+                    if(data!=null){
+                        return comma(data);
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'title':'출고택배사','data':'null','defaultContent':''}
+            ,{'title':'출고송장번호','data':'null','defaultContent':''}
+            ,{'title':'수거택배사','data':'null','defaultContent':''}
+            ,{'title':'수거송장번호','data':'null','defaultContent':''}
+            ,{'title':'설치업체','data':'null','defaultContent':''}
+            ,{'title':'수거업체','data':'null','defaultContent':''}
+            ,{'title':'주문완료일','data':'null','defaultContent':''}
+            ,{'title':'배송출고일','data':'null','defaultContent':''}
+            ,{'title':'배송완료일','data':'null','defaultContent':''}
+            ,{'title':'설치완료일','data':'null','defaultContent':''}
+            ,{'title':'구매확정일','data':'null','defaultContent':''}
+            ,{'title':'설치예정일','data':'null','defaultContent':''}
+            ,{'title':'주문취소일','data':'null','defaultContent':''}
+            ,{'title':'반품요청일','data':'null','defaultContent':''}
+            ,{'title':'반품완료일','data':'null','defaultContent':''}
+            ,{'title':'환불요청일','data':'null','defaultContent':''}
+            ,{'title':'환불완료일','data':'null','defaultContent':''}
+            ,{'title':'자산픽킹예정 로케이션','data':'null','defaultContent':''}
+        ]
+    });
+
+
+    window.onload=function(){
+        smImage('#summerNote1');
+        smImage('#summerNote2');
+        smImage('#summerNote3');
+
+        if([[${cg?.depth}]]!=null){
+            if([[${cg?.depth}]]==1){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+            }else if([[${cg?.depth}]]==2){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+            }else if([[${cg?.depth}]]==3){
+                $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
+                $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
+                $('select[name=CATE_IDX3]').val([[${cg?.CATE_IDX3}]]).trigger('change');
+            }
+        }
+
+    }
+
+
+    $('#companyModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchCompanyDataTable();return false;}
+    });
+</script>
+
+</html>

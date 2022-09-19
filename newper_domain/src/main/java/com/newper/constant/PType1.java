@@ -9,11 +9,17 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PType1 implements EnumOption {
 
+    /**정상품*/
      NORMAL("정상품")
+    /**리퍼상품*/
     ,REFUR("리퍼상품")
+    /**입점상품(총액)*/
     ,TOTALCOST("입점상품(총액)")
+    /**입점상품(순액)*/
     ,NETAMOUNT("입점상품(순액)")
+    /**AS*/
     ,AS("AS")
+    /**용역*/
     ,SERVICE("용역")
     ;
     private String option;

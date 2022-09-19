@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.TemplateFormMapper">
+
+    <sql id="includeTemplateFormDataTable">
+        <if test="TF_TITLE != null and TF_TITLE != ''">AND TF_TITLE LIKE CONCAT('%',#{TF_TITLE},'%')</if>
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
+    </sql>
+
+    <select id="selectTemplateFormDatatable" resultType="Map" parameterType="Map">
+        SELECT
+            TF_IDX,
+            TF_TITLE,
+            TF_CONTENT,
+            CREATED_DATE
+        FROM
+            template_form
+        WHERE
+        TF_TYPE=#{TF_TYPE}
+        <include refid="includeTemplateFormDataTable"></include>
+        ORDER BY
+        TF_IDX desc
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countTemplateFormDatatable" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        template_form
+        WHERE
+        TF_TYPE=#{TF_TYPE}
+        <include refid="includeTemplateFormDataTable"></include>
+    </select>
+</mapper>

@@ -15,6 +15,7 @@ import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,18 +67,20 @@ public class ProductController {
     @PostMapping("category/categoryCreate/{cate_depth}")
     public ModelAndView categoryCatePost(@PathVariable int cate_depth,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertClose");
+
         paramMap.put("CATE_DEPTH",cate_depth);
         paramMap.put("CATE_TYPE", CateType.CATEGORY);
         categoryService.categoryInsert(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","등록 완료");
+
         return mav;
     }
 
     /**카테고리 상세 팝업*/
-    @GetMapping("category/categoryDetail/{cate_idx}")
-    public ModelAndView categoryDetail(@PathVariable int cate_idx){
-        ModelAndView mav = new ModelAndView("product/category/categoryDetail");
-        Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+    @GetMapping("category/{idx}")
+    public ModelAndView categoryDetail(@PathVariable(value = "idx") int cateIdx){
+        ModelAndView mav = new ModelAndView("product/category_idx");
+        Category category = categoryRepo.findById(cateIdx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         int depth = category.getCateDepth();
 
@@ -87,22 +90,32 @@ public class ProductController {
             mav.addObject("parent",categoryMapper.selectCategoryListByCateDepth(2));
         }
 
+        List<String> list = category.getCateSpecList();
+        String spec = "";
+        for (int i = 0; i < list.size(); i++) {
+            spec += list.get(i);
+            if (i + 1 != list.size()) {
+                spec += ", ";
+            }
+        }
+        mav.addObject("spec",spec);
 
         String image = category.getCateImage();
         image=Common.summernoteContent(image);
         mav.addObject("category",category);
         mav.addObject("image",image);
+
         return mav;
     }
 
     /**카테고리 수정*/
-    @PostMapping("category/categoryDetail/{cate_idx}")
-    public ModelAndView categoryDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+    @PostMapping("category/{cateIdx}")
+    public ModelAndView categoryDetailPost(@PathVariable int cateIdx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        paramMap.put("CATE_IDX",cate_idx);
+        paramMap.put("CATE_IDX",cateIdx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/category/categoryDetail/"+cate_idx);
+        mav.addObject("loc","/product/category/"+cateIdx);
         return mav;
     }
 
@@ -133,11 +146,11 @@ public class ProductController {
     }
 
     /**브랜드 상세 팝업*/
-    @GetMapping("brand/{cate_idx}")
-    public ModelAndView brandDetail(@PathVariable int cate_idx){
+    @GetMapping("brand/{cateIdx}")
+    public ModelAndView brandDetail(@PathVariable int cateIdx){
         ModelAndView mav = new ModelAndView("product/brand_detail");
 
-        Category category = categoryRepo.findById(cate_idx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
+        Category category = categoryRepo.findById(cateIdx).orElseThrow(() -> new MsgException("존재하지 않는 카테고리입니다."));
 
         String image = category.getCateImage();
         image= Common.summernoteContent(image);
@@ -149,13 +162,13 @@ public class ProductController {
     }
 
     /**브랜드 수정*/
-    @PostMapping("brand/{cate_idx}")
-    public ModelAndView brandDetailPost(@PathVariable int cate_idx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
+    @PostMapping("brand/{cateIdx}")
+    public ModelAndView brandDetailPost(@PathVariable int cateIdx,ParamMap paramMap, MultipartFile CATE_ICON, MultipartFile CATE_THUMBNAIL){
         ModelAndView mav = new ModelAndView("main/alertMove");
-        paramMap.put("CATE_IDX",cate_idx);
+        paramMap.put("CATE_IDX",cateIdx);
         categoryService.categoryUpdate(paramMap,CATE_ICON,CATE_THUMBNAIL);
         mav.addObject("msg","수정 완료");
-        mav.addObject("loc","/product/brand/"+cate_idx);
+        mav.addObject("loc","/product/brand/"+cateIdx);
         return mav;
     }
 
@@ -202,18 +215,14 @@ public class ProductController {
         mav.addObject("content2",content2);
         mav.addObject("content3",content3);
 
-        Map<String,Object> option = product.getPOption();
-        List<Map<String,Object>> pOption = new ArrayList<Map<String,Object>>();
-
-        for(int i=1; i<4; i++){
-            Map<String,Object> optionMap = new HashMap<>();
-            if(!option.get("p_option_key"+i).equals("")||!option.get("p_option_value"+i).equals("")){
-                optionMap.put("p_option_key",option.get("p_option_key"+i));
-                optionMap.put("p_option_value",option.get("p_option_value"+i));
-                pOption.add(optionMap);
-            }
+        List<Map<String,Object>> option = product.getPOption();
+        int cnt=0;
+        for(int i=0; i<option.size(); i++){
+            cnt++;
         }
-        mav.addObject("pOption",pOption);
+        System.out.println("cnt : "+cnt);
+        mav.addObject("optionSize",option.size());
+
         Map<String, Object> cg = new HashMap<>();
         if(product.getCategory() != null){
             Map<String,Object> category = categoryMapper.selectCategoryDetail(product.getCategory().getCateIdx());
@@ -241,11 +250,11 @@ public class ProductController {
         }else{
             com.put("storeName","");
         }
-        if (product.getManufactureName() != null) {
+/*        if (product.getManufactureName() != null) {
             com.put("manufactureName",companyRepo.findById(product.getManufactureName().getComIdx()).get().getComName());
         }else{
             com.put("manufactureName","");
-        }
+        }*/
         if (product.getAfterServiceName() != null) {
             com.put("afterServiceName",companyRepo.findById(product.getAfterServiceName().getComIdx()).get().getComName());
         }else{
@@ -273,21 +282,21 @@ public class ProductController {
     }
 
     /**재고상품관리 상세*/
-    @GetMapping("goodsStock/{GS_IDX}")
-    public ModelAndView goodsStockDetail(@PathVariable int GS_IDX) {
+    @GetMapping("goodsStock/{gsidx}")
+    public ModelAndView goodsStockDetail(@PathVariable int gsidx) {
         ModelAndView mav = new ModelAndView("product/goods_stock_detail");
 
-        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(GS_IDX);
+        GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(gsidx);
         Product product = goodsStock.getProduct();
 
-        Map<String, Object> po = product.getPOption();
-        String ov1 = po.get("p_option_value1")+"";
-        String ov2 = po.get("p_option_value2")+"";
-        String ov3 = po.get("p_option_value3")+"";
+        List<Map<String, Object>> po = product.getPOption();
 
-        String[] option1 = ov1.split(",");
-        String[] option2 = ov2.split(",");
-        String[] option3 = ov3.split(",");
+        for(int i=0; i<po.size();i++){
+            List<String> val = (List)po.get(i).get("values");
+            System.out.println("option"+(i+1));
+            mav.addObject("option"+(i+1),val);
+        }
+
 
         String content = goodsStock.getGsContent();
         content= Common.summernoteContent(content);
@@ -295,9 +304,6 @@ public class ProductController {
         mav.addObject("goodsStock", goodsStock);
         mav.addObject("product", product);
         mav.addObject("content", content);
-        mav.addObject("option1", option1);
-        mav.addObject("option2", option2);
-        mav.addObject("option3", option3);
 
         return mav;
     }
@@ -305,6 +311,12 @@ public class ProductController {
     @GetMapping("info")
     public ModelAndView info() {
         ModelAndView mav = new ModelAndView("product/info");
+        return mav;
+    }
+    /**재고 상품 관리*/
+    @GetMapping("stock")
+    public ModelAndView stock() {
+        ModelAndView mav = new ModelAndView("product/stock");
         return mav;
     }
 

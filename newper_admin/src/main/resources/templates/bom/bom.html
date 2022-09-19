@@ -77,12 +77,12 @@
                                             <i class="icon-popout mr-1"></i>신규등록
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">
-                                            <i class="icon-popout mr-1"></i>일괄변경
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="deleteBtn">
+                                            <i class="icon-popout mr-1"></i>일괄삭제
                                         </a>
 
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">
-                                            <i class="icon-popout mr-1"></i>BOM엑셀 업로드
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="excelUploadBtn">
+                                            <i class="icon-upload4 mr-1"></i>엑셀업로드
                                         </a>
                                     </div>
                                 </div>
@@ -101,9 +101,9 @@
     </div>
 </div>
 
-</body>
+<th:block th:replace="bom/modal/excelUploadModal.html"/>
+
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -129,7 +129,34 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 <script th:inline="javascript">
+    function bomDetailPop(pIdx) {
+        var focusPopup = window.open('/bom/bomPop/' + pIdx, 'bomDetail', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 
+    function deleteBom() {
+        var data = dataTableGetSelectedDataArray('bomTable', 'BOM_P_IDX');
+
+        if (data.length <= 0) {
+            alert("선택한 BOM이 없습니다.");
+
+        } else if (confirm("선택한 BOM을 일괄삭제하시겠습니까?")) {
+            $.ajax({
+                url: '/bom/delete.ajax',
+                type: 'post',
+                data: {
+                    pIdxList : data
+                },
+                success: function () {
+                    refreshTable('#bomTable');
+                }
+            });
+        }
+    }
+
+    function searchBtn(){
+        $('#bomTable').DataTable().page('first').ajax.url('/bom/bom.dataTable?'+$('#bomForm').serialize()).load();
+    }
 </script>
 <script th:inline="javascript">
     $('#bomTable').DataTable({
@@ -141,7 +168,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/bom.dataTable',
+            url:'/bom/bom.dataTable',
             type:'post'
         },
         columns : [
@@ -151,14 +178,26 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'상품코드','data':'P_CODE', 'defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
-            ,{'title':'구성상품','data':'P_NAME', 'render': function (data,type,full,meta) {
-                    return '';
+            ,{'title':'구성상품','data':'CNT', 'render': function (data,type,full,meta) {
+                    return '<a href="#" onclick="bomDetailPop('+full.BOM_P_IDX+')" class="badge badge-primary">'+full.CNT+'개</a>';
                 }}
-            ,{'title':'대분류','data':'CATE_NAME','defaultContent':''}
-            ,{'title':'중분류','data':'CATE_NAME','defaultContent':''}
-            ,{'title':'소분류','data':'CATE_NAME','defaultContent':''}
+            ,{'title':'대분류','data':'CATE_NAME1','defaultContent':''}
+            ,{'title':'중분류','data':'CATE_NAME2','defaultContent':''}
+            ,{'title':'소분류','data':'CATE_NAME3','defaultContent':''}
         ]
     });
+
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('/bom/bomPop', 'insertBom', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+
+    $('#deleteBtn').on('click', deleteBom);
+    $('#bomForm').on('keyup', function (event) {
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+    $('#excelUploadBtn').on('click', showExcelUploadModal);
 </script>
+</body>
+</html>

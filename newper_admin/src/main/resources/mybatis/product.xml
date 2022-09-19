@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ProductMapper">
+    <sql id="includeGoodsStockDataTable">
+        <if test="P_IDX != null and P_IDX != ''">AND P_IDX LIKE CONCAT('%',#{P_IDX},'%')</if>
+        <if test="P_NAME != null and P_NAME != ''">AND P_NAME LIKE CONCAT('%',#{P_NAME},'%')</if>
+        <if test="P_MODEL != null and P_MODEL !=''">AND P_MODEL LIKE CONCAT('%',#{P_MODEL},'%')</if>
+        <if test="GS_CODE != null and GS_CODE !=''">AND GS_CODE like CONCAT('%',#{GS_CODE},'%')</if>
+        <if test="GS_NAME != null and GS_NAME != ''">AND GS_NAME LIKE CONCAT('%',#{GS_NAME},'%')</if>
+        <if test="GS_DAILY != null and GS_DAILY != ''">AND GS_DAILY LIKE CONCAT('%',#{GS_DAILY},'%')</if>
+        <if test="modifiedBy != null and modifiedBy != ''">AND MODIFIED_BY LIKE CONCAT('%',#{modifiedBy},'%')</if>
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
+        <if test="createdBy != null and createdBy != ''">AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test='GS_RANK != null'>
+            <foreach collection="GS_RANK" open="AND GS_RANK IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test='P_STATE != null'>
+            <foreach collection="P_STATE" open="AND P_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+    <sql id="includeProductDataTable">
+        <if test="P_CODE != null and P_CODE != ''">AND P_IDX LIKE CONCAT('%',#{P_CODE},'%')</if>
+        <if test="P_NAME != null and P_NAME != ''">AND P_NAME LIKE CONCAT('%',#{P_NAME},'%')</if>
+        <if test="P_STATE != null and  P_STATE!=''">AND P_STATE LIKE CONCAT('%',#{P_STATE},'%')</if>
+        <if test="P_MODEL != null and P_MODEL !=''">AND P_MODEL LIKE CONCAT('%',#{P_MODEL},'%')</if>
+        <if test="P_CATE_IDX2 != null and P_CATE_IDX2 !=''">AND P_CATE_IDX2 like CONCAT('%',#{P_CATE_IDX2},'%')</if>
+        <if test="P_USE_STOCK != null and P_USE_STOCK != ''">AND P_USE_STOCK LIKE CONCAT('%',#{P_USE_STOCK},'%')</if>
+        <if test="CATE_IDX1 != null and CATE_IDX1 !=''">AND CATE_IDX1 like CONCAT('%',#{CATE_IDX1},'%')</if>
+        <if test="CATE_IDX2 != null and CATE_IDX2 !=''">AND CATE_IDX2 like CONCAT('%',#{CATE_IDX2},'%')</if>
+        <if test="CATE_IDX3 != null and CATE_IDX3 !=''">AND CATE_IDX3 like CONCAT('%',#{CATE_IDX3},'%')</if>
+        <if test="P_TYPE1 != null">
+        <foreach collection="P_TYPE1" open="AND P_TYPE1 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_TYPE2 != null">
+        <foreach collection="P_TYPE2" open="AND P_TYPE2 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_TYPE3 != null">
+        <foreach collection="P_TYPE3" open="AND P_TYPE3 IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        </if>
+        <if test="P_COM_IDX != null and P_COM_IDX != ''">AND P_COM_IDX LIKE CONCAT('%',#{P_COM_IDX},'%')</if>
+        <if test="P_COM_IDX2 != null and P_COM_IDX2 != ''">AND P_COM_IDX2 LIKE CONCAT('%',#{P_COM_IDX2},'%')</if>
+        <if test="P_COM_IDX3 != null and P_COM_IDX3 != ''">AND P_COM_IDX3 LIKE CONCAT('%',#{P_COM_IDX3},'%')</if>
+        <if test="CREATED_BY != null and CREATED_BY != ''">AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
+        <if test="CREATED_BY != null and CREATED_BY != ''">AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>/*수정자*/
+        <if test="CREATED_DATE != null and CREATED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>/*수정일*/
+        <if test="MODIFIED_BY != null and MODIFIED_BY != ''">AND MODIFIED_BY LIKE CONCAT('%',#{MODIFIED_BY},'%')</if>
+        <if test="MODIFIED_DATE != null and MODIFIED_DATE != ''">AND PRODUCT.CREATED_DATE BETWEEN SUBSTR(#{MODIFIED_DATE}, 1, 10) AND SUBSTR(#{MODIFIED_DATE}, 13)</if>
+        <if test="mpIdx != null and mpIdx != ''">AND P_IDX != #{mpIdx}</if>
+        <if test="cpIdx != null">
+            <foreach collection="cpIdx" open="AND P_IDX NOT IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
     <select id="selectProductDataTable" resultType="Map">
         SELECT
-            dt.CATE_SPEC_LIST AS 'CATE_SPEC_LIST',
+            dt.CATE_SPEC_LIST_DT,
+            dt.CATE_SPEC_LIST,
             product.*,
             FORMAT(P_SELL_PRICE , 0) AS 'P_SELL_PRICE',
             (case
@@ -20,42 +83,48 @@
             if(dt.CATE_DEPTH=3,dt.CATE_NAME1,NULL) CATE_NAME3,
             brand.CATE_NAME as 'BRAND_NAME',
                 store.COM_NAME AS 'STORE_NAME',
-                manufacture.COM_NAME AS 'MANUFACTURE_NAME',
+               /* manufacture.COM_NAME AS 'MANUFACTURE_NAME',*/
                 afterservice.COM_NAME AS 'AFTERSERVICE_NAME',
-            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value1'),'"','') OPTION1,
-            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value2'),'"','') OPTION2,
-            replace(JSON_EXTRACT(P_OPTION,'$.p_option_value3'),'"','') OPTION3
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
+
+           ,CONCAT_WS(', ', p_option->>'$[0].title',p_option->>'$[1].title',p_option->>'$[2].title') P_OPTION_DT
         FROM
             product
-                LEFT JOIN (SELECT
-                               category1.CATE_NAME AS CATE_NAME1,
-                               category1.CATE_IDX AS CATE_IDX1,
-                               category1.CATE_DEPTH,
-                               category1.CATE_SPEC_LIST AS CATE_SPEC_LIST,
-                               category2.CATE_NAME AS CATE_NAME2,
-                               category2.CATE_IDX AS CATE_IDX2,
-                               category3.CATE_NAME AS CATE_NAME3,
-                               category3.CATE_IDX AS CATE_IDX3
+                LEFT JOIN (
+                    SELECT
+                           category1.CATE_NAME AS CATE_NAME1,
+                           category1.CATE_IDX AS CATE_IDX1,
+                           category1.CATE_DEPTH,
+                           category2.CATE_NAME AS CATE_NAME2,
+                           category2.CATE_IDX AS CATE_IDX2,
+                           IF(category2.CATE_SPEC ='Y', JSON_ARR_TO_STR(category2.CATE_SPEC_LIST), '') AS CATE_SPEC_LIST_DT,
+                           IF(category2.CATE_SPEC ='Y', category2.CATE_SPEC_LIST, '') AS CATE_SPEC_LIST,
+                           category3.CATE_NAME AS CATE_NAME3,
+                           category3.CATE_IDX AS CATE_IDX3
 
-                           FROM
-                               category AS category1
-                                   LEFT JOIN category AS category2
-                                             ON category1.CATE_PARENT_IDX = category2.CATE_IDX
-                                   LEFT JOIN category AS category3
-                                             ON category2.CATE_PARENT_IDX = category3.CATE_IDX)dt
-                          ON dt.CATE_IDX1=P_CATE_IDX
+                       FROM
+                           category AS category1
+                               LEFT JOIN category AS category2
+                                     ON category1.CATE_PARENT_IDX = category2.CATE_IDX
+                               LEFT JOIN category AS category3
+                                     ON category2.CATE_PARENT_IDX = category3.CATE_IDX
+                )dt
+                      ON dt.CATE_IDX1=P_CATE_IDX
 
                 LEFT JOIN category AS brand
                     ON P_CATE_IDX2 = brand.CATE_IDX
                 LEFT JOIN company AS store
                     ON P_COM_IDX = store.COM_IDX
-                LEFT JOIN company AS manufacture
-                    ON P_COM_IDX2 = manufacture.COM_IDX
+/*                LEFT JOIN company AS manufacture
+                    ON P_COM_IDX2 = manufacture.COM_IDX*/
                 LEFT JOIN company AS afterservice
-                    ON P_COM_IDX3 = afterservice.COM_IDX
+                    ON P_COM_IDX2 = afterservice.COM_IDX
         WHERE
             P_IDX is not null
-            order by P_IDX desc
+            <include refid="includeProductDataTable"></include>
+         order by P_IDX desc
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -86,23 +155,29 @@
                           ON P_CATE_IDX2 = brand.CATE_IDX
                 LEFT JOIN company AS store
                           ON P_COM_IDX = store.COM_IDX
-                LEFT JOIN company AS manufacture
-                          ON P_COM_IDX2 = manufacture.COM_IDX
+/*                LEFT JOIN company AS manufacture
+                          ON P_COM_IDX2 = manufacture.COM_IDX*/
                 LEFT JOIN company AS afterservice
-                          ON P_COM_IDX3 = afterservice.COM_IDX
-    </select>
+                          ON P_COM_IDX2 = afterservice.COM_IDX
 
-    <select id="selectProductByListPcode" resultType="String">
-        select
-            P_CODE
-        from
-            product
-        order by P_IDX desc limit 1
-    </select>
+            WHERE
+                P_IDX is not null
+                <include refid="includeProductDataTable"></include>
+
+
+</select>
+
+<!--    <select id="selectProductByListPcode" resultType="String">-->
+<!--        select-->
+<!--            P_CODE-->
+<!--        from-->
+<!--            product-->
+<!--        order by P_IDX desc limit 1-->
+<!--    </select>-->
 
     <select id="selectGoodsStockDataTable" resultType="map">
         SELECT
-        GS_IDX, GS_THUMB_FILE1, P_CODE, P_STATE, P_NAME, P_IDX,
+        GS_IDX, GS_THUMB_FILE1, P_STATE, P_NAME, P_IDX,
         P_MODEL, P_COST, P_SELL_PRICE, GS_CODE, GS_NAME,
         GS_PRICE, GS_SALE, GS_RANK, GS_SAFE_STOCK, GS_PROPER_STOCK,
         GS_DAILY, goods_stock.CREATED_BY, goods_stock.CREATED_DATE, goods_stock.MODIFIED_BY, goods_stock.MODIFIED_DATE,
@@ -115,6 +190,7 @@
         ON GS_P_IDX=P_IDX
         WHERE
         GS_IDX IS NOT null
+        <include refid="includeGoodsStockDataTable"></include>
         order by P_IDX desc
         <if test="length!=-1">
             limit #{start},#{length}
@@ -129,6 +205,7 @@
                           ON GS_P_IDX=P_IDX
         WHERE
             GS_IDX IS NOT null
+            <include refid="includeGoodsStockDataTable"></include>
     </select>
 
     <select id="selectGoodsStockByListGsCode" resultType="String">
@@ -137,5 +214,28 @@
         from
             goods_stock
         order by GS_IDX desc limit 1
+    </select>
+    
+    <select id="selectShopProductByOrdersModalDataTable" resultType="map">
+        SELECT
+            P_IDX, P_NAME, SP_IDX, GS_CODE, GS_IDX,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, P_DEL_PRICE, truncate(SPO_PRICE * SP_PERCENT / 100,0) AS MILEAGE,
+            SPO_IDX
+        FROM
+            shop_product
+                LEFT JOIN shop_product_add
+                          ON SP_IDX=SPA_SP_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_SPA_IDX=SPA_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 </mapper>

@@ -1,14 +1,12 @@
 package com.newper.entity;
 
+import com.newper.constant.GgtType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigInteger;
-import java.util.Date;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -23,7 +21,9 @@ public class GoodsGroupTemp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ggtIdx;
 
-    private String ggtType;
+    @Enumerated(EnumType.STRING)
+    private GgtType ggtType;
 
-    private Date ggtDate;
+    @Builder.Default
+    private LocalDate ggtDate = LocalDate.now();
 }

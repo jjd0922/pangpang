@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>입고관리</title>
+    <title>입고등록</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -38,19 +38,89 @@
 
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="inSearchForm">
+                                    <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-<!--                                                <div class="form-group">-->
-<!--                                                    <label class="d-block">수정일</label>-->
-<!--                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="MODIFIED_DATE">-->
-<!--                                                </div>-->
+                                                <div class="form-group">
+                                                    <label class="d-block">발주 상태</label>
+                                                    <select name="poState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">구매담당자</label>
+                                                    <input type="text" name="uName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">매입처</label>
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">입고예정일</label>
+                                                    <input type="text" name="poInDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">납기일</label>
+                                                    <input type="text" name="poDueDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">반품기한</label>
+                                                    <input type="text" name="poRefundDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">A/S 기한</label>
+                                                    <input type="text" name="poAsDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재매입 여부</label>
+                                                    <select name="poRepurchase" class="form-control">
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록자</label>
+                                                    <input type="text" name="createdBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">2
+                                                    <label class="d-block">승인자</label>
+                                                    <input type="text" name="hwAprvId" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">승인일</label>
+                                                    <input type="text" name="hwAprvDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정자</label>
+                                                    <input type="text" name="modifiedBy" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수정일</label>
+                                                    <input type="text" name="modifiedDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
                                                         <span class="ladda-label">조회하기</span>
                                                     </button>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </form>
@@ -77,7 +147,7 @@
 </body>
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -107,13 +177,12 @@
 
 <script>
     function searchBtn(){
-        var table = $('#productTable').DataTable();
-        table.page('first').ajax.url('/product/product.dataTable?'+$('#productForm').serialize()).load(null, false);
+        var table = $('#inTable').DataTable();
+        table.page('first').ajax.url('/in/in.dataTable?'+$('#searchForm').serialize()).load(null, false);
     }
 
-    //발주코드 팝업
-    function openInPop(idx){
-        var focusPopup = window.open('/in/'+idx, 'inDetail', 'width=1200, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function poDetail(idx) {
+        var focusPopup = window.open('/in/po/' + idx, 'inPo', 'width=1100,height=900,scrollbars=yes,resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -121,34 +190,39 @@
 
 <script>
     var inTable = $('#inTable').DataTable({
-        ordering:false,
-        // select: {
-        //     style: 'multi',
-        //     selector: 'td:first-child'
-        // },
+        buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/in/in.dataTable?'+$('#inSearchForm').serialize(),
+            url:'/in/in.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
         "columns" : [
-            // {'class':'select-checkbox m-w-2', 'title':'선택','data':'P_IDX','defaultContent':'','render':function(data,type,full,meta){
-            //         return '<input type="hidden" name="P_IDX" value="'+data+'">';
-            //     }}
             {'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
-            ,{'title':'발주코드','data':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-indigo" onclick="openInPop(1)">발주코드</a>';
+            ,{'title':'긴급발주','data':'PO_TYPE_STR','render':function(data,type,full,meta){
+                if(full.PO_TYPE == 'EMERGENCY'){
+                    return spanTag(full.PO_TYPE_STR,'text-danger');
+                }
+                return full.PO_TYPE_STR;
             }}
+            ,{'title':'입고상태','data':'PO_STATE_STR','defaultContent':''}
+            ,{'title':'입고 담당자','data':'U_NAME','defaultContent':''}
+            ,{'title':'입고 완료일','data':'PO_IN_DATE','defaultContent':''}
+            ,{'title':'세금계산서 발행일','data':'PO_TAX_MONTH','defaultContent':''}
+            ,{'title':'입고창고','data':'WH_NAME','defaultContent':''}
+            ,{'title':'발주담당자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'발주완료일','data':'CREATED_DATE','defaultContent':''}
+            ,{'title':'구매담당자','data':'','defaultContent':''}
+            ,{'title':'발주코드','data':'PO_IDX','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="poDetail('+full.PO_IDX+')">' + full.PO_IDX + '</a>';
+            }}
+            ,{'title':'매입처','data':'COM_NAME','defaultContent':''}
+            ,{'title':'재매입여부','data':'PO_REPURCHASE','defaultContent':''}
         ]
     });
 
-    $('#inSearchForm').on('keyup',function(event){
+    $('#searchForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 

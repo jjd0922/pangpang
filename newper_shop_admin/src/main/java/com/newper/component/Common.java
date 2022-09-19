@@ -38,4 +38,14 @@ public class Common {
 
         paramMap.getMap().put(key, value_arr);
     }
+
+    public static String summernoteContent(String content){
+        content=content.replaceAll("&lt;","<");
+        content=content.replaceAll("&#37;","%");
+        content=content.replaceAll("&gt;",">");
+        content=content.replaceAll("&quot;","\"");
+        content=content.replaceAll("<br>",System.getProperty("line.separator"));
+
+        return content;
+    }
 }

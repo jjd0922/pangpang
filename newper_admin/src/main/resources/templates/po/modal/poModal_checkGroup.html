@@ -1,0 +1,133 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="poModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">발주코드 매핑</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="poDiv">
+                    <div class="card mb-1">
+                        <div class="card-body popup-contents mb-1">
+                            <fieldset class="mb-0">
+                                <legend class="">1. 등록정보</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주상태</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poState" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">입고예정창고(발주)</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="whName" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주담당자</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="uName" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주완료일</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="hwAprvDate" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">거래처담당자</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="uName2" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주서</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poFile" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">발주메모</span>
+                                                </span>
+                                                <input type="text" class="form-control" id="poMemo" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <table class="table" id="poReceivedTable"></table>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnpoModal" onclick="poReceivedMapping()">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function setGoods(data) {
+
+    }
+
+    function selectReceived() {
+        var poIdx = $('input[name=poIdx]').val()
+        var cgIdx = $('input[name=cgIdx]').val()
+        $.ajax({
+            url: '/in/selectReceivedByPo.ajax',
+            data: {
+                "poIdx" : poIdx,
+                "cgIdx" : cgIdx
+            },
+            type: 'post',
+            success(result) {
+                setGoods(result);
+            }
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,61 @@
+<div class="modal" tabindex="-1" role="dialog" id="processHistoryModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">자산 공정 이력</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="collapse show" id="collapse-button-collapsed">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="processHistoryModalTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function openProcessHistoryModal() {
+        $('#processHistoryModal').modal('show');
+        selectProcessHistoryDataTable();
+    }
+
+    function selectProcessHistoryDataTable(){
+        destroyDatatable('processHistoryModalTable');
+        $('#processHistoryModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            ordering: false,
+            buttons: buttonsSelect(false),
+            serverSide: true,
+            ajax:{
+                url:'/warehouse/location.dataTable',
+                type:'post'
+            },
+            columns : [
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                        return meta.settings._iDisplayStart+meta.row+1;
+                    }}
+                ,{'title':'공정항목','data':'', 'defaultContent':''}
+                ,{'title':'공정코드','data':'', 'defaultContent':''}
+                ,{'title':'자산상태','data':'', 'defaultContent':''}
+                ,{'title':'자산처리담당자','data':'', 'defaultContent':''}
+                ,{'title':'자산처리일','data':'', 'defaultContent':''}
+                ,{'title':'공정결과','data':'', 'defaultContent':''}
+                ,{'title':'공정결과 상세메모','data':'', 'defaultContent':''}
+                ,{'title':'영업검수','data':'', 'defaultContent':''}
+                ,{'title':'영업검수담당자','data':'', 'defaultContent':''}
+                ,{'title':'영업검수처리일','data':'', 'defaultContent':''}
+            ]
+        });
+    }
+</script>

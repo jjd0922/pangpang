@@ -6,4 +6,30 @@
         WHERE SPECL_NAME=#{speclName}
         ORDER BY SPECL_NAME
     </select>
+    <select id="selectSpecListMap" resultType="com.newper.entity.SpecList">
+        SELECT SPECL_IDX, SPECL_VALUE FROM SPEC_LIST
+        WHERE SPECL_NAME=#{speclName}
+    </select>
+
+    <insert id="insertSpecItem">
+        INSERT INTO spec_item (
+            SPECI_ORDER,
+            SPECI_SPEC_IDX,
+            SPECI_SPECL_IDX
+        ) VALUES (
+            #{SPECI_ORDER},
+            #{SPEC_IDX},
+            #{SPECL_IDX}
+        )
+    </insert>
+
+    <insert id="insertSpecItemAll">
+        INSERT INTO
+            SPEC_ITEM
+                (SPECI_ORDER, SPECI_SPEC_IDX, SPECI_SPECL_IDX)
+        VALUES
+            <foreach collection="speclIdxs" separator="," item="item" index="i">
+                (#{i}, #{specIdx}, #{item})
+            </foreach>
+    </insert>
 </mapper>

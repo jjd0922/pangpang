@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>영업검수</title>
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-office mr-1"></i> 영업검수상세(발주서단위)</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <!-- 타이틀 -->
+                                <fieldset class="mb-0">
+                                    <legend class="">1. 등록 정보</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${ig?.po?.poIdx}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의작성자(등록자)</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${po != null ? ig?.po?.createdBy: @sessionInfo.id}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의등록일(등록일)</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${po != null ? po.createdDate : #calendars.format(#calendars.createNow(),'yyyy-MM-dd')}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의 승인일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${ig?.po?.hiworks?.hwAprvDate}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의 승인자</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${ig?.po?.hiworks?.hwAprvId}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의상태</span>
+                                                    </span>
+                                                    <input class="form-control" readonly th:value="${ig?.po?.poState?.option}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6" th:if="${po != null}">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의요청일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${ig?.po?.poRequestDate}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">첨부파일<a th:if="${po != null}" th:href="|javascript: fileDownload('${ig?.po?.poFile}', '${ig?.po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                    </span>
+                                                    <input type="input" th:value="${ig?.po?.poFileName}" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">구매담당자</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">품의메모</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="입력" th:value="${ig?.po?.poMemo}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="card-body popup-contents">
+                                <!-- 타이틀 -->
+                                <fieldset class="mb-0">
+                                    <legend class="">2. 발주자산현황</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고상태</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" th:value="${ig?.igState.option}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">매입수량</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고완료</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" placeholder="입력" th:value="${ig?.po?.poBuyReceiveAmount}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고검수완료수량</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고검수 잔여수량</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">3. 발주 상품정보</legend>
+                                        <div class="row overflow-x-scroll">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>상품코드</th>
+                                                    <th>상품타입</th>
+                                                    <th>발주상품<br>INDEX</th>
+                                                    <th>외부상품코드<br>(AJ상품코드)</th>
+                                                    <th>상품명</th>
+                                                    <th>브랜드</th>
+                                                    <th>옵션1</th>
+                                                    <th>옵션2</th>
+                                                    <th>옵션3</th>
+                                                    <th>기준매입가</th>
+                                                    <th>발주단가</th>
+                                                    <th>매입수량</th>
+                                                    <th>매입총액<br>(발주)</th>
+                                                    <th>생산원가<br>(발주)</th>
+                                                    <th>판매금액<br>(발주)</th>
+                                                    <th>예상총이익<br>(발주)</th>
+                                                    <th>예상수익률<br>(발주)</th>
+                                                    <th>입고SPEC<br>(예정)</th>
+                                                    <th>판매SPEC<br>(예정)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="poProductTbody">
+                                                <tr th:if="${poProduct != null}" th:each="i : ${poProduct}">
+                                                    <td th:text="${i.P_IDX}"></td><!--상품코드-->
+                                                    <td th:text="${i.P_TYPE1_STR}"></td><!--상품타입-->
+                                                    <td th:text="${i.PP_IDX}"></td><!--발주상품INDEX-->
+                                                    <td th:text="${i.PP_MEMO}"></td><!--외부상품코드-->
+                                                    <td th:text="${i.P_NAME}"></td><!--상품명-->
+                                                    <td th:text="${i.CATE_NAME}"></td><!--브랜드-->
+                                                    <td th:text="${i.OPTION1}"></td><!--옵션1-->
+                                                    <td th:text="${i.OPTION2}"></td><!--옵션2-->
+                                                    <td th:text="${i.OPTION3}"></td><!--옵션3-->
+                                                    <td th:text="${i.P_COST}"></td><!--기준매입가-->
+                                                    <td th:text="${i.PP_COST}"></td><!--발주단가-->
+                                                    <td th:text="${i.PP_COUNT}"></td><!--메입수량-->
+                                                    <td th:text="${i.PP_COST * i.PP_COUNT}"></td><!--매입총액-->
+                                                    <td th:text="${i.CREATE_PRICE}"></td><!--생산원가-->
+                                                    <td th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td><!--판매금액-->
+                                                    <td th:text="${i.PP_SELL_PRICE * i.PP_COUNT - i.CREATE_PRICE}"></td><!--예상총이익-->
+                                                    <td th:text="${i.CREATE_PRICE / (i.PP_SELL_PRICE * i.PP_COUNT - i.CREATE_PRICE) * 100}"></td><!--예상수익률-->
+                                                    <td th:text="${i.SPEC_BUY}"></td><!--입고SPEC(예정)-->
+                                                    <td th:text="${i.SPEC_SELL}"></td><!--판매SPEC(예정)-->
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <!-- 타이틀 구분 끝-->
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-0">
+                                        <legend class="">4. 입고상품정보</legend>
+                                        <div class="row overflow-x-scroll">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>상품코드</th>
+                                                    <th>상품타입</th>
+                                                    <th>입고그룹</th>
+                                                    <th>외부상품코드<br>(AJ상품코드)</th>
+                                                    <th>상품명</th>
+                                                    <th>브랜드</th>
+                                                    <th>옵션1</th>
+                                                    <th>옵션2</th>
+                                                    <th>옵션3</th>
+                                                    <th>기준매입가</th>
+                                                    <th>입고단가</th>
+                                                    <th>입고수량</th>
+                                                    <th>매입총액<br>(발주)</th>
+                                                    <th>생산원가<br>(발주)</th>
+                                                    <th>판매금액<br>(발주)</th>
+                                                    <th>예상총이익<br>(발주)</th>
+                                                    <th>예상수익률<br>(발주)</th>
+                                                    <th>입고SPEC<br>(예정)</th>
+                                                    <th>가공SPEC<br>(예정)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="poReceivedTbody">
+                                                <tr th:if="${poReceived != null}" th:each="i : ${poReceived}">
+                                                    <td th:text="${i.P_IDX}"></td><!--상품코드-->
+                                                    <td th:text="${i.P_TYPE1_STR}"></td><!--상품타입-->
+                                                    <td th:text="${i.POR_IDX}"></td><!--실입고그룹-->
+                                                    <td th:text="${i.POR_MEMO}"></td><!--외부자산코드-->
+                                                    <td th:text="${i.P_NAME}"></td><!--상품명-->
+                                                    <td th:text="${i.CATE_NAME}"></td><!--브랜드-->
+                                                    <td th:text="${i.OPTION1}"></td><!--옵션1-->
+                                                    <td th:text="${i.OPTION2}"></td><!--옵션2-->
+                                                    <td th:text="${i.OPTION3}"></td><!--옵션3-->
+                                                    <td th:text="${i.P_COST}"></td><!--기준매입가-->
+                                                    <td th:text="${i.POR_COST}"></td><!--입고단가-->
+                                                    <td th:text="${i.POR_COUNT}"></td><!--입고수량-->
+                                                    <td th:text="${i.POR_COST * i.POR_COUNT}"></td><!--매입총액-->
+                                                    <td>00</td><!--생산원가-->
+                                                    <td th:text="${i.POR_SELL_PRICE}"></td><!--판매금액-->
+                                                    <td>0</td><!--예상총이익-->
+                                                    <td>00</td><!--예상수익률-->
+                                                    <td th:text="${i.INSPEC}"></td><!--입고스팩-->
+                                                    <td>가공스펙</td><!--가공스펙-->
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                    <!-- 타이틀 구분 끝-->
+                                </div>
+                            </div>
+                            <div class="card-body popup-contents">
+                                <!-- 타이틀 -->
+                                <form id="goodsForm">
+                                    <fieldset class="mb-0">
+                                        <legend class="">5. 자산정보</legend>
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품코드</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="pIdx">
+                                                        <input type="hidden" name="poIdx" th:value="${ig.po.poIdx}">
+                                                        <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품명</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="pName">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션1</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="option1">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션2</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="option2">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션3</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="option3">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고SPEC(확정)</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" name="inSpec">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <!-- #regiForm end -->
+                                <div class="justify-content-end mt-2 mb-2">
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="searchGoods()">
+                                        <i class="icon-search4 mr-1"></i>조회
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CANCEL_REQ')">
+                                        <i class="icon-search4 mr-1"></i>반품요청
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CHECK')">
+                                        <i class="icon-search4 mr-1"></i>반품반려
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="openGoodsModal()">
+                                        <i class="icon-search4 mr-1"></i>입고그룹 맵핑
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="openChecksModal()">
+                                        <i class="icon-search4 mr-1"></i>영업검수 확정
+                                    </button>
+                                </div>
+                                <table class="table" id="goodsTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /content area -->
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button th:if="${ig?.po?.hiworks == null}" type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<th:block th:replace="in/modal/goodsModal.html"/>
+<th:block th:replace="in/modal/checksModal.html"/>
+
+<script>
+    function goodsStateUpdate(gState) {
+        var gIdxs = '';
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해 주세요');
+            return false;
+        }
+        $.each($('.selected'), function (index, value) {
+            gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        gIdxs = gIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/goods/goodsStateUpdateByCheck.ajax',
+            type: 'post',
+            data: {
+                'gIdxs' : gIdxs,
+                'gState' : gState
+            }
+        });
+    }
+
+    function searchGoods() {
+        goodsTable.page('first').ajax.url('/goods/goods.dataTable?'+$('#goodsForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    var goodsTable = $('#goodsTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/goods/goods.dataTable?' + $('#goodsForm').serialize(),
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="gIdx" value="' + full.G_IDX + '">';
+                }}
+            ,{'title':'입고그룹','data':'IG_IDX','defaultContent':''}
+            ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'옵션1','data':'G_IDX','defaultContent':''}
+            ,{'title':'옵션2','data':'G_IDX','defaultContent':''}
+            ,{'title':'옵션3','data':'G_IDX','defaultContent':''}
+            ,{'title':'IMEI','data':'G_IDX','defaultContent':''}
+            ,{'title':'시리얼','data':'G_IDX','defaultContent':''}
+            ,{'title':'입고SPEC(확정)','data':'G_IDX','defaultContent':''}
+            ,{'title':'가공SPEC(예정)','data':'G_IDX','defaultContent':''}
+        ]
+    });
+</script>
+
+</body>
+</html>

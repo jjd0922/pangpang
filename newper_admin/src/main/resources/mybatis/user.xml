@@ -54,8 +54,8 @@
             User
                 LEFT JOIN COMPANY ON u_com_idx = Com_idx
         where
-        U_IDX!=1
-             <include refid="includeUserDatatable"></include>
+            U_IDX!=1
+        <include refid="includeUserDatatable"></include>
     </select>
 
     <select id="selectUserForCompany" resultType="Map">
@@ -74,6 +74,7 @@
         WHERE
             U_TYPE = 'INSIDE'
             <include refid="includeUserForCompany"></include>
+
     </select>
 
     <select id="countUserForCompany" resultType="Long">

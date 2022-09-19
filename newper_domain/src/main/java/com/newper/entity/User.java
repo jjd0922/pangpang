@@ -72,6 +72,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<CompanyContract> contracts;
 
+    @OneToMany(mappedBy = "user")
+    private List<Location> locations;
+
    @PrePersist
     @PreUpdate
     public void preSave(){

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${warehouse != null} ? '창고 조회/수정'">창고 등록</title>
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        #comModalTable {
+            width: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold" th:if="${warehouse == null}"><i class="icon-office mr-1"></i>창고 신규등록</h4>
+                            <h4 class="font-weight-semibold" th:unless="${warehouse == null}"><i class="icon-office mr-1"></i>창고 조회/수정</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <form id="regiForm" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <!-- 타이틀 -->
+                                    <fieldset class="mb-2">
+                                        <legend class="">1. 등록정보</legend>
+
+                                        <div class="row">
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">창고상태</span>
+                                                            </span>
+                                                        <select name="whState" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(warehouse?.whState) eq opt.name()}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    창고명
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="whName" class="form-control" th:value="${warehouse?.whName}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested d-flex justify-content-between">
+                                                                    거래처<a href="#" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="comName" class="form-control" th:value="${warehouse?.company?.comName}" readonly>
+                                                        <input type="hidden" name="comIdx" th:value="${warehouse?.company?.comIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    사업자등록번호
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="comNum" class="form-control" th:value="${warehouse?.company?.comNum}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    담당자
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="ceName" class="form-control" th:value="${warehouse?.company?.companyEmployee?.ceName}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested d-flex justify-content-between">
+                                                                    우편번호 <a href="#" onclick="daum_address()" class="badge badge-sm badge-primary ml-1">검색</a>
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="post" class="form-control" placeholder="우편번호검색" th:value="${warehouse?.address?.post}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    주소(시,도)
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr1" class="form-control" th:value="${warehouse?.address?.addr1}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    주소(시,군,구)
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr2" class="form-control" th:value="${warehouse?.address?.addr2}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    도로명(지번)주소
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr3" class="form-control" th:value="${warehouse?.address?.addr3}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    상세주소
+                                                                </span>
+                                                            </span>
+                                                        <input type="text" name="addr4" class="form-control" th:value="${warehouse?.address?.addr4}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                            </div>
+                        </form>
+                        <!-- #regiForm end -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button type="button" class="btn btn-sm btn-secondary ml-1" th:id="${warehouse != null} ? 'updateBtn' : 'saveBtn'"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+<th:block th:replace="modal/companyModal.html"/>
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 그래프 -->
+<script th:src="@{/assets/js/plugins/visualization/echarts/echarts.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+
+
+<script th:src="@{/assets/js/common.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+
+<script th:inline="javascript">
+    function saveAction(){
+        $.ajax({
+            url: location.pathname + '.ajax',
+            type: 'post',
+            data: $('#regiForm').serializeArray(),
+            success: function () {
+                window.opener.refreshTable('#warehouseTable');
+            }
+        });
+    }
+
+    function updateAction() {
+        if (confirm("창고 정보를 수정하시겠습니까?")) {
+            saveAction();
+        }
+    }
+
+    /** 다음 주소 api사용 */
+    function daum_address() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = ''; // api에서 받아오는 기본 주소
+                var extraAddr = ''; // 도로명일때 참고주소
+
+                // 사용자가 도로명주소, 지번주소 중 어떤 것을 클릭했는지에 따라
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+
+                    if(extraAddr !== ''){
+                        extraAddr = '(' + extraAddr + ')';
+                    }
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                // addr1, addr2 부분을 제외한 기본주소 만들기
+                var addr_ = addr.split(' ');
+                addr = '';
+                for (var i = 2; i < addr_.length; i++) {
+                    addr += addr_[i] + ' ';
+                }
+
+                $('input[name=post]').val(data.zonecode);
+                $('input[name=addr1]').val(data.sido);
+                $('input[name=addr2]').val(data.sigungu);
+                $('input[name=addr3]').val(addr + extraAddr);
+            }
+        }).open();
+    }
+
+    function selectCompany(row) {
+        var rowData = getDatatablemap('comModalTable', row);
+
+        $('#searchComModal').modal('hide');
+        $('#regiForm input[name="comName"]').val(rowData.COM_NAME);
+        $('#regiForm input[name="comNum"]').val(rowData.COM_NUM);
+        $('#regiForm input[name="ceName"]').val(rowData.CE_NAME);
+        $('input[name="comIdx"]').val(rowData.COM_IDX);
+    }
+</script>
+<script th:inline="javascript">
+    $("#saveBtn").on("click", saveAction);
+    $("#updateBtn").on("click", updateAction);
+    $("#searchCompanyBtn").on("click", showComModal);
+    $("input[name=post]").on("click", daum_address);
+</script>
+</body>
+</html>

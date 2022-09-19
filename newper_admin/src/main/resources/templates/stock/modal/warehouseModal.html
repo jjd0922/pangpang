@@ -1,0 +1,106 @@
+<div class="modal" tabindex="-1" role="dialog" id="warehouseModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">창고 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="collapse show" id="collapse-button-collapsed">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <form id="warehouseModalForm" class="w-lg-100">
+                                <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                    <div class="form-group">
+                                        <label class="d-block">창고명</label>
+                                        <input type="text" name="whName" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">로케이션</label>
+                                        <input type="text" name="locCode" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">형태</label>
+                                        <input type="text" name="locForm" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">존</label>
+                                        <input type="text" name="locZone" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">열</label>
+                                        <input type="text" name="locColumn" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">행</label>
+                                        <input type="text" name="locRow" class="form-control form-control-sm w-120px">
+                                    </div>
+
+                                    <div class="form-group end">
+                                        <button type="button" class="btn btn-secondary" onclick="searchWarehouse()">
+                                            <span class="ladda-label">조회하기</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="warehouseModalTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function openWarehouseModal() {
+        $('#warehouseModal').modal('show');
+        selectWarehouseDataTable();
+    }
+
+    // 창고 검색
+    function searchWarehouse(){
+        $('#warehouseModalTable').DataTable().page('first').ajax.url('/warehouse/location.dataTable?' + $('#warehouseModalForm').serialize()).load();
+    }
+
+    function selectWarehouseDataTable(){
+        destroyDatatable('warehouseModalTable');
+        $('#warehouseModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            ordering: false,
+            buttons: buttonsSelect(false),
+            serverSide: true,
+            ajax:{
+                url:'/warehouse/location.dataTable',
+                type:'post'
+            },
+            columns : [
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                        return meta.settings._iDisplayStart+meta.row+1;
+                    }}
+                ,{'title':'창고명','data':'WH_NAME', 'defaultContent':''}
+                ,{'title':'형태','data':'LOC_FORM_STR', 'defaultContent':''}
+                ,{'title':'존','data':'LOC_ZONE', 'defaultContent':''}
+                ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
+                ,{'title':'열','data':'LOC_COLUMN', 'defaultContent':''}
+                ,{'title':'로케이션','data':'LOC_CODE', 'defaultContent':''}
+                ,{'title':'바코드','data':'LOC_BARCODE', 'defaultContent':''}
+                ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectWarehouse('+ meta.row +')">선택</button>';
+                    }}
+            ]
+        });
+    }
+</script>

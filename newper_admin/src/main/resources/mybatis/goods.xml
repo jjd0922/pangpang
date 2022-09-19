@@ -18,6 +18,248 @@
         FROM
             warehouse
     </select>
-    
+    <sql id="includeProcessBoardDatatable">
+        <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
+    </sql>
 
+    <select id="selectProcessBoardDatatable" resultType="map" parameterType="map">
+        SELECT
+            G_IDX,
+            G_STATE,
+            P_NAME,
+            G_BARCODE,
+            IN_SPEC1.SPEC_LOOKUP IN_SPEC1,
+            SELL_SPEC1.SPEC_LOOKUP SELL_SPEC1
+        FROM
+            GOODS
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX AND P_IDX = PP_P_IDX
+                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
+                LEFT JOIN SPEC AS IN_SPEC1 ON PP_SPEC_IDX = IN_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC1 ON PP_SPEC_IDX2 = SELL_SPEC1.SPEC_IDX
+        <where>
+            <include refid="includeProcessBoardDatatable"></include>
+        </where>
+        ORDER BY
+            G_IDX DESC
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countProcessBoardDatatable" resultType="Long" parameterType="map">
+        SELECT
+            count(*)
+        FROM
+            GOODS
+        <where>
+            <include refid="includeProcessBoardDatatable"></include>
+        </where>
+    </select>
+    <insert id="insertGoodsTemp">
+        INSERT IGNORE INTO GOODS_TEMP
+            (GT_GGT_IDX, GT_G_IDX)
+        VALUES
+            <foreach collection="g_idxs" separator="," item="g_idx">
+            (#{ggt_idx}, #{g_idx})
+            </foreach>
+    </insert>
+    <select id="selectGoodsTempDatatable" parameterType="map" resultType="map">
+        SELECT
+            G_IDX, G_BARCODE, GGT_IDX
+        FROM
+            GOODS, GOODS_TEMP, GOODS_GROUP_TEMP
+        WHERE
+            GT_GGT_IDX = GGT_IDX
+            AND GT_G_IDX = G_IDX
+            AND GGT_IDX = #{ggt_idx}
+        ORDER BY GT_CREATED_DATETIME DESC
+        <if test="length!=-1">
+            LIMIT #{start},#{length}
+        </if>
+    </select>
+    <select id="countGoodsTempDatatable" parameterType="map" resultType="Long">
+        SELECT COUNT(*) FROM GOODS_TEMP WHERE GT_GGT_IDX = #{ggt_idx}
+    </select>
+
+    <delete id="deleteGoodsGroupTempByGIdxAndGgtIdx">
+        DELETE FROM
+            GOODS_TEMP
+        WHERE
+            GT_GGT_IDX = #{ggtIdx}
+        AND
+            GT_G_IDX = #{gIdx}
+    </delete>
+
+    <select id="selectGoodsByG_IDX" resultType="Map">
+        SELECT
+            G_IDX,
+            PRODUCT1.P_IDX AS P_IDX,
+            PRODUCT1.P_NAME AS P_NAME,
+            CATE_SPEC_LIST,
+            G_BARCODE,
+            G_IMEI,
+            IN_SPEC1.SPEC_LOOKUP AS IN_SPEC1,
+            IN_SPEC2.SPEC_LOOKUP AS IN_SPEC2,
+            SELL_SPEC1.SPEC_LOOKUP AS SELL_SPEC1,
+            SELL_SPEC2.SPEC_LOOKUP AS SELL_SPEC2,
+            PROCESS_SPEC1.SPEC_LOOKUP AS PROCESS_SPEC1,
+            PRODUCT2.P_COST AS P_COST,
+            PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST AS TOTAL_PROCESS_COST
+        FROM
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PRODUCT AS PRODUCT1 ON G_P_IDX = PRODUCT1.P_IDX
+                LEFT JOIN CATEGORY ON PRODUCT1.P_CATE_IDX = CATE_IDX
+                LEFT JOIN GOODS_STOCK ON G_GS_IDX = GS_IDX
+                LEFT JOIN PRODUCT AS PRODUCT2 ON GS_P_IDX = PRODUCT2.P_IDX
+                LEFT JOIN SPEC AS IN_SPEC1 ON PP_SPEC_IDX = IN_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC1 ON PP_SPEC_IDX2 = SELL_SPEC1.SPEC_IDX
+                LEFT JOIN SPEC AS IN_SPEC2 ON POR_IN_SPEC_IDX = IN_SPEC2.SPEC_IDX
+                LEFT JOIN SPEC AS SELL_SPEC2 ON G_SELL_SPEC_IDX = SELL_SPEC2.SPEC_IDX
+                LEFT JOIN SPEC AS PROCESS_SPEC1 ON POR_PROCESS_SPEC_IDX = PROCESS_SPEC1.SPEC_IDX
+        WHERE
+            G_IDX = #{gIdx}
+    </select>
+
+    <delete id="deleteGoodsGroupTempByGGT_IDX">
+        DELETE FROM
+            GOODS_GROUP_TEMP
+        WHERE
+            GGT_IDX = #{ggtIdx}
+    </delete>
+
+    <sql id="includeGoodsDatatable">
+        <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
+        <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+        <if test="poIdx != null and poIdx != ''">AND PO_IDX = #{poIdx}</if>
+        <if test="gState != null and gState != ''">
+            <foreach collection="gState" open="AND G_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="selectGoodsDataTable" resultType="Map">
+        SELECT
+            G_IDX,
+            G_BARCODE,
+            P_NAME,
+            IG_IDX,
+            G_STATE,
+            P_IDX
+        FROM
+            GOODS
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
+        <if test="length != -1">
+            LIMIT
+                #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countGoodsDataTable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
+    </select>
+
+    <select id="selectBarcodeDataTable" resultType="Map">
+        SELECT
+            P_NAME,P_IDX,GS_CODE,G_BARCODE,WH_NAME,
+            LOC_TYPE,LOC_CODE,LOC_FORM,LOC_ZONE,location.CREATED_DATE,
+            U_NAME, G_IDX
+        FROM
+            goods
+                LEFT JOIN location
+                          ON G_LOC_IDX=LOC_IDX
+                LEFT JOIN warehouse
+                          ON LOC_WH_IDX=WH_IDX
+                LEFT JOIN product
+                          ON G_P_IDX=P_IDX
+                LEFT JOIN goods_stock
+                          on G_GS_IDX=GS_IDX
+                left join user
+                          on LOC_U_IDX=U_IDX
+        WHERE
+            G_LOC_IDX IS NOT NULL
+          AND G_STATE='STOCK'
+          and GS_IDX in (SELECT
+                             GS_IDX
+                         FROM
+                             order_gs
+                                 LEFT JOIN shop_product_option
+                                           ON SPO_IDX=OG_SPO_IDX
+                                 LEFT JOIN GOODS_STOCK
+                                           ON SPO_GS_IDX=GS_IDX
+                                 LEFT JOIN delivery_num
+                                           ON OG_DN_IDX=DN_IDX
+                         WHERE DN_IDX IS NOT null
+                         GROUP BY GS_IDX)
+    </select>
+
+
+    <select id="goodsProductCheck" resultType="Map">
+        SELECT
+            P_IDX,
+            P_OPTION,
+            CATE_SPEC_LIST,
+            G_PO_IDX,
+            P_STATE,
+            P_COST,
+            P_SELL_PRICE,
+            P_MEMO,
+            P_MODEL
+        FROM
+            GOODS
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+        WHERE
+            <foreach collection="gIdxs" open="G_IDX IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        GROUP BY
+            G_P_IDX
+    </select>
+
+    <select id="checkGoodsReceived" resultType="Map">
+        SELECT
+            P_IDX,
+            POR_OPTION,
+            CATE_SPEC_LIST,
+            G_PO_IDX,
+            P_STATE,
+            P_COST,
+            P_SELL_PRICE,
+            P_MEMO,
+            P_MODEL,
+            SPEC_LOOKUP,
+            POR_IDX
+        FROM
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN SPEC ON POR_PROCESS_SPEC_IDX = SPEC_IDX
+        WHERE
+        <foreach collection="gIdxs" open="G_IDX IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+        GROUP BY
+            POR_IDX
+    </select>
 </mapper>

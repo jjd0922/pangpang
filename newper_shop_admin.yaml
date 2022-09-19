@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newper-shop-admin
+  namespace: newper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: newper-shop-admin
+  template:
+    metadata:
+      labels:
+        app: newper-shop-admin
+    spec:
+      containers:
+        - image: 'reg-dev-container.kr.ncr.ntruss.com/newper_shop_admin:1.0'
+          imagePullPolicy: Always
+          name: newper-shop-admin
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: dev-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newper-shop-admin-service
+spec:
+  type: NodePort
+  selector:
+    app: newper
+  ports:
+    - name: newper-shop-admin-service
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+      nodePort: 30008
+

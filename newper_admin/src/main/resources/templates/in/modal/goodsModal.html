@@ -1,0 +1,437 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="goodsModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">입고그룹 맵핑</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="col-lg-12" id="goodsDiv">
+                    <form id="goodsModalForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+
+                                <fieldset class="mb-0">
+                                    <legend class="">1. 입고상품정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주구분</span>
+                                                    </span>
+                                                    <select id="poCheckType" onchange="setPoReceived();" class="form-control">
+                                                        <option value="new">신규</option>
+                                                        <option value="ori">원발주</option>
+                                                    </select>
+                                                    <input type="hidden" name="gIdxs">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주상품 그룹 INDEX</span>
+                                                    </span>
+                                                    <select name="ppIdx" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고수량</span>
+                                                    </span>
+                                                    <input type="text" name="porCount" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">입고단가</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="porCost">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">외부상품코드(AJ자산코드)</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="porMemo">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend class="">2. 예상비용</legend>
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>공정구분</th>
+                                                <th>예상공정항목</th>
+                                                <th>예상비용</th>
+                                                <th>진행여부</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>도색</td>
+                                                <td><input type="text" name="paintMemo" class="form-control"></td>
+                                                <td><input type="text" name="paintCost" class="form-control"></td>
+                                                <td>
+                                                    <select name="paintYn" class="form-control">
+                                                        <option value="N">N</option>
+                                                        <option value="Y">Y</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>수리</td>
+                                                <td><input type="text" name="fixMemo" class="form-control"></td>
+                                                <td><input type="text" name="fixCost" class="form-control"></td>
+                                                <td>
+                                                    <select name="fixYn" class="form-control">
+                                                        <option value="N">N</option>
+                                                        <option value="Y">Y</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>가공</td>
+                                                <td><input type="text" name="processMemo" class="form-control"></td>
+                                                <td><input type="text" name="processCost" class="form-control"></td>
+                                                <td>
+                                                    <select name="processYn" class="form-control">
+                                                        <option value="N">N</option>
+                                                        <option value="Y">Y</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend class="">3. 상품 SPEC정보</legend>
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>SPEC명</th>
+                                                <th>입고SPEC(확정)</th>
+                                                <th>가공SPEC(예정)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="goodsSpec">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+
+
+                                <fieldset class="mt-3">
+                                    <legend class="">4. 옵션</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션1</span>
+                                                    </span>
+                                                    <select name="goodsOption" id="goodsOption1" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션2</span>
+                                                    </span>
+                                                    <select name="goodsOption" id="goodsOption2" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션3</span>
+                                                    </span>
+                                                    <select name="goodsOption" id="goodsOption3" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="insertPoReceived();">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function insertPoReceived () {
+        $.ajax({
+            type: "POST",
+            url:"/po/insertPoReceived.ajax?" + $('#goodsModalForm').serialize(),
+            async: false,
+            success : function(result){
+                $('input[name=gIdxs]').val('');
+                $('input[name=porCount]').val('');
+                $('input[name=porCost]').val('');
+                $('input[name=porMemo]').val('');
+                $('input[name=paintMemo]').val('');
+                $('input[name=paintCost]').val('');
+                $('input[name=paintYn]').val('');
+                $('input[name=fixMemo]').val('');
+                $('input[name=fixCost]').val('');
+                $('input[name=fixYn]').val('');
+                $('input[name=processMemo]').val('');
+                $('input[name=processCost]').val('');
+                $('input[name=processYn]').val('');
+                $('input[name=porSpec1]').val('');
+                $('input[name=porSpec2]').val('');
+                $('input[name=goodsOption]').val('');
+                $('#goodsModal').hide();
+                searchGoods();
+            }
+        });
+    }
+
+    function openGoodsModal () {
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해 주세요');
+            return false;
+        }
+
+        var dataMap = checkProduct();
+
+        if (dataMap == false) {
+            return false;
+        }
+
+        $('#goodsModal').modal('show');
+
+        if(dataMap.CATE_SPEC_LIST != null){
+            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            $('#goodsSpec').empty();
+            for (var i = 0; i < specList.length; i++) {
+                var specTr
+                    ='<tr>'
+                    +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
+                    +'<input type="hidden" name="specName" value="' + specList[i] + '">'
+                    +'<td><input type="text" specList="'+i+'" name="porSpec1" class="form-control" value=""></td>'
+                    +'<td><input type="text" specList="'+i+'" name="porSpec2" class="form-control" value=""></td>'
+                    +'</tr>';
+
+                $('#goodsSpec').append(specTr);
+            }
+
+
+            var specListTd = $('.specListTd');
+            for (var i = 0; i < specListTd.length; i++) {
+                $.ajax({
+                    type: "GET",
+                    url:"/goods/specList.ajax?specName=" + specListTd[i].innerHTML,
+                    async:false,
+                    success : function(result){
+                        $('input[specList='+i+']').autocomplete({
+                            source: result
+                            ,minLength: 0
+                        });
+                    }
+                });
+            }
+
+            var options = JSON.parse(dataMap.P_OPTION);
+            for (var i = 0; i < 3; i++) {
+                var num = parseInt(i) + 1;
+                $('#goodsOption' + num).empty();
+                $('#goodsOption' + num).append('<option value="">없음</option>');
+            }
+
+            for (var i = 0; i < options.length; i++) {
+                var text = '';
+                for (var j = 0; j < options[i].values.length; j++) {
+                    text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+                }
+                var num = parseInt(i) + 1;
+                $('#goodsOption' + num).empty();
+                $('#goodsOption' + num).append(text);
+            }
+
+            $('input[name=pIdx]').val(dataMap.P_IDX);
+        }
+    }
+
+    function setPoReceived() {
+        if ($('#poCheckType').val() == 'ori') {
+            $.ajax({
+                url: '/po/selectPoProduct.dataTable?' + $('#goodsForm').serialize(),
+                type: 'post',
+                async: false,
+                success(result) {
+                    $('select[name=ppIdx]').empty();
+
+                    var html = '';
+                    $.each(result.data, function (index, value) {
+                        html += '<option onchange="setProduct()" value="' + value.PP_IDX + '">' + value.PP_IDX + '</option>';
+                    });
+
+                    $('select[name=ppIdx]').append(html);
+
+                    setProduct();
+                }
+            });
+        } else {
+            $('select[name=ppIdx]').empty();
+
+            $('input[name=porCost]').val('');
+            $('input[name=porCost]').removeAttr('readonly')
+
+            $('input[name=porMemo]').val('');
+            $('input[name=porMemo]').removeAttr('readonly')
+
+            $('input[name=paintMemo]').val('');
+            $('input[name=paintMemo]').removeAttr('readonly')
+
+            $('input[name=paintCost]').val('');
+            $('input[name=paintCost]').removeAttr('readonly')
+
+            $('input[name=fixMemo]').val('');
+            $('input[name=fixMemo]').removeAttr('readonly')
+
+            $('input[name=fixCost]').val('');
+            $('input[name=fixCost]').removeAttr('readonly')
+
+            $('input[name=processMemo]').val('');
+            $('input[name=processMemo]').removeAttr('readonly')
+
+            $('input[name=processCost]').val('');
+            $('input[name=processCost]').removeAttr('readonly')
+
+
+            $('#goodsOption1').attr('onFocus', '');
+            $('#goodsOption2').attr('onFocus', '');
+            $('#goodsOption3').attr('onFocus', '');
+        }
+    }
+
+    function setProduct() {
+        var ppIdx = $('select[name=ppIdx] option:selected').val();
+
+        $.ajax({
+            url: '/po/poProduct.ajax',
+            type: 'post',
+            data: {'ppIdx' : ppIdx},
+            async: false,
+            success(data) {
+                $('input[name=porCost]').val(data.PP_COST);
+                $('input[name=porCost]').attr('readonly', 'readonly');
+
+                $('input[name=porMemo]').val(data.PP_MEMO);
+                $('input[name=porMemo]').attr('readonly', 'readonly');
+
+                $('input[name=paintMemo]').val(data.PP_PAINT_MEMO);
+                $('input[name=paintMemo]').attr('readonly', 'readonly');
+
+                $('input[name=paintCost]').val(data.PP_PAINT_COST);
+                $('input[name=paintCost]').attr('readonly', 'readonly');
+
+                $('input[name=fixMemo]').val(data.PP_FIX_MEMO);
+                $('input[name=fixMemo]').attr('readonly', 'readonly');
+
+                $('input[name=fixCost]').val(data.PP_FIX_COST);
+                $('input[name=fixCost]').attr('readonly', 'readonly');
+
+                $('input[name=processMemo]').val(data.PP_PROCESS_MEMO);
+                $('input[name=processMemo]').attr('readonly', 'readonly');
+
+                $('input[name=processCost]').val(data.PP_PROCESS_COST);
+                $('input[name=processCost]').attr('readonly', 'readonly');
+
+
+                var option = JSON.parse(data.PP_OPTION);
+                for (var i = 0; i < option.length; i++) {
+                    $('#goodsOption' + (i + 1)).val(option[i].title + ':' + option[i].values).prop('selected', true);
+                    $('#goodsOption' + (i + 1)).attr('onFocus', 'this.initialSelect = this.selectedIndex');
+                    $('#goodsOption' + (i + 1)).attr('onChange', 'this.selectedIndex = this.initialSelect');
+                }
+            }
+        });
+    }
+
+    //선택한 자산들이 모두 같은 상품인지 체크
+    function checkProduct() {
+        var data = null;
+        var gIdxs = '';
+
+        $.each($('.selected'), function (index, value) {
+            gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        gIdxs = gIdxs.slice(0, -1);
+
+        $('input[name=gIdxs]').val(gIdxs);
+
+        $.ajax({
+            url: '/goods/checkGoodsProduct.ajax',
+            type: 'post',
+            async: false,
+            data: {
+                'gIdxs' : gIdxs
+            },
+            success(result) {
+                data = result.data[0];
+            }
+        });
+
+        return data;
+    }
+</script>
+</html>

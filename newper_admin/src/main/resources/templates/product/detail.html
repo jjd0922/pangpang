@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -36,7 +37,7 @@
             </div>
             <form id="productForm">
                 <div class="card">
-                    <div class="card-body popup-contents">
+                    <div class="card-body popup-contents mb-4">
                         <fieldset class="mb-0">
                             <legend class="">1.상품 등록<span class="small ml-2"></span></legend>
                             <div class="row">
@@ -49,7 +50,7 @@
                                                   상품코드
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control" th:value="${product?.pCode}" readonly>
+                                            <input type="text" name="" class="form-control" th:value="${product?.pIdx}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +59,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text requested requested">
+                                                <span class="input-group-text requested">
                                                   상품명
                                                 </span>
                                             </span>
@@ -133,15 +134,15 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                               <span class="input-group-text requested">
                                                   카테고리 대분류
-                                                </span>
+                                               </span>
                                             </span>
                                             <select class="form-control select" data-placeholder="선택" name="CATE_IDX1" onchange="category1()">
                                                 <option></option>
                                                 <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
                                             </select>
-                                            <input type="hidden" name="P_CATE_IDX" th:value="${product?.category?.cateIdx}">
+
                                         </div>
                                     </div>
                                 </div>
@@ -149,9 +150,9 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                 <span class="input-group-text requested">
                                                     카테고리 중분류
-                                                </span>
+                                                 </span>
                                             </span>
                                             <select class="form-control select" data-placeholder="선택" name="CATE_IDX2" onchange="category2()">
                                                 <option></option>
@@ -163,11 +164,11 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                <span class="input-group-text requested">
                                                   카테고리 소분류
                                                 </span>
                                             </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX3" onchange="category3()">
+                                            <select class="form-control select" data-placeholder="선택" name="P_CATE_IDX">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -178,7 +179,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                <span class="input-group-text requested">
                                                   정산구분(품목구분1)
                                                 </span>
                                             </span>
@@ -194,7 +195,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                <span class="input-group-text requested">
                                                     상품분류(품목구분2)
                                                 </span>
                                             </span>
@@ -209,13 +210,29 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                <span class="input-group-text requested">
                                                   물류타입(품목자산구분)
                                                 </span>
                                             </span>
                                             <select class="form-control select" name="P_TYPE3" data-placeholder="선택">
                                                 <option></option>
                                                 <option th:each="ptype3:${T(com.newper.constant.PType3).values()}" th:text="${ptype3.option}" th:value="${ptype3}" th:selected="${product?.pType3 eq ptype3}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested">
+                                                  배송타입
+                                                </span>
+                                            </span>
+                                            <select class="form-control select" name="P_DEL_TYPE" data-placeholder="선택">
+                                                <option></option>
+                                                <option th:each="pdeltype:${T(com.newper.constant.PDelType).values()}" th:text="${pdeltype.option}"
+                                                         th:value="${pdeltype}" th:selected="${product?.pDelType eq pdeltype}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -244,11 +261,13 @@
                                         <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                  제조사 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal()">검색</a>
+                                                  제조사
                                                 </span>
                                             </span>
-                                            <input type="text" name="P_COM_NAME2" class="form-control" th:value="${com?.manufactureName}" readonly>
-                                            <input type="hidden" name="P_COM_IDX2" th:value="${product?.manufactureName?.comIdx}">
+                                       <!--     <input type="text" name="P_COM_NAME2" class="form-control" th:value="${com?.manufactureName}" readonly>
+                                            <input type="hidden" name="P_COM_IDX2" th:value="${product?.manufactureName?.comIdx}">-->
+                                       <!--     <input type="text" name="P_COM_MANUFACTURER" class="form-control" th:value="${product?.pComManufacturer}">-->
+                                            <input type="text" class="form-control "  name="P_COM_MANUFACTURER"  th:value="${product != null} ? ${product.pComManufacturer}">
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +280,7 @@
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control "  name="P_COM_NAME3" th:value="${com?.afterServiceName}" readonly>
-                                            <input type="hidden" name="P_COM_IDX3" th:value="${product?.afterServiceName?.comIdx}">
+                                            <input type="hidden" name="P_COM_IDX2" th:value="${product?.afterServiceName?.comIdx}">
                                         </div>
                                     </div>
                                 </div>
@@ -698,10 +717,10 @@
                                         </tr>
                                     </thead>
                                     <tbody id="option_area">
-                                        <tr th:if="${pOption}!=null" th:each="option:${pOption}" th:id="'option_'+${optionStat.count}">
+                                        <tr th:if="${product}!=null" th:each="option:${product?.pOption}" th:id="'option_'+${optionStat.count}">
                                             <td th:id="'opCnt'+${optionStat.count}" th:text="${optionStat.count}"></td>
-                                            <td><input type="text" class="form-control" th:name="'p_option_key'+${optionStat.count}" th:value="${option.p_option_key}"></td>
-                                            <td><input type="text" class="form-control" th:name="'p_option_value'+${optionStat.count}" th:value="${option.p_option_value}"></td>
+                                            <td><input type="text" class="form-control" th:name="'p_option_key'+${optionStat.count}" th:value="${option?.title}"></td>
+                                            <td><input type="text" class="form-control" th:name="'p_option_value'+${optionStat.count}" th:value="${product.getOptionValues(option?.title)}"></td>
                                             <td><a class="btn btn-sm badge-indigo" th:id="'optionBtn'+${optionStat.count}" th:onclick="'deleteOption('+${optionStat.count}+')'">삭제</a></td>
                                         </tr>
                                     </tbody>
@@ -711,18 +730,20 @@
                     </div>
                 </div>
             </form>
-            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <button th:if="${product}==null" onclick="productSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
-                <button th:unless="${product}==null" onclick="productUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
-            </div>
+        </div>
+
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button th:if="${product}==null" onclick="productSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button th:unless="${product}==null" onclick="productUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
         </div>
     </div>
+
 </div>
 
 <th:block th:replace="product/modal/companyModal.html"/>
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -773,14 +794,13 @@
             async: false,
             success:function (res){
                 $('select[name=CATE_IDX2] option').remove();
-                $('select[name=CATE_IDX3] option').remove();
+                $('select[name=P_CATE_IDX] option').remove();
                 var str = '<option value="">선택</option>';
                 $.each(res.data.list,function (i){
                     var result = res.data.list[i]
                     str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
                 })
                 $('select[name=CATE_IDX2]').append(str);
-                $('input[name=P_CATE_IDX]').val(category);
             }
         })
     }
@@ -793,44 +813,34 @@
             type:'post',
             async: false,
             success:function (res){
-                $('select[name=CATE_IDX3] option').remove();
+                $('select[name=P_CATE_IDX] option').remove();
                 var str = '<option value="">선택</option>';
                 $.each(res.data.list,function (i){
                     var result = res.data.list[i]
                     str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
                 })
-                $('select[name=CATE_IDX3]').append(str);
-                $('input[name=P_CATE_IDX]').val(category);
+                $('select[name=P_CATE_IDX]').append(str);
             }
         })
     }
 
-    function category3(){
-        var category = $('select[name=CATE_IDX3]').val();
-        $('input[name=P_CATE_IDX]').val(category);
-    }
 
-    function selectCompany(comIdx){
+
+    function selectCompany(row){
         var CT_TYPE = $('input[name=CT_TYPE]').val();
-        $.ajax({
-            url:'/company/companyByComIdx.ajax',
-            type:'post',
-            data:'comIdx='+comIdx,
-            success:function (res){
-                if(CT_TYPE=='STORE'){
-                    $('input[name=P_COM_NAME]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX]').val(res.data.COM_IDX)
-                }else if(CT_TYPE==''){
-                    $('input[name=P_COM_NAME2]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX2]').val(res.data.COM_IDX)
-                }else if(CT_TYPE=='REPAIRING'){
-                    $('input[name=P_COM_NAME3]').val(res.data.COM_NAME)
-                    $('input[name=P_COM_IDX3]').val(res.data.COM_IDX)
-                }
-                $('#searchCompanyModal').modal('hide');
-            }
-        })
+        var rowData = getDatatablemap('companyModalTable', row);
 
+        if(CT_TYPE=='STORE'){
+            $('input[name=P_COM_NAME]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX]').val(rowData.COM_IDX);
+/*        }else if(CT_TYPE==''){
+            $('input[name=P_COM_NAME2]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);*/
+        }else if(CT_TYPE=='REPAIRING'){
+            $('input[name=P_COM_NAME3]').val(rowData.COM_NAME);
+            $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);
+        }
+        $('#searchCompanyModal').modal('hide');
     }
 
     function optionAdd(){
@@ -919,7 +929,8 @@
                 contentType:false,
                 data:param,
                 success: function(res){
-                    if(res.message.indexOf('수정되었습니다.')!=-1){
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        window.location.reload();
                         opener.location.reload();
                     }
                 }
@@ -943,7 +954,7 @@
             }else if([[${cg?.depth}]]==3){
                 $('select[name=CATE_IDX1]').val([[${cg?.CATE_IDX1}]]).trigger('change');
                 $('select[name=CATE_IDX2]').val([[${cg?.CATE_IDX2}]]).trigger('change');
-                $('select[name=CATE_IDX3]').val([[${cg?.CATE_IDX3}]]).trigger('change');
+                $('select[name=P_CATE_IDX]').val([[${cg?.CATE_IDX3}]]).trigger('change');
             }
         }
 

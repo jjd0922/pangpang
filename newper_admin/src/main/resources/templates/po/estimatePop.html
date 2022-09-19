@@ -190,7 +190,7 @@
                                                         </thead>
                                                         <tbody id="productTbody">
                                                             <tr th:if="${product != null}" th:each="i : ${product}" th:id="|tr_${i.P_IDX}|">
-                                                                <td th:text="${i.P_CODE}"></td>
+                                                                <td th:text="${i.P_IDX}"></td>
                                                                 <td th:text="${i.P_NAME}"></td>
                                                                 <td th:text="${i.BRAND}"></td>
                                                                 <td th:text="${i.CATEGORY}"></td>
@@ -228,7 +228,7 @@
             </div>
         </div>
         <!-- 공통 js -->
-        <script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
         <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
         <!-- input -->
@@ -254,8 +254,8 @@
 
         <script th:src="@{/assets/js/common.js}"></script>
 
-        <th:block th:replace="@{/company/modal/companyModal.html}"/>
-        <th:block th:replace="@{/product/modal/productModal.html}"/>
+        <th:block th:replace="/company/modal/companyModal.html"/>
+        <th:block th:replace="/product/modal/productModal.html"/>
 
         <script>
             $(function(){
@@ -268,7 +268,7 @@
 
 
             function saveAction(){
-                var peCount = $('input[name=peCount]').val().replace(/,/gi,'');
+                var peCount = $('input[name=peCount]').val().replace(/,/gi,'');poProductCost
                 var peCost = $('input[name=peCost]').val().replace(/,/gi,'');
 
                 $('input[name=peCount]').val(peCount);

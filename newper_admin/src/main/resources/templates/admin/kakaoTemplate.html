@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>카카오템플릿관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item"></span>
+                                    </div>
+                                </h6>
+                            </div>
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="kakaoForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">제목</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="TF_TITLE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등록일</label>
+                                                    <input type="text"  class="form-control form-control-sm w-datarange daterange-basic" name="CREATED_DATE">
+                                                    <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('K')}">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>신규등록
+                                        </a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="deleteBtn">
+                                            <i class="icon-popout mr-1"></i>삭제
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="kakaoTable"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+
+
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script th:inline="javascript">
+
+    function searchBtn() {
+        var table = $('#kakaoTable').DataTable();
+        table.page('first').ajax.url('/admin/kakao.dataTable?' + $('#kakaoForm').serialize()).load(null, false);
+
+
+    }
+
+    function kakaoDetailPop(tfIdx) {
+        var focusPopup = window.open('kakaoPop/' + tfIdx, 'kakaoPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+    function deletekakao() {
+        var param = dataTableGetSelectedDataArray('kakaoTable', 'TF_IDX');
+        if (param.length == 0) {
+            alert('선택된 템플릿이 없습니다.');
+            return false;
+        } else {
+            if (confirm("선택한 템플릿을 일괄삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/admin/deletekakao.ajax',
+                    type: 'post',
+                    data: {
+                        tfIdxs : param
+                    },
+                    success: function (res) {
+                        $('#kakaoTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                    }
+
+                });
+            }
+        }
+    }
+
+</script>
+<script>
+
+    var kakaoTable = $('#kakaoTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax: {
+            url: '/admin/kakao.dataTable?' + $('#kakaoForm').serialize(),
+            type: 'post'
+        },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
+
+        }],
+
+
+        "columns" : [
+
+            {'class':'select-checkbox', 'title':'선택','data':'TF_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '';
+                }}
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'제목','data':'TF_TITLE',
+                "render" : function(data, type, full, meta){
+                    return '<button type="button"  class="badge badge-primary" onclick="kakaoDetailPop('+full.TF_IDX+')">'+data+'</button>';
+                }}
+            ,{'title':'내용','data':'TF_CONTENT', "className" : "text-left", "render": function(data, type, full, meta){
+                    if(data.length<150){
+                        return data;
+                    }else{
+                        return data.substring(0,150)+"...";
+                    }
+                }}
+            ,{'title':'등록일','data':'CREATED_DATE'}
+        ]
+    });
+</script>
+<script>
+
+    $('#kaakaoForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+    $('#popNewBtn').on('click', function () {
+        var focusPopup = window.open('kakaoPop', 'kakaoPop', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+
+    $('#deleteBtn').on('click', deletekakao);
+</script>
+</html>

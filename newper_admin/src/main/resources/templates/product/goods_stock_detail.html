@@ -49,8 +49,7 @@
                                                       상품코드 <a class="btn btn-sm badge-indigo" onclick="showProductModal()">검색</a>
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_CODE" class="form-control" th:value="${product?.pCode}" disabled>
-                                                <input type="hidden" name="P_IDX" th:value="${product?.pIdx}">
+                                                <input type="text" name="P_IDX" class="form-control" th:value="${product?.pIdx}" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -694,7 +693,7 @@
 
 <th:block th:replace="product/modal/productModal_goods_stock.html"/>
 <<!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -734,59 +733,58 @@
 <th:block th:replace="modal/summernoteImageModal.html"></th:block>
 
 <script th:inline="javascript">
-    function selectProduct(pIdx){
-        $.ajax({
-            url:'/product/productDetail.ajax',
-            type:'post',
-            data:'P_IDX='+pIdx,
-            success:function(res){
-                $('input[name=P_IDX]').val(pIdx);
-                $('input[name=P_CODE]').val(res.data.P_CODE);
-                $('input[name=P_NAME]').val(res.data.P_NAME);
-                $('input[name=P_STATE]').val(res.data.P_STATE);
-                $('input[name=P_MODEL]').val(res.data.P_MODEL);
-                $('input[name=P_COST]').val(comma(res.data.P_COST));
-                $('input[name=P_SELL_PRICE]').val(comma(res.data.P_SELL_PRICE));
-                $('input[name=P_MEMO]').val(res.data.P_MEMO);
-                if(res.data.P_THUMB_FILE1!=''){
-                    document.getElementById("P_THUMB_FILE1").src=res.data.P_THUMB_FILE1
-                }
-                if(res.data.P_THUMB_FILE2!=''){
-                    document.getElementById("P_THUMB_FILE2").src=res.data.P_THUMB_FILE2;
-                }
-                if(res.data.P_THUMB_FILE3!=''){
-                    document.getElementById("P_THUMB_FILE3").src=res.data.P_THUMB_FILE3;
-                }
-                if(res.data.P_THUMB_FILE4!=''){
-                    document.getElementById("P_THUMB_FILE4").src=res.data.P_THUMB_FILE4;
-                }
-                if(res.data.P_THUMB_FILE5!=''){
-                    document.getElementById("P_THUMB_FILE5").src=res.data.P_THUMB_FILE5;
-                }
-                if(res.data.P_THUMB_FILE6!=''){
-                    document.getElementById("P_THUMB_FILE6").src=res.data.P_THUMB_FILE6;
-                }
-                var str= '';
-                var str2= '';
-                var str3= '';
-                $.each(res.data.OPTION1,function (i){
-                    var result = res.data.OPTION1[i]
-                    str+='<option>'+result+'</option>'
-                })
-                $.each(res.data.OPTION2,function (i){
-                    var result = res.data.OPTION2[i]
-                    str2+='<option>'+result+'</option>'
-                })
-                $.each(res.data.OPTION3,function (i){
-                    var result = res.data.OPTION3[i]
-                    str3+='<option>'+result+'</option>'
-                })
-                $('select[name=OPTION1]').append(str)
-                $('select[name=OPTION2]').append(str2);
-                $('select[name=OPTION3]').append(str3);
-                $('#searchProductModal').modal('hide');
-            }
-        })
+    function selectProduct(row){
+        var rowData = getDatatablemap('productModalTable', row);
+        $('input[name=P_IDX]').val(rowData.P_IDX);
+        $('input[name=P_NAME]').val(rowData.P_NAME);
+        $('input[name=P_STATE]').val(rowData.P_STATE);
+        $('input[name=P_MODEL]').val(rowData.P_MODEL);
+        $('input[name=P_COST]').val(comma(rowData.P_COST));
+        $('input[name=P_SELL_PRICE]').val(comma(rowData.P_SELL_PRICE));
+        $('input[name=P_MEMO]').val(rowData.P_MEMO);
+        if(rowData.P_THUMB_FILE1!=''){
+            document.getElementById("P_THUMB_FILE1").src=rowData.P_THUMB_FILE1
+        }
+        if(rowData.P_THUMB_FILE2!=''){
+            document.getElementById("P_THUMB_FILE2").src=rowData.P_THUMB_FILE2;
+        }
+        if(rowData.P_THUMB_FILE3!=''){
+            document.getElementById("P_THUMB_FILE3").src=rowData.P_THUMB_FILE3;
+        }
+        if(rowData.P_THUMB_FILE4!=''){
+            document.getElementById("P_THUMB_FILE4").src=rowData.P_THUMB_FILE4;
+        }
+        if(rowData.P_THUMB_FILE5!=''){
+            document.getElementById("P_THUMB_FILE5").src=rowData.P_THUMB_FILE5;
+        }
+        if(rowData.P_THUMB_FILE6!=''){
+            document.getElementById("P_THUMB_FILE6").src=rowData.P_THUMB_FILE6;
+        }
+        var str= rowData.OPTION1.split(",");
+        var str2= rowData.OPTION2.split(",");
+        var str3= rowData.OPTION3.split(",");
+
+        var option1 = "";
+        var option2 = "";
+        var option3 = "";
+
+        for(var i in str){
+            var result = str[i]
+            option1+='<option>'+result+'</option>';
+        }
+        for(var i in str2){
+            var result = str2[i]
+            option2+='<option>'+result+'</option>';
+        }
+        for(var i in str3){
+            var result = str3[i]
+            option3+='<option>'+result+'</option>';
+        }
+
+        $('select[name=OPTION1]').append(option1)
+        $('select[name=OPTION2]').append(option2);
+        $('select[name=OPTION3]').append(option3);
+        $('#searchProductModal').modal('hide');
     }
 
     function goodsStockSave(){

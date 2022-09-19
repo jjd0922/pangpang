@@ -104,7 +104,7 @@
 
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -176,7 +176,7 @@
                 }
             }).on('drop', function(el, target, source, sibling){
                 $.ajax({
-                    url:'/product/category/order.ajax'
+                    url:'/product/category/orders.ajax'
             ,type:'post'
                     ,data:$('#'+table_id+'Form').serialize()
             }).always(function(res){
@@ -235,7 +235,7 @@
                 }
             }).on('drop', function(el, target, source, sibling){
                 $.ajax({
-                    url:'/product/category/order.ajax'
+                    url:'/product/category/orders.ajax'
                     ,type:'post'
                     ,data:$('#'+table_id+'Form').serialize()
                 }).always(function(res){
@@ -289,7 +289,7 @@
                 }
             }).on('drop', function(el, target, source, sibling){
                 $.ajax({
-                    url:'/product/category/order.ajax'
+                    url:'/product/category/orders.ajax'
                     ,type:'post'
                     ,data:$('#'+table_id+'Form').serialize()
                 }).always(function(res){
@@ -339,7 +339,7 @@
     }
 
     function categoryDetail(cate_idx){
-       var cd = window.open('/product/category/categoryDetail/'+cate_idx,'categoryDetail','width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+       var cd = window.open('/product/category/'+cate_idx,'categoryDetail','width=850, height=500, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         cd.focus();
     }
 </script>

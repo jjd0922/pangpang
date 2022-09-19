@@ -1,12 +1,12 @@
 package com.newper.entity;
 
+import com.newper.constant.PgType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.lang.invoke.SwitchPoint;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -24,11 +24,19 @@ public class ProcessGroup extends CreatedEntity {
     @JoinColumn(name="PG_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PG_U_IDX", referencedColumnName = "uIdx")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PG_U_IDX2", referencedColumnName = "uIdx")
+    private User user2;
+
     private String pgType;
 
     private String pgLastState;
 
-    private Date pgRequestDate;
+    private String pgRequestDate;
 
     private String pgReqMemo;
 
@@ -36,10 +44,7 @@ public class ProcessGroup extends CreatedEntity {
 
     private String pgDoneMemo;
 
-    private Date pgStartDate;
+    private String pgStartDate;
 
-    private Date pgEndDate;
-
-    private Integer pgUIdx;
-
+    private String pgEndDate;
 }

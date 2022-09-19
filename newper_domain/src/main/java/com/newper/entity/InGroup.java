@@ -1,13 +1,17 @@
 package com.newper.entity;
 
+import com.newper.constant.IgState;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -19,11 +23,17 @@ public class InGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer igIdx;
 
-    private Date igReceiveDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IG_PO_IDX", referencedColumnName = "poIdx")
+    private Po po;
 
-    private Time igReceiveTime;
+    private LocalDate igReceiveDate;
 
-    private String igState;
+    private LocalTime igReceiveTime;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private IgState igState = IgState.NONE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IG_WH_IDX", referencedColumnName = "whIdx")
@@ -33,13 +43,17 @@ public class InGroup {
     @JoinColumn(name = "IG_U_IDX", referencedColumnName = "uIdx")
     private User user;
 
-    private Date igDate;
+    private LocalDate igDate;
 
-    private Time igTime;
+    private LocalTime igTime;
 
     private String igMemo;
 
     private String igDoneMemo;
+    private String igTaxDate;
 
+
+    @OneToMany(mappedBy = "inGroup", cascade = CascadeType.ALL)
+    private List<InProduct> inProductList;
 
 }

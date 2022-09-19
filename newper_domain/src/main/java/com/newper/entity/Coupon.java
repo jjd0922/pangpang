@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
@@ -25,18 +24,7 @@ public class Coupon {
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CP_PAY_IDX", referencedColumnName = "payIdx")
-    private Payment payment;
-
-    private String cpName;
-
-    private Integer cpMin;
-
-    private Integer cpMax;
-
-    private Float cpMoney;
-
-    private Date cpEndDate;
-
+    @JoinColumn(name="CP_CPG_IDX", referencedColumnName = "cpgIdx")
+    private CouponGroup couponGroup;
 
 }

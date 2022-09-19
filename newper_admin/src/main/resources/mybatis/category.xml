@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.CategoryMapper">
-
     <select id="selectCategoryDatatableByParent" resultType="map">
         SELECT
             P.*,
@@ -90,6 +89,11 @@
 
     <sql id="includeCategoryDatatableByBrand">
         <if test='CATE_NAME != null and CATE_NAME != ""'>AND CATE_NAME LIKE CONCAT('%',#{CATE_NAME},'%')</if>
+        <if test='CATE_ORDER != null'>
+            <foreach collection="CATE_ORDER" open="AND CATE_ORDER IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
         <!--<if test='CATE_DISPLAY != null and CATE_DISPLAY != ""'>AND CATE_DISPLAY = #{CATE_DISPLAY}</if>-->
         <if test='CREATED_BY != null and CREATED_BY != ""'>AND CREATED_BY LIKE CONCAT('%',#{CREATED_BY},'%')</if>
         <if test='CREATED_DATE != null and CREATED_DATE != ""'>AND CREATED_DATE BETWEEN SUBSTR(#{CREATED_DATE}, 1, 10) AND SUBSTR(#{CREATED_DATE}, 13)</if>
@@ -127,6 +131,8 @@
     <select id="selectCategoryDetail" resultType="map">
         SELECT
             a.CATE_IDX as ori_cate_idx, a.CATE_DEPTH,b.CATE_IDX AS per_cate_idx1, c.CATE_IDX AS per_cate_idx2
+            ,a.CATE_NAME AS ori_cate_name, b.CATE_NAME AS per_cate_name1, c.CATE_NAME AS per_cate_name2
+
         FROM
             category a
                 LEFT JOIN category b

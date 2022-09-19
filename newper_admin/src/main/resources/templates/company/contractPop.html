@@ -266,7 +266,7 @@
                                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text requested">계약서 파일<a th:if="${contract != null}" th:href="|javascript: fileDownload('${contract.ccFile}', '${contract.ccFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
-                                                        <input type="file" name="ccFile" class="form-control form-control-plaintext">
+                                                        <input type="file" name="ccFile" class="form-control form-control-plaintext" accept=".jpg,.pdf,.doc,.docx,.xlsx,.xls">
                                                         <input type="hidden" name="ccFileOri" th:value="${contract?.ccFile}">
                                                         <input type="hidden" name="ccFileNameOri" th:value="${contract?.ccFileName}">
                                                     </div>
@@ -424,11 +424,11 @@
         <!-- /footer -->
     </div>
 </div>
-<th:block th:replace="company/modal/comModal.html"/>
+<th:block th:replace="modal/companyModal.html"/>
 <th:block th:replace="modal/userModal.html"/>
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- 메뉴 호버 -->

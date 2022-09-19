@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.ShopCategoryMapper">
+
+    <select id="selectShopCategoryDatatableByParent" resultType="map">
+        SELECT
+            shop_category.*,IFNULL(dt.cnt,0) AS CNT
+        FROM
+            shop_category
+                LEFT JOIN (SELECT
+                               CSC_SCATE_IDX,COUNT(*) AS cnt
+                           FROM
+                               category_shop_category
+                           GROUP BY CSC_SCATE_IDX) dt
+                    ON SCATE_IDX=CSC_SCATE_IDX
+        order by SCATE_ORDER
+    </select>
+
+    <select id="selectShopCategoryDatatableByChildren" resultType="map">
+        SELECT
+            category.*,category_shop_category.*
+        FROM
+            category
+                LEFT JOIN category_shop_category
+                          ON CATE_IDX=CSC_CATE_IDX
+                LEFT JOIN shop_category
+                          ON SCATE_IDX=CSC_SCATE_IDX
+        WHERE
+            CATE_DEPTH=2
+          AND SCATE_IDX=#{SCATE_IDX}
+        ORDER BY CSC_ORDER
+    </select>
+
+    <select id="maxShopCategoryOrderBySCateDepth" resultType="Integer">
+        SELECT
+            MAX(SCATE_ORDER)
+        FROM
+            shop_category
+        WHERE
+            SCATE_DEPTH=#{SCATE_DEPTH}
+    </select>
+
+    <select id="selectCategoryDatatableByTwoDetph" resultType="map">
+        SELECT
+            CATE_IDX,CATE_NAME,SCATE_NAME
+        FROM
+            category
+                LEFT JOIN CATEGORY_SHOP_CATEGORY
+                          ON CSC_CATE_IDX=CATE_IDX
+                LEFT JOIN SHOP_CATEGORY
+                          ON CSC_SCATE_IDX=SCATE_IDX
+        WHERE
+            CATE_DEPTH=2
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="selectCategoryDetailByTwoDetph" resultType="map">
+        SELECT
+            CSC_IDX,SCATE_IDX,SCATE_NAME
+        FROM
+            category
+                LEFT JOIN CATEGORY_SHOP_CATEGORY
+                          ON CSC_CATE_IDX=CATE_IDX
+                LEFT JOIN SHOP_CATEGORY
+                          ON CSC_SCATE_IDX=SCATE_IDX
+        WHERE
+            CATE_DEPTH=2
+            and CATE_IDX=#{CATE_IDX}
+    </select>
+
+    <select id="selectCategoryDatatableByChildren" resultType="map">
+        SELECT
+            CATE_IDX,CATE_NAME,CSC_IDX,CSC_ORDER
+        FROM
+            category
+                LEFT JOIN category_shop_category
+                          ON CATE_IDX=CSC_CATE_IDX
+                LEFT JOIN shop_category
+                          ON SCATE_IDX=CSC_SCATE_IDX
+        WHERE
+            CATE_DEPTH=2
+          AND CSC_SCATE_IDX=#{SCATE_IDX}
+        ORDER BY CSC_ORDER
+    </select>
+
+    <select id="selectCategoryListByParent" resultType="map">
+        select
+            CATE_IDX,CATE_NAME
+        from
+            category
+        where
+            CATE_PARENT_IDX is null
+          and CATE_TYPE='CATEGORY'
+    </select>
+
+
+</mapper>

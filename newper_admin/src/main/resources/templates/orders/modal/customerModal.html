@@ -1,0 +1,113 @@
+<div class="modal" tabindex="-1" role="dialog" id="customerModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">고객 검색</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-lable="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="collapse show" id="collapse-button-collapsed">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <form id="customerModalForm" class="w-lg-100">
+                                <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                    <div class="form-group">
+                                        <label class="d-block">이름</label>
+                                        <input type="text" class="form-control form-control-sm w-120px" name="cuName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-block">아이디</label>
+                                        <input type="text" class="form-control form-control-sm w-120px" name="cuId">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">휴대폰번호</label>
+                                        <input type="text" class="form-control form-control-sm w-120px" name="cuPhone">
+                                    </div>
+
+
+
+                                    <div class="form-group end">
+                                        <button type="button" class="btn btn-secondary" onclick="searchCustomer()">
+                                            <span class="ladda-label">조회하기</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="customerModalTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function user() {
+        $('#customerModal').modal('show');
+        selectCustomerDatatable();
+    }
+
+    function searchCustomer() {
+        $("#customerModalTable").DataTable().page('first').ajax.url('/customer/customer.dataTable?'+$('#customerModalForm').serialize()).load();
+    }
+</script>
+<script th:inline="javascript">
+    function selectCustomerDatatable() {
+        if ($.fn.DataTable.isDataTable('#customerModalTable')) {
+            refreshTable('#customerModalTable');
+        } else {
+            $("#customerModalTable").DataTable({
+                dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+                ordering: false,
+                autoWidth: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                serverSide: true,
+                ajax:{
+                    url:'/customer/customer.dataTable',
+                    type:'post'
+                },
+                columns : [
+                    {'title':'No','data':'No','render':function(data,type,full,meta){
+                            return meta.settings._iDisplayStart+meta.row+1;
+                        }}
+                    ,{'title':'ID','data':'CU_ID', 'render': function (data,type,full,meta) {
+                            return '<a onclick="selectCustmer('+meta.row+')" class="badge badge-primary">'+full.CU_ID+'</a>';
+                        }}
+                    ,{'title':'휴대폰번호','data':'CU_PHONE','defaultContent':''}
+                    ,{'title':'회원상태','data':'CU_STATE_STR','defaultContent':''}
+                    ,{'title':'회원등급','data':'CU_RATE_STR','defaultContent':''}
+                    ,{'title':'싱글싸인온','data':'','defaultContent':''}
+                    ,{'title':'분양몰','data':'SHOP_NAME','defaultContent':''}
+                    ,{'title':'이름','data':'CU_NAME','defaultContent':''}
+                    ,{'title':'통신사','data':'CU_TELECOM','defaultContent':''}
+                    ,{'title':'생년월일','data':'CU_BIRTH','defaultContent':''}
+                    ,{'title':'성별','data':'CU_GENDER','defaultContent':''}
+                    ,{'title':'추천인코드<br>(본인)','data':'','defaultContent':''}
+                    ,{'title':'추천인코드<br>(등록)','data':'','defaultContent':''}
+                    ,{'title':'마지막접속일','data':'CU_LAST_DATE','defaultContent':''}
+                    ,{'title':'누적구매금액','data':'','defaultContent':''}
+                    ,{'title':'누적구매건수','data':'','defaultContent':''}
+                    ,{'title':'누적취소/환불건수','data':'','defaultContent':''}
+                    ,{'title':'잔여적립금','data':'','defaultContent':''}
+                    ,{'title':'잔여예치금','data':'','defaultContent':''}
+                    ,{'title':'등록일<br>(가입일)','data':'CU_JOIN_DATE','defaultContent':''}
+                ]
+            });
+        }
+    }
+</script>

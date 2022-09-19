@@ -22,22 +22,12 @@
                                 <div class="card-header header-elements-inline">
                                     <h6 class="card-title">
                                         <div class="breadcrumb breadcrumb-caret">
-                                                <span class="breadcrumb-item">
-                                                    <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                    <th:block th:text="${mainTitle}"></th:block>
-                                                </span>
-                                            <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                    <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                    <th:block th:text="${subTitle}"></th:block>
-                                                </span>
+                                            <span class="breadcrumb-item">
+                                            </span>
                                         </div>
                                     </h6>
                                     <div class="header-elements text-right">
                                         <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
-                                                <i class="icon-popout mr-1"></i>신규등록
-                                            </a>
-    
                                             <div class="list-icons ml-2">
                                                 <a class="list-icons-item" data-action="collapse"></a>
                                             </div>
@@ -63,11 +53,6 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">발주 코드</label>
-                                                        <input type="text" name="poCode" class="form-control form-control-sm w-120px" placeholder="검색">
-                                                    </div>
-
-                                                    <div class="form-group">
                                                         <label class="d-block">매입처</label>
                                                         <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
                                                     </div>
@@ -81,54 +66,50 @@
 
                                                     <div class="form-group">
                                                         <label class="d-block">입고예정일</label>
-                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="poInDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">납기일</label>
-                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="poDueDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">반품기한</label>
-                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="poRefundDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">A/S 기한</label>
-                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="poAsDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">재매입 여부</label>
-                                                        <select name="test" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                            <option th:each="opt: ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        <select name="poRepurchase" class="form-control">
+                                                            <option value="Y">Y</option>
+                                                            <option value="N">N</option>
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="d-block">입고 예정 창고</label>
-                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
-                                                    </div>
-
-                                                    <div class="form-group">
                                                         <label class="d-block">등록자</label>
-                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                        <input type="text" name="createdBy" class="form-control form-control-sm w-120px" placeholder="검색">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">등록일</label>
-                                                        <input type="text" name="poPeriod" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group">2
                                                         <label class="d-block">승인자</label>
-                                                        <input type="text" name="comName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                        <input type="text" name="hwAprvId" class="form-control form-control-sm w-120px" placeholder="검색">
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="d-block">승인일</label>
-                                                        <input type="text" name="poApply" class="form-control form-control-sm w-datarange daterange-basic">
+                                                        <input type="text" name="hwAprvDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                     </div>
 
                                                     <div class="form-group">
@@ -159,6 +140,35 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
+                                <div class="card-footer bg-white d-sm-flex justify-content-sm-start align-items-center">
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-sm btn-primary" id="popNewBtn">
+                                            신규등록
+                                        </a>
+                                    </div>
+                                    <div class="btn-group ml-1">
+                                        <a type="button" class="btn btn-sm btn-primary">
+                                            승인요청
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group ml-1">
+                                        <a onclick="poHiworksApply()" type="button" class="btn btn-sm btn-primary">
+                                            하이웍스 승인요청 TEST
+                                        </a>
+                                    </div>
+                                    <div class="btn-group ml-1">
+                                        <a onclick="poHiworksResponse()" type="button" class="btn btn-sm btn-primary">
+                                            하이웍스 승인&반려 TEST
+                                        </a>
+                                    </div>
+
+                                    <div class="btn-group ml-1">
+                                        <a onclick="poDelete()" type="button" class="btn btn-sm btn-danger">
+                                            삭제
+                                        </a>
+                                    </div>
+                                </div>
                                 <table class="table" id="poTable"></table>
                             </div>
                         </div>
@@ -170,7 +180,7 @@
 </body>
 
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -222,35 +232,28 @@
             {'class':'select-checkbox', 'title':'선택','data':'PO_IDX','defaultContent':'','render':  function(data,type,full,meta){
                     return '<input type="hidden" name="poIdx" value="' + data + '">';
                 }}
-            ,{'title':'품의상태','data':'PO_STATE_STR'}
-            ,{'title':'구매 담당자','data':'U_NAME'}
-            ,{'title':'발주코드','data':'PO_CODE','defaultContent':'','render':  function(data,type,full,meta){
+            ,{'title':'품의상태','data':'PO_STATE_STR','defaultContent':''}
+            ,{'title':'구매 담당자','data':'U_NAME','defaultContent':''}
+            ,{'title':'발주코드','data':'PO_IDX','defaultContent':'','render':  function(data,type,full,meta){
                     return '<button type="button" class="badge badge-primary" onclick="poDetail(' + full.PO_IDX + ')">' + data + '</button>';
                 }}
-            ,{'title':'사업자 등록 번호','data':'COM_NUM'}
-            ,{'title':'총 발주 상품','data':'PRODUCT_COUNT'}
-            ,{'title':'총 발주 금액','data':'PO_TOTAL_PRICE'}
-            ,{'title':'생산원가(합)','data':'COM_NAME'}
-            ,{'title':'판매금액(합)','data':'COM_NAME'}
-            ,{'title':'예상총이익','data':'COM_NAME'}
-            ,{'title':'예상수익률','data':'COM_NAME'}
-            ,{'title':'매입운송비 주체','data':'COM_NAME'}
-            ,{'title':'입고예정일','data':'COM_NAME'}
-            ,{'title':'납기일','data':'COM_NAME'}
-            ,{'title':'반품기한','data':'COM_NAME'}
-            ,{'title':'A/S기한','data':'COM_NAME'}
-            ,{'title':'판매기한','data':'COM_NAME'}
-            ,{'title':'재매입 여부','data':'COM_NAME'}
-            ,{'title':'입고 예정 창고','data':'COM_NAME'}
-            ,{'title':'등록자','data':'COM_NAME'}
-            ,{'title':'등록일','data':'COM_NAME'}
-            ,{'title':'승인자','data':'COM_NAME'}
-            ,{'title':'승인일','data':'COM_NAME'}
-            ,{'title':'반려자','data':'COM_NAME'}
-            ,{'title':'반려일','data':'COM_NAME'}
-            ,{'title':'반려사유','data':'COM_NAME'}
-            ,{'title':'수정자','data':'COM_NAME'}
-            ,{'title':'수정일','data':'COM_NAME'}
+            ,{'title':'사업자 등록 번호','data':'COM_NUM','defaultContent':''}
+            ,{'title':'총 발주 금액','data':'PO_TOTAL_AMOUNT','defaultContent':''}
+            ,{'title':'판매금액(합)','data':'PO_SELL_TOTAL_AMOUNT','defaultContent':''}
+            ,{'title':'예상수익률','data':'PO_SELL_PROFIT','defaultContent':''}
+            ,{'title':'매입운송비 주체','data':'PO_DELIVERY_MAIN','defaultContent':''}
+            ,{'title':'입고예정일','data':'PO_IN_DATE','defaultContent':''}
+            ,{'title':'납기일','data':'PO_DUE_DATE','defaultContent':''}
+            ,{'title':'반품기한','data':'PO_REFUND_DATE','defaultContent':''}
+            ,{'title':'A/S기한','data':'PO_AS_DATE','defaultContent':''}
+            ,{'title':'판매기한','data':'PO_BUY_SELL_PERIOD','defaultContent':''}
+            ,{'title':'재매입 여부','data':'PO_REPURCHASE','defaultContent':''}
+            ,{'title':'등록자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'등록일','data':'CREATED_DATE','defaultContent':''}
+            ,{'title':'승인자','data':'HW_APRV_ID','defaultContent':''}
+            ,{'title':'승인일','data':'HW_APRV_DATE','defaultContent':''}
+            ,{'title':'수정자','data':'MODIFIED_BY','defaultContent':''}
+            ,{'title':'수정일','data':'MODIFIED_DATE','defaultContent':''}
         ]
     });
 
@@ -259,13 +262,70 @@
     });
 
     $('#popNewBtn').on('click',function (){
-       var focusPopup = window.open('/po/poPop', 'poNew', 'width=' + screen.width, 'height=' + screen.height, 'left=' + screenX, top='+screenY+', 'scrollbars=yes', 'resizable=yes');
+       var focusPopup = window.open('/po/poPop', 'poNew','width='+screen.width+',height='+screen.height+',left='+screenX+',top='+screenY+',scrollbars=yes', 'resizable=yes');
        focusPopup.focus();
     });
 
     function poDetail(idx) {
-        var focusPopup = window.open('/po/poPop/' + idx, 'poDetail', 'width=' + screen.width, 'height=' + screen.height, 'left=' + screenX, 'top=' +screenY,'scrollbars=yes', 'resizable=yes');
+        var focusPopup = window.open('/po/poPop/' + idx, 'poDetail','width='+screen.width+',height='+screen.height+',left='+screenX+',top='+screenY+',scrollbars=yes', 'resizable=yes');
         focusPopup.focus();
+    }
+
+    function poHiworksApply() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poHiworks.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+
+    function poHiworksResponse() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poHiworksResponse.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+
+    function poDelete() {
+        var poIdxs = '';
+        $.each($('.selected'), function (index, value) {
+            poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        poIdxs = poIdxs.slice(0, -1);
+
+        $.ajax({
+            url: '/po/poDelete.ajax',
+            data: {
+                'poIdxs' : poIdxs
+            },
+            type: 'POST',
+            success: function (result) {
+                location.reload();
+            }
+        });
     }
 </script>
 </html>

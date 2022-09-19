@@ -23,14 +23,7 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                            <span class="breadcrumb-item">
-                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                <th:block th:text="${mainTitle}"></th:block>
-                                            </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                <th:block th:text="${subTitle}"></th:block>
-                                            </span>
+                                        <span class="breadcrumb-item"></span>
                                     </div>
                                 </h6>
                             </div>
@@ -282,43 +275,31 @@
                         <div class="card">
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popInBtn">
-                                            <i class="icon-popout mr-1"></i>입고검수
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNeeedBtn">
-                                            <i class="icon-popout mr-1"></i>가공요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popFixBtn">
-                                            <i class="icon-popout mr-1"></i>수리요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popPaintBtn">
-                                            <i class="icon-popout mr-1"></i>도색요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popRecheckBtn">
-                                            <i class="icon-popout mr-1"></i>재검수요청
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
-                                            <i class="icon-popout mr-1"></i>망실
-                                        </a>
-
-
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="handoverBtn()">
-                                            <i class="icon-popout mr-1"></i>재고인계
-                                        </a>
-                                    </div>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('incheckPop', 'IN_CHECK')">
+                                        입고검수
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PROCESS')">
+                                        가공요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'FIX')">
+                                        수리요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PAINT')">
+                                        도색요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('recheckPop')">
+                                        재검수요청
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
+                                        망실
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="handoverBtn()">
+                                        재고인계
+                                    </a>
                                 </div>
-                            <table class="table" id="boardTable"></table>
+                                </div>
+
+                                <table class="table" id="boardTable"></table>
                           </div>
                      </div>
                  </div>
@@ -331,7 +312,7 @@
 <th:block th:replace="process/modal/lostModal.html"/>
 <th:block th:replace="process/modal/handoverModal.html"/>
                 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
                 <!-- input -->
@@ -362,10 +343,11 @@
     function handoverBtn(){
         $('#handoverModal').modal('show');
     }
+
 </script>
 
 <script>
-    var userTable = $('#boardTable').DataTable({
+    var boardTable = $('#boardTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -385,28 +367,30 @@
 
 
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'G_IDX','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
-            ,{'title':'자산상태','data':'G_STATE'}
-            ,{ 'title':'자산처리<br>담당자','data':''}
-            ,{ 'title':'자산<br>처리일','data':'U_PHONE'}
-            ,{ 'title':'자산<br>코드','data':'U_PHONE'}
-            ,{ 'title':'상품<br>코드','data':'U_PHONE'}
-            ,{ 'title':'상품명','data':'U_PHONE'}
-            ,{ 'title':'입고SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'입고SPEC<br>(확정)','data':'U_PHONE'}
-            ,{ 'title':'판매SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'판매SPEC<br>(확정)','data':'U_PHONE'}
-            ,{'title':'가공SPEC<br>(예정)','data':'U_PHONE'}
-            ,{ 'title':'가공SPEC<br>(확정)','data':'U_PHONE'}
-            ,{ 'title':'판매스펙<br>확정일','data':'U_PHONE'}
-            ,{ 'title':'IMEI','data':'U_PHONE'}
-            ,{ 'title':'시리얼','data':'U_PHONE'}
-            ,{'data':null, 'render': function (data,type,full,meta) {
+            ,{'title':'No','data':'No','render':function(data,type,full,meta){
+                return meta.settings._iDisplayStart+meta.row+1;
+            }}
+            ,{'title':'자산상태','data':'G_STATE_STR'}
+            ,{'title':'자산처리<br>담당자','data':'', defaultContent: ''}
+            ,{'title':'자산<br>처리일','data':'G_IDX'}
+            ,{'title':'자산<br>코드','data':'G_IDX'}
+            ,{'title':'상품<br>코드','data':'G_IDX'}
+            ,{'title':'상품명','data':'P_NAME'}
+            ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1'}
+            ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2'}
+            ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1'}
+            ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2'}
+            ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1'}
+            ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2'}
+            ,{'title':'판매스펙<br>확정일','data':'G_IDX'}
+            ,{'title':'IMEI','data':'G_IDX'}
+            ,{'title':'시리얼','data':'G_IDX'}
+            ,{title:'', 'data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
-            ,{'title':'발주<br>INDEX','data':'U_PHONE'}
             ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
@@ -422,9 +406,6 @@
             ,{'title':'재검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}
-
-
-
         ]
     });
 
@@ -434,26 +415,24 @@
         if(event.keyCode==13){searchBtn();return false;}
     });
 
-
-    $('#popInBtn').on('click',function (){
-        var focusPopup = window.open('incheckPop', 'in_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popNeeedBtn').on('click',function (){
-        var focusPopup = window.open('needPop', 'need_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popFixBtn').on('click',function (){
-        var focusPopup = window.open('fixPop', 'fix_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popPaintBtn').on('click',function (){
-        var focusPopup = window.open('paintPop', 'paint_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
-    $('#popRecheckBtn').on('click',function (){
-        var focusPopup = window.open('recheckPop', 'recheck_process', 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    });
+    function tempGoodsGroup(url, type) {
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        if(g_idxs.length > 0){
+            $.ajax({
+                url:'/process/in/temp.ajax'
+                ,type:'post'
+                ,data: {
+                    "g_idxs" : g_idxs,
+                    "type" : type
+                }
+                ,async: false
+            }).done(function(res){
+                var focusPopup = window.open('/process/'+ url +'?ggt_idx=' + res + '&type=' + type, url, 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+                focusPopup.focus();
+            }).fail(function(){
+                return false;
+            });
+        }
+    }
 </script>
 </html>

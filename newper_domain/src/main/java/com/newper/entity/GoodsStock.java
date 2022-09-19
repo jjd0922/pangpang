@@ -1,16 +1,17 @@
 package com.newper.entity;
 
-import com.newper.entity.common.BaseEntity;
+import com.newper.constant.GRank;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/** 재고 코드*/
 @Entity
 @DynamicUpdate
 @Getter
@@ -18,8 +19,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
-public class GoodsStock extends BaseEntity {
+public class GoodsStock{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,8 @@ public class GoodsStock extends BaseEntity {
     private String gsSale;
     private String gsName;
     private Integer gsPrice;
-    private Integer gsRank;
+    @Enumerated(EnumType.STRING)
+    private GRank gsRank;
     private String gsMd;
     private Integer gsOriginalPrice;
     private String gsThumbFile1;
@@ -54,6 +55,10 @@ public class GoodsStock extends BaseEntity {
 
     private boolean gsDaily;
     private String gsLocation;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
+    private List<Goods> goodsList;
+    private String gsSabang;
 
     @PrePersist
     @PreUpdate

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="part/head :: head('이벤트')">
+</head>
+<body th:classappend="${@shopComp.getShopDesign()}">
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!--페이지 타이틀-->
+<section th:insert="part/title :: pageTitle('이벤트 / 기획전','')">
+</section>
+
+<!--메뉴 : 박스형 탭 메뉴 : 하단 라인-->
+<section th:insert="part/menu :: boxTab">
+</section>
+
+<!--메뉴 : 버튼형 탭 메뉴 : 사각 외각선-->
+<section th:insert="part/menu :: buttonTab">
+</section>
+
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+</html>

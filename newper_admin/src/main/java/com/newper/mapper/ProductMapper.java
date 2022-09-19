@@ -12,7 +12,7 @@ public interface ProductMapper {
     long countProductDataTable(Map<String,Object> map);
 
     /**마지막 상품코드 조회*/
-    String selectProductByListPcode();
+//    String selectProductByListPcode();
 
     /**재고상품 데이터테이블*/
     List<Map<String, Object>> selectGoodsStockDataTable(Map<String, Object> map);
@@ -20,4 +20,8 @@ public interface ProductMapper {
 
     /**마지막 재고상품 코드 조회*/
     String selectGoodsStockByListGsCode();
+
+    /**신규 주문 구성상품 datatable*/
+    List<Map<String, Object>> selectShopProductByOrdersModalDataTable(Map<String, Object> map);
 }
+

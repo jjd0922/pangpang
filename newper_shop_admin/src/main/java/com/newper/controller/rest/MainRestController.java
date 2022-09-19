@@ -6,19 +6,24 @@ import com.newper.constant.MenuType;
 import com.newper.constant.UState;
 import com.newper.controller.NoLogin;
 import com.newper.dto.ParamMap;
+import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Menu;
+import com.newper.entity.User;
 import com.newper.mapper.MenuMapper;
 import com.newper.mapper.UserMapper;
 import com.newper.repository.MenuRepo;
+import com.newper.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +32,7 @@ import java.util.Map;
 public class MainRestController {
 
     private final MenuRepo menuRepo;
+    private final UserRepo userRepo;
     private final UserMapper userMapper;
     private final MenuMapper menuMapper;
     @Autowired
@@ -66,5 +72,21 @@ public class MainRestController {
         }
 
         return rm;
+    }
+
+    /** 로그인 pass */
+    @NoLogin
+    @GetMapping(value = "login.pass")
+    public ModelAndView loginPass(ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("main/home");
+
+        User user  = userRepo.findUserByuId(paramMap.getString("id"));
+        Map<String,Object> userMap = new HashMap<>();
+        userMap.put("U_IDX", user.getUIdx());
+        userMap.put("U_ID", user.getUId());
+        userMap.put("U_AUTH_IDX", user.getAuth().getAuthIdx());
+        sessionInfo.login(userMap);
+
+        return mav;
     }
 }

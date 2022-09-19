@@ -4,6 +4,7 @@
     <sql id="includeCompanyDataTable">
         <if test='createdDate != null and createdDate != ""'>AND COMPANY.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
         <if test='comName != null and comName != ""'>AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
+        <if test='comIdx != null and comIdx != ""'>AND COM_IDX = #{comIdx}</if>
         <if test='comNum != null and comNum != ""'>AND COM_NUM LIKE CONCAT('%',#{comNum},'%')</if>
         <if test='comCeo != null and comCeo != ""'>AND COM_CEO LIKE CONCAT('%',#{comCeo},'%')</if>
         <if test='comMid != null and comMid != ""'>AND COM_MID LIKE CONCAT('%',#{comMid},'%')</if>
@@ -98,9 +99,10 @@
             COM_STATE,
             COM_MID,
             COM_NAME,
+            COM_NUM,
             COM_CEO,
-            POST,
-            CONCAT(ADDR1,' ',ADDR2,' ',ADDR3,' ',ADDR4) AS ADDRESS,
+            COMPANY.POST AS POST,
+            CONCAT(COMPANY.ADDR1,' ',COMPANY.ADDR2,' ',COMPANY.ADDR3,' ',COMPANY.ADDR4) AS ADDRESS,
             COM_TEL,
             COM_CE_IDX,
             CE_IDX,
@@ -108,11 +110,14 @@
             CE_PHONE,
             COMPANY.CREATED_BY AS 'COM_CREATED_BY',
             COMPANY.MODIFIED_BY AS 'COM_MODIFIED_BY',
-            COMPANY.MODIFIED_DATE AS 'COM_MODIFIED_DATE'
+            COMPANY.MODIFIED_DATE AS 'COM_MODIFIED_DATE',
+            U_IDX,
+            U_NAME
         FROM
             COMPANY
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
                 LEFT JOIN COMPANY_TYPE ON CT_COM_IDX = COM_IDX
+                LEFT JOIN USER ON COM_U_IDX = U_IDX
         <where>
             <include refid="includeCompanyDataTable"></include>
         </where>
@@ -248,6 +253,7 @@
 
     <select id="selectFeeDatatable" resultType="Map">
         SELECT
+            CATE_IDX,
             CATE_NAME,
             CF_IDX,
             CF_TYPE,

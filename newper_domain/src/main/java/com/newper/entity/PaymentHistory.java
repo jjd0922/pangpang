@@ -1,18 +1,18 @@
 package com.newper.entity;
 
+import com.newper.constant.PhResult;
+import com.newper.constant.PhType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
-import java.util.Timer;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -25,16 +25,28 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long phIdx;
 
-    private String phType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PH_PAY_IDX", referencedColumnName = "payIdx")
+    private Payment payment;
 
-    private String phRequest;
+    @Enumerated(EnumType.STRING)
+    private PhType phType;
 
-    private String phResponse;
+    private boolean phFlag;
+    private String phReq;
+    private String phRes;
+    private LocalDate phReqDate;
+    private LocalTime phReqTime;
 
-    private Date phRequestDate;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PhResult phResult = PhResult.WAIT;
 
-    private Time phRequestTime;
-
-    private String phCode;
-
+    /** phReq세팅시 날짜시간도 세팅*/
+    public void setPhReq(String phReq) {
+        LocalDateTime now = LocalDateTime.now();
+        setPhReqDate(now.toLocalDate());
+        setPhReqTime(now.toLocalTime());
+        this.phReq = phReq;
+    }
 }

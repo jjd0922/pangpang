@@ -1,27 +1,44 @@
 package com.newper.controller.rest;
 
+import com.github.underscore.U;
 import com.newper.constant.PState;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
-import com.newper.entity.Product;
-import com.newper.exception.MsgException;
 import com.newper.entity.Category;
+import com.newper.entity.GoodsStock;
+import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
 import com.newper.repository.CategoryRepo;
+import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RequestMapping(value = "/product/")
@@ -35,6 +52,7 @@ public class ProductRestController {
     private final ProductService productService;
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
+    private final GoodsStockRepo goodsStockRepo;
 
 
     /**category 대분류 dataTable*/
@@ -116,6 +134,11 @@ public class ProductRestController {
     @PostMapping("product.dataTable")
     public ReturnDatatable productDataTable(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("상품관리");
+
+        paramMap.multiSelect("P_TYPE1");
+        paramMap.multiSelect("P_TYPE2");
+        paramMap.multiSelect("P_TYPE3");
+        paramMap.multiSelect("cpIdx");
         returnDatatable.setData(productMapper.selectProductDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countProductDataTable(paramMap.getMap()));
         return returnDatatable;
@@ -125,8 +148,10 @@ public class ProductRestController {
     @PostMapping("brand.dataTable")
     public ReturnDatatable CategoryDatatableByBrand(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable();
+
         List<Map<String,Object>> bList = categoryMapper.selectCategoryDatatableByBrand(paramMap.getMap());
         int total = categoryMapper.countCategoryDatatableByBrand(paramMap.getMap());
+
         returnDatatable.setData(bList);
         returnDatatable.setRecordsTotal(total);
         return returnDatatable;
@@ -167,12 +192,13 @@ public class ProductRestController {
 
         Map<String, Object> map1 = new HashMap<>();
         Map<String, Object> map2 = new HashMap<>();
-        Map<String, Object> map3 = new HashMap<>();
+
         for(int i=1; i<10; i++){
             map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
         }
         paramMap.put("P_NAVER", map1);
 
+        List<Map<String,Object>> p_option = new ArrayList<>();
         for(int y=1; y<4; y++){
             map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
             map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
@@ -183,12 +209,23 @@ public class ProductRestController {
                 p_option_key=paramMap.get("p_option_key"+y)+"";
                 p_option_value=paramMap.get("p_option_value"+y)+"";
             }
-            map3.put("p_option_key"+y,p_option_key);
-            map3.put("p_option_value"+y,p_option_value);
 
+            Map<String, Object> map3 = new HashMap<>();
+            String p_option_values[]=p_option_value.split(",");
+            List<String> values = new ArrayList<>();
+            for(int z=0; z<p_option_values.length;z++){
+                if(!p_option_values[z].equals("")){
+                    values.add(p_option_values[z]);
+                }
+            }
+            if(!p_option_key.equals("")&&values.size()>0){
+                map3.put("title",p_option_key);
+                map3.put("values",values);
+                p_option.add(map3);
+            }
         }
         paramMap.put("P_INFO",map2);
-        paramMap.put("P_OPTION",map3);
+        paramMap.put("P_OPTION",p_option);
 
         paramMap.put("P_STATE", PState.PROTO);
         paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
@@ -211,12 +248,13 @@ public class ProductRestController {
         System.out.println(paramMap.getMap());
         Map<String, Object> map1 = new HashMap<>();
         Map<String, Object> map2 = new HashMap<>();
-        Map<String, Object> map3 = new HashMap<>();
         for(int i=1; i<10; i++){
             map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
         }
         paramMap.put("P_NAVER", map1);
 
+
+        List<Map<String,Object>> p_option = new ArrayList<>();
         for(int y=1; y<4; y++){
             map2.put("P_INFO_KEY"+y, paramMap.get("P_INFO_KEY"+y));
             map2.put("P_INFO_VALUE"+y, paramMap.get("P_INFO_VALUE"+y));
@@ -227,12 +265,24 @@ public class ProductRestController {
                 p_option_key=paramMap.get("p_option_key"+y)+"";
                 p_option_value=paramMap.get("p_option_value"+y)+"";
             }
-            map3.put("p_option_key"+y,p_option_key);
-            map3.put("p_option_value"+y,p_option_value);
+
+            Map<String, Object> map3 = new HashMap<>();
+            String p_option_values[]=p_option_value.split(",");
+            List<String> values = new ArrayList<>();
+            for(int z=0; z<p_option_values.length;z++){
+                if(!p_option_values[z].equals("")){
+                    values.add(p_option_values[z]);
+                }
+            }
+            if(!p_option_key.equals("")&&values.size()>0){
+                map3.put("title",p_option_key);
+                map3.put("values",values);
+                p_option.add(map3);
+            }
 
         }
         paramMap.put("P_INFO",map2);
-        paramMap.put("P_OPTION",map3);
+        paramMap.put("P_OPTION",p_option);
 
         paramMap.put("P_COST", paramMap.get("P_COST").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
@@ -252,58 +302,14 @@ public class ProductRestController {
     @PostMapping("goodsStock.dataTable")
     public ReturnDatatable goodsStock(ParamMap paramMap){
         ReturnDatatable returnDatatable = new ReturnDatatable("재고상품관리");
+        paramMap.multiSelect("GS_RANK");
+        paramMap.multiSelect("P_STATE");
         returnDatatable.setData(productMapper.selectGoodsStockDataTable(paramMap.getMap()));
         returnDatatable.setRecordsTotal(productMapper.countGoodsStockDataTable(paramMap.getMap()));
         return returnDatatable;
     }
 
-    /**P_IDX로 상품조회*/
-    @PostMapping("productDetail.ajax")
-    public ReturnMap productDetial(int P_IDX){
-        ReturnMap returnMap = new ReturnMap();
-        Product product = productRepo.findById(P_IDX).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
-        String P_CODE = product.getPCode();
-        String P_NAME = product.getPName();
-        String P_STATE = product.getPState().getOption();
-        String P_MODEL = product.getPModel();
-        int P_COST = product.getPCost();
-        int P_SELL_PRICE = product.getPSellPrice();
-        String P_MEMO = product.getPMemo();
-        String P_THUMB_FILE1 = product.getPThumbFile1();
-        String P_THUMB_FILE2 = product.getPThumbFile2();
-        String P_THUMB_FILE3 = product.getPThumbFile3();
-        String P_THUMB_FILE4 = product.getPThumbFile4();
-        String P_THUMB_FILE5 = product.getPThumbFile5();
-        String P_THUMB_FILE6 = product.getPThumbFile6();
-        Map<String, Object> map = product.getPOption();
-        String ov1 = map.get("p_option_value1")+"";
-        String ov2 = map.get("p_option_value2")+"";
-        String ov3 = map.get("p_option_value3")+"";
 
-        String[] OPTION1 = ov1.split(",");
-        String[] OPTION2 = ov2.split(",");
-        String[] OPTION3 = ov3.split(",");
-
-        returnMap.put("P_CODE", P_CODE);
-        returnMap.put("P_NAME", P_NAME);
-        returnMap.put("P_STATE", P_STATE);
-        returnMap.put("P_MODEL", P_MODEL);
-        returnMap.put("P_COST", P_COST);
-        returnMap.put("P_SELL_PRICE", P_SELL_PRICE);
-        returnMap.put("P_MEMO", P_MEMO);
-        returnMap.put("P_THUMB_FILE1", P_THUMB_FILE1);
-        returnMap.put("P_THUMB_FILE2", P_THUMB_FILE2);
-        returnMap.put("P_THUMB_FILE3", P_THUMB_FILE3);
-        returnMap.put("P_THUMB_FILE4", P_THUMB_FILE4);
-        returnMap.put("P_THUMB_FILE5", P_THUMB_FILE5);
-        returnMap.put("P_THUMB_FILE6", P_THUMB_FILE6);
-        returnMap.put("OPTION1", OPTION1);
-        returnMap.put("OPTION2", OPTION2);
-        returnMap.put("OPTION3", OPTION3);
-
-
-        return returnMap;
-    }
 
     /**재고상품 저장*/
     @PostMapping("goodsStockSave.ajax")
@@ -362,7 +368,7 @@ public class ProductRestController {
     }
 
     /**고시정보관리 중분류별 고시정보 템플릿 데이터테이블*/
-    @PostMapping("info.dataTable")
+    @PostMapping("cateInfo.dataTable")
     public ReturnDatatable infoTemplateDatatable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("중분류 고시정보");
 
@@ -374,10 +380,50 @@ public class ProductRestController {
     }
 
     /**고시정보관리 고시정보 템플릿 update*/
-    @PostMapping("info.ajax")
+    @PostMapping("cateInfo.ajax")
     public ReturnMap updateInfoTemplate(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         categoryService.updateCateInfo(paramMap);
+        
+        rm.setMessage("수정완료");
         return rm;
     }
+
+    /** 재고상품관리 dt*/
+    @PostMapping("stock.dataTable")
+    public ReturnDatatable stock(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("재고상품관리");
+
+        rd.sampleData();
+
+        return rd;
+
+    }
+
+    /**신규 주문 구성상품 datatable*/
+    @PostMapping("ordersAddProduct.dataTable")
+    public ReturnDatatable ordersAddProduct(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+
+        List<Map<String,Object>> list = productMapper.selectShopProductByOrdersModalDataTable(paramMap.getMap());
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+        return returnDatatable;
+    }
+
+    /**사방넷 상품 등록 api*/
+    @PostMapping("sabang.ajax")
+    public ReturnMap sabang(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        System.out.println(paramMap.getMap());
+        String res = productService.sabang(paramMap);
+
+        rm.setMessage(res);
+
+
+        return rm;
+    }
+
+
+
 }

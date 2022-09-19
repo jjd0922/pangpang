@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문통합관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+<!--                                        <span class="breadcrumb-item font-weight-bold text-secondary">-->
+<!--                                                <i class="mr-1" th:classappend="${subIcon}"></i>-->
+<!--                                                <th:block th:text="${subTitle}"></th:block>-->
+<!--                                        </span>-->
+                                    </div>
+                                </h6>
+                            </div>
+
+
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="goodsStockForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문완료일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문분양몰</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">회원구분</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문자 ID</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문자 이름</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">주문자 연락처</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">결제상태</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">결제방식</label>
+                                                    <select class="form-control multiselect-reset" multiple="multiple" data-fouc name="" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">PG결제승인코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">결제일</label>
+                                                    <input type="text" class="form-control form-control-sm w-datarange daterange-basic" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">카드결제취소코드</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">카드결제취소일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">배송자 이름</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">수취인 연락처</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">배송자 우편번호</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="">
+                                                </div>
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label">조회하기</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="popNewBtn">
+                                            <i class="icon-popout mr-1"></i>주문등록
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="orderTable"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    function searchBtn(){
+        var table = $('#orderTable').DataTable();
+        table.page('first').ajax.url('/orders/orders.dataTable?'+$('#orderTableForm').serialize()).load(null, false);
+    }
+
+    function orderDetail(oIdx){
+        var focusPopup = window.open('/orders/detail/'+oIdx, 'orderDetail', 'width=1600, height=1200, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
+</script>
+
+<script>
+    var orderTable = $('#orderTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/orders/orders.dataTable?'+$('#orderTableForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'select-checkbox m-w-2', 'title':'선택','data':'null','defaultContent':'','render':function(data,type,full,meta){
+                    return '<input type="hidden" name="O_IDX" value="'+data+'">';
+                }}
+            ,{'title':'주문일','data':'O_DATE'}
+            ,{'title':'주문코드','data':'O_CODE','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="orderDetail('+full.O_IDX+')">'+data+'</a>';
+                }}
+            ,{'title':'주문쇼핑몰/판매처','data':'SHOP_NAME','defaultContent':''}
+            ,{'title':'주문자 ID','data':'CU_ID','defaultContent':''}
+            ,{'title':'주문자 이름','data':'CU_NAME','defaultContent':''}
+            ,{'title':'주문자 연락처','data':'CU_PHONE','defaultContent':''}
+            ,{'title':'주문경로','O_LOCATION':'null','defaultContent':''}
+            ,{'title':'결제상태','data':'PAY_STATE','defaultContent':''}
+            ,{'title':'결제방식','data':'PAY_METHOD','defaultContent':''}
+            ,{'title':'PG결제승인코드','data':'PAY_CODE','defaultContent':''}
+            ,{'title':'결제일','data':'PAY_DATE','defaultContent':''}
+            ,{'title':'카드결제취소코드','data':'PAY_CANCEL_CODE','defaultContent':''}
+            ,{'title':'카드결제취소일','data':'PAY_CANCEL_DATE','defaultContent':''}
+            ,{'title':'판매가 합(+)','data':'O_GS_PRICE','defaultContent':''}
+            ,{'title':'이벤트할인가 합(-)','data':'PAY_EVENT','defaultContent':''}
+            ,{'title':'쿠폰할인가 합(-)','data':'O_COUPON','defaultContent':''}
+            ,{'title':'사용적립금(마일리지) 합(-)','data':'O_MILEAGE','defaultContent':''}
+            ,{'title':'사용적립금(예치금) 합(-)','data':'O_POINT','defaultContent':''}
+            ,{'title':'배송비(설치비)(+)','data':'PAY_DELIVERY','defaultContent':''}
+            ,{'title':'최종결제금액','data':'PAY_PRICE','defaultContent':''}
+            ,{'title':'결제취소금액','data':'PAY_CANCEL_PRICE','defaultContent':''}
+            ,{'title':'예정적립금합계','data':'PAY_MILEAGE','defaultContent':''}
+            ,{'title':'배송자(설치자) 이름','data':'AD_NAME','defaultContent':''}
+            ,{'title':'배송자(설치자) 연락처','data':'AD_PHONE','defaultContent':''}
+            ,{'title':'배송자(설치자) 우편번호','data':'POST','defaultContent':''}
+            ,{'title':'배송자(설치자) 주소','data':'ADDRS','defaultContent':''}
+            ,{'title':'배송자(설치자) 상세주소','data':'ADDR4','defaultContent':''}
+            ,{'title':'배송자(설치자) 메시지(현관비밀번호)','data':'AD_ENTRANCE','defaultContent':''}
+        ]
+    });
+
+    $('#goodsStockForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+
+    $('#popNewBtn').on('click',function (){
+        var focusPopup = window.open('/orders/detail', 'orderDetail', 'width=1600, height=1200, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    });
+</script>
+
+
+</html>

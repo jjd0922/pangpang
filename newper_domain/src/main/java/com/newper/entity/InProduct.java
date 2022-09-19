@@ -13,23 +13,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 public class InProduct {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ipIdx;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IG_IDX", referencedColumnName = "igIdx")
+    @JoinColumn(name = "IP_IG_IDX", referencedColumnName = "igIdx")
     private InGroup inGroup;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "P_IDX", referencedColumnName = "pIdx")
-    private  Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IP_SPEC_IDX", referencedColumnName = "specIdx")
-    private  Spec spec;
+    @JoinColumn(name = "IP_P_IDX", referencedColumnName = "pIdx")
+    private Product product;
 
     private Integer ipCount;
 

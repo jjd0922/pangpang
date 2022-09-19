@@ -1,20 +1,29 @@
 package com.newper.controller.view;
 
+import com.newper.constant.PgType;
+import com.newper.constant.PnType;
+import com.newper.repository.ProcessGroupRepo;
+import com.newper.repository.ProcessNeedRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Locale;
 
 @Controller
 @RequestMapping(value = "/process/")
 @RequiredArgsConstructor
 public class ProcessController {
+    private final ProcessGroupRepo processGroupRepo;
+    private final ProcessNeedRepo processNeedRepo;
 
 
     /**공정관리 공정보드 페이지**/
     @GetMapping(value = "board")
-    public ModelAndView process() {
+    public ModelAndView board() {
         ModelAndView mav = new ModelAndView("process/board");
 
         return mav;
@@ -25,31 +34,14 @@ public class ProcessController {
     @GetMapping(value = "incheckPop")
     public ModelAndView incheckPopup() {
         ModelAndView mav = new ModelAndView("process/incheckPop");
-
         return mav;
     }
 
     /**가공요청 팝업**/
     @GetMapping(value = "needPop")
-    public ModelAndView needPopup() {
+    public ModelAndView needPopup(String type) {
         ModelAndView mav = new ModelAndView("process/needPop");
-
-        return mav;
-    }
-
-    /**수리요청 팝업**/
-    @GetMapping(value = "fixPop")
-    public ModelAndView fixPopup() {
-        ModelAndView mav = new ModelAndView("process/fixPop");
-
-        return mav;
-    }
-
-    /**도색요청 팝업**/
-    @GetMapping(value = "paintPop")
-    public ModelAndView paintPopup() {
-        ModelAndView mav = new ModelAndView("process/paintPop");
-
+        mav.addObject("type", PnType.valueOf(type));
         return mav;
     }
 
@@ -141,32 +133,28 @@ public class ProcessController {
         return mav;
     }
 
-    /**가공관리 페이지**/
+    /**공정관리 페이지**/
     @GetMapping(value = "processing")
-    public ModelAndView processing() {
+    public ModelAndView processing(String type) {
         ModelAndView mav = new ModelAndView("process/processing");
-
+        type = type.toUpperCase();
+        mav.addObject("type", PgType.valueOf(type));
         return mav;
     }
-    /**수리관리 페이지**/
-    @GetMapping(value = "fix")
-    public ModelAndView fix() {
-        ModelAndView mav = new ModelAndView("process/fix");
 
-        return mav;
-    }
-    /**도색관리 페이지**/
-    @GetMapping(value = "paint")
-    public ModelAndView paint() {
-        ModelAndView mav = new ModelAndView("process/paint");
-
-        return mav;
-    }
     /**재검수관리 페이지**/
     @GetMapping(value = "recheck")
     public ModelAndView recheck() {
         ModelAndView mav = new ModelAndView("process/recheck");
 
+        return mav;
+    }
+
+    /** 공정 - 가공관리 그룹 상세 */
+    @GetMapping("processGroupPop_process/{pgIdx}")
+    public ModelAndView recheck(@PathVariable int pgIdx) {
+        ModelAndView mav = new ModelAndView("process/processGroupPop_process");
+        mav.addObject("group", processGroupRepo.findByPgIdx(pgIdx));
         return mav;
     }
 

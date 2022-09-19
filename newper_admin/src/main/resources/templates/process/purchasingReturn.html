@@ -23,14 +23,7 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                            <span class="breadcrumb-item">
-                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                                <th:block th:text="${mainTitle}"></th:block>
-                                            </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
-                                                <i class="mr-1" th:classappend="${subIcon}"></i>
-                                                <th:block th:text="${subTitle}"></th:block>
-                                            </span>
+                                        <span class="breadcrumb-item"></span>
                                     </div>
                                 </h6>
                             </div>
@@ -113,6 +106,11 @@
                         <div class="card">
                             <table class="table" id="returnTable"></table>
                         </div>
+                        <div class="form-group end">
+                            <button type="button" class="btn btn-primary" onclick="returnManagePop()">
+                                <span class="ladda-label" onclick="returnManagePop()">반품코드반품관리팝업임시버튼</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -121,7 +119,7 @@
 </div>
 </body>
 <!-- 공통 js -->
-<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
@@ -145,6 +143,12 @@
         var table = $('#returnTable').DataTable();
         table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
+
+    function returnManagePop(){
+        var focusPopup = window.open('/process/returnManagePop','returnManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
 </script>
 
 <script>

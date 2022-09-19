@@ -16,11 +16,12 @@ INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(12,'매입정
 INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(13,'회계관리' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(14,'통계' , 'ERP' ,@menu_order:=@menu_order+1);
 INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(15,'ADMIN' , 'ERP' ,@menu_order:=@menu_order+1);
-INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(16,'보상닷컴 기능' , 'ERP' ,@menu_order:=@menu_order+1);
+
 
 
 
 -- sub_menu query
+
 
 
 
@@ -37,18 +38,19 @@ INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '상품분
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '브랜드관리', '/product/brand' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '상품상태', '' ,@menu_order:=@menu_order+1  );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '상품관리', '/product/' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '재고상품관리', '/product/goodsStock' , @menu_order:=@menu_order+1 );
 -- INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '조합상품', '' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '상품권관리', '/gift/' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '고시정보관리', '/product/info' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(3, '상품SPEC관리', '' , @menu_order:=@menu_order+1 );
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(4, '견적서관리', '' ,@menu_order:=@menu_order+1  );
+
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(4, '견적서관리', '/po/estimate' ,@menu_order:=@menu_order+1  );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(4, '발주품의', '/po/' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(4, '발주관리', '/po/approved' , @menu_order:=@menu_order+1 );
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '입고관리', '/in/' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '입고검수', '/in/inCheck' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '영업검수', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '입고등록', '/in/' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '입고검수', '/in/incheck' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '영업검수', '/in/checks' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '공정보드', '/process/board' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '매입처반품', '/process/purchasingReturn' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '가공관리', '/process/processing' , @menu_order:=@menu_order+1 );
@@ -57,42 +59,42 @@ INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '도색관
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '재검수관리', '/process/recheck' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, 'BOM관리', '/bom/' ,@menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '출고전검수관리', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(5, '리퍼센터 기회 회의 1차', '' ,@menu_order:=@menu_order+1  );
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '재고인수,인계', '' ,@menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '창고입고(적재관리)', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '적재관리', '/stock/load' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '적재현황', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '재고현황', '' ,@menu_order:=@menu_order+1  );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '재고현황', '/stock/' ,@menu_order:=@menu_order+1  );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '자산조회', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '재고입출고현황', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '창고관리', '' , @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '재고입출고현황', '/stock/move' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '창고관리', '/warehouse/' , @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(6, '픽킹관리', '/stock/picking' , @menu_order:=@menu_order+1);
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(7, '영업활동관리(리드관리)', '' ,@menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(7, '영업활동관리(리드관리)', '/schedule/' ,@menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(7, '일정관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(7, '영업분석', '' , @menu_order:=@menu_order+1 );
 
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, '주문통합관리', '' ,@menu_order:=@menu_order+1  );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, 'SHOP주문관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, '주문통합관리', '/order/' ,@menu_order:=@menu_order+1  );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, 'SHOP주문관리', '/orders/shop/order' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, 'BAN(SCM)주문관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, '상태별주문관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(8, '대량주문관리', '' ,  @menu_order:=@menu_order+1);
 
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '회원관리', '' , @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '회원관리', '/customer/' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별구매내역', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별쿠폰사용내역', '' ,@menu_order:=@menu_order+1  );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별적립금사용내역(적립,사용)', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별예치금사용내역', '' ,  @menu_order:=@menu_order+1);
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객상담관리(1:1)문의관리', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, 'SMS발송내역', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별쿠폰사용내역', '/customer/history/coupon' ,@menu_order:=@menu_order+1  );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별적립금사용내역(적립,사용)', '/customer/history/mileage' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객별예치금사용내역', '/customer/history/point' ,  @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '고객상담관리(1:1)문의관리', '/customer/qna' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, 'SMS발송내역', '/customer/sendingHistory' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '카카오톡발송내역', '' ,@menu_order:=@menu_order+1  );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, 'APP푸쉬발송내역', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '쿠폰생성관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(9, '쿠폰생성관리', '/coupon/' , @menu_order:=@menu_order+1 );
 
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '출고관리_자사상품', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '배송관리', '' ,@menu_order:=@menu_order+1  );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '설치관리', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '반품관리', '' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '배송관리', '/deliveryManagement/delivery' ,@menu_order:=@menu_order+1  );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '설치관리', '/deliveryManagement/installation' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '배송반품관리', '/deliveryManagement/deliveryReturn' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '설치반품관리', '/deliveryManagement/installationReturn' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '교환관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, 'AS관리', '' , @menu_order:=@menu_order+1 );
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(10, '화물,직접수령관리', '' , @menu_order:=@menu_order+1 );
@@ -106,7 +108,7 @@ INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(11, 'SHOP정�
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '정산개요및정산방식정의', '' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '상품매입정산', '' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '입점사매입정산', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '벤더,이지웰매입정산', '' , @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '벤더,이지웰매입정산', 'purchaseCal/vendorSetting' , @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, 'PG정산관리', '' ,  @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, '외주가공비', '' ,  @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(12, 'AS비용', '' ,  @menu_order:=@menu_order+1);
@@ -119,13 +121,11 @@ INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(14, '하위�
 
 
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '권한설정', '/auth/' ,@menu_order:=@menu_order+1  );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '템플릿관리_문자', '' ,  @menu_order:=@menu_order+1);
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '템플릿관리_카카오톡', '' , @menu_order:=@menu_order+1 );
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '상담결과관리', '' ,  @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '템플릿관리_문자', '/admin/smsTemplate' ,  @menu_order:=@menu_order+1);
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '템플릿관리_카카오톡', '/admin/kakaoTemplate' , @menu_order:=@menu_order+1 );
+INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '상담결과관리', '/admin/counselResult' ,  @menu_order:=@menu_order+1);
 INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(15, '기타코드관리', '' , @menu_order:=@menu_order+1 );
 
-
-INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(16, '하위아이템', '' , @menu_order:=@menu_order+1 );
 
 
 
@@ -137,7 +137,8 @@ INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(17,'HOME' , '
     INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(17, '요약통계', '' , @menu_order:=@menu_order+1 );
     INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(17, '게시판', '' , @menu_order:=@menu_order+1 );
 INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(18,'상품관리' , 'SHOP' ,@menu_order:=@menu_order+1);
-    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(18, 'SHOP 카테고리 관리', '' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(18, '전시 대분류관리', '/product/shopCategory' , @menu_order:=@menu_order+1 );
+    INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(18, 'SHOP 상품 판매관리', '/product/' , @menu_order:=@menu_order+1 );
 INSERT INTO MENU (MENU_IDX, MENU_NAME,MENU_TYPE,MENU_ORDER) VALUES(19,'게시판관리' , 'SHOP' ,@menu_order:=@menu_order+1);
     INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(19, '공지사항', '' , @menu_order:=@menu_order+1 );
     INSERT INTO SUB_MENU (SM_MENU_IDX, SM_NAME,SM_URL,SM_ORDER) VALUES(19, 'FAQ', '' , @menu_order:=@menu_order+1 );

@@ -4,8 +4,10 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -17,22 +19,37 @@ import java.util.Date;
 public class PoReceived {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer prIdx;
-
-    private Integer prCount;
-
-    private String prMemo;
-
-    private Date prDate;
-
-    private Time prTime;
+    private Integer porIdx;
+    private Integer porCount;
+    private Integer porCost;
+    private String porMemo;
+    private Integer porSellPrice;
+    private float porProfitTarget;
+    private List<Map<String, Object>> porOption;
+//    private LocalDate porDate;
+//    private LocalTime porTime;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PR_P_IDX", referencedColumnName = "pIdx")
+    @JoinColumn(name = "POR_P_IDX", referencedColumnName = "pIdx")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PR_PO_IDX", referencedColumnName = "poIdx")
+    @JoinColumn(name = "POR_PO_IDX", referencedColumnName = "poIdx")
     private Po po;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POR_PP_IDX", referencedColumnName = "ppIdx")
+    private PoProduct poProduct;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "poReceived", cascade = CascadeType.DETACH)
+    private List<Goods> goodsList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POR_IN_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec inSpec;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POR_PROCESS_SPEC_IDX", referencedColumnName = "specIdx")
+    private Spec processSpec;
 }
