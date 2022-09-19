@@ -1,8 +1,8 @@
 package com.newper.component;
 
-import com.newper.constant.etc.ShopDesign;
 import com.newper.entity.HeaderMenu;
 import com.newper.entity.Shop;
+import com.newper.entity.ShopCategory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -30,6 +30,8 @@ public class ShopComp {
     private Map<String,Object> shopColorMap;
     /** 분양몰 디자인 */
     private String shopDesign;
+    /** 전시 대분류 */
+    private List<ShopCategory> shopCategoryList;
 
     /** 분양몰 디자인 class*/
     public String setShopDesignClass(Map<String, Object> shopDesignMap){
