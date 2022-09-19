@@ -65,8 +65,8 @@ public class PoRestController {
     }
 
     /** 발주품의 수정 */
-    @PostMapping(value = "poPop/{poIdx}/poPop.ajax")
-    public ReturnMap poPopDetailPost(@PathVariable long poIdx, ParamMap paramMap, MultipartFile poFile){
+    @PostMapping(value = "poPop/{poIdx}.ajax")
+    public ReturnMap poPopDetailPost(@PathVariable Integer poIdx, ParamMap paramMap, MultipartFile poFile){
         ReturnMap rm = new ReturnMap();
         poService.updatePo(poIdx, paramMap, poFile);
         rm.setLocation("/po/poPop/" + poIdx);

@@ -491,4 +491,14 @@
         WHERE
             PP_IDX = #{ppIdx}
     </select>
+
+    <delete id="deletePoProductBypoIdx">
+        DELETE FROM
+            PO_PRODUCT
+        WHERE
+            PP_PO_IDX = #{poIdx}
+            <foreach collection="ppIdxs" item="item">
+                AND PP_IDX != #{item}
+            </foreach>
+    </delete>
 </mapper>

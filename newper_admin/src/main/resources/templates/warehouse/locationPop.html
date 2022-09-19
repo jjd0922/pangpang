@@ -76,6 +76,20 @@
                                                 </div>
 
                                                 <!-- 입력필드 -->
+                                                <div class="col-sm-12 gu-hide" id="locMax">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    최대적재수량
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -208,7 +222,6 @@
                                             </div>
                                         </div>
                                     </fieldset>
-
                                 </div>
                             </div>
                         </form>
@@ -316,6 +329,14 @@
     $("#updateBtn").on("click", updateAction);
     $("#searchUserBtn").on("click", showUserModal);
     $(".location").on("keyup", setLocation);
+    $("select[name=locForm]").on("change", function (event) {
+        var el = $(event.target);
+        if (el.val() == [[${T(com.newper.constant.LocForm).SHELF}]]) {
+            $('#locMax').removeClass('gu-hide')
+        } else {
+            $('#locMax').addClass('gu-hide')
+        }
+    });
 </script>
 </body>
 </html>
