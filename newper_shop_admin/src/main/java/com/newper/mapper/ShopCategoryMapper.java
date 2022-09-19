@@ -15,7 +15,7 @@ public interface ShopCategoryMapper {
     List<Map<String, Object>> selectShopCategoryDatatableByChildren(Integer SCATE_IDX);
 
     /**shop category order 마지막 값 depth로 가져오기*/
-    Integer maxShopCategoryOrderBySCateDepth(int SCATE_DEPTH);
+    Integer maxShopCategoryOrderBySCateDepth();
 
     /**category 중분류*/
     List<Map<String, Object>> selectCategoryDatatableByTwoDetph(Map<String, Object> map);
