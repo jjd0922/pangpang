@@ -4,13 +4,16 @@ package com.newper.service;
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;
 import com.newper.entity.Shop;
+import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
+import com.newper.repository.ShopCategoryRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,8 @@ public class ShopService {
     private final ShopComp shopComp;
     private final ShopRepo shopRepo;
     private final DomainRepo domainRepo;
+    private final ShopMapper shopMapper;
+    private final ShopCategoryRepo shopCategoryRepo;
 
     /** shop 정보 가져오기 */
     public void setShopComp() {
@@ -32,6 +37,14 @@ public class ShopService {
             //select sql
             //N+1 (shop갯수만큼 조회됨) vs shop 중복 조회 효율
             shop.getHeaderMenulist().size();
+
+            // 분양몰 디자인 정보
+            Map<String,Object> shopDesignMap = shopMapper.selectShopDesignJson(shop.getShopIdx());
+            shopComp.setShopDesignClass(shopDesignMap);
+            shopComp.setShopColorMap(shopDesignMap);
+
+            // 카테고리 정보
+            shopComp.setShopCategoryList(shopCategoryRepo.findAll());
         }
     }
 

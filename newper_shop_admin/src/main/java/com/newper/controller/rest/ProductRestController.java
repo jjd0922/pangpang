@@ -60,7 +60,7 @@ public class ProductRestController {
     }
 
     /**shop_category 순서 변경*/
-    @PostMapping("order.ajax")
+    @PostMapping("orders.ajax")
     public ReturnMap shopCategoryOrder(Integer SCATE_IDX[]){
         ReturnMap rm = new ReturnMap();
         shopCategoryService.shopCategoryOrder(SCATE_IDX);
@@ -69,7 +69,7 @@ public class ProductRestController {
     }
 
     /**카테고리 순서 변경*/
-    @PostMapping("category/order.ajax")
+    @PostMapping("category/orders.ajax")
     public ReturnMap categoryOrder(Integer CSC_IDX[]){
         ReturnMap rm = new ReturnMap();
         shopCategoryService.categoryOrder(CSC_IDX);
@@ -81,7 +81,6 @@ public class ProductRestController {
     @PostMapping("shopCategorySave.ajax")
     public ReturnMap shopCategorySave(ParamMap paramMap, MultipartFile SCATE_ICON, MultipartFile SCATE_THUMBNAIL){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("SCATE_DEPTH",1);
         Integer res=shopCategoryService.shopProductInsert(paramMap, SCATE_ICON, SCATE_THUMBNAIL);
         if(res>0){
             rm.setMessage("저장되었습니다.");

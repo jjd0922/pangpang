@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="part/head :: head('마이페이지')">
 </head>
-<body>
+<body th:classappend="${@shopComp.getShopDesign()}">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header"></th:block>
@@ -21,9 +21,26 @@
 <div class="container">
     <div class="myPage-header-wrap">
         <ul class="myPage-header">
-            <li class="myClass semi-bold">
-                <p class="font-xsm"><span class="bold myname">홍길동님</span>&nbsp;의 회원등급은 <span class="class class-normal font-lg"><i></i><span>일반</span></span>입니다.</p>
-                <p class="font-xsm"><span class="color-blue">50,000원</span> 추가 구매하시면 <span>스페셜</span> 등급으로 업데이트 됩니다.</p>
+            <li class="myGrade-wrap semi-bold">
+                <div>
+                    <p class="font-xsm">
+                        <span class="bold myName">홍길동님</span><span>&nbsp;의 회원등급은&nbsp;</span>
+
+                        <!-- 일반회원 -->
+                        <span class="myGrade grade-normal font-lg"><i></i><span>일반</span></span>
+                        <!-- 스페셜회원
+                        <span class="myGrade grade-special font-lg"><i></i><span>스페셜</span></span> -->
+                        <!-- 플래티넘회원
+                        <span class="myGrade grade-platinum font-lg"><i></i><span>플래티넘</span></span>-->
+                        <!-- VIP회원
+                        <span class="myGrade grade-vip font-lg"><i></i><span>VIP</span></span> -->
+                        <!-- VVIP회원
+                        <span class="myGrade grade-vvip font-lg"><i></i><span>VVIP</span></span> -->
+
+                        <span>입니다.</span>
+                    </p>
+                    <p class="font-xsm"><span class="color-blue">50,000원</span> 추가 구매하시면 <span>스페셜</span> 등급으로 업데이트 됩니다.</p>
+                </div>
                 <div>
                     <p class="co-gr">주문횟수 : 0건</p>
                     <div>
@@ -56,15 +73,22 @@
         </ul>
         <!-- 탭 메뉴 -->
         <ul class="my-menu-tab">
-            <li><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
-            <li><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
-            <li><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
-            <li><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
-            <li><i class="my-tab-icon5"></i>회원정보관리</li>
+            <li onclick="openMenu('myOrder')" th:classappend="${menu == 'myOrder'}?'on':''"><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
+            <li onclick="openMenu('myGift')" th:classappend="${menu == 'myGift'}?'on':''"><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
+            <li onclick="openMenu('alarm')" th:classappend="${menu == 'alarm'}?'on':''"><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
+            <li onclick="openMenu('myList')" th:classappend="${menu == 'myList'}?'on':''"><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
+            <li onclick="openMenu('myInfo')" th:classappend="${menu == 'myInfo'}?'on':''"><i class="my-tab-icon5"></i>회원정보관리</li>
         </ul>
+        <form method="post" name="myPage" id="myPage">
+            <input type="hidden" name="menu">
+        </form>
     </div>
 </div>
 
+<!-- 페이지 상단 5개 탭 클릭 시 보여지는 내용 -->
+
+<th:block th:if="${menu != null}" th:replace="myPage/myMenu :: ${menu}(${menu})"></th:block>
+<th:block th:if="${menu == null}">
 <!-- 진행 중인 주문 내역 -->
 <div class="container">
     <div class="my-content-title">
@@ -74,37 +98,51 @@
     <div class="my-content">
         <ul class="orderHistory-progress">
             <li>
-                <p>주문 접수</p>
-                <p>0</p>
-                <i></i>
+                <a href="javascript:;">
+                    <p>주문 접수</p>
+                    <p>0</p>
+                    <i></i>
+                </a>
             </li>
             <li>
-                <p>결제 완료</p>
-                <p>0</p>
-                <i></i>
+                <a href="javascript:;">
+                    <p>결제 완료</p>
+                    <p>0</p>
+                    <i></i>
+                </a>
             </li>
             <li>
-                <p>상품 준비중</p>
-                <p>0</p>
-                <i></i>
+                <a href="javascript:;">
+                    <p>상품 준비중</p>
+                    <p>0</p>
+                    <i></i>
+                </a>
             </li>
             <li>
-                <p>배송출발</p>
-                <p class="color-red">0</p>
-                <i></i>
+                <a href="javascript:;">
+                    <p>배송출발</p>
+                    <p class="color-red">0</p>
+                    <i></i>
+                </a>
             </li>
             <li>
-                <p>배송중</p>
-                <p class="color-red">1</p>
-                <i></i>
+                <a href="javascript:;">
+                    <p>배송중</p>
+                    <p class="color-red">1</p>
+                    <i></i>
+                </a>
             </li>
             <li>
-                <p>배송완료</p>
-                <p>0</p>
+                <a href="javascript:;">
+                    <p>배송완료</p>
+                    <p>0</p>
+                </a>
             </li>
             <li>
-                <p>취소/교환/반품</p>
-                <p>0</p>
+                <a href="javascript:;">
+                    <p>취소/교환/반품</p>
+                    <p>0</p>
+                </a>
             </li>
         </ul>
     </div>
@@ -265,11 +303,11 @@
     </div>
 </div>
 
-<!-- 최근 본 상풍 -->
+<!-- 최근 본 상품 -->
 <div class="container">
     <div class="my-content-title">
         <h2>최근 본 상품<i></i></h2>
-        <p class="font-lg">최근 본 상품 기준으로 최대 200개 까지 저장됩니다.</p>
+        <p class="font-lg">최근 본 상품 기준으로 최대 10개 까지 저장됩니다.</p>
     </div>
     <div class="my-content">
         <ul class="thumb-list lg-col-3 sm-col-6">
@@ -286,9 +324,15 @@
                 <div th:replace="part/thumbnail :: thumbnail-default"></div>
             </li>
         </ul>
+        <div class="paging-num semi-bold">
+            <span class="on">1</span>
+            <span>2</span>
+            <span>3</span>
+        </div>
     </div>
 </div>
 
+<!-- 작성 가능한 리뷰 -->
 <div class="container">
     <div class="my-content-title">
         <h2>작성 가능한 리뷰<i></i></h2>
@@ -363,9 +407,8 @@
             </li>
         </ul>
     </div>
-
-
 </div>
+</th:block>
 
 
 
@@ -383,4 +426,12 @@
 <th:block th:replace="part/js.html"></th:block>
 
 </body>
+
+<script>
+    function openMenu(menu){
+        $("input[name=menu]").val(menu);
+        document.myPage.action="/myPage";
+        document.myPage.submit();
+    }
+</script>
 </html>

@@ -241,7 +241,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총구매액</span>
                                                         </span>
-                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${po?.poTotalAmount}" readonly>
+                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,7 +345,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총판매액</span>
                                                         </span>
-                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${po?.poSellTotalAmount}" readonly>
+                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poSellTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -369,7 +369,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">예상수익률</span>
                                                         </span>
-                                                        <input type="text" name="poSellProfit" class="form-control" th:value="${po?.poSellProfit}" readonly>
+                                                        <input type="text" name="poSellProfit" class="form-control" th:value="|${po?.poSellProfit}%|" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -472,7 +472,9 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">매입운송비 주체</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryMain" class="form-control" th:value="${po?.poDeliveryMain}">
+                                                        <select name="poDeliveryMain" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PoDeliveryMain).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(po?.poDeliveryMain) eq opt.name()}"></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,7 +486,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">매입운송비</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryCost" class="form-control" th:value="${po?.poDeliveryCost}">
+                                                        <input type="text" name="poDeliveryCost" class="form-control text-won" th:value="${#numbers.formatInteger(po?.poDeliveryCost,1,'COMMA')}" placeholder="0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -579,6 +581,8 @@
                                             <a onclick="openProductModal()" class="btn btn-sm btn-primary ml-1">검색</a>
                                         </legend>
                                         <div class="row overflow-x-scroll">
+                                            <input type="hidden" name="rowCnt">
+                                            <input type="hidden" name="cnt">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -600,10 +604,10 @@
                                                     <tr class="defaultRow" th:unless="${poProduct != null}">
                                                         <td colspan="12">
                                                             발주품의할 상품을 선택하십시오.
-                                                            <input type="hidden" name="cnt">
                                                         </td>
                                                     </tr>
                                                     <tr th:if="${poProduct != null}" th:each="i : ${poProduct}"><!--th:class="|productPoTr_${iStat.index} poProductTr|"-->
+                                                        <td hidden><input type="text" th:name="|ppIdx_${iStat.index}|" th:value="${i.PP_IDX}"></td>
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
                                                         <td th:text="${i.P_TYPE1_STR}"></td>
@@ -612,7 +616,7 @@
                                                         <td th:text="${i.OPTION1}"></td>
                                                         <td th:text="${i.OPTION2}"></td>
                                                         <td th:text="${i.OPTION3}"></td>
-                                                        <td th:text="${i.P_COST}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i?.P_COST, 1, 'COMMA')}"></td>
                                                         <td th:text="${i.SPEC_BUY}"></td>
                                                         <td th:text="${i.SPEC_SELL}"></td>
                                                         <td><a onclick="deleteRow($(this))" class="btn btn-sm btn-warning">삭제</a></td>
@@ -641,10 +645,10 @@
                                                     <tr th:if="${poProduct != null}" th:each="i : ${poProduct}">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
-                                                        <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
-                                                        <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
-                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
-                                                        <td th:text="${i.PP_FIX_COST}+${i.PP_PAINT_COST}+${i.PP_PROCESS_COST}"></td>
+                                                        <td th:text="|${i.PP_FIX_MEMO}/${#numbers.formatInteger(i.PP_FIX_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="|${i.PP_PAINT_MEMO}/${#numbers.formatInteger(i.PP_PAINT_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${#numbers.formatInteger(i.PP_PROCESS_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="${#numbers.formatInteger((i.PP_FIX_COST+i.PP_PAINT_COST+i.PP_PROCESS_COST),1,'COMMA')}"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -656,7 +660,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="w-5">상품코드</th>
-                                                        <th class="w-7">상품명</th>
+                                                        <th class="w-10">상품명</th>
                                                         <th class="w-7">구매단가</th>
                                                         <th class="w-7">매입수량</th>
                                                         <th>매입총액</th>
@@ -673,19 +677,20 @@
                                                     <tr class="defaultRow" th:unless="${poProduct != null}">
                                                         <td colspan="12">발주품의할 상품을 선택하십시오.</td>
                                                     </tr>
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${iStat.index}|" th:class="|productPoTr_${iStat.index}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:row-cnt="${iStat.index}"
+                                                        th:with="ppTotalProdCost = ${(i.PP_PAINT_COST+i.PP_FIX_COST+i.PP_PROCESS_COST+i.PP_COST)*i.PP_COUNT}, ppTotalSellPrice= ${i.PP_SELL_PRICE*i.PP_COUNT}">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
-                                                        <td th:text="${i.PP_COST}"></td>
-                                                        <td th:text="${i.PP_COUNT}"></td>
-                                                        <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_COST,1,'COMMA')}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_COUNT,1,'COMMA')}"></td>
+                                                        <td th:id="|ppTotalCost_${iStat.index}|" th:text="${#numbers.formatInteger((i.PP_COST*i.PP_COUNT),1,'COMMA')}"></td>
                                                         <td th:text="${i.PP_PROFIT_TARGET}"></td>
-                                                        <td th:text="${(i.PP_PAINT_COST + i.PP_FIX_COST + i.PP_PROCESS_COST) * i.PP_COUNT}"></td>
-                                                        <td th:id="|buy_per_${iStat.index}|"></td>
-                                                        <td th:text="${i.PP_SELL_PRICE}"></td>
-                                                        <td th:id="|poProductSellPriceTotal_${iStat.index}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
-                                                        <td th:id="|totalProfit_${iStat.index}|"></td>
-                                                        <td th:id="|profitPer_${iStat.index}|"></td>
+                                                        <td th:id="|ppTotalProdCost_${iStat.index}|" th:text="${#numbers.formatInteger(ppTotalProdCost,1,'COMMA')}"></td>
+                                                        <td th:id="|ppProdCostRate_${iStat.index}|"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_SELL_PRICE,1,'COMMA')}"></td>
+                                                        <td th:id="|ppTotalSellPrice_${iStat.index}|" th:text="${#numbers.formatInteger(ppTotalSellPrice,1,'COMMA')}"></td>
+                                                        <td th:id="|ppTotalProfit_${iStat.index}|" th:text="${#numbers.formatInteger(ppTotalSellPrice - ppTotalProdCost,1,'COMMA')}"></td>
+                                                        <td th:id="|ppProfitRate_${iStat.index}|"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -770,18 +775,21 @@
     }
 
     function saveAction(){
-        var poTotalAmount = $('input[name=poTotalAmount]').val().replace(/,/gi,'');
-        $('input[name=poTotalAmount]').val(poTotalAmount);
-
-        var poSellTotalAmount = $('input[name=poSellTotalAmount]').val().replace(/,/gi,'');
-        $('input[name=poSellTotalAmount]').val(poSellTotalAmount);
+        if ($('.defaultRow').attr('hidden') != null) {
+            $('input[name=rowCnt]').val($('#productTbody tr').length);
+        } else {
+            $('input[name=rowCnt]').val(0);
+        }
 
         $.ajax({
             url: location.pathname + '.ajax',
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#createForm')[0])
+            data: new FormData($('#createForm')[0]),
+            success: function () {
+                window.opener.refreshTable('#poTable');
+            }
         });
     }
 
@@ -828,6 +836,10 @@
         var rowIdx = target.index();
         target.remove();
         $('#rateTbody tr')[rowIdx].remove();
+        $('#processTbody tr')[rowIdx].remove();
+
+        // po총액들 새로계산
+        calculatePo();
 
         // 기본행 보여주기
         if ($('#rateTbody tr').length < 2) {
@@ -836,6 +848,9 @@
     }
 
     var cnt = 0;
+    if ([[${poProduct != null}]]) {
+        cnt = $('#productTbody tr').length;
+    }
     /** product테이블 새로운 행 더하기*/
     function appendRowToProductTable(data) {
         var brandName = '';
@@ -953,7 +968,7 @@
             '   <td><input type="text" name="ppSellPrice_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" placeholder="0"></td>' +
             '   <td id="ppTotalSellPrice_'+cnt+'"></td>' + //예상판매가총액
             '   <td id="ppTotalProfit_'+cnt+'"></td>' + //총이익
-            '   <td id="ppReturnRate_'+cnt+'"></td>' +
+            '   <td id="ppProfitRate_'+cnt+'"></td>' +
             '</tr>'
         );
 
@@ -1009,20 +1024,75 @@
 
         //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
         if (ppTotalSellPrice != 0) {
-            var ppProdCostRate = Math.round((ppTotalProdCost/ppTotalSellPrice)*100)/100;
-            var ppReturnRate = Math.round((1-ppProdCostRate)*100)/100;
-            $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate*100)+'%');
-            $('#ppReturnRate_'+rowCnt).text(comma(ppReturnRate*100)+'%');
+            calculateRate(ppTotalProdCost,ppTotalSellPrice,rowCnt);
+            calculatePo();
         }
+
+    }
+
+    /**나눗셈 계산*/
+    function calculateRate(ppTotalProdCost, ppTotalSellPrice, rowCnt) {
+        //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
+        var ppProdCostRate = Math.round((ppTotalProdCost/ppTotalSellPrice)*10000)/100;
+        var ppProfitRate = Math.round((100-ppProdCostRate)*100)/100;
+        $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate)+'%');
+        $('#ppProfitRate_'+rowCnt).text(comma(ppProfitRate)+'%');
+    }
+
+    /** po 총구매액, 총판매액, 예상수익률 계산*/
+    function calculatePo() {
+        var len = $('#rateTbody tr').length;
+        var totalCost = 0; var totalSell = 0; var totalProfit = 0;
+        for (var i = 0; i < len; i++) {
+            if (isNaN(getNumberById('ppTotalCost_' + i))) {
+                continue;
+            }
+            totalCost += getNumberById('ppTotalCost_'+i);
+            totalSell += getNumberById('ppTotalSellPrice_'+i);
+            totalProfit += getNumberById('ppTotalProfit_'+i);
+        }
+        var totalProfitRate = Math.round((totalProfit / totalSell)*10000)/100;
+        $('input[name=poTotalAmount]').val(comma(totalCost));
+        $('input[name=poSellTotalAmount]').val(comma(totalSell));
+        $('input[name=poSellProfit]').val(totalProfitRate+'%');
     }
 
     /**input value에서 특수문자를 제외하고 숫자형태로 return*/
     function getNumberInInput(name) {
         return Number($('input[name="'+name+'"]').val().replace(/[^0-9]/g,""));
     }
+
+    /**id를 통해 특수문자 제외한 숫자형태 return*/
+    function getNumberById(id) {
+        return Number($('#'+id).text().replace(/[^0-9]/g,""));
+    }
+
+    /**매입운송비 주체 변경시 input창 변화*/
+    function changePoDeliveryMain(el) {
+        if (el.val() != '[[${T(com.newper.constant.PoDeliveryMain).MAIN}]]') {
+            $('input[name=poDeliveryCost]').val('').attr('readonly', true);
+        } else {
+            $('input[name=poDeliveryCost]').val('').attr('readonly', false);
+        }
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
+    // 숫자만 입력되도록
+    $('.text-won').on("input", function (event) {
+        inputOnlyNumber($(event.target))
+    });
+    $('select[name=poDeliveryMain]').on('change', function (event) {
+        changePoDeliveryMain($(event.target));
+    });
+</script>
+<script th:inline="javascript" th:if="${poProduct != null}">
+    var len = $('#rateTbody tr').length;
+    for (var i = 0; i < len; i++) {
+        var ppTotalProdCost = getNumberById('ppTotalProdCost_'+i);
+        var ppTotalSellPrice = getNumberById('ppTotalSellPrice_'+i);
+        calculateRate(ppTotalProdCost, ppTotalSellPrice, i);
+    }
 </script>
 </body>
 </html>

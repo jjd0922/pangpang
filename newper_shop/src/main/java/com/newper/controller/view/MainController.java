@@ -1,9 +1,12 @@
 package com.newper.controller.view;
 
+import com.newper.dto.ParamMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
@@ -50,27 +53,47 @@ public class MainController {
     }
 
     /* myPage 나의쇼핑정보 */
-    @GetMapping(value = "myPage")
-    public ModelAndView myPage(){
+    @RequestMapping(value = "myPage", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView myPage(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("myPage/myPage");
+        if(paramMap.containsKey("menu")){
+            mav.addObject("menu", paramMap.getString("menu"));
+            mav.addObject("active", "on");
+        }
         return mav;
     }
 
     /* custCenter 고객센터 */
-    @GetMapping(value = "custCenter")
-    public ModelAndView custCenter(){
+    @RequestMapping(value = "custCenter", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView custCenter(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("custCenter/custCenter");
+
+        if(paramMap.containsKey("menu")){
+            mav.addObject("menu", paramMap.getString("menu"));
+            mav.addObject("active", "on");
+        }else{
+            mav.addObject("menu", "faq");
+            mav.addObject("active", "on");
+        }
+
         return mav;
     }
 
-    /* product 상품상세 */
+    /* product - 상품 상세페이지 */
     @GetMapping(value = "product")
     public ModelAndView product(){
         ModelAndView mav = new ModelAndView("product/product");
         return mav;
     }
 
-    /* cart 주문프로세서 - 장바구니 */
+    /* product - 카테고리 대분류/중분류 목록페이지 */
+    @GetMapping(value = "category")
+    public ModelAndView category(){
+        ModelAndView mav = new ModelAndView("product/category");
+        return mav;
+    }
+
+    /* order 주문프로세서 - 장바구니 */
     @GetMapping(value = "cart")
     public ModelAndView cart(){
         ModelAndView mav = new ModelAndView("orderProcess/cart");
@@ -104,7 +127,7 @@ public class MainController {
         return mav;
     }
 
-    /* auth - 회원가입 완료 */
+    /** auth - 회원가입 완료 */
     @GetMapping(value = "joinComplete")
     public ModelAndView joinComplete(){
         ModelAndView mav = new ModelAndView("auth/joinComplete");
@@ -128,5 +151,7 @@ public class MainController {
         ModelAndView mav = new ModelAndView("iamport/payment");
         return mav;
     }
+
+
 
 }

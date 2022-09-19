@@ -61,6 +61,7 @@ public class EnumClasses {
         enumClasses.put("ph_result","PhResult");
         enumClasses.put("ph_type","PhType");
         enumClasses.put("pn_process","PnProcess");
+        enumClasses.put("po_delivery_main","PoDeliveryMain");
         enumClasses.put("po_state","PoState");
         enumClasses.put("po_type","PoType");
         enumClasses.put("p_state","PState");
