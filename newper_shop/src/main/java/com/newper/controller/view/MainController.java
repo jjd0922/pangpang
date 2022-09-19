@@ -1,9 +1,12 @@
 package com.newper.controller.view;
 
+import com.newper.dto.ParamMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
@@ -57,9 +60,18 @@ public class MainController {
     }
 
     /* custCenter 고객센터 */
-    @GetMapping(value = "custCenter")
-    public ModelAndView custCenter(){
+    @RequestMapping(value = "custCenter", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView custCenter(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("custCenter/custCenter");
+
+        if(paramMap.containsKey("menu")){
+            mav.addObject("menu", paramMap.getString("menu"));
+            mav.addObject("active", "on");
+        }else{
+            mav.addObject("menu", "faq");
+            mav.addObject("active", "on");
+        }
+
         return mav;
     }
 
