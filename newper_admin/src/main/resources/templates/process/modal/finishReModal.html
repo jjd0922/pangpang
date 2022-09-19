@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <div class="collapse show" id="collapse-button-collapsed">
                     <div class="card-body pt-0">
-                        <form id="modalForm">
+                        <form id="resellFinishModalForm">
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <fieldset class="mb-0">
@@ -30,7 +30,7 @@
                                                                   자산상태
                                                                 </span>
                                                             </span>
-                                                           <input type="text" name="" class="input1" placeholder="반품완료">
+                                                           <input type="text" name="" class="form-control" placeholder="반품완료">
                                                         <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                   자산처리일
@@ -50,7 +50,7 @@
                                                            처리사유
                                                             </span>
                                                         </span>
-                                                      <input type="text" name="" class="form-control">
+                                                      <input type="text" name="rgMemo" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="mdSave" onclick="">확인</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="mdSave" onclick="resellComp();">확인</button>
                                 <button type="button" class="btn btn-primary" onclick="window.close();"><i class="icon-cross2 mr-1"></i>취소</button>
                             </div>
                         </form>
@@ -69,4 +69,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function resellComp() {
+        var rgIdx = '';
+        $.each($('.selected'), function (index, value) {
+            rgIdx += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+
+        $.ajax({
+            url:'/process/resellComp.ajax',
+            data: {
+                "rgIdx" : rgIdx
+            }
+        });
+    }
+</script>
 

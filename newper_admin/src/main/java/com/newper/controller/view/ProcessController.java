@@ -2,8 +2,11 @@ package com.newper.controller.view;
 
 import com.newper.constant.PgType;
 import com.newper.constant.PnType;
+import com.newper.dto.ParamMap;
+import com.newper.mapper.ProcessMapper;
 import com.newper.repository.ProcessGroupRepo;
 import com.newper.repository.ProcessNeedRepo;
+import com.newper.repository.ResellRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,8 @@ import java.util.Locale;
 public class ProcessController {
     private final ProcessGroupRepo processGroupRepo;
     private final ProcessNeedRepo processNeedRepo;
+    private final ProcessMapper processMapper;
+    private final ResellRepo resellRepo;
 
 
     /**공정관리 공정보드 페이지**/
@@ -77,10 +82,10 @@ public class ProcessController {
 
 
     /**매입처반품 반품관리팝업**/
-    @GetMapping(value = "returnManagePop")
-    public ModelAndView returnManagePop() {
+    @GetMapping(value = "returnManagePop/{rsIdx}")
+    public ModelAndView returnManagePop(@PathVariable int rsIdx) {
         ModelAndView mav = new ModelAndView("process/returnManagePop");
-
+        mav.addObject("resell", resellRepo.findById(rsIdx).get());
         return mav;
     }
 
@@ -150,11 +155,28 @@ public class ProcessController {
         return mav;
     }
 
+    /** 공정 - 수리, 도색 그룹 상세 */
+    @GetMapping("processGroupPop/{pgIdx}")
+    public ModelAndView processGroupPop(@PathVariable int pgIdx) {
+        ModelAndView mav = new ModelAndView("process/processGroupPop");
+        mav.addObject("group", processGroupRepo.findByPgIdx(pgIdx));
+        return mav;
+    }
+
+
     /** 공정 - 가공관리 그룹 상세 */
     @GetMapping("processGroupPop_process/{pgIdx}")
-    public ModelAndView recheck(@PathVariable int pgIdx) {
+    public ModelAndView processGroupPop_process(@PathVariable int pgIdx) {
         ModelAndView mav = new ModelAndView("process/processGroupPop_process");
         mav.addObject("group", processGroupRepo.findByPgIdx(pgIdx));
+        return mav;
+    }
+
+    /** 반품 요청 팝업 */
+    @GetMapping(value = "resellPop")
+    public ModelAndView resellPop(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/resellPop");
+        mav.addObject("company", processMapper.selectResellComIdx(paramMap.getMap()));
         return mav;
     }
 

@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import com.newper.component.Common;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -111,7 +111,6 @@ public class GoodsService {
     /**입고검수 임시 그룹 생성 및 바코드 추가.*/
     @Transactional
     public String insertGoodsTemp(String idx, String[] gIdxs, GgtType ggtType){
-
         //임시그룹 생성
         if (idx == null) {
             GoodsGroupTemp goodsGroupTemp = GoodsGroupTemp.builder()
@@ -218,6 +217,23 @@ public class GoodsService {
             }
 
             goodsRepo.save(goods);
+        }
+    }
+
+    /** 자산 반품 가능한지 체크 */
+    public void goodsResellCheck(ParamMap paramMap) {
+        String[] gIdx = paramMap.getString("gIdx").split(",");
+        paramMap.put("gIdxList", gIdx);
+
+        List<Map<String, Object>> goodsListCompany = goodsMapper.selectGoodsGroupByPO_COMPANY(paramMap.getMap());
+        if (goodsListCompany.size() != 1) {
+            throw new MsgException("같은 매입처 자산을 선택해 주세요");
+        }
+
+        paramMap.put("gState", "CANCEL_REQ");
+        List<Map<String, Object>> goodsListState = goodsMapper.selectGoodsGroupByCANCEL_REQ(paramMap.getMap());
+        if (goodsListState.size() != 1) {
+            throw new MsgException("반품 요청상태의 자산을 선택해 주세요");
         }
     }
 }

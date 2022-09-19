@@ -76,9 +76,11 @@
 
     <sql id="includeStockDataTable">
         <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
-        <if test="pType2 != null and pType2 != ''">AND P_TYPE2 = #{pType2}</if>
         <if test="pName != null and pName != ''">AND P_IDX LIKE CONCAT('%', #{pName}, '%')</if>
         <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+        <if test="onlyParts == 'true'">AND P_TYPE2 = 'PARTS'</if>
+        <if test="speclName != null and speclName != ''">AND SPECL_NAME = #{speclName}</if>
+        <if test="gsIdx != null and gsIdx != ''">AND GS_IDX = #{gsIdx}</if>
     </sql>
 
     <select id="selectStockDataTable" resultType="map" parameterType="map">
@@ -86,7 +88,6 @@
             *
         FROM
             GOODS_STOCK
-                LEFT JOIN GOODS ON GS_IDX = G_GS_IDX
                 LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
         <where>
             <include refid="includeStockDataTable"></include>
@@ -105,6 +106,40 @@
         </where>
     </select>
 
+    <select id="selectStockParts" resultType="map">
+        SELECT
+            *,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
+            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
+        FROM
+            GOODS_STOCK
+                LEFT JOIN GOODS ON GS_IDX = G_GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+                LEFT JOIN SPEC ON GS_SPEC_IDX = SPEC_IDX
+                LEFT JOIN SPEC_ITEM ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN SPEC_LIST ON SPECI_SPECL_IDX = SPECL_IDX
+        <where>
+            <include refid="includeStockDataTable"></include>
+        </where>
+        <if test="length != -1">
+        LIMIT
+            #{start},#{length}
+        </if>
+    </select>
 
-
+    <select id="countStockParts" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS_STOCK
+                LEFT JOIN GOODS ON GS_IDX = G_GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+                LEFT JOIN SPEC ON GS_SPEC_IDX = SPEC_IDX
+                LEFT JOIN SPEC_ITEM ON SPEC_IDX = SPECI_SPEC_IDX
+                LEFT JOIN SPEC_LIST ON SPECI_SPECL_IDX = SPECL_IDX
+        <where>
+            <include refid="includeStockDataTable"></include>
+        </where>
+    </select>
 </mapper>

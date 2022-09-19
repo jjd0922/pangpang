@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>가공 요청</title>
+    <title>공정관리</title>
 
     <th:block th:replace="common/css.html"></th:block>
     <style>
@@ -22,7 +22,7 @@
                 <div class="page-header-content container-fluid header-elements-md-inline px-3">
                     <div class="d-flex">
                         <div class="page-title">
-                            <h4 class="font-weight-semibold">가공 관리</h4>
+                            <h4 class="font-weight-semibold">공정 관리</h4>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
-                            <legend class="">1. 가공관리 등록정보<span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                            <legend class="">1. 공정관리 등록정보<span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                             <div class="row">
                                 <!-- 입력필드 -->
                                 <div class="col-sm-12 ">
@@ -75,7 +75,7 @@
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">
-                                                  가공담당자(업체)
+                                                  공정담당자(업체)
                                                 </span>
                                             </span>
                                             <input type="text" name="uName3" class="form-control" readonly>
@@ -146,8 +146,8 @@
                                     <fieldset class="mt-4 mb-4">
                                         <legend class="">2.자산정보</legend>
                                         <div class="justify-content-end mt-2 mb-2">
-                                            <button type="button" class="btn btn-sm btn-primary">가공입고</button>
-                                            <button type="button" class="btn btn-sm btn-primary">가공보류</button>
+                                            <button type="button" class="btn btn-sm btn-primary">공정입고</button>
+                                            <button type="button" class="btn btn-sm btn-primary">공정보류</button>
 
                                             <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업요청취소</a>
                                             <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업중(출고)</a>
@@ -211,7 +211,6 @@
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <th:block th:replace="modal/inOperationModal.html"/>
-<th:block th:replace="process/modal/processSpecModal.html"/>
 <th:block th:replace="process/modal/processModal.html"/>
 <script>
     var userFlag = '';
@@ -290,9 +289,6 @@
                 }}
             ,{'class':'m-w-max', 'title':'자산코드','data':'G_IDX'}
             ,{'class':'m-w-max', 'title':'바코드','data':'G_BARCODE'}
-            ,{'class':'m-w-max', 'title':'가공SPEC(확정)','data':'G_BARCODE','render':  function(data,type,full,meta){
-                    return '<a onclick="openProcessSpecModal('+ full.G_IDX +','+full.PN_IDX+')" class="badge badge-primary">등록</a>';
-                }}
             ,{'class':'m-w-max', 'title':'공정결과','data':'G_BARCODE','render':  function(data,type,full,meta){
                     return '<a onclick="openProcessModal('+ full.G_IDX +','+full.PN_IDX+')" class="badge badge-primary">업로드</a>';
                 }}

@@ -80,7 +80,7 @@ public class StockRestContoroller {
 
     /** 재고상품 조회 */
     @PostMapping("stockGoods.dataTable")
-    public ReturnDatatable stock(ParamMap paramMap) {
+    public ReturnDatatable stockGoods(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
         rd.setData(stockMapper.selectStockDataTable(paramMap.getMap()));
@@ -88,4 +88,16 @@ public class StockRestContoroller {
 
         return rd;
     }
+
+    /** 재고상품 조회 */
+    @PostMapping("stockGoodsParts.dataTable")
+    public ReturnDatatable stockGoodsParts(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        rd.setData(stockMapper.selectStockParts(paramMap.getMap()));
+        rd.setRecordsTotal(stockMapper.countStockParts(paramMap.getMap()));
+
+        return rd;
+    }
+
 }

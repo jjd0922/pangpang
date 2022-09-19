@@ -140,12 +140,11 @@
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        returnTable.page('first').ajax.url('/process/purchasingReturn.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 
-    function returnManagePop(){
-        var focusPopup = window.open('/process/returnManagePop','returnManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+    function returnManagePop(idx){
+        var focusPopup = window.open('/process/returnManagePop/'+idx,'returnManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 
@@ -175,24 +174,23 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'반품코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: returnManagePop('+ data[''] +')" class="badge badge-primary" >'+ data[''] + '</a>';
+            ,{'title':'반품코드','data':'RS_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: returnManagePop('+ data +')" class="badge badge-primary" >'+ data + '</a>';
                 }}
-            //returnManagePop(상품관리 팝업 매핑 시키기)
-            ,{'class':'m-w-max', 'title':'반품상품상태값','data':''}
-            ,{'class':'m-w-max', 'title':'매입처','data':''}
-           ,{'class':'m-w-max', 'title':'매입처담당자','data':''}
-            ,{'class':'m-w-max', 'title':'요청자','data':''}
-            ,{'class':'m-w-max', 'title':'상품명','data':''}
-            ,{'class':'m-w-max', 'title':'작업지시자','data':''}
-            ,{'class':'m-w-max', 'title':'완료처리자','data':''}
-            ,{'class':'m-w-max', 'title':'요청일','data':''}
-            ,{'class':'m-w-max', 'title':'작업시작일','data':''}
-            ,{'class':'m-w-max', 'title':'작업종료일','data':''}
-            ,{'class':'m-w-max', 'title':'완료/요청건','data':''}
-            ,{'class':'m-w-max', 'title':'요청메모','data':''}
-            ,{'class':'m-w-max', 'title':'반품예정일 합계','data':''}
-            ,{'class':'m-w-max', 'title':'반품확정액 합계','data':''}
+            ,{'class':'m-w-max', 'title':'반품상품상태값','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'매입처','data':'COM_NAME','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'매입처담당자','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'요청자','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'상품명','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'작업지시자','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'완료처리자','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'요청일','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'작업시작일','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'작업종료일','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'완료/요청건','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'요청메모','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'반품예정일 합계','data':'','defaultContent':''}
+            ,{'class':'m-w-max', 'title':'반품확정액 합계','data':'','defaultContent':''}
         ]
     });
 

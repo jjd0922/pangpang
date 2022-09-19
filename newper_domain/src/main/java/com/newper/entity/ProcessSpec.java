@@ -29,6 +29,10 @@ public class ProcessSpec {
     @JoinColumn(name = "PS_BOM_IDX", referencedColumnName = "speclIdx")
     private SpecList specList;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PS_GS_IDX", referencedColumnName = "gsIdx")
+    private GoodsStock goodsStock;
+
     private PsType psType;
     private int psExpectedCost;
     private int psRealCost;
