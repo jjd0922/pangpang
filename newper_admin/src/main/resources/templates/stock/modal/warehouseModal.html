@@ -70,6 +70,13 @@
         selectWarehouseDataTable();
     }
 
+    /**창고이동 입고창고 선택*/
+    function openWarehouseModal2() {
+        $('#warehouseModal').modal('show');
+        selectWarehouseDataTable2();
+    }
+
+
     // 창고 검색
     function searchWarehouse(){
         $('#warehouseModalTable').DataTable().page('first').ajax.url('/warehouse/location.dataTable?' + $('#warehouseModalForm').serialize()).load();
@@ -99,6 +106,35 @@
                 ,{'title':'바코드','data':'LOC_BARCODE', 'defaultContent':''}
                 ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
                         return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectWarehouse('+ meta.row +')">선택</button>';
+                    }}
+            ]
+        });
+    }
+    /**창고이동 입고창고 선택*/
+    function selectWarehouseDataTable2(){
+        destroyDatatable('warehouseModalTable');
+        $('#warehouseModalTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            ordering: false,
+            buttons: buttonsSelect(false),
+            serverSide: true,
+            ajax:{
+                url:'/warehouse/location.dataTable',
+                type:'post'
+            },
+            columns : [
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                        return meta.settings._iDisplayStart+meta.row+1;
+                    }}
+                ,{'title':'창고명','data':'WH_NAME', 'defaultContent':''}
+                ,{'title':'형태','data':'LOC_FORM_STR', 'defaultContent':''}
+                ,{'title':'존','data':'LOC_ZONE', 'defaultContent':''}
+                ,{'title':'행','data':'LOC_ROW', 'defaultContent':''}
+                ,{'title':'열','data':'LOC_COLUMN', 'defaultContent':''}
+                ,{'title':'로케이션','data':'LOC_CODE', 'defaultContent':''}
+                ,{'title':'바코드','data':'LOC_BARCODE', 'defaultContent':''}
+                ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectWarehouse2('+ meta.row +')">선택</button>';
                     }}
             ]
         });
