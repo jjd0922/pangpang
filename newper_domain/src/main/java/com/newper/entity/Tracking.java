@@ -14,21 +14,18 @@ import javax.persistence.*;
 @Setter
 @ToString
 @DynamicUpdate
-@Table(name = "GMP_TRACKING")
+@Table(name = "TRACKING")
 public class Tracking extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GMP_TRACKING_SEQ")
-    @SequenceGenerator(name = "GMP_TRACKING_SEQ", allocationSize = 1)
     private Long teIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "te_d_idx", referencedColumnName = "dIdx")
+    @JoinColumn(name = "te_dn_idx", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
 
     private String teType;
     @Column(insertable = false, updatable = false)
-    @ColumnTransformer(read = "MGP.GET_CODE_NAME('TE_TYPE', TE_TYPE)")
     private String teTypeName;
 
     /**구분값 - 송장번호*/

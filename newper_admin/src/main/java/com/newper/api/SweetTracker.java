@@ -23,17 +23,13 @@ public class SweetTracker {
 
 
     /**sweet tracker 도메인*/
-    @Value("${sweettracker.domain}")
-    private String domain;
+    private final String domain="";
     /**tier*/
-    @Value("${sweettracker.tier}")
-    private String tier;
+    private final String tier="";
     /**key*/
-    @Value("${sweettracker.key}")
-    private String key;
+    private final String key="";
     /**callback*/
-    @Value("${sweettracker.callback}")
-    private String callback;
+    private final String callback="";
 
 
     /**운송장 추적 요청*/
