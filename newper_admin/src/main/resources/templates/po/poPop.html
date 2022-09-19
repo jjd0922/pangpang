@@ -241,7 +241,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총구매액</span>
                                                         </span>
-                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${po?.poTotalAmount}" readonly>
+                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,7 +345,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총판매액</span>
                                                         </span>
-                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${po?.poSellTotalAmount}" readonly>
+                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poSellTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -369,7 +369,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">예상수익률</span>
                                                         </span>
-                                                        <input type="text" name="poSellProfit" class="form-control" th:value="${po?.poSellProfit}" readonly>
+                                                        <input type="text" name="poSellProfit" class="form-control" th:value="|${po?.poSellProfit}%|" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -472,7 +472,9 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">매입운송비 주체</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryMain" class="form-control" th:value="${po?.poDeliveryMain}">
+                                                        <select name="poDeliveryMain" class="form-control select">
+                                                            <option th:each="opt: ${T(com.newper.constant.PoDeliveryMain).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${po != null} and ${po?.poDeliveryMain} == ${opt.name()}"></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,7 +486,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">매입운송비</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryCost" class="form-control" th:value="${po?.poDeliveryCost}">
+                                                        <input type="text" name="poDeliveryCost" class="form-control text-won" th:value="${#numbers.formatInteger(po?.poDeliveryCost,1,'COMMA')}" placeholder="0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -656,7 +658,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="w-5">상품코드</th>
-                                                        <th class="w-7">상품명</th>
+                                                        <th class="w-10">상품명</th>
                                                         <th class="w-7">구매단가</th>
                                                         <th class="w-7">매입수량</th>
                                                         <th>매입총액</th>
@@ -1014,6 +1016,7 @@
         //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
         if (ppTotalSellPrice != 0) {
             calculateRate(ppTotalProdCost,ppTotalSellPrice,rowCnt);
+            calculatePo();
         }
 
     }
@@ -1025,6 +1028,23 @@
         var ppProfitRate = Math.round((100-ppProdCostRate)*100)/100;
         $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate)+'%');
         $('#ppProfitRate_'+rowCnt).text(comma(ppProfitRate)+'%');
+    }
+
+    /** po 총구매액, 총판매액, 예상수익률 계산*/
+    function calculatePo() {
+        var len = $('#rateTbody tr').length;
+        var totalCost = 0;
+        var totalSell = 0;
+        var totalProfit = 0;
+        for (var i = 0; i < len; i++) {
+            totalCost += getNumberById('ppTotalCost_'+i);
+            totalSell += getNumberById('ppTotalSellPrice_'+i);
+            totalProfit += getNumberById('ppTotalProfit_'+i);
+        }
+        var totalProfitRate = Math.round((totalProfit / totalSell)*10000)/100;
+        $('input[name=poTotalAmount]').val(comma(totalCost));
+        $('input[name=poSellTotalAmount]').val(comma(totalSell));
+        $('input[name=poSellProfit]').val(totalProfitRate+'%');
     }
 
     /**input value에서 특수문자를 제외하고 숫자형태로 return*/
@@ -1039,6 +1059,18 @@
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
+    // 숫자만 입력되도록
+    $('.text-won').on("input", function (event) {
+        inputOnlyNumber($(event.target))
+    });
+    $('select[name=poDeliveryMain]').on('change', function (event) {
+        var el = $(event.target);
+        if (el.val() == [[${T(com.newper.constant.PoDeliveryMain).Main}]]) {
+            $('input[name=poDeliveryCost]').val('').attr('readonly', true);
+        } else {
+            $('input[name=poDeliveryCost]').val('').attr('readonly', false);
+        }
+    });
 </script>
 <script th:inline="javascript" th:if="${poProduct != null}">
     var len = $('#rateTbody tr').length;

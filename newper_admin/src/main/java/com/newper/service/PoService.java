@@ -46,6 +46,12 @@ public class PoService {
     @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
         System.out.println("paramMap = " + paramMap);
+        //replaceComma
+        paramMap.replaceComma("poTotalAmount");
+        paramMap.replaceComma("poSellTotalAmount");
+        paramMap.replaceComma("poDeliveryCost");
+        paramMap.onlyNumber("poSellProfit");
+
         // setDate
         paramMap.parseLocalDate("poSellPayDate");
         paramMap.parseLocalDate("poInDate", "입고예정일을 입력해주세요");
