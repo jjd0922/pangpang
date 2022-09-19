@@ -53,9 +53,13 @@ public class MainController {
     }
 
     /* myPage 나의쇼핑정보 */
-    @GetMapping(value = "myPage")
-    public ModelAndView myPage(){
+    @RequestMapping(value = "myPage", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView myPage(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("myPage/myPage");
+        if(paramMap.containsKey("menu")){
+            mav.addObject("menu", paramMap.getString("menu"));
+            mav.addObject("active", "on");
+        }
         return mav;
     }
 
