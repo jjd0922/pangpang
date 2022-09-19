@@ -1,10 +1,7 @@
 package com.newper.entity;
 
 
-import com.newper.constant.Channel;
-import com.newper.constant.PType1;
-import com.newper.constant.PoState;
-import com.newper.constant.PoType;
+import com.newper.constant.*;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
@@ -81,7 +78,8 @@ public class Po extends BaseEntity {
     private LocalDate poDueDate;
     private LocalDate poRefundDate;
     private LocalDate poAsDate;
-    private String poDeliveryMain;
+    @Enumerated(EnumType.STRING)
+    private PoDeliveryMain poDeliveryMain;
     private int poDeliveryCost;
     private LocalDate poTaxMonth;
     private LocalDate poPayDate;
@@ -118,7 +116,39 @@ public class Po extends BaseEntity {
             throw new MsgException("입금계좌정보를 입력해주세요");
         } else if (getPoDeliveryCost() < 0) {
             throw new MsgException("유효한 매입운송비를 입력해주세요");
+        } else if ((getPoDeliveryMain() == PoDeliveryMain.MAIN && getPoDeliveryCost() == 0)) {
+            throw new MsgException("유효한 매입운송비를 입력해주세요");
         }
+    }
+
+    public void updateAll(Po po) {
+        setPoType(po.getPoType());
+        setPoMemo(po.getPoMemo());
+        setPoRepurchase(po.poRepurchase);
+        setPoTotalAmount(po.getPoTotalAmount());
+        setPoTotalCount(po.getPoTotalCount());
+        setPoBuyChannel(po.getPoBuyChannel());
+        setPoBuyReceiveAmount(po.getPoBuyReceiveAmount());
+        setPoBuyUnpaidAmount(po.getPoBuyUnpaidAmount());
+        setPoBuyProductType(po.getPoBuyProductType());
+        setPoBuyOriUse(po.getPoBuyOriUse());
+        setPoBuySellPeriod(po.getPoBuySellPeriod());
+        setPoSellChannel(po.getPoSellChannel());
+        setPoSellReceiveAmount(po.getPoSellReceiveAmount());
+        setPoSellUnpaidAmount(po.getPoSellUnpaidAmount());
+        setPoSellPayDate(po.getPoSellPayDate());
+        setPoSellProfit(po.getPoSellProfit());
+        setPoSellUse(po.getPoSellUse());
+        setPoSellTotalAmount(po.getPoSellTotalAmount());
+        setPoInDate(po.getPoInDate());
+        setPoDueDate(po.getPoDueDate());
+        setPoRefundDate(po.getPoRefundDate());
+        setPoAsDate(po.getPoAsDate());
+        setPoDeliveryMain(po.getPoDeliveryMain());
+        setPoDeliveryCost(po.getPoDeliveryCost());
+        setPoTaxMonth(po.getPoTaxMonth());
+        setPoPayDate(po.getPoPayDate());
+        setPoPayAccount(po.getPoPayAccount());
     }
 
 }

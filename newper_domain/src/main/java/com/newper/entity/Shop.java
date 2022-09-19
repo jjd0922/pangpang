@@ -2,7 +2,6 @@ package com.newper.entity;
 
 import com.newper.constant.ShopState;
 import com.newper.constant.ShopType;
-import com.newper.converter.ConvertMap;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
@@ -11,7 +10,6 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,9 +80,6 @@ public class Shop extends BaseEntity{
             throw new MsgException("쇼핑몰 타입을 선택해주세요.");
         }
     }
-
-
-
 
 
 }

@@ -1,0 +1,570 @@
+<th:block th:fragment="myOrder">
+<div class="container">
+    <ul class="my-menu-content">
+        <!-- 나의 쇼핑내역 -->
+        <li class="on">
+            <ul class="shoppingHistory-tab semi-bold">
+                <li class="on">주문/배송조회</li>
+                <li>AS접수</li>
+                <li>정품등록</li>
+                <li>보상내역</li>
+            </ul>
+            <ul class="shoppingHistory-tab-content">
+                <!-- 주문/배송 조회 -->
+                <li class="on">
+                    <!-- 주문 진행 과정 -->
+                    <div>
+                        <ul class="orderHistory-progress">
+                            <li>
+                                <a href="javascript:;">
+                                    <p>주문 접수</p>
+                                    <p>0</p>
+                                    <i></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>결제 완료</p>
+                                    <p>0</p>
+                                    <i></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>상품 준비중</p>
+                                    <p>0</p>
+                                    <i></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>배송출발</p>
+                                    <p class="color-red">0</p>
+                                    <i></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>배송중</p>
+                                    <p class="color-red">1</p>
+                                    <i></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>배송완료</p>
+                                    <p>0</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <p>취소/교환/반품</p>
+                                    <p>0</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 전체 주문 내역 -->
+                    <div>
+                        <h3 class="font-xxlg bold">전체 주문 내역</h3>
+                        <!-- 조회기간 -->
+                        <div class="inquiryPeriod">
+                            <div>
+                                <p class="semi-bold font-md">조회기간</p>
+                                <ul class="period-btn-wrap">
+                                    <li class="btn btn8 period-btn">
+                                        <a href="javascript:;">오늘</a>
+                                    </li>
+                                    <li class="btn btn8 period-btn">
+                                        <a href="javascript:;">1개월</a>
+                                    </li>
+                                    <li class="btn btn8 period-btn">
+                                        <a href="javascript:;">3개월</a>
+                                    </li>
+                                    <li class="btn btn8 period-btn">
+                                        <a href="javascript:;">6개월</a>
+                                    </li>
+                                    <li class="btn btn8 period-btn">
+                                        <a href="javascript:;">1년</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="semi-bold font-md">기간설정</p>
+                                <div class="date-input-wrap">
+                                    <input type="date" id="date1">
+                                    <span>&nbsp;~&nbsp;</span>
+                                    <input type="date" id="date2">
+                                </div>
+                            </div>
+                            <div class="btn btn2 periodSearch-btn">
+                                <a href="javascript:;">검색</a>
+                            </div>
+                        </div>
+                        <!-- 주문 내역 -->
+                        <p class="color-grey666">* 주문조회기간은 최대 3년 전까지 조회가 가능합니다.</p>
+                        <div>
+                            <!-- 주문 내역 테이블 제목 -->
+                            <ul class="myShopping-table-title recent-orderHistory font-sm">
+                                <li>주문일자</li>
+                                <li>상품명</li>
+                                <li>AS기간</li>
+                                <li>수량</li>
+                                <li>결제금액</li>
+                                <li>주문현황</li>
+                                <li>상세조회</li>
+                            </ul>
+                            <!-- 주문 내역 상품 리스트 -->
+                            <ul class="recent-orderHistory-list">
+                                <!-- 상품 1 -->
+                                <li class="myShopping-table-item orderHistory-item">
+                                    <ul>
+                                        <!-- 주문일자 -->
+                                        <li>
+                                            <p class="semi-bold">2022-08-10</p>
+                                            <div class="color-grey999">
+                                                <p>주문번호</p>
+                                                <p>16616564654535</p>
+                                            </div>
+                                        </li>
+                                        <!-- 상품명 -->
+                                        <li>
+                                            <div class="order-item-thumb">
+                                                <a href="javascript:;">
+                                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                                    <p class="font-xsm color-grey999">001762984</p>
+                                                </a>
+                                            </div>
+                                            <div class="order-item-info-wrap">
+                                                <div>
+                                                    <a href="javascript:;">
+                                                        <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                            듀얼하드 윈10</h3>
+                                                    </a>
+                                                </div>
+                                                <div class="font-xxsm order-item-info">
+                                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                                    <p>사이즈 : 15인치</p>
+                                                    <p>용량 : 램 8G SSD 대용량</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- AS기간 -->
+                                        <li class="as-period">
+                                            <p class="color-blue semi-bold">AS케어상품</p>
+                                            <p>3개월 무상 (기본제공)</p>
+                                            <p>-</p>
+                                            <p>2022-08-01&#8764;<br>2022-10-01</p>
+                                        </li>
+                                        <!-- 수량 -->
+                                        <li>
+                                            <p class="font-sm semi-bold">1개</p>
+                                        </li>
+                                        <!-- 결제금액 -->
+                                        <li>
+                                            <p class="font-sm">179,000<span class="won">원</span></p>
+                                        </li>
+                                        <!-- 주문현황 -->
+                                        <li>
+                                            <p class="color-blue">상품준비중</p>
+                                            <!-- 배송완료 시 아래 <div> 태그 추가
+                                            <p>배송완료</p>
+                                            <div>
+                                                <p>CJ 대한통운</p>
+                                                <p class="color-grey999">5612121212135</p>
+                                            </div> -->
+                                        </li>
+                                        <!-- 상세조회 -->
+                                        <li>
+                                            <div>
+                                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                                <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!-- 상품 2 -->
+                                <li class="myShopping-table-item orderHistory-item">
+                                    <ul>
+                                        <!-- 주문일자 -->
+                                        <li>
+                                            <p class="semi-bold">2022-08-10</p>
+                                            <div class="color-grey999">
+                                                <p>주문번호</p>
+                                                <p>16616564654535</p>
+                                            </div>
+                                        </li>
+                                        <!-- 상품명 -->
+                                        <li>
+                                            <div class="order-item-thumb">
+                                                <a href="javascript:;">
+                                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                                    <p class="font-xsm color-grey999">001762984</p>
+                                                </a>
+                                            </div>
+                                            <div class="order-item-info-wrap">
+                                                <div>
+                                                    <a href="javascript:;">
+                                                        <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                            듀얼하드 윈10</h3>
+                                                    </a>
+                                                </div>
+                                                <div class="font-xxsm order-item-info">
+                                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                                    <p>사이즈 : 15인치</p>
+                                                    <p>용량 : 램 8G SSD 대용량</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- AS기간 -->
+                                        <li class="as-period">
+                                            <p class="color-blue semi-bold">AS케어상품</p>
+                                            <p>3개월 무상 (기본제공)</p>
+                                            <p>-</p>
+                                            <p>2022-08-01&#8764;<br>2022-10-01</p>
+                                        </li>
+                                        <!-- 수량 -->
+                                        <li>
+                                            <p class="font-sm semi-bold">1개</p>
+                                        </li>
+                                        <!-- 결제금액 -->
+                                        <li>
+                                            <p class="font-sm">179,000<span class="won">원</span></p>
+                                        </li>
+                                        <!-- 주문현황 -->
+                                        <li>
+                                            <p>배송완료</p>
+                                            <div>
+                                                <p>CJ 대한통운</p>
+                                                <p class="color-grey999">5612121212135</p>
+                                            </div>
+                                        </li>
+                                        <!-- 상세조회 -->
+                                        <li>
+                                            <div>
+                                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                                <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <!-- AS접수 -->
+                <li>
+                    <ul class="asApplication-tab semi-bold color-grey666">
+                        <li class="on">뉴퍼마켓 구매제품 AS 접수</li>
+                        <li>다른 온라인몰 구매제품 AS 접수</li>
+                        <li>AS접수 현황조회</li>
+                    </ul>
+                    <ul class="asApplication-tab-content">
+                        <!-- 뉴퍼마켓 구매제품 AS 접수 -->
+                        <li class="on">
+                            <ul class="table font-xsm">
+                                <!-- 접수하실 상품 -->
+                                <li>
+                                    <div class="table-title">접수하실 상품</div>
+                                    <div class="table-content">
+                                        <div class="btn btn5 itemSelect-btn">
+                                            <a href="javascript:;">상품선택</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- 이메일 주소 -->
+                                <li>
+                                    <div class="table-title">이메일 주소</div>
+                                    <div class="table-content">
+                                        <div class="input-email">
+                                            <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                                            <span class="at">@</span>
+                                            <input type="text" id="emailDomain" name="emailDomain" class="form-control">
+                                            <select class="form-control">
+                                                <option value="직접입력">직접입력</option>
+                                                <option value="naver.com">naver.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="hotmail.com">hotmail.com</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                                <option value="paran.com">paran.com</option>
+                                                <option value="empas.com">empas.com</option>
+                                                <option value="dreamwiz.com">dreamwiz.com</option>
+                                                <option value="lycos.co.kr">lycos.co.kr</option>
+                                                <option value="korea.com">korea.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="hanmir.com">hanmir.com</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- 휴대전화 -->
+                                <li class="table-phone">
+                                    <div class="table-title">휴대전화</div>
+                                    <div class="table-content">
+                                        <select class="form-control">
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="016">016</option>
+                                            <option value="017">017</option>
+                                            <option value="018">018</option>
+                                            <option value="019">019</option>
+                                        </select>
+                                        <span>&nbsp;-&nbsp;</span>
+                                        <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                                        <span>&nbsp;-&nbsp;</span>
+                                        <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
+
+                                    </div>
+                                </li>
+                                <!-- 내용작성 -->
+                                <li>
+                                    <div class="table-title">내용작성</div>
+                                    <div class="table-content">
+                                        <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                                    </div>
+                                </li>
+                                <!-- 사진첨부 -->
+                                <li>
+                                    <div class="table-title">사진첨부</div>
+                                    <div class="table-content fileAdd">
+                                        <label class="file-btn" for="file">사진 첨부하기
+                                        </label>
+                                        <input type="file" id="file" class="file-input">
+                                        <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
+                                        <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- 하단 문구 & 수집 동의 & 약관보기 -->
+                            <div class="importText-wrap">
+                                <div>
+                                    <p class="color-grey999 importText"><i class="important"></i>AS진행 시 기존 데이터는 보호되지 않으니 중요 데이터는 백업 부탁드립니다.</p>
+                                    <p class="color-grey999 importText"><i class="important"></i>무상서비스 기간이 경과되었을 경우 유상 비용이 발생할 수 있습니다.</p>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="generalPayment1" name="paymentCheck" value="">
+                                    <label for="generalPayment1" class="color-grey333 font-md">개인정보 활용동의 및 수집동의</label>
+                                    <span class="color-blue font-md viewTerms"><a href="javascript:;">약관보기</a></span>
+                                </div>
+                            </div>
+                            <!-- 신청버튼 -->
+                            <div class="btn btn2 semi-bold shopping-btn">
+                                <a href="javascript:;">AS 신청</a>
+                            </div>
+                        </li>
+                        <!-- 다른 온라인몰 구매제품 AS 접수 -->
+                        <li>
+                            <ul class="table font-xsm">
+                                <!-- 구매처 선택 -->
+                                <li>
+                                    <div class="table-title">구매처</div>
+                                    <div class="table-content">
+                                        <div class="btn btn5 itemSelect-btn">
+                                            <a href="javascript:;">구매처 선택</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- 이름 -->
+                                <li>
+                                    <div class="table-title">이름</div>
+                                    <div class="table-content">
+                                        <input type="text" id="receiverName" name="receiverName" class="form-control" maxlength="20" title="이름" placeholder="이름" value=""
+                                    </div>
+                                </li>
+                                <!-- 이메일 주소 -->
+                                <li>
+                                    <div class="table-title">이메일 주소</div>
+                                    <div class="table-content">
+                                        <div class="input-email">
+                                            <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                                            <span class="at">@</span>
+                                            <input type="text" id="emailDomain" name="emailDomain" class="form-control">
+                                            <select class="form-control">
+                                                <option value="직접입력">직접입력</option>
+                                                <option value="naver.com">naver.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="hotmail.com">hotmail.com</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                                <option value="paran.com">paran.com</option>
+                                                <option value="empas.com">empas.com</option>
+                                                <option value="dreamwiz.com">dreamwiz.com</option>
+                                                <option value="lycos.co.kr">lycos.co.kr</option>
+                                                <option value="korea.com">korea.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="hanmir.com">hanmir.com</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- 휴대전화 -->
+                                <li class="table-phone">
+                                    <div class="table-title">휴대전화</div>
+                                    <div class="table-content">
+                                        <select class="form-control">
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="016">016</option>
+                                            <option value="017">017</option>
+                                            <option value="018">018</option>
+                                            <option value="019">019</option>
+                                        </select>
+                                        <span>&nbsp;-&nbsp;</span>
+                                        <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                                        <span>&nbsp;-&nbsp;</span>
+                                        <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
+
+                                    </div>
+                                </li>
+                                <!-- 접수하실 상품-->
+                                <li>
+                                    <div class="table-title">접수하실 상품</div>
+                                    <div class="table-content">
+                                        <div class="btn btn5 itemSelect-btn">
+                                            <a href="javascript:;">상품선택</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- 내용작성 -->
+                                <li>
+                                    <div class="table-title">내용작성</div>
+                                    <div class="table-content">
+                                        <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                                    </div>
+                                </li>
+                                <!-- 사진첨부 -->
+                                <li>
+                                    <div class="table-title">사진첨부</div>
+                                    <div class="table-content fileAdd">
+                                        <label class="file-btn" for="file">사진 첨부하기
+                                        </label>
+                                        <input type="file" id="file" class="file-input">
+                                        <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
+                                        <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- 하단 문구 & 수집 동의 & 약관보기 -->
+                            <div class="importText-wrap">
+                                <div>
+                                    <p class="color-grey999 importText"><i class="important"></i>AS진행 시 기존 데이터는 보호되지 않으니 중요 데이터는 백업 부탁드립니다.</p>
+                                    <p class="color-grey999 importText"><i class="important"></i>무상서비스 기간이 경과되었을 경우 유상 비용이 발생할 수 있습니다.</p>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="generalPayment1" name="paymentCheck" value="">
+                                    <label for="generalPayment1" class="color-grey333 font-md">개인정보 활용동의 및 수집동의</label>
+                                    <span class="color-blue font-md viewTerms"><a href="javascript:;">약관보기</a></span>
+                                </div>
+                            </div>
+                            <!-- 신청버튼 -->
+                            <div class="btn btn2 semi-bold shopping-btn">
+                                <a href="javascript:;">AS 신청</a>
+                            </div>
+                        </li>
+                        <!-- AS접수 현황조회 -->
+                        <li>
+                            <ul class="table font-xsm">
+                                <!-- 진행단계 -->
+                                <li>
+                                    <div class="table-title">진행단계</div>
+                                    <div class="table-content">
+                                        <ul class="progressStep">
+                                            <!-- 진행 현황에 class="on" 추가 -->
+                                            <li class="on">
+                                                <i class="dot"></i>
+                                                <p>접수완료</p>
+                                            </li>
+                                            <li class="on">
+                                                <i class="dot"></i>
+                                                <p>처리중</p>
+                                            </li>
+                                            <li>
+                                                <i class="dot"></i>
+                                                <p>완료</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 주문번호 -->
+                                <li>
+                                    <div class="table-title">주문번호</div>
+                                    <div class="table-content">
+                                        <p class="semi-bold font-lg">2022-08-07-36900</p>
+                                    </div>
+                                </li>
+                                <!-- AS 신청제품 -->
+                                <li>
+                                    <div class="table-title">AS 신청제품</div>
+                                    <div class="table-content">
+                                    </div>
+                                </li>
+                                <!-- 접수 상세내용 -->
+                                <li>
+                                    <div class="table-title">접수 상세내용</div>
+                                    <div class="table-content">
+                                        <ul class="receiptDetail">
+                                            <li>
+                                                <p class="receiptDetail-title">
+                                                    <span>신</span>
+                                                    <span>청</span>
+                                                    <span>방</span>
+                                                    <span>식</span>
+                                                </p>
+                                                <p class="receiptDetail-content">온라인접수</p>
+                                            </li>
+                                            <li>
+                                                <p class="receiptDetail-title">
+                                                    <span>고</span>
+                                                    <span>객</span>
+                                                    <span>명</span>
+                                                </p>
+                                                <p class="receiptDetail-content">손원기</p>
+                                            </li>
+                                            <li>
+                                                <p class="receiptDetail-title">
+                                                    <span>이</span>
+                                                    <span>메</span>
+                                                    <span>일</span>
+                                                </p>
+                                                <p class="receiptDetail-content">uniquehan@kakao.com</p>
+                                            </li>
+                                            <li>
+                                                <p class="receiptDetail-title">
+                                                    <span>연</span>
+                                                    <span>락</span>
+                                                    <span>처</span>
+                                                </p>
+                                                <p class="receiptDetail-content">010-7426-7426</p>
+                                            </li>
+                                            <li>
+                                                <p class="receiptDetail-title">
+                                                    <span>증</span>
+                                                    <span>상</span>
+                                                </p>
+                                                <p class="receiptDetail-content">노트북 지문인식 로그인 불가</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- 정품등록 -->
+                <li>정품등록</li>
+                <!-- 보상내역 -->
+                <li>보상내역</li>
+            </ul>
+        </li>
+        <!-- 쿠폰.적립금.상품권 -->
+        <li>쿠폰.적립금.상품권</li>
+        <!-- 관심상품.재입고알림 -->
+        <li>관심상품.재입고알림</li>
+        <!-- 리뷰.문의내역.이벤트응모 -->
+        <li>리뷰.문의내역.이벤트응모</li>
+        <!-- 회원정보관리 -->
+        <li>회원정보관리</li>
+    </ul>
+</div>
+</th:block>

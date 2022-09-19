@@ -1,5 +1,7 @@
 package com.newper.service;
 
+import com.newper.component.AdminBucket;
+import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.DeliveryNum;
 import com.newper.entity.OrderGs;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +126,9 @@ public class DeliverytService {
                     deliveryNum.setDnState("");
                     deliveryNum.setDnNum(DN_NUM);
                     deliveryNum.setDnCompany(DN_COMPANY);
+                    deliveryNum.setDnFile("");
+                    deliveryNum.setDnFileName("");
+                    deliveryNum.setDnMemo("");
                     deliveryNum.setCreatedDate(LocalDate.now());
                     deliveryNumRepo.save(deliveryNum);
 
@@ -141,4 +147,44 @@ public class DeliverytService {
 
         return result;
     }
+
+    /**설치확인서 등록*/
+    @Transactional
+    public int saveInstall(ParamMap paramMap, MultipartFile DN_FILE){
+        String[] idxs = paramMap.getString("idxs").split(",");
+        int cnt =0;
+        for(int i=0; i<idxs.length; i++){
+            try {
+                Long OG_IDX = Long.parseLong(idxs[i]);
+                OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
+                String file = "";
+                String fileName = "";
+
+                DeliveryNum deliveryNum = paramMap.mapParam(DeliveryNum.class);
+                if(DN_FILE.getSize()!=0){
+                    file = Common.uploadFilePath(DN_FILE, "install/", AdminBucket.SECRET);
+                    fileName= DN_FILE.getOriginalFilename();
+                }
+                deliveryNum.setDnState("");
+                deliveryNum.setDnNum("");
+                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
+                deliveryNum.setDnFile(file);
+                deliveryNum.setDnFileName(fileName);
+                deliveryNum.setDnMemo(paramMap.getString("DN_MEMO"));
+                deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                deliveryNum.setCreatedDate(LocalDate.now());
+                deliveryNumRepo.save(deliveryNum);
+                orderGs.setDeliveryNum(deliveryNum);
+                ordersGsRepo.save(orderGs);
+                cnt++;
+            }catch (Exception e){
+                continue;
+            }
+
+        }
+
+        return cnt;
+    }
+
 }

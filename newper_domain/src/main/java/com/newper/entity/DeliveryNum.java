@@ -28,7 +28,12 @@ public class DeliveryNum {
     private String dnState;
     private String dnNum;
     private String dnCompany;
-    private Date dnDate;
+    private String dnFile;
+    private String dnFileName;
+    private String dnMemo;
+    private LocalDate dnDate;
+    private LocalDate dnRelease;
+    private LocalDate dnSchedule;
     private LocalDate createdDate;
 
     /** 랜덤 문자열 생성 (숫자,특수문자,대소문자)*/

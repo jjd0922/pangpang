@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('상품 카테고리')">
+</head>
+<body>
+
+<!-- 헤더 카테고리 -->
+<th:block th:replace="part/header :: main-header"></th:block>
+
+<!-- 헤더 카테고리 모바일 -->
+<th:block th:replace="part/header_mobile :: main-header-mobile"></th:block>
+
+<!-- 로그인 모달창 -->
+<th:block th:replace="part/modal :: login-modal"></th:block>
+
+<!-- 좌측 상단 해당 페이지 메뉴 경로 -->
+<div class="container">
+    <p class="menu-route">
+        <span>노트북/데스크탑</span><i class="circle-down2"></i>
+        &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
+        <span>노트북/스마트PC</span><i class="circle-down2"></i>
+        &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
+        <span>울트라북</span></span><i class="circle-down2"></i>
+    </p>
+</div>
+
+<!-- 상단 슬라이드 썸네일 -->
+<section>
+    <div class="swiper swiper-itemCategory container">
+        <ul class="swiper-wrapper">
+            <li class="swiper-slide">
+                <div th:replace="part/thumbnail :: thumbnail-category"></div>
+            </li>
+            <li class="swiper-slide">
+                <div th:replace="part/thumbnail :: thumbnail-category"></div>
+            </li>
+            <li class="swiper-slide">
+                <div th:replace="part/thumbnail :: thumbnail-category"></div>
+            </li>
+        </ul>
+        <div class="itemCategory-pagination custom-pagination"></div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- 상품 카테고리 대분류/중분류 목록페이지 -->
+    <section>
+        <div class="cate-title">
+            <p>노트북/데스크탑</p>
+        </div>
+        <!-- 상위 카테고리 [대중소분류/상품상태] -->
+        <div class="cate-table-wrap">
+            <ul class="cate-table">
+                <!-- 대분류 -->
+                <li>
+                    <div class="cate-table-title">대분류</div>
+                    <!-- 선택된 카테고리는 li에 class="on" 추가 -->
+                    <ul class="cate-table-cont">
+                        <li>노트북/데스크탑</li>
+                        <li>모니터/주변기기</li>
+                        <li>태블릿/휴대폰/웨어러블</li>
+                        <li>음향/이어폰/스피커</li>
+                        <li>가전/TV/세탁기/냉장고</li>
+                        <li>주방/생활/레져</li>
+                        <li>차량용품/블랙박스</li>
+                        <li>패션/잡화/뷰티</li>
+                        <li>식품/헬스케어</li>
+                    </ul>
+                </li>
+                <!-- 중분류 -->
+                <li>
+                    <div class="cate-table-title">중분류</div>
+                    <ul class="cate-table-cont">
+                        <li class="on">노트북/스마트PC</li>
+                        <li>컴퓨터/일체형PC</li>
+                        <li>애플/맥북/아이맥</li>
+                    </ul>
+                </li>
+                <!-- 소분류 -->
+                <li>
+                    <div class="cate-table-title">소분류</div>
+                    <ul class="cate-table-cont">
+                        <li>일반용</li>
+                        <li>게임용</li>
+                        <li class="on">울트라북</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- 하위카테고리 [상품상태, 브랜드, 색상, 배송옵션 ...] -->
+        <div class="cate-table-wrap">
+            <ul class="cate-table cate-table2">
+                <!-- 상품상태 -->
+                <li>
+                    <div class="cate-table-title">상품상태</div>
+                    <ul class="cate-table-cont">
+                        <li>새상품</li>
+                        <li>박스개봉</li>
+                        <li>단기사용</li>
+                        <li>해외리퍼</li>
+                        <li>A급리퍼</li>
+                        <li>가성비중고</li>
+                        <li>임박상품</li>
+                        <li class="itemGuide">
+                            <a href="javascript:;"><i class="questionMark"></i>상품가이드상태</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- 브랜드 -->
+                <li>
+                    <div class="cate-table-title">브랜드</div>
+                    <ul class="cate-table-cont">
+                        <li class="on">삼성</li>
+                        <li class="on">LG</li>
+                        <li>HP/컴펙</li>
+                        <li>IBM/레노버</li>
+                        <li class="on">DELL</li>
+                        <li>SONY/도시바/후지쯔</li>
+                        <li>ASUS/MSI/ACER</li>
+                        <li>넷북/미니노트북</li>
+                        <li>윈도 태블릿</li>
+                    </ul>
+                </li>
+                <!-- CPU -->
+                <li>
+                    <div class="cate-table-title">CPU</div>
+                    <ul class="cate-table-cont">
+                        <li>펜티엄</li>
+                        <li>코어i3</li>
+                        <li class="on">코어i5</li>
+                        <li>AMD</li>
+                        <li>셀러론</li>
+                        <li>기타</li>
+                    </ul>
+                </li>
+                <!-- 화면사이즈 -->
+                <li>
+                    <div class="cate-table-title">화면사이즈</div>
+                    <ul class="cate-table-cont">
+                        <li>15~16인치</li>
+                        <li class="on">14인치</li>
+                        <li>13인치</li>
+                        <li>11~12인치</li>
+                        <li>10인치이하</li>
+                    </ul>
+                </li>
+                <!-- 무게 -->
+                <li>
+                    <div class="cate-table-title">무게</div>
+                    <ul class="cate-table-cont">
+                        <li>1kg미만</li>
+                        <li>1.0~1.4kg</li>
+                        <li class="on">1.4~1.7kg</li>
+                        <li>1.7~2.0kg</li>
+                        <li>2.3~2.5kg</li>
+                        <li>2.5~2.8kg</li>
+                        <li>2.8~3.0kg</li>
+                        <li>3kg이상</li>
+                    </ul>
+                </li>
+                <!-- 가격대 -->
+                <li>
+                    <div class="cate-table-title">가격대</div>
+                    <ul class="cate-table-cont">
+                        <li>20만원 이하</li>
+                        <li>20만원~50만원</li>
+                        <li class="on">50만원~100만원</li>
+                        <li>11~12인치</li>
+                        <li>100만원 이상</li>
+                    </ul>
+                </li>
+                <!-- 색상 -->
+                <li>
+                    <div class="cate-table-title">색상</div>
+                    <div class="cate-table-cont">
+                        <div class="item-color">
+                            <span><span></span></span>
+                            <span><span></span></span>
+                            <span class="on"><span></span></span>
+                        </div>
+                    </div>
+                </li>
+                <!-- 배송옵션-->
+                <li>
+                    <div class="cate-table-title">배송옵션</div>
+                    <div class="cate-table-cont">
+                        <p>당일배송</p>
+                    </div>
+                </li>
+                <!-- 결과 내 재검색 -->
+                <li>
+                    <div class="cate-table-title">결과 내 재검색</div>
+                    <div class="cate-table-cont">
+                        <label for="includedWords">포함단어</label><input type="text" id="includedWords" name="includedWords" class="word-input" maxlength="10" title="포함단어" value="">
+                        <label for="exceptWords">제외단어</label><input type="text" id="exceptWords" name="exceptWords" class="word-input" maxlength="10" title="제외단어" value="">
+                        <div class="btn btn2 ok-btn">
+                            <a href="javascript:;">확인</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 펼침 & 접기 -->
+        <div class="cate-selectedOption-wrap">
+            <div class="cate-selectedOption color-blue font-sm">
+                <p>노트북/스마트PC<i class="close"></i></p>
+                <p>울트라북<i class="close"></i></p>
+                <p>삼성<i class="close"></i></p>
+                <p>LG<i class="close"></i></p>
+                <p>DELL<i class="close"></i></p>
+                <div class="item-color">
+                    <span><span></span></span>
+                    <i class="close">
+                </div>
+            </div>
+            <div>
+                <p class="revert"><i class="revert-icon"></i>전체해제</p>
+                <div class="filter-toggle">
+                    <i class="filter-toggle-icon"></i><span class="filter-text">접기</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 검색결과 -->
+    <section>
+        <div class="itemSort-header">
+            <p><span class="color-red">848</span>&nbsp;개의 검색결과</p>
+            <div>
+                <select name="itemSort-option" id="itemSort-option">
+                    <option value="orderByHit">인기순</option>
+                    <option value="orderByNew">신규런칭</option>
+                    <option value="orderByPriceAsc">낮은가격순</option>
+                    <option value="orderByPriceDesc">높은가격순</option>
+                    <option value="orderByReview">상품평 많은순</option>
+                </select>
+                <i class="itemSort1"></i>
+                <i class="itemSort2"></i>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- 푸터 -->
+<th:block th:replace="part/footer :: main-footer"></th:block>
+
+<!-- 플로팅 -->
+<th:block th:replace="part/floating :: main-floating"></th:block>
+
+<!--js-->
+<th:block th:replace="part/js.html"></th:block>
+
+</body>
+</html>

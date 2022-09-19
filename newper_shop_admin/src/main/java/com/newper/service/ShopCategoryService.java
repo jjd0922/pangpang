@@ -65,7 +65,7 @@ public class ShopCategoryService {
     public int shopProductInsert(ParamMap paramMap, MultipartFile icon, MultipartFile thumbnail){
         ShopCategory shopCategory = paramMap.mapParam(ShopCategory.class);
         Map<String,Object> map = new HashMap<>();
-        Integer cateOrder = shopCategoryMapper.maxShopCategoryOrderBySCateDepth(paramMap.getInt("SCATE_DEPTH"));
+        Integer cateOrder = shopCategoryMapper.maxShopCategoryOrderBySCateDepth();
         if(cateOrder==null){
             cateOrder=0;
         }

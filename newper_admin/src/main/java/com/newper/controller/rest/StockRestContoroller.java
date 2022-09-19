@@ -3,9 +3,11 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.LocationMapper;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.StockMapper;
+import com.newper.service.GoodsService;
 import com.newper.service.LocationService;
 import com.newper.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,10 @@ public class StockRestContoroller {
     private final StockMapper stockMapper;
     private final LocationMapper locationMapper;
     private final LocationService locationService;
+    private final GoodsMapper goodsMapper;
     private final StockService stockService;
+
+    private final GoodsService goodsService;
 
     /**재고관리 픽킹관리 조회테이블**/
     @PostMapping("parent.dataTable")
@@ -97,6 +102,41 @@ public class StockRestContoroller {
         rd.setData(stockMapper.selectStockParts(paramMap.getMap()));
         rd.setRecordsTotal(stockMapper.countStockParts(paramMap.getMap()));
 
+        return rd;
+    }
+
+
+/*
+    *//** 창고이동관리 팝업 출고창고 데이터테이블 *//*
+    @PostMapping("whOut.dataTable")
+    public ReturnDatatable whOut(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+*//*
+
+        rd.setData(stockMapper.selectStockDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(stockMapper.countStockDataTable(paramMap.getMap()));
+*//*
+
+        return rd;
+    }*/
+    /** 창고이동관리 팝업 입고창고 데이터테이블 */
+    @PostMapping("whIn.dataTable")
+    public ReturnDatatable whIn(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+/*
+
+        rd.setData(stockMapper.selectStockDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(stockMapper.countStockDataTable(paramMap.getMap()));
+*/
+
+        return rd;
+    }
+    /** 창고이동관리 팝업 자산상태 데이터테이블 */
+    @PostMapping("goods.dataTable")
+    public ReturnDatatable goods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
         return rd;
     }
 

@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="part/head :: head('회원가입 정보입력')">
 </head>
-<body>
+<body th:classappend="${@shopComp.getShopDesign()}">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header-join"></th:block>
@@ -19,12 +19,12 @@
         <p class="color-grey999"><span class="color-red">*&nbsp;</span>표시 필수입력</p>
     </div>
 
-
+    <form id="joinForm">
     <ul class="join-table">
         <!-- 아이디 -->
         <li>
-            <div class="infoInput-title font-md semi-bold">아이디<span class="color-red">&nbsp;*</span></div>
-            <div class="infoInput-content">
+            <div class="table-title font-md semi-bold">아이디<span class="color-red">&nbsp;*</span></div>
+            <div class="table-content">
                 <input type="text" id="joinID" name="joinID" class="form-control" maxlength="20" title="아이디" placeholder="아이디 6~12자 영문, 숫자" value="">
                 <div class="btn btn2">
                     <a href="javascript:;">중복확인</a>
@@ -33,23 +33,23 @@
         </li>
         <!-- 비밀번호 -->
         <li>
-            <div class="infoInput-title font-md semi-bold">비밀번호<span class="color-red">&nbsp;*</span></div>
-            <div class="infoInput-content joinPW-input-wrap">
+            <div class="table-title font-md semi-bold">비밀번호<span class="color-red">&nbsp;*</span></div>
+            <div class="table-content joinPW-input-wrap">
                 <input type="text" id="joinPW" name="joinPW" class="form-control" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자" value="">
                 <input type="text" id="joinPWConfirm" name="joinPWConfirm" class="form-control" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인" value="">
             </div>
         </li>
         <!-- 이름 -->
         <li>
-            <div class="infoInput-title font-md semi-bold">이름<span class="color-red">&nbsp;*</span></div>
-            <div class="infoInput-content">
+            <div class="table-title font-md semi-bold">이름<span class="color-red">&nbsp;*</span></div>
+            <div class="table-content">
                 <input type="text" id="joinName" name="joinName" class="form-control" maxlength="20" title="이름" placeholder="한글 2자이상 입력" value="">
             </div>
         </li>
         <!-- 이메일 -->
         <li>
-            <div class="infoInput-title font-md semi-bold">이메일<span class="color-red">&nbsp;*</span></div>
-            <div class="infoInput-content joinEmail-input-wrap">
+            <div class="table-title font-md semi-bold">이메일<span class="color-red">&nbsp;*</span></div>
+            <div class="table-content joinEmail-input-wrap">
                 <div>
                     <input type="text" id="joinEmail" name="joinEmail" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
@@ -74,8 +74,8 @@
         </li>
         <!-- 휴대폰 번호 -->
         <li class="phone">
-            <div class="infoInput-title font-md semi-bold">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
-            <div class="infoInput-content joinPhone-input-wrap">
+            <div class="table-title font-md semi-bold">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
+            <div class="table-content joinPhone-input-wrap">
                 <div>
                     <select class="form-control">
                         <option value="010">010</option>
@@ -97,8 +97,8 @@
         </li>
         <!-- 추천인 -->
         <li>
-            <div class="infoInput-title font-md semi-bold">추천인</div>
-            <div class="infoInput-content recommender">
+            <div class="table-title font-md semi-bold">추천인</div>
+            <div class="table-content recommender">
                 <input type="text" id="recommender" name="recommender" class="form-control" maxlength="20" title="추천인" placeholder="(선택) 추천인 아이디 입력" value="">
             </div>
         </li>
@@ -145,10 +145,11 @@
                 <a href="javascript:;">취소</a>
             </div>
             <div class="btn btn2 semi-bold">
-                <a href="javascript:;">가입완료</a>
+                <a onclick="joinComplete()">가입완료</a>
             </div>
         </div>
     </div>
+    </form>
 </div>
 
 
@@ -163,4 +164,22 @@
 <th:block th:replace="part/js.html"></th:block>
 
 </body>
+<script>
+    function joinComplete(){
+        if(window.confirm("가입 하시겠습니까?")){
+            $.ajax({
+                url: 'join.ajax'
+                ,type: 'post'
+                ,data: $('#joinForm').serialize()
+                ,success:function(res){
+                    if(res.location != null){
+                        alert(res.message);
+                        location.href=res.location;
+                    }
+                }
+                ,error: function(){}
+            })
+        }
+    }
+</script>
 </html>
