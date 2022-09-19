@@ -1,11 +1,13 @@
 package com.newper.controller.rest;
 
 import com.newper.component.ShopSession;
+import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.exception.MsgException;
 import com.newper.service.CustomerService;
 import com.newper.service.ShopService;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +49,18 @@ public class MainRestController {
     @GetMapping("logout.ajax")
     public void logout(HttpServletRequest request){
         request.getSession().invalidate();
+    }
+
+    @PostMapping("join.ajax")
+    public ReturnMap join(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        String resCode = "0000";
+        if(resCode.equals("0000")){
+            rm.setLocation("/joinComplete");
+            rm.setMessage("회원가입 완료!");
+        }else{
+            rm.setMessage("잠시 후 다시 시도해주세요.");
+        }
+        return rm;
     }
 }

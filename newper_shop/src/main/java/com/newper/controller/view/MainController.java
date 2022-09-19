@@ -53,9 +53,13 @@ public class MainController {
     }
 
     /* myPage 나의쇼핑정보 */
-    @GetMapping(value = "myPage")
-    public ModelAndView myPage(){
+    @RequestMapping(value = "myPage", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView myPage(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("myPage/myPage");
+        if(paramMap.containsKey("menu")){
+            mav.addObject("menu", paramMap.getString("menu"));
+            mav.addObject("active", "on");
+        }
         return mav;
     }
 
@@ -123,7 +127,7 @@ public class MainController {
         return mav;
     }
 
-    /* auth - 회원가입 완료 */
+    /** auth - 회원가입 완료 */
     @GetMapping(value = "joinComplete")
     public ModelAndView joinComplete(){
         ModelAndView mav = new ModelAndView("auth/joinComplete");
@@ -147,5 +151,7 @@ public class MainController {
         ModelAndView mav = new ModelAndView("iamport/payment");
         return mav;
     }
+
+
 
 }
