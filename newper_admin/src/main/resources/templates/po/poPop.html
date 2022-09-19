@@ -612,7 +612,7 @@
                                                         <td th:text="${i.OPTION1}"></td>
                                                         <td th:text="${i.OPTION2}"></td>
                                                         <td th:text="${i.OPTION3}"></td>
-                                                        <td th:text="${i.P_COST}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i?.P_COST, 1, 'COMMA')}"></td>
                                                         <td th:text="${i.SPEC_BUY}"></td>
                                                         <td th:text="${i.SPEC_SELL}"></td>
                                                         <td><a onclick="deleteRow($(this))" class="btn btn-sm btn-warning">삭제</a></td>
@@ -641,10 +641,10 @@
                                                     <tr th:if="${poProduct != null}" th:each="i : ${poProduct}">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
-                                                        <td th:text="|${i.PP_FIX_MEMO}/${i.PP_FIX_COST}|"></td>
-                                                        <td th:text="|${i.PP_PAINT_MEMO}/${i.PP_PAINT_COST}|"></td>
-                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${i.PP_PROCESS_COST}|"></td>
-                                                        <td th:text="${i.PP_FIX_COST}+${i.PP_PAINT_COST}+${i.PP_PROCESS_COST}"></td>
+                                                        <td th:text="|${i.PP_FIX_MEMO}/${#numbers.formatInteger(i.PP_FIX_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="|${i.PP_PAINT_MEMO}/${#numbers.formatInteger(i.PP_PAINT_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="|${i.PP_PROCESS_MEMO}/${#numbers.formatInteger(i.PP_PROCESS_COST,1,'COMMA')}|"></td>
+                                                        <td th:text="${#numbers.formatInteger((i.PP_FIX_COST+i.PP_PAINT_COST+i.PP_PROCESS_COST),1,'COMMA')}"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -673,19 +673,20 @@
                                                     <tr class="defaultRow" th:unless="${poProduct != null}">
                                                         <td colspan="12">발주품의할 상품을 선택하십시오.</td>
                                                     </tr>
-                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:id="|tr_${iStat.index}|" th:class="|productPoTr_${iStat.index}|">
+                                                    <tr th:if="${poProduct != null}" th:each="i : ${poProduct}" th:row-cnt="${iStat.index}"
+                                                        th:with="ppTotalProdCost = ${(i.PP_PAINT_COST+i.PP_FIX_COST+i.PP_PROCESS_COST+i.PP_COST)*i.PP_COUNT}, ppTotalSellPrice= ${i.PP_SELL_PRICE*i.PP_COUNT}">
                                                         <td th:text="${i.P_IDX}"></td>
                                                         <td th:text="${i.P_NAME}"></td>
-                                                        <td th:text="${i.PP_COST}"></td>
-                                                        <td th:text="${i.PP_COUNT}"></td>
-                                                        <td th:text="${i.PP_COST * i.PP_COUNT}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_COST,1,'COMMA')}"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_COUNT,1,'COMMA')}"></td>
+                                                        <td th:text="${#numbers.formatInteger((i.PP_COST*i.PP_COUNT),1,'COMMA')}"></td>
                                                         <td th:text="${i.PP_PROFIT_TARGET}"></td>
-                                                        <td th:text="${(i.PP_PAINT_COST + i.PP_FIX_COST + i.PP_PROCESS_COST) * i.PP_COUNT}"></td>
-                                                        <td th:id="|buy_per_${iStat.index}|"></td>
-                                                        <td th:text="${i.PP_SELL_PRICE}"></td>
-                                                        <td th:id="|poProductSellPriceTotal_${iStat.index}|" th:text="${i.PP_SELL_PRICE * i.PP_COUNT}"></td>
-                                                        <td th:id="|totalProfit_${iStat.index}|"></td>
-                                                        <td th:id="|profitPer_${iStat.index}|"></td>
+                                                        <td th:id="|ppTotalProdCost_${iStat.index}|" th:text="${#numbers.formatInteger(ppTotalProdCost,1,'COMMA')}"></td>
+                                                        <td th:id="|ppProdCostRate_${iStat.index}|"></td>
+                                                        <td th:text="${#numbers.formatInteger(i.PP_SELL_PRICE,1,'COMMA')}"></td>
+                                                        <td th:id="|ppTotalSellPrice_${iStat.index}|" th:text="${#numbers.formatInteger(ppTotalSellPrice,1,'COMMA')}"></td>
+                                                        <td th:text="${#numbers.formatInteger(ppTotalSellPrice - ppTotalProdCost,1,'COMMA')}"></td>
+                                                        <td th:id="|ppProfitRate_${iStat.index}|"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -781,7 +782,10 @@
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#createForm')[0])
+            data: new FormData($('#createForm')[0]),
+            success: function () {
+                window.opener.refreshTable('#poTable');
+            }
         });
     }
 
@@ -953,7 +957,7 @@
             '   <td><input type="text" name="ppSellPrice_'+cnt+'" class="form-control text-won calculate" row-cnt="'+cnt+'" placeholder="0"></td>' +
             '   <td id="ppTotalSellPrice_'+cnt+'"></td>' + //예상판매가총액
             '   <td id="ppTotalProfit_'+cnt+'"></td>' + //총이익
-            '   <td id="ppReturnRate_'+cnt+'"></td>' +
+            '   <td id="ppProfitRate_'+cnt+'"></td>' +
             '</tr>'
         );
 
@@ -1009,20 +1013,40 @@
 
         //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
         if (ppTotalSellPrice != 0) {
-            var ppProdCostRate = Math.round((ppTotalProdCost/ppTotalSellPrice)*100)/100;
-            var ppReturnRate = Math.round((1-ppProdCostRate)*100)/100;
-            $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate*100)+'%');
-            $('#ppReturnRate_'+rowCnt).text(comma(ppReturnRate*100)+'%');
+            calculateRate(ppTotalProdCost,ppTotalSellPrice,rowCnt);
         }
+
+    }
+
+    /**나눗셈 계산*/
+    function calculateRate(ppTotalProdCost, ppTotalSellPrice, rowCnt) {
+        //pp별 생산원가율 계산 => (생산원가합/예상판매가총액)*100, 수익률 => 1-생산원가율
+        var ppProdCostRate = Math.round((ppTotalProdCost/ppTotalSellPrice)*10000)/100;
+        var ppProfitRate = Math.round((100-ppProdCostRate)*100)/100;
+        $('#ppProdCostRate_'+rowCnt).text(comma(ppProdCostRate)+'%');
+        $('#ppProfitRate_'+rowCnt).text(comma(ppProfitRate)+'%');
     }
 
     /**input value에서 특수문자를 제외하고 숫자형태로 return*/
     function getNumberInInput(name) {
         return Number($('input[name="'+name+'"]').val().replace(/[^0-9]/g,""));
     }
+
+    /**id를 통해 특수문자 제외한 숫자형태 return*/
+    function getNumberById(id) {
+        return Number($('#'+id).text().replace(/[^0-9]/g,""));
+    }
 </script>
 <script>
     $("#saveBtn").on("click", saveAction);
+</script>
+<script th:inline="javascript" th:if="${poProduct != null}">
+    var len = $('#rateTbody tr').length;
+    for (var i = 0; i < len; i++) {
+        var ppTotalProdCost = getNumberById('ppTotalProdCost_'+i);
+        var ppTotalSellPrice = getNumberById('ppTotalSellPrice_'+i);
+        calculateRate(ppTotalProdCost, ppTotalSellPrice, i);
+    }
 </script>
 </body>
 </html>
