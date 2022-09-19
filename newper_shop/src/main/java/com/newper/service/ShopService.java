@@ -38,7 +38,7 @@ public class ShopService {
 
             Map<String,Object> shopDesignMap = shopMapper.selectShopDesignJson(shop.getShopIdx());
             shopComp.setShopDesignClass(shopDesignMap);
-
+            shopComp.setShopColorMap(shopDesignMap);
         }
     }
 
