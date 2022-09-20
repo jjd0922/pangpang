@@ -76,4 +76,7 @@ public interface PoMapper {
 
     /**po수정시 연결되어있던 pp모두 삭제 > 그이후 다시 등록할 것*/
     void deletePoProductBypoIdx(@Param("poIdx") Integer poIdx, @Param("ppIdxs") List<Integer> ppIdxs);
+
+    /**po hiworks 관계테이블 insert*/
+    void insertPoHiworks(@Param("list") List<Map<String,Object>> list);
 }

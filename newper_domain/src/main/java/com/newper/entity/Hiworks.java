@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.HwState;
+import com.newper.constant.HwType;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,7 +28,8 @@ public class Hiworks {
     @JoinColumn(name = "HW_U_IDX", referencedColumnName = "uIdx")
     private User user;
 
-    private String hwType;
+    @Enumerated(EnumType.STRING)
+    private HwType hwType;
     @Enumerated(EnumType.STRING)
     private HwState hwState;
     private LocalDate hwReqDate;
@@ -35,4 +37,5 @@ public class Hiworks {
     private LocalDate hwAprvDate;
     private LocalTime hwAprvTime;
     private String hwAprvId;
+    private String hwMemo;
 }
