@@ -2134,9 +2134,6 @@
 <!-- 플로팅 -->
 <th:block th:replace="part/floating :: main-floating"></th:block>
 
-<!--js-->
-<th:block th:replace="part/js"></th:block>
-
 <!-- 모바일 하단 고정 네비게이션 -->
 <div id="mo-bottom-nav">
     <ul class="mo-bottom-nav">
@@ -2160,102 +2157,6 @@
 
 <!--js-->
 <th:block th:replace="part/js"></th:block>
-<script>
-    /*** 검색창 펼침 ***/
-    var searchInput = $('#searchInput');
-
-    searchInput.click(function(){
-        $(this).parents().find('.searchBar').toggleClass('on');
-        $('.searchBar-open').toggleClass('on');
-    });
-
-    /* 검색창 펼침 내부 tab 기능 */
-    var searchTab = $('.searchWord-tab li'),
-          searchTabContent = $('.searchWord-content>div')
-
-    searchTab.click(function(){
-        $(this).addClass('on');
-        $(this).siblings().removeClass('on');
-
-        let $Idx = $(this).index();
-        searchTabContent.eq($Idx).addClass('on').siblings().removeClass('on');
-    });
-
-    /* 검색창 펼침 내부 배너 타이틀 슬라이드 */
-    new Swiper('.swiper-searchBar', {
-        slidesPerView: 1,
-        speed:700,
-        /*autoplay:true,*/
-        navigation: {
-            nextEl: '.searchBar-next',
-            prevEl: '.searchBar-prev',
-        },
-    });
-
-    /*** gnb-menu list slide [swiper] ***/
-    new Swiper('.swiper-gnb', {
-        slidesPerView: 'auto',
-        navigation: {
-            nextEl: '.swiper-gnb-next',
-            disabledClass: 'gnb-disabled',
-        }
-    });
-
-    /*** 메인 이미지 슬라이드 [swiper] ***/
-    var swiper = new Swiper('.swiper-main-image', {
-        slidesPerView: 1,
-        speed: 300,
-        autoplay: true,
-        loop: true,
-        loopAdditionalSlides: 1,
-        pagination: {
-            el: '.swiper-pagination', type: 'custom',
-            renderCustom: function (swiper, current, total) {
-                return '<span class="current-num">' + current + '</span> &nbsp;/&nbsp; <span class="total-num">' + total + '</span>';
-            },
-        },
-        navigation: {
-            nextEl: '.swiper-next',
-            prevEl: '.swiper-prev',
-        },
-        on: {
-            init: function () {
-                $(".swiper-progress-bar").removeClass("animate");
-                $(".swiper-progress-bar").eq(0).addClass("animate");
-            },
-            slideChangeTransitionStart: function () {
-                $(".swiper-progress-bar").removeClass("animate");
-            },
-            slideChangeTransitionEnd: function () {
-                $(".swiper-progress-bar").eq(0).addClass("animate");
-            }
-        }
-    });
-    /* index page-main image slide 일시정지, 재생 기능 */
-    $(".swiper-button-pause").click(function () {
-        $(this).css('display', 'none');
-        $('.swiper-button-play').css('display', 'block');
-        swiper.autoplay.stop();
-        return false
-    });
-    $(".swiper-button-play").click(function () {
-        $(this).css('display', 'none');
-        $('.swiper-button-pause').css('display', 'block');
-        swiper.autoplay.start();
-        return false
-    });
-
-    /** 메인 이미지 슬라이드 좌측 카테고리 서브 메뉴 열림 **/
-    $('.ctg-open').hide();
-    $(".ctg-all>li").mouseover(function(){
-        $(this).addClass("on")
-               .children(".ctg-open").show();
-
-    });
-    $(".ctg-all>li").mouseout(function(){
-        $(this).removeClass("on")
-               .children(".ctg-open").hide();
-    });
 
 
 </body>
