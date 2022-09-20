@@ -33,9 +33,17 @@ public class MyPageRestController {
             Shop shop = shopRepo.findById(1).orElseThrow(()-> new MsgException("ㄷㄷㄷ"));
             shopList.add(shop);
         }else if(paramMap.getString("menu").equals("payment")){
+            shopList = shopRepo.findAll();
         }else if(paramMap.getString("menu").equals("ready")){
+            Shop shop = shopRepo.findById(2).orElseThrow(()-> new MsgException("ㄷㄷㄷ"));
+            shopList.add(shop);
         }else if(paramMap.getString("menu").equals("delStart")){
+            Shop shop = shopRepo.findById(3).orElseThrow(()-> new MsgException("ㄷㄷㄷ"));
+            shopList.add(shop);
         }else if(paramMap.getString("menu").equals("delIng")){
+            Shop shop = shopRepo.findById(4).orElseThrow(()-> new MsgException("ㄷㄷㄷ"));
+            Shop shop2 = shopRepo.findById(3).orElseThrow(()-> new MsgException("www"));
+            shopList.add(shop);
         }else if(paramMap.getString("menu").equals("delComplete")){
         }else if(paramMap.getString("menu").equals("cancel")) {
         }else if(paramMap.getString("menu").equals("all")){
