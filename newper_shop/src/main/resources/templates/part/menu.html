@@ -1,4 +1,4 @@
-<!--메뉴 : 썸네일 카테고리 메뉴-->
+<!--메뉴 : 썸네일 카테고리 메뉴 -->
 <th:block th:fragment="thumbnailCategory">
     <div class="ctg-tab-cover">
         <div class="container swiper swiper-ctg-tab">
@@ -88,9 +88,9 @@
     </div>
 </th:block>
 
-<!--메뉴 : 박스형 탭 메뉴 : 하단 라인-->
+<!--메뉴 : 박스형 탭 메뉴 : 하단 라인[품절임박] -->
 <th:block th:fragment="boxTab">
-    <ul class="container">
+    <div class="container">
         <ul class="event-tab semi-bold">
             <li class="on">노트북</li>
             <li>컴퓨터</li>
@@ -98,6 +98,16 @@
             <li>애플컴퓨터</li>
             <li>태블릿</li>
             <li>가전·생활</li>
+        </ul>
+    </div>
+</th:block>
+
+<!--메뉴 : 박스형 탭 메뉴 : 하단 라인[이벤트] -->
+<th:block th:fragment="boxTab2">
+    <div class="container">
+        <ul class="event-tab semi-bold">
+            <li class="on">진행 중인 이벤트</li>
+            <li>종료 된 이벤트</li>
         </ul>
     </div>
 </th:block>
@@ -114,21 +124,18 @@
                     <li>가전</li>
                     <li>생활</li>
                 </ul>
-                <ul class="button-tab-content">
-                    <!-- 전체 -->
-                    <li class="on" th:insert="part/banner :: banner_2">
-                        <!--배너 : 이미지 배너 2-->
-                    </li>
-                    <!-- IT -->
-                    <li>IT만</li>
-                    <!-- 가전 -->
-                    <li>가전만</li>
-                    <!-- 생활 -->
-                    <li>생활만</li>
-                </ul>
+                <div class="button-tab-content" th:insert="part/banner :: banner_2"></div>
             </li>
             <!-- 종료 된 이벤트 -->
-            <li></li>
+            <li>
+                <ul class="button-tab font-lg">
+                    <li class="on">전체</li>
+                    <li>IT</li>
+                    <li>가전</li>
+                    <li>생활</li>
+                </ul>
+                <div class="button-tab-content" th:insert="part/banner :: banner_2"></div>
+            </li>
         </ul>
     </div>
 </th:block>
