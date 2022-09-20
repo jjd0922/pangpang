@@ -1,12 +1,10 @@
 package com.newper.controller.rest;
 
 import com.newper.dto.ParamMap;
-import com.newper.dto.ReturnMap;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +52,7 @@ public class MyPageRestController {
         }else if(paramMap.getString("menu").equals("cancel")) {
             orderMenuTitle = "취소/교환/반품";
         }else if(paramMap.getString("menu").equals("all")){
+            orderMenuTitle = "전체 주문 내역";
             shopList = shopRepo.findAll();
         }
         mav.addObject("shopList", shopList);

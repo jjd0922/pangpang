@@ -64,6 +64,7 @@ public class MainController {
             mav.addObject("active", "on");
             if(paramMap.getString("menu").equals("myOrder")){
                 mav.addObject("shopList", shopRepo.findAll());
+                mav.addObject("orderMenuTitle", "전체 주문 내역");
             }
         }
         return mav;

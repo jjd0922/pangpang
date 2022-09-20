@@ -17,7 +17,7 @@ public class CenterController {
     /** 공지사항 상세*/
     @GetMapping(value = "notice/{ntIdx}")
     public ModelAndView faq(@PathVariable Integer ntIdx){
-        ModelAndView mav = new ModelAndView("custCenter/ntIdx");
+        ModelAndView mav = new ModelAndView("custCenter/notice_ntIdx");
 
         return mav;
     }
