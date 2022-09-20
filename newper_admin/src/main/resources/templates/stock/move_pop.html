@@ -22,9 +22,11 @@
                         </div>
                     </div>
                     <div>
-                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null">작업요청취소</a>
-                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null">작업중(출고)</a>
-                        <a class="btn btn-sm btn-info">작업완료(입고)</a>
+                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test1" style="display: none">작업요청취소</a>
+                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test2" style="display: none">작업중(출고)</a>
+                        <a class="btn btn-sm btn-info" id="test3" style="display: none">작업완료(입고)</a>
+                        <input type="hidden" id="test4">
+                        <input type="hidden" id="test5">
                     </div>
                 </div>
             </div>
@@ -225,8 +227,10 @@
                                                 4. 자산정보
                                                 <div class="btn-group">
                                                     <div class="header-elements">
+                                                       <!-- <a onclick="locBarcode($(this))" class="badge badge-primary">자산등록</a>-->
                                                         <a class="badge badge-primary mr-1" id="searchGoodsByBarcode">자산등록</a>
-                                                        <a class="badge badge-primary" id="deleteGoods">자산일괄삭제</a>
+                                                        <a onclick="deleteRow($(this))" class="badge badge-primary">자산일괄삭제</a>
+                                                    <!--    <a class="badge badge-primary" id="deleteGoods">자산일괄삭제</a>-->
                                                     </div>
                                                 </div>
                                             </legend>
@@ -328,11 +332,17 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script th:inline="javascript">
-    /** 테이블 행 삭제*/
+    /** 창고테이블 행 삭제*/
     function deleteRow(el) {
         el.closest('tr').remove();
         $('#locationGoodsTbody').empty();
     }
+    /** 자산테이블 행 삭제*/
+    function deleteRow2(el) {
+        el.closest('tr').remove();
+    }
+
+
 
     /**데이터테이블에서 출고창고선택*/
     function selectWarehouse(rowIdx) {
@@ -362,9 +372,33 @@
             '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
             '</tr>'
         );
-
+        $('#test4').val(data.LOC_IDX);
+        var test4 = $('#test4').val();
+        var test5 = $('#test5').val();
+        if(test4==test5){
+            $('#test3').show();
+            $('#test1').hide();
+            $('#test2').hide();
+        }else{
+            $('#test1').show();
+            $('#test2').show();
+            $('#test3').show();
+        }
         selectLocGoods(data.LOC_IDX);
     }
+
+
+/*
+    if ($('#searchGoodsByBarcode').success().show()){
+        $('#searchWarehouseBtn').hide();
+        $('#searchWhByBarcode').hide();
+    }else {
+        $('#searchWarehouseBtn').show();
+        $('#searchWhByBarcode').show();
+    }
+
+
+*/
 
 
     /**입고창고테이블에 데이터 추가*/
@@ -382,6 +416,18 @@
             '   <td><a onclick="deleteRow($(this))" class="badge badge-primary">삭제</a></td>' +
             '</tr>'
         );
+        $('#test5').val(data.LOC_IDX);
+        var test4 = $('#test4').val();
+        var test5 = $('#test5').val();
+        if(test4==test5){
+            $('#test3').show();
+            $('#test1').hide();
+            $('#test2').hide();
+        }else{
+            $('#test1').show();
+            $('#test2').show();
+            $('#test3').show();
+        }
     }
 
 
@@ -399,6 +445,8 @@
         });
     }
 
+
+    /**창고 검색시 해당 창고에 있는 자산 행추가*/
     function appendLocGoods(data) {
         $('#locationGoodsTbody').empty();
 
@@ -419,7 +467,8 @@
                 '<td>' + value.G_IMEI + '</td>' +
                 '<td></td>' +
                 '<td>' + value.G_PO_IDX + '</td>' +
-                '<td><a onclick="deleteLocGoods(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +
+                '<td><a onclick="deleteRow2($(this))" class="badge badge-secondary">삭제</a></td>' +
+               /* '<td><a onclick="deleteRow(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +*/
                 '</tr>';
         })
 
@@ -445,22 +494,13 @@
 
     /**자산바코드 모달*/
     function showGoodsBarcodeModal() {
-        var barcodeInput = openBarcodeModal('자산등록(바코드)');
+        var barcodeInput = openBarcodeModal2('자산등록(바코드)');
+/*        if ( $('#openBarcodeModal').finish()){
+            $('#searchWarehouseBtn').hide();
+            $('#searchWhByBarcode').hide();
+        }*/
     }
 
-    /**자산삭제*/
-    function deleteLocGoods(g_idx){
-        if(confirm("삭제하시겠습니까?")){
-            $.ajax({
-                url:'/stock/goodsDelete.ajax',
-                type:'post',
-                data:'g_idx='+g_idx,
-                success:function(){
-                    $('#goodsTable').DataTable().ajax.reload();
-                }
-            })
-        }
-    }
 
     function locBarcode(data) {
         $.ajax({
@@ -476,6 +516,8 @@
             }
         });
     }
+
+
 </script>
 <script th:inline="javascript">
     $('#searchWarehouseBtn').on('click', openWarehouseModal);
@@ -483,59 +525,6 @@
     $('#searchGoodsByBarcode').on('click', showGoodsBarcodeModal);
 
 </script>
-  <!--  /** 테이블 행 삭제*/
-    function deleteRow(el) {
-        el.closest('tr').remove();
-    }
-
-
-    /**창고테이블에 데이터 추가*/
-    function appendRowToWarehouseTable(data, tableId) {
-        $('#'+tableId+' tbody tr').remove();
-        $('#'+tableId+' tbody').append(
-            '<tr>' +
-            '   <td><input type="hidden" name="locIdx" value="'+data.LOC_IDX+'">'+data.WH_NAME+'</td>' +
-            '   <td>'+data.LOC_FORM_STR+'</td>' +
-            '   <td>'+data.LOC_ZONE+'</td>' +
-            '   <td>'+data.LOC_COLUMN+'</td>' +
-            '   <td>'+data.LOC_ROW+'</td>' +
-            '   <td>'+data.LOC_CODE+'</td>' +
-            '   <td>'+data.LOC_BARCODE+'</td>' +
-            '   <td><a onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
-            '</tr>'
-        );
-    }
-
-    /**창고바코드 모달*/
-    function showWarehouseBarcodeModal(tableId) {
-        var barcodeInput = openBarcodeModal('창고등록(바코드)');
-
-        // 바코드 input시 ajax로 해당 바코드 로케이션 가져오기(추후에 작업~)
-        barcodeInput.on('input', function () {
-            $.ajax({
-                url: '',
-                data: data=barcodeInput.val(),
-                type: 'post',
-                success: function (res) {
-                    appendRowToWarehouseTable(res, tableId);
-                }
-            });
-        });
-    }
-
-    /**자산바코드 모달*/
-    function showGoodsBarcodeModal() {
-        var barcodeInput = openBarcodeModal('자산등록(바코드)');
-    }
-</script>
-<script th:inline="javascript">-->
-/*    $('#searchOutWhByBarcode').on('click', function () {
-        showWarehouseBarcodeModal('whOutTable');
-    });
-    $('#searchInWhByBarcode').on('click', function () {
-        showWarehouseBarcodeModal('whInTable');
-    });
-    $('#searchGoodsByBarcode').on('click',showGoodsBarcodeModal);*/
 
 </body>
 </html>

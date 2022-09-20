@@ -189,31 +189,31 @@
         buttons : buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/coupon/couponGroup.dataTable',
+            url:'/stock/stock2.dataTable?gsIdx=[[${gsIdx}]]&locIdx=[[${locIdx}]]',
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+            {'class':'select-checkbox', 'title':'선택','data':null,'defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'정산구분(품목구분1)','data':'','defaultContent':''}
-            ,{'title':'상품분류(품목구분2)','data':'','defaultContent':''}
-            ,{'title':'물류타입(품목자산구분)','data':'','defaultContent':''}
-            ,{'title':'상품코드','data':'','defaultContent':''}
-            ,{'title':'상품명','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','defaultContent':''}
-            ,{'title':'재고코드','data':'','defaultContent':''}
-            ,{'title':'판매채널','data':'','defaultContent':''}
-            ,{'title':'등급','data':'','defaultContent':''}
-            ,{'title':'옵션1','data':'','defaultContent':''}
-            ,{'title':'옵션2','data':'','defaultContent':''}
-            ,{'title':'옵션3','data':'','defaultContent':''}
-            ,{'title':'IMEI','data':'','defaultContent':''}
-            ,{'title':'시리얼','data':'','defaultContent':''}
-            ,{'title':'SPEC이력','data':'','render': function () {
+            ,{'title':'정산구분(품목구분1)','data':'P_TYPE1_STR','defaultContent':''}
+            ,{'title':'상품분류(품목구분2)','data':'P_TYPE2_STR','defaultContent':''}
+            ,{'title':'물류타입(품목자산구분)','data':'P_TYPE3_STR','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'재고코드','data':'G_GS_IDX','defaultContent':''}
+            ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'판매채널','data':null,'defaultContent':''}
+            ,{'title':'등급','data':null,'defaultContent':''}
+            ,{'title':'옵션1','data':'OPTION1','defaultContent':''}
+            ,{'title':'옵션2','data':'OPTION2','defaultContent':''}
+            ,{'title':'옵션3','data':'OPTION3','defaultContent':''}
+            ,{'title':'IMEI','data':null,'defaultContent':''}
+            ,{'title':'시리얼','data':null,'defaultContent':''}
+            ,{'title':'SPEC이력','data':null,'render': function () {
                 return '<a onclick="openGoodsSpecModal()" class="badge badge-primary">조회</a>';
             }}
             ,{'title':'공정이력','data':'','render': function () {
