@@ -15,7 +15,7 @@
     </div>
 </th:block>
 
-<!--썸네일 목록 : 품절임박 (1행 2열)-->
+<!--썸네일 목록 : 품절임박 상단 이벤트 (1행 2열)-->
 <th:block th:fragment="thumbnailLayout_2">
     <div class="container">
         <ul class="thumb-list lg-col-6">
@@ -24,6 +24,34 @@
             </li>
             <li>
                 <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
+            </li>
+        </ul>
+    </div>
+</th:block>
+
+<!--썸네일 목록 : 품절임박 (1행 4열)-->
+<th:block th:fragment="lastSecond">
+    <div class="container">
+        <ul class="thumb-list lg-col-3 sm-col-6">
+            <!-- 품절 상품에는 <li>태그에 class="lastSecond-soldout" 추가 -->
+            <li class="lastSecond-soldout">
+                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                <div class="quantity">
+                    <p>남은수량</p>
+                    <span>1개</span>
+                </div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
             </li>
         </ul>
     </div>
@@ -107,8 +135,8 @@
                         <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                         <div class="item-inner-wrap">
                             <div class="item-price">
-                                <p><span class="discount-price">359,000</span>원</p>
-                                <span class="real-price">897,000</span>
+                                <p><span class="discount-price">359,000</span>원
+                                <span class="real-price">897,000</span></p>
                             </div>
                             <div class="discount-rate">57%</div>
                         </div>
@@ -134,8 +162,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -159,8 +187,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -184,8 +212,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -209,8 +237,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -234,8 +262,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -259,8 +287,8 @@
                                 <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
+                                        <p><span class="discount-price">359,000</span>원
+                                        <span class="real-price">897,000</span></p>
                                     </div>
                                     <div class="discount-rate">57%</div>
                                 </div>
@@ -361,18 +389,4 @@
     </div>
     <div class="swiper-group1-prev prev-custom"></div>
     <div class="swiper-group1-next next-custom"></div>
-</th:block>
-
-<!--썸네일 목록 : 품절임박 (1행 2열)-->
-<th:block th:fragment="thumbnailLayout_2">
-    <div class="container">
-        <ul class="thumb-list lg-col-6">
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-category"></div>
-            </li>
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
-            </li>
-        </ul>
-    </div>
 </th:block>
