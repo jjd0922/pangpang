@@ -18,7 +18,6 @@
             <div class="content container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-
                         <div class="card">
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
@@ -32,19 +31,14 @@
                                     <form id="boardForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-
-                                                <div class="form-group">
-                                                    <label class="d-block">자산상태</label>
-                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK_NEED}">
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).PROCESS}">
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CANCEL_REQ}">
 
                                                 <div class="form-group">
                                                     <label class="d-block">자산처리<br>담당자</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                 </div>
-
 
                                                 <div class="form-group">
                                                     <label class="d-block">자산처리일</label>
@@ -290,6 +284,9 @@
                                     <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('recheckPop')">
                                         재검수요청
                                     </a>
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="insertResellGroup('resellPop', 'RESELL')">
+                                        반품
+                                    </a>
                                     <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
                                         망실
                                     </a>
@@ -337,6 +334,37 @@
         table.page('first').ajax.url('/user/user.dataTable?' + $('#boardForm').serialize()).load(null, false);
     }
 
+    function insertResellGroup(url, type) {
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        if(g_idxs.length > 0){
+            $.ajax({
+                url:'/goods/goodsResellCheck.ajax'
+                ,type:'post'
+                ,data: {
+                    "gIdx" : g_idxs,
+                }
+                ,async: false
+            })
+
+            $.ajax({
+                url:'/process/in/temp.ajax'
+                ,type:'post'
+                ,data: {
+                    "g_idxs" : g_idxs,
+                    "type" : type
+                }
+                ,async: false
+            }).done(function(res){
+                var focusPopup = window.open('/process/'+ url +'?ggt_idx=' + res + '&type=' + type, url, 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+                focusPopup.focus();
+            }).fail(function(){
+                return false;
+            });
+        }
+
+
+    }
+
     function lostBtn(){
         $('#lostModal').modal('show');
     }
@@ -373,21 +401,21 @@
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
-            ,{'title':'자산상태','data':'G_STATE_STR'}
-            ,{'title':'자산처리<br>담당자','data':'', defaultContent: ''}
-            ,{'title':'자산<br>처리일','data':'G_IDX'}
-            ,{'title':'자산<br>코드','data':'G_IDX'}
-            ,{'title':'상품<br>코드','data':'G_IDX'}
-            ,{'title':'상품명','data':'P_NAME'}
-            ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1'}
-            ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2'}
-            ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1'}
-            ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2'}
-            ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1'}
-            ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2'}
-            ,{'title':'판매스펙<br>확정일','data':'G_IDX'}
-            ,{'title':'IMEI','data':'G_IDX'}
-            ,{'title':'시리얼','data':'G_IDX'}
+            ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent': ''}
+            ,{'title':'자산처리<br>담당자','data':'', 'defaultContent': ''}
+            ,{'title':'자산<br>처리일','data':'G_IDX', 'defaultContent': ''}
+            ,{'title':'자산<br>코드','data':'G_IDX', 'defaultContent': ''}
+            ,{'title':'상품<br>코드','data':'G_IDX', 'defaultContent': ''}
+            ,{'title':'상품명','data':'P_NAME', 'defaultContent': ''}
+            ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1', 'defaultContent': ''}
+            ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2', 'defaultContent': ''}
+            ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1', 'defaultContent': ''}
+            ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2', 'defaultContent': ''}
+            ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1', 'defaultContent': ''}
+            ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2', 'defaultContent': ''}
+            ,{'title':'판매스펙<br>확정일','data':'G_IDX', 'defaultContent': ''}
+            ,{'title':'IMEI','data':'G_IDX', 'defaultContent': ''}
+            ,{'title':'시리얼','data':'G_IDX', 'defaultContent': ''}
             ,{title:'', 'data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
             }}

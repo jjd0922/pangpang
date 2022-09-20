@@ -49,4 +49,13 @@ public interface GoodsMapper {
 
     /** 자산으로 같은 입고그룹의 데이터체크 */
     List<Map<String, Object>> checkGoodsReceived(Map<String, Object> map);
+
+    /** 자산의 발주의 매입처 정보로 GROUP BY */
+    List<Map<String, Object>> selectGoodsGroupByPO_COMPANY(Map<String, Object> map);
+
+    /** 자산 반품요청값으로 GROUP BY */
+    List<Map<String, Object>> selectGoodsGroupByCANCEL_REQ(Map<String, Object> map);
+
+    /** 자산상태 변경 */
+    void updateGoodsState();
 }

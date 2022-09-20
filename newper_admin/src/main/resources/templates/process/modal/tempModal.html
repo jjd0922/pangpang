@@ -149,6 +149,18 @@
         $('#searchComModal').modal('hide');
     }
 
+    function saveResell() {
+        if (window.confirm("해당 자산들을 반품 처리 하시겠습니까?")) {
+            $.ajax({
+                url: '/process/resellPop.ajax' + location.search
+                , type: 'post'
+                , data: $('#tempForm').serialize()
+            }).done(function (res) {
+                window.close();
+            });
+        }
+    }
+
     function saveBtn() {
         if ($('input[name=uIdx]').val() == '') {
             alert('작업지시자(내부)를 선택해주세요');
@@ -235,6 +247,10 @@
                 }}
         ]
     });
+
+
+
+
 
 
 

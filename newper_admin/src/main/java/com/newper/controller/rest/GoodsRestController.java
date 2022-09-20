@@ -122,4 +122,12 @@ public class GoodsRestController {
         return goodsMapper.selectGoodsByG_IDX(paramMap.getLong("gIdx"));
     }
 
+
+    /** 자산 반품 가능한지 체크 */
+    @PostMapping("goodsResellCheck.ajax")
+    public ReturnMap selectGoodsGroupByCompany(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.goodsResellCheck(paramMap);
+        return rm;
+    }
 }

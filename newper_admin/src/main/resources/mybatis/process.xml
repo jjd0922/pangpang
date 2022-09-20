@@ -4,6 +4,7 @@
     <sql id="includeProcessNeedDataTable">
         <if test="gIdx != null and gIdx != ''">AND PN_G_IDX = #{gIdx}</if>
         <if test="pgIdx != null and pgIdx != ''">AND PN_PG_IDX = #{pgIdx}</if>
+        <if test="pnIdx != null and pnIdx != ''">AND PN_IDX = #{pnIdx}</if>
     </sql>
     <select id="selectProcessNeed" resultType="Map">
         SELECT
@@ -37,5 +38,110 @@
         <where>
             <include refid="includeProcessGroupDataTable"></include>
         </where>
+    </select>
+
+
+    <sql id="includeProcessSpec">
+        <if test="pnIdx != null and pnIdx != ''">AND PS_PN_IDX = #{pnIdx}</if>
+        <if test='psType != null'>
+            <foreach collection="psType" open="AND PS_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+    <select id="selectProcessSpec" resultType="Map">
+        SELECT
+            *
+        FROM
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
+                LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
+                LEFT JOIN GOODS_STOCK ON PS_GS_IDX = GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+        <where>
+            <include refid="includeProcessSpec"></include>
+        </where>
+    </select>
+
+    <insert id="insertResellGoods">
+        INSERT INTO RESELL_GOODS (
+            RG_RS_IDX,
+            RG_G_IDX
+        ) VALUES
+        <foreach collection="gIdxs" item="gIdx" separator=",">
+        (
+            #{rsIdx},
+            #{gIdx}
+        )
+        </foreach>
+    </insert>
+
+    <select id="selectResellComIdx" resultType="Map">
+        SELECT
+            COM_NAME,
+            COM_IDX
+        FROM
+            GOODS_TEMP
+                LEFT JOIN GOODS ON GT_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN COMPANY ON PO_COM_IDX = COM_IDX
+        WHERE
+            GT_GGT_IDX = #{ggt_idx}
+        LIMIT
+	        0, 1
+    </select>
+
+    <sql id="includeResellDatatable">
+
+    </sql>
+
+    <select id="selectResellDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            RESELL
+                LEFT JOIN COMPANY ON RS_COM_IDX = COM_IDX
+        <where>
+            <include refid="includeResellDatatable"></include>
+        </where>
+        <if test="length != -1">
+            LIMIT
+                #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countResellDatatable" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            RESELL
+                LEFT JOIN COMPANY ON RS_COM_IDX = COM_IDX
+        <where>
+            <include refid="includeResellDatatable"></include>
+        </where>
+    </select>
+
+    <select id="selectGoodsResell" resultType="Map">
+        SELECT
+            *
+        FROM
+            RESELL
+                LEFT JOIN RESELL_GOODS ON RS_IDX = RG_RS_IDX
+                LEFT JOIN GOODS ON RG_G_IDX = G_IDX
+        <if test="length != -1">
+        LIMIT
+            #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countGoodsResell" resultType="long">
+        SELECT
+            COUNT(*)
+        FROM
+            RESELL
+                LEFT JOIN RESELL_GOODS ON RS_IDX = RG_RS_IDX
+                LEFT JOIN GOODS ON RG_G_IDX = G_IDX
     </select>
 </mapper>

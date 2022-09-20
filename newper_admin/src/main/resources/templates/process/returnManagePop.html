@@ -72,7 +72,7 @@
                                                                   반품코드
                                                                 </span>
                                                             </span>
-                                            <input type="text" name="U_NAME" class="form-control">
+                                            <input type="text" name="rsIdx" class="form-control" th:value="${resell?.rsIdx}" readonly>
                                             <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                   작업지시자(내부)
@@ -206,23 +206,24 @@
                                 <div class="card-body popup-contents">
                                     <fieldset class="mb-0">
                                         <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                            <div class="btn-group2" id="2btn">
+                                        <div class="btn-group2" id="2btn">
+                                            <a type="button" class="badge badge-sm badge-primary ml-1" id="finishReBtn" onclick="finishReBtn()">
+                                                반품완료
+                                            </a>
 
-                                                <a type="button" class="badge badge-sm badge-primary ml-1" id="finishReBtn" onclick="finishReBtn()">
-                                                    반품완료
-                                                </a>
+                                            <a type="button" class="badge badge-sm badge-secondary ml-1" id="impossibleReBtn" onclick="impossibleReBtn()">
+                                              반품불가
+                                            </a>
 
-                                                <a type="button" class="badge badge-sm badge-secondary ml-1" id="impossibleReBtn" onclick="impossibleReBtn()">
-                                                  반품불가
-                                                </a>
-
-                                                <a type="button" class="badge badge-sm badge-primary ml-1" id="uploadReBtn" onclick="uploadReBtn()">
-                                                  반품결과 업로드
-                                                </a>
-                                            </div>
+                                            <a type="button" class="badge badge-sm badge-primary ml-1" id="uploadReBtn" onclick="uploadReBtn()">
+                                              반품결과 업로드
+                                            </a>
+                                        </div>
                                     </fieldset>
                                 </div>
                             </div>
+
+                            <table class="table" id="goodsTable"></table>
                         </fieldset>
                     </div>
                 </div>
@@ -238,8 +239,30 @@
 <th:block th:replace="process/modal/uploadReModal.html"/>
 
 <!-- 공통 js -->
-
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
 
 <script th:inline="javascript">
 
@@ -267,6 +290,43 @@
         $('#uploadReModal').modal('show');
     }
 
+</script>
+
+<script th:inline="javascript">
+    function searchGoods() {
+        goodsTable.page('first').ajax.url('/process/selectGoodsResell.dataTable?').load();
+    }
+
+    var goodsTable = $('#goodsTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/process/selectGoodsResell.dataTable',
+            type:'post'
+        },
+        columns : [
+            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="rgIdx" value="' + full.RG_IDX + '">';
+                }}
+            ,{'title':'입고그룹','data':'IG_IDX','defaultContent':''}
+            ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'옵션1','data':'G_IDX','defaultContent':''}
+            ,{'title':'옵션2','data':'G_IDX','defaultContent':''}
+            ,{'title':'옵션3','data':'G_IDX','defaultContent':''}
+            ,{'title':'IMEI','data':'G_IDX','defaultContent':''}
+            ,{'title':'시리얼','data':'G_IDX','defaultContent':''}
+            ,{'title':'입고SPEC(확정)','data':'G_IDX','defaultContent':''}
+            ,{'title':'가공SPEC(예정)','data':'G_IDX','defaultContent':''}
+        ]
+    });
 </script>
 </body>
 </html>

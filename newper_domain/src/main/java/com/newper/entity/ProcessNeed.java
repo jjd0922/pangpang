@@ -42,6 +42,7 @@ public class ProcessNeed {
     private String pnLast;
 
     private String pnProcess;
+    private String pnState;
 
     private Map<String, Object> pnJson;
 

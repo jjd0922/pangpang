@@ -87,7 +87,9 @@
 
 <!-- 페이지 상단 5개 탭 클릭 시 보여지는 내용 -->
 
-<th:block th:if="${menu != null}" th:replace="myPage/myMenu :: ${menu}(${menu})"></th:block>
+<th:block th:if="${menu != null}">
+    <th:block th:replace="myPage/myMenu :: ${menu}(${menu})"></th:block>
+</th:block>
 <th:block th:if="${menu == null}">
 <!-- 진행 중인 주문 내역 -->
 <div class="container">
