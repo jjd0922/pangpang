@@ -1,15 +1,21 @@
 <!--썸네일 목록 : 타임세일 (1행 1열)-->
 <th:block th:fragment="thumbnailLayout_1">
     <div class="container">
-        <ul class="thumbnailLayout_1 thumb-list lg-col-12">
+        <ul class="thumbnailLayout_1">
             <li>
-              <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                <div class="thumb-wrap boxShadow">
+                    <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                <div class="thumb-wrap boxShadow">
+                    <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                <div class="thumb-wrap boxShadow">
+                    <div th:replace="part/thumbnail :: thumbnail-timeSale"></div>
+                </div>
             </li>
         </ul>
     </div>
@@ -20,10 +26,14 @@
     <div class="container">
         <ul class="thumb-list lg-col-6">
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
+                <div class="thumb-wrap boxShadow">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
+                <div class="thumb-wrap boxShadow">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond"></div>
+                </div>
             </li>
         </ul>
     </div>
@@ -32,26 +42,52 @@
 <!--썸네일 목록 : 품절임박 (1행 4열)-->
 <th:block th:fragment="lastSecond">
     <div class="container">
-        <ul class="thumb-list lg-col-3 sm-col-6">
-            <!-- 품절 상품에는 <li>태그에 class="lastSecond-soldout" 추가 -->
-            <li class="lastSecond-soldout">
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
-                <div class="quantity">
-                    <p>남은수량</p>
-                    <span>1개</span>
+        <ul class="thumb-list lg-col-3 sm-col-6 lastSecond-thumb">
+            <li>
+                <!-- 품절 상품에는 아래 <div>태그에 class="lastSecond-soldout" 추가 -->
+                <div class="thumb-wrap boxShadow-hover lastSecond-soldout">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                    <div class="quantity">
+                        <p>남은수량</p>
+                        <span>1개</span>
+                    </div>
                 </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                    <div class="quantity">
+                        <p>남은수량</p>
+                        <span>1개</span>
+                    </div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                    <div class="quantity">
+                        <p>남은수량</p>
+                        <span>1개</span>
+                    </div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                    <div class="quantity">
+                        <p>남은수량</p>
+                        <span>1개</span>
+                    </div>
+                </div>
             </li>
             <li>
-                <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-lastSecond2"></div>
+                    <div class="quantity">
+                        <p>남은수량</p>
+                        <span>1개</span>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
@@ -59,63 +95,39 @@
 
 <!--썸네일 목록 : 베스트 100 (형태별로 명칭 변경 : 1행 4열)-->
 <th:block th:fragment="best100">
-    <ul class="ctg-tab-content">
-        <li>전체보기</li>
-        <li>내용1</li>
-        <li>내용2</li>
-        <li class="on">
-            <div class="container">
+    <div class="container">
                 <ul class="thumb-list lg-col-3 sm-col-6">
                     <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        <div class="thumb-wrap boxShadow-hover">
+                            <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        </div>
                     </li>
                     <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        <div class="thumb-wrap boxShadow-hover">
+                            <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        </div>
                     </li>
                     <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        <div class="thumb-wrap boxShadow-hover">
+                            <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        </div>
                     </li>
                     <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        <div class="thumb-wrap boxShadow-hover">
+                            <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        </div>
                     </li>
                     <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
-                    </li>
-                    <li>
-                        <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        <div class="thumb-wrap boxShadow-hover">
+                            <div th:replace="part/thumbnail :: thumbnail-defaultBest"></div>
+                        </div>
                     </li>
                 </ul>
             </div>
-        </li>
-        <li>내용4</li>
-        <li>내용5</li>
-        <li>내용6</li>
-        <li>내용7</li>
-        <li>내용8</li>
-        <li>내용9</li>
-    </ul>
 </th:block>
 
-<!--썸네일 목록 : 신상입고 (형태별로 명칭 변경 : 좌측 대형 + 우측 2행 3열)-->
-<th:block th:fragment="newLaunch">
+<!--썸네일 목록 : 신상입고 상단 이벤트 (형태별로 명칭 변경 : 좌측 대형 + 우측 2행 3열)-->
+<th:block th:fragment="newLaunch-event">
     <div class="container">
         <div id="newLaunch" class="thumb-list">
             <div class="main-newLaunch">
@@ -132,7 +144,7 @@
                                 <span class="item-condition item-conditionB-1">스크래치</span>
                             </div>
                         </div>
-                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                        <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                         <div class="item-inner-wrap">
                             <div class="item-price">
                                 <p><span class="discount-price">359,000</span>원
@@ -159,7 +171,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -184,7 +196,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -209,7 +221,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -234,7 +246,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -259,7 +271,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -284,7 +296,7 @@
                                         <span class="item-condition item-conditionB-1">스크래치</span>
                                     </div>
                                 </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                <div class="item-title"><a href="javascript:;">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
                                 <div class="item-inner-wrap">
                                     <div class="item-price">
                                         <p><span class="discount-price">359,000</span>원
@@ -301,68 +313,81 @@
     </div>
 </th:block>
 
+<!--썸네일 목록 : 신상입고 (1행 4열)-->
+<th:block th:fragment="newLaunch">
+    <div class="container">
+        <ul class="thumb-list lg-col-3 sm-col-6">
+            <li>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </div>
+            </li>
+            <li>
+                <div class="thumb-wrap boxShadow-hover">
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-default"></div>
+            </li>
+            <li>
+                <div th:replace="part/thumbnail :: thumbnail-default"></div>
+            </li>
+        </ul>
+    </div>
+</th:block>
+
 <!--썸네일 목록 : 리뷰전용 썸네일 (형태별로 명칭 변경 1행 4열)-->
 <th:block th:fragment="review">
-    <ul class="ctg-tab-content">
-        <li>전체보기</li>
-        <li>내용1</li>
-        <li>내용2</li>
-        <li class="on">
-            <div class="container">
+    <div class="container">
                 <ul class="thumb-list lg-col-3 sm-col-6 review-list">
                     <li>
-                        <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                        <div class="thumb-wrap">
+                            <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
+                            <i class="review-crown"></i>
+                            <i class="review-ranking"><span>01</span></i>
+                            <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                            </div>
                         </div>
                     </li>
                     <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                        <div class="thumb-wrap">
+                            <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
+                            <i class="review-crown"></i>
+                            <i class="review-ranking"><span>01</span></i>
+                            <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                            </div>
                         </div>
                     </li>
                     <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                        <div class="thumb-wrap">
+                            <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
+                            <i class="review-crown"></i>
+                            <i class="review-ranking"><span>01</span></i>
+                            <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                            </div>
                         </div>
                     </li>
                     <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                        <div class="thumb-wrap">
+                            <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
+                            <i class="review-crown"></i>
+                            <i class="review-ranking"><span>01</span></i>
+                            <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                            </div>
                         </div>
                     </li>
                     <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
-                        </div>
-                    </li>
-                    <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
-                        </div>
-                    </li>
-                    <li>
-                        <i class="review-crown"></i>
-                        <i class="review-ranking"><span>01</span></i>
-                        <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                        <div class="thumb-wrap">
+                            <!-- 11위 부터는 <i class="review-crown"> 태그 삭제 -->
+                            <i class="review-crown"></i>
+                            <i class="review-ranking"><span>01</span></i>
+                            <div class="thumb-package" th:replace="part/thumbnail :: thumbnail-review">
+                            </div>
                         </div>
                     </li>
                 </ul>
             </div>
-        </li>
-        <li>내용4</li>
-        <li>내용5</li>
-        <li>내용6</li>
-        <li>내용7</li>
-        <li>내용8</li>
-        <li>내용9</li>
-    </ul>
 </th:block>
 
 <!--썸네일 목록 : 상품상세 연관상품 슬라이드 썸네일 (형태별로 명칭 변경 1행 3열)-->
