@@ -555,4 +555,18 @@
         <li>보상내역</li>
     </ul>
 </div>
+<script>
+    function orders(menu){
+        $.ajax({
+            url: '/myPage/orders.ajax'
+            ,type: 'post'
+            ,data: {
+                'menu':menu
+            }
+        }).done(function(res){
+            $('#orderProductList').replaceWith(res);
+        })
+    }
+
+</script>
 </th:block>

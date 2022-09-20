@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
+import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
+
+    private final ShopRepo shopRepo;
 
     @GetMapping(value = { "", "index"})
     public ModelAndView index(){
@@ -59,6 +62,9 @@ public class MainController {
         if(paramMap.containsKey("menu")){
             mav.addObject("menu", paramMap.getString("menu"));
             mav.addObject("active", "on");
+            if(paramMap.getString("menu").equals("myOrder")){
+                mav.addObject("shopList", shopRepo.findAll());
+            }
         }
         return mav;
     }
