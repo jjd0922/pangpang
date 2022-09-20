@@ -47,6 +47,7 @@ public class EnumClasses {
         enumClasses.put("g_state","GState");
         enumClasses.put("g_stock_state","GStockState");
         enumClasses.put("hw_state","HwState");
+        enumClasses.put("hw_type","HwType");
         enumClasses.put("ig_state","IgState");
         enumClasses.put("loc_form","LocForm");
         enumClasses.put("loc_state","LocState");

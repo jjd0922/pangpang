@@ -40,6 +40,11 @@
         }
     });
 
+    // nav 전체카테고리 클릭시 펼침
+    $('.menu-btn-wrap').click(function() {
+        $('.gnb-ctg-all').toggle();
+    });
+
     <!-- index 페이지 -->
     /*** 메인 이미지 슬라이드 [swiper] ***/
     var swiper = new Swiper('.swiper-main-image', {
@@ -452,7 +457,11 @@
         $('.cate-table2>li:first-child').toggleClass('on')
 
     });
-
+    //상품 보기 정렬
+    $('.itemSort').click(function() {
+        $(this).addClass('on');
+        $(this).siblings().removeClass('on');
+    });
 
     /*** 마이쇼핑 ***/
     // 마이쇼핑 상단 tab 메뉴
@@ -486,8 +495,5 @@
     //
     //     $('.asApplication-tab-content>li').eq($Idx).addClass('on').siblings().removeClass('on');
     // });
-
-
-
 
 </script>

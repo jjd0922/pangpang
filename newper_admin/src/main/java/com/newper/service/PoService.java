@@ -3,10 +3,7 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.component.SessionInfo;
-import com.newper.constant.HwState;
-import com.newper.constant.PnType;
-import com.newper.constant.PoState;
-import com.newper.constant.PsType;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
@@ -51,7 +48,7 @@ public class PoService {
 
     /** 발주(po) 생성 */
     @Transactional
-    public Integer savePo(ParamMap paramMap, MultipartFile poFile) {
+    public Integer savePo(ParamMap paramMap, MultipartFile poFile, SessionInfo sessionInfo) {
         //replaceComma
         paramMap.replaceComma("poTotalAmount");
         paramMap.replaceComma("poSellTotalAmount");
@@ -104,16 +101,16 @@ public class PoService {
             }
             ParamMap ppParam = new ParamMap();
             ppParam.put("ppMemo", paramMap.getString("ppMemo_" + i));
-            ppParam.put("ppCost", paramMap.replaceComma("ppCost_" + i));
-            ppParam.put("ppCount", paramMap.getString("ppCount_" + i));
+            ppParam.put("ppCost", paramMap.getString("ppCost_" + i).replaceAll("[^0-9]", ""));
+            ppParam.put("ppCount", paramMap.getString("ppCount_" + i).replaceAll("[^0-9]", ""));
             ppParam.put("ppProfitTarget", paramMap.onlyNumber("ppProfitTarget_" + i));
             ppParam.put("ppFixMemo", paramMap.getString("ppFixMemo_" + i));
-            ppParam.put("ppFixCost", paramMap.replaceComma("ppFixCost_" + i));
+            ppParam.put("ppFixCost", paramMap.getString("ppFixCost_" + i).replaceAll("[^0-9]", ""));
             ppParam.put("ppPaintMemo", paramMap.getString("ppPaintMemo_" + i));
-            ppParam.put("ppPaintCost", paramMap.replaceComma("ppPaintCost_" + i));
+            ppParam.put("ppPaintCost", paramMap.getString("ppPaintCost_" + i).replaceAll("[^0-9]", ""));
             ppParam.put("ppProcessMemo", paramMap.getString("ppProcessMemo_" + i));
-            ppParam.put("ppProcessCost", paramMap.replaceComma("ppProcessCost_" + i));
-            ppParam.put("ppSellPrice", paramMap.replaceComma("ppSellPrice_"+i));
+            ppParam.put("ppProcessCost", paramMap.getString("ppProcessCost_" + i).replaceAll("[^0-9]", ""));
+            ppParam.put("ppSellPrice", paramMap.getString("ppSellPrice_"+i).replaceAll("[^0-9]", ""));
 
             PoProduct poProduct = ppParam.mapParam(PoProduct.class);
 
@@ -146,6 +143,34 @@ public class PoService {
 
             poProductRepo.save(poProduct);
         }
+
+        // hiworks setting
+        int hwCnt = 0;
+        if (StringUtils.hasText(paramMap.getString("hwCnt"))) {
+            hwCnt = paramMap.getInt("hwCnt");
+        }
+        List<Map<String,Object>> hiworksList = new ArrayList<>();
+        for (int i = 0; i < hwCnt; i++) {
+            if (!StringUtils.hasText(paramMap.getString("hwAprvId_"+i))) {
+                continue;
+            }
+            Hiworks hiworks = Hiworks.builder()
+                    .hwAprvId(paramMap.getString("hwAprvId_"+i))
+                    .hwType(HwType.valueOf(paramMap.getString("hwType_"+i)))
+                    .hwState(HwState.BEFORE)
+                    .user(User.builder().uIdx(sessionInfo.getIdx()).build())
+                    .hwMemo(paramMap.getString("hwMemo_"+i))
+                    .build();
+            hiworksRepo.save(hiworks);
+
+            Map<String,Object> hiworksMap = new HashMap<>();
+            hiworksMap.put("order", i);
+            hiworksMap.put("hwIdx", hiworks.getHwIdx());
+            hiworksMap.put("poIdx", po.getPoIdx());
+            hiworksList.add(hiworksMap);
+        }
+        poMapper.insertPoHiworks(hiworksList);
+
         return po.getPoIdx();
     }
 
@@ -262,6 +287,8 @@ public class PoService {
 
             poProductRepo.save(poProduct);
         }
+
+        // hiworks setting
     }
 
     /** 견적서(po_estimate), 견적서-상품 관계테이블(po_estimate_product) 생성 */
@@ -392,7 +419,6 @@ public class PoService {
                 Hiworks hiworks = Hiworks
                         .builder()
                         .hwState(HwState.REQ)
-                        .hwType("PO")
                         .hwReqDate(LocalDate.now())
                         .hwReqTime(LocalTime.now())
                         .hwAprvId("")

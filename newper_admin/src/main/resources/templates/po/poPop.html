@@ -90,55 +90,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-3">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">구매담당자</span>
-                                                        </span>
-                                                        <input type="text" name="uName" class="form-control" readonly>
-                                                        <input type="hidden" name="uIdx">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-3">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의상태</span>
-                                                        </span>
-                                                        <input name="poState" class="form-control" readonly th:value="${po?.poState?.option}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-3">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의 승인/반려자</span>
-                                                        </span>
-                                                        <input type="text" name="hwAprvId" class="form-control" th:value="${po?.hiworks?.hwAprvId}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-3">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">품의 승인/반려일</span>
-                                                        </span>
-                                                        <input type="text" name="hwAprvDate" class="form-control" th:value="${po?.hiworks?.hwAprvDate}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                             <div class="col-sm-12 col-md-3">
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -167,7 +118,32 @@
                                             </div>
 
                                             <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">구매담당자</span>
+                                                        </span>
+                                                        <input type="text" name="uName" class="form-control" readonly>
+                                                        <input type="hidden" name="uIdx">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">품의상태</span>
+                                                        </span>
+                                                        <input name="poState" class="form-control" readonly th:value="${po?.poState?.option}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
@@ -177,11 +153,46 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
-                                        <legend class="mt-3">2. 구매개요</legend>
+                                        <legend class="mt-3">
+                                            2. 품의경로<a class="btn btn-sm btn-primary ml-2" onclick="showUserModal()">추가</a>
+                                        </legend>
+                                        <select name="hwType" class="form-control select2-hidden-accessible">
+                                            <option th:each="opt: ${T(com.newper.constant.HwType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                        </select>
+                                        <input type="hidden" name="hwCnt">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <td>NO</td>
+                                                    <td>담당자</td>
+                                                    <td>구분</td>
+                                                    <td>메모</td>
+                                                    <td>결과</td>
+                                                    <td>승인메모</td>
+                                                    <td>처리일</td>
+                                                    <td>삭제</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="courseTbody">
+                                                <tr id="courseDefault">
+                                                    <td colspan="8">품의경로를 입력하십시오</td>
+                                                </tr>
+                                                <tr th:if="${poHiworks != null}">
+                                                    <td class="dragula-handle"><i class="icon-menu-open dragula-handle"></i>NO</td>
+                                                    <td>담당자</td>
+                                                    <td>구분</td>
+                                                    <td>메모</td>
+                                                    <td>결과</td>
+                                                    <td>승인메모</td>
+                                                    <td>처리일</td>
+                                                    <td><a onclick="deleteCourse($(this))" class="btn btn-sm btn-warning">삭제</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <legend class="mt-3">3. 구매개요</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-3">
@@ -217,7 +228,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미수대금</span>
                                                         </span>
-                                                        <input type="text" name="poBuyReceiveAmount" class="form-control" th:value="${po?.poBuyReceiveAmount}">
+                                                        <input type="text" name="poBuyReceiveAmount" class="form-control text-right" th:value="${po?.poBuyReceiveAmount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -229,7 +240,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미지급대금</span>
                                                         </span>
-                                                        <input type="text" name="poBuyUnpaidAmount" class="form-control" th:value="${po?.poBuyUnpaidAmount}">
+                                                        <input type="text" name="poBuyUnpaidAmount" class="form-control text-right" th:value="${po?.poBuyUnpaidAmount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,7 +252,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총구매액</span>
                                                         </span>
-                                                        <input type="text" name="poTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poTotalAmount,1,'COMMA')}" readonly>
+                                                        <input type="text" name="poTotalAmount" class="form-control text-right" th:value="${#numbers.formatInteger(po?.poTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,7 +296,7 @@
                                             </div>
                                         </div>
 
-                                        <legend class="pt-3">3. 판매개요</legend>
+                                        <legend class="pt-3">4. 판매개요</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-3">
@@ -321,7 +332,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미수대금</span>
                                                         </span>
-                                                        <input type="text" name="poSellReceiveAmount" class="form-control" th:value="${po?.poSellReceiveAmount}">
+                                                        <input type="text" name="poSellReceiveAmount" class="form-control text-right" th:value="${po?.poSellReceiveAmount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -333,7 +344,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">미지급대금</span>
                                                         </span>
-                                                        <input type="text" name="poUnpaidAmount" class="form-control" th:value="${po?.poSellUnpaidAmount}">
+                                                        <input type="text" name="poUnpaidAmount" class="form-control text-right" th:value="${po?.poSellUnpaidAmount}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,7 +356,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">총판매액</span>
                                                         </span>
-                                                        <input type="text" name="poSellTotalAmount" class="form-control" th:value="${#numbers.formatInteger(po?.poSellTotalAmount,1,'COMMA')}" readonly>
+                                                        <input type="text" name="poSellTotalAmount" class="form-control text-right" th:value="${#numbers.formatInteger(po?.poSellTotalAmount,1,'COMMA')}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -387,7 +398,7 @@
                                             </div>
                                         </div>
 
-                                        <legend class="mt-3">4. 계약조건</legend>
+                                        <legend class="mt-3">5. 계약조건</legend>
                                         <div class="row">
                                             <!-- 입력필드 -->
                                             <div class="col-sm-12 col-md-3">
@@ -486,7 +497,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text requested">매입운송비</span>
                                                         </span>
-                                                        <input type="text" name="poDeliveryCost" class="form-control text-won" th:value="${#numbers.formatInteger(po?.poDeliveryCost,1,'COMMA')}" placeholder="0">
+                                                        <input type="text" name="poDeliveryCost" class="form-control text-right calculate" th:value="${#numbers.formatInteger(po?.poDeliveryCost,1,'COMMA')}" placeholder="0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -577,7 +588,7 @@
                                             </div>
                                         </div>
 
-                                        <legend class="mt-3">5. 상품정보
+                                        <legend class="mt-3">6. 상품정보
                                             <a onclick="openProductModal()" class="btn btn-sm btn-primary ml-1">검색</a>
                                         </legend>
                                         <div class="row overflow-x-scroll">
@@ -619,13 +630,13 @@
                                                         <td th:text="${#numbers.formatInteger(i?.P_COST, 1, 'COMMA')}"></td>
                                                         <td th:text="${i.SPEC_BUY}"></td>
                                                         <td th:text="${i.SPEC_SELL}"></td>
-                                                        <td><a onclick="deleteRow($(this))" class="btn btn-sm btn-warning">삭제</a></td>
+                                                        <td><a onclick="deleteProduct($(this))" class="btn btn-sm btn-warning">삭제</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
 
-                                        <legend class="mt-3">6. 상품예상공정</legend>
+                                        <legend class="mt-3">7. 상품예상공정</legend>
                                         <div class="row overflow-x-scroll">
                                             <table class="table">
                                                 <thead>
@@ -654,7 +665,7 @@
                                             </table>
                                         </div>
 
-                                        <legend class="mt-3">7. 상품수익률</legend>
+                                        <legend class="mt-3">8. 상품수익률</legend>
                                         <div class="row overflow-x-scroll">
                                             <table class="table">
                                                 <thead>
@@ -732,6 +743,10 @@
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
 
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
 <!-- input -->
@@ -754,6 +769,15 @@
 
 
 <script>
+    var dnd = dragula([document.querySelector('#courseTbody')], {
+        mirrorContainer: document.querySelector('#courseTbody'),
+        moves: function (el, container, handle) {
+            return handle.classList.contains('dragula-handle');
+        }
+    }).on('drop', function () {
+        resetCourseNo();
+    });
+
     function openContractModal() {
         var comIdx = $('input[name=comIdxBuy]').val();
         if (comIdx == '') {
@@ -768,10 +792,8 @@
 
     function selectUser(row) {
         var rowData = getDatatablemap('userModalTable', row);
-
+        prependRowToCourseTable(rowData);
         $('#searchUserModal').modal('hide');
-        $('input[name=uName]').val(rowData.U_NAME);
-        $('input[name=uIdx]').val(rowData.U_IDX);
     }
 
     function saveAction(){
@@ -830,8 +852,18 @@
         $('#contractModal').modal('hide');
     }
 
-    /** 테이블 행 삭제*/
-    function deleteRow(el) {
+    /**품의경로 삭제*/
+    function deleteCourse(el) {
+        var target = el.closest('tr');
+        target.remove();
+        if ($('#courseTbody tr').length < 1) {
+            $('#courseTbody').append('<tr id="courseDefault"><td colspan="8">품의경로를 입력하십시오</td></tr>');
+        }
+        resetCourseNo();
+    }
+
+    /** 상품삭제*/
+    function deleteProduct(el) {
         var target = el.closest('tr');
         var rowIdx = target.index();
         target.remove();
@@ -845,6 +877,40 @@
         if ($('#rateTbody tr').length < 2) {
             $('.defaultRow').attr('hidden', false);
         }
+    }
+
+    var poOrder = 0;
+    if ([[${poProduct != null}]]) {
+        poOrder = $('#productTbody tr').length;
+    }
+    /**품의경로 테이블 새로운 행 더하기*/
+    function prependRowToCourseTable(data) {
+        $('#courseDefault').remove();
+        $('#courseTbody').prepend(
+            '<tr>' +
+            '   <td class="dragula-handle course-no"><i class="icon-menu-open"></i>'+($('#courseTbody tr').length+1)+'</td>' +
+            '   <td><input type="hidden" name="hwAprvId_'+poOrder+'" value="'+data.U_ID+'">'+data.U_NAME+'</td>' +
+            '   <td id="hwType_'+poOrder+'"></td>' +
+            '   <td><input type="text" name="hwMemo_'+poOrder+'" class="form-control"></td>' +
+            '   <td></td>' +
+            '   <td></td>' +
+            '   <td></td>' +
+            '   <td><a onclick="deleteCourse($(this))" class="btn btn-sm btn-warning">삭제</a></td>' +
+            '</tr>'
+        );
+
+        $('#hwType_'+poOrder).append($('select[name=hwType]:first').clone().removeClass('select2-hidden-accessible').attr('name','hwType_'+poOrder));
+
+        poOrder++;
+        $('input[name=hwCnt]').val(poOrder);
+    }
+
+    /**품의경로 no 다시 부여*/
+    function resetCourseNo() {
+        var len = $('.course-no').length - $('.gu-mirror').length;
+        $.each($('.course-no'), function (index, value) {
+            $(this).html('<i class="icon-menu-open dragula-handle"></i>'+len--);
+        });
     }
 
     var cnt = 0;
@@ -871,7 +937,7 @@
             '   <td>'+comma(data.P_COST)+'</td>' +
             '   <td id="poBuySpec_'+cnt+'"></td>' +
             '   <td id="poSellSpec_'+cnt+'"></td>' +
-            '   <td><a href="#" onclick="deleteRow($(this))" class="badge badge-warning">삭제</a></td>' +
+            '   <td><a href="#" onclick="deleteProduct($(this))" class="badge badge-warning">삭제</a></td>' +
             '</tr>'
         );
 
@@ -1084,6 +1150,9 @@
     });
     $('select[name=poDeliveryMain]').on('change', function (event) {
         changePoDeliveryMain($(event.target));
+    });
+    $('#userModalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchUserForCompany();return false;}
     });
 </script>
 <script th:inline="javascript" th:if="${poProduct != null}">
