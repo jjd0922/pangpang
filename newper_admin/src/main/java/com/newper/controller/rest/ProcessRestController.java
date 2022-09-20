@@ -1,5 +1,7 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.CgsType;
+import com.newper.constant.GState;
 import com.newper.constant.GgtType;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
@@ -39,7 +41,6 @@ public class ProcessRestController {
     @PostMapping("board.dataTable")
     public ReturnDatatable board(ParamMap paramMap) {
         ReturnDatatable returnDatatable = new ReturnDatatable("공정보드");
-
         paramMap.multiSelect("gState");
 
         returnDatatable.setData(goodsMapper.selectProcessBoardDatatable(paramMap.getMap()));
@@ -101,12 +102,11 @@ public class ProcessRestController {
     }
     /**재검수관리 페이지 조회테이블**/
     @PostMapping("recheck.dataTable")
-    public ReturnDatatable recheck(ParamMap paramMap, HttpServletResponse response) {
+    public ReturnDatatable recheck(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("재검수관리");
-
-        //임의로 userMapper 사용
-        rd.setData(userMapper.selectUserDatatable(paramMap.getMap()));
-        rd.setRecordsTotal(userMapper.countUserDatatable(paramMap.getMap()));
+        paramMap.put("cgType", "RE");
+        rd.setData(processMapper.selectCheckDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countCheckDatatable(paramMap.getMap()));
         return rd;
     }
     /** 입고검수 임시 테이블. return ggt_idx*/
@@ -121,8 +121,21 @@ public class ProcessRestController {
     @PostMapping("incheckPop.ajax")
     public ReturnMap incheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
+        paramMap.put("gState", GState.CHECK_NEED);
+        paramMap.put("cgsType", CgsType.IN);
         checkService.insertCheckGroup(paramMap);
         rm.setMessage("입고검수 요청 완료");
+        return rm;
+    }
+
+    /**입고검수 그룹 등록*/
+    @PostMapping("recheckPop.ajax")
+    public ReturnMap recheckPop(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        paramMap.put("gState", GState.CHECK_RE);
+        paramMap.put("cgsType", CgsType.RE);
+        checkService.insertCheckGroup(paramMap);
+        rm.setMessage("재검수 요청 완료");
         return rm;
     }
 

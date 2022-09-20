@@ -144,4 +144,32 @@
                 LEFT JOIN RESELL_GOODS ON RS_IDX = RG_RS_IDX
                 LEFT JOIN GOODS ON RG_G_IDX = G_IDX
     </select>
+
+    <sql id="includeCheckDatatable">
+        <if test="cgType != null and cgType != ''">AND CG_TYPE = #{cgType}</if>
+    </sql>
+    
+    <select id="selectCheckDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            CHECK_GROUP
+        <where>
+            <include refid="includeCheckDatatable"></include>
+        </where>
+        <if test="length != -1">
+        LIMIT
+            #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countCheckDatatable" resultType="Long">
+        SELECT
+            *
+        FROM
+            CHECK_GROUP
+        <where>
+            <include refid="includeCheckDatatable"></include>
+        </where>
+    </select>
 </mapper>

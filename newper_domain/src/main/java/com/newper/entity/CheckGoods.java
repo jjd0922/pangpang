@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicInsert
@@ -51,4 +53,15 @@ public class CheckGoods {
 
     private String porSpec;
 
+    private String cgsPaintMemo;
+    private int cgsPaintCost;
+
+    private String cgsFixMemo;
+    private int cgsFixCost;
+
+    private String cgsProcessMemo;
+    private int cgsProcessCost;
+
+    private List<Map<String, Object>> cgsFile;
+    private String cgsMemo;
 }

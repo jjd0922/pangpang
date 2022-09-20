@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -40,4 +41,10 @@ public interface ProcessMapper {
 
     /** 자산 반품 */
     void updateResellGoods(Map<String, Object> map);
+
+    /** 검수 그룹 데이터테이블 조회 */
+    List selectCheckDatatable(Map<String, Object> map);
+
+    /** 검수 그룹 개수 조회 */
+    long countCheckDatatable(Map<String, Object> map);
 }

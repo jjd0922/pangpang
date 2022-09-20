@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-/** CHECK_GOODS.CGS_TYPE 검수 타입 */
-public enum CgsType implements EnumOption {
+/** CHECK_GROUP.CG_TYPE 검수 타입 */
+public enum CgType implements EnumOption {
 
     IN("입고검수"),
     RE("재검수"),
