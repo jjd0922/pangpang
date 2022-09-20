@@ -329,6 +329,37 @@
             }
         });
     }
+
+    function locBarcode2(data) {
+        $('#locationGoodsTbody').empty();
+
+        var html = '';
+        $.each(data, function (index, value) {
+            html += '<tr>' +
+                '<td>' + value.G_STATE+ '</td>' +
+                '<td>' + value.G_BARCODE + '</td>' +
+                '<td>' + value.P_IDX + '</td>' +
+                '<td>' + value.P_NAME + '</td>' +
+                '<td>' + value.PS_TYPE + '</td>' +
+                '<td>' + value.LOC_WH_IDX + '</td>' +
+                '<td>' + value.LOC_FORM + '</td>' +
+                '<td>' + value.LOC_ZONE + '</td>' +
+                '<td>' + value.LOC_COLUMN + '</td>' +
+                '<td>' + value.LOC_ROW + '</td>' +
+                '<td>' + value.LOC_CODE + '</td>' +
+                '<td>' + value.G_IMEI + '</td>' +
+                '<td></td>' +
+                '<td>' + value.G_PO_IDX + '</td>' +
+                '<td><a onclick="deleteRow2($(this))" class="badge badge-secondary">삭제</a></td>' +
+                /* '<td><a onclick="deleteRow(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +*/
+                '</tr>';
+        })
+
+        $('#locationGoodsTbody').append(html);
+    }
+
+
+
 </script>
 <script th:inline="javascript">
     $('#searchWarehouseBtn').on('click', openWarehouseModal);

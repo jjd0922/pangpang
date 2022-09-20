@@ -49,4 +49,23 @@
     function focusOnBarcode() {
         $('input[name=barcode]').val('');
     }
+
+
+    function openBarcodeModal2(modalTitle) {
+        if (modalTitle == '자산등록(바코드)' && $('input[name=locIdx]').val() == null) {
+            alert('창고를 선택해 주세요');
+            return false;
+        }
+
+        if (modalTitle == '자산등록(바코드)') {
+            $('input[name=barcode]').attr('onKeypress', 'if(event.keyCode==13){locBarcode2(this)}');
+        }
+
+        $('#barcodeModal').modal('show');
+        $('#barcodeModal .modal-title').text(modalTitle);
+
+        var barcodeInput = $('input[name="barcode"]');
+        barcodeInput.val("").focus();
+        return barcodeInput;
+    }
 </script>

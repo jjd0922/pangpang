@@ -32,4 +32,34 @@
                 (#{i}, #{specIdx}, #{item})
             </foreach>
     </insert>
+    <select id="selectSpecDataTable" resultType="Map">
+        SELECT
+        CATE_SPEC_LIST,
+        PP_SPEC_IDX,
+        POR_IN_SPEC_IDX,
+        PP_SPEC_IDX2
+       /* PX_BOM_IDX*/
+        FROM
+        PO_PRODUCT
+        LEFT JOIN PRODUCT ON P_IDX = PP_P_IDX
+        LEFT JOIN PO ON PP_IDX = PP_PO_IDX
+        LEFT JOIN CATEGORY ON CATE_IDX = P_CATE_IDX
+        LEFT JOIN PO_RECEIVED ON PP_IDX = POR_PP_IDX
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countSpecDataTable" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        PO_PRODUCT
+        LEFT JOIN PRODUCT ON P_IDX = PP_P_IDX
+        LEFT JOIN PO ON PP_IDX = PP_PO_IDX
+        LEFT JOIN PO_RECEIVED ON PP_IDX = POR_PP_IDX
+    </select>
+
+
+
 </mapper>

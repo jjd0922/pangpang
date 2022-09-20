@@ -38,19 +38,19 @@
       buttons: buttonsSelect(false),
       serverSide: true,
       ajax:{
-        url:'/warehouse/location.dataTable',
+        url:'/stock/spec.dataTable',
         type:'post'
       },
       columns : [
         {'title':'No','data':'No','render':function(data,type,full,meta){
             return meta.settings._iDisplayStart+meta.row+1;
           }}
-        ,{'title':'스펙명','data':'', 'defaultContent':''}
-        ,{'title':'입고SPEC(예정)','data':'', 'defaultContent':''}
-        ,{'title':'입고SPEC(확정)','data':'', 'defaultContent':''}
-        ,{'title':'판매SPEC(예정)','data':'', 'defaultContent':''}
-        ,{'title':'가공SPEC(예정)','data':'', 'defaultContent':''}
-        ,{'title':'가공SPEC(확정)','data':'', 'defaultContent':''}
+        ,{'title':'스펙명','data':'CATE_SPEC_LIST', 'defaultContent':''}
+        ,{'title':'입고SPEC(예정)','data':'PP_SPEC_IDX', 'defaultContent':''}
+        ,{'title':'입고SPEC(확정)','data':'POR_IN_SPEC_IDX', 'defaultContent':''}
+        ,{'title':'판매SPEC(예정)','data':'PP_SPEC_IDX2', 'defaultContent':''}
+        ,{'title':'가공SPEC(예정)','data':null, 'defaultContent':''}
+        ,{'title':'가공SPEC(확정)','data':null, 'defaultContent':''}
       ]
     });
   }
