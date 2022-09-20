@@ -1,0 +1,123 @@
+<th:block th:fragment="myOrderProductList">
+    <div id="orderProductList">
+        <h3 class="font-xxlg bold">전체 주문 내역</h3>
+        <!-- 조회기간 -->
+        <div class="inquiryPeriod">
+            <div>
+                <p class="semi-bold font-md">조회기간</p>
+                <ul class="period-btn-wrap">
+                    <li class="btn btn8 period-btn">
+                        <a href="javascript:;">오늘</a>
+                    </li>
+                    <li class="btn btn8 period-btn">
+                        <a href="javascript:;">1개월</a>
+                    </li>
+                    <li class="btn btn8 period-btn">
+                        <a href="javascript:;">3개월</a>
+                    </li>
+                    <li class="btn btn8 period-btn">
+                        <a href="javascript:;">6개월</a>
+                    </li>
+                    <li class="btn btn8 period-btn">
+                        <a href="javascript:;">1년</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p class="semi-bold font-md">기간설정</p>
+                <div class="date-input-wrap">
+                    <input type="date" id="date1">
+                    <span>&nbsp;~&nbsp;</span>
+                    <input type="date" id="date2">
+                </div>
+            </div>
+            <div class="btn btn2 periodSearch-btn">
+                <a href="javascript:;">검색</a>
+            </div>
+        </div>
+        <!-- 주문 내역 -->
+        <p class="color-grey666">* 주문조회기간은 최대 3년 전까지 조회가 가능합니다.</p>
+        <div>
+            <!-- 주문 내역 테이블 제목 -->
+            <ul class="myShopping-table-title recent-orderHistory font-sm">
+                <li>주문일자</li>
+                <li>상품명</li>
+                <li>AS기간</li>
+                <li>수량</li>
+                <li>결제금액</li>
+                <li>주문현황</li>
+                <li>상세조회</li>
+            </ul>
+            <!-- 주문 내역 상품 리스트 -->
+            <ul class="recent-orderHistory-list">
+                <!-- 상품 1 -->
+                <li class="myShopping-table-item orderHistory-item" th:each="shop:${shopList}">
+                    <ul>
+                        <!-- 주문일자 -->
+                        <li>
+                            <p class="semi-bold" th:text="${shop.createdDate}">2022-08-10</p>
+                            <div class="color-grey999">
+                                <p>주문번호</p>
+                                <p th:text="${shop.shopIdx}">16616564654535</p>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
+                                </a>
+                            </div>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold" th:text="${shop.shopName}">삼성 노트북 코어i5 램8G SSD 대용량
+                                            듀얼하드 윈10</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>용량 : 램 8G SSD 대용량</p>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- AS기간 -->
+                        <li class="as-period">
+                            <p class="color-blue semi-bold">AS케어상품</p>
+                            <p>3개월 무상 (기본제공)</p>
+                            <p>-</p>
+                            <p>2022-08-01&#8764;<br>2022-10-01</p>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-sm semi-bold">1개</p>
+                        </li>
+                        <!-- 결제금액 -->
+                        <li>
+                            <p class="font-sm">179,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 주문현황 -->
+                        <li>
+                            <p class="color-blue">상품준비중</p>
+                            <!-- 배송완료 시 아래 <div> 태그 추가
+                            <p>배송완료</p>
+                            <div>
+                                <p>CJ 대한통운</p>
+                                <p class="color-grey999">5612121212135</p>
+                            </div> -->
+                        </li>
+                        <!-- 상세조회 -->
+                        <li>
+                            <div>
+                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</th:block>
