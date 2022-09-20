@@ -14,9 +14,9 @@
 <th:block th:replace="part/modal :: login-modal"></th:block>
 
 <!--페이지 타이틀-->
-<section th:insert="part/title :: pageTitle('고객센터','')" class="pageTitle"></section>
+<section th:insert="part/title :: pageTitle('고객센터','')" class="padding-section page-title-padding"></section>
 
-<section>
+<section class="padding-section">
     <div class="container">
         <ul class="cc-header">
             <li class="cc-header-left">
@@ -103,15 +103,16 @@
             <input type="hidden" name="menu">
         </form>
     </div>
+</section>
+<section class="padding-section">
         <!-- 고객센터 탭 내용 -->
         <ul class="cc-menu-content">
-            <section th:insert="custCenter/center :: ${menu}(${menu})"></section>
+            <li>
+            <th:block th:replace="custCenter/center :: ${menu}(${menu})"></th:block>
+            </li>
         </ul>
     </div><!-- // 고객센터 탭 내용 -->
 </section>
-
-
-
 
 <!-- 푸터 -->
 <th:block th:replace="part/footer :: main-footer"></th:block>
