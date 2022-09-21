@@ -95,6 +95,7 @@ public class PoService {
             throw new MsgException("상품을 선택해주세요");
         }
         int productCnt = paramMap.getInt("cnt");
+        List<PoProduct> poProducts = new ArrayList<>();
         for (int i = 0; i < productCnt; i++) {
             if (!StringUtils.hasText(paramMap.getString("pIdx_" + i))) {
                 continue;
@@ -141,8 +142,9 @@ public class PoService {
             poProduct.setPo(po);
             poProduct.setProduct(productRepo.getReferenceById(paramMap.getInt("pIdx_" + i, "유효한 상품이 아닙니다.")));
 
-            poProductRepo.save(poProduct);
+            poProducts.add(poProduct);
         }
+        poProductRepo.saveAll(poProducts);
 
         // hiworks setting
         int hwCnt = 0;
@@ -164,7 +166,7 @@ public class PoService {
             hiworksRepo.save(hiworks);
 
             Map<String,Object> hiworksMap = new HashMap<>();
-            hiworksMap.put("order", i);
+            hiworksMap.put("order", paramMap.getInt("order_"+i));
             hiworksMap.put("hwIdx", hiworks.getHwIdx());
             hiworksMap.put("poIdx", po.getPoIdx());
             hiworksList.add(hiworksMap);
@@ -176,7 +178,7 @@ public class PoService {
 
     /** 발주품의 수정 */
     @Transactional
-    public void updatePo(Integer poIdx, ParamMap paramMap, MultipartFile poFile) {
+    public void updatePo(Integer poIdx, ParamMap paramMap, MultipartFile poFile, SessionInfo sessionInfo) {
         Po po = poRepo.findById(poIdx).orElseThrow(() -> new MsgException("존재하지 않는 발주품의입니다."));
 
         //replaceComma
@@ -219,15 +221,7 @@ public class PoService {
         if (rowCnt == 0) {
             throw new MsgException("상품을 선택해주세요");
         }
-        List<Integer> ppIdxs = new ArrayList<>();
-        for (int i = 0; i < rowCnt; i++) {
-            try {
-                int ppIdx = paramMap.getInt("ppIdx_" + i);
-                ppIdxs.add(ppIdx);
-            } catch (NumberFormatException ne) {
-                continue;
-            }
-        }
+        List<Integer> ppIdxs = paramMap.getList("ppIdx");
         poMapper.deletePoProductBypoIdx(poIdx,ppIdxs);
 
         // pp 새로 setting
@@ -288,7 +282,35 @@ public class PoService {
             poProductRepo.save(poProduct);
         }
 
+        // poHiworks 삭제후 새로 setting
+        poMapper.deletePoHiworksBypoIdx(po.getPoIdx());
+
         // hiworks setting
+        int hwCnt = 0;
+        if (StringUtils.hasText(paramMap.getString("hwCnt"))) {
+            hwCnt = paramMap.getInt("hwCnt");
+        }
+        List<Map<String,Object>> hiworksList = new ArrayList<>();
+        for (int i = 0; i < hwCnt; i++) {
+            if (!StringUtils.hasText(paramMap.getString("hwAprvId_"+i))) {
+                continue;
+            }
+            Hiworks hiworks = Hiworks.builder()
+                                        .hwAprvId(paramMap.getString("hwAprvId_"+i))
+                                        .hwType(HwType.valueOf(paramMap.getString("hwType_"+i)))
+                                        .hwState(HwState.BEFORE)
+                                        .user(User.builder().uIdx(sessionInfo.getIdx()).build())
+                                        .hwMemo(paramMap.getString("hwMemo_"+i))
+                                    .build();
+            hiworksRepo.save(hiworks);
+
+            Map<String,Object> hiworksMap = new HashMap<>();
+            hiworksMap.put("order", paramMap.getInt("order_"+i));
+            hiworksMap.put("hwIdx", hiworks.getHwIdx());
+            hiworksMap.put("poIdx", po.getPoIdx());
+            hiworksList.add(hiworksMap);
+        }
+        poMapper.insertPoHiworks(hiworksList);
     }
 
     /** 견적서(po_estimate), 견적서-상품 관계테이블(po_estimate_product) 생성 */

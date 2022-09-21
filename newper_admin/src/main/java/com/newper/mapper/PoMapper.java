@@ -74,9 +74,15 @@ public interface PoMapper {
     /** 발주 상품 조회 */
     Map<String, Object> selectPoProductByPpIdx(int ppIdx);
 
-    /**po수정시 연결되어있던 pp모두 삭제 > 그이후 다시 등록할 것*/
+    /**po수정시 없어진 pp 삭제*/
     void deletePoProductBypoIdx(@Param("poIdx") Integer poIdx, @Param("ppIdxs") List<Integer> ppIdxs);
 
     /**po hiworks 관계테이블 insert*/
     void insertPoHiworks(@Param("list") List<Map<String,Object>> list);
+    
+    /** 발주품의 상세 > 품의경로 조회*/
+    List<Map<String,Object>> selectPoHiworksByPoIdx(@Param("poIdx") Integer poIdx);
+
+    /** po수정시 연결된 모든 po_hiworks 삭제 > 이후 새로 등록*/
+    void deletePoHiworksBypoIdx(@Param("poIdx") Integer poIdx);
 }
