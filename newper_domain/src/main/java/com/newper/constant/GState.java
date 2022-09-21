@@ -10,24 +10,20 @@ import lombok.Getter;
 public enum GState implements EnumOption {
 
     RECEIVED("입고")
-    ,CHECK_NEED("입고검수요청")
-    ,CHECK("입고검수")
+    ,CHECK_NEED("검수요청")
+
+    ,CHECK("검수")
+
     ,PROCESS("공정")
-    ,CHECK_RE("재검수요청")
-    ,CHECK_RE_PRO("재검수중")
-    ,STOCK_REQ("재고인계요청")
-    ,STOCK("적재")
+    ,STOCK("상품화완료")
+
     ,CANCEL_NEED("반품필요")
     ,CANCEL_REQ("반품요청")
-    ,CANCEL("반품진행중")
-    ,CANCEL_COMP("반품완료")
+    ,CANCEL_ING("반품진행중")
+    ,CANCEL_DONE("반품완료")
+
     ,LOSS("망실")
 
-    ,BEFORE_RELEASE_REQ("출고전검수요청")
-    ,BEFORE_RELEASE_OUT("출고전검수출고")
-    ,BEFORE_RELEASE_IN("출고전검수입고")
-    ,RELEASE_REQ("출고요청")
-    ,RELEASE("출고")
     ;
 
     private String option;

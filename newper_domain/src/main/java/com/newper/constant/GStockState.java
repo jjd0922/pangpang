@@ -9,7 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GStockState implements EnumOption {
 
-     N("상품화전 재고")
+     N("미적재")
+    ,STOCK_REQ("재고인계요청")
     ,STOCK("가용재고")
     ,OUT_REQ("출고재고")
     ,OUT("출고완료")
