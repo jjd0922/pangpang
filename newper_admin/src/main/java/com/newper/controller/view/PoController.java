@@ -56,6 +56,7 @@ public class PoController {
         ModelAndView mav = new ModelAndView("po/poPop");
         mav.addObject("po", poRepo.findPoByPoIdx(poIdx));
         mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
+        mav.addObject("poHiworks", poMapper.selectPoHiworksByPoIdx(poIdx));
         return mav;
     }
 
