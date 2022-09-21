@@ -63,6 +63,12 @@
                 ,success:function(res){
                     $('#myOrderOriginMenu').empty();
                     $('#myOrderOriginMenu').append(res);
+
+                    if($('#myOrderOriginTabMenu').length > 0){
+                        // action
+                        $('#myOrderOriginTabMenu').children('li').removeClass("on");
+                        $('#myOrderOriginTabMenu').find($('#originList')).addClass("on");
+                    }
                 }
                 ,error(){}
             })
