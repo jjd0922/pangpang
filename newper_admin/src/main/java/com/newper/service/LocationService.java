@@ -3,27 +3,19 @@ package com.newper.service;
 import com.newper.constant.GState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
+import com.newper.entity.GoodsStock;
 import com.newper.entity.Location;
+import com.newper.entity.User;
 import com.newper.exception.MsgException;
-import com.newper.mapper.BomMapper;
+import com.newper.mapper.LocationMapper;
 import com.newper.repository.GoodsRepo;
+import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.LocationRepo;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +23,14 @@ import java.util.Map;
 public class LocationService {
 
     private final LocationRepo locationRepo;
+    private final GoodsStockRepo goodsStockRepo;
     private final GoodsRepo goodsRepo;
 
+    private final LocationMapper locationMapper;
 
-    /** 재고인수(적재) 자산상태 적재로 수정 */
+    /**
+     * 재고인수(적재) 자산상태 적재로 수정
+     */
     @Transactional
     public void saveStockTake(ParamMap paramMap) {
         int locIdx = paramMap.getInt("locIdx");
@@ -49,7 +45,9 @@ public class LocationService {
         }
     }
 
-    /** 재고적재(바코드) 자산상태 적재로 수정 */
+    /**
+     * 재고적재(바코드) 자산상태 적재로 수정
+     */
     @Transactional
     public void saveStockBarcode(ParamMap paramMap) {
         int locIdx = paramMap.getInt("locIdx");
@@ -67,5 +65,40 @@ public class LocationService {
         }
 
         goods.setLocation(location);
+    }
+
+
+    /**
+     * 창고이동등록 자산 바코드 리딩
+     */
+
+    @Transactional
+    public List<Map<String, Object>> listStockBarcode(ParamMap paramMap) {
+
+
+        String barcode = paramMap.getString("barcode");
+        String[] gIdxs = barcode.substring(1, (barcode.length() - 0)).split(",");
+        System.out.println(gIdxs.length);
+
+/*            Goods goods = paramMap.mapParam(Goods.class);
+
+            if (paramMap.getString(goods.getGBarcode()).equals(barcode)){
+
+                return locationMapper.selectListGoodsByLocation(gIdxs);
+            }
+
+          */
+/*        Goods goods = goodsRepo.findBygBarcode(barcode);
+        if (goods == null) {
+            throw new MsgException("일치하는 바코드가 없습니다");
+        }*/
+
+    /*        for (int i = 0; i < gIdxs.length; i++) {
+
+                System.out.println("gIdxs = " + gIdxs[i]);
+            }*/
+
+
+        return  locationMapper.selectListGoodsByLocation(gIdxs);
     }
 }

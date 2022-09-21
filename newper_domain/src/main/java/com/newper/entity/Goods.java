@@ -40,7 +40,8 @@ public class Goods {
     @JoinColumn(name = "G_POR_IDX", referencedColumnName = "porIdx")
     private PoReceived poReceived;
 
-    /** 입고 확정 스펙*/
+/** 입고 확정 스펙*/
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_IN_SPEC_IDX", referencedColumnName = "specIdx")
     private Spec inSpec;

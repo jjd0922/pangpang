@@ -77,8 +77,9 @@ public class StockController {
 
     /**창고이동관리 > 창고이동등록 페이지*/
     @GetMapping("move/pop")
-    public ModelAndView stockMovePop() {
+    public ModelAndView stockMovePop(ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
+
         return mav;
     }
 
