@@ -71,350 +71,339 @@
             </li>
         </ul>
         <!-- 탭 메뉴 -->
-        <ul class="my-menu-tab">
-            <li onclick="openMenu('myOrder')" th:classappend="${menu == 'myOrder'}?'on':''"><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
-            <li onclick="openMenu('myGift')" th:classappend="${menu == 'myGift'}?'on':''"><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
-            <li onclick="openMenu('alarm')" th:classappend="${menu == 'alarm'}?'on':''"><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
-            <li onclick="openMenu('myList')" th:classappend="${menu == 'myList'}?'on':''"><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
-            <li onclick="openMenu('myInfo')" th:classappend="${menu == 'myInfo'}?'on':''"><i class="my-tab-icon5"></i>회원정보관리</li>
+        <ul class="my-menu-tab" id="myShoppingTabMenu">
+            <li onclick="openMenu('myOrder')" id="myOrder"><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
+            <li onclick="openMenu('myGift')" id="myGift"><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
+            <li onclick="openMenu('myAlarm')" id="myAlarm"><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
+            <li onclick="openMenu('myList')" id="myList"><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
+            <li onclick="openMenu('myInfo')" id="myInfo"><i class="my-tab-icon5"></i>회원정보관리</li>
         </ul>
-        <form method="post" name="myPage" id="myPage">
-            <input type="hidden" name="menu">
-        </form>
     </div>
 </div>
 
 <!-- 페이지 상단 5개 탭 클릭 시 보여지는 내용 -->
-
-<th:block th:if="${menu != null}">
-    <th:block th:replace="myPage/myMenu :: ${menu}(${menu})"></th:block>
-</th:block>
-<th:block th:if="${menu == null}">
-<!-- 진행 중인 주문 내역 -->
-<div class="container">
-    <div class="my-content-title">
-        <h2>진행 중인 주문 내역<i></i></h2>
-        <p class="font-lg">최근 3개월 기준</p>
-    </div>
-    <div class="my-content">
-        <ul class="orderHistory-progress">
-            <li>
-                <a href="javascript:;">
-                    <p>주문 접수</p>
-                    <p>0</p>
-                    <i></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>결제 완료</p>
-                    <p>0</p>
-                    <i></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>상품 준비중</p>
-                    <p>0</p>
-                    <i></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>배송출발</p>
-                    <p class="color-red">0</p>
-                    <i></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>배송중</p>
-                    <p class="color-red">1</p>
-                    <i></i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>배송완료</p>
-                    <p>0</p>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <p>취소/교환/반품</p>
-                    <p>0</p>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<!-- 최근 주문 내역 -->
-<div class="container">
-    <div class="my-content-title">
-        <h2>최근 주문 내역<i></i></h2>
-        <p class="font-lg">최근 1개월 기준</p>
-    </div>
-    <div class="my-content">
-        <!-- 최근 주문 내역 테이블 제목 -->
-        <ul class="myShopping-table-title recent-orderHistory font-sm">
-            <li>주문일자</li>
-            <li>상품명</li>
-            <li>AS기간</li>
-            <li>수량</li>
-            <li>결제금액</li>
-            <li>주문현황</li>
-            <li>상세조회</li>
-        </ul>
-        <!-- 최근 주문 내역 상품 리스트 -->
-        <ul class="recent-orderHistory-list">
-            <!-- 상품 1 -->
-            <li class="myShopping-table-item orderHistory-item">
-                <ul>
-                    <!-- 주문일자 -->
-                    <li>
-                        <p class="semi-bold">2022-08-10</p>
-                        <div class="color-grey999">
-                            <p>주문번호</p>
-                            <p>16616564654535</p>
-                        </div>
-                    </li>
-                    <!-- 상품명 -->
-                    <li>
-                        <div class="order-item-thumb">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                <p class="font-xsm color-grey999">001762984</p>
-                            </a>
-                        </div>
-                        <div class="order-item-info-wrap">
-                            <div>
-                                <a href="javascript:;">
-                                    <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                        듀얼하드 윈10</h3>
-                                </a>
-                            </div>
-                            <div class="font-xxsm order-item-info">
-                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
-                                <p>사이즈 : 15인치</p>
-                                <p>용량 : 램 8G SSD 대용량</p>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- AS기간 -->
-                    <li class="as-period">
-                        <p class="color-blue semi-bold">AS케어상품</p>
-                        <p>3개월 무상 (기본제공)</p>
-                        <p>-</p>
-                        <p>2022-08-01&#8764;<br>2022-10-01</p>
-                    </li>
-                    <!-- 수량 -->
-                    <li>
-                        <p class="font-sm semi-bold">1개</p>
-                    </li>
-                    <!-- 결제금액 -->
-                    <li>
-                        <p class="font-sm">179,000<span class="won">원</span></p>
-                    </li>
-                    <!-- 주문현황 -->
-                    <li>
-                        <p class="color-blue">상품준비중</p>
-                        <!-- 배송완료 시 아래 <div> 태그 추가
+<section id="myPageMenu">
+    <!-- 진행 중인 주문 내역 -->
+    <div class="container">
+        <div class="my-content-title">
+            <h2>진행 중인 주문 내역<i></i></h2>
+            <p class="font-lg">최근 3개월 기준</p>
+        </div>
+        <div class="my-content">
+            <ul class="orderHistory-progress">
+                <li>
+                    <a href="javascript:;">
+                        <p>주문 접수</p>
+                        <p>0</p>
+                        <i></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <p>결제 완료</p>
+                        <p>0</p>
+                        <i></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <p>상품 준비중</p>
+                        <p>0</p>
+                        <i></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <p>배송출발</p>
+                        <p class="color-red">0</p>
+                        <i></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <p>배송중</p>
+                        <p class="color-red">1</p>
+                        <i></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <p>배송완료</p>
-                        <div>
-                            <p>CJ 대한통운</p>
-                            <p class="color-grey999">5612121212135</p>
-                        </div> -->
-                    </li>
-                    <!-- 상세조회 -->
-                    <li>
-                        <div>
-                            <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                            <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <!-- 상품 2 -->
-            <li class="myShopping-table-item orderHistory-item">
-                <ul>
-                    <!-- 주문일자 -->
-                    <li>
-                        <p class="semi-bold">2022-08-10</p>
-                        <div class="color-grey999">
-                            <p>주문번호</p>
-                            <p>16616564654535</p>
-                        </div>
-                    </li>
-                    <!-- 상품명 -->
-                    <li>
-                        <div class="order-item-thumb">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                <p class="font-xsm color-grey999">001762984</p>
-                            </a>
-                        </div>
-                        <div class="order-item-info-wrap">
-                            <div>
-                                <a href="javascript:;">
-                                    <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                        듀얼하드 윈10</h3>
-                                </a>
-                            </div>
-                            <div class="font-xxsm order-item-info">
-                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
-                                <p>사이즈 : 15인치</p>
-                                <p>용량 : 램 8G SSD 대용량</p>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- AS기간 -->
-                    <li class="as-period">
-                        <p class="color-blue semi-bold">AS케어상품</p>
-                        <p>3개월 무상 (기본제공)</p>
-                        <p>-</p>
-                        <p>2022-08-01&#8764;<br>2022-10-01</p>
-                    </li>
-                    <!-- 수량 -->
-                    <li>
-                        <p class="font-sm semi-bold">1개</p>
-                    </li>
-                    <!-- 결제금액 -->
-                    <li>
-                        <p class="font-sm">179,000<span class="won">원</span></p>
-                    </li>
-                    <!-- 주문현황 -->
-                    <li>
-                        <p>배송완료</p>
-                        <div>
-                            <p>CJ 대한통운</p>
-                            <p class="color-grey999">5612121212135</p>
-                        </div>
-                    </li>
-                    <!-- 상세조회 -->
-                    <li>
-                        <div>
-                            <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                            <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<!-- 최근 본 상품 -->
-<div class="container">
-    <div class="my-content-title">
-        <h2>최근 본 상품<i></i></h2>
-        <p class="font-lg">최근 본 상품 기준으로 최대 10개 까지 저장됩니다.</p>
-    </div>
-    <div class="my-content">
-        <ul class="thumb-list lg-col-3 sm-col-6">
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-            </li>
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-            </li>
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-            </li>
-            <li>
-                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-            </li>
-        </ul>
-        <div class="paging-num semi-bold">
-            <span class="on">1</span>
-            <span>2</span>
-            <span>3</span>
+                        <p>0</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <p>취소/교환/반품</p>
+                        <p>0</p>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
 
-<!-- 작성 가능한 리뷰 -->
-<div class="container">
-    <div class="my-content-title">
-        <h2>작성 가능한 리뷰<i></i></h2>
-        <p class="font-lg">상품 리뷰는 결제 완료 후 작성 가능합니다.</p>
-    </div>
-    <div class="my-content">
-        <!-- 작성 가능한 리뷰 테이블 제목 -->
-        <ul class="myShopping-table-title writeableReview font-sm">
-            <li>주문일자</li>
-            <li>상품명</li>
-            <li>수량</li>
-            <li>결제금액</li>
-            <li>배송완료일</li>
-            <li>상세조회</li>
-        </ul>
-        <!-- 작성 가능한 리뷰 상품 리스트 -->
-        <ul class="writeableReview-list">
-            <!-- 상품 1 -->
-            <li class="myShopping-table-item writeableReview-item">
-                <ul>
-                    <!-- 주문일자 -->
-                    <li>
-                        <p class="semi-bold">2022-08-10</p>
-                        <div class="color-grey999">
-                            <p>주문번호</p>
-                            <p>16616564654535</p>
-                        </div>
-                    </li>
-                    <!-- 상품명 -->
-                    <li>
-                        <div class="order-item-thumb">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                <p class="font-xsm color-grey999">001762984</p>
-                            </a>
-                        </div>
-                        <div class="order-item-info-wrap">
-                            <div>
+    <!-- 최근 주문 내역 -->
+    <div class="container">
+        <div class="my-content-title">
+            <h2>최근 주문 내역<i></i></h2>
+            <p class="font-lg">최근 1개월 기준</p>
+        </div>
+        <div class="my-content">
+            <!-- 최근 주문 내역 테이블 제목 -->
+            <ul class="myShopping-table-title recent-orderHistory font-sm">
+                <li>주문일자</li>
+                <li>상품명</li>
+                <li>AS기간</li>
+                <li>수량</li>
+                <li>결제금액</li>
+                <li>주문현황</li>
+                <li>상세조회</li>
+            </ul>
+            <!-- 최근 주문 내역 상품 리스트 -->
+            <ul class="recent-orderHistory-list">
+                <!-- 상품 1 -->
+                <li class="myShopping-table-item orderHistory-item">
+                    <ul>
+                        <!-- 주문일자 -->
+                        <li>
+                            <p class="semi-bold">2022-08-10</p>
+                            <div class="color-grey999">
+                                <p>주문번호</p>
+                                <p>16616564654535</p>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-thumb">
                                 <a href="javascript:;">
-                                    <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                        듀얼하드 윈10</h3>
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
                                 </a>
                             </div>
-                            <div class="font-xxsm order-item-info">
-                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
-                                <p>사이즈 : 15인치</p>
-                                <p>용량 : 램 8G SSD 대용량</p>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                            듀얼하드 윈10</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>용량 : 램 8G SSD 대용량</p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <!-- 수량 -->
-                    <li>
-                        <p class="font-sm semi-bold">1개</p>
-                    </li>
-                    <!-- 결제금액 -->
-                    <li>
-                        <p class="font-sm">179,000<span class="won">원</span></p>
-                    </li>
-                    <!-- 배송완료일 -->
-                    <li>
-                        <p>2022-08-10</p>
-
-                    </li>
-                    <!-- 상세조회 -->
-                    <li>
-                        <div>
-                            <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                            <div class="btn btn2"><a href="javascript:;">리뷰작성하기</a></div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+                        </li>
+                        <!-- AS기간 -->
+                        <li class="as-period">
+                            <p class="color-blue semi-bold">AS케어상품</p>
+                            <p>3개월 무상 (기본제공)</p>
+                            <p>-</p>
+                            <p>2022-08-01&#8764;<br>2022-10-01</p>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-sm semi-bold">1개</p>
+                        </li>
+                        <!-- 결제금액 -->
+                        <li>
+                            <p class="font-sm">179,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 주문현황 -->
+                        <li>
+                            <p class="color-blue">상품준비중</p>
+                            <!-- 배송완료 시 아래 <div> 태그 추가
+                            <p>배송완료</p>
+                            <div>
+                                <p>CJ 대한통운</p>
+                                <p class="color-grey999">5612121212135</p>
+                            </div> -->
+                        </li>
+                        <!-- 상세조회 -->
+                        <li>
+                            <div>
+                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- 상품 2 -->
+                <li class="myShopping-table-item orderHistory-item">
+                    <ul>
+                        <!-- 주문일자 -->
+                        <li>
+                            <p class="semi-bold">2022-08-10</p>
+                            <div class="color-grey999">
+                                <p>주문번호</p>
+                                <p>16616564654535</p>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
+                                </a>
+                            </div>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                            듀얼하드 윈10</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>용량 : 램 8G SSD 대용량</p>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- AS기간 -->
+                        <li class="as-period">
+                            <p class="color-blue semi-bold">AS케어상품</p>
+                            <p>3개월 무상 (기본제공)</p>
+                            <p>-</p>
+                            <p>2022-08-01&#8764;<br>2022-10-01</p>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-sm semi-bold">1개</p>
+                        </li>
+                        <!-- 결제금액 -->
+                        <li>
+                            <p class="font-sm">179,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 주문현황 -->
+                        <li>
+                            <p>배송완료</p>
+                            <div>
+                                <p>CJ 대한통운</p>
+                                <p class="color-grey999">5612121212135</p>
+                            </div>
+                        </li>
+                        <!-- 상세조회 -->
+                        <li>
+                            <div>
+                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                <div class="btn btn4"><a href="javascript:;">영수증조회</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
-</th:block>
 
+    <!-- 최근 본 상품 -->
+    <div class="container">
+        <div class="my-content-title">
+            <h2>최근 본 상품<i></i></h2>
+            <p class="font-lg">최근 본 상품 기준으로 최대 10개 까지 저장됩니다.</p>
+        </div>
+        <div class="my-content">
+            <ul class="thumb-list lg-col-3 sm-col-6">
+                <li>
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </li>
+                <li>
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </li>
+                <li>
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </li>
+                <li>
+                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                </li>
+            </ul>
+            <div class="paging-num semi-bold">
+                <span class="on">1</span>
+                <span>2</span>
+                <span>3</span>
+            </div>
+        </div>
+    </div>
 
+    <!-- 작성 가능한 리뷰 -->
+    <div class="container">
+        <div class="my-content-title">
+            <h2>작성 가능한 리뷰<i></i></h2>
+            <p class="font-lg">상품 리뷰는 결제 완료 후 작성 가능합니다.</p>
+        </div>
+        <div class="my-content">
+            <!-- 작성 가능한 리뷰 테이블 제목 -->
+            <ul class="myShopping-table-title writeableReview font-sm">
+                <li>주문일자</li>
+                <li>상품명</li>
+                <li>수량</li>
+                <li>결제금액</li>
+                <li>배송완료일</li>
+                <li>상세조회</li>
+            </ul>
+            <!-- 작성 가능한 리뷰 상품 리스트 -->
+            <ul class="writeableReview-list">
+                <!-- 상품 1 -->
+                <li class="myShopping-table-item writeableReview-item">
+                    <ul>
+                        <!-- 주문일자 -->
+                        <li>
+                            <p class="semi-bold">2022-08-10</p>
+                            <div class="color-grey999">
+                                <p>주문번호</p>
+                                <p>16616564654535</p>
+                            </div>
+                        </li>
+                        <!-- 상품명 -->
+                        <li>
+                            <div class="order-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
+                                </a>
+                            </div>
+                            <div class="order-item-info-wrap">
+                                <div>
+                                    <a href="javascript:;">
+                                        <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                            듀얼하드 윈10</h3>
+                                    </a>
+                                </div>
+                                <div class="font-xxsm order-item-info">
+                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                    <p>사이즈 : 15인치</p>
+                                    <p>용량 : 램 8G SSD 대용량</p>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- 수량 -->
+                        <li>
+                            <p class="font-sm semi-bold">1개</p>
+                        </li>
+                        <!-- 결제금액 -->
+                        <li>
+                            <p class="font-sm">179,000<span class="won">원</span></p>
+                        </li>
+                        <!-- 배송완료일 -->
+                        <li>
+                            <p>2022-08-10</p>
 
+                        </li>
+                        <!-- 상세조회 -->
+                        <li>
+                            <div>
+                                <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                                <div class="btn btn2"><a href="javascript:;">리뷰작성하기</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-
+</section>
 
 
 <!-- 푸터 -->
@@ -430,9 +419,23 @@
 
 <script>
     function openMenu(menu){
-        $("input[name=menu]").val(menu);
-        document.myPage.action="/myPage";
-        document.myPage.submit();
+        $.ajax({
+            url: '/myPage/'+menu+'.load'
+            ,type:'post'
+            ,success:function (res){
+                $('#myPageMenu').empty();
+                $('#myPageMenu').append(res);
+
+                //action
+                $('#myShoppingTabMenu').children('li').removeClass("on");
+                $('#myShoppingTabMenu').find($('#'+menu)).addClass("on");
+
+                if(menu == 'myOrder'){
+                    openMyOrderMenu('orders');
+                }
+            }
+            ,error:function (){}
+        });
     }
 </script>
 </html>
