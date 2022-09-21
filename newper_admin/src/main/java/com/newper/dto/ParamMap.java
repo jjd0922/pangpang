@@ -1,11 +1,17 @@
 package com.newper.dto;
 
 import com.newper.exception.MsgException;
+import net.bytebuddy.asm.Advice;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.ValidationException;
+import org.modelmapper.config.Configuration;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ParamMap {
@@ -90,6 +96,15 @@ public class ParamMap {
             throw new MsgException(exceptionMsg);
         }
         return Integer.parseInt(value);
+    }
+
+    /** 값이 없는 경우 0 return */
+    public int getIntZero(String key) {
+        if (StringUtils.hasText(map.get(key) + "")) {
+            return getInt(key);
+        } else {
+            return 0;
+        }
     }
     public long getLong(String key) {
         return getLong(key, false);
@@ -193,15 +208,34 @@ public class ParamMap {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
+        Converter<String, LocalDate> strToDate = new AbstractConverter<String, LocalDate>() {
+            @Override
+            protected LocalDate convert(String source) {
+                if (StringUtils.hasText(source)) {
+                    LocalDate ld = LocalDate.parse(source);
+                    return ld;
+                } else {
+                    return null;
+                }
+            }
+        };
+        modelMapper.addConverter(strToDate, String.class, LocalDate.class);
+
         Object map = modelMapper.map(this.map, classType);
         return (S)map;
     }
-    public <S> S mapParamStrict(Class<S> classType){
+    public <S> S mapParam(Class<S> classType, MatchingStrategy ms){
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Configuration configuration = modelMapper.getConfiguration();
+        configuration.setAmbiguityIgnored(true);
+        configuration.setMatchingStrategy(ms);
 
         Object map = modelMapper.map(this.map, classType);
+        try {
+            modelMapper.validate();
+        } catch (ValidationException ve) {
+            ve.getMessage();
+        }
         return (S)map;
     }
     /** [^0-9.] replace. value의 값을 숫자 + . 만 남기기*/
