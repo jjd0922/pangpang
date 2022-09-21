@@ -289,13 +289,152 @@
     </section>
 
     <div class="container">
+        <!-- 런칭 스토리 -->
         <div class="launchingStory">
             <div>
                 <h5 class="font-lg bold color-red">런칭스토리</h5>
                 <p class="font-md">중고지만 괜찮아 ! 쓰다 보면 생길수 있는 미세한 생활 흠집, 스크래치 등에 문제가 있을 수 있으나, 외관에 별로 신경 쓰지 않는, 초가성비 제품을 찾으시는 고객님을 위한 상품입니다. 멍/빛샘 등에 문제는 흰색 바탕을 제외한 화면 상에서 잘티가 나지 않으며, 12단계 검수 과정을 거쳐 성능 기준에 합격한 제품만 선별하여 발송해드리고 있습니다.</p>
             </div>
         </div>
-    </div>
+        <!-- 네이버 가격 비교 배너 -->
+        <div class="naver-compare">
+            <div class="naver-compare-left">
+                <p><span>N사</span> 가격비교보다 싸다?</p>
+                <div>
+                    <p>지금 비교해보세요</p>
+                    <div class="btn btn9">
+                        <a href="javascript:;">자세히보기</a>
+                    </div>
+                </div>
+            </div>
+            <div class="naver-compare-right">
+                <a href="javascript:;">
+                    <img src="https://dummyimage.com/650x123/eeeeee/777&text=thumbnails+in+Naver+search+results" alt="네이버 검색결과 배너">
+                </a>
+            </div>
+        </div>
+
+        <!-- 네이버블로그 검색결과 링크이동 -->
+        <div class="naver-blog-link">
+            <img src="https://dummyimage.com/1380x100/dcffe5/777" alt="네이버 블로그 링크">
+            <div class="btn btn10">
+                <a href="javascript:;">후기 보러가기<i class="arrow-go"></i></a>
+            </div>
+        </div>
+
+        <!-- 공통 고정 광고배너 -->
+        <div class="common-fixed-banner">
+            <a href="javscript:;">
+                <img src="https://dummyimage.com/1380x360/2e88ff/fff" alt="광고배너">
+            </a>
+        </div>
+
+        <!-- 상품 상세 정보 -->
+        <div class="item-detail-info">
+            <h3 class="font-xxxlg semi-bold">상품 상세 정보</h3>
+            <div class="buyTogether-wrap">
+                <h4>함께 구매하면 좋은 옵션상품 특별가</h4>
+                <ul class="thumb-list lg-col-6">
+                    <li>
+                        <div th:insert="part/thumbnail :: thumbnail-buyTogether">
+                        </div>
+                    </li>
+                    <li>
+                        <div th:insert="part/thumbnail :: thumbnail-buyTogether">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 보여주기용 이미지 (추후 삭제)
+            <img src="https://images.ajrepository.com/item_images/001111152/001111152CT1.jpg">
+            -->
+       </div>
+
+        <!-- 이 상품을 본 고객이 많이 본 다른 상품 / 함께 구매하면 좋은 상품-->
+        <div class="thumb-list lg-col-6 other-products">
+            <div>
+                <h4 class="font-lg semi-bold">이 상품을 본 고객이 많이 본 다른 상품</h4>
+                <section th:insert="part/thumbnailList :: other-products1" class="padding-section padding-none">
+                </section>
+            </div>
+            <div>
+                <h4 class="font-lg semi-bold">함께 구매하면 좋은 상품</h4>
+                <section th:insert="part/thumbnailList :: other-products2" class="padding-section padding-none">
+                </section>
+            </div>
+        </div>
+
+        <!-- 상품리뷰 -->
+        <div class="display-flex space-between">
+            <h3 class="semi-bold itemDetail-page-subTitle">상품리뷰</h3>
+            <p class="font-md write-guide">상품리뷰 작성안내<i class="open-arrow"></i></p>
+        </div>
+        <ul class="review-header font-md semi-bold">
+            <li>
+                <div>
+                    <p>전체 리뷰 수</p>
+                    <p>10건</p>
+                </div>
+                <div>
+                    <p>총 평균 평점</p>
+                    <!-- 별점 개수는 class="grade-80"로 제어 -->
+                    <!-- grade-100, grade-80, grade-60, grade-40, grade-20 -->
+                    <div class="review-grade grade-80">
+                        <i></i>
+                        <p><span>4.9</span>/5.0</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <p>기본 적립</p>
+                <i class="point1000"></i>
+                <i class="point500"></i>
+                <span>+</span>
+                <p>추가 적립<br>선착순 포토리뷰<br>(상품별 포토리뷰 5개 한정)</p>
+                <i class="point10000"></i>
+            </li>
+
+        </ul>
+        <!-- MD리뷰 -->
+        <div class="sub-section-title">
+            <h4 class="font-lg semi-bold">MD리뷰</h4>
+        </div>
+        <div class="md-review">
+            <a href="javascript:;"><img src="https://dummyimage.com/130x130/eee/000877" alt=""></a>
+            <ul>
+                <li>
+                    <span>디자인</span>
+                    <div class="review-grade grade-80">
+                        <i></i>
+                    </div>
+                </li>
+                <li>
+                    <span>기능</span>
+                    <div class="review-grade grade-60">
+                        <i></i>
+                    </div>
+                </li>
+                <li>
+                    <span>가성비</span>
+                    <div class="review-grade grade-100">
+                        <i></i>
+                    </div>
+                </li>
+            </ul>
+            <p class="md-review-text font-md">50만원대 삼성 게이밍 노트북 성능 증명 !<br>
+                1. 7세대 코어 i5 보다 뛰어난 성능의 CPU 모델을 탑재<br>
+                2. 피파, 오버워치, 롤, 메이플 등 고사양 게임도 무난하게 구동 가능한 게이밍 그래픽 카드 탑재<br>
+                3. 웹캠 탑재로 늘어난 재택근무, 아이들 인강용으로도 제격</p>
+        </div>
+        <!-- 베스트 포토리뷰 -->
+        <div class="sub-section-title">
+            <h4 class="font-lg semi-bold">베스트 포토리뷰 PICK</h4>
+        </div>
+        <!-- 베스트 포토리뷰 슬라이드 -->
+        <section th:insert="part/thumbnailList :: bestPhotoReview" class="padding-section padding-none">
+        </section>
+
 </section>
 
 

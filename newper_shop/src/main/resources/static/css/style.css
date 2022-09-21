@@ -553,7 +553,7 @@ section {
 .swiper-realReview>ul>li {
     position: relative;
 }
-.realReview-inner {
+.review-inner {
     border: 1px solid #eee;
     border-radius: 15px;
     padding: 15px;
@@ -562,23 +562,23 @@ section {
     flex-direction: column;
     align-items: center;
 }
-.realReview-inner>div {
+.review-inner>div {
     margin-bottom: 5px;
 }
-.realReview-inner>div:not(:nth-of-type(1)) {
+.review-inner>div:not(:nth-of-type(1)) {
     padding: 0 15px;
 }
-.realReview-inner>div:last-child {
+.review-inner>div:last-child {
     margin-bottom: 0;
 }
-.realReview-img {
+.review-img {
     display: flex;
     justify-content: center;
     padding: 20px 0 30px;
     position: relative;
     width: 100%;
 }
-.realReview-img img {
+.review-img img {
     width: 250px;
     height: 250px;
 }
@@ -601,33 +601,33 @@ section {
     left: 15px;
     z-index: 1;
 }
-.realReview-id {
+.review-id {
     position: absolute;
     top: 7px;
     right: 25px;
 }
-.realReview-content {
+.review-content {
     width: 280px;
     height: 150px;
     background: url("../image/review-text-bg.png") no-repeat center/100% auto;
     padding: 15px!important;
 }
-.realReview-content-top {
+.review-content-top {
     display: flex;
     justify-content: space-between;
 }
-.realReview-grade {
+.review-grade {
     display: flex;
     align-items: center;
 }
-.realReview-grade i {
+.review-grade i {
     display: inline-block;
     width: 90px;
     height: 15px;
     background: url("../image/5star-grey.png") no-repeat 0 0/100% 100%;
 }
 /*별 5개 */
-.realReview-grade i::after {
+.review-grade i::after {
     content: "";
     display: inline-block;
     width: 100%;
@@ -635,25 +635,25 @@ section {
     background: url("../image/5star-yellow.png") no-repeat 0 0/90px 100%;
 }
 /* 별 4개 */
-.realReview-grade.grade_80 i::after {
+.review-grade.grade-80 i::after {
     width: 80%!important;
 }
 /* 별 3개 */
-.realReview-grade.grade_60 i::after {
+.review-grade.grade-60 i::after {
     width: 60%!important;
 }
 /* 별 2개 */
-.realReview-grade.grade_40 i::after {
+.review-grade.grade-40 i::after {
     width: 40%!important;
 }
 /* 별 1개 */
-.realReview-grade.grade_20 i::after {
+.review-grade.grade-20 i::after {
     width: 20%!important;
 }
-.realReview-text {
+.review-text {
     margin-top: 10px;
 }
-.realReview-inner .item-price {
+.review-inner .item-price {
     width: 100%;
 }
 
@@ -1742,7 +1742,7 @@ section {
     font-size: 26px;
     height: 65px;
 }
-.timeSale-price {
+.timeSale-price, .buyTogether-price {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1816,6 +1816,9 @@ section {
     width: 60%;
     padding-left: 30px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 .lastSecond-btn {
     margin-bottom: 0;
@@ -2173,11 +2176,13 @@ section {
 /* 연관상품 슬라이드 */
 .relatedProducts {
     display: flex;
+    padding: 15px;
 }
 .relatedProducts .item-img {
     margin-bottom: 0;
     width: 140px;
     height: 140px;
+    padding: 0;
 }
 .relatedProducts .item-info {
     width: calc(100% - 140px);
@@ -2186,17 +2191,27 @@ section {
     flex-direction: column;
     justify-content: space-between;
 }
-.relatedProducts .prev-custom, .relatedProducts .next-custom {
+.prev-custom-small, .next-custom-small {
     width: 40px;
     height: 40px;
+    top: 50%;
 }
-.relatedProducts .prev-custom {
+.prev-custom-small {
     background: #fff url(../image/thumb-arrow-left.png) no-repeat center/8px auto;
-    left: 25px;
+    left: 20px;
 }
-.relatedProducts .next-custom {
+.next-custom-small {
     background: #fff url(../image/thumb-arrow-right.png) no-repeat center/8px auto;
-    right: 25px;
+    right: 20px;
+}
+.swiper-group2-prev, .swiper-group2-next, .swiper-group3-prev, .swiper-group3-next {
+    top: 33%;
+}
+.swiper-group2-prev, .swiper-group3-prev {
+    left: -10px;
+}
+.swiper-group3-next {
+    right: -10px;
 }
 
 /* 탭 [5 메뉴] */
@@ -2218,6 +2233,7 @@ section {
 .launchingStory {
     border: 1px solid #999;
     background-color: #fff9ea;
+    margin-bottom: 7px;
 }
 .launchingStory h5 {
     margin-bottom: 10px;
@@ -2246,6 +2262,301 @@ section {
     left: 27px;
     top: 15px;
 }
+.naver-compare {
+    display: flex;
+    border: 1px solid #999;
+    padding: 15px 100px;
+    margin-bottom: 7px;
+}
+.naver-compare-left {
+    width: calc(100% - 650px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+}
+.naver-compare-left>p {
+    font-size: 28px;
+}
+.naver-compare-left>p>span {
+    color: #09bf40;
+}
+.naver-compare-left>div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.naver-compare-left>div>p {
+    font-size: 36px;
+    font-weight: 500;
+}
+.naver-compare-right {
+    width: 650px;
+}
+.btn9 a {
+    background-color: #09bf40;
+    color: #fff;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    border-radius: 9px;
+}
+.naver-blog-link {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    margin-bottom: 7px;
+}
+.naver-blog-link .btn10 {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    transform: translateY(-50%);
+}
+.btn10 a {
+    background-color: #fff;
+    color: #666;
+    font-size: 16px;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 9px;
+    border: 1px solid #666
+}
+.arrow-go {
+    width: 8px;
+    height: 11px;
+    display: inline-block;
+    background: url("../image/arrow/arrow4.png") no-repeat center/contain;
+    margin-left: 10px;
+}
+.common-fixed-banner {
+    width: 100%;
+    height: 360px;
+    margin-bottom: 15px;
+}
+.item-detail-info {
+    border: 1px solid #b2b2b2;
+    padding: 30px 45px;
+    margin-bottom: 35px;
+}
+.item-detail-info h3 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.buyTogether-wrap {
+    border: 1px solid #999;
+    border-radius: 15px;
+    padding: 30px 150px;
+}
+.buyTogether-wrap h4 {
+    font-size: 23px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+.buyTogether-wrap .thumb-list>li {
+    padding: 0;
+}
+.thumbnail-buyTogether .item-img {
+    width: 130px;
+    height: 130px;
+}
+.thumbnail-buyTogether .item-info>div:last-child {
+    margin-bottom: 0;
+}
+.other-products {
+    margin-bottom: 45px;
+}
+.other-products>div {
+    position: relative;
+}
+.other-products>div:first-child {
+    padding-right: 30px;
+}
+.otherProduct-thumb .item-img {
+    padding: 15px 0;
+}
+.otherProduct-thumb .item-price {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.otherProduct-thumb .real-price {
+    padding-left: 0;
+}
+.otherProduct-thumb .discount-price {
+    font-size: 20px;
+}
+.otherProduct-thumb .discount-rate {
+    font-size: 24px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.otherProduct-thumb .item-info>div:last-child {
+    position: relative;
+}
+/*상품상세 - 상품리뷰*/
+.itemDetail-page-subTitle {
+    font-size: 28px;
+    color: #666c7f;
+    margin-bottom: 25px;
+}
+.review-header {
+    display: flex;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+.review-header>li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+.review-header>li:nth-child(1) {
+    width: 40%;
+    position: relative;
+}
+.review-header>li:nth-child(1)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #999;
+}
+.review-header>li:nth-child(1)>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    padding: 10px 0;
+}
+.review-header>li:nth-child(1)>div>p:nth-child(2) {
+    font-size: 30px;
+}
+.review-header>li:nth-child(2) {
+    width: 60%;
+}
+.point1000, .point500, .point10000 {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+.point1000 {
+    background: url("../image/point1000.png") no-repeat center/contain;
+}
+.point500 {
+    background: url("../image/point500.png") no-repeat center/contain;
+}
+.point10000 {
+    background: url("../image/point10000.png") no-repeat center/contain;
+}
+.review-header .review-grade i {
+    width: 150px;
+    height: 25px;
+    margin-right: 10px;
+}
+.review-header .review-grade i::after {
+    background: url("../image/5star-yellow.png") no-repeat 0 0/150px 100%;
+}
+.review-header .review-grade p {
+    font-size: 21px;
+    font-weight: 300;
+    color: #999;
+}
+.review-header .review-grade p span {
+    font-size: 30px;
+    color: #333;
+}
+.open-arrow {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background: url("../image/arrow/open-arrow3.png") no-repeat center/contain;
+    margin-left: 7px;
+}
+.write-guide {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.sub-section-title{
+    margin-bottom: 15px;
+}
+.md-review {
+    display: flex;
+    border-top: 2px solid #333;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.md-review img {
+    width: 130px;
+    height: 130px;
+    margin-right: 20px;
+}
+.md-review>ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.md-review>ul>li {
+    display: flex;
+}
+.md-review>ul>li>span {
+    width: 70px;
+    font-size: 18px;
+}
+.md-review-text {
+    margin-left: 50px;
+    padding: 10px 0;
+}
+.bestPhotoReview {
+    display: flex;
+    padding: 15px;
+    border-radius: 5px!important;
+}
+.review-best {
+    display: inline-block;
+    width: 55px;
+    height: 24px;
+    background: url("../image/thumb-icon/best.png") no-repeat center/contain;
+}
+.bestPhotoReview img {
+    width: 100px;
+    height: 100px;
+}
+.bestPhotoReview .review-id {
+    position: initial;
+    color: #3c64a0;
+}
+.review-cont {
+    padding-left: 10px;
+}
+.review-cont>div:first-child {
+    margin-bottom: 10px;
+}
+.bestPhotoReview .review-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.swiper-group4-next {
+    right: -15px;
+}
+.swiper-group4-prev {
+    left: -15px;
+}
+
 
 
 @media (max-width:991px) {
