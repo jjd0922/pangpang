@@ -4,14 +4,14 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**HIWORKS결재구분*/
 @Getter
 @AllArgsConstructor
-/** CHECK_GOODS.CGS_TYPE 검수 타입 */
-public enum CgsType implements EnumOption {
+public enum HwType implements EnumOption {
 
-    IN("입고검수"),
-    RE("재검수"),
-    OUT("출고검수");
+    APPROVAL("승인"),
+    AGREEMENT("합의"),
+    CC("참조");
 
     private String option;
 }

@@ -1,7 +1,10 @@
 package com.newper.mapper;
 
 import com.newper.constant.LocType;
+import com.newper.constant.WhState;
 import com.newper.entity.Location;
+import com.newper.entity.SpecList;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,9 +26,19 @@ public interface LocationMapper {
     void insertLocationByExcel(List<Location> locations);
 
     /**로케이션별 재고현황 데이터테이블 조회 */
-    List<Map<String, Object>> selectStockInLocationDatatable(Map<String, Object> map);
+    /*List<Map<String, Object>> selectStockInLocationDatatable(Map<String, Object> map);*/
     long countStockInLocationDatatable(Map<String, Object> map);
 
     /** 로케이션에 있는 자산들 조회 */
     List<Map<String,Object>> selectGoodsByLocation(Map<String, Object> map);
+
+/*    *//** 로케이션에 있는 자산들 조회 *//*
+    List<Map<String,Object>> insertGoodsByLocation(Map<String, Object> map);*/
+
+/*    void insertGoodsByLocation(@Param("gIdxs") String[] gIdxs);*/
+
+    List<Map<String, Object>> selectStockInLocationDatatable(Map<String, Object> map);
+
+    List<Map<String, Object>> selectStockInLocationDatatable2(Map<String, Object> map);
+
 }

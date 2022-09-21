@@ -34,6 +34,7 @@ public class ProcessService {
     private final GoodsRepo goodsRepo;
     private final ResellRepo resellRepo;
     private final ResellGoodsRepo resellGoodsRepo;
+    private final CheckGoodsRepo checkGoodsRepo;
 
 
     /** 공정 가공 데이터 생성 */
@@ -147,4 +148,30 @@ public class ProcessService {
             goodsRepo.save(goods);
         }
     }
+
+    /** 검수 내용 업데이트 */
+    public void updateCheckGoods(ParamMap paramMap, MultipartFile[] cgsFile) {
+        CheckGoods checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
+        checkGoods.setCgsPaintMemo(paramMap.getString("paintMemo"));
+        checkGoods.setCgsPaintCost(paramMap.getInt("paintCost"));
+        checkGoods.setCgsFixMemo(paramMap.getString("fixMemo"));
+        checkGoods.setCgsFixCost(paramMap.getInt("fixCost"));
+        checkGoods.setCgsProcessMemo(paramMap.getString("processMemo"));
+        checkGoods.setCgsProcessCost(paramMap.getInt("processCost"));
+        checkGoods.setCgsMemo(paramMap.getString("cgsMemo"));
+        if (cgsFile.length != 0) {
+            List<Map<String, Object>> cgsFileList = new ArrayList<>();
+            for (int i = 0; i < cgsFile.length; i++) {
+                Map<String, Object> cgsFileMap = new HashMap<>();
+                String path = Common.uploadFilePath(cgsFile[i], "check/re/" + paramMap.getInt("gIdx") + "/", AdminBucket.SECRET);
+                cgsFileMap.put("cgsFile", path);
+                cgsFileMap.put("cgsFileName", cgsFile[i].getOriginalFilename());
+                cgsFileList.add(cgsFileMap);
+            }
+            checkGoods.setCgsFile(cgsFileList);
+        }
+
+        checkGoodsRepo.save(checkGoods);
+    }
+
 }

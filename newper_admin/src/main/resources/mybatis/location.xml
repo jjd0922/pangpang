@@ -84,6 +84,7 @@
             </foreach>
     </insert>
 
+<!--
     <select id="selectStockInLocationDatatable" resultType="map">
         SELECT
             P_TYPE1,
@@ -114,6 +115,7 @@
             LIMIT #{start}, #{length}
         </if>
     </select>
+-->
 
     <select id="countStockInLocationDatatable" resultType="Long">
         SELECT
@@ -153,5 +155,72 @@
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
         WHERE
             LOC_IDX = #{locIdx}
+    </select>
+
+
+    <select id="selectStockInLocationDatatable" resultType="map">
+        SELECT
+        P_TYPE1,
+        P_TYPE2,
+        P_TYPE3,
+        P_IDX,
+        P_NAME,
+        G_GS_IDX,
+        WH_NAME,
+        LOC_ZONE,
+        LOC_COLUMN,
+        LOC_ROW,
+        LOC_CODE,
+        GS_CODE,
+        LOC_IDX,
+        G_IDX,
+        GS_IDX,
+        COUNT(DISTINCT(G_IDX)) AS CNT,
+        P_COST
+        FROM
+        PRODUCT,
+        GOODS_STOCK
+        LEFT JOIN GOODS
+        ON G_GS_IDX=GS_IDX
+        LEFT JOIN LOCATION
+        ON G_LOC_IDX = LOC_IDX
+        LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+        WHERE
+        G_IDX IS NOT NULL
+        GROUP BY GS_CODE,LOC_IDX
+
+        <if test="length != -1">
+            LIMIT #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="selectStockInLocationDatatable2" resultType="map">
+        SELECT
+        P_TYPE1,
+        P_TYPE2,
+        P_TYPE3,
+        P_IDX,
+        P_NAME,
+        GS_IDX,
+        G_IDX,
+        G_BARCODE,
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
+        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
+        FROM
+        goods_stock
+        LEFT JOIN goods
+        ON G_GS_IDX=GS_IDX
+        LEFT JOIN location
+        ON G_LOC_IDX=LOC_IDX
+        LEFT JOIN PRODUCT
+        ON G_P_IDX=P_IDX
+        WHERE
+        G_IDX IS NOT NULL
+        AND GS_IDX=#{gsIdx}
+        AND LOC_IDX=#{locIdx}
+        <if test="length != -1">
+            LIMIT #{start}, #{length}
+        </if>
     </select>
 </mapper>

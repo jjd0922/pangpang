@@ -55,5 +55,7 @@ public class CheckGroup extends CreatedEntity {
     @JoinColumn(name="CG_U_IDX2", referencedColumnName = "uIdx")
     private User user2;
 
+    private String cgType;
+
 
 }

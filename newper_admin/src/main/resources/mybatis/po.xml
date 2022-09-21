@@ -501,4 +501,14 @@
                 AND PP_IDX != #{item}
             </foreach>
     </delete>
+
+    <insert id="insertPoHiworks" parameterType="map">
+        INSERT INTO
+            PO_HIWORKS
+                (POH_ORDER, POH_PO_IDX, POH_HW_IDX)
+        VALUES
+            <foreach collection="list" separator="," item="item">
+                (#{item.order}, #{item.poIdx}, #{item.hwIdx})
+            </foreach>
+    </insert>
 </mapper>

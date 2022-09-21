@@ -56,7 +56,7 @@ public class PoRestController {
     public ReturnMap poPopPost(ParamMap paramMap, MultipartFile poFile){
         ReturnMap rm = new ReturnMap();
 
-        Integer poIdx = poService.savePo(paramMap, poFile);
+        Integer poIdx = poService.savePo(paramMap, poFile, sessionInfo);
 
         rm.setLocation("/po/poPop/" + poIdx);
         rm.setMessage("발주품의 등록 완료");

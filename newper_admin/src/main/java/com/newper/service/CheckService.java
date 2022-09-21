@@ -47,6 +47,9 @@ public class CheckService {
 
         checkGroupRepo.save(checkGroup);
 
+        GState gState = GState.valueOf(paramMap.getString("gState"));
+        CgsType cgsType = CgsType.valueOf(paramMap.getString("cgsType"));
+
 
         //check goods
         List<Long> gIdx = paramMap.getListLong("gIdx");
@@ -55,21 +58,25 @@ public class CheckService {
             Goods goods = Goods
                     .builder()
                     .gIdx(gIdx.get(i))
-                    .gState(GState.CHECK_NEED)
+                    .gState(gState)
                     .build();
 
             CheckGoods checkGoods = CheckGoods
                     .builder()
                     .goods(goods)
                     .checkGroup(checkGroup)
-                    .cgsExpectedCost(Integer.parseInt(goodsMapper.selectGoodsByG_IDX(gIdx.get(i)).get("TOTAL_PROCESS_COST").toString()))
+//                    .cgsExpectedCost(Integer.parseInt(goodsMapper.selectGoodsByG_IDX(gIdx.get(i)).get("TOTAL_PROCESS_COST").toString()))
+                    .cgsExpectedCost(0)
                     .cgsRealCost(0)
-                    .cgsType(paramMap.get("cgsType").toString())
-                    .cgsCount(checkMapper.countCheckGroupByGoods(gIdx.get(i)) + 1)
+                    .cgsType(cgsType.toString())
+//                    .cgsCount(checkMapper.countCheckGroupByGoods(gIdx.get(i)) + 1)
+                    .cgsCount(0)
                     .build();
 
             checkGoodsRepo.save(checkGoods);
         }
+
+
 
         long ggt_idx = paramMap.getLong("ggt_idx");
         goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);

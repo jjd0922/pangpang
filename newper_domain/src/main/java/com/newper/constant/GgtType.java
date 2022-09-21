@@ -12,6 +12,7 @@ public enum GgtType implements EnumOption {
     PROCESS("가공"),
     FIX("수리"),
     PAINT("도색"),
+    RE_CHECK("재검수"),
     RESELL("반품")
     ;
 

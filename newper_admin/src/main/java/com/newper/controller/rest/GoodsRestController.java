@@ -35,8 +35,8 @@ public class GoodsRestController {
     }
     /** 스펙리스트 조회 */
     @GetMapping("specList.ajax")
-    public List<String> specList(String specName) {
-        return specMapper.selectSpecListValueList(specName);
+    public List<String> specList(String speclName) {
+        return specMapper.selectSpecListValueList(speclName);
     }
 
     /** 자산 임시 테이블 조회 */

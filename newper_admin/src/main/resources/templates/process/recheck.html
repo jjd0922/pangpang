@@ -134,9 +134,13 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
+    function checkGroupPop(cgIdx) {
+        var focusPopup = window.open('/process/checkGroupPop/'+cgIdx, 'checkGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
+
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/recheck.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        returnTable.page('first').ajax.url('/process/recheck.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 </script>
 
@@ -164,8 +168,8 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
                     return '';
                 }}
-            ,{'title':'재검수코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: fixPop('+ data[''] +')" class="badge badge-primary">' + data[''] + '</a>';
+            ,{'title':'재검수코드','data':'CG_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: checkGroupPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
             ,{ 'title':'재검수<br>작업 상태값','data':''}
             ,{ 'title':'재검수업체','data':''}
