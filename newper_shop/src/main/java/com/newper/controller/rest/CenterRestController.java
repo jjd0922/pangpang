@@ -16,19 +16,4 @@ import java.util.List;
 @RequestMapping("/custCenter/")
 public class CenterRestController {
 
-    private final ShopRepo shopRepo;
-
-    @PostMapping("menu.ajax")
-    public String menuTest(ParamMap paramMap, Model m){
-
-        String menu = paramMap.getString("menu");
-
-        List<Shop> shopList = shopRepo.findAll();
-
-        m.addAttribute("shopList",shopList);
-
-//        return "custCenter/custCenter_menu :: "+menu+"("+menu+")";
-        return "<th:block th:replace='custCenter/custCenter_menu :: "+menu+"("+menu+")'></th:block>";
-//        return "custCenter/custCenter_menu :: #firstDiv";
-    }
 }
