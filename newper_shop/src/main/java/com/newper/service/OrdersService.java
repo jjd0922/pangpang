@@ -71,7 +71,7 @@ public class OrdersService {
 
         //merchant_uid ph_idx사용
         IamportReq iamportReq = new IamportReq(IamPortPayMethod.CARD, "ph"+paymentHistory.getPhIdx(), payment.getPayPrice(), orders.getOPhone());
-        iamportReq.setPg(IamPortPg.BLUEWALNUT.getPg());
+        //iamportReq.setPg(IamPortPg.BLUEWALNUT.getPg());
         iamportReq.setName("test주문");
         iamportReq.setBuyer_name("구매자");
 
