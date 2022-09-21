@@ -89,11 +89,4 @@ public class MyPageController {
 
         return mav;
     }
-    @PostMapping("myOrder/origin/step/{menu}.load")
-    public ModelAndView registOriginStep(@PathVariable(required = false) String menu) {
-        ModelAndView mav = new ModelAndView("myPage/myOrder_menu_origin :: " + menu);
-
-        return mav;
-    }
-
 }

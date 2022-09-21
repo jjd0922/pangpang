@@ -54,7 +54,20 @@
 <!-- 정품등록하기 STEP.3-->
 <th:block th:fragment="originStep3">
     정품등록하기 step3
-    <button onclick="openMyOrderOriginMenu('originList');">등록현황조회</button>
+    <button onclick="goOriginList();">등록현황조회</button>
+    <script>
+        function goOriginList(){
+            $.ajax({
+                url:'/myPage/myOrder/origin/originList.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderOriginMenu').empty();
+                    $('#myOrderOriginMenu').append(res);
+                }
+                ,error(){}
+            })
+        }
+    </script>
 </th:block>
 <!-- 정품등록하기 STEP.3 end-->
 

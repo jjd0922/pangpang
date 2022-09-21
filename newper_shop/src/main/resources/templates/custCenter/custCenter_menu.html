@@ -291,7 +291,20 @@
 
     <script>
         function openOriginModal(){
-            url: '/myPage/myOrder/origin/'
+            $.ajax({
+                url: '/myPage/myOrder/origin/originStep1.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('#modalContent').empty();
+                    $('#modalContent').append('<li className = "on" id = "myOrderOriginMenu" ></li>')
+
+                    $('#modalContent').find('li').eq(0).append(res);
+
+                    $('#custCenterModal').show();
+                }
+                ,error:function(){}
+            })
         }
     </script>
 </th:block>
