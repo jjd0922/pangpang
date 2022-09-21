@@ -251,9 +251,26 @@
             <img src="https://dummyimage.com/1380x1129/eeeeee/777777" alt="AS접수안내">
         </div>
         <div class="cc-btn2">
-            <a href="javascript:;">AS접수하기</a>
+            <a onclick="openAsModal('newperAS')">뉴퍼마켓 구매제품 AS접수하기</a>
+            <a onclick="openAsModal('otherAS')">다른 온라인몰 구매제품 AS접수하기</a>
         </div>
     </div>
+    <script>
+        function openAsModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('#modalContent').empty();
+                    $('#modalContent').append(res);
+
+                    $('#custCenterModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 <!-- AS접수안내 end -->
 
@@ -269,8 +286,14 @@
         <img th:attr="src=@{/image/genuine-registration.png},title='정품등록안내',alt='정품등록안내'">
     </div>
     <div class="cc-btn2">
-        <a href="javascript:;">정품등록하기</a>
+        <a onclick="openOriginModal()">정품등록하기</a>
     </div>
+
+    <script>
+        function openOriginModal(){
+            url: '/myPage/myOrder/origin/'
+        }
+    </script>
 </th:block>
 <!-- 정품등록안내 end -->
 

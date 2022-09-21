@@ -82,5 +82,18 @@ public class MyPageController {
 
         return mav;
     }
+    /** 정품등록 하위 메뉴 load */
+    @PostMapping("myOrder/origin/{menu}.load")
+    public ModelAndView registOrigin(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_menu_origin :: " + menu);
+
+        return mav;
+    }
+    @PostMapping("myOrder/origin/step/{menu}.load")
+    public ModelAndView registOriginStep(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_menu_origin :: " + menu);
+
+        return mav;
+    }
 
 }

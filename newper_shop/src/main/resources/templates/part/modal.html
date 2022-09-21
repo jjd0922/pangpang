@@ -276,6 +276,7 @@
                 <img src="/image/close.png" title="모달창닫기" alt="창닫기">
             </div>
         </div>
+    </div>
 
     <script>
         /*** 배송지목록 모달 창 ***/
@@ -313,6 +314,38 @@
                 addrListModal.hide();
                 $('body').removeClass('no-scroll');
             }
+        });
+    </script>
+</th:block>
+
+<!--뉴퍼 고객센터 모달-->
+<th:block th:fragment="custCenter-modal">
+    <div class="modal-wrap" id="custCenterModal">
+        <div class="modal">
+            <div class="custCenterModal-close">
+                <span>x</span>
+            </div>
+            <div id="modalContent">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var centerModal = $("#custCenterModal");
+
+        $(document).mouseup(function (e){
+            if(centerModal.has(e.target).length === 0){
+                centerModal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+
+        $(".custCenterModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
         });
     </script>
 </th:block>

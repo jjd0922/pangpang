@@ -1,0 +1,65 @@
+<!-- 정품등록하기 STEP.1-->
+<th:block th:fragment="originStep1">
+정품등록하기 step1
+<button onclick="nextStep()">다음</button>
+    <script>
+        function nextStep(){
+            $.ajax({
+                url:'/myPage/myOrder/origin/originStep2.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderOriginMenu').empty();
+                    $('#myOrderOriginMenu').append(res);
+                }
+                ,error(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 정품등록하기 STEP.1 end-->
+
+<!-- 정품등록하기 STEP.2-->
+<th:block th:fragment="originStep2">
+    정품등록하기 step2
+    <button onclick="goStep1()">이전으로</button>
+    <button onclick="goStep3()">정품등록</button>
+
+    <script>
+        function goStep1(){
+            $.ajax({
+                url:'/myPage/myOrder/origin/originStep1.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderOriginMenu').empty();
+                    $('#myOrderOriginMenu').append(res);
+                }
+                ,error(){}
+            })
+        }
+        function goStep3(){
+            $.ajax({
+                url:'/myPage/myOrder/origin/originStep3.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderOriginMenu').empty();
+                    $('#myOrderOriginMenu').append(res);
+                }
+                ,error(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 정품등록하기 STEP.2 end-->
+
+<!-- 정품등록하기 STEP.3-->
+<th:block th:fragment="originStep3">
+    정품등록하기 step3
+    <button onclick="openMyOrderOriginMenu('originList');">등록현황조회</button>
+</th:block>
+<!-- 정품등록하기 STEP.3 end-->
+
+<!-- 정품등록 현황 조회-->
+<th:block th:fragment="originList">
+정품등록 현황조회
+</th:block>
+<!-- 정품등록 현황 조회 end-->

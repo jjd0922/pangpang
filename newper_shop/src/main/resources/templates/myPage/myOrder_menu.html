@@ -74,31 +74,57 @@
         <li onclick="openMyOrderAsMenu('asList')" id="asList">AS접수 현황조회</li>
     </ul>
     <ul class="asApplication-tab-content">
-        <li class="on" id="myOrderMenuAs">
+        <li class="on" id="myOrderAsMenu">
         </li>
     </ul>
-<script>
-    function openMyOrderAsMenu(menu){
-        $.ajax({
-            url: '/myPage/myOrder/as/'+menu+'.load'
-            ,type:'post'
-            ,success:function(res){
-                $('#myOrderMenuAs').empty();
-                $('#myOrderMenuAs').append(res);
-                // test~~
-                // action
-                $('#myOrderAsTabMenu').children('li').removeClass("on");
-                $('#myOrderAsTabMenu').find($('#'+menu)).addClass("on");
-            }
-            ,error:function(){}
-        })
-    }
-</script>
+    <script>
+        function openMyOrderAsMenu(menu){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+menu+'.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderAsMenu').empty();
+                    $('#myOrderAsMenu').append(res);
+
+                    // action
+                    $('#myOrderAsTabMenu').children('li').removeClass("on");
+                    $('#myOrderAsTabMenu').find($('#'+menu)).addClass("on");
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 <!-- AS접수 end -->
 
 <!-- 정품등록 -->
-<th:block th:fragment="originInsert"></th:block>
+<th:block th:fragment="originInsert">
+    <ul class="asApplication-tab semi-bold color-grey666" id="myOrderOriginTabMenu">
+        <li onclick="openMyOrderOriginMenu('originStep1')" id="originStep1">정품등록하기</li>
+        <li onclick="openMyOrderOriginMenu('originList')" id="originList">정품등록 현황조회</li>
+    </ul>
+    <ul class="asApplication-tab-content">
+        <li class="on" id="myOrderOriginMenu">
+        </li>
+    </ul>
+    <script>
+        function openMyOrderOriginMenu(menu){
+            $.ajax({
+                url: '/myPage/myOrder/origin/'+menu+'.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myOrderOriginMenu').empty();
+                    $('#myOrderOriginMenu').append(res);
+
+                    // action
+                    $('#myOrderOriginTabMenu').children('li').removeClass("on");
+                    $('#myOrderOriginTabMenu').find($('#'+menu)).addClass("on");
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
+</th:block>
 <!-- 정품등록 end -->
 
 <!-- 보상내역 -->
