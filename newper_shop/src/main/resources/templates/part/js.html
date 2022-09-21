@@ -384,6 +384,17 @@
         slides: false,
     });
 
+    //탭 스크롤시 하단 외곽 추가
+    $(window).scroll(function(){
+        var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
+
+        if ($(window).scrollTop() >= sectionHeight) {
+            $(".boxTab3-wrap").addClass("on");
+        } else {
+            $(".boxTab3-wrap").removeClass("on");
+        }
+    })
+
     // 연관상품
     new Swiper('.swiper-group1', {
         slidesPerView: 1,
@@ -442,7 +453,7 @@
         breakpoints: {
             992: {
                 slidesPerView: 3,
-                spaceBetween: 35,
+                spaceBetween: 25,
                 navigation: {
                     nextEl: '.swiper-group4-next',
                     prevEl: '.swiper-group4-prev',
