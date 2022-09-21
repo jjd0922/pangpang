@@ -38,7 +38,7 @@ public class SweetTracker {
         try{
             Tracking te = new Tracking();
             te.setDeliveryNum(deliveryNum);
-            te.setTeType("REQUEST");
+            te.setTraType("REQUEST");
 
             //추적 API 생성
 //            trackingRepository.saveAndFlush(te);
@@ -55,11 +55,11 @@ public class SweetTracker {
             jsonObject.put("code", deliveryNum.getDnCompany());
 
             RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
-            te.setTeReq(jsonObject.toJSONString());
+            te.setTraReq(jsonObject.toJSONString());
 
             String url = domain + "add_invoice";
-            te.setTeUrl(url);
-            te.setTeNum(deliveryNum.getDnNum());
+            te.setTraUrl(url);
+            te.setTraNum(deliveryNum.getDnNum());
 
             OkHttpClient client1 = new OkHttpClient.Builder().build();
             Request req = new Request.Builder()
@@ -69,7 +69,7 @@ public class SweetTracker {
                     .build();
             response = client1.newCall(req).execute();
             String response_str= response.body().string();
-            te.setTeRes(response_str);
+            te.setTraRes(response_str);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject result = (JSONObject) jsonParser.parse(response_str);
@@ -138,7 +138,7 @@ public class SweetTracker {
         try{
             Tracking te = new Tracking();
             te.setDeliveryNum(deliveryNum);
-            te.setTeType("REQUEST");
+            te.setTraType("REQUEST");
 
             //추적 API 생성
 //            trackingRepository.saveAndFlush(te);
@@ -183,11 +183,11 @@ public class SweetTracker {
 
 
             RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
-            te.setTeReq(jsonObject.toJSONString());
+            te.setTraReq(jsonObject.toJSONString());
 
             String url = domain + "takeback";
-            te.setTeUrl(url);
-            te.setTeNum(deliveryNum.getDnNum());
+            te.setTraUrl(url);
+            te.setTraNum(deliveryNum.getDnNum());
 
             OkHttpClient client1 = new OkHttpClient.Builder().build();
             Request req = new Request.Builder()
@@ -197,7 +197,7 @@ public class SweetTracker {
                     .build();
             response = client1.newCall(req).execute();
             String response_str= response.body().string();
-            te.setTeRes(response_str);
+            te.setTraRes(response_str);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject result = (JSONObject) jsonParser.parse(response_str);
@@ -222,7 +222,7 @@ public class SweetTracker {
         try{
             Tracking te = new Tracking();
             te.setDeliveryNum(deliveryNum);
-            te.setTeType("REQUEST");
+            te.setTraType("REQUEST");
 
             //추적 API 생성
 //            trackingRepository.saveAndFlush(te);
@@ -231,11 +231,11 @@ public class SweetTracker {
 
 
             RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
-            te.setTeReq(jsonObject.toJSONString());
+            te.setTraReq(jsonObject.toJSONString());
 
             String url = domain + "takeback/"+tier+"/"+deliveryNum.getDnIdx();
-            te.setTeUrl(url);
-            te.setTeNum(deliveryNum.getDnNum());
+            te.setTraUrl(url);
+            te.setTraNum(deliveryNum.getDnNum());
 
             OkHttpClient client1 = new OkHttpClient.Builder().build();
             Request req = new Request.Builder()
@@ -245,7 +245,7 @@ public class SweetTracker {
                     .build();
             response = client1.newCall(req).execute();
             String response_str= response.body().string();
-            te.setTeRes(response_str);
+            te.setTraRes(response_str);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject result = (JSONObject) jsonParser.parse(response_str);
@@ -270,7 +270,7 @@ public class SweetTracker {
         try{
             Tracking te = new Tracking();
             te.setDeliveryNum(deliveryNum);
-            te.setTeType("REQUEST");
+            te.setTraType("REQUEST");
 
             //추적 API 생성
 //            trackingRepository.saveAndFlush(te);
@@ -286,11 +286,11 @@ public class SweetTracker {
 
 
             RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
-            te.setTeReq(jsonObject.toJSONString());
+            te.setTraReq(jsonObject.toJSONString());
 
             String url = domain + "takeback";
-            te.setTeUrl(url);
-            te.setTeNum(deliveryNum.getDnNum());
+            te.setTraUrl(url);
+            te.setTraNum(deliveryNum.getDnNum());
 
             OkHttpClient client1 = new OkHttpClient.Builder().build();
             Request req = new Request.Builder()
@@ -300,7 +300,7 @@ public class SweetTracker {
                     .build();
             response = client1.newCall(req).execute();
             String response_str= response.body().string();
-            te.setTeRes(response_str);
+            te.setTraRes(response_str);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject result = (JSONObject) jsonParser.parse(response_str);
