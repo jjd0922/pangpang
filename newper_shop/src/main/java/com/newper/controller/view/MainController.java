@@ -56,16 +56,9 @@ public class MainController {
     }
 
     /* myPage 나의쇼핑정보 */
-    @RequestMapping(value = "myPage", method = {RequestMethod.POST, RequestMethod.GET})
+    @GetMapping(value = "myPage")
     public ModelAndView myPage(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("myPage/myPage");
-        if(paramMap.containsKey("menu")){
-            mav.addObject("menu", paramMap.getString("menu"));
-            mav.addObject("active", "on");
-            if(paramMap.getString("menu").equals("myOrder")){
-                mav.addObject("shopList", shopRepo.findAll());
-            }
-        }
         return mav;
     }
 
@@ -74,13 +67,12 @@ public class MainController {
     public ModelAndView custCenter(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("custCenter/custCenter");
 
-        if(paramMap.containsKey("menu")){
-            mav.addObject("menu", paramMap.getString("menu"));
-            mav.addObject("active", "on");
-        }else{
-            mav.addObject("menu", "faq");
-            mav.addObject("active", "on");
-        }
+//        if(paramMap.containsKey("menu")){
+//            mav.addObject("menu", paramMap.getString("menu"));
+//        }else{
+//            mav.addObject("menu", "faq");
+//        }
+        mav.addObject("menu","faq");
 
         return mav;
     }

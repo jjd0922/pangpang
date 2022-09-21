@@ -106,9 +106,11 @@
 </section>
 <section class="padding-section">
         <!-- 고객센터 탭 내용 -->
-        <ul class="cc-menu-content">
+        <ul>
             <li>
-            <th:block th:replace="custCenter/center :: ${menu}(${menu})"></th:block>
+<!--                <th:block th:replace="custCenter/custCenter_menu :: ${menu}(${menu})"></th:block>-->
+                <div id="firstDiv">
+                </div>
             </li>
         </ul>
     </div><!-- // 고객센터 탭 내용 -->
@@ -127,15 +129,30 @@
 
 <script>
     function openMenu(menu){
-        $("input[name=menu]").val(menu);
-        document.custCenter.action="/custCenter";
-        document.custCenter.submit();
+        // $("input[name=menu]").val(menu);
+        // document.custCenter.action="/custCenter";
+        // document.custCenter.submit();
+
+        $.ajax({
+            url: '/custCenter/menu.ajax'
+            ,type : 'post'
+            ,data: {
+                "menu":menu
+            }
+            ,success:function(res){
+                $('#firstDiv').replaceWith(res);
+                console.log(res);
+            }
+            ,error:function(){}
+        });
     }
 </script>
 <script>
 $(function(){
-    var target = $('.cc-content-title').offset().top;
-    $('html,body').animate({scrollTop: target-500}, 500);
+    // var target = $('.cc-content-title').offset().top;
+    // $('html,body').animate({scrollTop: target-500}, 500);
+
+    // openMenu('faq');
 });
 </script>
 </html>
