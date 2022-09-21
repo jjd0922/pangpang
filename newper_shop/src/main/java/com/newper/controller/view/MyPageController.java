@@ -61,6 +61,7 @@ public class MyPageController {
             Shop shop = shopRepo.findById(4).orElseThrow(()-> new MsgException("ㄷㄷㄷ"));
             Shop shop2 = shopRepo.findById(3).orElseThrow(()-> new MsgException("www"));
             shopList.add(shop);
+            shopList.add(shop2);
             orderMenuTitle = "배송중";
         }else if(menu.equals("delComplete")){
             orderMenuTitle = "배송완료";
