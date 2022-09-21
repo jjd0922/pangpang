@@ -27,5 +27,11 @@ public interface OrdersMapper {
     /**주문코드,재고코드,자산코드로 주문구성상품 조회*/
     Long selectOrderGsDetailByOCodeAndGsCode(Map<String, Object> map);
 
+    /**O_IDX, P_DEL_TYPE으로 order_gs 조회*/
+    List<Map<String, Object>> selectGoodsGsDetailByOIdxAndPType(Map<String, Object> map);
+
+    /**출고전(입금대기,주문완료,상품준비중) 상태의 주문*/
+    List<Map<String, Object>> selectOrdersListByBeforeRelease();
+
 
 }

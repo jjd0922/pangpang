@@ -169,14 +169,45 @@ public class DeliveryManagementRestController {
         Long DN_IDX=paramMap.getLong("DN_IDX");
         Long OG_IDX=paramMap.getLong("OG_IDX");
         DeliveryNum deliveryNum = deliveryNumRepo.findById(DN_IDX).get();
+        Map<String, Object> dnJson = deliveryNum.getDnJson();
+
+        // 설치확인서 파일 n개일시 반복문 사용
+        List<List<String>> list = (List<List<String>>) dnJson.get("files");
+        List<String> lt = list.get(0);
+
         rm.put("idxs", OG_IDX);
         rm.put("DN_SCHEDULE", deliveryNum.getDnSchedule());
         rm.put("DN_DATE", deliveryNum.getDnDate());
-        rm.put("DN_FILE_NAME", deliveryNum.getDnFileName());
-        rm.put("DN_FILE", deliveryNum.getDnFile());
+        rm.put("DN_FILE_NAME", lt.get(1));
+        rm.put("DN_FILE", lt.get(0));
         rm.put("DN_COMPANY", deliveryNum.getDnCompany());
-        rm.put("DN_MEMO", deliveryNum.getDnMemo());
+        rm.put("DN_MEMO", dnJson.get("memo"));
 
         return rm;
+    }
+
+    /**출고전(입금대기,주문완료,상품준비중) 상태의 주문*/
+    @PostMapping("orders.dataTable")
+    public ReturnDatatable orders(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        List<Map<String,Object>> list = ordersMapper.selectGoodsGsDetailByOIdxAndPType(paramMap.getMap());
+        System.out.println(list);
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+
+        return returnDatatable;
+    }
+
+    /**배송 주문건 상세 상품 데이터테이블*/
+    @PostMapping("orderGoodsDetail.dataTable")
+    public ReturnDatatable orderGoodsDetail(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        paramMap.put("P_DEL_TYPE","DELIVERY");
+        List<Map<String,Object>> list = ordersMapper.selectGoodsGsDetailByOIdxAndPType(paramMap.getMap());
+        System.out.println(list);
+        returnDatatable.setData(list);
+        returnDatatable.setRecordsTotal(list.size());
+
+        return returnDatatable;
     }
 }
