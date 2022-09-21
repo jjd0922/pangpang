@@ -85,9 +85,9 @@
                 store.COM_NAME AS 'STORE_NAME',
                /* manufacture.COM_NAME AS 'MANUFACTURE_NAME',*/
                 afterservice.COM_NAME AS 'AFTERSERVICE_NAME',
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[0].values','"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[1].values','"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[2].values','"|\\[|\\]',''),''),'') OPTION3
 
            ,CONCAT_WS(', ', p_option->>'$[0].title',p_option->>'$[1].title',p_option->>'$[2].title') P_OPTION_DT
         FROM
@@ -181,9 +181,9 @@
         P_MODEL, P_COST, P_SELL_PRICE, GS_CODE, GS_NAME,
         GS_PRICE, GS_SALE, GS_RANK, GS_SAFE_STOCK, GS_PROPER_STOCK,
         GS_DAILY, goods_stock.CREATED_BY, goods_stock.CREATED_DATE, goods_stock.MODIFIED_BY, goods_stock.MODIFIED_DATE,
-        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
-        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
-        replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
+        ifnull(GS_OPTION ->>'$.OPTION1','') OPTION1,
+        ifnull(GS_OPTION ->>'$.OPTION2','') OPTION2,
+        ifnull(GS_OPTION ->>'$.OPTION3','') OPTION3
         FROM
         goods_stock
         LEFT JOIN product
@@ -219,9 +219,9 @@
     <select id="selectShopProductByOrdersModalDataTable" resultType="map">
         SELECT
             P_IDX, P_NAME, SP_IDX, GS_CODE, GS_IDX,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[0].values','"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[1].values','"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[2].values','"|\\[|\\]',''),''),'') OPTION3,
             GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, P_DEL_PRICE, truncate(SPO_PRICE * SP_PERCENT / 100,0) AS MILEAGE,
             SPO_IDX
         FROM
