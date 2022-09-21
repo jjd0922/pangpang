@@ -1,0 +1,106 @@
+<!-- 주문/배송조회-->
+<th:block th:fragment="orders">
+    <!-- 주문 진행 과정 -->
+    <ul class="orderHistory-progress">
+        <li>
+            <a onclick="orders('orders')">
+                <p>주문 접수</p>
+                <p>0</p>
+                <i></i>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('payment')">
+                <p>결제 완료</p>
+                <p>0</p>
+                <i></i>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('ready')">
+                <p>상품 준비중</p>
+                <p>0</p>
+                <i></i>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('delStart')">
+                <p>배송출발</p>
+                <p class="color-red">0</p>
+                <i></i>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('delIng')">
+                <p>배송중</p>
+                <p class="color-red">1</p>
+                <i></i>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('delComplete')">
+                <p>배송완료</p>
+                <p>0</p>
+            </a>
+        </li>
+        <li>
+            <a onclick="orders('cancel')">
+                <p>취소/교환/반품</p>
+                <p>0</p>
+            </a>
+        </li>
+    </ul>
+    <!-- 전체 주문 내역 -->
+    <th:block th:replace="myPage/myOrderProductList"></th:block>
+
+<script>
+    function orders(menu){
+        $.ajax({
+            url: '/myPage/myOrder/list/'+menu+'.load'
+            ,type: 'post'
+        }).done(function(res){
+            $('#orderProductList').replaceWith(res);
+        })
+    }
+</script>
+</th:block>
+<!-- 주문/배송조회 end-->
+
+<!-- AS접수 -->
+<th:block th:fragment="asRegist">
+    <ul class="asApplication-tab semi-bold color-grey666" id="myOrderAsTabMenu">
+        <li onclick="openMyOrderAsMenu('newperAS')" id="newperAS">뉴퍼마켓 구매제품 AS 접수</li>
+        <li onclick="openMyOrderAsMenu('otherAS')" id="otherAS">다른 온라인몰 구매제품 AS 접수</li>
+        <li onclick="openMyOrderAsMenu('asList')" id="asList">AS접수 현황조회</li>
+    </ul>
+    <ul class="asApplication-tab-content">
+        <li class="on" id="myOrderMenuAs">
+        </li>
+    </ul>
+<script>
+    function openMyOrderAsMenu(menu){
+        $.ajax({
+            url: '/myPage/myOrder/as/'+menu+'.load'
+            ,type:'post'
+            ,success:function(res){
+                $('#myOrderMenuAs').empty();
+                $('#myOrderMenuAs').append(res);
+
+                // action
+                $('#myOrderAsTabMenu').children('li').removeClass("on");
+                $('#myOrderAsTabMenu').find($('#'+menu)).addClass("on");
+            }
+            ,error:function(){}
+        })
+    }
+</script>
+</th:block>
+<!-- AS접수 end -->
+
+<!-- 정품등록 -->
+<th:block th:fragment="originInsert"></th:block>
+<!-- 정품등록 end -->
+
+<!-- 보상내역 -->
+<th:block th:fragment="coverage"></th:block>
+<!-- 보상내역 end -->

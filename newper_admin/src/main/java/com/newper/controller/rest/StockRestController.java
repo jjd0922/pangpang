@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.LocationMapper;
+import com.newper.mapper.SpecMapper;
 import com.newper.mapper.StockMapper;
 import com.newper.service.LocationService;
 import com.newper.service.StockService;
@@ -11,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +27,45 @@ public class StockRestController {
 
     private final StockService stockService;
 
+    private final SpecMapper specMapper;
+
+/*
     @PostMapping("stock.dataTable")
     public ReturnDatatable stockInLocation(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("재고현황");
         rd.setData(locationMapper.selectStockInLocationDatatable(paramMap.getMap()));
         return rd;
     }
+*/
+
+    @PostMapping("stock.dataTable")
+    public ReturnDatatable stock(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("재고현황");
+        rd.setData(locationMapper.selectStockInLocationDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+    @PostMapping("stock2.dataTable")
+    public ReturnDatatable stock2(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("재고현황");
+        System.out.println(paramMap.getMap());
+
+        rd.setData(locationMapper.selectStockInLocationDatatable2(paramMap.getMap()));
+        return rd;
+    }
+
+
+
+
+    /**재고 자산 상세 스펙이력 데이터 테이블*/
+    @PostMapping("spec.dataTable")
+    public ReturnDatatable spec(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("스펙리스트");
+        rd.setData(specMapper.selectSpecDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(specMapper.countSpecDataTable(paramMap.getMap()));
+        return rd;
+    }
+
 
     /** 로케이션에 해당하는 자산들 select */
     @PostMapping("/locGoods.ajax")
@@ -36,6 +74,25 @@ public class StockRestController {
         rd.setData(locationMapper.selectGoodsByLocation(paramMap.getMap()));
         return rd;
     }
+/*
+
+    */
+/** 창고이동 등록 팝업 해당하는 자산들 insert *//*
+
+    @PostMapping("/insertGoods.ajax")
+    public ReturnDatatable insertGoods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("재고현황");
+        List<String> gIdxs = paramMap.getList("gIdxs[]");
+        for(int gIdx : gIdxs){
+            locationMapper.insertGoodsByLocation(Integer.parseInt(gIdx));
+        }
+        rd.setData(locationMapper.insertGoodsByLocation(paramMap.getMap()));
+        return rd;
+    }
+
+*/
+
+
 
     /** 재고인수(적재) */
     @PostMapping("/load/take.ajax")

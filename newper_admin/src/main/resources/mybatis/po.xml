@@ -375,6 +375,9 @@
             PP_SELL_PRICE,
             PP_PROFIT_TARGET,
             P_TYPE1,
+            (PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST) AS PRODUCT_COST,
+            (PP_COST * PP_COUNT) AS TOTAL_BUY_COST,
+            (PP_SELL_PRICE * PP_COUNT) AS TOTAL_SELL_PRICE,
             (PP_COST + PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST) * PP_COUNT AS CREATE_PRICE,
             IFNULL(CONCAT (PP_OPTION ->> '$[0].title', ':', PP_OPTION ->> '$[0].values'), '') AS OPTION1,
             IFNULL(CONCAT (PP_OPTION ->> '$[1].title', ':', PP_OPTION ->> '$[1].values'), '') AS OPTION2,
@@ -511,6 +514,26 @@
                 (#{item.order}, #{item.poIdx}, #{item.hwIdx})
             </foreach>
     </insert>
+
+    <select id="selectPoHiworksByPoIdx" resultType="map">
+        SELECT
+            POH_ORDER,
+            POH_PO_IDX,
+            POH_HW_IDX
+        FROM
+            PO_HIWORKS
+        WHERE
+            POH_PO_IDX = #{poIdx}
+        ORDER BY
+            POH_ORDER DESC
+    </select>
+
+    <delete id="deletePoHiworksBypoIdx">
+        DELETE FROM
+            PO_HIWORKS
+        WHERE
+            POH_PO_IDX = #{poIdx}
+    </delete>
 
     <select id="selectNewPoProductGoods" resultType="Map">
         SELECT

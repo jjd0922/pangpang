@@ -1,5 +1,5 @@
 <!-- 자주 묻는 질문 -->
-<th:block th:fragment="faq(id)">
+<th:block th:fragment="faq">
     <div class="container">
         <div class="cc-content-title">
             <h2>자주 묻는 질문</h2>
@@ -108,104 +108,46 @@
         </div>
         <!-- 자주 묻는 질문 메뉴 탭 -->
         <div class="swiper swiper-questionsTab">
-            <ul class="questions-tab swiper-wrapper">
-                <li class="on swiper-slide">공통질문</li>
-                <li class="swiper-slide">회원</li>
-                <li class="swiper-slide">주문/결제확인</li>
-                <li class="swiper-slide">교환/환불/취소</li>
-                <li class="swiper-slide">보상/회수/접수확인</li>
-                <li class="swiper-slide">배송문의</li>
-                <li class="swiper-slide">영수증/증빙</li>
-                <li class="swiper-slide">상품문의</li>
-                <li class="swiper-slide">세금계산서 발행안내</li>
+            <ul class="questions-tab swiper-wrapper" id="custCenterFaqTabMenu">
+                <li onclick="openFaqMenu('common')" id="common" class="on swiper-slide">공통질문</li>
+                <li onclick="openFaqMenu('1')" id="1" class="swiper-slide">회원</li>
+                <li onclick="openFaqMenu('2')" id="2" class="swiper-slide">주문/결제확인</li>
+                <li onclick="openFaqMenu('3')" id="3" class="swiper-slide">교환/환불/취소</li>
+                <li onclick="openFaqMenu('4')" id="4" class="swiper-slide">보상/회수/접수확인</li>
+                <li onclick="openFaqMenu('5')" id="5" class="swiper-slide">배송문의</li>
+                <li onclick="openFaqMenu('6')" id="6" class="swiper-slide">영수증/증빙</li>
+                <li onclick="openFaqMenu('7')" id="7" class="swiper-slide">상품문의</li>
+                <li onclick="openFaqMenu('8')" id="8" class="swiper-slide">세금계산서 발행안내</li>
             </ul>
         </div>
         <!-- 자주 묻는 질문 메뉴 탭 내용-->
-        <ul class="questions-tab-content">
-            <li class="on">
-                <div>
-                    <ul class="cc-table">
-                        <li>
-                            <div class="cc-table-title">
-                                <span class="Q color-blue">Q.</span>
-                                <span>쿠폰과 적립금 확인 어디서 할 수 있나요?</span>
-                            </div>
-                            <div class="cc-table-open">
-                                <span class="A color-blue">A.</span>
-                                <div>
-                                    <p>안녕하세요! 고객만족센터입니다.<br><br></p>
-                                    <p>할인쿠폰 내역과 적립금 확인은 사이트 로그인 후 &gt; 내쇼핑정보<br>앱과 모바일웹 로그인 후 가운데 하단에 위치한 마이쇼핑 에서 가능합니다.<br>감사합니다.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="cc-table-title">
-                                <span class="Q color-blue">Q.</span>
-                                <span>간편결제 (카카오페이,네이버페이,페이코등) 로 결제한 영수증은 어디서 발급받을 수 있나요?</span>
-                            </div>
-                            <div class="cc-table-open">
-                                <span class="A color-blue">A.</span>
-                                <div>
-                                    <p>안녕하세요! 고객만족센터입니다.<br><br></p>
-                                    <p>카카오페이, 네이버 페이, 페이코 등 간편결제 수단을 통하여 결제하신 경우 결제 금액은 해당 결제 대행사를 거쳐 전시몰로 전달받게 됩니다.<br>
-                                        따라서 전시몰에서는 영수증을 발급해드릴 수 없는 점 양해 부탁드립니다.<br>
-                                        간편결제 서비스사에서 영수증을 발급받으실 수 있으니 번거로우시겠지만 이용하신 간편결제 서비스사 측으로 문의해 주시기 바랍니다.<br>
-                                        감사합니다.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="cc-table-title">
-                                <span class="Q color-blue">Q.</span>
-                                <span>보상 가능한 제품은 어떤 제품인가요?</span>
-                            </div>
-                            <div class="cc-table-open">
-                                <span class="A color-blue">A.</span>
-                                <div>
-                                    <p>안녕하세요! 고객만족센터입니다.<br<br></p>
-                                    <p>보상 가능한 제품군은 노트북, 태블릿 PC, 모바일, 웨어러블 기기입니다.<br>
-                                        전시몰에서 구매하지 않은 제품도 보상 접수 가능하며, 다만 파손이 없고 정상 구동 가능한 제품만 보상 진행 가능한 점 양해 부탁드립니다.<br>감사합니다.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="cc-table-title">
-                                <span class="Q color-blue">Q.</span>
-                                <span>세금계산서 발급 가능한가요?</span>
-                            </div>
-                            <div class="cc-table-open">
-                                <span class="A color-blue">A.</span>
-                                <div>
-                                    <p>안녕하세요! 고객만족센터입니다.<br><br></p>
-                                    <p>세금계산서 발행 관련 안내드리겠습니다.<br>
-                                        1. 상품 주 문시 결제수단을 가상계좌(KCP)로 선택하여 결제하기 버튼을 눌러 주문을 완료합니다.<br>
-                                        2. 입금은 당사 법인계좌로 해주셔야 합니다. ( ※지급된 가상계좌로 입금 시 세금계산서 발급 불가 )<br>
-                                        - KEB하나은행 / 에이제이전시몰 / 141-910003-86904<br>
-                                        3. 당사 팩스나 이메일로 사업자등록증 사본을 보내주세요.<br>
-                                        - 팩스 : 02-6240-0998 / 이메일 : ajmall_planning@ajnet.co.kr<br>
-                                        4. 사업자 등록증 사본 발송 및 결제금액을 법인 계좌에 입금하신 후 고객센터(1599-5372)로 연락 주셔서<br>
-                                        ①사업자 명 ②사업자 번호 ③회신 받을 이메일주소 알려주시면 담당 부서 확인 후 발행 완료됩니다.<br>
-                                        추가 문의사항 있으실 경우 고객만족센터 1599-5372로 연락 부탁드립니다.<br>감사합니다.</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li>내용2</li>
-            <li>내용3</li>
-            <li>내용4</li>
-            <li>내용5</li>
-            <li>내용6</li>
-            <li>내용7</li>
-            <li>내용8</li>
-            <li>내용9</li>
-        </ul>
+        <th:block th:replace="custCenter/custCenterFaqList"></th:block>
+
     </div>
+    <script>
+        function openFaqMenu(menu){
+            $.ajax({
+                url: '/custCenter/faq/list/'+menu+'.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#custCenterFaqMenu').replaceWith(res)
+
+                    //action
+                    $('#custCenterFaqTabMenu').children('li').removeClass("on");
+                    $('#custCenterFaqTabMenu').find($('#'+menu)).addClass("on");
+
+                }
+                ,error(){}
+            });
+        }
+        $(function(){
+            openFaqMenu('common');
+        })
+    </script>
 </th:block>
 <!-- 자주 묻는 질문 end-->
 <!-- 공지사항 -->
-<th:block th:fragment="notice(id)">
+<th:block th:fragment="notice">
     <div class="container">
         <div class="cc-content-title">
             <h2>공지사항</h2>
@@ -220,11 +162,11 @@
             </div>
         </div>
         <ul class="cc-table cc-notice-table">
-            <li>
-                <a href="/center/notice/11">
+            <li th:each="shop : ${shopList}">
+                <a href="/custCenter/notice/11">
                     <div class="cc-table-title">
                         <div class="cc-table-left">
-                            <span class="Q color-blue">01</span>
+                            <span class="Q color-blue" th:text="${shop.shopIdx}">01</span>
                             <span>가격 고민, 품질 걱정 없는 가성비 쇼핑몰 에이전시몰이 뉴퍼마켓으로 새로 시작합니다.</span>
                         </div>
                         <div class="cc-table-right">
@@ -242,65 +184,64 @@
 <!-- 공지사항 end -->
 
 <!-- 보기쉬운 FAQ -->
-<th:block th:fragment="easyFaq(id)">
-        <div class="container">
-            <div class="cc-content-title">
-                <h2>보기쉬운 FAQ</h2>
-                <p>동영상으로 보다 쉽게 설명 드립니다.</p>
-            </div>
-            <div class="faq">
-                <ul class="faq-tab-content">
-                    <li class="on">
-                        <div class="faq-video-area">
-                            <div class="faq-video">
-                                <iframe class="youtubeFrame" src="https://www.youtube.com/embed/ap3xuDsOOnA"></iframe>
-                            </div>
-                            <div class="faq-video-title">
-                                <h3>PC(데스크탑) RTC 배터리 교체이유&방법</h3>
-                                <p>2022-08</p>
-                            </div>
-                        </div>
-                        <div class="faq-video-info">
-                            <p>#RTC배터리<br>PC(데스크탑) RTC배터리<br>
-                                교체이유&방법을 알려드리겠습니다.<br>
-                                자세한 내용은 영상을 참고해주세요&#126;&#126;</p>
-                        </div>
-                    </li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                </ul>
-                <ul class="faq-tab">
-                    <li class="on">
-                        <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
-                        <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
-                    </li>
-                    <li>
-                        <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
-                        <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
-                    </li>
-                    <li>
-                        <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
-                        <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
-                    </li>
-                    <li>
-                        <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
-                        <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
-                    </li>
-                    <li>
-                        <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
-                        <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
-                    </li>
-                </ul>
-            </div>
+<th:block th:fragment="easyFaq">
+    <div class="container">
+        <div class="cc-content-title">
+            <h2>보기쉬운 FAQ</h2>
+            <p>동영상으로 보다 쉽게 설명 드립니다.</p>
         </div>
-    </li>
+        <div class="faq">
+            <ul class="faq-tab-content">
+                <li class="on">
+                    <div class="faq-video-area">
+                        <div class="faq-video">
+                            <iframe class="youtubeFrame" src="https://www.youtube.com/embed/ap3xuDsOOnA"></iframe>
+                        </div>
+                        <div class="faq-video-title">
+                            <h3>PC(데스크탑) RTC 배터리 교체이유&방법</h3>
+                            <p>2022-08</p>
+                        </div>
+                    </div>
+                    <div class="faq-video-info">
+                        <p>#RTC배터리<br>PC(데스크탑) RTC배터리<br>
+                            교체이유&방법을 알려드리겠습니다.<br>
+                            자세한 내용은 영상을 참고해주세요&#126;&#126;</p>
+                    </div>
+                </li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </ul>
+            <ul class="faq-tab">
+                <li class="on">
+                    <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
+                    <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
+                </li>
+                <li>
+                    <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
+                    <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
+                </li>
+                <li>
+                    <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
+                    <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
+                </li>
+                <li>
+                    <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
+                    <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
+                </li>
+                <li>
+                    <img src="https://dummyimage.com/350x195/eeeeee/777777" alt="">
+                    <p>PC(데스크탑) RTC 배터리 교체이유&방법</p>
+                </li>
+            </ul>
+        </div>
+    </div>
 </th:block>
 <!-- 보기쉬운 FAQ end-->
 
 <!-- AS접수안내 -->
-<th:block th:fragment="asInfo(id)">
+<th:block th:fragment="asInfo">
     <div class="container">
         <div class="cc-content-title">
             <h2>AS 접수안내</h2>
@@ -317,7 +258,7 @@
 <!-- AS접수안내 end -->
 
 <!-- 정품등록안내 -->
-<th:block th:fragment="origin(id)">
+<th:block th:fragment="origin">
     <div class="container">
         <div class="cc-content-title">
             <h2>정품등록</h2>
@@ -334,7 +275,7 @@
 <!-- 정품등록안내 end -->
 
 <!-- 회원혜택안내 -->
-<th:block th:fragment="cuGuide(id)">
+<th:block th:fragment="cuGuide">
     <div class="member-benefits">
         <div class="container">
             <div class="cc-content-title">
@@ -356,7 +297,7 @@
                 <li>일반상품평 500P / 포토상품평 1,000P / 선착순포토상품평 10,000P (상품별 포토상품평 5개 한정)</li>
             </ul>
             <div class="cc-btn2">
-                <a href="javascript:;">회원가입 하기</a>
+                <a href="/joinWelcome">회원가입 하기</a>
             </div>
         </div>
     </div>

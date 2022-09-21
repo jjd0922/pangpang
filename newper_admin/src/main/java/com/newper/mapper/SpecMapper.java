@@ -23,4 +23,10 @@ public interface SpecMapper {
 
     void insertSpecItemAll(@Param("specIdx") Integer specIdx,
                            @Param("speclIdxs") String[] speclIdxs);
+
+
+    /**재고 자산 상세 스펙이력 데이터 테이블*/
+    List<Map<String, Object>> selectSpecDataTable(Map<String, Object> param);
+    /**재고 자산 상세 스펙이력 데이터 테이블*/
+    Integer countSpecDataTable(Map<String, Object> param);
 }

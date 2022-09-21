@@ -18,31 +18,29 @@ import javax.persistence.*;
 public class Tracking extends BaseEntity {
 
     @Id
-    private Long teIdx;
+    private Long traIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "te_dn_idx", referencedColumnName = "dnIdx")
+    @JoinColumn(name = "tra_dn_idx", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
 
-    private String teType;
-    @Column(insertable = false, updatable = false)
-    private String teTypeName;
+    private String traType;
 
     /**구분값 - 송장번호*/
-    private String teNum;
+    private String traNum;
 
     /**API URI*/
-    private String teUrl;
+    private String traUrl;
 
     /**요청*/
-    private String teReq;
+    private String traReq;
 
     /**응답*/
-    private String teRes;
+    private String traRes;
 
 
     /**트래킹 fids - 추적요청시 송장별로 고유한 값으로 처리*/
     public String getFid(){
-        return "ST"+teIdx;
+        return "ST"+traIdx;
     }
 }

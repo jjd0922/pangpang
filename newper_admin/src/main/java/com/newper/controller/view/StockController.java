@@ -1,12 +1,16 @@
 package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
+import com.newper.entity.Goods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,8 +57,14 @@ public class StockController {
     
     /**재고현황 > 해당 로케이션의 재고자산 상세*/
     @GetMapping("goods")
-    public ModelAndView goodsInLocation() {
+    public ModelAndView goodsInLocation(ParamMap paramMap, int gsIdx ,int locIdx ) {
+        System.out.println(paramMap.getMap());
         ModelAndView mav = new ModelAndView("/stock/goods");
+        mav.addObject("gsIdx",gsIdx);
+        mav.addObject("locIdx",locIdx);
+/*        Map<String, Object> map = new HashMap<>();
+        map.put("gsIdx",gsIdx);
+        map.put("locIdx",locIdx);*/
         return mav;
     }
     

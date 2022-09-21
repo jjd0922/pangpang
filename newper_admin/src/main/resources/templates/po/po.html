@@ -238,9 +238,19 @@
                     return '<button type="button" class="badge badge-primary" onclick="poDetail(' + full.PO_IDX + ')">' + data + '</button>';
                 }}
             ,{'title':'사업자 등록 번호','data':'COM_NUM','defaultContent':''}
-            ,{'title':'총 발주 금액','data':'PO_TOTAL_AMOUNT','defaultContent':''}
-            ,{'title':'판매금액(합)','data':'PO_SELL_TOTAL_AMOUNT','defaultContent':''}
-            ,{'title':'예상수익률','data':'PO_SELL_PROFIT','defaultContent':''}
+            ,{'class':'text-won','title':'총 발주 금액','data':'PO_TOTAL_AMOUNT','render': function (data, type, full, meta) {
+                return comma(full.PO_TOTAL_AMOUNT);
+            }}
+            ,{'class':'text-won','title':'판매금액(합)','data':'PO_SELL_TOTAL_AMOUNT','render': function (data, type, full, meta) {
+                return comma(full.PO_SELL_TOTAL_AMOUNT);
+            }}
+            ,{'title':'예상수익률','data':'PO_SELL_PROFIT','render':function(data,type,full,meta){
+                if (data != null) {
+                    return full.PO_SELL_PROFIT + '%';
+                } else {
+                    return 0+'%';
+                }
+            }}
             ,{'title':'매입운송비 주체','data':'PO_DELIVERY_MAIN_STR','defaultContent':''}
             ,{'title':'입고예정일','data':'PO_IN_DATE','defaultContent':''}
             ,{'title':'납기일','data':'PO_DUE_DATE','defaultContent':''}

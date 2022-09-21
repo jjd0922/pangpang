@@ -370,7 +370,6 @@
     $('.faq-tab>li').css('height', Height);
 
 
-
     /*** 상품상세 ***/
     var prodThumbs = new Swiper('.prod-thumbList-swiper', {
         spaceBetween: 10,
@@ -384,6 +383,17 @@
         slides: false,
     });
 
+    //탭 스크롤시 하단 외곽 추가
+    $(window).scroll(function(){
+        var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
+
+        if ($(window).scrollTop() >= sectionHeight) {
+            $(".boxTab3-wrap").addClass("on");
+        } else {
+            $(".boxTab3-wrap").removeClass("on");
+        }
+    })
+
     // 연관상품
     new Swiper('.swiper-group1', {
         slidesPerView: 1,
@@ -391,7 +401,7 @@
         breakpoints: {
             992: {
                 slidesPerView: 3,
-                spaceBetween: 35,
+                spaceBetween: 0,
                 navigation: {
                     nextEl: '.swiper-group1-next',
                     prevEl: '.swiper-group1-prev',
@@ -401,8 +411,64 @@
         },
     });
 
+    // 상품상세 - 이 상품을 본 고객이 많이 본 다른 상품
+    new Swiper('.swiper-group2', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 25,
+                navigation: {
+                    nextEl: '.swiper-group2-next',
+                    prevEl: '.swiper-group2-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
 
-    /* input type:number maxLength 적용 */
+    // 상품상세 - 함께 구매하면 좋은 상품
+    new Swiper('.swiper-group3', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 35,
+                navigation: {
+                    nextEl: '.swiper-group3-next',
+                    prevEl: '.swiper-group3-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+
+    // 상품상세 - 베스트 포토리뷰 슬라이드
+    new Swiper('.swiper-group4', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        breakpoints: {
+            992: {
+                slidesPerView: 3,
+                spaceBetween: 25,
+                navigation: {
+                    nextEl: '.swiper-group4-next',
+                    prevEl: '.swiper-group4-prev',
+                    disabledClass: 'btn-disabled',
+                },
+            },
+        },
+    });
+    // 좋아요 클릭시 active
+    $('.good-wrap').click(function() {
+        $(this).toggleClass('on');
+    });
+
+
+
+        /* input type:number maxLength 적용 */
     function maxLengthCheck(object){
         if (object.value.length > object.maxLength){
             object.value = object.value.slice(0, object.maxLength);
