@@ -75,5 +75,12 @@ public class MyPageController {
         mav.addObject("orderMenuTitle", orderMenuTitle);
         return mav;
     }
+    /** AS접수 하위 메뉴 load */
+    @PostMapping("myOrder/as/{menu}.load")
+    public ModelAndView registAS(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
+
+        return mav;
+    }
 
 }
