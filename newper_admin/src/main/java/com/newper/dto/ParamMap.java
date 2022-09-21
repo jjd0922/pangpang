@@ -1,5 +1,6 @@
 package com.newper.dto;
 
+import com.newper.converter.ConverterLocalDate;
 import com.newper.exception.MsgException;
 import net.bytebuddy.asm.Advice;
 import org.modelmapper.AbstractConverter;
@@ -207,19 +208,7 @@ public class ParamMap {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
-
-        Converter<String, LocalDate> strToDate = new AbstractConverter<String, LocalDate>() {
-            @Override
-            protected LocalDate convert(String source) {
-                if (StringUtils.hasText(source)) {
-                    LocalDate ld = LocalDate.parse(source);
-                    return ld;
-                } else {
-                    return null;
-                }
-            }
-        };
-        modelMapper.addConverter(strToDate, String.class, LocalDate.class);
+        modelMapper.addConverter(new ConverterLocalDate(), String.class, LocalDate.class);
 
         Object map = modelMapper.map(this.map, classType);
         return (S)map;
