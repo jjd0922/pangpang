@@ -76,20 +76,6 @@
                                                 </div>
 
                                                 <!-- 입력필드 -->
-                                                <div class="col-sm-12 gu-hide" id="locMax">
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
-                                                                    최대적재수량
-                                                                </span>
-                                                            </span>
-                                                            <input type="text" name="" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- 입력필드 -->
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -127,6 +113,20 @@
                                                                 </span>
                                                             </span>
                                                             <input type="text" name="locRow" class="form-control location" th:value="${location?.locRow}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12 gu-hide" id="locMax">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text requested">
+                                                                    최대적재수량
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="locMax" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -322,13 +322,21 @@
         var location = $('input[name="locZone"]').val()+$('input[name="locColumn"]').val()+$('input[name="locRow"]').val();
         $('input[name="locCode"]').val(location);
     }
+
+    function locationRegex(el) {
+        var val = el.val().replace(/./g, str => str.toUpperCase()).replace(/[^0-9A-Z]/g, '');
+        el.val(val);
+    }
 </script>
 <script th:inline="javascript">
     setLocation();
     $("#saveBtn").on("click", saveAction);
     $("#updateBtn").on("click", updateAction);
     $("#searchUserBtn").on("click", showUserModal);
-    $(".location").on("keyup", setLocation);
+    $(".location").on("input", function (event) {
+        locationRegex($(event.target));
+        setLocation();
+    });
     $("select[name=locForm]").on("change", function (event) {
         var el = $(event.target);
         if (el.val() == [[${T(com.newper.constant.LocForm).SHELF}]]) {
