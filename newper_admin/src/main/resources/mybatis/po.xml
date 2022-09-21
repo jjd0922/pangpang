@@ -511,4 +511,17 @@
                 (#{item.order}, #{item.poIdx}, #{item.hwIdx})
             </foreach>
     </insert>
+
+    <select id="selectNewPoProductGoods" resultType="Map">
+        SELECT
+            P_IDX, P_NAME, P_MODEL, COUNT(*)
+        FROM
+            PO
+                LEFT JOIN GOODS ON PO_IDX = G_PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        WHERE
+            PO_IDX = #{poIdx}
+        GROUP BY
+            P_IDX
+    </select>
 </mapper>

@@ -79,4 +79,7 @@ public interface PoMapper {
 
     /**po hiworks 관계테이블 insert*/
     void insertPoHiworks(@Param("list") List<Map<String,Object>> list);
+
+    /** 해당 발주건에 새로 입고된 상품들 조회 */
+    List selectNewPoProductGoods(Map<String, Object> map);
 }
