@@ -91,24 +91,20 @@
             </li>
         </ul>
         <!-- 고객센터 탭 메뉴 -->
-        <ul class="cc-menu-tab">
-            <li onclick="openMenu('faq')" th:classappend="${menu == 'faq'}?'on':''"><i class="cc-tab-icon1"></i>자주 묻는 질문</li>
-            <li onclick="openMenu('notice')" th:classappend="${menu == 'notice'}?'on':''"><i class="cc-tab-icon2"></i>공지사항</li>
-            <li onclick="openMenu('easyFaq')" th:classappend="${menu == 'easyFaq'}?'on':''"><i class="cc-tab-icon3"></i>보기쉬운 FAQ</li>
-            <li onclick="openMenu('asInfo')" th:classappend="${menu == 'asInfo'}?'on':''"><i class="cc-tab-icon4"></i>AS접수안내</li>
-            <li onclick="openMenu('origin')" th:classappend="${menu == 'origin'}?'on':''"><i class="cc-tab-icon5"></i>정품등록안내</li>
-            <li onclick="openMenu('cuGuide')" th:classappend="${menu == 'cuGuide'}?'on':''"><i class="cc-tab-icon6"></i>회원혜택안내</li>
+        <ul class="cc-menu-tab" id="custCenterTabMenu">
+            <li onclick="openMenu('faq')" id="faq"><i class="cc-tab-icon1"></i>자주 묻는 질문</li>
+            <li onclick="openMenu('notice')" id="notice"><i class="cc-tab-icon2"></i>공지사항</li>
+            <li onclick="openMenu('easyFaq')" id="easyFaq"><i class="cc-tab-icon3"></i>보기쉬운 FAQ</li>
+            <li onclick="openMenu('asInfo')" id="asInfo"><i class="cc-tab-icon4"></i>AS접수안내</li>
+            <li onclick="openMenu('origin')" id="origin"><i class="cc-tab-icon5"></i>정품등록안내</li>
+            <li onclick="openMenu('cuGuide')" id="cuGuide"><i class="cc-tab-icon6"></i>회원혜택안내</li>
         </ul><!-- // 고객센터 탭 메뉴 -->
-        <form method="post" name="custCenter" id="custCenter">
-            <input type="hidden" name="menu">
-        </form>
     </div>
 </section>
 <section class="padding-section">
         <!-- 고객센터 탭 내용 -->
-        <ul class="cc-menu-content">
-            <li>
-            <th:block th:replace="custCenter/center :: ${menu}(${menu})"></th:block>
+        <ul>
+            <li id="custCenterMenu">
             </li>
         </ul>
     </div><!-- // 고객센터 탭 내용 -->
@@ -127,15 +123,22 @@
 
 <script>
     function openMenu(menu){
-        $("input[name=menu]").val(menu);
-        document.custCenter.action="/custCenter";
-        document.custCenter.submit();
+        $.ajax({
+            url: '/custCenter/'+menu+'.load'
+            ,type : 'post'
+            ,success:function(res){
+                $('#custCenterMenu').empty();
+                $('#custCenterMenu').append(res);
+
+                //action
+                $('#custCenterTabMenu').children('li').removeClass("on");
+                $('#custCenterTabMenu').find($('#'+menu)).addClass("on");
+            }
+            ,error:function(){}
+        });
     }
-</script>
-<script>
-$(function(){
-    var target = $('.cc-content-title').offset().top;
-    $('html,body').animate({scrollTop: target-500}, 500);
-});
+    $(function(){
+        openMenu('faq');
+    })
 </script>
 </html>

@@ -22,12 +22,6 @@ public enum GState implements EnumOption {
     ,CANCEL("반품진행중")
     ,CANCEL_COMP("반품완료")
     ,LOSS("망실")
-
-    ,BEFORE_RELEASE_REQ("출고전검수요청")
-    ,BEFORE_RELEASE_OUT("출고전검수출고")
-    ,BEFORE_RELEASE_IN("출고전검수입고")
-    ,RELEASE_REQ("출고요청")
-    ,RELEASE("출고")
     ;
 
     private String option;

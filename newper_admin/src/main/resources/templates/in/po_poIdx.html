@@ -64,7 +64,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">세금계산서 발행일</span>
                                                     </span>
-                                                    <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${ig?.igTaxDate}">
+                                                    <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력">
                                                 </div>
                                             </div>
                                         </div>
@@ -150,6 +150,18 @@
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
                                     <legend class="">
+                                        4. 새상품 자산 정보
+                                    </legend>
+
+                                    <div class="row">
+                                        <table class="table" id="newPoProductGoodsTable"></table>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="card-body popup-contents mb-4">
+                                <fieldset class="mb-0">
+                                    <legend class="">
                                         발주 정보
                                     </legend>
 
@@ -159,11 +171,22 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
+                                                        <span class="input-group-text">발주코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="poIdx" th:value="${po?.poIdx}" readonly>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
                                                         <span class="input-group-text">발주상태</span>
                                                     </span>
-                                                    <select class="form-control select">
-                                                        <option th:each="opt : ${T(com.newper.constant.PoState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${po?.poState} == ${opt.name()}"></option>
-                                                    </select>
+                                                    <input type="text" class="form-control" placeholder="검색" th:value="${po?.poState.option}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -219,36 +242,12 @@
                                         </div>
 
                                         <!-- 입력필드 -->
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">발주메모</span>
-                                                    </span>
-                                                    <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${po?.poMemo}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- 입력필드 -->
-                                        <div class="col-sm-12 col-md-6" th:if="${po.poFile != ''}" >
+                                        <div class="col-sm-12 col-md-12" th:if="${po.poFile != ''}" >
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">첨부파일<a th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                     </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- 입력필드 -->
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">입고 메모</span>
-                                                    </span>
-                                                    <input type="text" name="igMemo" class="form-control" placeholder="입력" th:value="${ig?.igMemo}">
                                                 </div>
                                             </div>
                                         </div>
@@ -306,6 +305,7 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
+<th:block th:replace="in/modal/poReceivedModal.html"></th:block>
 <th:block th:replace="in/modal/inModal.html"></th:block>
 <th:block th:replace="goods/modal/warehouseModal.html"/>
 <th:block th:replace="modal/userModal.html"/>
@@ -354,6 +354,54 @@
         $('input[name="uIdx"]').val(rowData.U_IDX);
     }
 </script>
+
+<script>
+    var newPoProductGoodsTable = $('#newPoProductGoodsTable').DataTable({
+        ordering:false,
+        serverSide: false,
+        ajax:{
+            url:'/in/selectNewPoProductGoods.dataTable?po_idx=[[${poIdx}]]',
+            type:'post'
+        },
+        pageLength: -1,
+        dom: '<"datatable-header"B><"datatable-scroll"t><"datatable-footer">',
+        buttons: [
+            {
+                text: '자산코드 엑셀 업로드',
+                className: 'btn btn-sm btn-primary',
+                action: function (e, dt, node, config) {
+                    openInExcelModal();
+                }
+            }
+            ,{
+                text: '새상품등록',
+                className: 'btn btn-sm btn-secondary',
+                action: function (e, dt, node, config) {
+                    openProductModal();
+                }
+            }
+        ],
+        "columns" : [
+            {'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'title':'상품코드','data':'P_IDX'}
+            ,{'title':'상품명','data':'P_NAME'}
+            ,{'title':'모델명','data':'P_MODEL'}
+            ,{'title':'매입수량','data':'PP_COUNT','render':function(data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'입고 수량','data':'IP_COUNT','render':function(data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'자산코드','data':'','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="openInModal('+meta.row+')">등록</a>';
+                }}
+        ]
+    });
+
+</script>
+
 <script th:inline="javascript">
     //입고 정보 table
     var inProductTable = $('#inProductTable').DataTable({
@@ -378,13 +426,6 @@
                 className: 'btn btn-sm btn-secondary',
                 action: function (e, dt, node, config) {
                     dt.ajax.reload();
-                }
-            }
-            ,{
-                text: '새상품등록',
-                className: 'btn btn-sm btn-primary',
-                action: function (e, dt, node, config) {
-                    openInModalNewProduct();
                 }
             }
         ],

@@ -38,7 +38,7 @@ public class GoodsService {
     private final ProcessNeedRepo processNeedRepo;
 
 
-    /** 자산 등록. 상품코드와 바코드만 먼저 등록. 입고검수가 되어야 입고확정스펙 나옴 */
+    /** 자산 등록. 발주코드, 상품코드, 바코드만 먼저등록 입고검수가 되어야 입고확정스펙 나옴 */
     @Transactional
     public void insertGoods(int p_idx, int po_idx, String barcode) {
         Po po = poRepo.getReferenceById(po_idx);
@@ -50,46 +50,6 @@ public class GoodsService {
                 .product(product)
                 .build();
 
-        // 자산체번시 품목구분1 정산구분(PRODUCT.P_TYPE1)이 정상품일경우 (NORMAL)
-        if (product.getPType1().equals(PType1.NORMAL)) {
-           // 자동매핑
-            PoProduct poProduct = poProductRepo.findTopByPo_poIdxAndProduct_pIdx(po_idx, p_idx);
-            PoReceived poReceived = poMapper.selectPoReceivedByPoIdxAndPpIdx(po_idx, poProduct.getPpIdx());
-            int count = 0;
-            if (poReceived != null) { count = poReceived.getPorCount(); }
-
-            poReceived = PoReceived
-                    .builder()
-                    .po(po)
-                    .poProduct(poProduct)
-                    .porProfitTarget(poProduct.getPpProfitTarget())
-                    .porMemo(poProduct.getPpMemo())
-                    .porSellPrice(poProduct.getPpSellPrice())
-                    .porCost(poProduct.getPpCost())
-                    .porOption(poProduct.getPpOption())
-                    .porCount(count)
-                    .build();
-
-            poReceivedRepo.save(poReceived);
-
-            // 입고SPEC(예정), 입고SPEC(확정), 판매SPEC(예정), 판매SPEC(확정) 전부 같음 (가공SPEC없음), 옵션
-            // GOODS.G_STATE값 입고검수 (CHECK)
-            goods = Goods
-                    .builder()
-                    .gState(GState.CHECK)
-                    .inSpec(poProduct.getSpec())
-                    .sellSpec(poProduct.getSpec())
-//                    .stockSpec(poProduct.getSpec())
-                    .gOption(poProduct.getPpOption())
-                    .gRank(GRank.N1)
-                    .gBarcode(barcode)
-                    .gAjBarcode(poProduct.getPpMemo())
-                    .po(po)
-                    .product(product)
-                    .poReceived(poReceived)
-                    .build();
-
-        }
         Goods save = goodsRepo.save(goods);
 
         poMapper.updategoods(po_idx, p_idx);

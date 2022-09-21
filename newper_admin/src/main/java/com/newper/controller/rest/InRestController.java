@@ -208,6 +208,23 @@ public class InRestController {
 
         return rm;
     }
+
+    /** 해당 발주건에 새로 입고된 상품들 select */
+    @PostMapping("selectNewPoProductGoods.dataTable")
+    public ReturnDatatable selectNewPoProductGoods(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(poMapper.selectNewPoProductGoods(paramMap.getMap()));
+
+        return rd;
+    }
+
+    /** 입고등록시 새로운 상품 입고 데이터 추가  */
+    @PostMapping("insertNewPoReceived.ajax")
+    public ReturnMap insertNewPoReceived(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        inService.insertNewPoReceived(paramMap);
+        return rm;
+    }
 }
 
 

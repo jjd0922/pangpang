@@ -10,12 +10,12 @@
   </div>
   <!-- iam Menu -->
   <div class="d-flex w-100 w-lg-auto overflow-x overflow-lg-visible border-top border-top-light-100 border-top-lg-0 orders-1 orders-lg-0"><!-- scrollbar-hidden -->
-    <div style="width: 100px;">
+    <!--<div style="width: 100px;">
       <select class="form-control" onchange="if(this.value!='')location.href=this.value;">
         <option value="/erpAdmin">ERP ADMIN</option>
         <option value="" selected>SHOP ADMIN</option>
       </select>
-    </div>
+    </div>-->
     <ul class="navbar-nav flex-row text-nowrap mx-auto">
 
       <li class="nav-item dropdown nav-item-dropdown-lg" th:each="menus: ${T(com.newper.component.MenuList).menus}">
@@ -32,27 +32,36 @@
   <div class="d-flex flex-lg-1 justify-content-lg-end orders-0 orders-lg-1 pr-3">
     <ul class="navbar-nav flex-row">
 
-      <!-- 고객단 바로가기 : 이 위치의 하위메뉴는 클릭해야 나타남-->
+      <!-- ERP 관리자 바로가기 -->
+      <li class="nav-item">
+        <a href="#" class="navbar-nav-link navbar-nav-link-toggler">
+          <i class="icon-loop"></i>
+          <span class="d-none d-lg-inline-block">ERP 관리자</span>
+        </a>
+      </li>
+      <!-- 고객단 바로가기 -->
       <li class="nav-item dropdown">
-        <a href="#" class="navbar-nav-link" data-toggle="dropdown">
+        <a href="#" class="navbar-nav-link navbar-nav-link-toggler dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
           <i class="icon-store2"></i>
-          <span class="d-xl-none ml-2">With badge</span>
+          <span class="d-none d-lg-inline-block">분양몰</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right">
-          <a href="" target="_blank" class="dropdown-item">고객단 홈페이지 바로 가기</a>
-
-          <div class="dropdown-divider"></div>
-
-          <a href="#" class="dropdown-item">
-            <i class="icon-link"></i> 기타 바로가기 연결
-          </a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 1</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 2</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 3</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 4</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 5</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 6</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 7</a>
+          <a href="" target="_blank" class="dropdown-item">분양몰 8</a>
         </div>
       </li>
 
-      <li class="nav-item nav-item-dropdown-lg dropdown dropdown-user h-100">
-        <a href="#" class="navbar-nav-link navbar-nav-link-toggler d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-          <span>관리자</span>
+      <li class="nav-item dropdown">
+        <a href="javascript:;" class="navbar-nav-link navbar-nav-link-toggler dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+          <i class="icon-cog6"></i>
+          <span class="d-none d-lg-inline-block">설정</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right">
@@ -60,10 +69,15 @@
             <i class="icon-user"></i> 내 정보
           </a><!-- 비밀번호 변경 등 -->
 
+          <a href="#" class="dropdown-item">
+            <i class="icon-collaboration"></i> 관리자 설정
+          </a><!-- 마스터 관리자 추가관리 페이지로 이동 -->
+
           <div class="dropdown-divider"></div>
 
-          <a href="#" class="dropdown-item"><i class="icon-cog5"></i> 관리자 설정</a><!-- 마스터 관리자 추가관리 페이지로 이동 -->
-          <a th:href="@{/logout}" class="dropdown-item"><i class="icon-switch2"></i> 로그아웃</a>
+          <a th:href="@{/logout}" class="dropdown-item">
+            <i class="icon-switch2"></i> 로그아웃
+          </a>
         </div>
       </li>
     </ul>

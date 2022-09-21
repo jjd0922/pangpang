@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -29,6 +28,7 @@ public class InService {
     private final GoodsRepo goodsRepo;
     private final ChecksMapper checkMapper;
     private final CheckGroupRepo checkGroupRepo;
+    private final PoReceivedRepo poReceivedRepo;
 
     /** 발주서에 입고그룹 없는 경우 생성. */
     @Transactional
@@ -83,5 +83,25 @@ public class InService {
             }
         }
 
+    }
+
+    /** 입고등록시 완전 새로운 상품 입고시 입고상품 그룹 생성 */
+    public void insertNewPoReceived(ParamMap paramMap) {
+        Product product = paramMap.mapParam(Product.class);
+        Po po = paramMap.mapParam(Po.class);
+
+        PoReceived poReceived = PoReceived
+                .builder()
+                .product(product)
+                .po(po)
+                .porCount(0)
+                .porCost(0)
+                .porSellPrice(0)
+                .porProfitTarget(0)
+                .porOption(new ArrayList<>())
+                .porMemo("기존 발주에 없는 상품")
+                .build();
+
+        poReceivedRepo.save(poReceived);
     }
 }
