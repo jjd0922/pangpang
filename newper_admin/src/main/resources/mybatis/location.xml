@@ -157,6 +157,31 @@
             LOC_IDX = #{locIdx}
     </select>
 
+    <select id="selectListGoodsByLocation" resultType="Map">
+        SELECT
+            G_IDX,
+            G_STATE,
+            G_BARCODE,
+            P_NAME,
+            P_IDX,
+            LOC_WH_IDX,
+            LOC_FORM,
+            LOC_ZONE,
+            LOC_COLUMN,
+            LOC_ROW,
+            LOC_CODE,
+            G_PO_IDX,
+            IFNULL(G_IMEI, '') AS G_IMEI
+        FROM
+            LOCATION
+                LEFT JOIN GOODS ON LOC_IDX = G_LOC_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        WHERE
+        <foreach collection="gIdxs" open="G_BARCODE IN (" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
 
     <select id="selectStockInLocationDatatable" resultType="map">
         SELECT

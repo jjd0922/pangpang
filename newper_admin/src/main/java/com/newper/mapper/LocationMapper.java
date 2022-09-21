@@ -32,10 +32,10 @@ public interface LocationMapper {
     /** 로케이션에 있는 자산들 조회 */
     List<Map<String,Object>> selectGoodsByLocation(Map<String, Object> map);
 
-/*    *//** 로케이션에 있는 자산들 조회 *//*
-    List<Map<String,Object>> insertGoodsByLocation(Map<String, Object> map);*/
 
 /*    void insertGoodsByLocation(@Param("gIdxs") String[] gIdxs);*/
+
+    List<Map<String, Object>> selectListGoodsByLocation(@Param("gIdxs") String[] gIdxs);
 
     List<Map<String, Object>> selectStockInLocationDatatable(Map<String, Object> map);
 

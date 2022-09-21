@@ -164,7 +164,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <input type="hidden" id="barTest" >
                                         <legend class="mt-3 d-flex justify-content-between align-items-center">
                                         2. 출고창고
                                         <div class="mr-1">
@@ -449,7 +449,6 @@
     /**창고 검색시 해당 창고에 있는 자산 행추가*/
     function appendLocGoods(data) {
         $('#locationGoodsTbody').empty();
-
         var html = '';
         $.each(data, function (index, value) {
             html += '<tr>' +
@@ -515,6 +514,52 @@
                 $('input[name="barcode"]').val("").focus();
             }
         });
+    }
+    function locBarcode2(data) {
+
+        console.log("test~~~"+$(data).val())
+        var barTest = $('#barTest').val();
+        var dt = $(data).val();
+        $('#barTest').val(barTest+","+dt);
+        $.ajax({
+            url: '/stock/list/barcode.ajax',
+            data: {
+                'barcode' : $('#barTest').val(),
+
+            },
+            type: 'post',
+            success: function (res) {
+                console.log(res)
+                appendLocGoods(res.data.list);
+            }
+        });
+    }
+
+
+    /**창고 이동등록 바코드리딩 자산 행추가*/
+    function appendLocGoods2(data) {
+        $('#locationGoodsTbody').append(
+            '<tr>' +
+            '<td><input type="hidden" name="locIdx" value="'+data.barcode+'"></td>' +
+            '<td>' + value.G_STATE + '</td>' +
+            '<td>' + value.G_BARCODE + '</td>' +
+            '<td>' + value.P_IDX + '</td>' +
+            '<td>' + value.P_NAME + '</td>' +
+            '<td>' + value.PS_TYPE + '</td>' +
+            '<td>' + value.LOC_WH_IDX + '</td>' +
+            '<td>' + value.LOC_FORM + '</td>' +
+            '<td>' + value.LOC_ZONE + '</td>' +
+            '<td>' + value.LOC_COLUMN + '</td>' +
+            '<td>' + value.LOC_ROW + '</td>' +
+            '<td>' + value.LOC_CODE + '</td>' +
+            '<td>' + value.G_IMEI + '</td>' +
+            '<td></td>' +
+            '<td>' + value.G_PO_IDX + '</td>' +
+            '<td><a onclick="deleteRow2($(this))" class="badge badge-secondary">삭제</a></td>' +
+            /* '<td><a onclick="deleteRow(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +*/
+            '</tr>'
+        );
+
     }
 
 
