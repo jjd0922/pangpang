@@ -120,7 +120,7 @@ public class ProcessService {
         resellGoods.put("rsIdx", resell.getRsIdx());
         for (int i = 0; i < gIdx.size(); i++) {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdx.get(i))).get();
-            goods.setGState(GState.CANCEL);
+            goods.setGState(GState.CANCEL_DONE);
             goodsRepo.save(goods);
         }
         processMapper.insertResellGoods(resellGoods);
@@ -142,7 +142,7 @@ public class ProcessService {
             Goods goods = Goods
                     .builder()
                     .gIdx(resellGoods.getGoods().getGIdx())
-                    .gState(GState.CANCEL_COMP)
+                    .gState(GState.CANCEL_DONE)
                     .build();
 
             goodsRepo.save(goods);
