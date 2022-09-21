@@ -60,7 +60,7 @@ public class LocationService {
             throw new MsgException("없는 자산바코드 입니다.");
         }
 
-        if (!goods.getGState().equals(GState.STOCK_REQ)) {
+        if (!goods.getGState().equals(GState.STOCK)) {
             throw new MsgException("재고인계요청 상태의 자산만 적재할 수 있습니다.");
         }
 

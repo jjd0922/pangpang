@@ -132,7 +132,7 @@ public class ProcessRestController {
     @PostMapping("recheckPop.ajax")
     public ReturnMap recheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("gState", GState.CHECK_RE);
+//        paramMap.put("gState", GState.CHECK_RE);
         paramMap.put("cgsType", CgsType.RE);
         checkService.insertCheckGroup(paramMap);
         rm.setMessage("재검수 요청 완료");

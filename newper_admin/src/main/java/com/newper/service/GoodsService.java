@@ -173,7 +173,7 @@ public class GoodsService {
             if (processNeed.size() != 0) {
                 goods.setGState(GState.PROCESS);
             } else {
-                goods.setGState(GState.STOCK_REQ);
+            /*    goods.setGState(GState.STOCK_REQ);*/
             }
 
             goodsRepo.save(goods);

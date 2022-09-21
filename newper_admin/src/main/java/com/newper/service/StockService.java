@@ -32,7 +32,7 @@ public class StockService {
             Goods goods = goodsRepo.getReferenceById(G_IDX);
             GState g_state = goods.getGState();
             if(g_state.equals(GState.STOCK)){
-                goods.setGState(GState.BEFORE_RELEASE_REQ);
+             /*   goods.setGState(GState.BEFORE_RELEASE_REQ);*/
                 goodsRepo.saveAndFlush(goods);
                 cnt++;
             }
@@ -50,7 +50,7 @@ public class StockService {
             Map<String, Object> map = list.get(i);
             String gBarcode = map.get("G_BARCODE")+"";
             if(barcode.equals(gBarcode)){
-                goods.setGState(GState.BEFORE_RELEASE_REQ);
+            /*    goods.setGState(GState.BEFORE_RELEASE_REQ);*/
                 goodsRepo.save(goods);
                 check=true;
                 break;
