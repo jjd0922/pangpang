@@ -25,8 +25,6 @@ public class Tracking extends BaseEntity {
     private DeliveryNum deliveryNum;
 
     private String traType;
-    @Column(insertable = false, updatable = false)
-    private String traTypeName;
 
     /**구분값 - 송장번호*/
     private String traNum;

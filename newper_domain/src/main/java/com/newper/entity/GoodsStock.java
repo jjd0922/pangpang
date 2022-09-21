@@ -48,8 +48,9 @@ public class GoodsStock{
     private String gsThumbFileName2;
     private String gsThumbFileName3;
     private String gsContent;
-    private Long gsStock;
-    private Long gsOutStock;
+    private long gsStock;
+    private long gsOutStock;
+    private long gsMoveStock;
     private Long gsSafeStock;
     private Long gsProperStock;
 
@@ -73,6 +74,11 @@ public class GoodsStock{
 
     @Builder.Default
     private Map<String,Object> gsOption = new HashMap<>();
+
+    /**판매 가능한 재고*/
+    public long getSellStock(){
+        return getGsStock() + getGsMoveStock();
+    }
 
 
 }
