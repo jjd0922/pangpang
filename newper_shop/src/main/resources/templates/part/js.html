@@ -370,7 +370,6 @@
     $('.faq-tab>li').css('height', Height);
 
 
-
     /*** 상품상세 ***/
     var prodThumbs = new Swiper('.prod-thumbList-swiper', {
         spaceBetween: 10,
@@ -462,9 +461,14 @@
             },
         },
     });
+    // 좋아요 클릭시 active
+    $('.good-wrap').click(function() {
+        $(this).toggleClass('on');
+    });
 
 
-    /* input type:number maxLength 적용 */
+
+        /* input type:number maxLength 적용 */
     function maxLengthCheck(object){
         if (object.value.length > object.maxLength){
             object.value = object.value.slice(0, object.maxLength);
