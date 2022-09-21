@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="part/head :: head('타이틀')">
-</head>
+<head th:replace="part/head :: head('베스트 100')"></head>
 <body th:classappend="${@shopComp.getShopDesign()}">
 
 <!-- 헤더 카테고리 -->
@@ -20,11 +19,7 @@
 <section th:insert="part/menu :: thumbnailCategory" class="padding-section sticky"></section>
 
 <!--썸네일 목록 - best 100-->
-<div>
-    <div th:insert="part/thumbnailList :: best100">
-    </div>
-</div>
-
+<section th:insert="part/thumbnailList :: best100" class="padding-section"></section>
 
 <!-- 푸터 -->
 <th:block th:replace="part/footer :: main-footer"></th:block>

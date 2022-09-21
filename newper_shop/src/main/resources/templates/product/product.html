@@ -277,17 +277,21 @@
         </ul>
     </div>
 
-    <!-- 연관상품 -->
+<!-- 연관상품 -->
+<section class="padding-section padding-none">
     <div class="container">
         <h3>연관상품</h3>
     </div>
-    <section th:insert="part/thumbnailList :: relatedProducts" class="padding-section padding-none relatedProducts swiper-all">
+</section>
+<section th:insert="part/thumbnailList :: relatedProducts" class="padding-section padding-none relatedProducts swiper-all">
     </section>
 
-    <!--메뉴 : 박스형 탭 메뉴 : 해당 영역 하단 라인[상품상세] -->
-    <section th:insert="part/menu :: boxTab3" class="boxTab3-wrap sticky">
-    </section>
+<!--메뉴 : 행 전체 메뉴 - 상하 라인 [상품상세] -->
+<section th:insert="part/menu :: boxTab3" class="boxTab3-wrap sticky">
+</section>
 
+<!--상품상세 정보 : 공통영역-->
+<section class="padding-section half-padding-section">
     <div class="container">
         <!-- 런칭 스토리 -->
         <div class="launchingStory">
@@ -328,8 +332,11 @@
                 <img src="https://dummyimage.com/1380x360/2e88ff/fff" alt="광고배너">
             </a>
         </div>
-
-        <!-- 상품 상세 정보 -->
+    </div>
+</section>
+<!-- 상품 상세 정보 -->
+<section class="padding-section padding-none">
+    <div class="container">
         <div class="item-detail-info">
             <h3 class="font-xxxlg semi-bold">상품 상세 정보</h3>
             <div class="buyTogether-wrap">
@@ -350,8 +357,12 @@
             <img src="https://images.ajrepository.com/item_images/001111152/001111152CT1.jpg">
             -->
        </div>
+    </div>
+</section>
 
-        <!-- 이 상품을 본 고객이 많이 본 다른 상품 / 함께 구매하면 좋은 상품-->
+<!-- 이 상품을 본 고객이 많이 본 다른 상품 / 함께 구매하면 좋은 상품-->
+<section class="padding-section padding-none">
+    <div class="container">
         <div class="thumb-list lg-col-6 other-products">
             <div>
                 <h4 class="font-lg semi-bold">이 상품을 본 고객이 많이 본 다른 상품</h4>
@@ -364,7 +375,11 @@
                 </section>
             </div>
         </div>
+    </div>
+</section>
 
+<section class="padding-section">
+    <div class="container">
         <!-- 상품리뷰 -->
         <div class="display-flex space-between">
             <h3 class="semi-bold itemDetail-page-subTitle">상품리뷰</h3>
@@ -396,7 +411,12 @@
             </li>
 
         </ul>
-        <!-- MD리뷰 -->
+    </div>
+</section>
+
+<!-- MD리뷰 -->
+<section class="padding-section padding-none">
+    <div class="container">
         <div class="sub-section-title">
             <h4 class="font-lg semi-bold">MD리뷰</h4>
         </div>
@@ -429,14 +449,24 @@
                     3. 웹캠 탑재로 늘어난 재택근무, 아이들 인강용으로도 제격</p>
             </li>
         </ul>
-        <!-- 베스트 포토리뷰 -->
+    </div>
+</section>
+
+<!-- 베스트 포토리뷰 -->
+<section class="padding-section padding-menu">
+    <div class="container">
         <div class="sub-section-title">
             <h4 class="font-lg semi-bold">베스트 포토리뷰 PICK</h4>
         </div>
-        <!-- 베스트 포토리뷰 슬라이드 -->
-        <section th:insert="part/thumbnailList :: bestPhotoReview" class="padding-section padding-none bestPhotoReview-pick">
-        </section>
-        <!-- 리뷰쓰기 -->
+    </div>
+</section>
+<!-- 베스트 포토리뷰 슬라이드 -->
+<section th:insert="part/thumbnailList :: bestPhotoReview" class="padding-section padding-none bestPhotoReview-pick">
+</section>
+
+<!-- 리뷰쓰기 -->
+<section class="padding-section">
+    <div class="container">
         <div class="display-flex space-between position-relative">
             <div class="btn btn11">
                 <a href="javascript:;" class="font-lg semi-bold">리뷰쓰기</a>
@@ -536,8 +566,12 @@
                 </div>
             </li>
         </ul>
+    </div>
+</section>
 
-        <!-- 상품문의 -->
+<!-- 상품문의 -->
+<section class="padding-section">
+    <div class="container">
         <div class="productInquiry">
             <h3 class="semi-bold itemDetail-page-subTitle">상품문의</h3>
             <span>총 2 건</span>
@@ -549,10 +583,8 @@
                 <a href="javascript:;" class="font-lg semi-bold">문의하기</a>
             </div>
         </div>
+    </div>
 </section>
-
-
-
 
 <!-- 푸터 -->
 <th:block th:replace="part/footer :: main-footer"></th:block>
