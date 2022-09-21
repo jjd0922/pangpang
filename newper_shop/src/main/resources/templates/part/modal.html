@@ -318,34 +318,34 @@
     </script>
 </th:block>
 
-<!--뉴퍼 고객센터 모달-->
-<th:block th:fragment="custCenter-modal">
-    <div class="modal-wrap" id="custCenterModal">
+<!-- 공통 모달-->
+<th:block th:fragment="common-modal">
+    <div class="modal-wrap" id="commonModal">
         <div class="modal">
-            <div class="custCenterModal-close">
+            <div class="commonModal-close">
                 <span>x</span>
             </div>
-            <div id="modalContent">
+            <div class="modalContent">
 
             </div>
         </div>
     </div>
 
     <script>
-        var centerModal = $("#custCenterModal");
+        var commonModal = $("#commonModal");
 
         $(document).mouseup(function (e){
-            if(centerModal.has(e.target).length === 0){
-                centerModal.hide();
+            if(commonModal.has(e.target).length === 0){
+                commonModal.hide();
                 $('body').removeClass('no-scroll');
             } else {
                 $('body').addClass('no-scroll');
             }
         });
 
-        $(".custCenterModal-close").click(function(){
+        $(".commonModal-close").click(function(){
             $('body').removeClass('no-scroll');
-            centerModal.hide();
+            commonModal.hide();
         });
     </script>
 </th:block>

@@ -1,5 +1,32 @@
+<!--쿠폰·적립금·상품권-->
 <th:block th:fragment="myGift">
     <div class="container">
-        myGift
+        <ul class="shoppingHistory-tab semi-bold" id="myGiftTabMenu">
+            <li class="on" onclick="openMyGiftMenu('coupon')" id="coupon">할인쿠폰</li>
+            <li onclick="openMyGiftMenu('point')" id="point">적립금</li>
+            <li onclick="openMyGiftMenu('deposit')" id="deposit">상품권/예치금</li>
+        </ul>
+        <ul class="shoppingHistory-tab-content" id="myGiftMenu">
+
+        </ul>
     </div>
+    <script>
+        function openMyGiftMenu(menu){
+            $.ajax({
+                url: '/myPage/myGift/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myGiftMenu').empty();
+                $('#myGiftMenu').append(res);
+
+                // action
+                $('#myGiftTabMenu').children('li').removeClass("on");
+                $('#myGiftTabMenu').find($('#'+menu)).addClass("on");
+
+                if(menu == 'deposit'){
+                    openMyGiftDepositMenu('chargeHistory');
+                }
+            });
+        }
+    </script>
 </th:block>

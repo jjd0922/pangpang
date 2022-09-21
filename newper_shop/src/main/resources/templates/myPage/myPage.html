@@ -13,6 +13,9 @@
 <!-- 로그인 모달창 -->
 <th:block th:replace="part/modal :: login-modal"></th:block>
 
+<!-- 공통 모달창 -->
+<th:block th:replace="part/modal :: common-modal"></th:block>
+
 <!--페이지 타이틀-->
 <section th:insert="part/title :: pageTitle('마이쇼핑정보','')" class="padding-section page-title-padding"></section>
 
@@ -432,6 +435,8 @@
 
                 if(menu == 'myOrder'){
                     openMyOrderMenu('orders');
+                }else if(menu == 'myGift'){
+                    openMyGiftMenu('coupon');
                 }
             }
             ,error:function (){}

@@ -1,0 +1,60 @@
+<!-- 할인쿠폰 -->
+<th:block th:fragment="coupon">
+    할인쿠폰
+</th:block>
+<!-- 할인쿠폰 end-->
+
+<!-- 적립금 -->
+<th:block th:fragment="point">
+    적립금
+</th:block>
+<!-- 적립금 end-->
+
+<!-- 적립금 상품권/예치금-->
+<th:block th:fragment="deposit">
+    <section>
+        뉴퍼마켓 상품권 번호입력~~
+        <button onclick="openGiftGuideModal()">사용가이드</button>
+    </section>
+
+    <ul class="asApplication-tab semi-bold color-grey666" id="myGiftDepositTabMenu">
+        <li onclick="openMyGiftDepositMenu('chargeHistory')" id="chargeHistory">뉴퍼마켓 구매제품 AS 접수</li>
+        <li onclick="openMyGiftDepositMenu('useHistory')" id="useHistory">다른 온라인몰 구매제품 AS 접수</li>
+    </ul>
+    <ul class="asApplication-tab-content">
+        <li class="on" id="myGiftDepositMenu">
+        </li>
+    </ul>
+    <script>
+        function openMyGiftDepositMenu(menu){
+            $.ajax({
+                url: '/myPage/myGift/deposit/'+menu+'.load'
+                ,type:'post'
+                ,success:function(res){
+                    $('#myGiftDepositMenu').empty();
+                    $('#myGiftDepositMenu').append(res);
+
+                    // action
+                    $('#myGiftDepositTabMenu').children('li').removeClass("on");
+                    $('#myGiftDepositTabMenu').find($('#'+menu)).addClass("on");
+                }
+                ,error:function(){}
+            })
+        }
+        function openGiftGuideModal(){
+            $.ajax({
+                url: '/myPage/myGift/deposit/useGuide.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 적립금 상품권/예치금 end-->
