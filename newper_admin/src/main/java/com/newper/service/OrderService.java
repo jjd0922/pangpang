@@ -273,9 +273,7 @@ public class OrderService {
                 dn.setRandomInvoice(12);
                 dn.setDnState("");
                 dn.setDnCompany("우체국");
-                dn.setDnFile("");
-                dn.setDnFileName("");
-                dn.setDnMemo("");
+                dn.setDnJson(null);
                 dn.setCreatedDate(LocalDate.now());
 
                 deliveryNumRepo.save(dn);

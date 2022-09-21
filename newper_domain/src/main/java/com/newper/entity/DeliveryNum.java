@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.entity.common.BaseEntity;
+import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,6 +13,8 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -20,7 +23,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DeliveryNum {
+public class DeliveryNum extends CreatedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +31,13 @@ public class DeliveryNum {
     private String dnState;
     private String dnNum;
     private String dnCompany;
-    private String dnFile;
-    private String dnFileName;
-    private String dnMemo;
+
     private LocalDate dnDate;
     private LocalDate dnRelease;
     private LocalDate dnSchedule;
-    private LocalDate createdDate;
+
+    @Builder.Default
+    private Map<String,Object> dnJson = new HashMap<String, Object>();
 
     /** 랜덤 문자열 생성 (숫자,특수문자,대소문자)*/
     public void setRandomInvoice(int size) {

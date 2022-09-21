@@ -17,6 +17,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,9 +128,7 @@ public class DeliverytService {
                     deliveryNum.setDnState("");
                     deliveryNum.setDnNum(DN_NUM);
                     deliveryNum.setDnCompany(DN_COMPANY);
-                    deliveryNum.setDnFile("");
-                    deliveryNum.setDnFileName("");
-                    deliveryNum.setDnMemo("");
+                    deliveryNum.setDnJson(null);
                     deliveryNum.setCreatedDate(LocalDate.now());
                     deliveryNumRepo.save(deliveryNum);
 
@@ -165,15 +165,26 @@ public class DeliverytService {
                     file = Common.uploadFilePath(DN_FILE, "install/", AdminBucket.SECRET);
                     fileName= DN_FILE.getOriginalFilename();
                 }
+
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+
+                //파일 추가시 파일 갯수만큼 반복문 적용
+                for(int y=0; y<1; y++){
+                    JSONArray jsonArray2 = new JSONArray();
+                    jsonArray2.add(file);
+                    jsonArray2.add(fileName);
+                    jsonArray.add(jsonArray2);
+                }
+                jsonObject.put("files",jsonArray);
+                jsonObject.put("memo",paramMap.getString("DN_MEMO"));
+
                 deliveryNum.setDnState("");
                 deliveryNum.setDnNum("");
                 deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
-                deliveryNum.setDnFile(file);
-                deliveryNum.setDnFileName(fileName);
-                deliveryNum.setDnMemo(paramMap.getString("DN_MEMO"));
+                deliveryNum.setDnJson(jsonObject);
                 deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                deliveryNum.setCreatedDate(LocalDate.now());
                 deliveryNumRepo.save(deliveryNum);
                 orderGs.setDeliveryNum(deliveryNum);
                 ordersGsRepo.save(orderGs);

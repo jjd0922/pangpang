@@ -1,0 +1,68 @@
+<div class="modal" tabindex="-1" role="dialog" id="barcodeModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">바코드 리딩</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="collapse show" id="collapse-button-collapsed">
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                <div class="form-group">
+                                    <label class="d-block">송장번호 리딩</label>
+                                    <input type="text" name="dn_num" id="dn_num" class="form-control" placeholder="바코드 입력 후 엔터를 눌러주세요" onkeyup="if(event.keyCode==13){dnNumBarcode(this)}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                <div class="form-group">
+                                    <label class="d-block">자산바코드 리딩</label>
+                                    <input type="text" name="g_barcode" id="g_barcode" class="form-control" placeholder="바코드 입력 후 엔터를 눌러주세요" onkeyup="if(event.keyCode==13){gBarcode(this)}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    function barcodeModal(res){
+        var oIdx = res;
+        console.log(oIdx);
+        if(res!=''){
+            $('input[name=dn_num]').val('');
+            $('input[name=g_barcode]').val('');
+            $('#dn_num').focus();
+            $('#barcodeModal').modal('show');
+        }else{
+            alert("주문코드를 선택해주세요.")
+        }
+
+    }
+
+    function dnNumBarcode(res){
+        $('#g_barcode').focus();
+    }
+    function gBarcode(res){
+        var g_barcode=$(res).val()
+        $.ajax({
+            url:'checkBarcode.ajax',
+            type:'post',
+            data:'G_BARCODE='+g_barcode,
+            success: function(res){
+
+            }
+        })
+
+        $('input[name=dn_num]').val('');
+        $('input[name=g_barcode]').val('');
+        $('#dn_num').focus();
+    }
+</script>
