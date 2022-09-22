@@ -1,7 +1,10 @@
 package com.newper.service;
 
 
+import com.newper.component.Common;
 import com.newper.component.ShopSession;
+import com.newper.constant.CuState;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
 import com.newper.exception.MsgException;
 import com.newper.repository.CustomerRepo;
@@ -77,4 +80,19 @@ public class CustomerService {
         shopSession.setPwdCheck(true);
         return "Y";
     }
+    @Transactional
+    public void join (ParamMap paramMap) {
+        boolean isExistCustomer = customerRepo.existsByCuId(paramMap.getString("cuId"));
+        if (isExistCustomer) {
+            throw new MsgException("이미 사용중인 아이디입니다.");
+        }
+
+        Customer customer = paramMap.mapParam(Customer.class);
+        String cuPhone = paramMap.getString("phone1")+"-"+paramMap.getString("phone2")+"-"+paramMap.getString("phone3");
+        String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
+        customer.join(cuPhone, cuEmail, paramMap.getMap());
+        customer.setCuPw(Common.parseSHA(paramMap.getString("cuPw")));
+        customerRepo.save(customer);
+    }
+
 }
