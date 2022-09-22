@@ -154,14 +154,7 @@ public class MyPageController {
     /** 회원정보관리 메뉴 load */
     @PostMapping("myInfo/{menu}.load")
     public ModelAndView myInfoMenu(@PathVariable(required = false) String menu) {
-        ModelAndView mav = new ModelAndView("myPage/myInfo :: " + menu);
-
-        return mav;
-    }
-    /** 회원정보관리 패스워드 check 페이지 load*/
-    @PostMapping("myInfo/myInfoPwCheck.load")
-    public ModelAndView myInfoPwCheck(){
-        ModelAndView mav = new ModelAndView("myPage/myInfo :: " + "myInfoPwCheck");
+        ModelAndView mav = new ModelAndView("myPage/myInfo_menu :: " + menu);
 
         return mav;
     }

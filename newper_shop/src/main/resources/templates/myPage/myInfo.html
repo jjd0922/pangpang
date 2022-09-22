@@ -1,4 +1,4 @@
-<th:block th:fragment="myInfoPwCheck">
+<th:block th:fragment="myInfo">
     <div class="container">
         <span>
             고객님의 회원정보를 안전하게 보호하기 위해 <br>
@@ -26,37 +26,7 @@
             //         openMyInfoMenu('updateInfo')
             //     }
             // });
-
-            openMenu('myInfo');
+            openMenu('myInfoPwCheck');
         }
     </script>
 </th:block>
-<th:block th:fragment="myInfo">
-    <div class="container">
-        <ul class="shoppingHistory-tab semi-bold" id="myInfoTabMenu">
-            <li class="on" onclick="openMyInfoMenu('updateInfo')" id="updateInfo">회원정보수정</li>
-            <li onclick="openMyInfoMenu('refundAccount')" id="refundAccount">환불계좌관리</li>
-            <li onclick="openMyInfoMenu('delivery')" id="delivery">배송지관리</li>
-        </ul>
-
-        <ul class="shoppingHistory-tab-content" id="myInfoMenu">
-
-        </ul>
-    </div>
-</th:block>
-<script>
-    function openMyInfoMenu(menu){
-        $.ajax({
-            url: '/myPage/myInfo/'+menu+'.load'
-            ,type: 'post'
-        }).done(function(res){
-            $('#myInfoMenu').empty();
-            $('#myInfoMenu').append(res);
-
-            // action
-            $('#myInfoTabMenu').children('li').removeClass("on");
-            $('#myInfoTabMenu').find($('#'+menu)).addClass("on");
-
-        });
-    }
-</script>
