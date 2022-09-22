@@ -218,10 +218,10 @@ public class StockRestContoroller {
 
 
     @PostMapping("/list/barcode.ajax")
-    public ReturnMap listBarcode(ParamMap paramMap,Long gIdx) {
+    public ReturnMap listBarcode(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        List<Map<String, Object>> list=locationService.listStockBarcode(paramMap,gIdx);
+        List<Map<String, Object>> list=locationService.listStockBarcode(paramMap);
         rm.put("locIdx", paramMap.getString("locIdx"));
         rm.put("barcode", paramMap.getString("barcode").substring(2).split(",").length);
         rm.put("list",list);
@@ -249,6 +249,21 @@ public class StockRestContoroller {
         return rm;
     }
 
+    /** 창고이동관리 작업완료 처리 */
+    @PostMapping(value = "changeLocation.ajax")
+    public ReturnMap changeLocation(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        paramMap.getMap();
+
+        System.out.println("paramMap = " + paramMap);
+
+     /*   int idx = locationService.changeLocation(paramMap);*/
+
+        rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
+
+        return rm;
+    }
 
 
 }

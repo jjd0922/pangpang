@@ -24,7 +24,7 @@
                     <div>
                         <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test1" style="display: none">작업요청취소</a>
                         <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test2" style="display: none">작업중(출고)</a>
-                        <a class="btn btn-sm btn-info" id="test3" style="display: none">작업완료(입고)</a>
+                        <a class="btn btn-sm btn-info" id="test3" style="display: none" href=javascript:finishedBtn();>작업완료(입고)</a>
                         <input type="hidden" id="test4">
                         <input type="hidden" id="test5">
                     </div>
@@ -399,8 +399,6 @@
 
 
 */
-
-
     /**입고창고테이블에 데이터 추가*/
     function appendRowToWarehouseTable2(data) {
         $('#warehouseTable2 tbody tr').remove();
@@ -494,10 +492,10 @@
     /**자산바코드 모달*/
     function showGoodsBarcodeModal() {
         var barcodeInput = openBarcodeModal2('자산등록(바코드)');
-/*        if ( $('#openBarcodeModal').finish()){
+        if ( $('#openBarcodeModal').finish()){
             $('#searchWarehouseBtn').hide();
             $('#searchWhByBarcode').hide();
-        }*/
+        }
     }
 
 
@@ -562,13 +560,32 @@
 
     }
 
-
+    function finishedBtn(){
+        $.ajax({
+            url:'/stock/changeLocation.ajax'
+            ,type:'post'
+            ,data:$('#regiForm').serialize()
+        }).done(function(res){
+            try{
+                if(res.data.result == '200'){
+                    //로그인 성공
+                    modal.hide();
+                    $('.nosessionClass').hide();
+                    $('.sessionClass').show();
+                }else{
+                    //로그인 실패
+                    console.log(res.data.result);
+                }
+            }catch (e){
+                alert('잠시 후 시도해주세요');
+            }
+        });
+    }
 </script>
 <script th:inline="javascript">
     $('#searchWarehouseBtn').on('click', openWarehouseModal);
     $('#searchWarehouseBtn2').on('click', openWarehouseModal2);
     $('#searchGoodsByBarcode').on('click', showGoodsBarcodeModal);
-
 </script>
 
 </body>
