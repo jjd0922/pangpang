@@ -7,6 +7,10 @@ import com.newper.storage.NewperStorage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class Common {
@@ -37,5 +41,18 @@ public class Common {
         String[] value_arr = value.split(", ");
 
         paramMap.getMap().put(key, value_arr);
+    }
+
+    /**비밀번호 암호화*/
+    public static String parseSHA(String str){
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            digest.reset();
+            digest.update(str.getBytes(StandardCharsets.UTF_8));
+            String result = String.format("%0128x", new BigInteger(1, digest.digest()));
+            return result;
+        }catch (NoSuchAlgorithmException nae){
+            throw new MsgException("해쉬 암호화 중 에러발생");
+        }
     }
 }
