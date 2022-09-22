@@ -22,13 +22,14 @@ public class MyPageController {
 
     private final ShopRepo shopRepo;
 
-    /** 마이쇼핑 메뉴 load*/
+    /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
     public ModelAndView myPageMenu(@PathVariable String menu){
         ModelAndView mav = new ModelAndView("myPage/"+menu);
 
         return mav;
     }
+
     /** 나의 쇼핑내역 메뉴 load */
     @PostMapping("myOrder/{menu}.load")
     public ModelAndView myOrderMenu(@PathVariable String menu){
@@ -83,4 +84,26 @@ public class MyPageController {
         return mav;
     }
 
+    /** 정품등록 하위 메뉴 load */
+    @PostMapping("myOrder/origin/{menu}.load")
+    public ModelAndView registOrigin(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_menu_origin :: " + menu);
+
+        return mav;
+    }
+
+    /** 쿠폰·적립금·상품권 메뉴 load */
+    @PostMapping("myGift/{menu}.load")
+    public ModelAndView myGiftMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myGift_menu :: " + menu);
+
+        return mav;
+    }
+    /** 상품권/예치금 하위 메뉴 load */
+    @PostMapping("myGift/deposit/{menu}.load")
+    public ModelAndView depositHistory(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myGift_menu_deposit :: " + menu);
+
+        return mav;
+    }
 }

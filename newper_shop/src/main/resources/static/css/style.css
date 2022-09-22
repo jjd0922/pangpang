@@ -1097,51 +1097,7 @@ section {
 .cc-header-right-content>div:nth-child(2) {
     height: 95px;
 }
-.cc-menu-tab {
-    display: flex;
-    justify-content: space-between;
-    margin: 100px 0;
-}
-.cc-menu-tab li {
-    width: 205px;
-    height: 157px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    background-color: #f9f9f9;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-}
-.cc-menu-tab li.on {
-    background-color: #eaeef4;
-    color: #21365f;
-}
-.cc-menu-tab li i {
-    width: 54px;
-    height: 54px;
-    margin-bottom: 20px;
-}
-.cc-tab-icon1 {
-    background: url("../image/cc-tab-icon1.png") no-repeat center/contain;
-}
-.cc-tab-icon2 {
-    background: url("../image/cc-tab-icon2.png") no-repeat center/contain;
-}
-.cc-tab-icon3 {
-    background: url("../image/cc-tab-icon3.png") no-repeat center/contain;
-}
-.cc-tab-icon4 {
-    background: url("../image/cc-tab-icon4.png") no-repeat center/contain;
-}
-.cc-tab-icon5 {
-    background: url("../image/cc-tab-icon5.png") no-repeat center/contain;
-}
-.cc-tab-icon6 {
-    background: url("../image/cc-tab-icon6.png") no-repeat center/contain;
-}
+
 .cc-menu-content>li {
     display: none;
 }
@@ -2214,31 +2170,6 @@ section {
     right: -10px;
 }
 
-/* 탭 [5 메뉴] */
-.boxTab3-wrap {
-    background-color: #fff;
-}
-.boxTab3-wrap.on {
-    box-shadow: 0 12px 12px 0 rgba(0,0,0,0.05), 0 3px 9px 0 rgba(0,0,0,0.35);
-}
-.boxTab3-wrap.on .boxTab3 {
-    border-bottom: none;
-}
-.boxTab3 {
-    display: flex;
-    border-top: 2px solid #333;
-    border-bottom: 1px solid #d1d1d1;
-}
-.boxTab3>li {
-    flex: 1;
-    font-size: 24px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-}
-.boxTab3>li.on {
-    border-bottom: 2px solid #314ad7;
-}
 .launchingStory {
     border: 1px solid #999;
     background-color: #fff9ea;
@@ -2496,9 +2427,9 @@ section {
     align-items: center;
     cursor: pointer;
 }
-.sub-section-title{
+/*.sub-section-title{
     margin-bottom: 15px;
-}
+}*/
 .md-review {
     border-top: 2px solid #333;
     margin-bottom: 20px;
@@ -2551,9 +2482,6 @@ section {
     width: 100px;
     height: 100px;
 }
-.review-id {
-    color: #3c64a0;
-}
 .review-cont {
     padding-left: 10px;
 }
@@ -2593,7 +2521,7 @@ section {
 .item-review-wrap {
     border-top: 2px solid #333;
     margin-top: 15px;
-    margin-bottom: 50px;
+    /*margin-bottom: 50px;*/
 }
 .item-review-wrap>li {
     position: relative;
@@ -2633,8 +2561,8 @@ section {
     align-items: end;
     justify-content: space-between;
 }
-.review-right .review-id {
-    margin-right: 12px;
+.review-right>div:nth-child(1)>span:nth-child(1) {
+    margin-right: 7px
 }
 .review-right>div:nth-child(2) {
     display: flex;
@@ -2673,18 +2601,67 @@ section {
 .good-wrap.on .good {
     background: url("../image/thumb-icon/good-active.png") no-repeat center/contain;
 }
-.productInquiry {
+.productInquiry-title {
     display: flex;
     align-items: center;
 }
-.productInquiry h3 {
+.productInquiry-title h3 {
     margin-bottom: 10px;
     margin-right: 15px;
 }
-.productInquiry span {
+.productInquiry-title span {
     font-size: 23px;
     font-weight: 500;
 }
+.productInquiry {
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #333;
+    margin-top: 15px;
+    margin-bottom: 45px;
+    padding: 10px 0;
+}
+.productInquiry>li {
+    display: flex;
+    padding: 15px 0;
+    cursor: pointer;
+}
+.productInquiry>li>div:not(:nth-child(2)) {
+    display: flex;
+    justify-content: center;
+}
+.productInquiry>li>div:last-child {
+    justify-content: end;
+}
+.productInquiry>li>div:nth-child(1) {
+    width: 85px;
+}
+.productInquiry>li>div:nth-child(2) {
+    width: calc(100% - 445px);
+    display: flex;
+    align-items: center;
+}
+.productInquiry>li>div:nth-child(3) {
+    width: 100px;
+}
+.productInquiry>li>div:nth-child(4) {
+    width: 140px;
+}
+.productInquiry>li>div:nth-child(5) {
+    width: 120px;
+}
+.lock {
+    display: inline-block;
+    width: 15px;
+    height: 17px;
+    background: url("../image/lock.png") no-repeat center/contain;
+    margin-left: 10px;
+}
+
+
+
+
+
+
 
 
 
@@ -3738,42 +3715,128 @@ input[type="number"]::-webkit-inner-spin-button {
     }
 }
 
-/*** 이벤트/기획전 ***/
-.event-tab {
+/* 메뉴 */
+
+/*** 행 전체 메뉴 menu-full ***/
+.menu-full {
     display: flex;
-    height: 85px;
     align-items: center;
 }
-.event-tab>li {
+.menu-full>li {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
     cursor: pointer;
-    font-size: 24px;
 }
-.event-tab>li {
+/*행 전체 메뉴(menu-full) - 1. 탭 박스형 언더라인*/
+.menu-full.menu-box>li {
+    background-color: #ffffff;
     border-top: 1px solid #b7b7b7;
     border-right: 1px solid #b7b7b7;
-    border-bottom: 2px solid #314ad7;
+    border-bottom: 2px solid var(--scPoint);
 }
-.event-tab>li:nth-child(1) {
+.menu-full.menu-box>li:nth-child(1) {
     border-left: 1px solid #b7b7b7;;
 }
-.event-tab>li:nth-child(2) {
-    border-right: 1px solid #b7b7b7;;
+.menu-full.menu-box>li.on {
+    background-color: var(--scPoint);
+    color: var(--scPointFont);
 }
-.event-tab>li.on {
-    background-color: #314ad7;
-    color: #fff;
+.menu-box {
+    height: 85px;
+    font-size: 24px;
+    font-weight: 500;
 }
-.event-content>li {
+
+/*행 전체 메뉴 - 2. 상하 라인*/
+/*[상품상세페이지 플로팅 메뉴]*/
+.boxTab3-wrap {
+    background-color: #fff;
+}
+.boxTab3-wrap.on {
+    box-shadow: 0 12px 12px 0 rgba(0,0,0,0.05), 0 3px 9px 0 rgba(0,0,0,0.35);
+}
+.boxTab3-wrap.on .menu-lines {
+    border-bottom: none;
+}
+
+.menu-full.menu-lines {
+    border-top: 2px solid var(--scBlack);
+    border-bottom: 1px solid #d1d1d1;
+}
+.menu-full.menu-lines>li {
+    background-color: #ffffff;
+}
+.menu-full.menu-lines>li.on {
+    border-bottom: 2px solid var(--scPoint);
+}
+
+.menu-lines {
+    font-size: 24px;
+    height: 75px;
+    font-weight: 500;
+}
+
+/*.event-content>li {
     display: none;
 }
 .event-content>li.on {
     display: block;
+}*/
+
+/*행 전체 메뉴 - 3. 아이콘 박스형*/
+/*고객센터*/
+.cc-menu-tab {
+    display: flex;
+    justify-content: space-between;
 }
+.cc-menu-tab li {
+    width: 205px;
+    height: 157px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.cc-menu-tab li.on {
+    background-color: #eaeef4;
+    color: #21365f;
+}
+.cc-menu-tab li i {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 20px;
+}
+.cc-tab-icon1 {
+    background: url("../image/cc-tab-icon1.png") no-repeat center/contain;
+}
+.cc-tab-icon2 {
+    background: url("../image/cc-tab-icon2.png") no-repeat center/contain;
+}
+.cc-tab-icon3 {
+    background: url("../image/cc-tab-icon3.png") no-repeat center/contain;
+}
+.cc-tab-icon4 {
+    background: url("../image/cc-tab-icon4.png") no-repeat center/contain;
+}
+.cc-tab-icon5 {
+    background: url("../image/cc-tab-icon5.png") no-repeat center/contain;
+}
+.cc-tab-icon6 {
+    background: url("../image/cc-tab-icon6.png") no-repeat center/contain;
+}
+
+/*행 전체 메뉴 - 4. 버튼형*/
+/*자주묻는 질문*/
+
+/*행 일부 메뉴(menu-part) - 좌측 버튼형*/
 .button-tab {
     display: flex;
     padding-bottom: 25px;

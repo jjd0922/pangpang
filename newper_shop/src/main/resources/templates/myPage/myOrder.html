@@ -1,35 +1,37 @@
+<!-- 나의 쇼핑내역 -->
 <th:block th:fragment="myOrder">
-<div class="container">
-    <!-- 나의 쇼핑내역 -->
-    <ul class="shoppingHistory-tab semi-bold" id="myOrderTabMenu">
-        <li class="on" onclick="openMyOrderMenu('orders')" id="orders">주문/배송조회</li>
-        <li onclick="openMyOrderMenu('asRegist')" id="asRegist">AS접수</li>
-        <li onclick="openMyOrderMenu('originInsert')" id="originInsert">정품등록</li>
-        <li onclick="openMyOrderMenu('coverage')" id="coverage">보상내역</li>
-    </ul>
-    <ul class="shoppingHistory-tab-content" id="myOrderMenu">
+    <div class="container">
+        <ul class="shoppingHistory-tab semi-bold" id="myOrderTabMenu">
+            <li class="on" onclick="openMyOrderMenu('orders')" id="orders">주문/배송조회</li>
+            <li onclick="openMyOrderMenu('asRegist')" id="asRegist">AS접수</li>
+            <li onclick="openMyOrderMenu('originInsert')" id="originInsert">정품등록</li>
+            <li onclick="openMyOrderMenu('coverage')" id="coverage">보상내역</li>
+        </ul>
+        <ul class="shoppingHistory-tab-content" id="myOrderMenu">
 
-    </ul>
-</div>
-<script>
-    function openMyOrderMenu(menu){
-        $.ajax({
-            url: '/myPage/myOrder/'+menu+'.load'
-            ,type: 'post'
-        }).done(function(res){
-            $('#myOrderMenu').empty();
-            $('#myOrderMenu').append(res);
+        </ul>
+    </div>
+    <script>
+        function openMyOrderMenu(menu){
+            $.ajax({
+                url: '/myPage/myOrder/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myOrderMenu').empty();
+                $('#myOrderMenu').append(res);
 
-            // action
-            $('#myOrderTabMenu').children('li').removeClass("on");
-            $('#myOrderTabMenu').find($('#'+menu)).addClass("on");
+                // action
+                $('#myOrderTabMenu').children('li').removeClass("on");
+                $('#myOrderTabMenu').find($('#'+menu)).addClass("on");
 
-            if(menu == 'orders'){
-                orders('all');
-            }else if(menu == 'asRegist'){
-                openMyOrderAsMenu('newperAS');
-            }
-        });
-    }
-</script>
+                if(menu == 'orders'){
+                    orders('all');
+                }else if(menu == 'asRegist'){
+                    openMyOrderAsMenu('newperAS');
+                }else if(menu == 'originInsert'){
+                    openMyOrderOriginMenu('originStep1');
+                }
+            });
+        }
+    </script>
 </th:block>

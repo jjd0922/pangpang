@@ -276,6 +276,7 @@
                 <img src="/image/close.png" title="모달창닫기" alt="창닫기">
             </div>
         </div>
+    </div>
 
     <script>
         /*** 배송지목록 모달 창 ***/
@@ -313,6 +314,38 @@
                 addrListModal.hide();
                 $('body').removeClass('no-scroll');
             }
+        });
+    </script>
+</th:block>
+
+<!-- 공통 모달-->
+<th:block th:fragment="common-modal">
+    <div class="modal-wrap" id="commonModal">
+        <div class="modal">
+            <div class="commonModal-close">
+                <span>x</span>
+            </div>
+            <div class="modalContent">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var commonModal = $("#commonModal");
+
+        $(document).mouseup(function (e){
+            if(commonModal.has(e.target).length === 0){
+                commonModal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+
+        $(".commonModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            commonModal.hide();
         });
     </script>
 </th:block>

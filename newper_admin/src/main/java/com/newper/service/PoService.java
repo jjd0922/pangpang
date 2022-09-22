@@ -52,15 +52,6 @@ public class PoService {
     /** 발주(po) 생성 */
     @Transactional
     public Integer savePo(ParamMap paramMap, MultipartFile poFile, SessionInfo sessionInfo) {
-        // setDate
-        /*paramMap.parseLocalDate("poSellPayDate");
-        paramMap.parseLocalDate("poInDate", "입고예정일을 입력해주세요");
-        paramMap.parseLocalDate("poDueDate", "납기일을 입력해주세요");
-        paramMap.parseLocalDate("poRefundDate");
-        paramMap.parseLocalDate("poAsDate");
-        paramMap.parseLocalDate("poTaxMonth", "계산서발행월을 입력해주세요");
-        paramMap.parseLocalDate("poPayDate", "지급예정일을 입력해주세요");*/
-
         Po po = paramMap.mapParam(Po.class);
         po.setPoState(PoState.WAITING);
 
@@ -177,15 +168,6 @@ public class PoService {
     @Transactional
     public void updatePo(Integer poIdx, ParamMap paramMap, MultipartFile poFile, SessionInfo sessionInfo) {
         Po po = poRepo.findById(poIdx).orElseThrow(() -> new MsgException("존재하지 않는 발주품의입니다."));
-
-        // setDate
-        paramMap.parseLocalDate("poSellPayDate");
-        paramMap.parseLocalDate("poInDate", "입고예정일을 입력해주세요");
-        paramMap.parseLocalDate("poDueDate", "납기일을 입력해주세요");
-        paramMap.parseLocalDate("poRefundDate");
-        paramMap.parseLocalDate("poAsDate");
-        paramMap.parseLocalDate("poTaxMonth", "계산서발행월을 입력해주세요");
-        paramMap.parseLocalDate("poPayDate", "지급예정일을 입력해주세요");
 
         Po poParam = paramMap.mapParam(Po.class);
         po.updateAll(poParam);
