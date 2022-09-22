@@ -94,7 +94,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text d-flex justify-content-between">첨부파일<a th:if="${po != null && po?.poFile != ''}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                            <span class="input-group-text d-flex justify-content-between">첨부파일<a th:if="${po != null && po?.poFile != ''}" th:title="${po?.poFileName}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                         </span>
                                                         <input type="file" name="poFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                         <input type="hidden" name="poFileOri" th:if="${po != null}" th:value="${po?.poFile}">
