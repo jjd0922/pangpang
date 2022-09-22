@@ -106,4 +106,45 @@ public class MyPageController {
 
         return mav;
     }
+
+    /** 관심상품·재입고알림  메뉴 load */
+    @PostMapping("myAlarm/{menu}.load")
+    public ModelAndView myAlarmMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myAlarm_menu :: " + menu);
+
+        return mav;
+    }
+
+    /** 리뷰·문의내역·이벤트응모 메뉴 load */
+    @PostMapping("myList/{menu}.load")
+    public ModelAndView myListMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myList_menu :: " + menu);
+
+        if(menu.equals("eventWinnerModal")){
+            mav.addObject("modalTitle", "이벤트 당첨자보기");
+        }
+
+        return mav;
+    }
+
+    /** 상품리뷰 하위 메뉴 load */
+    @PostMapping("myList/review/{menu}.load")
+    public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myList_menu_review :: " + menu);
+
+        return mav;
+    }
+
+    /** 문의내역 하위 메뉴 load */
+    @PostMapping("myList/qna/{menu}.load")
+    public ModelAndView myListQnaMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myList_menu_qna :: " + menu);
+
+        if(menu.equals("qnaModal")){
+            mav.addObject("modalTitle", "1:1문의 수정하기");
+        }else if(menu.equals("qnaProductModal")){
+            mav.addObject("modalTitle", "상품문의 수정하기");
+        }
+        return mav;
+    }
 }

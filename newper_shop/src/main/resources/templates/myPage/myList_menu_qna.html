@@ -1,0 +1,72 @@
+<!-- 1:1문의내역-->
+<th:block th:fragment="qnaHistory">
+    1:1문의내역
+
+    <div class="container">
+        <a onclick="reviewInsertModal()">수정하기</a>
+        <a onclick="alert('준비중')">삭제</a>
+    </div>
+
+    <script>
+        function reviewInsertModal(){
+            $.ajax({
+                url: '/myPage/myList/qna/qnaModal.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 1:1문의내역 end-->
+
+<!-- 상품 문의내역-->
+<th:block th:fragment="productQnaHistory">
+    상품 문의내역
+
+    <div class="container">
+        <a onclick="reviewUpdateModal()">수정하기</a>
+        <a onclick="alert('준비중')">삭제</a>
+    </div>
+
+    <script>
+        function reviewUpdateModal(){
+            $.ajax({
+                url: '/myPage/myList/qna/qnaProductModal.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 상품 문의내역 end-->
+
+<!-- 1:1문의 수정 modal -->
+<th:block th:fragment="qnaModal">
+    <span th:text="${modalTitle}"></span>
+
+    <button onclick="$('#commonModal').hide()">취소</button>
+    <button onclick="alert('준비중!')">작성완료</button>
+</th:block>
+
+<!-- 상품문의 수정 modal -->
+<th:block th:fragment="qnaProductModal">
+    <span th:text="${modalTitle}"></span>
+
+    <button onclick="$('#commonModal').hide()">취소</button>
+    <button onclick="alert('준비중!')">작성완료</button>
+</th:block>
+<!-- 상품문의 등록/수정 modal end-->
