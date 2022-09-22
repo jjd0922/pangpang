@@ -1,5 +1,32 @@
 <th:block th:fragment="myInfo">
     <div class="container">
-        myInfo
+        <span>
+            고객님의 회원정보를 안전하게 보호하기 위해 <br>
+            비밀번호를 한번 더 확인해 주세요.
+        </span>
+        패스워드 : <input type="password" name="pw" id="pw">
+
+        <div class="container">
+            <a onclick="passwordCheck()">확인</a>
+        </div>
     </div>
+    <script>
+        function passwordCheck(){
+            // $.ajax({
+            //     url: 'pwdCheck.ajax'
+            //     ,type: 'post'
+            //     ,data: {
+            //         'pw': $('#pw').val()
+            //     }
+            // }).done(function(res){
+            //     if(res.message != 'Y'){
+            //         alert(res.message);
+            //     }else{
+            //         openMenu('myInfo');
+            //         openMyInfoMenu('updateInfo')
+            //     }
+            // });
+            openMenu('myInfoPwCheck');
+        }
+    </script>
 </th:block>

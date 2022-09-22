@@ -23,13 +23,11 @@ public class DSConfig {
     private String driver;
 
     @Bean(name = "dataSource")
-    //@ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         AesEncrypt aesEncrypt = new AesEncrypt();
 
         DataSource dataSource = DataSourceBuilder.create()
                .url("jdbc:mysql://"+aesEncrypt.decrypt(url))
-//                .url("jdbc:mysql://db-atqo0.vpc-cdb.ntruss.com/newpermarket?serverTimezone=UT")
                 .username(aesEncrypt.decrypt(username))
                 .password(aesEncrypt.decrypt(password))
                 .driverClassName(driver)

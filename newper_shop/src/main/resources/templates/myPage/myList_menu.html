@@ -1,0 +1,93 @@
+<!-- 상품리뷰-->
+<th:block th:fragment="review">
+    <ul class="asApplication-tab semi-bold color-grey666" id="myListReviewTabMenu">
+        <li onclick="openMyListReviewMenu('possibleReview')" id="possibleReview">작성가능리뷰</li>
+        <li onclick="openMyListReviewMenu('completeReview')" id="completeReview">작성완료리뷰</li>
+    </ul>
+    <ul class="asApplication-tab-content">
+        <li class="on" id="myListReviewMenu">
+        </li>
+    </ul>
+
+    <script>
+        function openMyListReviewMenu(menu){
+            $.ajax({
+                url: '/myPage/myList/review/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myListReviewMenu').empty();
+                $('#myListReviewMenu').append(res);
+
+                // action
+                $('#myListReviewTabMenu').children('li').removeClass("on");
+                $('#myListReviewTabMenu').find($('#'+menu)).addClass("on");
+
+            });
+        }
+    </script>
+</th:block>
+<!-- 상품리뷰 end-->
+
+<!-- 문의내역-->
+<th:block th:fragment="qna">
+    <ul class="asApplication-tab semi-bold color-grey666" id="myListQnaTabMenu">
+        <li onclick="openMyListQnaMenu('qnaHistory')" id="qnaHistory">1:1 문의내역</li>
+        <li onclick="openMyListQnaMenu('productQnaHistory')" id="productQnaHistory">상품문의내역</li>
+    </ul>
+    <ul class="asApplication-tab-content">
+        <li class="on" id="myListQnaMenu">
+        </li>
+    </ul>
+
+    <script>
+        function openMyListQnaMenu(menu){
+            $.ajax({
+                url: '/myPage/myList/qna/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myListQnaMenu').empty();
+                $('#myListQnaMenu').append(res);
+
+                // action
+                $('#myListQnaTabMenu').children('li').removeClass("on");
+                $('#myListQnaTabMenu').find($('#'+menu)).addClass("on");
+
+            });
+        }
+    </script>
+</th:block>
+<!-- 문의내역 end-->
+
+<!-- 이벤트응모내역-->
+<th:block th:fragment="eventHistory">
+이벤트 응모내역
+    <div>
+        <a onclick="eventWinnerModal()">당첨자보기</a>
+    </div>
+
+    <script>
+        function eventWinnerModal(){
+            $.ajax({
+                url: '/myPage/myList/eventWinnerModal.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
+</th:block>
+<!-- 이벤트응모내역 end-->
+
+<!--이벤트 당첨자보기 modal-->
+<th:block th:fragment="eventWinnerModal">
+    <span th:text="${modalTitle}"></span>
+
+
+
+</th:block>

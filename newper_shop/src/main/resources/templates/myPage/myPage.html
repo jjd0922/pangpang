@@ -307,7 +307,7 @@
             <p class="font-lg">최근 본 상품 기준으로 최대 10개 까지 저장됩니다.</p>
         </div>
         <div class="my-content">
-            <ul class="thumb-list lg-col-3 sm-col-6">
+            <ul class="col-list lg-4col sm-2col">
                 <li>
                     <div th:replace="part/thumbnail :: thumbnail-default"></div>
                 </li>
@@ -437,10 +437,39 @@
                     openMyOrderMenu('orders');
                 }else if(menu == 'myGift'){
                     openMyGiftMenu('coupon');
+                }else if(menu == 'myAlarm'){
+                    openMyAlarmMenu('wish');
+                }else if(menu == 'myList'){
+                    openMyListMenu('review');
                 }
             }
             ,error:function (){}
         });
+    }
+
+    // 주문 상세보기
+    function orderDetail(){
+        $.ajax({
+            url: '/myPage/order/detail.load'
+            ,type:'post'
+            ,success:function(res){
+                $('#orderProductList').empty();
+                $('#orderProductList').append(res);
+            }
+            ,error:function(){}
+        })
+    }
+
+    function receiptDetail(){
+        $.ajax({
+            url: '/myPage/order/receipt.load'
+            ,type:'post'
+            ,success:function(res){
+                $('#orderProductList').empty();
+                $('#orderProductList').append(res);
+            }
+            ,error:function(){}
+        })
     }
 </script>
 </html>

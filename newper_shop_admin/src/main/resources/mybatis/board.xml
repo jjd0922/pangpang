@@ -2,9 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.BoardMapper">
     <sql id="includeNoticeDatatable">
+        WHERE
+            SHOP_IDX = NT_SHOP_IDX
     </sql>
     <select id="selectNoticeDatatable" resultType="map">
+        SELECT
+            N.*
+            ,CONCAT(N.CREATED_DATE,N.CREATED_TIME) CREATED_DATE_TIME
+        FROM
+            NOTICE N
+            ,SHOP S
+        <include refid="includeNoticeDatatable"></include>
     </select>
-    <select id="countNoticeDatatable" resultType="map">
+    <select id="countNoticeDatatable" resultType="long">
+        SELECT
+            COUNT(*) CNT
+        FROM
+            NOTICE
+            ,SHOP
+        <include refid="includeNoticeDatatable"></include>
     </select>
 </mapper>

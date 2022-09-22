@@ -58,17 +58,12 @@ public class StockRestContoroller {
         if(paramMap.get("GS_IDX")!=null){
             gs_idx=paramMap.getInt("GS_IDX");
         }
-        String[] G_STATES = new String[3];
         Map<String, Object> map = new HashMap<>();
         map.put("GS_IDX", gs_idx);
         if(paramMap.get("release")==null){
-            G_STATES[0]="STOCK";
-            map.put("G_STATES",G_STATES);
+            map.put("G_STOCK_STATE","STOCK");
         }else{
-            G_STATES[0]="BEFORE_RELEASE_REQ";
-            G_STATES[1]="BEFORE_RELEASE_IN";
-            G_STATES[2]="BEFORE_RELEASE_OUT";
-            map.put("G_STATES",G_STATES);
+            map.put("G_STOCK_STATE","OUT_REQ");
         }
         List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(map);
         returnDatatable.setData(cList);
@@ -249,6 +244,21 @@ public class StockRestContoroller {
         return rm;
     }
 
+    /** 창고이동관리 작업완료 처리 */
+    @PostMapping(value = "changeLocation.ajax")
+    public ReturnMap changeLocation(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+        paramMap.getMap();
+
+        System.out.println("paramMap = " + paramMap);
+
+     /*   int idx = locationService.changeLocation(paramMap);*/
+
+        rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
+
+        return rm;
+    }
 
 
 }

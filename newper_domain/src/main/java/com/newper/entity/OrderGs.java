@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.PDelType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,11 +29,10 @@ public class OrderGs {
     @JoinColumn(name = "OG_SPO_IDX", referencedColumnName = "spoIdx")
     private ShopProductOption shopProductOption;
 
-    private String ogType;
-    private Integer ogPrice;
-    private Integer ogPoint;
-    private Integer ogMileage;
-    private Integer ogCoupon;
+    private int ogPrice;
+    private int ogPoint;
+    private int ogMileage;
+    private int ogCoupon;
     private LocalDate ogDate;
     private LocalTime ogTime;
 
@@ -43,11 +43,6 @@ public class OrderGs {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_DN_IDX", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
-
-
-
-
-
 
 
 }

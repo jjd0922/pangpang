@@ -38,6 +38,7 @@ public class Location extends CreatedEntity {
     private String locZone;
     private String locColumn;
     private String locRow;
+    private Integer locMax;
     private String locBarcode;
     private String locMemo;
 
@@ -67,6 +68,7 @@ public class Location extends CreatedEntity {
         setLocZone(location.getLocZone());
         setLocColumn(location.getLocColumn());
         setLocRow(location.getLocRow());
+        setLocMax(location.getLocMax());
         setLocBarcode(location.getLocBarcode());
         setLocMemo(location.getLocMemo());
     }

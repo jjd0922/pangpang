@@ -1,5 +1,6 @@
 package com.newper.config;
 
+import com.newper.component.ShopComp;
 import com.newper.component.ShopSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 public class NewperInterceptor implements HandlerInterceptor {
     @Autowired
     private ShopSession shopSession;
+    @Autowired
+    private ShopComp shopComp;
 
     @Value("${spring.profiles.active}")
     private String active;
@@ -28,6 +31,11 @@ public class NewperInterceptor implements HandlerInterceptor {
         //error ex) 404 page
         if(request.getRequestURI().equals("/error")){
             return true;
+        }
+
+        //세션에 분양몰 idx 세팅
+        if(shopSession.getShopIdx() == null){
+            shopSession.setShopIdx(shopComp.getShopMap().get(request.getServerName()).getShopIdx());
         }
 
 //        String requestURI = request.getRequestURI();

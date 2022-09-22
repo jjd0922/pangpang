@@ -7,19 +7,43 @@
     <script type="text/javascript" th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
     <script th:src="@{/js/iamport.payment-1.1.8.js}"></script>
 </head>
-<body th:classappend="${@shopComp.getShopDesign()}">
+<body>
 
+
+    <div th:each="pg:${pgList}">
+        <a th:text="${pg.IPP_NAME}" th:onclick="|payMethod(${pg.IPP_IDX})|"></a>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div th:each="method:${pgMethod}" style="display: none;" class="pmClass" th:id="|pm${method.key}|">
+        <div th:each="methodMap:${method.value}" th:text="${methodMap.IPM_NAME}" th:onclick="|payRequest(${methodMap.IPM_IDX})|"></div>
+    </div>
 </body>
 <script>
+    //pg선택
+    function payMethod(ipp_idx) {
+        console.log(ipp_idx)
+        $('.pmClass').hide();
+        $('#pm'+ipp_idx).show();
+    }
     //결제팝업
     var payRequestAvailable = true;
-    function payRequest(){
+    function payRequest(ipm_idx){
         if(payRequestAvailable){
+            $('#payMethodDiv').html('');
+
             payRequestAvailable = false;
             $.ajax({
-              url:'/orders/iamport/pay.ajax'
-              ,type:'post'
+                url:'/orders/iamport/pay.ajax'
+                ,type:'post'
+                ,data:'ipm_idx='+ipm_idx
             }).done(function(res){
+                var redirect_url = location.origin+'/orders/result/'+res.data.req.merchant_uid;
+                res.data.m_redirect_url=redirect_url;
+
                 var IMP = window.IMP;
                 IMP.init(res.data.id);
                 IMP.request_pay(res.data.req, function (rsp) {
@@ -34,12 +58,10 @@
 
                     if(rsp.success){
                         //결제 성공 페이지로 이동
-
+                        location.href = redirect_url;
                     }else{
                         alert(rsp.error_msg);
                     }
-
-
 
                 });
 

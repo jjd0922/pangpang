@@ -86,6 +86,7 @@ public class ParamMap {
             return list;
         }
     }
+
     public int getInt(String key) {
         return Integer.parseInt( map.get(key)+"" );
     }
@@ -105,6 +106,16 @@ public class ParamMap {
             return getInt(key);
         } else {
             return 0;
+        }
+    }
+
+    /** 값이 없는 경우 0 return */
+    public Float getFloatZero(String key) {
+        String value=map.get(key) + "";
+        if (StringUtils.hasText(value)) {
+            return Float.parseFloat(value.replaceAll("[^0-9.]",""));
+        } else {
+            return 0.0f;
         }
     }
     public long getLong(String key) {

@@ -1,0 +1,84 @@
+<!-- 회원정보수정-->
+<th:block th:fragment="updateInfo">
+    회원정보수정
+
+    <button onclick="updateInfoBtn('changePwd')">비밀번호변경</button>
+    <button onclick="updateInfoBtn('deleteCustomer')">회원탈퇴</button>
+
+    <script>
+        function updateInfoBtn(menu){
+            $.ajax({
+                url: '/myPage/myInfo/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myInfoMenu').empty();
+                $('#myInfoMenu').append(res);
+            });
+        }
+    </script>
+</th:block>
+<!-- 회원정보수정 end-->
+
+<!-- 환불계좌관리-->
+<th:block th:fragment="refundAccount">
+    환불계좌관리
+    <button onclick="refundUpdate('refundDelete')">계좌삭제</button>
+    <button onclick="refundUpdate('refundUpdate')">환불계좌수정</button>
+    <script>
+        function refundUpdate(menu){
+            $.ajax({
+                url: '/myPage/myInfo/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myInfoMenu').empty();
+                $('#myInfoMenu').append(res);
+            });
+        }
+    </script>
+</th:block>
+<!-- 환불계좌관리 end-->
+
+<!-- 계좌삭제-->
+<th:block th:fragment="refundDelete">
+계좌삭제 완료 페이지
+
+    <button onclick="openMyInfoMenu('refundAccount')">완료</button>
+</th:block>
+<!-- 계좌삭제 end-->
+
+<!-- 환불계좌 수정-->
+<th:block th:fragment="refundUpdate">
+    계좌 수정
+
+    <button onclick="openMyInfoMenu('refundAccount');">취소</button>
+    <button onclick="alert('준비중')">환불계좌등록</button>
+</th:block>
+<!-- 환불계좌 수정 end-->
+
+
+<!-- 배송지관리-->
+<th:block th:fragment="delivery">
+    배송지관리
+
+</th:block>
+<!-- 배송지관리 end-->
+
+<!-- 회월탈퇴 -->
+<th:block th:fragment="deleteCustomer">
+    회원탈퇴
+
+    <button onclick="alert('준비중!')">회원탈퇴</button>
+    <button onclick="openMyInfoMenu('updateInfo');">취소</button>
+
+</th:block>
+<!-- 회월탈퇴 end -->
+
+<!-- 비밀번호변경 -->
+<th:block th:fragment="changePwd">
+비밀번호 변경
+
+    <button onclick="openMyInfoMenu('updateInfo');">취소</button>
+    <button onclick="alert('준비중!')">변경하기</button>
+</th:block>
+<!-- 비밀번호변경 end -->
+

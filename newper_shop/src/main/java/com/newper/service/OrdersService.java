@@ -6,18 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopSession;
 import com.newper.constant.OLocation;
 import com.newper.constant.PayMethod;
-import com.newper.constant.etc.IamPortPayMethod;
-import com.newper.constant.etc.IamPortPg;
 import com.newper.dto.IamportReq;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Orders;
-import com.newper.entity.Payment;
-import com.newper.entity.PaymentHistory;
+import com.newper.entity.*;
 import com.newper.exception.MsgException;
-import com.newper.repository.CustomerRepo;
-import com.newper.repository.OrdersRepo;
-import com.newper.repository.PaymentHistoryRepo;
-import com.newper.repository.PaymentRepo;
+import com.newper.mapper.IamportMapper;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,14 +31,18 @@ public class OrdersService {
 
     private final CustomerRepo customerRepo;
     private final OrdersRepo ordersRepo;
+    private final ShopRepo shopRepo;
     private final PaymentRepo paymentRepo;
     private final PaymentHistoryRepo paymentHistoryRepo;
+    private final IamportMapper iamportMapper;
+    private final ShopProductOptionRepo shopProductOptionRepo;
+
     @Autowired
     private ShopSession shopSession;
 
-    /** insert order*/
+    /** insert orders, payment*/
     @Transactional
-    public JSONObject insertOrder(ParamMap paramMap){
+    public Orders insertOrder(ParamMap paramMap){
         LocalDateTime now = LocalDateTime.now();
 
         Orders orders = Orders.builder()
@@ -49,31 +50,57 @@ public class OrdersService {
                 .oDate(now.toLocalDate())
                 .oTime(now.toLocalTime())
                 .oLocation(OLocation.SHOP)
+                .shop(shopRepo.getReferenceById(shopSession.getShopIdx()))
                 .oMemo("")
-                .oName("")
+                .oName("주문자명")
                 .oPhone("01085434628")
                 .build();
 
         Payment payment = Payment.builder()
                 .payMethod(PayMethod.CARD)
-                .payPrice(1000)
-                .payProductPrice(1000)
                 .build();
 
+        List<OrderGs> orderGsList = new ArrayList<>();
+        for(long i=1;i<3;i++){
+            ShopProductOption shopProductOption = shopProductOptionRepo.findById(i).get();
+            OrderGs orderGs = OrderGs.builder()
+                    .orders(orders)
+                    .shopProductOption(shopProductOption)
+                    .ogPrice(shopProductOption.getSpoPrice())
+                    .build();
+            orderGsList.add(orderGs);
+        }
+        orders.setOrderGs(orderGsList);
 
         orders.setPayment(payment);
+        payment.calculatePrice();
 
         paymentRepo.save(payment);
 
-
+        return orders;
+    }
+    /** iamport 결제요청 데이터 세팅*/
+    @Transactional
+    public JSONObject insertIamportReq(Orders orders, int ipm_idx){
+        Payment payment = paymentRepo.findLockByPayIdx(orders.getPayment().getPayIdx());
         PaymentHistory paymentHistory = payment.createPayReq();
         paymentHistoryRepo.save(paymentHistory);
 
-        //merchant_uid ph_idx사용
-        IamportReq iamportReq = new IamportReq(IamPortPayMethod.CARD, "ph"+paymentHistory.getPhIdx(), payment.getPayPrice(), orders.getOPhone());
-        //iamportReq.setPg(IamPortPg.BLUEWALNUT.getPg());
-        iamportReq.setName("test주문");
-        iamportReq.setBuyer_name("구매자");
+        Map<String, Object> ipmMap = iamportMapper.selectIamportMethodDetail(ipm_idx);
+        if(ipmMap == null){
+            throw new MsgException("지원하지 않는 결제수단입니다");
+        }
+
+        IamportReq iamportReq = new IamportReq(paymentHistory.getPhIdx());
+        iamportReq.setKcpInfo((String)ipmMap.get("mid"),
+                (String)ipmMap.get("IPM_VALUE"),
+                orders.getOrderPaymentTitle(),
+                payment.getPayPrice(),
+                "",
+                orders.getOName(),
+                "",
+                "",
+                "");
 
         try{
             ObjectMapper om = new ObjectMapper();
@@ -87,6 +114,5 @@ public class OrdersService {
         }catch (JsonProcessingException jpe){
             throw new MsgException("parsing error");
         }
-
     }
 }

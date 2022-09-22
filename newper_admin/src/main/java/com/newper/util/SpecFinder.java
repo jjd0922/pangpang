@@ -22,21 +22,20 @@ public class SpecFinder {
 
     /** specl_name, specl_value로 specl_idx 가져오기*/
     public SpecList findSpecList(String speclName, String speclValue){
-//        Map<String, SpecList> specValueMap = null;
-//        if(!specNameMap.containsKey(speclName)){
-//            specValueMap = specMapper.selectSpecListMap(speclName);
-//            specNameMap.put(speclName, specValueMap);
-//        }else{
-//            specValueMap = specNameMap.get(speclName);
-//        }
-//
-//        if(specValueMap == null){
-//            specValueMap = new HashMap<>();
-//            specNameMap.put(speclName, specValueMap);
-//        }
-//
-//        SpecList specList = specValueMap.get(speclValue);
-        SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(speclName, speclValue);
+        Map<String, SpecList> specValueMap = null;
+        if(!specNameMap.containsKey(speclName)){
+            specValueMap = specMapper.selectSpecListMap(speclName);
+            specNameMap.put(speclName, specValueMap);
+        }else{
+            specValueMap = specNameMap.get(speclName);
+        }
+
+        if(specValueMap == null){
+            specValueMap = new HashMap<>();
+            specNameMap.put(speclName, specValueMap);
+        }
+
+        SpecList specList = specValueMap.get(speclValue);
         //해당 스펙 처음 사용하는 경우 db에 insert
         if(specList == null){
             specList = SpecList.builder()
@@ -44,7 +43,7 @@ public class SpecFinder {
                     .speclValue(speclValue)
                     .build();
             specListRepo.save(specList);
-//            specValueMap.put(speclValue, specList);
+            specValueMap.put(speclValue, specList);
         }
 
         return specList;
@@ -54,9 +53,11 @@ public class SpecFinder {
     public Spec findSpec(List<String> specNameList, List<String> specValueList){
         List<Integer> specConfirmList = new ArrayList<>();
         String specLookup = "";
+        int[] speclIdxs = new int[specNameList.size()];//신규스펙그룹 insert시 사용
         for (int i = 0; i < specNameList.size(); i++) {
             SpecList specList = findSpecList(specNameList.get(i), specValueList.get(i));
 
+            speclIdxs[i] = specList.getSpeclIdx();
             specConfirmList.add(specList.getSpeclIdx());
             if (i+1 < specNameList.size()) {
                 specLookup += specNameList.get(i) +":"+specValueList.get(i)+"/";
@@ -84,15 +85,10 @@ public class SpecFinder {
                     .specLookup(specLookup)
                     .build();
             specRepo.save(spec);
-            saveSpecItem(spec);
+
+            specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
         }
         return spec;
-    }
-
-    /**spec_item 저장*/
-    public void saveSpecItem(Spec spec) {
-        String[] speclIdxs = spec.getSpecConfirm().split("_");
-        specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
     }
 
     /** PROCESS_SPEC 에 사용할 SPEC_LIST 조회 */

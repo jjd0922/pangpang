@@ -76,8 +76,8 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text requested">
-                                                                거래처<a href="#" th:unless="${insurance}" id="searchComBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
+                                                            <span class="input-group-text requested d-flex justify-content-between">
+                                                                거래처<a href="#" th:unless="${insurance != null}" id="searchComBtn" class="badge badge-sm badge-primary ml-1" disabled>검색</a>
                                                             </span>
                                                         </span>
                                                     <input type="text" name="comName" class="form-control" th:value="${insurance?.company?.comName}" th:disabled="${insurance} ? true" th:readonly="${insurance == null} ? true">
@@ -203,10 +203,9 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">보험 증서 파일</span>
+                                                            <span class="input-group-text d-flex justify-content-between">보험 증서 파일<a th:if="${insurance?.ciFile != null && insurance?.ciFile != ''}" th:title="${insurance?.ciFileName}" th:href="|javascript: fileDownload('${insurance.ciFile}', '${insurance.ciFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                         </span>
-                                                    <input type="file" name="ciFile" class="form-control form-control-plaintext"
-                                                           th:value="${insurance?.ciFile}" accept=".jpg,.pdf,.doc,.docx,.xlsx,.xls">
+                                                    <input type="file" name="ciFile" class="form-control form-control-plaintext" accept=".jpg,.pdf,.doc,.docx,.xlsx,.xls">
                                                 </div>
                                             </div>
                                         </div>
@@ -390,7 +389,11 @@
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#regiForm')[0])
+            data: new FormData($('#regiForm')[0]),
+            success: function (res) {
+                window.close();
+                opener.location.reload();
+            },
         });
     }
 

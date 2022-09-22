@@ -1,7 +1,10 @@
 package com.newper.service;
 
 
+import com.newper.component.Common;
 import com.newper.component.ShopSession;
+import com.newper.constant.CuState;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
 import com.newper.exception.MsgException;
 import com.newper.repository.CustomerRepo;
@@ -53,8 +56,43 @@ public class CustomerService {
         shopSession.login(customer);
 
         customer.login();
+    }
 
+    /** 비밇번호 확인 */
+    public String pwdCheck(String pw) {
+        Customer customer = customerRepo.findByCuId(shopSession.getId());
 
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            digest.reset();
+            digest.update(pw.getBytes("UTF-8"));
+            String pw_sha2 = String.format("%0128x", new BigInteger(1, digest.digest()));
+
+            if(!customer.getCuPw().equals(pw_sha2)){
+                return "잘못된 비밀번호 입니다";
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        shopSession.setPwdCheck(true);
+        return "Y";
+    }
+    @Transactional
+    public void join (ParamMap paramMap) {
+        boolean isExistCustomer = customerRepo.existsByCuId(paramMap.getString("cuId"));
+        if (isExistCustomer) {
+            throw new MsgException("이미 사용중인 아이디입니다.");
+        }
+
+        Customer customer = paramMap.mapParam(Customer.class);
+        String cuPhone = paramMap.getString("phone1")+"-"+paramMap.getString("phone2")+"-"+paramMap.getString("phone3");
+        String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
+        customer.join(cuPhone, cuEmail, paramMap.getMap());
+        customer.setCuPw(Common.parseSHA(paramMap.getString("cuPw")));
+        customerRepo.save(customer);
     }
 
 }

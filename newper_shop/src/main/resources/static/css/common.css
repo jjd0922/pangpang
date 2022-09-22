@@ -4,10 +4,16 @@
 * {margin: 0; padding: 0; box-sizing: border-box;}
 li {list-style: none;}
 a {text-decoration: none; color: #333;}
-body, html {background: #fff; font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color:#333; min-width: calc(1380px + 120px)}
+body, html {background: #fff; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color:#333;}
 .hidden {display: none;}
 img {width: 100%; height: auto;}
 
+html {
+    direction: ltr;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: none !important;
+}
 body.no-scroll {
     overflow: hidden;
 }
@@ -189,7 +195,9 @@ body.no-scroll {
 }
 
 .container {
-    width: 1380px;
+    position: relative;
+    max-width: var(--container-width);
+    width: 100%;
     height: 100%;
     margin: 0 auto;
 }
@@ -261,7 +269,7 @@ body.no-scroll {
 /********* nav ************/
 header {
     width: 100%;
-    min-width: calc(1380px + 120px);
+    /*min-width: calc(1380px + 120px);*/
     height: auto;
     position: sticky;
     top: 0;
@@ -770,6 +778,9 @@ nav .gnb-ctg-all {
 .item-info>div {
     margin-bottom: 10px;
 }
+.item-info>div:last-child {
+    margin-bottom: 0px;
+}
 .item-inner-wrap {
     display: flex;
     justify-content: space-between;
@@ -917,38 +928,44 @@ nav .gnb-ctg-all {
 }
 
 /*** non-슬라이드 썸네일 ***/
-.thumb-list {
+.col-list {
     display: flex;
     flex-wrap: wrap;
 }
-.thumb-list>li {
+.col-list>li {
     padding: 15px;
     position: relative;
 }
-.lg-col-12>* {
+.lg-1col>* {
     width: 100%;
 }
-.lg-col-6>* {
+.lg-2col>* {
     width: 50%;
 }
-.lg-col-4>* {
+.lg-3col>* {
     width: 33.33%;
 }
-.lg-col-3>* {
+.lg-4col>* {
     width: 25%;
 }
+.lg-5col>* {
+    width: 20%;
+}
 @media (max-width:991px) {
-    .sm-col-12>* {
+    .sm-1col>* {
         width: 100%;
     }
-    .sm-col-6>* {
+    .sm-2col>* {
         width: 50%;
     }
-    .sm-col-4>* {
+    .sm-3col>* {
         width: 33.33%;
     }
-    .sm-col-3>* {
+    .sm-4col>* {
         width: 25%;
+    }
+    .sm-5col>* {
+        width: 20%;
     }
 }
 
@@ -1283,6 +1300,7 @@ footer {
 .space-between {
     justify-content: space-between;
 }
+
 .alignItems-center {
     align-items: center;
 }

@@ -283,11 +283,11 @@
         <h3>연관상품</h3>
     </div>
 </section>
-<section th:insert="part/thumbnailList :: relatedProducts" class="padding-section padding-none relatedProducts swiper-all">
+<section th:insert="part/thumbnailList :: relatedProducts" class="padding-section padding-none relatedProducts">
     </section>
 
 <!--메뉴 : 행 전체 메뉴 - 상하 라인 [상품상세] -->
-<section th:insert="part/menu :: boxTab3" class="boxTab3-wrap sticky">
+<section th:insert="part/menu :: boxTab3" class="boxTab3-wrap sticky product-tab">
 </section>
 
 <!--상품상세 정보 : 공통영역-->
@@ -335,13 +335,13 @@
     </div>
 </section>
 <!-- 상품 상세 정보 -->
-<section class="padding-section padding-none">
+<section class="padding-section padding-none" id="product-detail">
     <div class="container">
         <div class="item-detail-info">
             <h3 class="font-xxxlg semi-bold">상품 상세 정보</h3>
             <div class="buyTogether-wrap">
                 <h4>함께 구매하면 좋은 옵션상품 특별가</h4>
-                <ul class="thumb-list lg-col-6">
+                <ul class="col-list lg-2col">
                     <li>
                         <div th:insert="part/thumbnail :: thumbnail-buyTogether">
                         </div>
@@ -353,9 +353,8 @@
                 </ul>
             </div>
 
-            <!-- 보여주기용 이미지 (추후 삭제)
-            <img src="https://images.ajrepository.com/item_images/001111152/001111152CT1.jpg">
-            -->
+            <!-- 보여주기용 이미지 (추후 삭제) -->
+            <img src="https://dummyimage.com/1380x1000/eeeeee/777777">
        </div>
     </div>
 </section>
@@ -363,7 +362,7 @@
 <!-- 이 상품을 본 고객이 많이 본 다른 상품 / 함께 구매하면 좋은 상품-->
 <section class="padding-section padding-none">
     <div class="container">
-        <div class="thumb-list lg-col-6 other-products">
+        <div class="col-list lg-2col other-products">
             <div>
                 <h4 class="font-lg semi-bold">이 상품을 본 고객이 많이 본 다른 상품</h4>
                 <section th:insert="part/thumbnailList :: other-products1" class="padding-section padding-none">
@@ -378,9 +377,9 @@
     </div>
 </section>
 
-<section class="padding-section">
+<!-- 상품리뷰 -->
+<section class="padding-section" id="product-review">
     <div class="container">
-        <!-- 상품리뷰 -->
         <div class="display-flex space-between">
             <h3 class="semi-bold itemDetail-page-subTitle">상품리뷰</h3>
             <p class="font-md write-guide">상품리뷰 작성안내<i class="open-arrow"></i></p>
@@ -569,7 +568,7 @@
 </section>
 
 <!-- 상품문의 -->
-<section class="padding-section">
+<section class="padding-section" id="product-inquiry">
     <div class="container">
         <div class="productInquiry-title">
             <h3 class="semi-bold itemDetail-page-subTitle">상품문의</h3>
@@ -582,38 +581,199 @@
                 <a href="javascript:;" class="font-lg semi-bold">문의하기</a>
             </div>
         </div>
-    </div>
-</section>
-<section class="padding-section">
-    <div class="container">
+
         <!-- 상품문의 내역 -->
         <ul class="productInquiry">
             <li>
-                <!-- 문의 번호 -->
-                <div>01</div>
-                <!-- 문의 제목 -->
-                <!-- 비밀문의는 아래 <i class="lock"> 태그 추가 -->
-                <div>AS기간 연장을 위해 결제를 취소 하였습니다.<i class="lock"></i></div>
-                <!-- 답변상태 -->
-                <div>
-                    <!-- 답변완료 / 답변대기 -->
-                    <span class="color-red">답변완료</span>
-                    <!--<span>답변대기</span>-->
+                <!-- 테이블 제목 -->
+                <div class="inquiry-title font-md">
+                    <!-- 문의 번호 -->
+                    <div>01</div>
+                    <!-- 문의 제목 -->
+                    <!-- 비밀문의는 아래 <i class="lock"> 태그 추가 -->
+                    <div>AS기간 연장을 위해 결제를 취소 하였습니다.<i class="lock"></i></div>
+                    <!-- 답변상태 -->
+                    <div>
+                        <!-- 답변완료 / 답변대기 -->
+                        <span class="color-red">답변완료</span>
+                        <!--<span>답변대기</span>-->
+                    </div>
+                    <!-- 아이디 -->
+                    <div class="color-indigo">skycoco*****</div>
+                    <!-- 날짜 -->
+                    <div class="color-grey666">2022-07-26</div>
                 </div>
-                <!-- 아이디 -->
-                <div class="color-indigo">skycoco*****</div>
-                <!-- 날짜 -->
-                <div class="color-grey666">2022-07-26</div>
+                <!-- 테이블 내용 -->
+                <div class="inquiry-content font-md">
+                    <div><p class="color-grey666">AS기간 연장을 위해 결제를 취소 하였습니다. 취소없이 추가 결제로 AS 연장 가능하면 그대로 발송 부탁드립니다.
+                        혹시 DDR 4 8G 를 16G로 바꿀 수 있을가요?
+                        변경 추가금액 알려주시면 감사하겠습니다.</p></div>
+                    <div>
+                        <p><span class="inquiry-answer font-xxsm">답변</span>
+                        <span class="color-grey666">안녕하세요!! 고객만족센터입니다.<br>
+                            뉴퍼마켓을 이용해주셔서 감사합니다. 죄송하지만 해당 상품은 변경이 어려우며, 결제 취소 후 재 구매를 부탁드립니다.<br>
+                            감사합니다.
+                        </span></p>
+                    </div>
+                </div>
             </li>
             <li>
-                <div>01</div>
-                <div>AS기간 연장을 위해 결제를 취소 하였습니다.</div>
-                <div><!-- 답변완료 / 답변대기 -->
-                    <!--<span class="color-red">답변완료</span>-->
-                    <span>답변대기</span>
+                <!-- 테이블 제목 -->
+                <div class="inquiry-title font-md">
+                    <!-- 문의 번호 -->
+                    <div>01</div>
+                    <!-- 문의 제목 -->
+                    <!-- 비밀문의는 아래 <i class="lock"> 태그 추가 -->
+                    <div>AS기간 연장을 위해 결제를 취소 하였습니다.<i class="lock"></i></div>
+                    <!-- 답변상태 -->
+                    <div><!-- 답변완료 / 답변대기 -->
+                        <!--<span class="color-red">답변완료</span>-->
+                        <span>답변대기</span>
+                    </div>
+                    <!-- 아이디 -->
+                    <div class="color-indigo">skycoco*****</div>
+                    <!-- 날짜 -->
+                    <div class="color-grey666">2022-07-26</div>
                 </div>
-                <div class="color-indigo">skycoco*****</div>
-                <div class="color-grey666">2022-07-26</div>
+                <!-- 테이블 내용 -->
+                <div class="inquiry-content font-md">
+                    <div><p class="color-grey666">AS기간 연장을 위해 결제를 취소 하였습니다. 취소없이 추가 결제로 AS 연장 가능하면 그대로 발송 부탁드립니다.
+                        혹시 DDR 4 8G 를 16G로 바꿀 수 있을가요?
+                        변경 추가금액 알려주시면 감사하겠습니다.</p></div>
+                    <div>
+                        <p><span class="inquiry-answer font-xxsm">답변</span>
+                            <span class="color-grey666">안녕하세요!! 고객만족센터입니다.<br>
+                            뉴퍼마켓을 이용해주셔서 감사합니다. 죄송하지만 해당 상품은 변경이 어려우며, 결제 취소 후 재 구매를 부탁드립니다.<br>
+                            감사합니다.
+                        </span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</section>
+
+<!-- 배송안내 -->
+<section class="padding-section" id="product-deliveryInfo">
+    <div class="container">
+        <div class="productInquiry-title">
+            <h3 class="semi-bold itemDetail-page-subTitle">배송안내</h3>
+        </div>
+
+        <ul class="delivery-info">
+            <li>
+                <h6>배송기간(영업일기준)</h6>
+                <p>뉴퍼마켓 배송 상품 - 입금 완료 후 1일~2일 이내 배송(출발)됨을 기준으로 하나 주문량이 많은 경우 최대 3일까지 소요될 수 있습니다.</p>
+                <p>협력업체 배송 상품 - 입금 완료 후 2일~3일 이내 배송(출발)됨을 기준으로 합니다.</p>
+                <p class="x">단, 대형가전(TV,냉장고,세탁기 등), 설치 상품의 경우에는 상품별로 예상 배송일을 고지하여 드립니다.</p>
+                <p class="x">천재지변, 물량 수급 변동 등 예외적인 사유 발생 시, 다소 지연될 수 있는 점 양해 부탁드립니다.</p>
+            </li>
+            <li>
+                <h6>배송요금</h6>
+                <p>상품별 지정 택배사에 따른 배송비가 별도발생합니다. (무료배송 품목제외)</p>
+                <p>대형가전이나 화물배송 상품의 경우, 추가비용이 발생할 수 있습니다.(옵션선택)</p>
+                <p class="x">대형가전(세탁기,건조기,냉장고 등)은 엘리베이터가 없는 3층 이상 주택 설치배송시 실비청구 될 수 있습니다. (사다리차 등)</p>
+                <p class="x">대형가전의 경우 설치장소 협소로 인한 설치 불가시 배송물류비는 고객님께서 부담하셔야 합니다. (구매전 사이즈확인 필수)</p>
+                <p class="x">TV벽걸이 설치를 위한 작업완료 이후 제품을 환불할 경우 벽타공의 보상은 지급하지 않습니다.</p>
+            </li>
+            <li>
+                <h6>배송방법</h6>
+                <p>뉴퍼마켓 배송 상품 : CJ대한통운 택배 (1588-1255)</p>
+                <p>협력업체 배송 상품 : 업체별 이용 택배 (배송시 문자안내)</p>
+            </li>
+            <li>
+                <h6>합배송(묶음배송)</h6>
+                <p>뉴퍼마켓 배송 상품 2개 이상 구매 시 합배송이 가능합니다.</p>
+                <p class="x">단, 제품의 크기나 무게에 따라 합배송이 어려울 경우 개별 발송될 수 있습니다(예: 컴퓨터+모니터)</p>
+                <p>뉴퍼마켓 배송 상품 + 협력사 배송 상품 구매 시 상품의 출고지가 각각 달라 개별 발송됩니다.</p>
+                <p class="x">뉴퍼마켓 상품과 협력사 상품 구분은 장바구니 혹은 주문/결제란에서 확인 가능합니다.</p>
+            </li>
+            <li>
+                <h6>당일수령(퀵배송)</h6>
+                <p>뉴퍼마켓 배송 상품 중 당일 수령을 원하는 경우 수도권(서울/경기/인천)에 한해 당일 오후 15시 이전 문의 시 상담 후 가능하며,<br>출고 일정에 따라 퀵서비스 이용이 어려울 수도 있습니다. 퀵 서비스 진행시 비용은 고객님 부담입니다.</p>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- 교환/환불안내 -->
+<section class="padding-section" id="product-refundInfo">
+    <div class="container">
+        <div class="productInquiry-title">
+            <h3 class="semi-bold itemDetail-page-subTitle">교환/환불안내</h3>
+        </div>
+
+        <ul class="delivery-info">
+            <li>
+                <h6>AS기간</h6>
+                <p>해외리퍼 / A급리퍼 / 박스개봉 / 단기사용 상품은 구매후 배송일로부터 90일동안 뉴퍼마켓에서 무상보증을 받으실 수 있습니다.</p>
+                <p>위 상품의 무상서비스를 연장할 경우 구매시 AS케어를 구매하시면 1년간 무상보증을 받으실 수 있습니다.</p>
+                <p>단, 미개봉 새상품의 경우 제조사에서 1년 동안 무상보증을 받으실 수 있습니다.</p>
+                <p>해외출시상품 등 일부 미개봉 새상품은 뉴퍼마켓에서 1년 동안 무상보증 해드립니다.</p>
+                <p>해외리퍼 / A급리퍼 / 박스개봉 / 단기사용 상품을 임의로 뉴퍼마켓이 아닌 제조사 및 타 수리업체에서 유상 AS받은 비용에 대해서는 보증해드리지 않는 점 참고 부탁드립니다.</p>
+            </li>
+            <li>
+                <h6>환불안내</h6>
+                <p>소비자보호법에 의거 제품수령일 포함 7일이내 환불접수 가능하며 제품 회수, 입고 후 환불진행 됩니다.</p>
+                <p>제품하자가 아닌 단순변심 환불비용은 택배박스당 왕복택배비 비용을 고객님이 부담하셔야 합니다. (왕복택배비 문의시 별도 안내 진행)</p>
+                <p class="x">단, 일부 설치형 가전 및 일반 택배가 아닌 화물배송의 경우 사이즈와 지역에 따라 별도 비용을 고객님께서 부담하실 수 있습니다.</p>
+                <p class="x">협력업체 배송상품의 경우 택배비가 상이할수 있으므로 별도 확인이 필요합니다.</p>
+                <p class="x">단순변심으로 인한 반품진행 요청시 본품박스가 없을 경우 반품진행이 불가하오니, 구매후에도 박스를 반드시 보관해주세요.</p>
+                <p class="x">상품상세에 배송/교환/환불 관련 안내가 기재된 경우 위 안내 사항보다 우선 적용됩니다.</p>
+            </li>
+            <li>
+                <h6>환불절차</h6>
+                <p>무통장입금 - 제품 입고일로부터 + 5일내 계좌 환불</p>
+                <p>카드결제 - 온라인카드취소는 취소승인일로부터 신용카드의 경우 최대 5박6일, 체크카드의 경우 최대 3박4일 소요</p>
+                <p>가상계좌 - 가상계좌취소는 취소승인일로부터 최대 2박3일 소요</p>
+                <p>적립금 - 제품 입고일로부터 1~2일내 회원계정으로 재적립</p>
+            </li>
+            <li>
+                <h6>결제수단별 환불안내</h6>
+                <table class="table-refund">
+                    <tbody>
+                        <tr>
+                            <th rowspan="2">결제수단</th>
+                            <th rowspan="2">환불수단</th>
+                            <th colspan="2">환불소요기간</th>
+                        </tr>
+                        <tr>
+                            <th>배송 전</th>
+                            <th>배송 후</th>
+                        </tr>
+                        <tr>
+                            <td class="align_center">무통장(가상계좌)입금</td><td class="align_center">요청계좌환불</td><td>환불접수일로부터 2~3일</td><td>입고검수완료 후 + 5일</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">실시간계좌이체</td><td class="align_center">계좌환불</td><td>환불접수일로부터 2~3일(결제계좌환불)</td><td>입고검수완료 후 + 5일(요청계좌환불)</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">카드 (신용카드/체크카드)</td><td class="align_center">승인취소</td><td>환불접수일로부터 3~5일이내 매출취소</td><td>입고검수완료 후 + 5일</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">NPAY</td><td class="align_center">결제계좌 입금</td><td>환불접수일로부터 3~4일</td><td>입고검수완료 후 + 5일</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">PAYCO	</td><td class="align_center">결제계좌 입금</td><td>환불접수일로부터 3~4일</td><td>입고검수완료 후 + 5일</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">적립금</td><td class="align_center">적립금 환원</td><td>환불접수일로부터 1일</td><td>입고검수완료 후 1~2일</td>
+                        </tr>
+                        <tr>
+                            <td class="align_center">예치금</td><td class="align_center">예치금 환원</td><td>환불접수일로부터 1일</td><td>입고검수완료 후 + 5일</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+            <li>
+                <h6>교환안내</h6>
+                <p>제품에 하자가 있을 경우 수령일포함 15일 이내 가능합니다.</p>
+                <p>택배 배송 중 분실 및 파손위험으로 1:1 맞교환은 불가능한 점 양해부탁드립니다.</p>
+            </li>
+            <li>
+                <h6>처리방법</h6>
+                <p>반품, AS, 교환처리시 택배서비스를 이용하여 이루어지고 있습니다. 서비스 이용시 착오없으시기 바랍니다.</p>
             </li>
         </ul>
     </div>

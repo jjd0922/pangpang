@@ -1,15 +1,19 @@
 package com.newper.entity;
 
 import com.newper.constant.CuGender;
+import com.newper.constant.CuRate;
 import com.newper.constant.CuState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+
 
 @Entity
 @DynamicUpdate
@@ -26,41 +30,26 @@ public class Customer {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CU_SHOP_IDX", referencedColumnName = "shopIdx")
     private Shop shop;
-
     private String cuName;
-
     private String cuId;
-
     private String cuPw;
-
     private String cuTelecom;
-
     private String cuPhone;
-
     private String cuEmail;
-
-    private String cuRate;
+    @Enumerated(EnumType.STRING)
+    private CuRate cuRate;
 
     @Enumerated(EnumType.STRING)
     private CuState cuState;
-
     private LocalDate cuBirth;
-
     @Enumerated(EnumType.STRING)
     private CuGender cuGender;
-
     private LocalDate cuJoinDate;
-
     private LocalTime cuJoinTime;
-
     private LocalDate cuLastDate;
-
     private LocalTime cuLastTime;
-
     private Integer cuPoint;
-
     private Integer cuMileage;
-
     private LocalDate cuPwChange;
     private boolean cuMarketingMail;
     private String cuMarketingMailCancel;
@@ -77,6 +66,27 @@ public class Customer {
         LocalDateTime now = LocalDateTime.now();
         setCuLastDate(now.toLocalDate());
         setCuLastTime(now.toLocalTime());
+    }
+
+    public void join(String phone, String email, Map<String,Object> map) {
+        setCuPhone(phone);
+        setCuEmail(email);
+        setCuState(CuState.NORMAL);
+        setCuRate(CuRate.SPECIAL); // 이게 제일 낮은지 확인
+        setCuCi(getCuId());// 임시값.
+        setCuMileage(0);
+        setCuPoint(0);
+        setCuDi(map.get("cuPw").toString()); // 임시값
+        setCuJoinDate(LocalDate.now());
+        setCuJoinTime(LocalTime.now());
+        setCuLastDate(LocalDate.now());
+        setCuLastTime(LocalTime.now());
+        setCuPwChange(LocalDate.now());
+        setShop(Shop.builder().shopIdx(1).build()); // 임시
+
+        // notnull위해서 잠시
+        setCuGender(CuGender.M);
+
     }
 
 }

@@ -94,7 +94,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text d-flex justify-content-between">첨부파일<a th:if="${po != null && po?.poFile != ''}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                            <span class="input-group-text d-flex justify-content-between">첨부파일<a th:if="${po != null && po?.poFile != ''}" th:title="${po?.poFileName}" th:href="|javascript: fileDownload('${po?.poFile}', '${po?.poFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                         </span>
                                                         <input type="file" name="poFile" class="form-control form-control-plaintext" placeholder="파일첨부">
                                                         <input type="hidden" name="poFileOri" th:if="${po != null}" th:value="${po?.poFile}">
@@ -696,12 +696,12 @@
                                                         <td th:text="${i.P_NAME}"></td>
                                                         <td class="text-right" th:text="${#numbers.formatInteger(i.PP_COST,1,'COMMA')}"></td>
                                                         <td class="text-right" th:text="${#numbers.formatInteger(i.PP_COUNT,1,'COMMA')}"></td>
-                                                        <td class="text-right" th:id="|i.TOTAL_BUY_COST_${iStat.index}|" th:text="${#numbers.formatInteger((i.TOTAL_BUY_COST),1,'COMMA')}"></td>
+                                                        <td class="text-right" th:id="|ppTotalCost_${iStat.index}|" th:text="${#numbers.formatInteger((i.TOTAL_BUY_COST),1,'COMMA')}"></td>
                                                         <td th:text="${i.PP_PROFIT_TARGET}"></td>
-                                                        <td class="text-right" th:id="|i.CREATE_PRICE_${iStat.index}|" th:text="${#numbers.formatInteger(i.CREATE_PRICE,1,'COMMA')}"></td>
+                                                        <td class="text-right" th:id="|ppTotalProdCost_${iStat.index}|" th:text="${#numbers.formatInteger(i.CREATE_PRICE,1,'COMMA')}"></td>
                                                         <td th:id="|ppProdCostRate_${iStat.index}|"></td>
                                                         <td class="text-right" th:text="${#numbers.formatInteger(i.PP_SELL_PRICE,1,'COMMA')}"></td>
-                                                        <td class="text-right" th:id="|i.TOTAL_SELL_PRICE_${iStat.index}|" th:text="${#numbers.formatInteger(i.TOTAL_SELL_PRICE,1,'COMMA')}"></td>
+                                                        <td class="text-right" th:id="|ppTotalSellPrice_${iStat.index}|" th:text="${#numbers.formatInteger(i.TOTAL_SELL_PRICE,1,'COMMA')}"></td>
                                                         <td class="text-right" th:id="|ppTotalProfit_${iStat.index}|" th:text="${#numbers.formatInteger(i.TOTAL_SELL_PRICE - i.CREATE_PRICE,1,'COMMA')}"></td>
                                                         <td th:id="|ppProfitRate_${iStat.index}|"></td>
                                                     </tr>
@@ -1118,6 +1118,7 @@
     function calculatePo() {
         var len = $('#rateTbody tr').length;
         var totalCost = 0; var totalSell = 0; var totalProfit = 0;
+        var deliveryCost = getNumberInInput('poDeliveryCost');
         for (var i = 0; i < len; i++) {
             if (isNaN(getNumberById('ppTotalCost_' + i))) {
                 continue;
@@ -1126,7 +1127,7 @@
             totalSell += getNumberById('ppTotalSellPrice_'+i);
             totalProfit += getNumberById('ppTotalProfit_'+i);
         }
-        var totalProfitRate = Math.round((totalProfit / totalSell)*10000)/100;
+        var totalProfitRate = (Math.round(((totalProfit-deliveryCost)/totalSell)*10000))/100;
         $('input[name=poTotalAmount]').val(comma(totalCost));
         $('input[name=poSellTotalAmount]').val(comma(totalSell));
         $('input[name=poSellProfit]').val(totalProfitRate+'%');

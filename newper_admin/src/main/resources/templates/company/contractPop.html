@@ -52,7 +52,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text requested">상호법인명<a href="#" id="searchComBtn" class="badge badge-sm badge-primary ml-1">검색</a></span>
+                                                            <span class="input-group-text requested d-flex justify-content-between">상호법인명<a href="#" id="searchComBtn" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
                                                         <input type="text" name="comName" class="form-control" placeholder="검색" th:value="${contract?.company?.comName}" readonly>
                                                         <input type="hidden" name="comIdx" th:value="${contract?.company?.comIdx}">
@@ -264,7 +264,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">계약서 파일<a th:if="${contract != null}" th:href="|javascript: fileDownload('${contract.ccFile}', '${contract.ccFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
+                                                                <span class="input-group-text requested d-flex justify-content-between">계약서 파일<a th:if="${contract != null}" th:title="${contract?.ccFileName}" th:href="|javascript: fileDownload('${contract.ccFile}', '${contract.ccFileName}')|" class="badge badge-sm badge-primary ml-1">다운로드</a></span>
                                                             </span>
                                                         <input type="file" name="ccFile" class="form-control form-control-plaintext" accept=".jpg,.pdf,.doc,.docx,.xlsx,.xls">
                                                         <input type="hidden" name="ccFileOri" th:value="${contract?.ccFile}">
@@ -278,7 +278,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                             <span class="input-group-prepend">
-                                                                <span class="input-group-text requested">
+                                                                <span class="input-group-text requested d-flex justify-content-between">
                                                                     내부담당자 <a href="#" id="searchUserBtn" class="badge badge-sm badge-primary ml-1">검색</a>
                                                                 </span>
                                                             </span>
