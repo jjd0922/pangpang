@@ -8,7 +8,7 @@ import com.newper.mapper.DeliveryMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.DeliveryNumRepo;
 import com.newper.service.OrderService;
-import com.newper.service.DeliverytService;
+import com.newper.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class DeliveryManagementRestController {
 
     private final DeliveryMapper deliveryMapper;
-    private final DeliverytService deliverytService;
+    private final DeliveryService deliveryService;
     private final DeliveryNumRepo deliveryNumRepo;
 
 
@@ -132,7 +132,7 @@ public class DeliveryManagementRestController {
     @PostMapping("deliveryUpload.ajax")
     public ReturnMap deliveryUpload(ParamMap paramMap, MultipartFile deliveryFile){
         ReturnMap rm = new ReturnMap();
-        String res = deliverytService.deliveryUpload(paramMap, deliveryFile);
+        String res = deliveryService.deliveryUpload(paramMap, deliveryFile);
         if (res == "") {
             rm.put("result","송장등록 업로드 완료");
         } else {
@@ -148,7 +148,7 @@ public class DeliveryManagementRestController {
 
         System.out.println(paramMap.getMap());
         int count = paramMap.getString("idxs").split(",").length;
-        int res = deliverytService.saveInstall(paramMap, DN_FILE);
+        int res = deliveryService.saveInstall(paramMap, DN_FILE);
         if(res==count){
             rm.setMessage("등록되었습니다.");
         }else{
@@ -204,10 +204,19 @@ public class DeliveryManagementRestController {
         ReturnDatatable returnDatatable = new ReturnDatatable();
         paramMap.put("P_DEL_TYPE","DELIVERY");
         List<Map<String,Object>> list = ordersMapper.selectGoodsGsDetailByOIdxAndPType(paramMap.getMap());
-        System.out.println(list);
         returnDatatable.setData(list);
         returnDatatable.setRecordsTotal(list.size());
 
         return returnDatatable;
     }
+
+    @PostMapping("checkBarcode.ajax")
+    public ReturnMap checkBarcode(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        System.out.println(paramMap.getMap());
+        String G_BARCODE = paramMap.getString("G_BARCODE");
+        String res = deliveryService.checkBarcode(G_BARCODE);
+        return rm;
+    }
+
 }

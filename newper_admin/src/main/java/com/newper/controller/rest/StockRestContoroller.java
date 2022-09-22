@@ -58,17 +58,12 @@ public class StockRestContoroller {
         if(paramMap.get("GS_IDX")!=null){
             gs_idx=paramMap.getInt("GS_IDX");
         }
-        String[] G_STATES = new String[3];
         Map<String, Object> map = new HashMap<>();
         map.put("GS_IDX", gs_idx);
         if(paramMap.get("release")==null){
-            G_STATES[0]="STOCK";
-            map.put("G_STATES",G_STATES);
+            map.put("G_STOCK_STATE","STOCK");
         }else{
-            G_STATES[0]="BEFORE_RELEASE_REQ";
-            G_STATES[1]="BEFORE_RELEASE_IN";
-            G_STATES[2]="BEFORE_RELEASE_OUT";
-            map.put("G_STATES",G_STATES);
+            map.put("G_STOCK_STATE","OUT_REQ");
         }
         List<Map<String,Object>> cList = stockMapper.selectStockDatatableByChildren(map);
         returnDatatable.setData(cList);

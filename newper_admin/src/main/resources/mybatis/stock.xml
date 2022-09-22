@@ -25,7 +25,8 @@
                                              ON G_LOC_IDX=LOC_IDX
                            WHERE
                                G_LOC_IDX IS NOT NULL
-                               and G_STATE='STOCK'
+                             and G_STATE='STOCK'
+                             AND G_STOCK_STATE='STOCK'
                            GROUP BY G_GS_IDX
                            HAVING G_GS_IDX IS NOT null) dt
                           ON dt.G_GS_IDX=SPO_GS_IDX
@@ -36,7 +37,8 @@
                                    LEFT JOIN goods
                                              ON GS_IDX=G_GS_IDX
                            WHERE
-                              G_STATE in ('BEFORE_RELEASE_REQ','BEFORE_RELEASE_OUT','BEFORE_RELEASE_IN')
+                               G_STATE = 'STOCK'
+                             AND G_STOCK_STATE='OUT_REQ'
                            GROUP BY GS_IDX
             )ct
                           ON ct.GS_IDX1=SPO_GS_IDX
@@ -64,10 +66,8 @@
                           on LOC_U_IDX=U_IDX
         WHERE
             G_LOC_IDX IS NOT NULL
-            and G_STATE in
-                <foreach collection="G_STATES" item="gState" index="index" open="(" separator="," close=")">
-                    #{gState}
-                </foreach>
+            and G_STATE='STOCK'
+            and G_STOCK_STATE = #{G_STOCK_STATE}
             and G_GS_IDX=#{GS_IDX}
     </select>
 
