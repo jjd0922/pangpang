@@ -68,6 +68,7 @@ public class Location extends CreatedEntity {
         setLocZone(location.getLocZone());
         setLocColumn(location.getLocColumn());
         setLocRow(location.getLocRow());
+        setLocMax(location.getLocMax());
         setLocBarcode(location.getLocBarcode());
         setLocMemo(location.getLocMemo());
     }

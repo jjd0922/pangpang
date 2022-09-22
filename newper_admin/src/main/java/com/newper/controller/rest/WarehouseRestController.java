@@ -96,6 +96,7 @@ public class WarehouseRestController {
 
         warehouseService.updateLocation(locIdx, paramMap);
         rm.setMessage("수정완료");
+        rm.setLocation("/warehouse/locationPop/"+whIdx+"/"+locIdx);
         return rm;
     }
 
