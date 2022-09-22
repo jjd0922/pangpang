@@ -88,4 +88,14 @@ public class PaymentService {
 
         return payment;
     }
+
+    /** iamport 결제 취소 요청 보내기 전 확인 및, 데이터 세팅*/
+    @Transactional
+    public void iamportPaymentCancelReq(String oCode){
+//        Payment payment = paymentr.getPayment();
+
+//        payment.setPayCancelState(PayState.REQ);
+
+
+    }
 }

@@ -14,13 +14,8 @@ public class IamportApi {
     private static OkHttpClient CLIENT = null;
     private final String URL = "https://api.iamport.kr";
 
-    private String imp_key;
-    private String imp_secret;
-
-    public IamportApi(String imp_key, String imp_secret) {
-        this.imp_key = imp_key;
-        this.imp_secret = imp_secret;
-    }
+    private final String imp_key = "7551760752994000";
+    private final String imp_secret = "bVmJurNh2koL0ouzErz9tAbwlURA7nQjjd2NFQ5HbttbSXKwpkGTURqfLhQSFHcZUeNz5ShgmKseIcL8";
 
     private OkHttpClient getClient(){
         if (CLIENT == null) {

@@ -11,4 +11,5 @@ public interface PaymentHistoryRepo extends JpaRepository<PaymentHistory, Long> 
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     PaymentHistory findLockByPhIdx(long phIdx);
+
 }
