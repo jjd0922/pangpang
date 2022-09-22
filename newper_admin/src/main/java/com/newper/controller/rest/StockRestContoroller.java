@@ -218,10 +218,10 @@ public class StockRestContoroller {
 
 
     @PostMapping("/list/barcode.ajax")
-    public ReturnMap listBarcode(ParamMap paramMap) {
+    public ReturnMap listBarcode(ParamMap paramMap,Long gIdx) {
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        List<Map<String, Object>> list=locationService.listStockBarcode(paramMap);
+        List<Map<String, Object>> list=locationService.listStockBarcode(paramMap,gIdx);
         rm.put("locIdx", paramMap.getString("locIdx"));
         rm.put("barcode", paramMap.getString("barcode").substring(2).split(",").length);
         rm.put("list",list);

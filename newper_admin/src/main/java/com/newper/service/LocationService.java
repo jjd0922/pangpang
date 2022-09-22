@@ -12,6 +12,7 @@ import com.newper.repository.GoodsRepo;
 import com.newper.repository.GoodsStockRepo;
 import com.newper.repository.LocationRepo;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,12 +74,22 @@ public class LocationService {
      */
 
     @Transactional
-    public List<Map<String, Object>> listStockBarcode(ParamMap paramMap) {
+    public List<Map<String, Object>> listStockBarcode(ParamMap paramMap, Long gIdx) {
 
 
         String barcode = paramMap.getString("barcode");
-        String[] gIdxs = barcode.substring(1, (barcode.length() - 0)).split(",");
-        System.out.println(gIdxs.length);
+        String[] barcodes = barcode.substring(1, (barcode.length() - 0)).split(",");
+        System.out.println(barcodes.length);
+
+
+        Goods goods = goodsRepo.findBygBarcode(barcodes[barcodes.length-1]);
+        if (goods==goodsRepo.findBygBarcode(goods.getGBarcode()))
+
+            throw new MsgException("존재하는 바코드가 아닙니다");
+            barcode.replace(","+barcodes[barcodes.length-1],"");
+
+
+
 
 /*            Goods goods = paramMap.mapParam(Goods.class);
 
@@ -99,6 +110,6 @@ public class LocationService {
             }*/
 
 
-        return  locationMapper.selectListGoodsByLocation(gIdxs);
+        return  locationMapper.selectListGoodsByLocation(barcodes);
     }
 }
