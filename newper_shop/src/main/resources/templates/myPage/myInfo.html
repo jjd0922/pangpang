@@ -1,5 +1,62 @@
+<th:block th:fragment="myInfoPwCheck">
+    <div class="container">
+        <span>
+            고객님의 회원정보를 안전하게 보호하기 위해 <br>
+            비밀번호를 한번 더 확인해 주세요.
+        </span>
+        패스워드 : <input type="password" name="pw" id="pw">
+
+        <div class="container">
+            <a onclick="passwordCheck()">확인</a>
+        </div>
+    </div>
+    <script>
+        function passwordCheck(){
+            // $.ajax({
+            //     url: 'pwdCheck.ajax'
+            //     ,type: 'post'
+            //     ,data: {
+            //         'pw': $('#pw').val()
+            //     }
+            // }).done(function(res){
+            //     if(res.message != 'Y'){
+            //         alert(res.message);
+            //     }else{
+            //         openMenu('myInfo');
+            //         openMyInfoMenu('updateInfo')
+            //     }
+            // });
+
+            openMenu('myInfo');
+        }
+    </script>
+</th:block>
 <th:block th:fragment="myInfo">
     <div class="container">
-        myInfo
+        <ul class="shoppingHistory-tab semi-bold" id="myInfoTabMenu">
+            <li class="on" onclick="openMyInfoMenu('updateInfo')" id="updateInfo">회원정보수정</li>
+            <li onclick="openMyInfoMenu('refundAccount')" id="refundAccount">환불계좌관리</li>
+            <li onclick="openMyInfoMenu('delivery')" id="delivery">배송지관리</li>
+        </ul>
+
+        <ul class="shoppingHistory-tab-content" id="myInfoMenu">
+
+        </ul>
     </div>
 </th:block>
+<script>
+    function openMyInfoMenu(menu){
+        $.ajax({
+            url: '/myPage/myInfo/'+menu+'.load'
+            ,type: 'post'
+        }).done(function(res){
+            $('#myInfoMenu').empty();
+            $('#myInfoMenu').append(res);
+
+            // action
+            $('#myInfoTabMenu').children('li').removeClass("on");
+            $('#myInfoTabMenu').find($('#'+menu)).addClass("on");
+
+        });
+    }
+</script>

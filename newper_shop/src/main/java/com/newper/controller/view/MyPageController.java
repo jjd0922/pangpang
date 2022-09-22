@@ -1,11 +1,11 @@
 package com.newper.controller.view;
 
-import com.newper.dto.ParamMap;
+import com.newper.component.ShopSession;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/myPage/")
 public class MyPageController {
+
+    @Autowired
+    private ShopSession shopSession;
 
     private final ShopRepo shopRepo;
 
@@ -147,4 +150,20 @@ public class MyPageController {
         }
         return mav;
     }
+
+    /** 회원정보관리 메뉴 load */
+    @PostMapping("myInfo/{menu}.load")
+    public ModelAndView myInfoMenu(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myInfo :: " + menu);
+
+        return mav;
+    }
+    /** 회원정보관리 패스워드 check 페이지 load*/
+    @PostMapping("myInfo/myInfoPwCheck.load")
+    public ModelAndView myInfoPwCheck(){
+        ModelAndView mav = new ModelAndView("myPage/myInfo :: " + "myInfoPwCheck");
+
+        return mav;
+    }
+
 }
