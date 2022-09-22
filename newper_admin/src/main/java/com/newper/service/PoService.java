@@ -91,7 +91,7 @@ public class PoService {
             ppParam.put("ppMemo", paramMap.getString("ppMemo_" + i));
             ppParam.put("ppCost", paramMap.getInt("ppCost_" + i));
             ppParam.put("ppCount", paramMap.getInt("ppCount_" + i));
-            ppParam.put("ppProfitTarget", Float.parseFloat(paramMap.getString("ppProfitTarget_" + i)));
+            ppParam.put("ppProfitTarget", paramMap.getFloatZero("ppProfitTarget_" + i));
             ppParam.put("ppFixMemo", paramMap.getString("ppFixMemo_" + i));
             ppParam.put("ppFixCost", paramMap.getIntZero("ppFixCost_" + i));
             ppParam.put("ppPaintMemo", paramMap.getString("ppPaintMemo_" + i));
@@ -213,13 +213,13 @@ public class PoService {
             ppParam.put("ppMemo", paramMap.getString("ppMemo_" + i));
             ppParam.put("ppCost", paramMap.getInt("ppCost_" + i));
             ppParam.put("ppCount", paramMap.getInt("ppCount_" + i));
-            ppParam.put("ppProfitTarget", Float.parseFloat(paramMap.getString("ppProfitTarget_" + i)));
+            ppParam.put("ppProfitTarget", paramMap.getFloatZero("ppProfitTarget_" + i));
             ppParam.put("ppFixMemo", paramMap.getString("ppFixMemo_" + i));
-            ppParam.put("ppFixCost", paramMap.getInt("ppFixCost_" + i));
+            ppParam.put("ppFixCost", paramMap.getIntZero("ppFixCost_" + i));
             ppParam.put("ppPaintMemo", paramMap.getString("ppPaintMemo_" + i));
-            ppParam.put("ppPaintCost", paramMap.getInt("ppPaintCost_" + i));
+            ppParam.put("ppPaintCost", paramMap.getIntZero("ppPaintCost_" + i));
             ppParam.put("ppProcessMemo", paramMap.getString("ppProcessMemo_" + i));
-            ppParam.put("ppProcessCost", paramMap.getInt("ppProcessCost_" + i));
+            ppParam.put("ppProcessCost", paramMap.getIntZero("ppProcessCost_" + i));
             ppParam.put("ppSellPrice", paramMap.getInt("ppSellPrice_"+i));
 
             PoProduct poProduct = ppParam.mapParam(PoProduct.class);
