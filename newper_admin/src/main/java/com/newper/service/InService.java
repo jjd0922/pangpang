@@ -21,6 +21,7 @@ import java.util.Optional;
 public class InService {
 
     private final InGroupRepo inGroupRepo;
+    private final InProductRepo inProductRepo;
     private final PoRepo poRepo;
     private final ProductRepo productRepo;
     private final PoMapper poMapper;
@@ -55,6 +56,8 @@ public class InService {
         }
     }
 
+    /** 입고완료 처리 */
+    @Transactional
     public void updateInGroup(ParamMap paramMap) {
         InGroup inGroup = paramMap.mapParam(InGroup.class);
         inGroup.setIgState(IgState.DONE);
@@ -85,23 +88,18 @@ public class InService {
 
     }
 
-    /** 입고등록시 완전 새로운 상품 입고시 입고상품 그룹 생성 */
-    public void insertNewPoReceived(ParamMap paramMap) {
-        Product product = paramMap.mapParam(Product.class);
-        Po po = paramMap.mapParam(Po.class);
+    /** 해당 발주 품의 건에 없는 새로운 상품이 입고될시 입고 상품 추가  */
+    public void insertInProduct(ParamMap paramMap) {
+        Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
+        InGroup ig = inGroupRepo.findByPo(po);
 
-        PoReceived poReceived = PoReceived
+        InProduct inProduct = InProduct
                 .builder()
-                .product(product)
-                .po(po)
-                .porCount(0)
-                .porCost(0)
-                .porSellPrice(0)
-                .porProfitTarget(0)
-                .porOption(new ArrayList<>())
-                .porMemo("기존 발주에 없는 상품")
+                .inGroup(ig)
+                .product(productRepo.getReferenceById(paramMap.getInt("pIdx")))
+                .ipCount(0)
                 .build();
 
-        poReceivedRepo.save(poReceived);
+        inProductRepo.save(inProduct);
     }
 }

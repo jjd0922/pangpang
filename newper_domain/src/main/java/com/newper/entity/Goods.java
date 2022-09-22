@@ -40,21 +40,11 @@ public class Goods {
     @JoinColumn(name = "G_POR_IDX", referencedColumnName = "porIdx")
     private PoReceived poReceived;
 
-/** 입고 확정 스펙*/
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_IN_SPEC_IDX", referencedColumnName = "specIdx")
-    private Spec inSpec;
 
     /** 판매 확정 스펙*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "G_SELL_SPEC_IDX", referencedColumnName = "specIdx")
     private Spec sellSpec;
-
-    /** 가공 예정 스펙 */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "G_PROCESS_SPEC_IDX", referencedColumnName = "specIdx")
-    private Spec processSpec;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -81,12 +71,8 @@ public class Goods {
     @Enumerated(EnumType.STRING)
     private GStockState gStockState = GStockState.N;
 
-
-
-     private String gMemo;
-     private String gVendor;
-
-
+    private String gMemo;
+    private String gVendor;
 
 
     @Enumerated(EnumType.STRING)

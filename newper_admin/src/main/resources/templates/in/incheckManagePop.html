@@ -42,13 +42,13 @@
                             <div class="row">
                                 <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check.cgIdx}, 'cancel')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'cancel')|">
                                         <i class="icon-popout mr-1"></i>작업요청취소
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check.cgIdx}, 'ing')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'ing')|">
                                         <i class="icon-popout mr-1"></i>작업중(출고)
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="finishBtn" th:onclick="|stateUpdate(${check.cgIdx}, 'finish')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="finishBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'finish')|">
                                         <i class="icon-popout mr-1"></i>작업완료(입고)
                                     </a>
                                 </div>
@@ -61,22 +61,22 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수코드</span>
                                             </span>
-                                            <input type="text" th:value="${check.cgIdx}" class="form-control" readonly>
+                                            <input type="text" th:value="${check?.cgIdx}" class="form-control" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">작업지시자(내부)</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.user.uName}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.user?.uName}" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수업체</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.company.comName}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.company?.comName}" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">작업시작일</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.cgStartDate}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgStartDate}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -88,21 +88,21 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수 상태</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.cgState.option}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgState.option}" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">완료처리자(내부)</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.user2.uName}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.user2?.uName}" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수담당자(업체)</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.company.user.uName}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.company?.user?.uName}" readonly>
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">작업종료일</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.cgEndDate}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgEndDate}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                                                    요청일
                                                </span>
                                            </span>
-                                            <input type="text" class="form-control" th:value="${check.cgRequestDate}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgRequestDate}" readonly>
 
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수비(확정)합계</span>
@@ -138,7 +138,7 @@
                                             <span class="input-group-prepend">
                                                    <span class="input-group-text">요청메모</span>
                                                </span>
-                                            <input type="text" class="form-control" id="cgReqMemo" th:value="${check.cgReqMemo}" readonly>
+                                            <input type="text" class="form-control" id="cgReqMemo" th:value="${check?.cgReqMemo}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">작업메모</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.cgCheckMemo}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgCheckMemo}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +162,7 @@
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">작업완료메모</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check.cgDoneMemo}" readonly>
+                                            <input type="text" class="form-control" th:value="${check?.cgDoneMemo}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +207,7 @@
                                         <div class="collapse show" id="collapse-button-collapsed">
                                             <div class="card-body pt-0">
                                                 <form id="goodsForm">
-                                                    <input type="hidden" name="cgIdx" th:value="${check.cgIdx}">
+                                                    <input type="hidden" name="cgIdx" th:value="${check?.cgIdx}">
                                                     <div class="row">
                                                         <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                             <div class="form-group">
@@ -391,9 +391,9 @@
             , {'title': '입고SPEC(예정)', 'data': '', 'defaultContent': ''}
             , {'title': '입고SPEC(확정)', 'data': 'SPEC1', 'defaultContent': '', 'render': function (data, type, full, meta) {
                     if (data == null) {
-                        return '<a href="javascript: openSpecModal_CGS(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
+                        return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
                     } else {
-                        return '<a href="javascript: openSpecModal_CGS(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
+                        return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
                     }
                 }}
             , {'title': '판매SPEC(예정)', 'data': '', 'defaultContent': ''}

@@ -140,16 +140,6 @@ public class InRestController {
         return rm;
 
     }
-    /** 강제 입고 완료 */
-    @PostMapping("po/compulsion.ajax")
-    public ReturnMap compulsion(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        inService.updateInGroup(paramMap);
-        rm.setMessage("강제입고 완료");
-
-        return rm;
-
-    }
 
     /** 입고완료 */
     @PostMapping("inGroupSave.ajax")
@@ -191,11 +181,11 @@ public class InRestController {
         return rd;
     }
 
-    /** 입고검수 자산 SPEC 세팅 */
-    @PostMapping("checkGoodsSpecSet.ajax")
-    public ReturnMap checkGoodsSpecSet(ParamMap paramMap, MultipartFile[] gFile) {
+    /** 입고검수 자산 정보 입력 */
+    @PostMapping("goodsInCheck.ajax")
+    public ReturnMap goodsInCheck(ParamMap paramMap, MultipartFile[] gFile) {
         ReturnMap rm = new ReturnMap();
-        checkService.updateCheckGoodsSpec(paramMap, gFile);
+        checkService.goodsInCheck(paramMap, gFile);
         rm.setMessage("등록완료");
         return rm;
     }
@@ -209,20 +199,12 @@ public class InRestController {
         return rm;
     }
 
-    /** 해당 발주건에 새로 입고된 상품들 select */
-    @PostMapping("selectNewPoProductGoods.dataTable")
-    public ReturnDatatable selectNewPoProductGoods(ParamMap paramMap) {
-        ReturnDatatable rd = new ReturnDatatable();
-        rd.setData(poMapper.selectNewPoProductGoods(paramMap.getMap()));
-
-        return rd;
-    }
-
-    /** 입고등록시 새로운 상품 입고 데이터 추가  */
-    @PostMapping("insertNewPoReceived.ajax")
-    public ReturnMap insertNewPoReceived(ParamMap paramMap) {
+    /** 해당 발주건에 새로 입고된 insert */
+    @PostMapping("insertInProduct.ajax")
+    public ReturnMap selectNewPoProductGoods(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        inService.insertNewPoReceived(paramMap);
+        inService.insertInProduct(paramMap);
+        rm.setMessage("입고상품 추가 완료");
         return rm;
     }
 }

@@ -36,13 +36,19 @@ public class GoodsService {
     private final SpecListRepo specListRepo;
     private final SpecRepo specRepo;
     private final ProcessNeedRepo processNeedRepo;
-
+    private final InGroupRepo inGroupRepo;
 
     /** 자산 등록. 발주코드, 상품코드, 바코드만 먼저등록 입고검수가 되어야 입고확정스펙 나옴 */
     @Transactional
     public void insertGoods(int p_idx, int po_idx, String barcode) {
         Po po = poRepo.getReferenceById(po_idx);
         Product product = productRepo.getReferenceById(p_idx);
+
+        InGroup inGroup = inGroupRepo.findByPo(po);
+
+        if (inGroup.getIgState().equals(IgState.DONE)) {
+            throw new MsgException("해당 발주건은 입고 완료되었습니다.");
+        }
 
         Goods goods= Goods.builder()
                 .gBarcode(barcode)
@@ -58,13 +64,9 @@ public class GoodsService {
     @Transactional
     public void barcodeDelete(long g_idx){
         //조건 체크 GOODS.java 에 생성 함
-
-
         Goods goods = goodsRepo.findById(g_idx).orElseThrow(()->new MsgException(("존재하지 않는 자산코드입니다.")));
         goodsRepo.delete(goods);
-
         goodsRepo.flush();
-
         poMapper.updategoods(goods.getPo().getPoIdx(), goods.getProduct().getPIdx());
     }
 
@@ -79,6 +81,17 @@ public class GoodsService {
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
         }
+
+        // 해당 요청이 입고검수일경우 해당자산의 상태값이 RECEIVED 입고 상태일때만
+        if (ggtType.equals(GgtType.IN_CHECK)) {
+            for (int i = 0; i < gIdxs.length; i++) {
+                Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+                if (!goods.getGState().equals(GState.RECEIVED)) {
+                    throw new MsgException(goods.getGBarcode() + "는 이미 입고검수한 자산입니다.");
+                }
+            }
+        }
+
         //임시그룹에 바코드 추가
         goodsMapper.insertGoodsTemp(idx, gIdxs);
 

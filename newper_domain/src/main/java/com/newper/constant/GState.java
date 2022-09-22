@@ -13,7 +13,6 @@ public enum GState implements EnumOption {
     ,CHECK_NEED("검수요청")
 
     ,CHECK("검수")
-
     ,PROCESS("공정")
     ,STOCK("상품화완료")
 

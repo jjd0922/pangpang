@@ -1,5 +1,5 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="productModal">
+<div class="modal" tabindex="-1" role="dialog" id="poNewProductModal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="card mb-3">
                         <div class="card-body popup-contents mb-1">
-                            <form id="productModalForm" onkeypress="if(event.keyCode==13){searchProductModal();return false;}">
+                            <form id="poNewProductModalForm" onkeypress="if(event.keyCode==13){searchpoNewProductModal();return false;}">
                                 <fieldset class="mb-0">
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
@@ -21,7 +21,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="pIdx" placeholder="검색">
+                                                    <input type="text" class="form-control" name="P_CODE" placeholder="검색">
                                                 </div>
                                             </div>
                                         </div>
@@ -32,7 +32,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">상품명</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="pName" placeholder="검색">
+                                                    <input type="text" class="form-control" name="P_NAME" placeholder="검색">
                                                 </div>
                                             </div>
                                         </div>
@@ -44,7 +44,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">브랜드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="pBrand" placeholder="검색">
+                                                    <input type="text" class="form-control" name="P_CATE_IDX2" placeholder="검색">
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 대분류</span>
                                                     </span>
-                                                    <select name="category1" data-placeholder="다중선택가능" class="form-control">
+                                                    <select name="CATE_IDX1" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -68,7 +68,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 중분류</span>
                                                     </span>
-                                                    <select name="category2" data-placeholder="다중선택가능" class="form-control">
+                                                    <select name="CATE_IDX2" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -81,7 +81,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">카테고리 소분류</span>
                                                     </span>
-                                                    <select name="category3" data-placeholder="다중선택가능" class="form-control">
+                                                    <select name="CATE_IDX3" data-placeholder="다중선택가능" class="form-control">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -92,12 +92,12 @@
                             </form>
 
                             <div class="justify-content-end mt-2 mb-2">
-                                <button type="button" class="btn btn-sm btn-secondary" onclick="searchProductModal()">
+                                <button type="button" class="btn btn-sm btn-secondary" onclick="searchPoNewProduct()">
                                     <i class="icon-search4 mr-1"></i>조회
                                 </button>
                             </div>
 
-                            <table class="table" id="productModalTable">
+                            <table class="table" id="poNewProductModalTable">
                             </table>
 
                         </div>
@@ -109,69 +109,78 @@
 </div>
 
 <script th:inline="javascript">
-    /** 구성상품 하나 선택*/
-    function selectProduct(pIdx) {
+    function selectNewProduct(id, row) {
+        var dataMap = getDatatablemap(id, row);
+        var flag = false;
         $.ajax({
-            url: '/in/selectPoNewProduct.ajax',
-            type: 'POST',
+            url: '/in/insertInProduct.ajax',
+            type: 'post',
             data: {
-                "pIdx" : pIdx,
-                "poIdx" : $('#poIdx').val()
+                "poIdx" : $('#poIdx').val(),
+                "pIdx" : dataMap.P_IDX
             }
         })
 
-        $('#inProductTable').DataTable().ajax.reload();
-        $('#productModal').modal('hide');
+        var html = '<tr>' +
+            '<td>'+$('#inProductTable').children('tbody').children('tr').length+'</td>' +
+            '<td>'+dataMap.P_IDX+'</td>' +
+            '<td>'+dataMap.P_NAME+'</td>' +
+            '<td>'+dataMap.P_MODEL+'</td>' +
+            '<td>0</td>' +
+            '<td>0</td>' +
+            '<td><a class="btn btn-sm badge-indigo" onclick="openInModal('+dataMap.P_IDX+',\''+dataMap.P_NAME+'\')">등록</a></td>' +
+            '</tr>'
+
+        $('#inProductTable').append(html)
+
+        $('#poNewProductModal').modal('hide');
     }
 
-    function openProductModal(){
-        $('#productModal').modal('show');
-        selectProductDataTable();
+    function openPoNewProductModal() {
+        // searchPoNewProduct();
+        $('#poNewProductModal').modal('show');
     }
 
 
     <!-- 상품 검색 -->
-    function searchProductModal(){
-        $('#productModalTable').DataTable().page("first").ajax.url("/product/product.dataTable?" + $('#productModalForm').serialize()).load(null, false);
+    function searchPoNewProduct(){
+        poNewProductModalTable.DataTable().page("first").ajax.url("/product/product.dataTable?" + $('#poNewProductModalForm').serialize()).load(null, false);
     }
 
-    function selectProductDataTable(){
-        destroyDatatable('productModalTable');
-        $('#productModalTable').DataTable({
-            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
-            ordering: false,
-            serverSide: true,
-            ajax:{
-                url:'/product/product.dataTable',
-                type:'post'
-            },
-            columnDefs: [ {
+    var poNewProductModalTable = $('#poNewProductModalTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+        ordering: false,
+        serverSide: true,
+        ajax:{
+            url:'/product/product.dataTable',
+            type:'post'
+        },
+        columnDefs: [ {
+            width: '40px',
+            orderable: false,
+            autoWidth: false,
+            // className: 'select-checkbox',
+            targets:   [0]
+        },
+            {
                 width: '40px',
-                orderable: false,
-                autoWidth: false,
-                // className: 'select-checkbox',
-                targets:   [0]
-            },
-                {
-                    width: '40px',
-                    targets:    [1]
-                }],
-            columns : [
-                {'title':'상품코드','data':'P_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
-                        return '';
-                    }}
-                ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
-                ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
-                ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
-                ,{'title':'사용 옵션','data':'P_OPTION_DT', 'defaultContent':''}
-                ,{'title':'사용 스펙','data':'CATE_SPEC_LIST_DT', 'defaultContent':''}
-                ,{'title':'기준매입가','data':'P_COST', 'defaultContent':''}
-                ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectProduct('+data+');">선택</button>'
-                    }}
+                targets:[1]
+            }],
+        columns : [
+            {'title':'상품코드','data':'P_IDX', 'defaultContent':'', 'render' : function (data, type, full, meta) {
+                    return '';
+                }}
+            ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+            ,{'title':'브랜드','data':'BRAND_NAME', 'defaultContent':''}
+            ,{'title':'대분류','data':'CATE_NAME1', 'defaultContent':''}
+            ,{'title':'사용 옵션','data':'P_OPTION_DT', 'defaultContent':''}
+            ,{'title':'사용 스펙','data':'CATE_SPEC_LIST_DT', 'defaultContent':''}
+            ,{'title':'기준매입가','data':'P_COST', 'defaultContent':''}
+            ,{'title':'선택','data':'P_IDX','defaultContent':'', 'render':function(data,type,full,meta){
+                    return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="selectNewProduct(\''+meta.settings.sTableId+'\','+meta.row+');">선택</button>'
+                }}
 
-            ]
-        });
-    }
+        ]
+    });
 </script>
 </html>

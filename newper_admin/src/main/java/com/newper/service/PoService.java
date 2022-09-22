@@ -41,6 +41,7 @@ public class PoService {
     private final CompanyContractRepo companyContractRepo;
     private final HiworksRepo hiworksRepo;
     private final ProductRepo productRepo;
+    private final InGroupRepo inGroupRepo;
 
 
     private final GoodsRepo goodsRepo;
@@ -408,10 +409,17 @@ public class PoService {
         }
     }
 
+    /** 입고등록 자산수령 */
+    @Transactional
     public void productComp(int poIdx) {
-        Po po = poRepo.findPoByPoIdx(poIdx);
-        po.setPoState(PoState.APPROVAL);
-        poRepo.save(po);
+        Po po = poRepo.getReferenceById(poIdx);
+        InGroup inGroup = inGroupRepo.findByPo(po);
+        if (inGroup.getIgState().equals(IgState.DONE)) {
+            throw new MsgException("이미 완료된 발주 정보 입니다.");
+        }
+
+        inGroup.setIgState(IgState.ING);
+        inGroupRepo.save(inGroup);
     }
 
     /** 발주 하이웍스 승인 요청 */

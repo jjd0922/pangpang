@@ -1,5 +1,5 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="productModal">
+<div class="modal" tabindex="-1" role="dialog" id="goodsModal">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                <div class="col-lg-12" id="ProductDiv">
-                    <form id="productModalForm">
+                    <form id="goodsModalForm">
                         <div class="card mb-1">
                             <div class="card-body popup-contents mb-1">
 
@@ -72,13 +72,11 @@
                                             <thead>
                                             <tr>
                                                 <th>SPEC명</th>
-                                                <th>입고SPEC(예정)</th>
                                                 <th>입고SPEC(확정)</th>
-                                                <th>판매SPEC(예정)</th>
                                                 <th>가공SPEC(예정)</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="poModalProductSpecList">
+                                            <tbody id="productSpecListTable">
 
                                             </tbody>
                                         </table>
@@ -200,7 +198,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1" id="setBtnProductModal" onclick="goodsSpecSetting();">저장</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="goodsInCheck();">저장</button>
             </div>
             <!-- /footer -->
         </div>
@@ -208,23 +206,15 @@
 </div>
 
 <script>
-    function goodsSpecSetting () {
-        var flag = true;
-        $.each($('input[name=porSpec1]'), function (index, value) {
-            if ($(this).val() == '') {
-                flag = false;
-                return false;
-            }
-        });
-
-        if (flag == false) {
+    function goodsInCheck () {
+        $.each($('input[name=spec1]'), function (index, value) {
             alert('입고SPEC(확정)을 입력해 주세요');
             return false;
-        }
+        });
 
         $.ajax({
             type: "POST",
-            url:"/in/checkGoodsSpecSet.ajax?" + $('#productModalForm').serialize(),
+            url:"/in/goodsInCheck.ajax?" + $('#goodsModalForm').serialize(),
             async: false,
             success : function(result){
                 $('#pIdx').val('');
@@ -232,27 +222,26 @@
                 $('#gIdx').val('');
                 $('#porIdx').val('');
                 $('#IMEI').val('');
-                $('#poModalProductSpecList').empty();
+                $('#productSpecListTable').empty();
                 $('#paintMemo').val('');
                 $('#paintCost').val('');
                 $('#fixMemo').val('');
                 $('#fixCost').val('');
                 $('#processMemo').val('');
                 $('#processCost').val('');
-
-                $('#productModal').hide();
+                $('#goodsModal').hide();
                 searchBtn();
             }
         });
     }
 
-    function openSpecModal_CGS (id, rowIdx) {
-        $('#productModal').modal('show');
+    function openInGoodsModal (id, rowIdx) {
+        $('#goodsModal').modal('show');
         var dataMap = getDatatablemap(id, rowIdx);
 
         if(dataMap.CATE_SPEC_LIST != null){
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
-            $('#poModalProductSpecList').empty();
+            $('#productSpecListTable').empty();
             for (var i = 0; i < specList.length; i++) {
                 var specValue = "";
                 var specValue2 = "";
@@ -268,13 +257,11 @@
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" name="porSpec1" class="form-control" value="' + specValue + '"></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" name="porSpec2" class="form-control" value="' + specValue2 + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="spec1" class="form-control" value="' + specValue + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="spec2" class="form-control" value="' + specValue2 + '"></td>'
                     +'</tr>';
 
-                $('#poModalProductSpecList').append(specTr);
+                $('#productSpecListTable').append(specTr);
             }
 
 
@@ -309,11 +296,6 @@
                 $('#productOption' + num).empty();
                 $('#productOption' + num).append(text);
             }
-
-
-
-
-
 
             $('#pIdx').val(dataMap.P_IDX);
             $('#pName').val(dataMap.P_NAME);

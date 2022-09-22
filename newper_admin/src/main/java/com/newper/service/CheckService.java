@@ -55,28 +55,22 @@ public class CheckService {
         List<Long> gIdx = paramMap.getListLong("gIdx");
 
         for (int i = 0; i < gIdx.size(); i++) {
-            Goods goods = Goods
-                    .builder()
-                    .gIdx(gIdx.get(i))
-                    .gState(gState)
-                    .build();
+            Goods goods = goodsRepo.findById(gIdx.get(i)).get();
+            goods.setGState(gState);
+            goodsRepo.save(goods);
 
             CheckGoods checkGoods = CheckGoods
                     .builder()
                     .goods(goods)
                     .checkGroup(checkGroup)
-//                    .cgsExpectedCost(Integer.parseInt(goodsMapper.selectGoodsByG_IDX(gIdx.get(i)).get("TOTAL_PROCESS_COST").toString()))
                     .cgsExpectedCost(0)
                     .cgsRealCost(0)
                     .cgsType(cgsType.toString())
-//                    .cgsCount(checkMapper.countCheckGroupByGoods(gIdx.get(i)) + 1)
                     .cgsCount(0)
                     .build();
 
             checkGoodsRepo.save(checkGoods);
         }
-
-
 
         long ggt_idx = paramMap.getLong("ggt_idx");
         goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);
@@ -84,7 +78,7 @@ public class CheckService {
 
     /** 입고검수 자산 입고검수 정보 자산에 UPDATE */
     @Transactional
-    public void updateCheckGoodsSpec(ParamMap paramMap, MultipartFile[] gFile) {
+    public void goodsInCheck(ParamMap paramMap, MultipartFile[] gFile) {
         // 자산 상태 체크
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
         if (!goods.getGState().equals(GState.RECEIVED)) {
@@ -137,12 +131,12 @@ public class CheckService {
         // 입고SPEC(확정)
         SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
         List<String> specName = paramMap.getList("specName");
-        List<String> specValue1 = paramMap.getList("porSpec1");
-        goods.setInSpec(specFinder.findSpec(specName, specValue1));
+        List<String> specValue1 = paramMap.getList("spec1");
+        gJson.put("inSpec", specFinder.findSpec(specName, specValue1));
 
         //가공SPEC(예정)
-        List<String> specValue2 = paramMap.getList("porSpec2");
-        goods.setProcessSpec(specFinder.findSpec(specName, specValue2));
+        List<String> specValue2 = paramMap.getList("spec2");
+        gJson.put("processSpec", specFinder.findSpec(specName, specValue2));
 
         // 자산 상태 변경
         goods.setGState(GState.CHECK);

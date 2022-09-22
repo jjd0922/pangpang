@@ -125,19 +125,11 @@
         $('#inExcelModal').modal('show');
     }
     //po_poIdx.html에서 dt row 넘겨받음
-    function openInModal(row){
-        var rowData = getDatatablemap('inProductTable', row);
-
-        $('#inModalPname').val(rowData.P_NAME);
-        $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
+    function openInModal(pIdx, pName){
+        $('#inModalPname').val(pName);
+        $('#inModalForm input[name=p_idx]').val(pIdx);
 
         initInProductModalTable();
-        $('#inProductModal').modal('show');
-    }
-
-    function openInModalNewProduct() {
-
-        $('#inModalForm input[name=p_idx]').val(rowData.P_IDX);
         $('#inProductModal').modal('show');
     }
 

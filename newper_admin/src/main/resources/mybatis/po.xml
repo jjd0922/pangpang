@@ -408,19 +408,18 @@
 
     <select id="selectInPoProductDatatable" resultType="map" parameterType="map">
         SELECT
-            P_IDX, P_NAME, P_MODEL
-             ,PP_COUNT
-             ,IP_COUNT
+            P_IDX,
+            P_NAME,
+            P_MODEL,
+            IFNULL(PP_COUNT, 0),
+            IP_COUNT
         FROM
             PRODUCT
-           ,IN_PRODUCT
-           ,IN_GROUP
-           ,(SELECT PP_P_IDX, SUM(PP_COUNT) PP_COUNT FROM PO_PRODUCT WHERE PP_PO_IDX = #{po_idx} GROUP BY PP_P_IDX) PP
+                LEFT JOIN IN_PRODUCT ON P_IDX = IP_P_IDX
+                LEFT JOIN IN_GROUP ON IP_IG_IDX = IG_IDX
+                LEFT JOIN PO_PRODUCT ON PP_P_IDX = IP_P_IDX AND PP_PO_IDX = IG_PO_IDX
         WHERE
             IG_PO_IDX = #{po_idx}
-          AND IP_IG_IDX = IG_IDX
-          AND IP_P_IDX = P_IDX
-          AND P_IDX = PP_P_IDX
     </select>
     <select id="selectPoProductIdxList" resultType="Integer">
         SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT
@@ -534,17 +533,4 @@
         WHERE
             POH_PO_IDX = #{poIdx}
     </delete>
-
-    <select id="selectNewPoProductGoods" resultType="Map">
-        SELECT
-            P_IDX, P_NAME, P_MODEL, COUNT(*)
-        FROM
-            PO
-                LEFT JOIN GOODS ON PO_IDX = G_PO_IDX
-                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
-        WHERE
-            PO_IDX = #{poIdx}
-        GROUP BY
-            P_IDX
-    </select>
 </mapper>
