@@ -215,7 +215,7 @@ public class OrderService {
                 OrderGs orderGs = paramMap.mapParam(OrderGs.class);
                 orderGs.setOrders(orders);
                 orderGs.setShopProductOption(shopProductOption);
-                orderGs.setOgType(shopProductOption.getGoodsStock().getProduct().getPDelType()+"");
+
                 orderGs.setOgPrice(shopProductOption.getSpoPrice());
                 orderGs.setOgPoint(Integer.parseInt(paramMap.onlyNumber("OG_POINT_"+spo_idx)));
                 orderGs.setOgMileage(Integer.parseInt(paramMap.onlyNumber("OG_MILEAGE_"+spo_idx)));

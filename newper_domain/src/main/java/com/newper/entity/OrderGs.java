@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.PDelType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,7 +29,6 @@ public class OrderGs {
     @JoinColumn(name = "OG_SPO_IDX", referencedColumnName = "spoIdx")
     private ShopProductOption shopProductOption;
 
-    private String ogType;
     private Integer ogPrice;
     private Integer ogPoint;
     private Integer ogMileage;
@@ -44,7 +44,12 @@ public class OrderGs {
     @JoinColumn(name = "OG_DN_IDX", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
 
+    /** shopProductOption, ogPrice 같이 세팅*/
+    public void setShopProductOption(ShopProductOption shopProductOption) {
+        setOgPrice(shopProductOption.getSpoPrice());
 
+        this.shopProductOption = shopProductOption;
+    }
 
 
 

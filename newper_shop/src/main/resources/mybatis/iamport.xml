@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.IamportMapper">
+    <select id="selectIamportPgList" resultType="map">
+        SELECT
+            IPP_IDX, IPP_NAME
+        FROM IAMPORT_PG
+        WHERE IPP_ORDER > 0
+        ORDER BY IPP_ORDER
+    </select>
+    <select id="selectIamportMethodMap" resultType="map">
+        SELECT
+            *
+        FROM
+            IAMPORT_METHOD
+        WHERE IPM_ORDER > 0
+        ORDER BY IPM_ORDER
+    </select>
+    <select id="selectIamportMethodDetail" resultType="map">
+        SELECT
+            IPP_VALUE
+            ,IPP_JSON->>'$.mid' as 'mid'
+            ,IPM_VALUE
+        FROM IAMPORT_METHOD, IAMPORT_PG
+        WHERE
+            IPP_IDX = IPM_IPP_IDX
+            AND IPP_ORDER > 0
+            AND IPM_ORDER > 0
+            AND IPM_IDX = #{ipm_idx}
+    </select>
+</mapper>
