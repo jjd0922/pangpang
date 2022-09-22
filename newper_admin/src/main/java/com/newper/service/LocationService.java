@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.newper.constant.GState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
@@ -74,42 +75,54 @@ public class LocationService {
      */
 
     @Transactional
-    public List<Map<String, Object>> listStockBarcode(ParamMap paramMap, Long gIdx) {
-
+    public List<Map<String, Object>> listStockBarcode(ParamMap paramMap) {
 
         String barcode = paramMap.getString("barcode");
+        System.out.println(barcode);
         String[] barcodes = barcode.substring(1, (barcode.length() - 0)).split(",");
         System.out.println(barcodes.length);
 
 
         Goods goods = goodsRepo.findBygBarcode(barcodes[barcodes.length-1]);
-        if (goods==goodsRepo.findBygBarcode(goods.getGBarcode()))
 
+
+        if (goods==null){
+//            barcode=barcode.replace("," + barcodes[barcodes.length - 1], "");
             throw new MsgException("존재하는 바코드가 아닙니다");
-            barcode.replace(","+barcodes[barcodes.length-1],"");
+        }
+
+        System.out.println(barcode.replace("," + barcode, "")+"/"+barcodes[barcodes.length-1]);
 
 
-
-
-/*            Goods goods = paramMap.mapParam(Goods.class);
-
-            if (paramMap.getString(goods.getGBarcode()).equals(barcode)){
-
-                return locationMapper.selectListGoodsByLocation(gIdxs);
-            }
-
-          */
-/*        Goods goods = goodsRepo.findBygBarcode(barcode);
-        if (goods == null) {
-            throw new MsgException("일치하는 바코드가 없습니다");
-        }*/
-
-    /*        for (int i = 0; i < gIdxs.length; i++) {
-
-                System.out.println("gIdxs = " + gIdxs[i]);
-            }*/
-
+        if(barcode.split(barcodes[barcodes.length-1]).length>1){
+            throw new MsgException("리딩된 바코드입니다.");
+        }
 
         return  locationMapper.selectListGoodsByLocation(barcodes);
     }
+
+
+
+    /**창고이동 팝업 작업완료 처리*/
+
+    @Transactional
+    public Integer changeLocation(ParamMap paramMap){
+
+ /*       Location location = paramMap.mapParam(Location.class);
+        Goods goods = paramMap.mapParam(Goods.class);
+
+*/
+        String locIdx = String.valueOf(locationRepo.findLocationByLocIdx(Integer.parseInt("locIdx")));
+         String locIdxs[] = locIdx.substring(1, (locIdx.length() - 0)).split(",");
+
+        System.out.println("locIdxs = " + locIdxs);
+
+
+
+
+
+        return paramMap.getInt(locIdx);
+    }
+ 
+
 }

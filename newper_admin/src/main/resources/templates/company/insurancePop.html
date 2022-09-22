@@ -389,7 +389,11 @@
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#regiForm')[0])
+            data: new FormData($('#regiForm')[0]),
+            success: function (res) {
+                window.close();
+                opener.location.reload();
+            },
         });
     }
 

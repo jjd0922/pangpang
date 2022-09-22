@@ -99,9 +99,9 @@ public class User extends BaseEntity {
         if (uId.equals("")) {
             throw new MsgException("로그인 ID를 입력해주세요.");
         }
-        if (uPassword == null || uPassword.equals("")) {
+/*        if (uPassword == null || uPassword.equals("")) {
             throw new MsgException("비밀번호를 입력해주세요.");
-        }
+        }*/
 
     }
 
