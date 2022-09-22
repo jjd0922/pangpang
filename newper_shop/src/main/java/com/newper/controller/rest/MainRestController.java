@@ -50,17 +50,4 @@ public class MainRestController {
     public void logout(HttpServletRequest request){
         request.getSession().invalidate();
     }
-
-    @PostMapping("join.ajax")
-    public ReturnMap join(ParamMap paramMap){
-        ReturnMap rm = new ReturnMap();
-        String resCode = "0000";
-        if(resCode.equals("0000")){
-            rm.setLocation("/joinComplete");
-            rm.setMessage("회원가입 완료!");
-        }else{
-            rm.setMessage("잠시 후 다시 시도해주세요.");
-        }
-        return rm;
-    }
 }
