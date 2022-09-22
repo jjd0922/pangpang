@@ -13,6 +13,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.LocationMapper;
 import com.newper.mapper.WarehouseMapper;
 import com.newper.repository.LocationRepo;
+import com.newper.repository.UserRepo;
 import com.newper.repository.WarehouseRepo;
 import com.newper.util.ExcelDownload;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class WarehouseService {
     private final WarehouseMapper warehouseMapper;
     private final LocationRepo locationRepo;
     private final LocationMapper locationMapper;
+    private final UserRepo userRepo;
 
     /** 창고정보 등록 */
     @Transactional
@@ -103,13 +105,9 @@ public class WarehouseService {
     /** 창고관리 > 로케이션 등록 */
     @Transactional
     public Integer saveLocation(Integer whIdx, ParamMap paramMap) {
-        // 담당자 입력 체크
-        if (!StringUtils.hasText(paramMap.getString("uIdx"))) {
-            throw new MsgException("로케이션 담당자를 입력해주세요");
-        }
         Location location = paramMap.mapParam(Location.class);
-        location.setWarehouse(Warehouse.builder().whIdx(whIdx).build());
-        location.setUser(User.builder().uIdx(paramMap.getInt("uIdx")).build());
+        location.setWarehouse(warehouseRepo.getReferenceById(whIdx));
+        location.setUser(userRepo.getReferenceById(paramMap.getInt("uIdx","로케이션 담당자를 입력해주세요")));
         Location savedLoc = locationRepo.save(location);
         return savedLoc.getLocIdx();
     }
@@ -117,10 +115,6 @@ public class WarehouseService {
     /** 창고관리 > 로케이션 수정 */
     @Transactional
     public void updateLocation(Integer locIdx, ParamMap paramMap) {
-        // 담당자 입력 체크
-        if (!StringUtils.hasText(paramMap.getString("uIdx"))) {
-            throw new MsgException("로케이션 담당자를 입력해주세요");
-        }
         Location location = locationRepo.findById(locIdx).orElseThrow(() -> new MsgException("존재하지 않는 로케이션입니다."));
         Location locationParam = paramMap.mapParam(Location.class);
         if (locationParam.getLocType() != LocType.NORMAL && location.getLocType() != locationParam.getLocType()) {
@@ -130,7 +124,7 @@ public class WarehouseService {
             }
         }
         location.updateLocation(locationParam);
-        location.setUser(User.builder().uIdx(paramMap.getInt("uIdx")).build());
+        location.setUser(userRepo.getReferenceById(paramMap.getInt("uIdx", "로케이션 담당자를 입력해주세요")));
     }
 
     /**창고관리 > 로케이션구분 일괄변경*/
