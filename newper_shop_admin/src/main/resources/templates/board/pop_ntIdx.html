@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>공지사항</title>
+    <title th:text="${ntIdx != null?'공지사항 상세':'공지사항 신규등록'}"></title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>공지사항 상세</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="noticeForm">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 공지사항 정보 <i class="icon-info22 small ml-1 opacity-90" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="선택한 크기를 기준으로 다른 요소들의 크기도 비례해서 커지거나 작아집니다."></i></legend>
+                                        <div class="row">
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">분양몰</span>
+                                                            </span>
+                                                            <th:block th:if="${notice == null}">
+                                                                <input type="hidden" name="shopIdx">
+                                                                <input class="form-control" name="shopName" readonly  placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
+                                                                <span class="input-group-append" onclick="openShopModal()">
+                                                                    <a class="input-group-text"><i class="icon-home"></i></a>
+                                                                </span>
+                                                            </th:block>
+                                                            <th:block th:unless="${notice == null}">
+                                                                <input type="text" class="form-control" readonly th:value="${notice.shop.shopName}">
+                                                            </th:block>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">상단고정</span>
+                                                        </span>
+                                                        <select class="form-control select" name="ntTop" data-placeholder="선택">
+                                                            <option>N</option>
+                                                            <option>Y</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출 여부</span>
+                                                        </span>
+                                                        <select class="form-control select" name="ntDisplay">
+                                                            <option value="1">노출</option>
+                                                            <option value="-1">미노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">제목</span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="ntTitle" th:value="${notice?.ntTitle}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <span class="input-group-text w-100 mb--1">내용</span>
+                                        <textarea id="summernote" name="ntContent" th:utext="${notice?.ntContent}"></textarea>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <!-- /footer -->
+    </div>
+    <!-- /main content -->
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class="w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();">
+            <i class="icon-cross2 mr-1"></i>닫기
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 에디터 -->
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+</body>
+
+<!--shop modal-->
+<th:block th:replace="shop/modal/shopModal.html"></th:block>
+
+<script th:inline="javascript">
+    function saveBtn(){
+        if(window.confirm('저장 하시겠습니까?')){
+            $.ajax({
+                url: location.pathname + '.ajax',
+                processData: false,
+                contentType: false,
+                type: 'post',
+                data: new FormData($('#noticeForm')[0])
+            }).done(function(res){
+                opener.refreshTable('#noticeTable');
+                location.reload();
+            });
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+        $('#summernote').summernote({
+            height: 400
+        });
+    }
+</script>
+</html>
