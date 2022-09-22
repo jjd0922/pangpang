@@ -17,7 +17,9 @@ import com.newper.repository.ProductRepo;
 import com.newper.service.CategoryService;
 import com.newper.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -419,6 +421,24 @@ public class ProductRestController {
         String res = productService.sabang(paramMap);
 
         rm.setMessage(res);
+
+
+        return rm;
+    }
+
+    /**네이버 최저가 검색?*/
+    @PostMapping("naver.ajax")
+    public ReturnMap naver(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        String res = productService.naver(paramMap);
+        try{
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(res);
+            JSONArray jsonArray = (JSONArray)jsonObject.get("items");
+            JSONObject item = (JSONObject)jsonArray.get(0);
+            String price = item.get("lprice")+"";
+            rm.put("price", price);
+        }catch (Exception e){}
 
 
         return rm;
