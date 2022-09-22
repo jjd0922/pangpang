@@ -41,7 +41,7 @@ public class ShopController {
         return mav;
     }
 
-    /**PG사이트코드 관리*/
+    /** PG 사이트코드 관리*/
     @GetMapping("pg")
     public ModelAndView pg(){
         ModelAndView mav = new ModelAndView("shop/pg");
@@ -51,5 +51,24 @@ public class ShopController {
         return mav;
     }
 
+    /** 무이자 할부 관리*/
+    @GetMapping("installment")
+    public ModelAndView installment(){
+        ModelAndView mav = new ModelAndView("shop/installment");
+
+        mav.addObject("shopList", shopRepo.findAll());
+
+        return mav;
+    }
+
+    /** 약관 관리*/
+    @GetMapping("agreement")
+    public ModelAndView agreement(){
+        ModelAndView mav = new ModelAndView("shop/agreement");
+
+        mav.addObject("shopList", shopRepo.findAll());
+
+        return mav;
+    }
 
 }
