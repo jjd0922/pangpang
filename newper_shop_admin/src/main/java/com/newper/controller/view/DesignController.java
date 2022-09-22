@@ -59,7 +59,7 @@ public class DesignController {
     /** 분양몰 디자인*/
     @GetMapping(value = "pop/design/{shopIdx}")
     public ModelAndView shopDesign(@PathVariable Integer shopIdx){
-        ModelAndView mav = new ModelAndView("pop_design");
+        ModelAndView mav = new ModelAndView("design/pop_design");
 
         Map<String,Object> shopDesign = shopMapper.selectShopDesignJson(shopIdx);
         mav.addObject("shopDesign", shopDesign);
@@ -68,7 +68,7 @@ public class DesignController {
     /** 분양몰 헤더*/
     @GetMapping(value = "pop/header/{shopIdx}")
     public ModelAndView shopHeader(@PathVariable Integer shopIdx){
-        ModelAndView mav = new ModelAndView("pop_header");
+        ModelAndView mav = new ModelAndView("design/pop_header");
 
         return mav;
     }
@@ -76,21 +76,21 @@ public class DesignController {
     /** 메인섹션 신규, 상세*/
     @GetMapping(value = {"mainsection/{msIdx}","mainpage/new"})
     public ModelAndView mainSection(@PathVariable(required = false) Integer msIdx){
-        ModelAndView mav = new ModelAndView("page/mainsection/msIdx");
+        ModelAndView mav = new ModelAndView("design/mainsection_msIdx");
 
         return mav;
     }
     /** 메인섹션 배너 신규, 상세*/
     @GetMapping(value = {"mainsection/banner/{msbnIdx}","mainsection/banner/new"})
     public ModelAndView mainSectionBanner(@PathVariable(required = false) Long msbnIdx){
-        ModelAndView mav = new ModelAndView("page/mainsection/msbnIdx");
+        ModelAndView mav = new ModelAndView("design/mainsection_msbnIdx");
 
         return mav;
     }
     /** 메인섹션 배너 신규, 상세*/
     @GetMapping(value = {"mainsection/shopProduct/{msspIdx}","mainsection/shopProduct/new"})
     public ModelAndView mainSectionShopProduct(@PathVariable(required = false) Long msspIdx){
-        ModelAndView mav = new ModelAndView("page/mainsection/msspIdx");
+        ModelAndView mav = new ModelAndView("design/mainsection_msspIdx");
 
         return mav;
     }
