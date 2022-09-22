@@ -15,6 +15,7 @@
                             <div class="col-lg-6 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                 <div class="form-group">
                                     <label class="d-block">송장번호 리딩</label>
+                                    <input type="hidden" name="O_IDX">
                                     <input type="text" name="dn_num" id="dn_num" class="form-control" placeholder="바코드 입력 후 엔터를 눌러주세요" onkeyup="if(event.keyCode==13){dnNumBarcode(this)}">
                                 </div>
                             </div>
@@ -35,10 +36,10 @@
 <script th:inline="javascript">
     function barcodeModal(res){
         var oIdx = res;
-        console.log(oIdx);
         if(res!=''){
-            $('input[name=dn_num]').val('');
-            $('input[name=g_barcode]').val('');
+            $('input[name="dn_num"]').val('');
+            $('input[name="g_barcode"]').val('');
+            $('input[name="O_IDX"]').val(oIdx);
             $('#dn_num').focus();
             $('#barcodeModal').modal('show');
         }else{
@@ -48,21 +49,37 @@
     }
 
     function dnNumBarcode(res){
-        $('#g_barcode').focus();
+        var num = $(res).val();
+        console.log(num);
+        if(num==''){
+            alert("송장번호를 입력해주세요.")
+        }else{
+            $('#g_barcode').focus();
+        }
     }
     function gBarcode(res){
         var g_barcode=$(res).val()
+        var o_idx=$('input[name="O_IDX"]').val()
+        var dn_num = $('input[name="dn_num"]').val();
         $.ajax({
             url:'/deliveryManagement/checkBarcode.ajax',
             type:'post',
-            data:'G_BARCODE='+g_barcode,
+            data:'G_BARCODE='+g_barcode+'&O_IDX='+o_idx,
             success: function(res){
-
+                if($('#OG_IDX'+res.data.gMap.OG_IDX).length>0){
+                    alert("리딩된 자산바코드 입니다.")
+                }else{
+                    var str = '';
+                    str+='<tr id="OG_IDX'+res.data.gMap.OG_IDX+'"><td><input type="text" class="form-control" name="delivery_num_'+res.data.gMap.OG_IDX+'" value="'+dn_num+'"></td>'
+                    str+='<td>'+res.data.gMap.G_BARCODE+'</td>'
+                    str+='<td><button type="button" class="btn btn-sm btn-danger" onclick="deleteBarcode('+res.data.gMap.OG_IDX+')">삭제</button></td></tr>'
+                    $('#deliveryScanTable').append(str);
+                }
             }
         })
 
-        $('input[name=dn_num]').val('');
-        $('input[name=g_barcode]').val('');
+        $('input[name="dn_num"]').val('');
+        $('input[name="g_barcode"]').val('');
         $('#dn_num').focus();
     }
 </script>

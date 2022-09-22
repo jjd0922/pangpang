@@ -214,8 +214,15 @@ public class DeliveryManagementRestController {
     public ReturnMap checkBarcode(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        String G_BARCODE = paramMap.getString("G_BARCODE");
-        String res = deliveryService.checkBarcode(G_BARCODE);
+        Map<String, Object> res = deliveryService.checkBarcode(paramMap.getMap());
+        rm.put("gMap",res);
+        return rm;
+    }
+
+    @PostMapping("together.ajax")
+    public ReturnMap together(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        deliveryService.tegether(paramMap.getMap());
         return rm;
     }
 

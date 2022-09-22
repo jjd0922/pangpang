@@ -234,11 +234,12 @@
     <select id="selectGoodsGsDetailByOIdxAndPType" resultType="map">
         select
             OG_IDX, P_IDX, SHOP_NAME, P_NAME, O_NAME,
-            O_PHONE, DN_COMPANY, DN_NUM, G_BARCODE, GS_CODE
+            O_PHONE, DN_COMPANY, DN_NUM, G_BARCODE, GS_CODE,
+            DN_RELEASE
         from
             order_gs
             left join orders
-            on O_IDX=OG_O_IDX
+        on O_IDX=OG_O_IDX
             left join shop
             on O_SHOP_IDX=SHOP_IDX
             left join shop_product_option
@@ -250,11 +251,10 @@
             left join delivery_num
             on OG_DN_IDX=DN_IDX
             left join goods
-            on G_GS_IDX=G_IDX
+            on OG_G_IDX=G_IDX
         where
             OG_O_IDX=#{O_IDX}
             and P_DEL_TYPE=#{P_DEL_TYPE}
-            and DN_RELEASE is null
     </select>
 
     <select id="selectOrdersListByBeforeRelease" resultType="map">
@@ -276,6 +276,44 @@
                           ON dt.OG_O_IDX=O_IDX
         where
             O_STATE in ('BEFORE','DONE','READY')
+    </select>
+
+    <select id="selectOrderGsDetailByOIdxAndGBarcode" resultType="map">
+        SELECT
+            O_IDX,OG_IDX,G_BARCODE,G_IDX
+        FROM
+            orders
+                LEFT JOIN order_gs
+                          ON OG_O_IDX=O_IDX
+                LEFT JOIN goods
+                          ON OG_G_IDX=G_IDX
+                LEFT JOIN delivery_num
+                          ON OG_DN_IDX=DN_IDX
+        WHERE
+            O_IDX=#{O_IDX}
+          AND G_BARCODE=#{G_BARCODE}
+          and DN_RELEASE is null
+    </select>
+
+    <select id="selectOrdersReleaseDateByOIdxAndPDelType" resultType="map">
+        SELECT
+            DN_RELEASE
+        FROM
+            orders
+                LEFT JOIN order_gs
+                          ON O_IDX=OG_O_IDX
+                LEFT JOIN delivery_num
+                          ON OG_DN_IDX=DN_IDX
+                LEFT JOIN shop_product_option
+                          ON OG_SPO_IDX=SPO_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+
+        WHERE
+            P_DEL_TYPE=#{P_DEL_TYPE}
+          and O_IDX=#{O_IDX}
     </select>
 
 </mapper>
