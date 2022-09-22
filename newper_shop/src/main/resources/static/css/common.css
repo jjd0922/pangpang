@@ -144,6 +144,11 @@ body.no-scroll {
 .color-purple {
     color: #3a4570;
 }
+
+.bg-light-grey {
+    background-color: #f7f7f7;
+}
+
 .opacity-8 {
     opacity: .8;
 }
@@ -201,9 +206,9 @@ body.no-scroll {
     height: 100%;
     margin: 0 auto;
 }
-/*.full-container .container {
+.width-100 {
     width: 100% !important;
-}*/
+}
 
 #mo-bottom-nav {
     display: none;
@@ -764,10 +769,19 @@ nav .gnb-ctg-all {
     right: -0;
 }
 
-/*** 썸네일 ***/
+/*** 기본 썸네일 ***/
+.thumbnail {
+    display: flex;
+    flex-direction: column;
+}
+
+.thumbnail-wide .thumbnail {
+    flex-direction: row !important;
+}
+
 .swiper-all {
     position: relative;
-    width: calc(1380px + 85px);
+    /*width: calc(1380px + 85px);*/
     margin: auto;
 }
 .swiper-all .swiper-slide {
@@ -775,12 +789,19 @@ nav .gnb-ctg-all {
     padding: 15px;
 }
 
+.item-info {
+    margin-top: 15px;
+}
+.thumbnail-wide .item-info {
+    margin-top: 0px !important;
+}
 .item-info>div {
     margin-bottom: 10px;
 }
 .item-info>div:last-child {
     margin-bottom: 0px;
 }
+
 .item-inner-wrap {
     display: flex;
     justify-content: space-between;
@@ -1039,15 +1060,13 @@ nav .gnb-ctg-all {
     background: url("../image/category-icon9.png") no-repeat center/contain;
 }
 
-.ctg-tab-content {
-    padding: 35px 0;
-}
 .ctg-tab-content>li {
     display: none;
 }
 .ctg-tab-content>li.on {
     display: block;
 }
+
 .ctg-tab-content .item-img a {
     display: inline-flex;
     width: 100%;
