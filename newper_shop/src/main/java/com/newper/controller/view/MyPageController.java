@@ -159,4 +159,21 @@ public class MyPageController {
         return mav;
     }
 
+
+    /** 주문내역 상세보기 load*/
+    @PostMapping("order/detail.load")
+    public ModelAndView orderDetail(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_detail :: " + "orderDetail");
+
+        return mav;
+    }
+
+    /** 주문내역 상세보기 load*/
+    @PostMapping("order/receipt.load")
+    public ModelAndView receiptDetail(@PathVariable(required = false) String menu) {
+        ModelAndView mav = new ModelAndView("myPage/myOrder_detail :: " + "receiptDetail");
+
+        return mav;
+    }
+
 }

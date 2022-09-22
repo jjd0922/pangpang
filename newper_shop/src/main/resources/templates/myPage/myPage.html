@@ -446,5 +446,30 @@
             ,error:function (){}
         });
     }
+
+    // 주문 상세보기
+    function orderDetail(){
+        $.ajax({
+            url: '/myPage/order/detail.load'
+            ,type:'post'
+            ,success:function(res){
+                $('#orderProductList').empty();
+                $('#orderProductList').append(res);
+            }
+            ,error:function(){}
+        })
+    }
+
+    function receiptDetail(){
+        $.ajax({
+            url: '/myPage/order/receipt.load'
+            ,type:'post'
+            ,success:function(res){
+                $('#orderProductList').empty();
+                $('#orderProductList').append(res);
+            }
+            ,error:function(){}
+        })
+    }
 </script>
 </html>
