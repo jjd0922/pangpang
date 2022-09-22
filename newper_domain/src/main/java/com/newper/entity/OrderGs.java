@@ -29,10 +29,10 @@ public class OrderGs {
     @JoinColumn(name = "OG_SPO_IDX", referencedColumnName = "spoIdx")
     private ShopProductOption shopProductOption;
 
-    private Integer ogPrice;
-    private Integer ogPoint;
-    private Integer ogMileage;
-    private Integer ogCoupon;
+    private int ogPrice;
+    private int ogPoint;
+    private int ogMileage;
+    private int ogCoupon;
     private LocalDate ogDate;
     private LocalTime ogTime;
 
@@ -43,16 +43,6 @@ public class OrderGs {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_DN_IDX", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
-
-    /** shopProductOption, ogPrice 같이 세팅*/
-    public void setShopProductOption(ShopProductOption shopProductOption) {
-        setOgPrice(shopProductOption.getSpoPrice());
-
-        this.shopProductOption = shopProductOption;
-    }
-
-
-
 
 
 }

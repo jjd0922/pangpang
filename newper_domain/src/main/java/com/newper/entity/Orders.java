@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -47,6 +48,7 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OLocation oLocation;
 
+    /** 주문코드 oDate+oTime+oIdx */
     private String oCode;
     /**임시여부. false인 경우 고객에게 노출X*/
     private boolean oTemp;
@@ -72,14 +74,13 @@ public class Orders {
 
     private String oMemo;
 
-    @OneToMany(mappedBy = "ogIdx")
+    @OneToMany(mappedBy = "ogIdx", cascade = CascadeType.ALL)
     private List<OrderGs> orderGs;
 
-//    public void setPayment(Payment payment){
-//        System.out.println("pay!!!");
-//        this.payment = payment;
-//        payment.setOrders(this);
-//    }
+    public void setPayment(Payment payment){
+        this.payment = payment;
+        payment.setOrders(this);
+    }
 
     @PrePersist
     @PreUpdate
@@ -100,11 +101,15 @@ public class Orders {
             throw new MsgException("주문경로를 입력해주세요.");
         }
     }
+    @PostPersist
+    public void ordersCode(){
+        //주문코드 o_code update
+        setOCode(oDate.format(DateTimeFormatter.ofPattern("yyMMdd")) + oTime.format(DateTimeFormatter.ofPattern("HHmm")) + getOIdx());
+    }
 
     /** 결제시 사용할 주문 제목 가져오기*/
     public String getOrderPaymentTitle(){
         List<OrderGs> orderGsList = getOrderGs();
         return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (orderGsList.size()-1)+"건";
     }
-
 }

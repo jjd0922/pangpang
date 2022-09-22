@@ -1,6 +1,7 @@
 package com.newper.controller;
 
 import com.newper.exception.MsgException;
+import com.newper.exception.NoRollbackException;
 import com.newper.exception.NoSessionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +21,7 @@ public class ViewAdvise {
 
         return mav;
     }
-    @ExceptionHandler(MsgException.class)
+    @ExceptionHandler(value = {MsgException.class, NoRollbackException.class})
     public ModelAndView msgException(MsgException e){
         ModelAndView mav = new ModelAndView("error/error");
         mav.addObject("msg", e.getMessage());

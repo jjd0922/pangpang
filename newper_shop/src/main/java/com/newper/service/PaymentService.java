@@ -1,10 +1,13 @@
 package com.newper.service;
 
+import com.newper.constant.OState;
 import com.newper.constant.PayState;
 import com.newper.constant.PhResult;
+import com.newper.entity.Orders;
 import com.newper.entity.Payment;
 import com.newper.entity.PaymentHistory;
 import com.newper.exception.MsgException;
+import com.newper.exception.NoRollbackException;
 import com.newper.iamport.IamportApi;
 import com.newper.repository.PaymentHistoryRepo;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +24,22 @@ public class PaymentService {
     private final PaymentHistoryRepo paymentHistoryRepo;
 
     /**결제결과 저장*/
-    @Transactional
-    public void savePaymentResult(long ph_idx, String response_str){
+    @Transactional(noRollbackFor = {NoRollbackException.class})
+    public Payment savePaymentResult(long ph_idx, String response_str){
         JSONParser jsonParser = new JSONParser();
         JSONObject jo = null;
 
-        System.out.println(response_str);
         try{
             jo = (JSONObject) jsonParser.parse(response_str);
         }catch (ParseException pe){
             throw new MsgException("결제 조회 중 에러 발생", pe);
         }
 
-        PaymentHistory paymentHistory = paymentHistoryRepo.findById(ph_idx).get();
+        PaymentHistory paymentHistory = paymentHistoryRepo.findLockByPhIdx(ph_idx);
+
+        //proxy객체 해소용 코드
+        Payment payment = paymentHistory.getPayment();
+        Orders orders = payment.getOrders();
 
         //결과 최초로 받은 경우에만 동작
         if (paymentHistory.getPhResult() == PhResult.WAIT) {
@@ -48,25 +54,23 @@ public class PaymentService {
                     JSONObject jo_response = (JSONObject)jo.get("response");
 
                     String status = jo_response.get("status")+"";
+                    //결제 성공
                     if(status.equals("paid")){
                         paymentHistory.setPhResult(PhResult.DONE);
-
-                        Payment payment = paymentHistory.getPayment();
-                        payment.setPayState(PayState.SUCCESS);
 
                         //amount (number): 주문(결제)금액
                         int amount = Integer.parseInt(jo_response.get("amount") + "");
                         //결제 금액 맞는지 확인
-                        if (payment.getPayPrice() != amount) {
-
-                            throw new MsgException("결제 금액이 일치하지 않습니다.");
+                        if (payment.getPayPrice() == amount) {
+                            payment.paySuccess();
+                        }else{
+                        //결제 금액 불일치
+                            payment.setPayState(PayState.ERROR);
+                            throw new NoRollbackException("결제 금액이 일치하지 않습니다.");
                         }
-
-
                     }else if(status.equals("cancelled")){
                         paymentHistory.setPhResult(PhResult.DONE);
 
-                        Payment payment = paymentHistory.getPayment();
                         payment.setPayCancelState(PayState.SUCCESS);
 
                     } else if (status.equals("failed")) {
@@ -82,9 +86,6 @@ public class PaymentService {
 
         }
 
-
-
-
-
+        return payment;
     }
 }

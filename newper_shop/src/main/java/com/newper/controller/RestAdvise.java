@@ -2,6 +2,7 @@ package com.newper.controller;
 
 import com.newper.dto.ReturnMap;
 import com.newper.exception.MsgException;
+import com.newper.exception.NoRollbackException;
 import com.newper.exception.NoSessionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class RestAdvise {
         return returnMap;
     }
 
-    @ExceptionHandler(MsgException.class)
+    @ExceptionHandler(value = {MsgException.class, NoRollbackException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ReturnMap msgException(MsgException e){
         ReturnMap rm = new ReturnMap();

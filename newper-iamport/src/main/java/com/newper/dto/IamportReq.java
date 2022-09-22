@@ -28,6 +28,8 @@ public class IamportReq {
     private String notice_url;
     private Map<String, Object> display;
 
+//    private String m_redirect_url;
+
     /** merchant_uid. ph_idx 사용*/
     public IamportReq(long ph_idx){
         this.merchant_uid = "ph"+ph_idx;

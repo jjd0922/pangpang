@@ -19,6 +19,7 @@ public class ShopSession implements Serializable {
 
     private Long idx;
     private String id;
+    private Integer shopIdx;
 
     private boolean pwdCheck = false;
 

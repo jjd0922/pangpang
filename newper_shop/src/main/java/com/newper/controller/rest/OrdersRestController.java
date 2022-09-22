@@ -61,22 +61,4 @@ public class OrdersRestController {
 
         return rm;
     }
-
-    /** 결제 결과 확인 후 저장*/
-    @PostMapping("iamport/check.ajax")
-    public void iamportCheck(long ph_idx){
-
-
-        String response_str;
-        try{
-            String imp_key = "7551760752994000";
-            String imp_secret = "bVmJurNh2koL0ouzErz9tAbwlURA7nQjjd2NFQ5HbttbSXKwpkGTURqfLhQSFHcZUeNz5ShgmKseIcL8";
-            response_str = new IamportApi().checkPay(imp_key, imp_secret, "ph"+ph_idx);
-        }catch (Exception e){
-            throw new MsgException("결제 조회 중 에러 발생", e);
-        }
-
-        paymentService.savePaymentResult(ph_idx, response_str);
-
-    }
 }
