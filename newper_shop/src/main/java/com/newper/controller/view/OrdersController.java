@@ -28,9 +28,7 @@ public class OrdersController {
 
         String response_str;
         try{
-            String imp_key = "7551760752994000";
-            String imp_secret = "bVmJurNh2koL0ouzErz9tAbwlURA7nQjjd2NFQ5HbttbSXKwpkGTURqfLhQSFHcZUeNz5ShgmKseIcL8";
-            response_str = new IamportApi(imp_key, imp_secret).checkPay("ph"+ph_idx);
+            response_str = new IamportApi().checkPay("ph"+ph_idx);
         }catch (Exception e){
             throw new MsgException("결제 조회 중 에러 발생", e);
         }

@@ -130,5 +130,34 @@ public class Payment {
             orders.setOState(OState.DONE);
         }
     }
+    /** 결제 취소 요청 가능한지 체크 후 return paymentHistory*/
+    public PaymentHistory createPayCancelReq(){
+        List<PaymentHistory> paymentHistoryList = getPaymentHistoryList();
+        if (paymentHistoryList == null) {
+            paymentHistoryList = new ArrayList<>();
+            setPaymentHistoryList(paymentHistoryList);
+        }
 
+        findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
+            if (paymentHistory.isPhFlag()) {
+                //마지막 결제 요청 check
+                paymentHistory.setPhFlag(false);
+
+//                    paymentHistory.getPhCode();
+
+                break findFlag;
+            }
+        }
+
+        PaymentHistory paymentHistory = PaymentHistory.builder()
+                .payment(this)
+                .phType(PhType.PAY)
+                .phReq("")
+                .phRes("")
+                .phFlag(true)
+                .build();
+        paymentHistoryList.add(paymentHistory);
+
+        return  paymentHistory;
+    }
 }

@@ -12,4 +12,5 @@ public interface PaymentRepo extends JpaRepository<Payment, Long> {
     @EntityGraph(attributePaths = {"paymentHistoryList"})
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Payment findLockByPayIdx(long payIdx);
+
 }
