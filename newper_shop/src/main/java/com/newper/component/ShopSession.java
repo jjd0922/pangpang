@@ -20,6 +20,8 @@ public class ShopSession implements Serializable {
     private Long idx;
     private String id;
 
+    private boolean pwdCheck = false;
+
     public void login(Customer customer) {
         idx = customer.getCuIdx();
         id = customer.getCuId();

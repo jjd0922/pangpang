@@ -51,6 +51,7 @@ public class MainRestController {
         request.getSession().invalidate();
     }
 
+    /** 회원가입 (임시) */
     @PostMapping("join.ajax")
     public ReturnMap join(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
@@ -61,6 +62,18 @@ public class MainRestController {
         }else{
             rm.setMessage("잠시 후 다시 시도해주세요.");
         }
+        return rm;
+    }
+
+    /** 비밇번호 확인 */
+    @PostMapping("pwdCheck.ajax")
+    public ReturnMap pwdCheck(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+
+        String pw = paramMap.getString("pw");
+        String result = customerService.pwdCheck(pw);
+
+        rm.setMessage(result);
         return rm;
     }
 }

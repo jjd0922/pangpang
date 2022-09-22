@@ -1,0 +1,33 @@
+<th:block th:fragment="myInfoPwCheck">
+    <div class="container">
+        <ul class="shoppingHistory-tab semi-bold" id="myInfoTabMenu">
+            <li class="on" onclick="openMyInfoMenu('updateInfo')" id="updateInfo">회원정보수정</li>
+            <li onclick="openMyInfoMenu('refundAccount')" id="refundAccount">환불계좌관리</li>
+            <li onclick="openMyInfoMenu('delivery')" id="delivery">배송지관리</li>
+        </ul>
+
+        <ul class="shoppingHistory-tab-content" id="myInfoMenu">
+
+        </ul>
+    </div>
+
+    <script>
+        function openMyInfoMenu(menu){
+            $.ajax({
+                url: '/myPage/myInfo/'+menu+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#myInfoMenu').empty();
+                $('#myInfoMenu').append(res);
+
+                // action
+                $('#myInfoTabMenu').children('li').removeClass("on");
+                $('#myInfoTabMenu').find($('#'+menu)).addClass("on");
+
+            });
+        }
+        $(function(){
+            openMyInfoMenu('updateInfo');
+        })
+    </script>
+</th:block>
