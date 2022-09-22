@@ -170,40 +170,29 @@
                             <div class="card">
                                 <div class="card-body popup-contents">
                                     <fieldset class="mb-0">
-                                        <legend class="">2.자산정보 <span class="small ml-2"><i
-                                                class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                        <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                         <div class="btn-group2">
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="incheckinBtn" onclick="incheckinBtn()">
-                                                <i class="icon-popout mr-1"></i>입고검수입고
-                                            </a>
-
-
-                                            <a type="button" class="btn btn-sm btn-secondary ml-1" id="returnBtn" onclick="returnBtn()">
-                                                <i class="icon-popout mr-1"></i>반품대기(검수)
-                                            </a>
-
-
-                                            <a type="button" class="btn btn-sm btn-secondary ml-1" id="lostBtn" onclick="lostBtn()">
+                                            <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="openGoodsStateModal('LOST')">
                                                 <i class="icon-popout mr-1"></i>망실
                                             </a>
 
-                                            <a type="button" class="btn btn-sm btn-secondary ml-1" id="handoverBtn" onclick="handoverBtn()">
-                                                <i class="icon-popout mr-1"></i>재고인계
+                                            <a type="button" class="btn btn-sm btn-secondary ml-1" id="handoverBtn" onclick="openGoodsStateModal('CANCEL_NEED')">
+                                                <i class="icon-popout mr-1"></i>반품필요
                                             </a>
                                         </div>
 
-                                        <div class="btn-group3">
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="reportuploadBtn"
-                                               onclick="reportuploadBtn()">
-                                                <i class="icon-popout mr-1"></i>(1)검수리포트 업로드
-                                            </a>
+<!--                                        <div class="btn-group3">-->
+<!--                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="reportuploadBtn"-->
+<!--                                               onclick="reportuploadBtn()">-->
+<!--                                                <i class="icon-popout mr-1"></i>(1)검수리포트 업로드-->
+<!--                                            </a>-->
 
 
-                                            <a type="button" class="btn btn-sm btn-warning ml-1" id="resultuploadBtn"
-                                               onclick="resultuploadBtn()">
-                                                <i class="icon-popout mr-1"></i>공정결과 업로드
-                                            </a>
-                                        </div>
+<!--                                            <a type="button" class="btn btn-sm btn-warning ml-1" id="resultuploadBtn"-->
+<!--                                               onclick="resultuploadBtn()">-->
+<!--                                                <i class="icon-popout mr-1"></i>공정결과 업로드-->
+<!--                                            </a>-->
+<!--                                        </div>-->
                                         <div class="collapse show" id="collapse-button-collapsed">
                                             <div class="card-body pt-0">
                                                 <form id="goodsForm">
@@ -294,6 +283,7 @@
 <script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 
 <th:block th:replace="product/modal/productModal_checkGroup.html"/>
+<th:block th:replace="goods/modal/goodsStateModal.html"/>
 
 
 <script th:inline="javascript">
@@ -335,14 +325,6 @@
         $('#operationModal').modal('show');
     }
 
-    function lostBtn() {
-        $('#lostModal').modal('show');
-    }
-
-    function handoverBtn() {
-        $('#handoverModal').modal('show');
-    }
-
     function searchBtn() {
         var table = $('#goodsTable').DataTable();
         table.page('first').ajax.url('/in/checkGoods.dataTable?' + $('#goodsForm').serialize()).load(null, false);
@@ -372,10 +354,10 @@
             {
                 'class': 'select-checkbox m-w-2',
                 'title': '선택',
-                'data': 'CGS_IDX',
+                'data': 'G_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
-                    return '';
+                    return '<input type="hidden" name="gIdx" value="'+full.G_IDX+'">';
                 }
             }
             , {'title': '발주코드', 'data': 'PO_IDX'}
@@ -389,7 +371,7 @@
             , {'title': 'IMEI', 'data': '', 'defaultContent': ''}
             , {'title': '시리얼', 'data': '', 'defaultContent': ''}
             , {'title': '입고SPEC(예정)', 'data': '', 'defaultContent': ''}
-            , {'title': '입고SPEC(확정)', 'data': 'SPEC1', 'defaultContent': '', 'render': function (data, type, full, meta) {
+            , {'title': '입고SPEC(확정)', 'data': 'INSPEC', 'defaultContent': '', 'render': function (data, type, full, meta) {
                     if (data == null) {
                         return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
                     } else {

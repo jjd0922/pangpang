@@ -87,19 +87,4 @@ public class InService {
         }
 
     }
-
-    /** 해당 발주 품의 건에 없는 새로운 상품이 입고될시 입고 상품 추가  */
-    public void insertInProduct(ParamMap paramMap) {
-        Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
-        InGroup ig = inGroupRepo.findByPo(po);
-
-        InProduct inProduct = InProduct
-                .builder()
-                .inGroup(ig)
-                .product(productRepo.getReferenceById(paramMap.getInt("pIdx")))
-                .ipCount(0)
-                .build();
-
-        inProductRepo.save(inProduct);
-    }
 }

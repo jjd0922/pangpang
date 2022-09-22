@@ -22,20 +22,21 @@ public class SpecFinder {
 
     /** specl_name, specl_value로 specl_idx 가져오기*/
     public SpecList findSpecList(String speclName, String speclValue){
-        Map<String, SpecList> specValueMap = null;
-        if(!specNameMap.containsKey(speclName)){
-            specValueMap = specMapper.selectSpecListMap(speclName);
-            specNameMap.put(speclName, specValueMap);
-        }else{
-            specValueMap = specNameMap.get(speclName);
-        }
-
-        if(specValueMap == null){
-            specValueMap = new HashMap<>();
-            specNameMap.put(speclName, specValueMap);
-        }
-
-        SpecList specList = specValueMap.get(speclValue);
+//        Map<String, SpecList> specValueMap = null;
+//        if(!specNameMap.containsKey(speclName)){
+//            specValueMap = specMapper.selectSpecListMap(speclName);
+//            specNameMap.put(speclName, specValueMap);
+//        }else{
+//            specValueMap = specNameMap.get(speclName);
+//        }
+//
+//        if(specValueMap == null){
+//            specValueMap = new HashMap<>();
+//            specNameMap.put(speclName, specValueMap);
+//        }
+//
+//        SpecList specList = specValueMap.get(speclValue);
+        SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(speclName, speclValue);
         //해당 스펙 처음 사용하는 경우 db에 insert
         if(specList == null){
             specList = SpecList.builder()
@@ -43,7 +44,7 @@ public class SpecFinder {
                     .speclValue(speclValue)
                     .build();
             specListRepo.save(specList);
-            specValueMap.put(speclValue, specList);
+//            specValueMap.put(speclValue, specList);
         }
 
         return specList;
@@ -93,4 +94,14 @@ public class SpecFinder {
         String[] speclIdxs = spec.getSpecConfirm().split("_");
         specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
     }
+
+    /** PROCESS_SPEC 에 사용할 SPEC_LIST 조회 */
+    public List<SpecList> selectSpecList(List<String> specName, List<String> specValue) {
+        List<SpecList> specLists = new ArrayList<>();
+        for (int i = 0; i < specName.size(); i++) {
+            specLists.add(findSpecList(specName.get(i), specValue.get(i)));
+        }
+        return specLists;
+    }
+
 }

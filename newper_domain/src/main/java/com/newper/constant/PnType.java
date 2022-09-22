@@ -11,7 +11,8 @@ public enum PnType implements EnumOption {
 
     PAINT("도색"),
     FIX("수리"),
-    PROCESS("가공");
+    PROCESS("가공")
+    ;
 
 
     private String option;

@@ -125,9 +125,17 @@ public class GoodsRestController {
 
     /** 자산 반품 가능한지 체크 */
     @PostMapping("goodsResellCheck.ajax")
-    public ReturnMap selectGoodsGroupByCompany(ParamMap paramMap) {
+    public ReturnMap goodsResellCheck(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         goodsService.goodsResellCheck(paramMap);
+        return rm;
+    }
+
+    /** 자산 망실 처리 */
+    @PostMapping("updateGoodsLost.ajax")
+    public ReturnMap updateGoodsLost(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.updateGoodsLost(paramMap);
         return rm;
     }
 }

@@ -190,21 +190,21 @@ public class InRestController {
         return rm;
     }
 
+    /** 영업검수 자산 정보 확정 */
+    @PostMapping("goodsInfoComplete.ajax")
+    public ReturnMap goodsInfoComplete(ParamMap paramMap, MultipartFile[] gFile) {
+        ReturnMap rm = new ReturnMap();
+        checkService.goodsInfoComplete(paramMap, gFile);
+        rm.setMessage("등록완료");
+        return rm;
+    }
+
     /** 해당 발주의 실입고 상품 select */
     @PostMapping("selectReceivedByPo.ajax")
     public ReturnMap selectReceivedByPo(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         poMapper.selectReceivedByPo(paramMap.getMap());
 
-        return rm;
-    }
-
-    /** 해당 발주건에 새로 입고된 insert */
-    @PostMapping("insertInProduct.ajax")
-    public ReturnMap selectNewPoProductGoods(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        inService.insertInProduct(paramMap);
-        rm.setMessage("입고상품 추가 완료");
         return rm;
     }
 }

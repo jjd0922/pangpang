@@ -1,5 +1,7 @@
 package com.newper.entity;
 
+import com.newper.constant.PnProcess;
+import com.newper.constant.PnState;
 import com.newper.constant.PnType;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -29,7 +31,7 @@ public class ProcessNeed {
     @JoinColumn(name="PN_PG_IDX", referencedColumnName = "pgIdx")
     private ProcessGroup processGroup;
 
-    private String pnType;
+    private PnType pnType;
 
     private Integer pnCount;
 
@@ -39,10 +41,10 @@ public class ProcessNeed {
 
     private Integer pnRealCost;
 
-    private String pnLast;
+    private Integer pnLast;
 
-    private String pnProcess;
-    private String pnState;
+    private PnProcess pnProcess;
+    private PnState pnState;
 
     private Map<String, Object> pnJson;
 

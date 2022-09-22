@@ -33,6 +33,7 @@ public class CheckService {
     private final SpecMapper specMapper;
     private final ProcessGroupRepo processGroupRepo;
     private final ProcessNeedRepo processNeedRepo;
+    private final ProcessSpecRepo processSpecRepo;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -76,12 +77,12 @@ public class CheckService {
         goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);
     }
 
-    /** 입고검수 자산 입고검수 정보 자산에 UPDATE */
+    /** 입고검수 자산 정보 UPDATE */
     @Transactional
     public void goodsInCheck(ParamMap paramMap, MultipartFile[] gFile) {
         // 자산 상태 체크
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
-        if (!goods.getGState().equals(GState.RECEIVED)) {
+        if (!goods.getGState().equals(GState.CHECK_NEED)) {
             throw new MsgException("영업검수 요청되어 수정이 불가능합니다.");
         }
 
@@ -98,48 +99,205 @@ public class CheckService {
         //메모 저장
         goods.setGMemo(paramMap.getString("gMemo"));
 
-        Map<String, Object> gJson = new HashMap<>();
+        Map<String, Object> gJson = goods.getGJson();
         // 자산 이미지 업로드
         if (gFile != null) {
-            List<String> file = new ArrayList<>();
-            List<String> fileName = new ArrayList<>();
+            List<String> file = (List<String>) gJson.get("gFile");
+            List<String> fileName = (List<String>) gJson.get("gFileName");
 
             for (int i = 0; i < gFile.length; i++) {
-                if (gFile[i] != null || !gFile[i].isEmpty()) {
-                    file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGIdx(), AdminBucket.SECRET));
-                    fileName.add(gFile[i].getOriginalFilename());
-                }
+                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGBarcode() + "/", AdminBucket.SECRET));
+                fileName.add(gFile[i].getOriginalFilename());
             }
 
             gJson.put("gFile", file);
             gJson.put("gFileName", fileName);
         }
 
-        // 예상 공정 항목
-        // 도색
-        gJson.put("paintMemo", paramMap.getString("paintMemo"));
-        gJson.put("paintCost", paramMap.getString("paintCost"));
-        // 수리
-        gJson.put("fixMemo", paramMap.getString("fixMemo"));
-        gJson.put("fixCost", paramMap.getString("fixCost"));
-        // 가공
-        gJson.put("processMemo", paramMap.getString("processMemo"));
-        gJson.put("processCost", paramMap.getString("processCost"));
-
-        goods.setGJson(gJson);
-
         // 입고SPEC(확정)
         SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
         List<String> specName = paramMap.getList("specName");
-        List<String> specValue1 = paramMap.getList("spec1");
-        gJson.put("inSpec", specFinder.findSpec(specName, specValue1));
-
-        //가공SPEC(예정)
-        List<String> specValue2 = paramMap.getList("spec2");
-        gJson.put("processSpec", specFinder.findSpec(specName, specValue2));
+        List<String> specValue3 = paramMap.getList("specValue3");
+        gJson.put("spec3", specFinder.findSpec(specName, specValue3).getSpecIdx());
 
         // 자산 상태 변경
         goods.setGState(GState.CHECK);
+
+        // CHECK_GOODS 예상비용 업데이트
+        int expectedCost = paramMap.getInt("paintCost") + paramMap.getInt("fixCost") + paramMap.getInt("processCost");
+        CheckGoods checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
+        checkGoods.setCgsExpectedCost(expectedCost);
+        checkGoodsRepo.save(checkGoods);
+
+        // PROCESS_NEED 생성
+        if (paramMap.getInt("paintCost") != 0) {
+            ProcessNeed paintNeed = processNeedRepo.findByGoodsAndPnCount(goods, 1);
+            if (paintNeed == null) {
+                paintNeed = ProcessNeed
+                        .builder()
+                        .goods(goods)
+                        .pnType(PnType.PAINT)
+                        .pnContent(paramMap.getString("paintMemo"))
+                        .pnCount(1)
+                        .pnExpectedCost(paramMap.getInt("paintCost"))
+                        .pnRealCost(0)
+                        .pnProcess(PnProcess.BEFORE)
+                        .pnJson(new HashMap<>())
+                        .pnState(PnState.NEED)
+                        .pnLast(0)
+                        .build();
+            }
+
+            paintNeed.setPnContent(paramMap.getString("paintMemo"));
+            paintNeed.setPnExpectedCost(paramMap.getInt("paintCost"));
+
+            processNeedRepo.save(paintNeed);
+        }
+
+        if (paramMap.getInt("fixCost") != 0) {
+            ProcessNeed fixNeed = processNeedRepo.findByGoodsAndPnCount(goods, 1);
+            if (fixNeed == null) {
+                fixNeed = ProcessNeed
+                        .builder()
+                        .goods(goods)
+                        .pnType(PnType.FIX)
+                        .pnCount(1)
+                        .pnRealCost(0)
+                        .pnProcess(PnProcess.BEFORE)
+                        .pnJson(new HashMap<>())
+                        .pnState(PnState.NEED)
+                        .pnLast(0)
+                        .build();
+            }
+            fixNeed.setPnContent(paramMap.getString("fixMemo"));
+            fixNeed.setPnExpectedCost(paramMap.getInt("fixCost"));
+
+            processNeedRepo.save(fixNeed);
+        }
+
+        List<Integer> psIdx = new ArrayList<>();
+        List<Long> psCost = paramMap.getListLong("psCost");
+        if (paramMap.getInt("processCost") != 0) {
+            List<String> specValue4 = paramMap.getList("specValue4");
+            Map<String ,Object> processMap = new HashMap<>();
+            processMap.put("spec4", specFinder.findSpec(specName, specValue4).getSpecIdx());
+            processMap.put("cost", paramMap.getListLong("psCost"));
+
+            ProcessNeed processNeed = processNeedRepo.findByGoodsAndPnCount(goods, 1);
+
+            if (processNeed == null) {
+                processNeed = ProcessNeed
+                        .builder()
+                        .goods(goods)
+                        .pnType(PnType.PROCESS)
+                        .pnCount(1)
+                        .pnRealCost(0)
+                        .pnProcess(PnProcess.BEFORE)
+                        .pnJson(new HashMap<>())
+                        .pnState(PnState.NEED)
+                        .pnLast(0)
+                        .pnJson(processMap)
+                        .build();
+            }
+            processNeed.setPnContent(paramMap.getString("processMemo"));
+            processNeed.setPnExpectedCost(paramMap.getInt("processCost"));
+
+            processNeedRepo.save(processNeed);
+
+            List<SpecList> specLists = specFinder.selectSpecList(specName, specValue4);
+
+
+            for (int i = 0; i < psCost.size(); i++) {
+                ProcessSpec processSpec = ProcessSpec
+                        .builder()
+                        .processNeed(processNeed)
+                        .psCost(psCost.get(i).intValue())
+                        .specList1(specLists.get(i))
+                        .psType(PsType.EXPECTED)
+                        .build();
+
+                processSpecRepo.save(processSpec);
+
+                psIdx.add(processSpec.getPsIdx());
+            }
+        }
+
+        gJson.put("psCost", psCost);
+        gJson.put("psIdx", psIdx);
+        goods.setGJson(gJson);
+        goodsRepo.save(goods);
+    }
+
+    /** 영업검수 자산 정보 확정 */
+    @Transactional
+    public void goodsInfoComplete(ParamMap paramMap, MultipartFile[] gFile) {
+        Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+
+        Map<String, Object> gJson = goods.getGJson();
+        // 자산 이미지 업로드
+        if (gFile != null) {
+            List<String> file = (List<String>) gJson.get("gFile");
+            List<String> fileName = (List<String>) gJson.get("gFileName");
+
+            for (int i = 0; i < gFile.length; i++) {
+                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGBarcode() + "/", AdminBucket.SECRET));
+                fileName.add(gFile[i].getOriginalFilename());
+            }
+
+            gJson.put("gFile", file);
+            gJson.put("gFileName", fileName);
+        }
+        goods.setGJson(gJson);
+        goods.setGVendor(paramMap.getString("gVendor"));
+        goods.setGRank(GRank.valueOf(paramMap.getString("gRank")));
+        goods.setGMemo(paramMap.getString("gMemo"));
+
+
+        List<String> gOption = paramMap.getList("goodsOption");
+        List<Map<String, Object>> optionList = new ArrayList<>();
+        for (int i = 0; i < gOption.size(); i++) {
+            Map<String, Object> optionMap = new HashMap<>();
+            optionMap.put("title", gOption.get(i).split(":")[0]);
+            optionMap.put("value", gOption.get(i).split(":")[1]);
+            optionList.add(optionMap);
+        }
+        goods.setGOption(optionList);
+
+        //판매 확정 SPEC
+        SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+        List<String> specName = paramMap.getList("specName");
+        List<String> spec5_list = paramMap.getList("spec5");
+        Spec spec5 = specFinder.findSpec(specName, spec5_list);
+        goods.setSellSpec(spec5);
+
+
+
+        // PROCESS_NEED 공정필요 진행여부
+        List<Long> pnIdx_list = paramMap.getListLong("pnIdx");
+        List<String> pnProcess_list = paramMap.getList("pnProcess");
+        PsType psType = PsType.EXPECTED;
+        for (int i = 0; i < pnIdx_list.size(); i++) {
+            ProcessNeed processNeed = processNeedRepo.findById(pnIdx_list.get(i)).get();
+            processNeed.setPnProcess(PnProcess.valueOf(pnProcess_list.get(i)));
+
+            if (processNeed.getPnType().equals(PnType.PROCESS) && processNeed.getPnProcess().equals(PnProcess.Y)) {
+                psType = PsType.CONFIRM;
+            }
+            
+            processNeedRepo.save(processNeed);
+        }
+
+
+        // 가공예정 SPEC
+        List<String> spec4 = paramMap.getList("spec4");
+        List<Long> psIdx_list = paramMap.getListLong("psIdx");
+        List<Long> psCost_list = paramMap.getListLong("");
+        for (int i = 0; i < spec4.size(); i++) {
+            ProcessSpec processSpec = processSpecRepo.findById(psIdx_list.get(i).intValue()).get();
+            processSpec.setPsCost(psCost_list.get(i).intValue());
+            processSpec.setPsType(psType);
+            processSpecRepo.save(processSpec);
+        }
 
         goodsRepo.save(goods);
     }

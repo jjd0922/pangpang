@@ -90,31 +90,28 @@
     <select id="selectGoodsByG_IDX" resultType="Map">
         SELECT
             G_IDX,
-            PRODUCT1.P_IDX AS P_IDX,
-            PRODUCT1.P_NAME AS P_NAME,
-            CATE_SPEC_LIST,
             G_BARCODE,
             G_IMEI,
-            IN_SPEC1.SPEC_LOOKUP AS IN_SPEC1,
-            IN_SPEC2.SPEC_LOOKUP AS IN_SPEC2,
-            SELL_SPEC1.SPEC_LOOKUP AS SELL_SPEC1,
-            SELL_SPEC2.SPEC_LOOKUP AS SELL_SPEC2,
-            PROCESS_SPEC1.SPEC_LOOKUP AS PROCESS_SPEC1,
-            PRODUCT2.P_COST AS P_COST,
-            PP_FIX_COST + PP_PAINT_COST + PP_PROCESS_COST AS TOTAL_PROCESS_COST
+            G_JSON,
+            P_NAME,
+            P_IDX,
+            G_OPTION,
+            PN_JSON,
+            SPEC3.SPEC_LOOKUP AS SPEC3,
+            SPEC4.SPEC_LOOKUP AS SPEC4,
+            SPEC5.SPEC_LOOKUP AS SPEC5,
+            CATE_SPEC_LIST,
+            G_MEMO,
+            G_VENDOR,
+            G_RANK
         FROM
             GOODS
-                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
-                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
-                LEFT JOIN PRODUCT AS PRODUCT1 ON G_P_IDX = PRODUCT1.P_IDX
-                LEFT JOIN CATEGORY ON PRODUCT1.P_CATE_IDX = CATE_IDX
-                LEFT JOIN GOODS_STOCK ON G_GS_IDX = GS_IDX
-                LEFT JOIN PRODUCT AS PRODUCT2 ON GS_P_IDX = PRODUCT2.P_IDX
-                LEFT JOIN SPEC AS IN_SPEC1 ON PP_SPEC_IDX = IN_SPEC1.SPEC_IDX
-                LEFT JOIN SPEC AS SELL_SPEC1 ON PP_SPEC_IDX2 = SELL_SPEC1.SPEC_IDX
-                LEFT JOIN SPEC AS IN_SPEC2 ON POR_IN_SPEC_IDX = IN_SPEC2.SPEC_IDX
-                LEFT JOIN SPEC AS SELL_SPEC2 ON G_SELL_SPEC_IDX = SELL_SPEC2.SPEC_IDX
-                LEFT JOIN SPEC AS PROCESS_SPEC1 ON POR_PROCESS_SPEC_IDX = PROCESS_SPEC1.SPEC_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN SPEC AS SPEC3 ON JSON_EXTRACT(G_JSON, '$.spec3[0]') = SPEC3.SPEC_IDX
+                LEFT JOIN PROCESS_NEED ON PN_G_IDX = G_IDX AND PN_COUNT = 1 AND PN_TYPE = 'PROCESS'
+                LEFT JOIN SPEC AS SPEC4 ON JSON_EXTRACT(PN_JSON, '$.spec4[0]') = SPEC4.SPEC_IDX
+                LEFT JOIN SPEC AS SPEC5 ON G_SELL_SPEC_IDX = SPEC5.SPEC_IDX
         WHERE
             G_IDX = #{gIdx}
     </select>
@@ -286,5 +283,14 @@
             G_STATE = #{gState}
         GROUP BY
             G_STATE
+    </select>
+
+    <select id="">
+        SELECT
+            *
+        FROM
+            GOODS
+                LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
+                LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
     </select>
 </mapper>

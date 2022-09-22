@@ -2,6 +2,7 @@ package com.newper.repository;
 
 import com.newper.constant.PnProcess;
 import com.newper.constant.PnType;
+import com.newper.entity.Goods;
 import com.newper.entity.PoReceived;
 import com.newper.entity.ProcessNeed;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -16,4 +17,6 @@ public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Long> {
 
     @EntityGraph(attributePaths = {"goods", "goods.product"})
     List<ProcessNeed> findByProcessGroup_pgIdx(int pgIdx);
+
+    ProcessNeed findByGoodsAndPnCount(Goods goods, int pnCount);
 }

@@ -65,27 +65,9 @@
                                     </div>
                                 </fieldset>
 
-                                <fieldset class="mt-3">
-                                    <legend class="">2. 상품 SPEC정보</legend>
-                                    <div class="row">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>SPEC명</th>
-                                                <th>입고SPEC(확정)</th>
-                                                <th>가공SPEC(예정)</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="productSpecListTable">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </fieldset>
-
                                 <!-- 타이틀 -->
                                 <fieldset class="mt-3">
-                                    <legend class="">3. 예상비용</legend>
+                                    <legend class="">2. 예상비용</legend>
                                     <div class="row">
                                         <table class="table">
                                             <thead>
@@ -99,18 +81,37 @@
                                                 <tr>
                                                     <td>도색</td>
                                                     <td><input type="text" name="paintMemo" class="form-control"></td>
-                                                    <td><input type="text" name="paintCost" class="form-control"></td>
+                                                    <td><input type="text" name="paintCost" value="0" class="form-control"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>수리</td>
                                                     <td><input type="text" name="fixMemo" class="form-control"></td>
-                                                    <td><input type="text" name="fixCost" class="form-control"></td>
+                                                    <td><input type="text" name="fixCost" value="0" class="form-control"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>가공</td>
                                                     <td><input type="text" name="processMemo" class="form-control"></td>
-                                                    <td><input type="text" name="processCost" class="form-control"></td>
+                                                    <td><input type="text" name="processCost" value="0" class="form-control"></td>
                                                 </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend class="">3. 상품 SPEC정보</legend>
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>SPEC명</th>
+                                                <th>입고SPEC(확정)</th>
+                                                <th>가공SPEC(예정)</th>
+                                                <th>가공SPEC예상비용</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="productSpecListTable">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -207,30 +208,29 @@
 
 <script>
     function goodsInCheck () {
+        var flag = true;
         $.each($('input[name=spec1]'), function (index, value) {
+            if ($(this).val() == '') {
+                flag = false;
+                return false;
+            }
+        });
+
+        if (flag == false) {
             alert('입고SPEC(확정)을 입력해 주세요');
             return false;
-        });
+        }
+
 
         $.ajax({
             type: "POST",
-            url:"/in/goodsInCheck.ajax?" + $('#goodsModalForm').serialize(),
+            url:"/in/goodsInCheck.ajax",
+            processData: false,
+            contentType: false,
+            data: new FormData($('#goodsModalForm')[0]),
             async: false,
             success : function(result){
-                $('#pIdx').val('');
-                $('#pName').val('');
-                $('#gIdx').val('');
-                $('#porIdx').val('');
-                $('#IMEI').val('');
-                $('#productSpecListTable').empty();
-                $('#paintMemo').val('');
-                $('#paintCost').val('');
-                $('#fixMemo').val('');
-                $('#fixCost').val('');
-                $('#processMemo').val('');
-                $('#processCost').val('');
-                $('#goodsModal').hide();
-                searchBtn();
+                location.reload();
             }
         });
     }
@@ -238,27 +238,29 @@
     function openInGoodsModal (id, rowIdx) {
         $('#goodsModal').modal('show');
         var dataMap = getDatatablemap(id, rowIdx);
+        $('input[name=gImei]').val(dataMap.G_IMEI);
 
         if(dataMap.CATE_SPEC_LIST != null){
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
             $('#productSpecListTable').empty();
             for (var i = 0; i < specList.length; i++) {
-                var specValue = "";
-                var specValue2 = "";
-                if (dataMap.SPEC1 != null) {
-                    specValue = dataMap.SPEC1.split("/")[i].split(":")[1]
+                var specValue3 = "";
+                var specValue4 = "";
+                if (dataMap.SPEC3 != null) {
+                    specValue3 = dataMap.SPEC3.split("/")[i].split(":")[1]
                 }
 
-                if (dataMap.SPEC2 != null) {
-                    specValue2 = dataMap.SPEC2.split("/")[i].split(":")[1]
+                if (dataMap.SPEC4 != null) {
+                    specValue4 = dataMap.SPEC4.split("/")[i].split(":")[1]
                 }
 
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" specList="'+i+'" name="spec1" class="form-control" value="' + specValue + '"></td>'
-                    +'<td><input type="text" specList="'+i+'" name="spec2" class="form-control" value="' + specValue2 + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="specValue3" class="form-control" value="' + specValue3 + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="specValue4" class="form-control" value="' + specValue4 + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="psCost" class="form-control" value="0"></td>'
                     +'</tr>';
 
                 $('#productSpecListTable').append(specTr);
@@ -279,30 +281,47 @@
                     }
                 });
             }
-
-            var options = JSON.parse(dataMap.P_OPTION);
-            for (var i = 0; i < 3; i++) {
-                var num = parseInt(i) + 1;
-                $('#productOption' + num).empty();
-                $('#productOption' + num).append('<option value="">없음</option>');
-            }
-
-            for (var i = 0; i < options.length; i++) {
-                var text = '';
-                for (var j = 0; j < options[i].values.length; j++) {
-                    text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
-                }
-                var num = parseInt(i) + 1;
-                $('#productOption' + num).empty();
-                $('#productOption' + num).append(text);
-            }
-
-            $('#pIdx').val(dataMap.P_IDX);
-            $('#pName').val(dataMap.P_NAME);
-            $('#gIdx').val(dataMap.G_IDX);
-            $('#cgsIdx').val(dataMap.CGS_IDX);
-            $('#poIdx').val(dataMap.PO_IDX);
         }
+
+        var options = JSON.parse(dataMap.P_OPTION);
+        for (var i = 0; i < 3; i++) {
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append('<option value="">없음</option>');
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            var text = '';
+            for (var j = 0; j < options[i].values.length; j++) {
+                text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+            }
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append(text);
+        }
+
+        var gJson = JSON.parse(dataMap.G_JSON);
+
+        $('input[name=paintMemo]').val(gJson.paintMemo);
+        $('input[name=paintCost]').val(gJson.paintCost);
+        $('input[name=fixMemo]').val(gJson.fixMemo);
+        $('input[name=fixCost]').val(gJson.fixCost);
+        $('input[name=processMemo]').val(gJson.processMemo);
+        $('input[name=processCost]').val(gJson.processCost);
+        $('input[name=gMemo]').val(dataMap.G_MEMO);
+
+        var text = '';
+        // $.each(gJson.gFile, function(index, value) {
+        //     text += '<a href="javascript: fileDownload(\''+gJson.gFile[index]+'\',\''+gJson.gFileName[index]+'\')" className="badge badge-sm badge-primary ml-1">'+gJson.gFileName[index]+'</a>'
+        // });
+        $('#fileSpan').append(text);
+
+
+        $('#pIdx').val(dataMap.P_IDX);
+        $('#pName').val(dataMap.P_NAME);
+        $('#gIdx').val(dataMap.G_IDX);
+        $('#cgsIdx').val(dataMap.CGS_IDX);
+        $('#poIdx').val(dataMap.PO_IDX);
     }
 </script>
 </html>

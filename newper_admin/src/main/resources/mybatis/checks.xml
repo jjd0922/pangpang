@@ -69,8 +69,8 @@
     <select id="selectCheckGoods" resultType="Map">
         SELECT
             *,
-            SPEC1.SPEC_LOOKUP AS SPEC1,
-            SPEC2.SPEC_LOOKUP AS SPEC2
+            SPEC3.SPEC_LOOKUP AS SPEC3,
+            SPEC4.SPEC_LOOKUP AS SPEC4
         FROM
             CHECK_GOODS
                 LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
@@ -78,8 +78,9 @@
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
-                LEFT JOIN SPEC AS SPEC1 ON CGS_SPEC_IDX = SPEC1.SPEC_IDX
-                LEFT JOIN SPEC AS SPEC2 ON CGS_SPEC_IDX2 = SPEC2.SPEC_IDX
+                LEFT JOIN SPEC AS SPEC3 ON JSON_EXTRACT(G_JSON, '$.spec3[0]') = SPEC3.SPEC_IDX
+                LEFT JOIN PROCESS_NEED ON PN_G_IDX = G_IDX AND PN_COUNT = 0 AND PN_TYPE = 'PROCESS'
+                LEFT JOIN SPEC AS SPEC4 ON JSON_EXTRACT(PN_JSON, '$.spec4[0]') = SPEC4.SPEC_IDX
         <where>
             <include refid="includeCheckGoodsDataTable"></include>
         </where>

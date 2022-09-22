@@ -1,5 +1,6 @@
 package com.newper.mapper;
 
+import com.newper.dto.ParamMap;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,7 @@ public interface ProcessMapper {
 
     /** 검수 그룹 개수 조회 */
     long countCheckDatatable(Map<String, Object> map);
+
+    /** 해당자산 공정 필요 데이터 조회 */
+    List<Map<String, Object>> selectProcessNeedDatatable(Map<String, Object> param);
 }

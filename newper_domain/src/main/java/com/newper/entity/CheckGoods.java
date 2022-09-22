@@ -35,13 +35,6 @@ public class CheckGoods {
     @JoinColumn(name="CGS_G_IDX", referencedColumnName = "gIdx")
     private Goods goods;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CGS_SPEC_IDX", referencedColumnName = "specIdx")
-    private Spec spec;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CGS_SPEC_IDX2", referencedColumnName = "specIdx")
-    private Spec spec2;
 
     private String cgsType;
 
@@ -50,18 +43,4 @@ public class CheckGoods {
     private int cgsExpectedCost;
 
     private int cgsRealCost;
-
-    private String porSpec;
-
-    private String cgsPaintMemo;
-    private int cgsPaintCost;
-
-    private String cgsFixMemo;
-    private int cgsFixCost;
-
-    private String cgsProcessMemo;
-    private int cgsProcessCost;
-
-    private List<Map<String, Object>> cgsFile;
-    private String cgsMemo;
 }

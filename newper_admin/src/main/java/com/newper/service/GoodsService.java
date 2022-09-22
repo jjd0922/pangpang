@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -207,6 +208,25 @@ public class GoodsService {
         List<Map<String, Object>> goodsListState = goodsMapper.selectGoodsGroupByCANCEL_REQ(paramMap.getMap());
         if (goodsListState.size() != 1) {
             throw new MsgException("반품 요청상태의 자산을 선택해 주세요");
+        }
+    }
+
+    /** 자산 망실 처리 */
+    @Transactional
+    public void updateGoodsLost(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gIdxs").split(",");
+
+        Map<String, Object> lost = new HashMap<>();
+        lost.put("lostDate", paramMap.getString("lostDate"));
+        lost.put("lostBy", paramMap.getString("lostBy"));
+        lost.put("lostReason", paramMap.getString("lostReason"));
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+            Map<String, Object> gJson = goods.getGJson();
+            gJson.put("lostInfo", lost);
+            goods.setGJson(gJson);
+            goods.setGState(GState.LOST);
+            goodsRepo.save(goods);
         }
     }
 }

@@ -157,11 +157,8 @@ public class ProcessRestController {
 
     /** 공정스펙 select */
     @PostMapping("selectProcessSpec.ajax")
-    public ReturnDatatable selectProcessSpec(ParamMap paramMap){
-        ReturnDatatable rd = new ReturnDatatable();
-        paramMap.multiSelect("psType");
-        rd.setData(processMapper.selectProcessSpec(paramMap.getMap()));
-        return rd;
+    public List<Map<String, Object>> selectProcessSpec(ParamMap paramMap){
+        return processMapper.selectProcessSpec(paramMap.getMap());
     }
 
     /** 공정 - 가공 데이터 생성 */
@@ -217,4 +214,11 @@ public class ProcessRestController {
         rm.setMessage("자산 반품 완료");
         return rm;
     }
+
+    /** 공정필요 데이터 조회 */
+    @PostMapping("selectProcessNeedByGoods.ajax")
+    public List<Map<String, Object>> selectProcessNeedByGoods(ParamMap paramMap){
+        return processMapper.selectProcessNeedDatatable(paramMap.getMap());
+    }
+
 }

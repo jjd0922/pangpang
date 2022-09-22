@@ -42,6 +42,8 @@
 
 
     <sql id="includeProcessSpec">
+        <if test="gIdx != null and gIdx != ''">AND G_IDX = #{gIdx}</if>
+        <if test="pnCount != null and pnCount != ''">AND PN_COUNT = #{pnCount}</if>
         <if test="pnIdx != null and pnIdx != ''">AND PS_PN_IDX = #{pnIdx}</if>
         <if test='psType != null'>
             <foreach collection="psType" open="AND PS_TYPE IN (" separator="," close=")" item="item">
@@ -51,15 +53,14 @@
     </sql>
     <select id="selectProcessSpec" resultType="Map">
         SELECT
-            *
+            IFNULL(specl_name, '') AS SPECL_NAME,
+            IFNULL(specl_value, '') AS SPECL_VALUE,
+            PS_COST
         FROM
             GOODS
-                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
-                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
                 LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
                 LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
-                LEFT JOIN GOODS_STOCK ON PS_GS_IDX = GS_IDX
-                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
+                LEFT JOIN SPEC_LIST ON PS_SPECL_IDX1 = SPECL_IDX
         <where>
             <include refid="includeProcessSpec"></include>
         </where>
@@ -170,6 +171,26 @@
             CHECK_GROUP
         <where>
             <include refid="includeCheckDatatable"></include>
+        </where>
+    </select>
+
+    
+    <sql id="includeProcessNeedDatatable">
+        <if test="gIdx != null and gIdx != ''">AND G_IDX = #{gIdx}</if>
+        <if test="pnCount != null and pnCount != ''">AND PN_COUNT = #{pnCount}</if>
+    </sql>
+    <select id="selectProcessNeedDatatable" resultType="Map">
+        SELECT
+            PN_IDX,
+            PN_TYPE,
+            PN_CONTENT,
+            PN_EXPECTED_COST,
+            PN_PROCESS
+        FROM
+            GOODS
+                LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
+        <where>
+            <include refid="includeProcessNeedDatatable"></include>
         </where>
     </select>
 </mapper>

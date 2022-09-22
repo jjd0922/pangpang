@@ -77,7 +77,6 @@ public class Goods {
 
     @Enumerated(EnumType.STRING)
     private GRank gRank;
-    /*private String gVendor;*/
 
     @Builder.Default
     private List<Map<String, Object>> gOption = new ArrayList<>();

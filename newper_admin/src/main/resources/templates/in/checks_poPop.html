@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>영업검수</title>
+    <title>영업검수(발주)</title>
     <th:block th:replace="common/css.html"></th:block>
 </head>
 <body>
@@ -329,7 +329,7 @@
                                                     <td th:text="${i.POR_SELL_PRICE}"></td><!--판매금액-->
                                                     <td>0</td><!--예상총이익-->
                                                     <td>00</td><!--예상수익률-->
-                                                    <td th:text="${i.INSPEC}"></td><!--입고스팩-->
+                                                    <td>입고스팩</td><!--입고스팩-->
                                                     <td>가공스펙</td><!--가공스펙-->
                                                 </tr>
                                                 </tbody>
@@ -531,6 +531,9 @@
         columns : [
             {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
                     return '<input type="hidden" name="gIdx" value="' + full.G_IDX + '">';
+                }}
+            ,{'title':'자산정보확정','data':'','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<button type="button" class="btn btn-sm btn-primary" onClick="openGoodsModal('+full.G_IDX+')">자산정보확정</button>';
                 }}
             ,{'title':'입고그룹','data':'IG_IDX','defaultContent':''}
             ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}

@@ -60,9 +60,9 @@ public class ProcessService {
             ProcessSpec processSpec = ProcessSpec
                     .builder()
                     .processNeed(processNeed)
-                    .specList(specList)
+//                    .specList(specList)
                     .goodsStock(goodsStock)
-                    .psRemove(psRemove.get(i))
+//                    .psRemove(psRemove.get(i))
                     .psType(PsType.CONFIRM)
                     .build();
 
@@ -99,7 +99,7 @@ public class ProcessService {
             ProcessSpec processSpec = ProcessSpec
                     .builder()
                     .psIdx(psIdx.get(i).intValue())
-                    .psRealCost(psRealCost.get(i).intValue())
+//                    .psRealCost(psRealCost.get(i).intValue())
                     .build();
 
             processSpecRepo.save(processSpec);
@@ -152,13 +152,6 @@ public class ProcessService {
     /** 검수 내용 업데이트 */
     public void updateCheckGoods(ParamMap paramMap, MultipartFile[] cgsFile) {
         CheckGoods checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
-        checkGoods.setCgsPaintMemo(paramMap.getString("paintMemo"));
-        checkGoods.setCgsPaintCost(paramMap.getInt("paintCost"));
-        checkGoods.setCgsFixMemo(paramMap.getString("fixMemo"));
-        checkGoods.setCgsFixCost(paramMap.getInt("fixCost"));
-        checkGoods.setCgsProcessMemo(paramMap.getString("processMemo"));
-        checkGoods.setCgsProcessCost(paramMap.getInt("processCost"));
-        checkGoods.setCgsMemo(paramMap.getString("cgsMemo"));
         if (cgsFile.length != 0) {
             List<Map<String, Object>> cgsFileList = new ArrayList<>();
             for (int i = 0; i < cgsFile.length; i++) {
@@ -168,7 +161,6 @@ public class ProcessService {
                 cgsFileMap.put("cgsFileName", cgsFile[i].getOriginalFilename());
                 cgsFileList.add(cgsFileMap);
             }
-            checkGoods.setCgsFile(cgsFileList);
         }
 
         checkGoodsRepo.save(checkGoods);

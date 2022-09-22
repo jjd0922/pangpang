@@ -30,13 +30,29 @@
                                                                   자산상태
                                                                 </span>
                                                             </span>
-                                                        <input type="text" name="" class="input1" placeholder="망실">
+                                                        <input type="text" name="gState" class="form-control" readonly>
+                                                        <input type="hidden" name="gIdxs">
+
                                                         <span class="input-group-prepend">
                                                                 <span class="input-group-text">
                                                                   자산처리일
                                                                 </span>
                                                           </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="lostDate" class="form-control w-datarange daterange-single">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                처리자
+                                                            </span>
+                                                        </span>
+                                                        <input type="text" name="lostBy" class="form-control" th:value="${@sessionInfo.id}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -50,7 +66,7 @@
                                                            처리사유
                                                             </span>
                                                         </span>
-                                                        <input type="text" name="" class="form-control">
+                                                        <input type="text" name="lostReason" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -59,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="mdSave" onclick="">확인</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="mdSave" onclick="goodsLost();">확인</button>
                                 <button type="button" class="btn btn-primary" onclick="window.close();"><i class="icon-cross2 mr-1"></i>취소</button>
                             </div>
                         </form>
@@ -69,3 +85,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    function openGoodsStateModal(state) {
+        var gIdxs = '';
+
+        $.each($('.selected'), function (index, value) {
+            gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        gIdxs = gIdxs.slice(0, -1);
+
+        if (gIdxs == '') {
+            alert("자산을 선택해 주세요");
+            return false;
+        }
+
+        $('input[name=gState]').val(state);
+
+        $('input[name=gIdxs]').val(gIdxs);
+        $('#lostModal').modal('show');
+    }
+
+    // 자산 망실처리
+    function goodsLost() {
+        $.ajax({
+            url:'/goods/updateGoodsLost.ajax',
+            data: $('#modalForm').serialize(),
+            type: 'POST'
+        })
+    }
+</script>
