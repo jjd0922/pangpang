@@ -4,10 +4,12 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.dto.ParamMap;
 import com.newper.entity.DeliveryNum;
+import com.newper.entity.Goods;
 import com.newper.entity.OrderGs;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.DeliveryNumRepo;
+import com.newper.repository.GoodsRepo;
 import com.newper.repository.OrdersGsRepo;
 import com.newper.repository.OrdersRepo;
 import lombok.RequiredArgsConstructor;
@@ -26,20 +28,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DeliverytService {
+public class DeliveryService {
 
     private final OrdersRepo ordersRepo;
     private final DeliveryNumRepo deliveryNumRepo;
     private final OrdersGsRepo ordersGsRepo;
     private final OrdersMapper ordersMapper;
+    private final GoodsRepo goodsRepo;
 
 
 
@@ -197,5 +198,14 @@ public class DeliverytService {
 
         return cnt;
     }
+
+    public String checkBarcode (String barcode){
+        Goods goods = goodsRepo.findBygBarcode(barcode);
+        if(goods == null){
+            throw new MsgException("hello");
+        }
+        return "";
+    }
+
 
 }
