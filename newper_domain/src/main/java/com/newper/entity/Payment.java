@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.OState;
 import com.newper.constant.PayMethod;
 import com.newper.constant.PayState;
 import com.newper.constant.PhType;
@@ -32,8 +33,9 @@ public class Payment {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payCancelState = PayState.BEFORE;
-    /** 결제 금액*/
+    /** 결제 금액 payProductPrice + payDelivery*/
     private int payPrice;
+    /** 상품 금액*/
     private int payProductPrice;
     private int payDelivery;
 
@@ -45,17 +47,33 @@ public class Payment {
     private Map<String,Object> payJson = new HashMap<>();
 
     /** OneToOne */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.DETACH)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
     private List<Orders> orders;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
     @OrderBy(value = "phFlag desc, phIdx desc")
     private List<PaymentHistory> paymentHistoryList;
 
+    @PrePersist
+    @PreUpdate
+    public void paymentSave(){
+
+        if (getPayState() == null) {
+            throw new MsgException("결제상태를 선택해주세요.");
+        }
+        if (getPayMethod() == null) {
+            throw new MsgException("결제방식을 선택해주세요.");
+        }
+
+    }
+
     /** order에서 setPayment로 세팅할 때 호출되는 메서드*/
     void setOrders(Orders orders){
         this.orders = new ArrayList<>();
         this.orders.add(orders);
+    }
+    public Orders getOrders(){
+        return this.orders.get(0);
     }
 
     /** 결제 요청 가능한지 체크 후 return paymentHistory*/
@@ -88,19 +106,29 @@ public class Payment {
 
         return  paymentHistory;
     }
-
-
-    @PrePersist
-    @PreUpdate
-    public void paymentSave(){
-
-        if (getPayState() == null) {
-            throw new MsgException("결제상태를 선택해주세요.");
+    /** 결제 가격 계산*/
+    public void calculatePrice(){
+        List<OrderGs> orderGs = getOrders().getOrderGs();
+        int ogPrice = 0;
+        int ogPoint = 0;
+        int ogMileage = 0;
+        int ogCoupon = 0;
+        for (OrderGs ogs : orderGs) {
+            ogPrice += ogs.getOgPrice();
+            ogPoint += ogs.getOgPoint();
+            ogMileage += ogs.getOgMileage();
+            ogCoupon += ogs.getOgCoupon();
         }
-        if (getPayMethod() == null) {
-            throw new MsgException("결제방식을 선택해주세요.");
+        setPayProductPrice(ogPrice - ogPoint - ogMileage - ogCoupon);
+        setPayPrice(payProductPrice + payDelivery);
+    }
+    /** 결제 성공*/
+    public void paySuccess(){
+        setPayState(PayState.SUCCESS);
+        Orders orders = getOrders();
+        if( orders.getOState() == OState.BEFORE){
+            orders.setOState(OState.DONE);
         }
-
     }
 
 }

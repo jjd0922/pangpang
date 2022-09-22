@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,6 +31,7 @@ public class OrdersService {
 
     private final CustomerRepo customerRepo;
     private final OrdersRepo ordersRepo;
+    private final ShopRepo shopRepo;
     private final PaymentRepo paymentRepo;
     private final PaymentHistoryRepo paymentHistoryRepo;
     private final IamportMapper iamportMapper;
@@ -47,31 +50,31 @@ public class OrdersService {
                 .oDate(now.toLocalDate())
                 .oTime(now.toLocalTime())
                 .oLocation(OLocation.SHOP)
+                .shop(shopRepo.getReferenceById(shopSession.getShopIdx()))
                 .oMemo("")
-                .oName("")
+                .oName("주문자명")
                 .oPhone("01085434628")
                 .build();
 
         Payment payment = Payment.builder()
                 .payMethod(PayMethod.CARD)
-                .payPrice(1000)
-                .payProductPrice(1000)
                 .build();
 
+        List<OrderGs> orderGsList = new ArrayList<>();
         for(long i=1;i<3;i++){
-
+            ShopProductOption shopProductOption = shopProductOptionRepo.findById(i).get();
             OrderGs orderGs = OrderGs.builder()
                     .orders(orders)
+                    .shopProductOption(shopProductOption)
+                    .ogPrice(shopProductOption.getSpoPrice())
                     .build();
-
-            ShopProductOption shopProductOption = shopProductOptionRepo.findById(i).get();
-            orderGs.setShopProductOption(shopProductOption);
-
+            orderGsList.add(orderGs);
         }
-
-
+        orders.setOrderGs(orderGsList);
 
         orders.setPayment(payment);
+        payment.calculatePrice();
+
         paymentRepo.save(payment);
 
         return orders;
