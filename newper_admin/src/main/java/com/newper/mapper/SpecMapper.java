@@ -22,7 +22,7 @@ public interface SpecMapper {
     void insertSpecItem(Map<String, Object> specParam);
 
     void insertSpecItemAll(@Param("specIdx") Integer specIdx,
-                           @Param("speclIdxs") String[] speclIdxs);
+                           @Param("speclIdxs") int[] speclIdxs);
 
 
     /**재고 자산 상세 스펙이력 데이터 테이블*/

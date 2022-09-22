@@ -53,9 +53,11 @@ public class SpecFinder {
     public Spec findSpec(List<String> specNameList, List<String> specValueList){
         List<Integer> specConfirmList = new ArrayList<>();
         String specLookup = "";
+        int[] speclIdxs = new int[specNameList.size()];//신규스펙그룹 insert시 사용
         for (int i = 0; i < specNameList.size(); i++) {
             SpecList specList = findSpecList(specNameList.get(i), specValueList.get(i));
 
+            speclIdxs[i] = specList.getSpeclIdx();
             specConfirmList.add(specList.getSpeclIdx());
             if (i+1 < specNameList.size()) {
                 specLookup += specNameList.get(i) +":"+specValueList.get(i)+"/";
@@ -83,14 +85,9 @@ public class SpecFinder {
                     .specLookup(specLookup)
                     .build();
             specRepo.save(spec);
-            saveSpecItem(spec);
+
+            specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
         }
         return spec;
-    }
-
-    /**spec_item 저장*/
-    public void saveSpecItem(Spec spec) {
-        String[] speclIdxs = spec.getSpecConfirm().split("_");
-        specMapper.insertSpecItemAll(spec.getSpecIdx(), speclIdxs);
     }
 }
