@@ -1,7 +1,6 @@
 package com.newper;
 
 import com.newper.component.SessionInfo;
-import com.newper.exception.MsgException;
 import com.newper.exception.NoSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

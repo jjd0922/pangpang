@@ -99,7 +99,12 @@ public class Orders {
         if (getOLocation() == null){
             throw new MsgException("주문경로를 입력해주세요.");
         }
+    }
 
+    /** 결제시 사용할 주문 제목 가져오기*/
+    public String getOrderPaymentTitle(){
+        List<OrderGs> orderGsList = getOrderGs();
+        return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (orderGsList.size()-1)+"건";
     }
 
 }

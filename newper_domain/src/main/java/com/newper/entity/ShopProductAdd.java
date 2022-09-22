@@ -16,7 +16,7 @@ public class ShopProductAdd {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer spaIdx;
+    private Long spaIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="SPA_SP_IDX", referencedColumnName = "spIdx")

@@ -45,7 +45,7 @@ public class Payment {
     private Map<String,Object> payJson = new HashMap<>();
 
     /** OneToOne */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.DETACH)
     private List<Orders> orders;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "payment",cascade = CascadeType.ALL)

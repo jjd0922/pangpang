@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
+import com.newper.mapper.IamportMapper;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
     private final ShopRepo shopRepo;
+    private final IamportMapper iamportMapper;
 
     @GetMapping(value = { "", "index"})
     public ModelAndView index(){
@@ -142,6 +148,13 @@ public class MainController {
     @GetMapping(value = "iamportTest")
     public ModelAndView iamportTest(){
         ModelAndView mav = new ModelAndView("iamport/payment");
+
+        mav.addObject("pgList", iamportMapper.selectIamportPgList());
+
+        List<Map<String, Object>> mm = iamportMapper.selectIamportMethodMap();
+        Map<Object, List<Map<String, Object>>> ippMap = mm.stream().collect(Collectors.groupingBy(map -> map.get("IPM_IPP_IDX")));
+        mav.addObject("pgMethod", ippMap);
+
         return mav;
     }
 }

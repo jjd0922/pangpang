@@ -3,6 +3,7 @@ package com.newper.controller.rest;
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Orders;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
 import com.newper.mapper.PaymentMapper;
@@ -34,7 +35,7 @@ public class OrdersRestController {
 
     /** iamport 결제 요청 */
     @PostMapping("iamport/pay.ajax")
-    public ReturnMap iamportPay(ParamMap paramMap) {
+    public ReturnMap iamportPay(ParamMap paramMap, int ipm_idx) {
         ReturnMap rm = new ReturnMap();
 
         shopSession.setIdx(1l);
@@ -42,7 +43,9 @@ public class OrdersRestController {
 
         rm.put("id", "imp07732252");
 
-        rm.put("req", ordersService.insertOrder(paramMap));
+        Orders orders = ordersService.insertOrder(paramMap);
+        JSONObject req = ordersService.insertIamportReq(orders, ipm_idx);
+        rm.put("req", req);
         return rm;
     }
     /** iamport 결제 결과 UID만 저장. JS에서 받는 결과여서 서버에서 따로 검증 단계 필요*/

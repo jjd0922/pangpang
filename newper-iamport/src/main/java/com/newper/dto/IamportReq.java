@@ -1,6 +1,5 @@
 package com.newper.dto;
 
-import com.newper.constant.etc.IamPortPayMethod;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,11 +7,10 @@ import java.util.Map;
 
 /** 결제 준비 DTO*/
 @Getter
-@Setter
 public class IamportReq {
 
     private String pg;
-    private IamPortPayMethod pay_method;
+    private String pay_method;
     private boolean escrow;
     private String merchant_uid;
     private String name;
@@ -30,12 +28,32 @@ public class IamportReq {
     private String notice_url;
     private Map<String, Object> display;
 
-    /** 필수항목 생성자*/
-    public IamportReq(IamPortPayMethod pay_method, String merchant_uid, int amount, String buyer_tel) {
-        this.pay_method = pay_method;
-        this.merchant_uid = merchant_uid;
-        this.amount = amount;
-        this.buyer_tel = buyer_tel;
+    /** merchant_uid. ph_idx 사용*/
+    public IamportReq(long ph_idx){
+        this.merchant_uid = "ph"+ph_idx;
     }
 
+    /** NHN KCP 필요 정보들*/
+    public void setKcpInfo(String mid,
+                           String pay_method,
+                           String name,
+                           int amount,
+                           String buyer_email,
+                           String buyer_name,
+                           String buyer_tel,
+                           String buyer_addr,
+                           String buyer_postcode) {
+        //사이트코드 테스트인경우 kcp.T000
+        this.pg = "kcp."+mid;
+        this.pay_method = pay_method;
+        this.name = name;
+        this.amount = amount;
+        this.buyer_email = buyer_email;
+        this.buyer_name = buyer_name;
+        this.buyer_tel = buyer_tel;
+        this.buyer_addr = buyer_addr;
+        this.buyer_postcode = buyer_postcode;
+//        this.language = language;
+//        this.m_redirect_url = m_redirect_url;
+    }
 }

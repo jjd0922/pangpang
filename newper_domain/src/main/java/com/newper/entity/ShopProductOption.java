@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class ShopProductOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer spoIdx;
+    private Long spoIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="SPO_SPA_IDX", referencedColumnName = "spaIdx")

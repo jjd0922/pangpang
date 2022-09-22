@@ -7,18 +7,35 @@
     <script type="text/javascript" th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
     <script th:src="@{/js/iamport.payment-1.1.8.js}"></script>
 </head>
-<body th:classappend="${@shopComp.getShopDesign()}">
+<body>
 
+
+    <div th:each="pg:${pgList}">
+        <a th:text="${pg.IPP_NAME}" th:onclick="|payMethod(${pg.IPP_IDX})|"></a>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div th:each="method:${pgMethod}" >
+        <div th:id="|pm${method.key}|">
+            <div th:each="methodMap:${method.value}" th:text="${methodMap.IPM_NAME}" th:onclick="|payRequest(${methodMap.IPM_IDX})|"></div>
+        </div>
+    </div>
 </body>
 <script>
     //결제팝업
     var payRequestAvailable = true;
-    function payRequest(){
+    function payRequest(ipm_idx){
         if(payRequestAvailable){
+            $('#payMethodDiv').html('');
+
             payRequestAvailable = false;
             $.ajax({
-              url:'/orders/iamport/pay.ajax'
-              ,type:'post'
+                url:'/orders/iamport/pay.ajax'
+                ,type:'post'
+                ,data:'ipm_idx='+ipm_idx
             }).done(function(res){
                 var IMP = window.IMP;
                 IMP.init(res.data.id);
