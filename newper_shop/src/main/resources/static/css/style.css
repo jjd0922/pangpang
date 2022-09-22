@@ -3860,16 +3860,13 @@ input[type="number"]::-webkit-inner-spin-button {
     border-bottom: 1px solid #d1d1d1;
 }
 .menu-full.menu-lines>li {
+    font-size: 24px;
+    height: 75px;
+    font-weight: 500;
     background-color: #ffffff;
 }
 .menu-full.menu-lines>li.on {
     border-bottom: 2px solid var(--scPoint);
-}
-
-.menu-lines {
-    font-size: 24px;
-    height: 75px;
-    font-weight: 500;
 }
 
 /*.event-content>li {
@@ -3929,36 +3926,66 @@ input[type="number"]::-webkit-inner-spin-button {
 /*행 전체 메뉴 - 4. 버튼형*/
 /*자주묻는 질문*/
 
-/*행 일부 메뉴(menu-part) - 좌측 버튼형*/
-.button-tab {
+
+
+/*** 행 일부 메뉴 menu-part ***/
+.menu-part {
     display: flex;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #333;
+    flex-flow: row wrap;
 }
-.button-tab>li {
-    border: 1px solid #b7b7b7;
-    margin-right: 10px;
-    cursor: pointer;
-    width: 135px;
-    height: 42px;
+
+.menu-part>li {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    cursor: pointer;
 }
-.button-tab>li:last-child {
+
+@media (max-width:991px) {
+    .menu-part {
+        justify-content: center;
+    }
+
+    .menu-part>li {
+        flex: 1 1 20%;
+        margin: 4px !important;
+    }
+}
+
+/*행 일부 메뉴(menu-part) - 좌측 버튼형*/
+/*이벤트 분류 상자형*/
+.menu-button>li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #b7b7b7;
+    cursor: pointer;
+    margin-right: 10px;
+    width: 135px;
+    height: 42px;
+}
+.menu-button>li:last-child {
     margin-right: 0;
 }
-.button-tab>li.on {
+.menu-button>li.on {
     background-color: #314ad7;
     color: #fff;
 }
-.button-tab-content>li {
+
+.menu-button.underline-dark {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #333;
+}
+
+/*.button-tab-content>li {
     display: none;
 }
 .button-tab-content>li.on {
     display: flex;
     flex-wrap: wrap;
-}
+}*/
+
 .button-tab-content .banner2>li {
     padding: 30px 0;
 }
@@ -3972,6 +3999,43 @@ input[type="number"]::-webkit-inner-spin-button {
     display: flex;
     flex-wrap: wrap;
 }
+
+.cart-breadcrumb>li {
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+    cursor: pointer;
+    font-weight: 500;
+    height: 42px;
+    color: #D2D2D2;
+}
+
+.cart-breadcrumb>li.on {
+    color: var(--scPoint);
+}
+
+.cart-breadcrumb>li::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: url(../image/arrow/route-grey.png) no-repeat center/contain;
+    margin: 0 15px;
+    opacity: 1;
+}
+.cart-breadcrumb>li.on::after {
+    background: url(../image/arrow/route-blue.png) no-repeat center/contain !important;
+    opacity: 0.9;
+}
+.cart-breadcrumb>li.pass::after {
+    background: url(../image/arrow/route-blue.png) no-indigo center/contain !important;
+}
+
+.cart-breadcrumb>li:last-child::after {
+    content: none;
+}
+
+
 @media (max-width:991px) {
     .button-tab-content .banner2>li {
         padding: 15px 0!important;
@@ -4598,6 +4662,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .asApplication-tab {
     display: flex;
     border-bottom: 2px solid #314ad7;
+    margin-top: 45px;
     margin-bottom: 30px;
 }
 .asApplication-tab>li {
@@ -4723,16 +4788,15 @@ input[type="number"]::-webkit-inner-spin-button {
     z-index: 1;
 }
 /*쿠폰·적립금·상품권*/
-.myGift-table {
+.coupon-table {
     border-top: 2px solid #333;
     border-bottom: 1px solid #d1d1d1;
-    margin-bottom: 100px;
 }
-.myGift-table>div>ul {
+.coupon-table>ul {
     display: flex;
     justify-content: space-between;
 }
-.myGift-table>div>ul>li {
+.coupon-table>ul>li {
     padding: 15px 0;
     display: flex;
     justify-content: center;
@@ -4740,190 +4804,39 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #666;
     border-right: 1px solid #d1d1d1;
 }
-.myGift-table>div>ul>li:nth-child(1) {
+.coupon-table>ul>li:nth-child(1) {
     width: 160px;
 }
-.myGift-table>div>ul>li:nth-child(2) {
+.coupon-table>ul>li:nth-child(2) {
     width: 450px;
 }
-.myGift-table>div>ul>li:nth-child(3) {
+.coupon-table>ul>li:nth-child(3) {
     width: 155px;
 }
-.myGift-table>div>ul>li:nth-child(4) {
+.coupon-table>ul>li:nth-child(4) {
     width: 155px;
 }
-.myGift-table>div>ul>li:nth-child(5) {
+.coupon-table>ul>li:nth-child(5) {
     width: 200px;
 }
-.myGift-table>div>ul>li:last-child {
+.coupon-table>ul>li:nth-child(6) {
     width: 240px;
     border-right: 0;
 }
-.saleCoupon-table .myGift-table-content>li:nth-child(2),
-.reserveFund-table .myGift-table-content>li:nth-child(2) {
-    justify-content: start;
-    padding-left: 40px;
-}
-.myGift-table-title {
+.coupon-table-title {
     background-color: #f6f6f6;
 }
-.myGift-table-content {
-    border-top: 1px solid #d1d1d1;
-}
-.myGift-table-content:nth-of-type(1) {
-    border-top: none;
-}
-.myGift-table-content li {
+.coupon-table-content li {
     padding: 20px 0;
 }
-#myGiftMenu h2 {
-    font-size: 32px;
-    font-weight: 500;
-    margin-top: 70px;
-    text-align: center;
-}
-.coupon-registration {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 25px 0;
-}
-.coupon-registration input {
-    width: 600px;
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #666;
-    outline: none;
-    border-radius: 5px;
-    font-size: 24px;
-}
-.coupon-des {
-    width: 860px;
-    margin: 0 auto 45px;
-}
-.coupon-des p {
-    margin-bottom: 7px;
-}
-.registration-btn a {
-    font-size: 29px;
-    width: auto;
-    padding: 12px 50px;
-}
-.myGift-guide {
-    border-top: 1px solid #999;
-    padding-top: 35px;
-    display: flex;
-}
-.myGift-guide>li {
-    flex: 1;
-}
-.myGift-guide strong {
-    font-size: 20px;
-    font-weight: 500;
-}
-.myGift-guide p {
-    font-size: 17px;
-    margin-top: 5px;
-}
-.voucher-registration {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 50px;
-}
-.code-num, .serial-number {
-    display: flex;
-    align-items: center;
-}
-.code-num>div, .serial-number>div {
-    width: 630px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.voucher-registration input {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #666;
-    outline: none;
-    border-radius: 5px;
-    font-size: 24px;
-}
-.code-num input {
-    width: 190px;
-}
-.serial-number input {
-    width: 100%;
-}
-.code-num>p, .serial-number>p {
-    font-size: 24px;
-    margin-right: 20px;
-}
-.serial-number {
-  margin-top: 10px;
-}
-.userGuide-btn a {
-    background-color: #81879b;
-}
-.reserveFund {
-    display: flex;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
-    margin: 45px 0;
-}
-.reserveFund>li {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-    font-size: 23px;
-    font-weight: 500;
-    padding: 50px 70px;
-}
-.reserveFund>li:first-child {
-    border-right: 1px solid #333;
-}
-.reserveFund-table>div>ul>li:nth-child(1) {
-    width: 220px;
-}
-.reserveFund-table>div>ul>li:nth-child(2) {
-    width: 600px;
-}
-.reserveFund-table>div>ul>li:nth-child(3) {
-    width: 260px;
-}
-.reserveFund-table>div>ul>li:nth-child(4) {
-    width: 260px;
-}
-.reserveFund-des {
-    margin-bottom: 30px;
-}
-.reserveFund-des p {
-    margin-bottom: 7px;
-}
 
 
-.voucher-table>div>ul>li:nth-child(1) {
-    width: 235px;
-}
-.voucher-table>div>ul>li:nth-child(2) {
-    width: 860px;
-}
-.voucher-table>div>ul>li:nth-child(3) {
-    width: 275px;
-}
-.exclamationMark {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background: url("../image/exclamationMark.png") no-repeat center/contain;
-}
-#myGiftDepositMenu .myGift-guide>li {
-    flex: initial;
-}
-#myGiftDepositMenu .myGift-guide>li:first-child {
-    padding: 0 20px 0 10px;
-}
+
+
+
+
+
+
 
 
 

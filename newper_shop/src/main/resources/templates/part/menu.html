@@ -134,29 +134,25 @@
 
 <!--행 일부 메뉴(menu-part) - 좌측 버튼형 ------------------------------------------>
 <!--이벤트 하위 카테고리 분류-->
-<th:block th:fragment="buttonTab">
+<th:block th:fragment="menu-part">
     <div class="container">
-        <ul class="event-content">
-            <!-- 진행중인 이벤트 -->
-            <li class="on">
-                <ul class="button-tab font-lg">
-                    <li class="on">전체</li>
-                    <li>IT</li>
-                    <li>가전</li>
-                    <li>생활</li>
-                </ul>
-                <div class="button-tab-content" th:insert="part/banner :: banner_2"></div>
-            </li>
-            <!-- 종료 된 이벤트 -->
-            <li>
-                <ul class="button-tab font-lg">
-                    <li class="on">전체</li>
-                    <li>IT</li>
-                    <li>가전</li>
-                    <li>생활</li>
-                </ul>
-                <div class="button-tab-content" th:insert="part/banner :: banner_2"></div>
-            </li>
+        <ul class="menu-part menu-button underline-dark">
+            <li class="on">전체</li>
+            <li>IT</li>
+            <li>가전</li>
+            <li>생활</li>
         </ul>
     </div>
+</th:block>
+
+<!--주문 프로세스 브레드 크럼-->
+<th:block th:fragment="cart-breadcrumb">
+    <ul class="menu-part cart-breadcrumb">
+        <li class="on">01. 장바구니</li>
+        <li>02. 주문&#183;결제정보입력</li>
+        <li>03. 주문완료</li>
+        <!--<p class="font-sm semi-bold">
+            <span class="color-blue">01 장바구니</span><i class="route-icon on"></i><i class="route-icon"></i>
+        </p>-->
+    </ul>
 </th:block>
