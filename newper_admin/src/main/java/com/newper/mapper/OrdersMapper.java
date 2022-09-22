@@ -33,5 +33,10 @@ public interface OrdersMapper {
     /**출고전(입금대기,주문완료,상품준비중) 상태의 주문*/
     List<Map<String, Object>> selectOrdersListByBeforeRelease();
 
+    /**자산바코드 주문IDX로 주문상품 조회*/
+    Map<String, Object> selectOrderGsDetailByOIdxAndGBarcode(Map<String, Object> map);
+
+    /**상품배송타입, 주문IDX로 주문상품 출고일 조회*/
+    List<Map<String, Object>> selectOrdersReleaseDateByOIdxAndPDelType(Map<String, Object> map);
 
 }

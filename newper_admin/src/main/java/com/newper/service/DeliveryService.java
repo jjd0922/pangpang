@@ -2,10 +2,12 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.OState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.DeliveryNum;
 import com.newper.entity.Goods;
 import com.newper.entity.OrderGs;
+import com.newper.entity.Orders;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.DeliveryNumRepo;
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -199,12 +202,53 @@ public class DeliveryService {
         return cnt;
     }
 
-    public String checkBarcode (String barcode){
-        Goods goods = goodsRepo.findBygBarcode(barcode);
-        if(goods == null){
-            throw new MsgException("hello");
+    @Transactional
+    public Map<String, Object> checkBarcode (Map<String, Object> map){
+        Map<String, Object> og = ordersMapper.selectOrderGsDetailByOIdxAndGBarcode(map);
+        if(og == null){
+            throw new MsgException("자산 바코드를 확인해주세요.");
         }
-        return "";
+
+        return og;
+    }
+
+    @Transactional
+    public void tegether(Map<String, Object> map){
+        Long oIdx = null;
+        for (String key : map.keySet()) {
+            Long OG_IDX = Long.parseLong(key.replace("delivery_num_",""));
+            OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
+            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
+            if(deliveryNum==null){
+                throw new MsgException("송장 미등록 주문상품입니다.");
+            }
+
+            deliveryNum.setDnNum(map.get(key)+"");
+            deliveryNum.setDnRelease(LocalDate.now());
+            deliveryNumRepo.saveAndFlush(deliveryNum);
+            orderGs.setDeliveryNum(deliveryNum);
+            ordersGsRepo.saveAndFlush(orderGs);
+
+            oIdx=orderGs.getOrders().getOIdx();
+        }
+        boolean check = true;
+        Map<String, Object> reMap = new HashMap<>();
+        reMap.put("O_IDX",oIdx);
+        reMap.put("P_DEL_TYPE", "DELIVERY");
+        List<Map<String, Object>> list = ordersMapper.selectOrdersReleaseDateByOIdxAndPDelType(reMap);
+        for(int i=0; i<list.size(); i++){
+            if(list.get(i)==null){
+                check=false;
+                break;
+            }
+        }
+        if (check) {
+            Orders orders = ordersRepo.getReferenceById(oIdx);
+            orders.setOState(OState.DELIVERY_REQ);
+            ordersRepo.save(orders);
+        }
+
+
     }
 
 
