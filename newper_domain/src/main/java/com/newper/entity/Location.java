@@ -38,6 +38,7 @@ public class Location extends CreatedEntity {
     private String locZone;
     private String locColumn;
     private String locRow;
+    private Integer locMax;
     private String locBarcode;
     private String locMemo;
 

@@ -106,11 +106,11 @@ public class Po extends BaseEntity {
             throw new MsgException("제품상태(품목구분1)을 선택해주세요");
         } else if (getPoSellChannel() == null) {
             throw new MsgException("판매채널유형을 선택해주세요");
-        } else if (getPoInDate().isBefore(LocalDate.now())) {
+        } else if (getPoInDate() == null || getPoInDate().isBefore(LocalDate.now())) {
             throw new MsgException("유효한 입고예정일을 입력해주세요");
-        } else if (getPoDueDate().isBefore(LocalDate.now())) {
+        } else if (getPoDueDate() == null || getPoDueDate().isBefore(LocalDate.now())) {
             throw new MsgException("유효한 납기일을 입력해주세요");
-        } else if (getPoPayDate().isBefore(LocalDate.now())) {
+        } else if (getPoPayDate() == null || getPoPayDate().isBefore(LocalDate.now())) {
             throw new MsgException("유효한 지급예정일을 입력해주세요");
         } else if (!StringUtils.hasText(getPoPayAccount())) {
             throw new MsgException("입금계좌정보를 입력해주세요");
