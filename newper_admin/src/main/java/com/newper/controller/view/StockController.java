@@ -79,7 +79,7 @@ public class StockController {
     @GetMapping("move/pop")
     public ModelAndView stockMovePop(ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
-
+        mav.addObject("whIdx","whIdx");
         return mav;
     }
 

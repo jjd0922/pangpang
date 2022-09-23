@@ -5,9 +5,11 @@
         SELECT
             WH_IDX,
             WH_NAME,
+            LOC_WH_IDX,
             CONCAT(POST, ' ', ADDR1, ' ', ADDR2, ' ', ADDR3, ' ', ADDR4, ' ') AS 'ADDRESS'
         FROM
             warehouse
+                LEFT JOIN ON LOCATION LOC_WH_IDX=WH_IDX
         LIMIT
             #{start}, #{length}
     </select>

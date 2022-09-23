@@ -41,4 +41,7 @@ public interface LocationMapper {
 
     List<Map<String, Object>> selectStockInLocationDatatable2(Map<String, Object> map);
 
+
+    /** 임시 테이블에 insert */
+    void insertLocationMoveGoods(@Param("lm_idx") long lm_idx, @Param("g_idxs") long[] g_idxs);
 }

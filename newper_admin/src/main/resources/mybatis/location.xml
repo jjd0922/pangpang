@@ -45,6 +45,14 @@
             LIMIT #{start},#{length}
         </if>
     </select>
+    <insert id="insertLocationMoveGoods">
+        INSERT IGNORE INTO LOCATION_MOVE_GOODS
+        (LMG_LM_IDX, LMG_G_IDX)
+        VALUES
+        <foreach collection="g_idxs" separator="," item="g_idx">
+            (#{lm_idx}, #{g_idx})
+        </foreach>
+    </insert>
 
     <select id="countLocationDatatable" resultType="long">
         SELECT

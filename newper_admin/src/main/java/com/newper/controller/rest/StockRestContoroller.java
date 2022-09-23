@@ -170,6 +170,7 @@ public class StockRestContoroller {
     /** 로케이션에 해당하는 자산들 select */
     @PostMapping("/locGoods.ajax")
     public ReturnDatatable locGoods(ParamMap paramMap) {
+        System.out.println(paramMap.getMap());
         ReturnDatatable rd = new ReturnDatatable("재고현황");
         rd.setData(locationMapper.selectGoodsByLocation(paramMap.getMap()));
         return rd;
@@ -246,15 +247,12 @@ public class StockRestContoroller {
 
     /** 창고이동관리 작업완료 처리 */
     @PostMapping(value = "changeLocation.ajax")
-    public ReturnMap changeLocation(ParamMap paramMap) {
+    public ReturnMap changeLocation(ParamMap paramMap,int[] locIdx, long[] gIdx) {
         ReturnMap rm = new ReturnMap();
-
+        System.out.println(locIdx);
         paramMap.getMap();
-
         System.out.println("paramMap = " + paramMap);
-
-     /*   int idx = locationService.changeLocation(paramMap);*/
-
+        locationService.changeLocation(paramMap,locIdx,gIdx);
         rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
 
         return rm;
