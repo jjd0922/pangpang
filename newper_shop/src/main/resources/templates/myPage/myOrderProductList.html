@@ -39,7 +39,7 @@
         <p class="color-grey666">* 주문조회기간은 최대 3년 전까지 조회가 가능합니다.</p>
         <div>
             <!-- 주문 내역 테이블 제목 -->
-            <ul class="myShopping-table-title recent-orderHistory font-sm">
+            <ul class="table-title2 recent-orderHistory-table-title font-sm">
                 <li>주문일자</li>
                 <li>상품명</li>
                 <li>AS기간</li>
@@ -49,7 +49,7 @@
                 <li>상세조회</li>
             </ul>
             <!-- 주문 내역 상품 리스트 -->
-            <ul class="recent-orderHistory-list">
+            <ul>
                 <th:block th:if="${shopList == null}">
                     <li class="myShopping-table-item orderHistory-item">
                         <ul>
@@ -58,18 +58,18 @@
                     </li>
                 </th:block>
                 <!-- 상품 1 -->
-                <li class="myShopping-table-item orderHistory-item" th:each="shop:${shopList}">
-                    <ul>
+                <li th:each="shop:${shopList}">
+                    <ul class="table-content2 recent-orderHistory-table-content">
                         <!-- 주문일자 -->
-                        <li>
-                            <p class="semi-bold" th:text="${shop.createdDate}">2022-08-10</p>
-                            <div class="color-grey999">
+                        <li class="flex-column">
+                            <p class="bold" th:text="${shop.createdDate}">2022-08-10</p>
+                            <div class="color-grey999 table-order-num">
                                 <p>주문번호</p>
                                 <p th:text="${shop.shopIdx}">16616564654535</p>
                             </div>
                         </li>
                         <!-- 상품명 -->
-                        <li>
+                        <li class="itemName">
                             <div class="order-item-thumb">
                                 <a href="javascript:;">
                                     <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
@@ -79,7 +79,7 @@
                             <div class="order-item-info-wrap">
                                 <div>
                                     <a href="javascript:;">
-                                        <h3 class="font-sm semi-bold" th:text="${shop.shopName}">삼성 노트북 코어i5 램8G SSD 대용량
+                                        <h3 class="font-sm bold" th:text="${shop.shopName}">삼성 노트북 코어i5 램8G SSD 대용량
                                             듀얼하드 윈10</h3>
                                     </a>
                                 </div>
@@ -92,23 +92,24 @@
                         </li>
                         <!-- AS기간 -->
                         <li class="as-period">
-                            <p class="color-blue semi-bold">AS케어상품</p>
+                            <p class="color-blue bold">AS케어상품</p>
                             <p>3개월 무상 (기본제공)</p>
                             <p>-</p>
                             <p>2022-08-01&#8764;<br>2022-10-01</p>
                         </li>
                         <!-- 수량 -->
                         <li>
-                            <p class="font-sm semi-bold">1개</p>
+                            <p class="font-sm bold">1개</p>
                         </li>
                         <!-- 결제금액 -->
                         <li>
-                            <p class="font-sm">179,000<span class="won">원</span></p>
+                            <p class="font-sm bold">179,000<span class="won">원</span></p>
                         </li>
                         <!-- 주문현황 -->
-                        <li>
+                        <li class="flex-column bold orderStatus">
+                            <!-- 상품준비중 -->
                             <p class="color-blue">상품준비중</p>
-                            <!-- 배송완료 시 아래 <div> 태그 추가
+                            <!-- 배송완료
                             <p>배송완료</p>
                             <div>
                                 <p>CJ 대한통운</p>
@@ -116,11 +117,9 @@
                             </div> -->
                         </li>
                         <!-- 상세조회 -->
-                        <li>
-                            <div>
-                                <div class="btn btn3"><a onclick="orderDetail()">주문상세보기</a></div>
-                                <div class="btn btn4"><a onclick="receiptDetail()">영수증조회</a></div>
-                            </div>
+                        <li class="flex-column button-vertical-group">
+                            <div class="btn btn3"><a onclick="orderDetail()">주문상세보기</a></div>
+                            <div class="btn btn4"><a onclick="receiptDetail()">영수증조회</a></div>
                         </li>
                     </ul>
                 </li>
