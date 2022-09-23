@@ -307,13 +307,8 @@
     }
 
     /**전체동의*/
-    function agreeAll(isTrue) {
-        $('input[attr=agree]').prop('checked', isTrue);
-    }
-
-    /**선택동의 사항 모두 체크*/
-    function agreeAllOpt(isTrue) {
-        $('input[opt=opt]').prop('checked', isTrue);
+    function agreeAll(target, isTrue) {
+        $(target).prop('checked', isTrue);
     }
 
     /** 체크박스 전체선택 확인 */
@@ -335,10 +330,10 @@
 </script>
 <script>
     $('#allConsent').change(function () {
-        agreeAll($(this).prop('checked'));
+        agreeAll('input[attr=agree]',$(this).prop('checked'));
     });
     $('#joinConsent5').change(function () {
-        agreeAllOpt($(this).prop('checked'));
+        agreeAll('input[opt=opt]',$(this).prop('checked'));
     });
     $('input[opt=opt]').change(function () {
         isCheckedAll('input[opt=opt]', 'joinConsent5');

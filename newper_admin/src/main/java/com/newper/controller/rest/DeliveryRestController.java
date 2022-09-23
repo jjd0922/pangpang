@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(value = "/deliveryManagement/")
+@RequestMapping(value = "/delivery/")
 @RequiredArgsConstructor
 @RestController
-public class DeliveryManagementRestController {
+public class DeliveryRestController {
 
     private final DeliveryMapper deliveryMapper;
     private final DeliveryService deliveryService;

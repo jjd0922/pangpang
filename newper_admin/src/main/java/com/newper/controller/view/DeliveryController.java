@@ -11,10 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
-@RequestMapping(value = "/deliveryManagement/")
+@RequestMapping(value = "/delivery/")
 @RequiredArgsConstructor
 @RestController
-public class DeliveryManagementController {
+public class DeliveryController {
 
     private final OrdersMapper ordersMapper;
 
@@ -23,7 +23,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("delivery")
     public ModelAndView delivery() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/delivery");
+        ModelAndView mav = new ModelAndView("delivery/delivery");
 
         return mav;
     }
@@ -33,7 +33,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("invoiceUploadPop")
     public ModelAndView invoiceUploadPop() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/invoiceUploadPop");
+        ModelAndView mav = new ModelAndView("delivery/invoiceUploadPop");
         return mav;
     }
 
@@ -42,7 +42,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("invoiceIntegratedPop")
     public ModelAndView invoiceIntegratedPop() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/invoiceIntegratedPop");
+        ModelAndView mav = new ModelAndView("delivery/invoiceIntegratedPop");
         return mav;
     }
 
@@ -51,7 +51,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("releasePop")
     public ModelAndView releasePop() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/releasePop");
+        ModelAndView mav = new ModelAndView("delivery/releasePop");
         return mav;
     }
 
@@ -60,7 +60,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("deliveryDetailPop")
     public ModelAndView deliveryDetailPop() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/deliveryDetailPop");
+        ModelAndView mav = new ModelAndView("delivery/deliveryDetailPop");
         return mav;
     }
 
@@ -69,7 +69,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("installation")
     public ModelAndView installation() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/installation");
+        ModelAndView mav = new ModelAndView("delivery/installation");
 
         return mav;
     }
@@ -79,7 +79,7 @@ public class DeliveryManagementController {
      */
     @GetMapping("deliveryReturn")
     public ModelAndView deliveryReturn() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/deliveryReturn");
+        ModelAndView mav = new ModelAndView("delivery/deliveryReturn");
 
         return mav;
     }
@@ -89,21 +89,21 @@ public class DeliveryManagementController {
      */
     @GetMapping("installationReturn")
     public ModelAndView installationReturn() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/installationReturn");
+        ModelAndView mav = new ModelAndView("delivery/installationReturn");
 
         return mav;
     }
 
     @GetMapping("integratedDetail")
     public ModelAndView integratedDetail() {
-        ModelAndView mav = new ModelAndView("deliveryManagement/integratedDetail");
+        ModelAndView mav = new ModelAndView("delivery/integratedDetail");
 
         return mav;
     }
 
     @GetMapping("integratedDetail/{oIdx}")
     public ModelAndView detail(@PathVariable int oIdx) {
-        ModelAndView mav = new ModelAndView("deliveryManagement/integratedDetail");
+        ModelAndView mav = new ModelAndView("delivery/integratedDetail");
 
         Map<String, Object> map = ordersMapper.selectOrderDetail(oIdx);
         String o_location = OLocation.valueOf(map.get("O_LOCATION") + "").getOption();

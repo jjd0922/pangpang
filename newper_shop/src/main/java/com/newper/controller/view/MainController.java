@@ -117,26 +117,6 @@ public class MainController {
         ModelAndView mav = new ModelAndView("orderProcess/order");
         return mav;
     }
-    /* auth - 회원가입 안내 */
-    @GetMapping(value = "joinWelcome")
-    public ModelAndView joinWelcome(){
-        ModelAndView mav = new ModelAndView("auth/joinWelcome");
-        return mav;
-    }
-
-    /* auth - 회원가입 정보입력 */
-    @GetMapping(value = "join")
-    public ModelAndView join(){
-        ModelAndView mav = new ModelAndView("auth/join");
-        return mav;
-    }
-
-    /** auth - 회원가입 완료 */
-    @GetMapping(value = "joinComplete")
-    public ModelAndView joinComplete(){
-        ModelAndView mav = new ModelAndView("auth/joinComplete");
-        return mav;
-    }
 
     /*테스트용 페이지*/
     @GetMapping(value = "mainMenu/index")
