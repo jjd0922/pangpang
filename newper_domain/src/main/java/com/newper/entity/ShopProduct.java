@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.SpState;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -29,7 +30,10 @@ public class ShopProduct extends BaseEntity {
     private Category category;
 
     private String spName;
-    private String spState;
+
+    @Enumerated(EnumType.STRING)
+    private SpState spState;
+
     private Integer spMinPrice;
     private Integer spMaxPrice;
     private String spBaseName;

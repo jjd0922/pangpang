@@ -6,14 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ShType implements EnumOption {
+public enum SpState implements EnumOption {
 
-    /**SMS*/
-    SMS("SMS"),
-    /**KAKAO*/
-    KAKAO("KAKAO"),
-    /**PUSH*/
-    PUSH("PUSH");
+     Y("판매")
+    ,N("판매중지")
+
+    ;
 
     private String option;
 }
