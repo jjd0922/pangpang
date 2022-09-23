@@ -531,8 +531,7 @@
                                             </span>
                                             <select class="form-control select" data-placeholder="선택" name="P_DEL_COMPANY">
                                                 <option></option>
-                                                <option value="true" th:selected="${product?.pDelCompany eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pDelCompany eq false}">N</option>
+                                                <option th:each="opt: ${T(com.newper.constant.PDelCompany).values()}" th:text="${opt.option}" th:value="${opt.name()}" th:selected="${product?.pDelCompany == opt}"></option>
                                             </select>
                                         </div>
                                     </div>
