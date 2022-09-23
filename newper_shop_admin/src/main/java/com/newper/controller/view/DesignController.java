@@ -1,6 +1,9 @@
 package com.newper.controller.view;
 
+import com.newper.entity.MainSection;
+import com.newper.exception.MsgException;
 import com.newper.mapper.ShopMapper;
+import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import java.util.Map;
 public class DesignController {
 
     private final ShopRepo shopRepo;
+    private final MainSectionRepo mainSectionRepo;
     private final ShopMapper shopMapper;
 
     /** 공통 디자인 영역*/
@@ -74,10 +78,14 @@ public class DesignController {
     }
 
     /** 메인섹션 신규, 상세*/
-    @GetMapping(value = {"mainsection/{msIdx}","mainpage/new"})
-    public ModelAndView mainSection(@PathVariable(required = false) String msIdx){
+    @GetMapping(value = {"mainsection/{msIdx}","mainsection/new"})
+    public ModelAndView mainSection(@PathVariable(required = false) Long msIdx){
         ModelAndView mav = new ModelAndView("design/mainsection_msIdx");
 
+        if(msIdx != null){
+            MainSection mainsection = mainSectionRepo.findMainSectionBymsIdx(msIdx);
+            mav.addObject("mainsection", mainsection);
+        }
         return mav;
     }
     /** 메인섹션 배너 신규, 상세*/
