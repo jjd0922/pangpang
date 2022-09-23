@@ -586,7 +586,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 지식쇼핑 최저가</span>
                                             </span>
-                                            <input type="text" name="P_NAVER1" class="form-control" th:value="${product?.pNaver?.P_NAVER1}">
+                                            <input type="text" name="P_NAVER1" class="form-control" th:value="${product?.pNaver?.P_NAVER1}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -596,7 +596,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 가격비교API 호출여부</span>
                                             </span>
-                                            <input type="text" name="P_NAVER2" class="form-control" th:value="${product?.pNaver?.P_NAVER2}">
+                                            <input type="text" name="P_NAVER2" class="form-control" th:value="${product?.pNaver?.P_NAVER2}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -606,7 +606,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">N:미체크, Y:추천, S:동일스펙, M:동일모델</span>
                                             </span>
-                                            <input type="text" name="P_NAVER3" class="form-control" th:value="${product?.pNaver?.P_NAVER3}">
+                                            <input type="text" name="P_NAVER3" class="form-control" th:value="${product?.pNaver?.P_NAVER3}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -616,7 +616,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 가격비교 API 호출시간</span>
                                             </span>
-                                            <input type="text" name="P_NAVER4" class="form-control" th:value="${product?.pNaver?.P_NAVER4}">
+                                            <input type="text" name="P_NAVER4" class="form-control" th:value="${product?.pNaver?.P_NAVER4}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -626,7 +626,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 가격비교 API 이미지경로</span>
                                             </span>
-                                            <input type="text" name="P_NAVER5" class="form-control" th:value="${product?.pNaver?.P_NAVER5}">
+                                            <input type="text" name="P_NAVER5" class="form-control" th:value="${product?.pNaver?.P_NAVER5}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -636,7 +636,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 가격비교 API 타이틀</span>
                                             </span>
-                                            <input type="text" name="P_NAVER6" class="form-control" th:value="${product?.pNaver?.P_NAVER6}">
+                                            <input type="text" name="P_NAVER6" class="form-control" th:value="${product?.pNaver?.P_NAVER6}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -646,7 +646,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입점시스템 네이버URL 입력여부</span>
                                             </span>
-                                            <input type="text" name="P_NAVER7" class="form-control" th:value="${product?.pNaver?.P_NAVER7}">
+                                            <input type="text" name="P_NAVER7" class="form-control" th:value="${product?.pNaver?.P_NAVER7}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -656,7 +656,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 가격비교 검색어</span>
                                             </span>
-                                            <input type="text" name="P_NAVER8" class="form-control" th:value="${product?.pNaver?.P_NAVER8}">
+                                            <input type="text" name="P_NAVER8" class="form-control" th:value="${product?.pNaver?.P_NAVER8}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -666,7 +666,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버쇼핑 연동 여부 (스마트스토어 등록 여부)</span>
                                             </span>
-                                            <input type="text" name="P_NAVER9" class="form-control" th:value="${product?.pNaver?.P_NAVER9}">
+                                            <input type="text" name="P_NAVER9" class="form-control" th:value="${product?.pNaver?.P_NAVER9}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -954,7 +954,15 @@
             type: 'POST',
             data:'P_NAME='+name+'&P_MODEL='+model,
             success:function(res){
-                $('input[name="P_NAVER1"]').val(res.data.price);
+                $('input[name="P_NAVER1"]').val(res.data.P_NAVER1);
+                $('input[name="P_NAVER2"]').val(res.data.P_NAVER2);
+                $('input[name="P_NAVER3"]').val(res.data.P_NAVER3);
+                $('input[name="P_NAVER4"]').val(res.data.P_NAVER4);
+                $('input[name="P_NAVER5"]').val(res.data.P_NAVER5);
+                $('input[name="P_NAVER6"]').val(res.data.P_NAVER6);
+                $('input[name="P_NAVER7"]').val(res.data.P_NAVER7);
+                $('input[name="P_NAVER8"]').val(res.data.P_NAVER8);
+                $('input[name="P_NAVER9"]').val(res.data.P_NAVER9);
             }
         })
     }
