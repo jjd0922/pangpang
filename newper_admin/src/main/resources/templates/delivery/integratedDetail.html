@@ -105,7 +105,7 @@
 </div>
 </div>
 
-<th:block th:replace="deliveryManagement/modal/barcodeModal.html"/>
+<th:block th:replace="delivery/modal/barcodeModal.html"/>
 
 <!-- 공통 js -->
 
@@ -168,7 +168,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/deliveryManagement/orderGoodsDetail.dataTable',
+            url:'/delivery/orderGoodsDetail.dataTable',
             type:'post'
         },
         columnDefs: [ {
@@ -205,7 +205,7 @@
 <script>
     function orderDetail(O_IDX){
         var table = $('#orderGoodsStockTable').DataTable();
-        table.ajax.url('/deliveryManagement/orderGoodsDetail.dataTable?O_IDX='+O_IDX).load(null,false);
+        table.ajax.url('/delivery/orderGoodsDetail.dataTable?O_IDX='+O_IDX).load(null,false);
         $('#barButton').attr('onclick', 'barcodeModal('+O_IDX+')');
         $('#deliveryScanTable').html('');
     }
@@ -216,7 +216,7 @@
 
     function togetherSave(){
         $.ajax({
-            url:'/deliveryManagement/together.ajax',
+            url:'/delivery/together.ajax',
             type:'POST',
             data:$('#tegetherTableForm').serialize(),
             success:function(res){
