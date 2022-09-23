@@ -210,9 +210,26 @@ body.no-scroll {
     height: 100%;
     margin: 0 auto;
 }
-.container-full {
+.container-full .container {
     max-width: 100% !important;
 }
+
+@media (max-width:991px) {
+    .sm-container-full,
+    .sm-container-full .container,
+    .sm-padding-fit {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .sm-margin-fit {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    .sm-display-none {
+        display: none;
+    }
+}
+
 
 #mo-bottom-nav {
     display: none;
@@ -876,6 +893,8 @@ nav .gnb-ctg-all {
 }
 
 .item-info {
+    display: flex;
+	flex-direction: column;
     margin-top: 15px;
 }
 .thumbnail-wide .item-info {
@@ -890,6 +909,7 @@ nav .gnb-ctg-all {
 
 .item-inner-wrap {
     display: flex;
+	width: 100%;
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
