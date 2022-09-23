@@ -27,6 +27,9 @@
                         <a class="btn btn-sm btn-info" id="test3" style="display: none" href=javascript:finishedBtn();>작업완료(입고)</a>
                         <input type="hidden" id="test4">
                         <input type="hidden" id="test5">
+                        <input type="hidden" id="test6">
+                        <input type="hidden" id="test7">
+                        <a  class="btn btn-sm btn-info" id="test8" style="display: none"  href=javascript:eqFinishedBtn();>작업완료</a>
                     </div>
                 </div>
             </div>
@@ -56,9 +59,11 @@
                                                                       창고이동상태
                                                                 </span>
                                                             </span>
-                                                            <select name="" class="form-control select">
-                                                                <option th:each="opt: ${T(com.newper.constant.WhState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(company?.comState) eq opt.name()}"></option>
-                                                            </select>
+                                                  <!--          <select name="LM_STATE" class="form-control select">
+                                                              &lt;!&ndash;  <option th:each="opt: ${T(com.newper.constant.LmState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" ></option>&ndash;&gt;
+
+                                                           </select>-->
+                                                       <input type="text" class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -72,7 +77,7 @@
                                                                       요청자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="WM_U_IDX" class="form-control">
+                                                            <input type="text" name="LM_U_IDX" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -86,13 +91,14 @@
                                                                       처리자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="WM_U_IDX2" class="form-control">
+                                                            <input type="text" name="LM_U_IDX" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
                                                 <!-- 입력필드 -->
-                                                <div class="col-sm-12">
+<!--                                                <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="input-group">
                                                             <span class="input-group-prepend">
@@ -104,7 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
 
                                             <div class="col-md-6 pl-0">
                                                 <!-- 입력필드 -->
@@ -116,12 +122,12 @@
                                                                       창고이동코드
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="WM_CODE" class="form-control">
+                                                            <input type="text" name="LM_IDX" class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- 입력필드 -->
+<!--
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -134,6 +140,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+-->
 
                                                 <!-- 입력필드 -->
                                                 <div class="col-sm-12">
@@ -144,7 +151,7 @@
                                                                       창고이동출고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="WM_OUT_DATE" class="form-control daterange-singlenull" readonly>
+                                                            <input type="text" name="LM_OUT_DATE" class="form-control daterange-singlenull" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -158,12 +165,30 @@
                                                                       창고이동입고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="WM_IN_DATE" class="form-control daterange-singlenull" readonly>
+                                                            <input type="text" name="LM_IN_DATE" class="form-control daterange-singlenull" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 pl-0">
+                                                <!-- 입력필드 -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                      메모
+                                                                </span>
+                                                            </span>
+                                                            <input type="text" name="LM_MEMO" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <input type="hidden" id="barTest" >
                                         <legend class="mt-3 d-flex justify-content-between align-items-center">
                                         2. 출고창고
@@ -184,6 +209,7 @@
                                             <td>열</td>
                                             <td>행</td>
                                             <td>로케이션</td>
+                                            <td>코드</td>
                                             <td>바코드</td>
                                             <td>삭제</td>
                                             </thead>
@@ -212,6 +238,7 @@
                                             <td>열</td>
                                             <td>행</td>
                                             <td>로케이션</td>
+                                            <td>코드</td>
                                             <td>바코드</td>
                                             <td>삭제</td>
                                             </thead>
@@ -363,8 +390,10 @@
         $('#warehouseTable tbody').append(
             '<tr>' +
             '   <td><input type="hidden" name="locIdx" value="'+data.LOC_IDX+'">'+data.WH_NAME+'</td>' +
-            '   <td>'+data.LOC_FORM_STR+'</td>' +
+            '   <td><input type="hidden" name="whIdxOut" value="'+data.WH_IDX+'">'+data.LOC_FORM_STR+'</td>' +
+       /*     '   <td>'+data.LOC_FORM_STR+'</td>' +*/
             '   <td>'+data.LOC_ZONE+'</td>' +
+            '   <td>'+data.LOC_IDX+'</td>' +
             '   <td>'+data.LOC_COLUMN+'</td>' +
             '   <td>'+data.LOC_ROW+'</td>' +
             '   <td>'+data.LOC_CODE+'</td>' +
@@ -373,20 +402,35 @@
             '</tr>'
         );
         $('#test4').val(data.LOC_IDX);
+        $('#test6').val(data.WH_IDX);
         var test4 = $('#test4').val();
         var test5 = $('#test5').val();
-        if(test4==test5){
-            $('#test3').show();
-            $('#test1').hide();
-            $('#test2').hide();
-        }else{
+
+        var test6 = $('#test6').val();
+        var test7 = $('#test7').val();
+        console.log(test6)
+        console.log(test7)
+        if(test6==test7){
+            if (test5==test4){
+                alert("해당 경우는 창고와 로케이션이 같습니다.");
+                $('#test3').hide();
+                $('#test1').hide();
+                $('#test2').hide();
+
+
+            }
+            else {
+                $('#test8').show();
+                $('#test3').hide();
+                $('#test1').hide();
+                $('#test2').hide();
+            }}else{
             $('#test1').show();
             $('#test2').show();
             $('#test3').show();
         }
         selectLocGoods(data.LOC_IDX);
     }
-
 
 /*
     if ($('#searchGoodsByBarcode').success().show()){
@@ -405,9 +449,11 @@
         $('#warehouseTable2 tbody').append(
             '<tr>' +
             '   <td><input type="hidden" name="locIdx" value="'+data.LOC_IDX+'">'+data.WH_NAME+'</td>' +
-            '   <td>'+data.LOC_FORM_STR+'</td>' +
+            '   <td><input type="hidden" name="whIdxIn" value="'+data.WH_IDX+'">'+data.LOC_FORM_STR+'</td>' +
+       /*     '   <td>'+data.LOC_FORM_STR+'</td>' +*/
             '   <td>'+data.LOC_ZONE+'</td>' +
             '   <td>'+data.LOC_COLUMN+'</td>' +
+            '   <td>'+data.LOC_IDX+'</td>' +
             '   <td>'+data.LOC_ROW+'</td>' +
             '   <td>'+data.LOC_CODE+'</td>' +
             '   <td>'+data.LOC_BARCODE+'</td>' +
@@ -415,13 +461,28 @@
             '</tr>'
         );
         $('#test5').val(data.LOC_IDX);
+        $('#test7').val(data.WH_IDX);
         var test4 = $('#test4').val();
         var test5 = $('#test5').val();
-        if(test4==test5){
-            $('#test3').show();
-            $('#test1').hide();
-            $('#test2').hide();
-        }else{
+        console.log(test6)
+        console.log(test7)
+        var test6 = $('#test6').val();
+        var test7 = $('#test7').val();
+        if(test6==test7){
+            if (test5==test4){
+                alert("해당 경우는 창고와 로케이션이 같습니다.");
+                $('#test3').hide();
+                $('#test1').hide();
+                $('#test2').hide();
+        /*        $('#warehouseTable2').hide();*/
+            }
+
+            else {
+                $('#test8').show();
+                $('#test3').hide();
+                $('#test1').hide();
+                $('#test2').hide();
+            }}else{
             $('#test1').show();
             $('#test2').show();
             $('#test3').show();
@@ -434,7 +495,11 @@
         $.ajax({
             url: '/stock/locGoods.ajax',
             data: {
-                'locIdx' : $('input[name=locIdx]').val()
+                'locIdx' : $('input[name=locIdx]').val(),
+                'whIdxIn' : $('input[name=whIdxIn]').val(),
+                'whIdxOut' : $('input[name=whIdxOut]').val()
+
+
             },
             type: 'post',
             success: function (res) {
@@ -451,7 +516,8 @@
         $.each(data, function (index, value) {
             html += '<tr>' +
                 '<td>' + value.G_STATE+ '</td>' +
-                '<td>' + value.G_BARCODE + '</td>' +
+                '<td><input type="hidden" name="gIdx" value="'+value.G_IDX+'">'+ value.G_BARCODE +'</td>'+
+           /*     '<td>' + value.G_BARCODE + '</td>' +*/
                 '<td>' + value.P_IDX + '</td>' +
                 '<td>' + value.P_NAME + '</td>' +
                 '<td>' + value.PS_TYPE + '</td>' +
@@ -536,6 +602,7 @@
 
     /**창고 이동등록 바코드리딩 자산 행추가*/
     function appendLocGoods2(data) {
+        $('#locationGoodsTbody').append('<form id="goodsForm">');
         $('#locationGoodsTbody').append(
             '<tr>' +
             '<td><input type="hidden" name="locIdx" value="'+data.barcode+'"></td>' +
@@ -557,10 +624,40 @@
             /* '<td><a onclick="deleteRow(' + value.G_IDX + ')" class="badge badge-secondary">삭제</a></td>' +*/
             '</tr>'
         );
+        $('#locationGoodsTbody').append('</form>');
+
+    }
+    function finishedBtn(){
+                $.ajax({
+                    url:'/stock/changeLocation.ajax',
+                    type: 'post'
+                    ,data:$('#regiForm').serialize(),
+
+                    success: function(res){
+                        $('#userTable').DataTable().ajax.reload();
+                    },
+                    error: function(){
+                    }
+                });
 
     }
 
-    function finishedBtn(){
+    function eqFinishedBtn(){
+        $.ajax({
+            url:'/stock/changeLocation.ajax',
+            type: 'post'
+            ,data:$('#regiForm').serialize()+"&LM_STATE=FINISHWORK",
+
+            success: function(res){
+                $('#userTable').DataTable().ajax.reload();
+            },
+            error: function(){
+            }
+        });
+    }
+ /*   +"&"+$('#goodsForm').serialize()*/
+
+/*    function finishedBtn(){
         $.ajax({
             url:'/stock/changeLocation.ajax'
             ,type:'post'
@@ -580,7 +677,7 @@
                 alert('잠시 후 시도해주세요');
             }
         });
-    }
+    }*/
 </script>
 <script th:inline="javascript">
     $('#searchWarehouseBtn').on('click', openWarehouseModal);

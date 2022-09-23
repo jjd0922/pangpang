@@ -17,12 +17,15 @@
             WH_STATE,
             WH_NAME,
             COM_NAME,
-            CE_NAME
+            CE_NAME,
+            LOC_WH_IDX
         FROM
             WAREHOUSE
                 LEFT JOIN COMPANY ON WH_COM_IDX = COM_IDX
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
+                LEFT JOIN LOCATION ON LOC_WH_IDX = WH_IDX
         <where>
+             LOC_WH_IDX= #{locWhIdx}
             <include refid="includeWarehouseDatatable"></include>
         </where>
         ORDER BY

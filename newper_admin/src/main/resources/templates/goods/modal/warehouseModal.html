@@ -92,7 +92,8 @@
                 {'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-                ,{'title':'창고명','data':'WH_NAME', 'defaultContent':''}
+                ,{'title':'창고명','data':'WH_NAME', 'defaultContent':'','render': function (data, type, full, meta) {
+                        return '<input type="hidden" name="whIdx" value="'+full.WH_IDX+'">';}}
                 ,{'title':'창고주소','data':'ADDRESS', 'defaultContent':''}
                 ,{'title':'선택','data':'WH_IDX','defaultContent':'', 'render':function(data,type,full,meta){
                         return '<button type="button" class="btn btn-sm btn-primary ml-1" onclick="warehouseSelect('+ meta.row +')">선택</button>';
