@@ -91,7 +91,6 @@ public class CustomerService {
         String cuPhone = paramMap.getString("phone1")+"-"+paramMap.getString("phone2")+"-"+paramMap.getString("phone3");
         String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
         customer.join(cuPhone, cuEmail, paramMap.getMap());
-        customer.setCuPw(Common.parseSHA(paramMap.getString("cuPw")));
         customerRepo.save(customer);
     }
 
