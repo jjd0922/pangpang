@@ -1,10 +1,7 @@
 package com.newper.dto;
 
-import com.newper.converter.ConverterLocalDate;
+import com.newper.converter.ConvertLocalDate;
 import com.newper.exception.MsgException;
-import net.bytebuddy.asm.Advice;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.ValidationException;
 import org.modelmapper.config.Configuration;
@@ -12,7 +9,6 @@ import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ParamMap {
@@ -219,7 +215,7 @@ public class ParamMap {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
-        modelMapper.addConverter(new ConverterLocalDate(), String.class, LocalDate.class);
+        modelMapper.addConverter(new ConvertLocalDate(), String.class, LocalDate.class);
 
         Object map = modelMapper.map(this.map, classType);
         return (S)map;

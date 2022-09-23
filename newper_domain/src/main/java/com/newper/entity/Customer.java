@@ -4,6 +4,8 @@ import com.newper.constant.CuGender;
 import com.newper.constant.CuRate;
 import com.newper.constant.CuState;
 import lombok.*;
+import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -32,6 +35,7 @@ public class Customer {
     private Shop shop;
     private String cuName;
     private String cuId;
+    @ColumnTransformer(write = "SHA2(?,512)")
     private String cuPw;
     private String cuTelecom;
     private String cuPhone;
