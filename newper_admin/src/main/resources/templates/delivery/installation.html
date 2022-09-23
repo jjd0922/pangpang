@@ -138,7 +138,7 @@
 
 </body>
 
-<th:block th:replace="/deliveryManagement/modal/installationModal.html"/>
+<th:block th:replace="/delivery/modal/installationModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -176,7 +176,7 @@
 <script>
     function searchBtn() {
         var table = $('#installationTable').DataTable();
-        table.page('first').ajax.url('/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL').load(null, false);
+        table.page('first').ajax.url('/delivery/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL').load(null, false);
     }
 
     function installation(){
@@ -213,7 +213,7 @@
 
     function check(dnIdx,ogIdx){
         $.ajax({
-            url:'/deliveryManagement/deliveryNum.ajax',
+            url:'/delivery/deliveryNum.ajax',
             data:'DN_IDX='+dnIdx+'&OG_IDX='+ogIdx,
             type:'POST',
             success:function(res){
@@ -235,7 +235,7 @@
         if(confirm("저장하시겠습니까?")){
             var param = new FormData($('#installationModalForm')[0]);
             $.ajax({
-                url:'/deliveryManagement/saveInstall.ajax',
+                url:'/delivery/saveInstall.ajax',
                 data: param,
                 processData:false,
                 contentType:false,
@@ -262,7 +262,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/deliveryManagement/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL',
+            url: '/delivery/installation.dataTable?' + $('#installationForm').serialize()+'&P_DEL_TYPE=INSTALL',
             type: 'post'
         },
         columnDefs: [{
