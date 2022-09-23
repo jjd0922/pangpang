@@ -97,10 +97,6 @@
                                     <fieldset class="mb-0">
                                         <legend class="d-flex justify-content-between">
                                             <span>2. 섹션 상세 정보</span>
-                                            <div>
-                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertBanner()">배너 그룹 생성</a>
-                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertProduct()">상품 그룹 생성</a>
-                                            </div>
                                         </legend>
                                         <div class="row" th:each="i :${#numbers.sequence(1, maxColumn)}" th:classappend="'ms_section'+${i}">
                                             <div class="col-sm-12 col-md-6">
@@ -181,16 +177,9 @@
 
 <!--shop modal-->
 <th:block th:replace="shop/modal/shopModal.html"></th:block>
+<th:block th:replace=""
 
 <script th:inline="javascript">
-    function popInsertBanner(){
-        var focusPopup = window.open('/page/mainsection/banner/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
-    function popInsertProduct(){
-        var focusPopup = window.open('/page/mainsection/shopProduct/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
     function saveBtn(){
         if(window.confirm('저장하시겠습니까?')){
             $.ajax({
