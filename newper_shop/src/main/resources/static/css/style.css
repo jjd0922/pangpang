@@ -1,8 +1,12 @@
 /********** 메인 이미지 slide [swiper] **********/
 .main-slide {
-    overflow:hidden;
-    border-bottom: 2px solid #ebebeb;
     position: relative;
+    overflow:hidden;
+    max-height: var(--main-slide-height);
+    border-bottom: 1px solid #ebebeb;
+}
+.main-slide .swiper-wrapper {
+    max-height: var(--main-slide-height);
 }
 /*.swiper-main-image {
     overflow: initial;
@@ -13,10 +17,8 @@
 .swiper-main-image {
 	overflow: initial;
 	width: calc(var(--container-width) - var(--ctg-all-width));
-	height: 100%;
 	transform: translateX(140px);
 }
-
 .item-img {
     display: flex;
     justify-content: center;
@@ -123,20 +125,20 @@
 /* swiper-progress-bar */
 .swiper-progress-bar {
     position: relative;
-    bottom:0;
-    left:0;
+    bottom: 2px;
+    left: 0;
     width: 100%;
     height: 2px;
     z-index: 1;
 }
 .slide-progress-bar {
-    display: inline-block;
+    /*display: inline-block;
     position: absolute;
     bottom: 2px;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: #fff;
+    height: 2px;*/
+    background: transparent;
 }
 .slide-progress-bar::after {
     content: "";
@@ -145,7 +147,7 @@
     left: 0;
     width: 0;
     height: 100%;
-    background-color: #314AD7;
+    background-color: var(--scPoint);
 }
 .swiper-progress-bar.animate .slide-progress-bar::after {
     transition: width linear;
@@ -174,17 +176,19 @@
 /* 슬라이드 이미지 내부 고정 - 좌측 nav category all */
 .ctg-all {
     width: var(--ctg-all-width);
-    height:100%;
+    height: var(--main-slide-height);
     position: absolute;
-    top:0;
+    top: 0;
     left: calc(0% - var(--ctg-all-width));
     z-index: 3;
     background-color: #314ad7;
     padding: 10px 0;
+    display: flex;
+    flex-direction: column;
 }
 .ctg-all>li {
     width: 100%;
-    height: calc(500px / 9);
+    height: 100%;
 }
 .ctg-all>li>a {
     width: 100%;
