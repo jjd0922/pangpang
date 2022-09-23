@@ -25,12 +25,11 @@ public class DSConfig {
     @Bean(name = "dataSource")
     public DataSource dataSource() {
         AesEncrypt aesEncrypt = new AesEncrypt();
-
         DataSource dataSource = DataSourceBuilder.create()
-                .url("jdbc:mysql://"+aesEncrypt.decrypt(url))
-                .username(aesEncrypt.decrypt(username))
-                .password(aesEncrypt.decrypt(password))
-                .driverClassName(driver)
+                .url("jdbc:mysql://db-atqo0.vpc-cdb.ntruss.com/newpermarket?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false")
+                .username("newpermarket")
+                .password("votmdnjem12#$")
+                .driverClassName("com.mysql.cj.jdbc.Driver")
                 .build();
         return dataSource;
     }
