@@ -35,7 +35,6 @@ public class MainsectionService {
         mainSection.setMsName(mainSectionParam.getMsName());
         mainSection.setMsType(mainSectionParam.getMsType());
         mainSection.setMsOrder(mainSection.getMsOrder()*mainSectionParam.getMsOrder());
-        mainSection.setMsColumn(mainSectionParam.getMsColumn());
 
     }
 
