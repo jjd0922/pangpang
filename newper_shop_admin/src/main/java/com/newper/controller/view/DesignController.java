@@ -75,7 +75,7 @@ public class DesignController {
 
     /** 메인섹션 신규, 상세*/
     @GetMapping(value = {"mainsection/{msIdx}","mainpage/new"})
-    public ModelAndView mainSection(@PathVariable(required = false) Integer msIdx){
+    public ModelAndView mainSection(@PathVariable(required = false) String msIdx){
         ModelAndView mav = new ModelAndView("design/mainsection_msIdx");
 
         return mav;

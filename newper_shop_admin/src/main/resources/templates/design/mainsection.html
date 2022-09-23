@@ -160,7 +160,7 @@ $(document).ready(function(){
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/page/mainsection.dataTable',
+            url:'/design/mainsection.dataTable',
             type:'post'
         },
         "columns" : [
@@ -220,7 +220,7 @@ $(document).ready(function(){
                 }
 
                 $.ajax({
-                    url:'/page/mainsection.ajax'
+                    url:'/design/mainsection.ajax'
                     ,type:'post'
                     ,data:param
                 }).always(function(res){
@@ -251,17 +251,27 @@ $(document).ready(function(){
 
 <script>
     function insertMainSectionPop(){
-        var focusPopup = window.open('/page/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/design/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
-    function test(){
-        alert('준비중');
+    function toggleMainSectionDisplay(msIdx){
+        $.ajax({
+            url:'/design/mainsection/toggle.ajax',
+            type:'post',
+            data:{
+                msIdx: msIdx
+            },
+            success:function(res){
+                $('#mainsectionTable').DataTable().ajax.reload();
+            }
+            ,error:function(){}
+        })
     }
 
     function deleteMainsection(msIdx){
         if(confirm("메인섹션을 삭제하시겠습니까?")){
             $.ajax({
-                url:'/page/mainsection/delete.ajax',
+                url:'/design/mainsection/delete.ajax',
                 type:'post',
                 data:{
                     msIdx: msIdx
