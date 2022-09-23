@@ -46,7 +46,7 @@
                         </div>
                     </li>
                     <!-- 상품명 -->
-                    <li>
+                    <li class="itemName">
                         <div class="order-item-thumb">
                             <a href="javascript:;">
                                 <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
@@ -80,11 +80,61 @@
                         <p class="bold">2022.08.10</p>
                     </li>
                     <!-- 버튼 -->
-                    <li>
-                        <div>
-                            <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                            <div class="btn btn4"><a onclick="reviewInsertModal()">리뷰작성하기</a></div>
+                    <li class="flex-column button-vertical-group">
+                        <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                        <div class="btn btn2"><a onclick="reviewInsertModal()">리뷰작성하기</a></div>
+                    </li>
+                </ul>
+            </li>
+            <!-- 상품 2 -->
+            <li>
+                <ul class="table-content2 writeable-table-content">
+                    <!-- 주문일자 -->
+                    <li class="flex-column">
+                        <p class="semi-bold">2022-08-10</p>
+                        <div class="color-grey999 table-order-num">
+                            <p>주문번호</p>
+                            <p>16616564654535</p>
                         </div>
+                    </li>
+                    <!-- 상품명 -->
+                    <li class="itemName">
+                        <div class="order-item-thumb">
+                            <a href="javascript:;">
+                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                <p class="font-xsm color-grey999">001762984</p>
+                            </a>
+                        </div>
+                        <div class="order-item-info-wrap">
+                            <div>
+                                <a href="javascript:;">
+                                    <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                        듀얼하드 윈10</h3>
+                                </a>
+                            </div>
+                            <div class="font-xxsm order-item-info">
+                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                <p>사이즈 : 15인치</p>
+                                <p>용량 : 램 8G SSD 대용량</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 수량 -->
+                    <li>
+                        <p class="font-sm bold">1개</p>
+                    </li>
+                    <!-- 결제금액 -->
+                    <li>
+                        <p class="font-sm bold">179,000<span class="won">원</span></p>
+                    </li>
+                    <!-- 배송완료일 -->
+                    <li>
+                        <p class="bold">2022.08.10</p>
+                    </li>
+                    <!-- 버튼 -->
+                    <li class="flex-column button-vertical-group">
+                        <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
+                        <div class="btn btn2"><a onclick="reviewInsertModal()">리뷰작성하기</a></div>
                     </li>
                 </ul>
             </li>
@@ -112,10 +162,86 @@
 
 <!-- 작성완료리뷰-->
 <th:block th:fragment="completeReview">
-    작성완료리뷰
+    <!-- 상품리뷰 -->
+    <section class="padding-section" id="product-review">
+        <ul class="review-header font-md semi-bold">
+            <li>
+                <p>기본 적립</p>
+                <i class="point1000"></i>
+                <i class="point500"></i>
+                <span>+</span>
+                <p>추가 적립<br>선착순 포토리뷰<br>(상품별 포토리뷰 5개 한정)</p>
+                <i class="point10000"></i>
+            </li>
+            <li>
+                <p>상품리뷰는 결제 완료 후 60일 이내 작성 가능합니다.</p>
+                <p>상품을 구매하신 분들이 작성하신 리뷰입니다.</p>
+                <p>상품리뷰 작성시 아래 금액 만큼 적립됩니다.<br><span class="color-red">일반리뷰 500P / 포토리뷰 1,000P / 선착순 포토리뷰 10,000P (상품별 포토리뷰 5개 한정)
+</span></p>
+                <p>적립금은 지급일로부터 1개월 경과시 자동 소멸됩니다.</p>
+            </li>
+        </ul>
+    </section>
 
-    <div class="container">
-        <a onclick="reviewUpdateModal()">리뷰수정</a>
+    <!-- 테이블 -->
+    <div class="writeable-table">
+        <!-- 작성가능 상품 내역 테이블 제목 -->
+        <ul class="table-title2 completed-table-title font-sm">
+            <li>상품명</li>
+            <li>리뷰내용</li>
+            <li>평점</li>
+            <li>작성일</li>
+            <li></li>
+        </ul>
+        <!-- 작성가능 상품 리스트 -->
+        <ul>
+            <!-- 상품 1 -->
+            <li>
+                <ul class="table-content2 completed-table-content">
+                    <!-- 상품명 -->
+                    <li class="itemName">
+                        <div class="order-item-thumb">
+                            <a href="javascript:;">
+                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                <p class="font-xsm color-grey999">001762984</p>
+                            </a>
+                        </div>
+                        <div class="order-item-info-wrap">
+                            <div>
+                                <a href="javascript:;">
+                                    <h3 class="font-sm semi-bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                        듀얼하드 윈10</h3>
+                                </a>
+                            </div>
+                            <div class="font-xxsm order-item-info">
+                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                <p>사이즈 : 15인치</p>
+                                <p>용량 : 램 8G SSD 대용량</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 리뷰내용 -->
+                    <li class="table-review-content">
+                        <p class="font-sm">정말 리퍼 같지 않고 박스만 없지 거짓말 조금 보태
+                            새거나 다름 없네요.</p>
+                    </li>
+                    <!-- 평점 -->
+                    <li>
+                        <!--5점:grade-100, 4점:grade-80, 3점:grade-60, 2점:grade-40, 1점:grade-20-->
+                        <div class="review-grade grade-80 flex-column"><i></i><span>4.9</span></div>
+                    </li>
+                    <!-- 작성일 -->
+                    <li>
+                        <p class="bold">2022.08.10</p>
+                    </li>
+                    <!-- 버튼 -->
+                    <li class="flex-column button-vertical-group">
+                        <div class="btn btn2"><a onclick="reviewUpdateModal()">리뷰수정</a></div>
+                        <div class="btn btn8"><a onclick="reviewInsertModal()">삭제</a></div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 
     <script>
