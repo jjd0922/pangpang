@@ -21,6 +21,7 @@ public class MainsectionService {
         }
     }
 
+    /** 메인섹션 삭제*/
     @Transactional
     public void mainsectionDelete(ParamMap paramMap) {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
@@ -45,5 +46,12 @@ public class MainsectionService {
 
         mainSectionRepo.save(mainSection);
         mainSection.setMsOrder(mainSection.getShop().getMainSections().size()*mainSection.getMsOrder());
+    }
+
+    /** mainsection 노출상태 토글 */
+    @Transactional
+    public void mainsectionDisplayToggle(ParamMap paramMap) {
+        MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
+        mainSection.setMsOrder(mainSection.getMsOrder() * -1);
     }
 }
