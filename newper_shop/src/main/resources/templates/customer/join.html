@@ -25,7 +25,7 @@
         <li>
             <div class="table-title font-md semi-bold">아이디<span class="color-red">&nbsp;*</span></div>
             <div class="table-content">
-                <input type="text" id="joinID" name="cuId" class="form-control" maxlength="20" title="아이디" placeholder="아이디 6~12자 영문, 숫자" is-checked="false" checked-id="">
+                <input type="text" id="joinID" name="cuId" class="form-control" maxlength="20" title="아이디" placeholder="이메일 형식" is-checked="false" checked-id="">
                 <div class="btn btn2">
                     <a onclick="checkId()">중복확인</a>
                 </div>
@@ -43,11 +43,11 @@
         <li>
             <div class="table-title font-md semi-bold">이름<span class="color-red">&nbsp;*</span></div>
             <div class="table-content">
-                <input type="text" id="joinName" name="cuName" class="form-control" maxlength="20" title="이름" placeholder="한글 2자이상 입력" value="">
+                <input type="text" id="joinName" name="cuName" class="form-control" maxlength="20" title="이름" placeholder="휴대폰 본인인증하기를 클릭해 주세요." readonly>
             </div>
         </li>
         <!-- 이메일 -->
-        <li>
+        <!--<li>
             <div class="table-title font-md semi-bold">이메일<span class="color-red">&nbsp;*</span></div>
             <div class="table-content joinEmail-input-wrap">
                 <div>
@@ -71,27 +71,21 @@
                 </div>
                 <input type="text" id="emailDomain" name="email2" class="form-control">
             </div>
-        </li>
+        </li>-->
         <!-- 휴대폰 번호 -->
         <li class="phone">
             <div class="table-title font-md semi-bold">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
             <div class="table-content joinPhone-input-wrap">
                 <div>
-                    <select class="form-control" name="phone1">
-                        <option value="010">010</option>
-                        <option value="011">011</option>
-                        <option value="016">016</option>
-                        <option value="017">017</option>
-                        <option value="018">018</option>
-                        <option value="019">019</option>
-                    </select>
+                    <input type="text" id="phone1" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 네자리" readonly>
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="HpNo2" class="form-control phone" maxlength="4" name="phone2" value="" title="휴대폰번호 중간 네자리">
+                    <input type="text" id="phone2" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리" readonly>
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="HpNo3" class="form-control phone" maxlength="4" name="phone3" value="" title="휴대폰번호 마지막 네자리">
+                    <input type="text" id="phone3" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리" readonly>
                 </div>
                 <div class="btn btn6">
-                    <a href="javascript:;">휴대폰 인증번호 받기</a>
+                    <a href="javascript:fnPopup();">휴대폰 인증번호 받기</a>
+                    <input type="hidden" name="saIdx" id="saIdx">
                 </div>
             </div>
         </li>
@@ -152,18 +146,18 @@
     </form>
 </div>
 
-
-
-
-
-
-
-
-
 <!--js-->
 <th:block th:replace="part/js"></th:block>
 
 </body>
+<script language='javascript'>
+    window.name ="Parent_window";
+
+    /**나이스 본인인증 팝업*/
+    function fnPopup(){
+        window.open('/customer/auth/request', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+    }
+</script>
 <script>
     function joinComplete(){
         if(window.confirm("가입 하시겠습니까?")){

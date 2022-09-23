@@ -72,21 +72,20 @@ public class Customer {
         setCuLastTime(now.toLocalTime());
     }
 
-    public void join(String phone, String email, Map<String,Object> map) {
+    public void join(String phone, Map<String,Object> param, Map<String,Object> niceReturn) {
         setCuPhone(phone);
-        setCuEmail(email);
+//        setCuEmail(email);
         setCuState(CuState.NORMAL);
         setCuRate(CuRate.SPECIAL); // 이게 제일 낮은지 확인
         setCuCi(getCuId());// 임시값.
         setCuMileage(0);
         setCuPoint(0);
-        setCuDi(map.get("cuPw").toString()); // 임시값
+        setCuDi(param.get("cuPw").toString()); // 임시값
         setCuJoinDate(LocalDate.now());
         setCuJoinTime(LocalTime.now());
         setCuLastDate(LocalDate.now());
         setCuLastTime(LocalTime.now());
         setCuPwChange(LocalDate.now());
-        setShop(Shop.builder().shopIdx(1).build()); // 임시
 
         // notnull위해서 잠시
         setCuGender(CuGender.M);

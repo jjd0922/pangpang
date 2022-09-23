@@ -1,13 +1,13 @@
 package com.newper.service;
 
 
-import com.newper.component.Common;
 import com.newper.component.ShopSession;
-import com.newper.constant.CuState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
+import com.newper.entity.SelfAuth;
 import com.newper.exception.MsgException;
 import com.newper.repository.CustomerRepo;
+import com.newper.repository.SelfAuthRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ public class CustomerService {
     private ShopSession shopSession;
 
     private final CustomerRepo customerRepo;
+    private final SelfAuthRepo selfAuthRepo;
 
 
     /** 로그인 처리 */
@@ -80,6 +81,8 @@ public class CustomerService {
         shopSession.setPwdCheck(true);
         return "Y";
     }
+
+    /**회원가입*/
     @Transactional
     public void join (ParamMap paramMap) {
         boolean isExistCustomer = customerRepo.existsByCuId(paramMap.getString("cuId"));
@@ -87,10 +90,16 @@ public class CustomerService {
             throw new MsgException("이미 사용중인 아이디입니다.");
         }
 
+        SelfAuth selfAuth = selfAuthRepo.findLockBySaIdx(Long.parseLong(paramMap.getString("saIdx")));
+
+        if (selfAuth.isSaUsed()) {
+            throw new MsgException("본인인증 오류"); // 문구.. 뭐지
+        }
+
         Customer customer = paramMap.mapParam(Customer.class);
         String cuPhone = paramMap.getString("phone1")+"-"+paramMap.getString("phone2")+"-"+paramMap.getString("phone3");
-        String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
-        customer.join(cuPhone, cuEmail, paramMap.getMap());
+//        String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
+        customer.join(cuPhone, paramMap.getMap(), selfAuth.getSaRes());
         customerRepo.save(customer);
     }
 

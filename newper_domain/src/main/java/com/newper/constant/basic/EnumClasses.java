@@ -69,6 +69,7 @@ public class EnumClasses {
         enumClasses.put("p_type1","PType1");
         enumClasses.put("p_type2","PType2");
         enumClasses.put("p_type3","PType3");
+        enumClasses.put("sa_type","saType");
         enumClasses.put("sh_code","ShCode");
         enumClasses.put("shop_state","ShopState");
         enumClasses.put("shop_type","ShopType");

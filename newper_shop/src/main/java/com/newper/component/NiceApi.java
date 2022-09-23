@@ -1,5 +1,6 @@
 package com.newper.component;
 
+import com.newper.dto.ParamMap;
 import com.newper.exception.MsgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,4 +69,92 @@ public class NiceApi {
         map.put("sEncData",sEncData);
         return map;
     }
+
+    /** nice 응답 후 받아온 데이터 return   */
+    public Map<String,Object> getNiceReturn(ParamMap paramMap) {
+        NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
+
+        String sEncodeData = requestReplace(paramMap.getString("EncodeData"), "encodeData");
+
+        String sCipherTime = "";			// 복호화한 시간
+        String sMessage = "";
+        String sPlainData = "";
+
+        int iReturn = niceCheck.fnDecode(auth_sitecode, auth_pw, sEncodeData);
+
+        if( iReturn == 0 ) {
+            sPlainData = niceCheck.getPlainData();
+            sCipherTime = niceCheck.getCipherDateTime();
+
+            // 데이타를 추출합니다.
+            java.util.HashMap mapresult = niceCheck.fnParse(sPlainData);
+
+            /*String session_sRequestNumber = (String)shopSession.getAttribute("REQ_SEQ");
+            if(!sRequestNumber.equals(session_sRequestNumber))
+            {
+                sMessage = "세션값 불일치 오류입니다.";
+                sResponseNumber = "";
+                sAuthType = "";
+            }*/
+            return mapresult;
+        } else if( iReturn == -1) {
+            sMessage = "복호화 시스템 오류입니다.";
+        } else if( iReturn == -4) {
+            sMessage = "복호화 처리 오류입니다.";
+        } else if( iReturn == -5) {
+            sMessage = "복호화 해쉬 오류입니다.";
+        } else if( iReturn == -6) {
+            sMessage = "복호화 데이터 오류입니다.";
+        } else if( iReturn == -9) {
+            sMessage = "입력 데이터 오류입니다.";
+        } else if( iReturn == -12) {
+            sMessage = "사이트 패스워드 오류입니다.";
+        } else {
+            sMessage = "알수 없는 에러 입니다. iReturn : " + iReturn;
+        }
+        if(sMessage != null){
+            log.error("NICE 본인인증 응답 중 에러 발생");
+            throw new MsgException("잠시 후 다시 시도해주세요");
+        }
+        return null;
+    }
+
+    public String requestReplace (String paramValue, String gubun) {
+        String result = "";
+
+        if (paramValue != null) {
+
+            paramValue = paramValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+            paramValue = paramValue.replaceAll("\\*", "");
+            paramValue = paramValue.replaceAll("\\?", "");
+            paramValue = paramValue.replaceAll("\\[", "");
+            paramValue = paramValue.replaceAll("\\{", "");
+            paramValue = paramValue.replaceAll("\\(", "");
+            paramValue = paramValue.replaceAll("\\)", "");
+            paramValue = paramValue.replaceAll("\\^", "");
+            paramValue = paramValue.replaceAll("\\$", "");
+            paramValue = paramValue.replaceAll("'", "");
+            paramValue = paramValue.replaceAll("@", "");
+            paramValue = paramValue.replaceAll("%", "");
+            paramValue = paramValue.replaceAll(";", "");
+            paramValue = paramValue.replaceAll(":", "");
+            paramValue = paramValue.replaceAll("-", "");
+            paramValue = paramValue.replaceAll("#", "");
+            paramValue = paramValue.replaceAll("--", "");
+            paramValue = paramValue.replaceAll("-", "");
+            paramValue = paramValue.replaceAll(",", "");
+
+            if(gubun != "encodeData"){
+                paramValue = paramValue.replaceAll("\\+", "");
+                paramValue = paramValue.replaceAll("/", "");
+                paramValue = paramValue.replaceAll("=", "");
+            }
+
+            result = paramValue;
+
+        }
+        return result;
+    }
+
 }
