@@ -42,11 +42,16 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">분양몰</span>
                                                         </span>
-                                                        <input type="hidden" name="shopIdx">
-                                                        <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
-                                                        <span class="input-group-append" onclick="openShopModal()">
-                                                            <a class="input-group-text"><i class="icon-home"></i></a>
-                                                        </span>
+                                                        <th:block th:if="${mainsection == null}">
+                                                            <input type="hidden" name="shopIdx">
+                                                            <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
+                                                            <span class="input-group-append" onclick="openShopModal()">
+                                                                <a class="input-group-text"><i class="icon-home"></i></a>
+                                                            </span>
+                                                        </th:block>
+                                                        <th:block th:unless="${mainsection == null}">
+                                                            <input class="form-control" type="text" readonly th:value="${mainsection?.shop.shopName}">
+                                                        </th:block>
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,7 +61,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">섹션 타이틀</span>
                                                         </span>
-                                                        <input type="text" class="form-control" name="msName">
+                                                        <input type="text" class="form-control" name="msName" th:value="${mainsection?.msName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,7 +72,7 @@
                                                             <span class="input-group-text">메인 섹션 타입</span>
                                                         </span>
                                                         <select class="form-control select" name="msType">
-                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}"></option>
+                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -79,8 +84,8 @@
                                                             <span class="input-group-text">노출 상태</span>
                                                         </span>
                                                         <select class="form-control select" name="msOrder">
-                                                            <option value="-1">미노출</option>
-                                                            <option value="1">노출</option>
+                                                            <option value="-1" th:selected="${mainsection?.msOrder < 1}">미노출</option>
+                                                            <option value="1" th:selected="${mainsection?.msOrder > 1}">노출</option>
                                                         </select>
                                                     </div>
                                                 </div>

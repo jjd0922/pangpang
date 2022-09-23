@@ -75,7 +75,7 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1" onclick="insertMainSectionPop()">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="mainSectionPop('new')">신규등록</a>
                             </div>
 
                             <table class="table" id="mainsectionTable"></table>
@@ -193,7 +193,7 @@ $(document).ready(function(){
                 if(data == null){
                     return '데이터 없음';
                 }else{
-                    return '<a class="btn btn-sm badge-primary" onclick="test('+full.MS_IDX+')">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-primary" onclick="mainSectionPop('+full.MS_IDX+')">'+data+'</a>';
                 }
             }}
             ,{'class':'m-w-4 w-10', 'title':'삭제','data':'MS_IDX','render':function(data,type,full,meta){
@@ -250,8 +250,8 @@ $(document).ready(function(){
 </script>
 
 <script>
-    function insertMainSectionPop(){
-        var focusPopup = window.open('/design/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+    function mainSectionPop(msIdx){
+        var focusPopup = window.open('/design/mainsection/'+msIdx, 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
     function toggleMainSectionDisplay(msIdx){
