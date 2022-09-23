@@ -24,20 +24,20 @@
                 <ul class="table-content2 direct-inquiry-table-content">
                     <!-- 주분번호 -->
                     <li>
-                        <p class="bold">2022-08-10</p>
+                        <p class="bold">123456873131</p>
                     </li>
                     <!-- 문의유형 -->
-                    <li>
-                        <p class="semi-bold">영수증/증빙 > 현금영수증</p>
+                    <li class="inquiry-type">
+                        <p class="semi-bold">주문/결제확인 > 주문내역확인</p>
                     </li>
                     <!-- 문의제목 -->
-                    <li>
-                        <p class="semi-bold">현금영수증 신청 문의드립니다.현금영수증 신청 문의드립니다.</p>
+                    <li class="inquiry-title">
+                        <p class="semi-bold">배송이 언제되나요?</p>
                     </li>
                     <!-- 답변상태 -->
                     <li>
-                        <!-- 답변대기 -->
-                        <p class="semi-bold">답변대기</p>
+                        <!-- 답변대기
+                        <p class="semi-bold">답변대기</p> -->
                         <!-- 답변완료 -->
                         <p class="color-red semi-bold">답변완료</p>
                     </li>
@@ -47,10 +47,30 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn3"><a onclick="reviewInsertModal()">수정하기</a></div>
-                        <div class="btn btn2"><a onclick="alert('준비중')">삭제</a></div>
+                        <div class="btn btn2"><a onclick="reviewInsertModal()">수정하기</a></div>
+                        <div class="btn btn8"><a onclick="alert('준비중')">삭제</a></div>
                     </li>
                 </ul>
+                <div class="inquiry-open font-md">
+                    <div>
+                        <div>
+                            <span class="inquiry-bedge font-xxsm">문의</span>
+                        </div>
+                        <p class="color-grey666">배송 언제되는지 정확한 날짜가 알고 싶어요~~!</p>
+                    </div>
+                    <div>
+                        <div>
+                            <span class="inquiry-answer font-xxsm">답변</span>
+                        </div>
+                        <p class="color-grey666">안녕하세요 고객님!! 뉴퍼마켓을 이용해주셔서 감사합니다.<br>
+                            뉴퍼마켓 직배송 상품
+                            - 결제 후 1일~2일이내 발송되어 받아보시는데까지 약 2~3일 소요됩니다.
+                            부득이 주문량 많아 발송이 지연되는 경우(5일 이상) 별도 안내 or 공지드리오니 안심하셔도 됩니다.<br>
+                            입점업체 배송 상품
+                            - 업체 사정에 따라, 결제 후 2일~3일 이내 발송되어 받아보시는데까지 약 3~4일 소요 됩니다.
+                            - 단, 대형가전(TV, 냉장고, 세탁기 등), 설치상품, 주문제작상품의 경우 별도 예상 배송일을 공지드립니다.</p>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
@@ -74,6 +94,12 @@
                 ,error:function(){}
             })
         }
+
+        // 1:1문의 내역  클릭 시 문의내용과 답변 보이기
+        $('.inquiry-title').click(function() {
+            $(this).toggleClass('on');
+            $(this).parent().siblings('.inquiry-open').toggle();
+        });
     </script>
 </th:block>
 <!-- 1:1문의내역 end-->
