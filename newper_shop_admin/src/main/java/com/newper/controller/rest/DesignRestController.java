@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,20 +70,21 @@ public class DesignRestController {
         return rd;
     }
     /** mainsection insert/update */
-    @PostMapping(value = {"mainsection/{msIdx}.ajax", "mainsection/new.ajax"})
-    public ReturnMap mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap){
-        ReturnMap rm = new ReturnMap();
+    @PostMapping(value = {"mainsection/{msIdx}.load", "mainsection/new.load"})
+    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("main/alertMove");
 
         if(msIdx != null){
             paramMap.put("msIdx",msIdx);
             mainsectionService.mainsectionUpdate(paramMap);
-            rm.setMessage("수정 완료");
+            mav.addObject("msg","수정 완료");
         }else{
-            mainsectionService.mainsectionSave(paramMap);
-            rm.setMessage("생성 완료");
+            msIdx = mainsectionService.mainsectionSave(paramMap);
+            mav.addObject("msg","생성 완료");
         }
+        mav.addObject("loc","/design/mainsection/"+msIdx);
 
-        return rm;
+        return mav;
     }
     /** mainsection 순서 변경*/
     @PostMapping("mainsection.ajax")

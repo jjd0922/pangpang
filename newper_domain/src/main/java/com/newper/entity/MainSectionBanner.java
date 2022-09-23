@@ -24,9 +24,13 @@ public class MainSectionBanner {
     /** 순서*/
     private int msbnOrder;
     /** 배너이미지 (WEB)*/
-    private String msbnImage;
+    private String msbnWebFile;
+    /** 배너이미지 이름(WEB)*/
+    private String msbnWebFileName;
     /** 배너이미지 (MOBILE)*/
-    private String msbnImageMobile;
+    private String msbnMobileFile;
+    /** 배너이미지 이름(MOBILE)*/
+    private String msbnMobileFileName;
     /** 링크*/
     private String msbnUrl;
 }
