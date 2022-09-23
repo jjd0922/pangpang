@@ -30,6 +30,8 @@ public class Menu {
 
     private byte menuOrder;
 
+    private String menuIcon;
+
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @OrderBy(value = "smOrder asc")
     private List<SubMenu> subMenuList;
