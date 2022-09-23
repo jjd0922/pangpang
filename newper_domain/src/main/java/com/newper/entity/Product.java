@@ -101,7 +101,8 @@ public class Product extends BaseEntity {
     private Integer pSellPrice;
     private Integer pDelPrice;
 
-    private String pDelCompany;
+    @Enumerated(EnumType.STRING)
+    private PDelCompany pDelCompany;
 
     private int pDelTogether;
 
