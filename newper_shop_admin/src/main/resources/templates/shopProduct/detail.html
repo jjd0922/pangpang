@@ -325,7 +325,7 @@
                                         <div class="input-group">
                                     <span class="form-control">
                                         1번 필수상품
-                                        <a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal(1)">재고상품 검색</a>
+                                        <a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal(1,true)">재고상품 검색</a>
                                     </span>
                                         </div>
                                     </div>
@@ -729,8 +729,8 @@
             </form>
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
                 <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <button th:if="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
-                <button th:unless="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
+                <button th:if="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>저장</button>
+                <button th:unless="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>수정</button>
             </div>
         </div>
     </div>
@@ -842,7 +842,7 @@
         $('#essentialCnt').val(essentialCnt);
         var str = '';
         str += '<div class="col-sm-12"><div class="form-group"><div class="input-group">';
-        str += '<span class="form-control">'+essentialCnt+'번 필수상품<a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal('+essentialCnt+')">재고상품 검색</a></span></div></div>';
+        str += '<span class="form-control">'+essentialCnt+'번 필수상품<a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal('+essentialCnt+','+true+')">재고상품 검색</a></span></div></div>';
         str += '<table class="table table-bordered" id="essentialTable'+essentialCnt+'"><thead><tr class="alpha-brown text-bold">';
         str += '<th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
         str += '<th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>할인가(최종혜택가)</th><th>재고자산</th><th>삭제</th></tr>'
@@ -850,9 +850,9 @@
         $('#essential').append(str);
     }
 
-    function selectProduct(row,cnt){
+    function selectProduct(cnt,boolean){
 
-        var rowData = getDatatablemap('goodsStockModalTable', row);
+        var rowData = dataTableGetSelectedDataArray('goodsStockModalTable', row);
         $('#searchGoodsStockModal').modal('hide');
         $('input[name="SHOP_NAME"]').val(rowData.SHOP_NAME);
         var eaCnt = $('#eaCnt'+cnt).val();
