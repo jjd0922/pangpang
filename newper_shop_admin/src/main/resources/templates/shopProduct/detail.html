@@ -81,6 +81,21 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-prepend">
+                                            <span class="input-group-text requested">
+                                                SHOP 판매상태
+                                            </span>
+                                        </span>
+                                            <select class="form-control select" data-placeholder="선택" name="SP_STATE">
+                                                <option></option>
+                                                <option th:each="opt: ${T(com.newper.constant.SpState).values()}" th:text="${opt.option}" th:value="${opt.name()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                        <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                 SHOP 판매기간 시작일
                                             </span>
@@ -100,6 +115,21 @@
                                         </span>
                                             <input type="text" name="SP_SELL_END_DATE" class="form-control daterange-singlenull" readonly>
                                             <input type="time" name="SP_SELL_END_TIME" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                전시 대분류
+                                            </span>
+                                        </span>
+                                            <select class="form-control select " data-placeholder="선택" name="P_CATE_IDX2">
+                                                <option></option>
+                                                <option th:each="shopCategory:${shopCategory}" th:text="${shopCategory.SCATE_NAME}" th:value="${shopCategory.SCATE_IDX}" th:selected="${product?.shopCategory?.scateIdx == shopCategory.SCATE_IDX}"></option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -129,64 +159,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                전시 대분류
-                                            </span>
-                                        </span>
-                                            <select class="form-control select " data-placeholder="선택" name="P_CATE_IDX2">
-                                                <option></option>
-                                                <option th:each="shopCategory:${shopCategory}" th:text="${shopCategory.SCATE_NAME}" th:value="${shopCategory.SCATE_IDX}" th:selected="${product?.shopCategory?.scateIdx == shopCategory.SCATE_IDX}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                카테고리 대분류
-                                            </span>
-                                        </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX1" onchange="category1()">
-                                                <option></option>
-                                                <option th:each="cate:${category}" th:text="${cate.CATE_NAME}" th:value="${cate.CATE_IDX}"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                카테고리 중분류
-                                            </span>
-                                        </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX2" onchange="category2()">
-                                                <option></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                카테고리 소분류
-                                            </span>
-                                        </span>
-                                            <select class="form-control select" data-placeholder="선택" name="CATE_IDX3" onchange="category3()">
-                                                <option></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                             </div>
                         </fieldset>
                     </div>
@@ -755,8 +729,8 @@
             </form>
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
                 <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <!--                <button th:if="${product}==null" onclick="productSave()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>-->
-                <!--                <button th:unless="${product}==null" onclick="productUpdate()" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>-->
+                <button th:if="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>저장</button>
+                <button th:unless="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" id=""><i class="icon-floppy-disk mr-1"></i>수정</button>
             </div>
         </div>
     </div>
