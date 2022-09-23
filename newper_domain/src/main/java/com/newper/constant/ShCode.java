@@ -12,5 +12,5 @@ public enum ShCode implements EnumOption {
     /**실패*/
     FAIL("FAIL");
 
-    public String option;
+    private String option;
 }
