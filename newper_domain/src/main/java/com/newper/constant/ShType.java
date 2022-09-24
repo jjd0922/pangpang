@@ -15,5 +15,5 @@ public enum ShType implements EnumOption {
     /**PUSH*/
     PUSH("PUSH");
 
-    public String option;
+    private String option;
 }

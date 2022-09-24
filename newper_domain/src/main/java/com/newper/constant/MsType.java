@@ -7,8 +7,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MsType implements EnumOption {
-    BANNER("배너")
+     BANNER("배너")
     ,PRODUCT("상품")
+    ,BOTH("기획전")
     ;
 
     private String option;

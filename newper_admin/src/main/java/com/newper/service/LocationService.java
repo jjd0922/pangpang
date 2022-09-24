@@ -1,23 +1,23 @@
 package com.newper.service;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.newper.constant.GState;
+import com.newper.constant.LmState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
-import com.newper.entity.GoodsStock;
 import com.newper.entity.Location;
+import com.newper.entity.LocationMove;
 import com.newper.entity.User;
 import com.newper.exception.MsgException;
 import com.newper.mapper.LocationMapper;
-import com.newper.repository.GoodsRepo;
-import com.newper.repository.GoodsStockRepo;
-import com.newper.repository.LocationRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,8 @@ public class LocationService {
     private final GoodsStockRepo goodsStockRepo;
     private final GoodsRepo goodsRepo;
 
+    private final UserRepo userRepo;
+    private final LocationMoveRepo locationMoveRepo;
     private final LocationMapper locationMapper;
 
     /**
@@ -83,46 +85,114 @@ public class LocationService {
         System.out.println(barcodes.length);
 
 
-        Goods goods = goodsRepo.findBygBarcode(barcodes[barcodes.length-1]);
+        Goods goods = goodsRepo.findBygBarcode(barcodes[barcodes.length - 1]);
 
 
-        if (goods==null){
+        if (goods == null) {
 //            barcode=barcode.replace("," + barcodes[barcodes.length - 1], "");
             throw new MsgException("존재하는 바코드가 아닙니다");
         }
 
-        System.out.println(barcode.replace("," + barcode, "")+"/"+barcodes[barcodes.length-1]);
+        System.out.println(barcode.replace("," + barcode, "") + "/" + barcodes[barcodes.length - 1]);
 
 
-        if(barcode.split(barcodes[barcodes.length-1]).length>1){
+        if (barcode.split(barcodes[barcodes.length - 1]).length > 1) {
             throw new MsgException("리딩된 바코드입니다.");
         }
 
-        return  locationMapper.selectListGoodsByLocation(barcodes);
+        return locationMapper.selectListGoodsByLocation(barcodes);
     }
 
 
-
-    /**창고이동 팝업 작업완료 처리*/
+    /**
+     * 창고이동 팝업 작업완료 처리
+     */
 
     @Transactional
-    public Integer changeLocation(ParamMap paramMap){
+    public void changeLocation(ParamMap paramMap,int[] locIdx,long[] gIdx) {
+        int loc_idx_out = locIdx[0];
+        int loc_idx_in = locIdx[1];
+        paramMap.put("LM_STATE",LmState.FINISHWORK);
+        Location location1 = locationRepo.getReferenceById(loc_idx_out);
+        Location location2 = locationRepo.getReferenceById(loc_idx_in);
+        User user = userRepo.getReferenceById(1);
 
- /*       Location location = paramMap.mapParam(Location.class);
-        Goods goods = paramMap.mapParam(Goods.class);
-
-*/
-        String locIdx = String.valueOf(locationRepo.findLocationByLocIdx(Integer.parseInt("locIdx")));
-         String locIdxs[] = locIdx.substring(1, (locIdx.length() - 0)).split(",");
-
-        System.out.println("locIdxs = " + locIdxs);
-
-
+        Integer whIdx1 = location1.getWarehouse().getWhIdx();
+        Integer whIdx2 = location2.getWarehouse().getWhIdx();
 
 
 
-        return paramMap.getInt(locIdx);
+
+        LocationMove locationMove =
+                LocationMove.builder()
+                        .build();
+        locationMove.setUser(User.builder().build());
+        locationMove.setLocation2(location2);
+        locationMove.setLocation1(location1);
+        locationMove.setLmInDate(LocalDate.now());
+        if(whIdx1==whIdx2){
+            locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
+
+            System.out.println("locationMove = " + locationMove);
+            locationMove.setUser(user);
+        }else{
+            locationMove.setLmState(LmState.WORKING);
+        }
+        locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
+        locationMoveRepo.saveAndFlush(locationMove);
+
+        long lmIdx = locationMove.getLmIdx();
+
+        for (int i = 0; i < gIdx.length; i++) {
+            System.out.println(gIdx[i]);
+            Long G_IDX = gIdx[i];
+            Goods goods = goodsRepo.getReferenceById(G_IDX);
+
+            goods.setLocation(locationMove.getLocation2());
+            /*locationRepo.save(location2);*/
+            goodsRepo.save(goods);
+
+        }
+        //관계테이블 인서트
+       locationMapper.insertLocationMoveGoods(lmIdx,gIdx);
+        System.out.println("whIdx2 = " + whIdx2);
+        System.out.println("whIdx1 = " + whIdx1);
     }
+
+
+
+//        int locIdx_in = locIdx[0];
+//        int locIdx_out = locIdx[1];
+//
+//        long gIdx1 = gIdx[2];
+//        Location location = paramMap.mapParam(Location.class);
+//       Goods goods = paramMap.mapParam(Goods.class);
+//
+//       long gIdx = goodsRepo.getReferenceById(gIdx;
+//        String gIdxs[] = gIdx.substring(1, (locIdx.length() - 0)).split(",");
+//
+//        System.out.println("gIdx1 = " + gIdx1);
+//
+//
+//            for (int i = 0; i < gIdxs.length; i++) {
+//                Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+//                if (!goods.getGState().equals(GState.RECEIVED)) {
+//                    throw new MsgException(goods.getGBarcode() + "는 이미 입고검수한 자산입니다.");
+//                }
+//            }
+//        }
+//
+
+        //출고 로케이션에 있던 자산들을 입고 로케이션으로 변경
+//        Location location = paramMap.mapParam(Location.class);
+//        Goods goods = paramMap.mapParam(Goods.class);
+
+//        String locIdx = String.valueOf(locationRepo.findLocationByLocIdx(Integer.parseInt("locIdx")));
+//        String locIdxs[] = locIdx.substring(1, (locIdx.length() - 0)).split(",");
+
+
+//        System.out.println("location = " + location);
+
  
 
 }

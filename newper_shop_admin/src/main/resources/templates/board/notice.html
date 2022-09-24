@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>공지사항</title>
+    <title th:text="${subTitle}"></title>
     <th:block th:replace="common/css.html"></th:block>
     <style>
         .group{
@@ -28,6 +28,15 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
+
                                     </div>
                                 </h6>
                                 <div class="header-elements text-right">

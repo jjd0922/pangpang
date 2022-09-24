@@ -6,7 +6,11 @@ li {list-style: none;}
 a {text-decoration: none; color: #333;}
 body, html {background: #fff; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; color:#333;}
 .hidden {display: none;}
-img {width: 100%; height: auto;}
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
 
 html {
     direction: ltr;
@@ -144,6 +148,11 @@ body.no-scroll {
 .color-purple {
     color: #3a4570;
 }
+
+.bg-light-grey {
+    background-color: #f7f7f7;
+}
+
 .opacity-8 {
     opacity: .8;
 }
@@ -201,9 +210,26 @@ body.no-scroll {
     height: 100%;
     margin: 0 auto;
 }
-/*.full-container .container {
-    width: 100% !important;
-}*/
+.container-full .container {
+    max-width: 100% !important;
+}
+
+@media (max-width:991px) {
+    .sm-container-full,
+    .sm-container-full .container,
+    .sm-padding-fit {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .sm-margin-fit {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    .sm-display-none {
+        display: none;
+    }
+}
+
 
 #mo-bottom-nav {
     display: none;
@@ -295,7 +321,7 @@ header {
     align-items: center;
 }
 .logo {
-    width: 280px;
+    width: var(--ctg-all-width);
     height: 100%;
     display: flex;
     justify-content: center;
@@ -565,7 +591,7 @@ nav {
     background: url('/image/menu-btn-w.png') no-repeat center/contain;
 }
 .menu-btn-wrap {
-    width: 280px;
+    width: var(--ctg-all-width);
     height:100%;
     font-size: 18px;
     display: flex;
@@ -656,8 +682,9 @@ nav {
     align-items: center;
 }
 nav .gnb-ctg-all {
+    position: absolute;
     top: 100%;
-    left: 0;
+    left: var(--ctg-all-width);
     display: none;
 }
 
@@ -764,25 +791,125 @@ nav .gnb-ctg-all {
     right: -0;
 }
 
-/*** 썸네일 ***/
+/*** 기본 썸네일 ***/
+.thumbnail {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.thumbnail-wide .thumbnail {
+    flex-direction: row !important;
+}
+
+
+/* ==================================
+    animation Settings
+==================================== */
+/* 배경형 */
+.body-thumb-bg .bg-thumb{/*(label 태그 다음)*/
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* 테두리형 */
+.body-thumb-border .prod_event .prod_thumb_link{
+    border: 1px solid #d5d5d5;
+}
+
+/* 테두리 그림자형 */
+.body-thumb-shadow .prod_event .prod_thumb_link{
+    box-shadow: 0 2px 7px 0 rgb(0 0 0 / 12%);
+}
+.body-thumb-shadow .value_group,
+ .ani-thumb-shadow .value_group{
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+/* 배경형(애니메이션) */
+.ani-thumb-bg .bg-thumb{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.04);
+    opacity: 0;
+}
+
+.ani-thumb-bg .prod_event:hover .bg-thumb {
+    transition: 0.1s;
+    opacity: 1;
+}
+
+/* 테두리 그림자형(애니메이션) */
+/*.ani-thumb-shadow .prod_event:hover .prod_thumb_link {
+    box-shadow: 0 2px 7px 0 rgb(0 0 0 / 12%);
+    transition: 0.1s;
+}*/
+.ani-thumb-shadow .thumbnail:hover {
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    transition: 0.2s;
+}
+
+.thumbnail img {
+    transition: all .4s ease;
+}
+.thumbnail:hover img {
+	transform: scale(1.05);
+	/*transition: .4s;*/
+}
+/*.box-outline {
+    border: 1px solid #d1d1d1;
+    border-radius: 15px;
+}
+.boxShadow {
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    border-radius: 15px;
+}
+.ani-thumb-shadow .thumbnail:hover {
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    border-radius: 15px;
+}*/
+/*-------------------*/
+
 .swiper-all {
     position: relative;
-    width: calc(1380px + 85px);
+    /*width: calc(1380px + 85px);*/
     margin: auto;
 }
 .swiper-all .swiper-slide {
     border-radius: 15px;
-    padding: 15px;
+    padding: 5px;
 }
 
+.item-info {
+    display: flex;
+	flex-direction: column;
+    margin-top: 15px;
+}
+.thumbnail-wide .item-info {
+    margin-top: 0px !important;
+}
 .item-info>div {
     margin-bottom: 10px;
 }
 .item-info>div:last-child {
     margin-bottom: 0px;
 }
+
 .item-inner-wrap {
     display: flex;
+	width: 100%;
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
@@ -933,7 +1060,7 @@ nav .gnb-ctg-all {
     flex-wrap: wrap;
 }
 .col-list>li {
-    padding: 15px;
+    padding: 10px;
     position: relative;
 }
 .lg-1col>* {
@@ -1039,15 +1166,13 @@ nav .gnb-ctg-all {
     background: url("../image/category-icon9.png") no-repeat center/contain;
 }
 
-.ctg-tab-content {
-    padding: 35px 0;
-}
 .ctg-tab-content>li {
     display: none;
 }
 .ctg-tab-content>li.on {
     display: block;
 }
+
 .ctg-tab-content .item-img a {
     display: inline-flex;
     width: 100%;
@@ -1297,10 +1422,15 @@ footer {
 .display-flex {
     display: flex;
 }
+.flex-column {
+    flex-direction: column;
+}
 .space-between {
     justify-content: space-between;
 }
-
+.center {
+    justify-content: center;
+}
 .alignItems-center {
     align-items: center;
 }

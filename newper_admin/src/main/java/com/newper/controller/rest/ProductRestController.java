@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -436,8 +437,19 @@ public class ProductRestController {
             JSONObject jsonObject = (JSONObject) parser.parse(res);
             JSONArray jsonArray = (JSONArray)jsonObject.get("items");
             JSONObject item = (JSONObject)jsonArray.get(0);
-            String price = item.get("lprice")+"";
-            rm.put("price", price);
+            System.out.println(item);
+            String title = item.get("title")+"";
+            title=title.replace("</b>","");
+            title=title.replace("<b>","");
+            rm.put("P_NAVER1", item.get("lprice"));
+            rm.put("P_NAVER2", "Y");
+            rm.put("P_NAVER3", "UNKNOWN");
+            rm.put("P_NAVER4", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            rm.put("P_NAVER5", item.get("image"));
+            rm.put("P_NAVER6", title);
+            rm.put("P_NAVER7", "UNKNOWN");
+            rm.put("P_NAVER8", paramMap.get("P_MODEL"));
+            rm.put("P_NAVER9", "UNKNOWN");
         }catch (Exception e){}
 
 

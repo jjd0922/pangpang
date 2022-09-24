@@ -31,9 +31,7 @@ public class MainSection extends BaseEntity {
     private String msName;
     /** 순서*/
     private int msOrder;
-    /**단 (배너 1단/2단)*/
-    private int msColumn;
-    /** 섹션타입*/
+    /** 섹션타입. 기획인 경우 배너,상품그룹의 순서 100자리수를 열로 사용 */
     @Enumerated(EnumType.STRING)
     private MsType msType;
     /** 섹션 정보*/
@@ -50,9 +48,6 @@ public class MainSection extends BaseEntity {
 
         if(msOrder == 0){
             msOrder =1;
-        }
-        if(msColumn == 0){
-            msColumn = 1;
         }
     }
 

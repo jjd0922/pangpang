@@ -42,10 +42,14 @@ public class NewperInterceptor implements HandlerInterceptor {
 
         String requestURI = request.getRequestURI();
         for (Menu menu : MenuList.menus) {
+            request.setAttribute("mainTitle", menu.getMenuName());
+            request.setAttribute("mainIcon", menu.getMenuIcon());
             for (SubMenu subMenu : menu.getSubMenuList()) {
                 if(!subMenu.hasAuth(sessionInfo.getAuthIdx(), requestURI)){
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return false;
+                }else{
+                    request.setAttribute("subTitle", subMenu.getSmName());
                 }
             }
         }
@@ -59,6 +63,22 @@ public class NewperInterceptor implements HandlerInterceptor {
             return;
         }
 
+        String requestURI = request.getRequestURI();
+        requestURI=requestURI.substring(request.getContextPath().length());
+
+        if(requestURI.indexOf(";")!=-1){
+            requestURI=requestURI.substring(0, requestURI.indexOf(";"));
+        }
+
+        for (Menu menu : MenuList.menus) {
+            for (SubMenu subMenu : menu.getSubMenuList()) {
+                if(subMenu.getSmUrl().equals(requestURI)){
+                    request.setAttribute("mainTitle", menu.getMenuName());
+                    request.setAttribute("mainIcon", menu.getMenuIcon());
+                    request.setAttribute("subTitle", subMenu.getSmName());
+                }
+            }
+        }
 
 //            String requestURI = request.getRequestURI();
 //            requestURI=requestURI.substring(request.getContextPath().length());

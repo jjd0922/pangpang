@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.constant.CateSpec;
 import com.newper.constant.CgsType;
 import com.newper.constant.GState;
 import com.newper.constant.GgtType;

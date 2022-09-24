@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>설치상품 반품관리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+<body>
+<th:block th:replace="common/header.html"></th:block>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="collapse show" id="collapse-button-collapsed">
+                                <div class="card-body pt-0">
+                                    <form id="returnForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <div class="form-group">
+                                                    <label class="d-block">주문완료일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출고요청일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출고(배송중)일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">배송완료일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출고구분</label>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문상태</label>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산상태</label>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문코드<br>(사방넷통합주문번호)</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_AUTH_IDX">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">주문상품코드<br>(사방넷주문번호)</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수취인명</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출하창고</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출고택배사</label>
+                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">출고송장번호</label>
+                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                </div>
+
+                                                <div class="form-group end">
+                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                <div class="btn-group">
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn1">
+                                            수거업체배정
+                                        </a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn2()">
+                                            수거정보등록
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table" id="returnTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+
+<th:block th:replace="/delivery/modal/returnInvoiceInformationModal.html"/>
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+
+
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+
+
+<script>
+
+</script>
+
+<script>
+    function searchBtn() {
+        var table = $('#returnTable').DataTable();
+        table.page('first').ajax.url('/delivery/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
+    }
+
+    function Btn2(){
+        $('#returnInvoiceInformationModal').modal('show');
+    }
+    /*    function userDetailPop(uIdx) {
+            var focusPopup = window.open('userPopup/' + uIdx, 'userPopup', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        }*/
+</script>
+
+
+<script>
+    var returnTable = $('#returnTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering: false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax: {
+            url: '/delivery/return.dataTable?' + $('#returnForm').serialize(),
+            type: 'post'
+        },
+        columnDefs: [{
+            orderable: false,
+            targets: [0]
+
+        }],
+
+        "columns": [
+            {
+                'class': 'select-checkbox',
+                'title': '선택',
+                'data': 'SP_IDX',
+                'defaultContent': '',
+                'render': function (data, type, full, meta) {
+                    return '';
+                }
+            }
+            , {'title': '주문완료일', 'data': 'U_PHONE'}
+            , {'title': '출고요청일', 'data': 'U_PHONE'}
+            , {'title': '출고일', 'data': 'U_PHONE'}
+            , {'title': '설치예정일', 'data': 'U_PHONE'}
+            , {'title': '설치완료일', 'data': 'U_PHONE'}
+            , {'title': '배송완료일', 'data': 'U_PHONE'}
+            , {'title': '출고구분', 'data': 'U_PHONE'}
+            , {'title': '주문상태', 'data': 'U_PHONE'}
+            , {'title': '자산상태', 'data': 'U_PHONE'}
+            , {
+                'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
+                    return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
+                }
+            }
+            , {'title': '주문코드<br>사방넷 주문번호', 'data': 'U_PHONE'}
+            , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
+            , {'title': '상품코드', 'data': 'U_ID'}
+            , {'title': '자산코드', 'data': 'U_DEPART'}
+            , {'title': '상품명', 'data': 'U_POSITION'}
+            , {'title': '수량', 'data': 'U_PERSON_MAIL'}
+
+        ]
+    });
+
+    $('#returnForm').on('keyup', function (event) {
+        if (event.keyCode == 13) {
+            searchBtn();
+            return false;
+        }
+    });
+
+    /*
+        $('#popNewBtn').on('click', function () {
+            var focusPopup = window.open('userPopup', 'insert_user', 'width=1000, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        });*/
+
+
+</script>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>출고등록(자산등록)</title>
+    <th:block th:replace="common/css.html"></th:block>
+    <style>
+        .group{
+            background:aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-header header-elements-inline">
+                                <h6 class="card-title">
+                                    <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                    </div>
+                                </h6>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2열 레이아웃 -->
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">주문코드</h6>
+                            </div>
+                            <form id="orderTableForm">
+                                <table class="table" id="orderTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">1.주문내역</h6>
+                            </div>
+                            <form id="categorySecondTableForm">
+                                <table class="table" id="orderGoodsStockTable">
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-header bg-white header-elements-inline">
+                                <h6 class="card-title">2.자산내역</h6>
+                                <a type="button" class="btn btn-sm btn-outline-dark ml-1" id="barButton" onclick="barcodeModal('')">
+                                    <i class="icon-popout mr-1"></i>바코드 스캔
+                                </a>
+                            </div>
+
+                            <div class="collapse show">
+                                <div class="table-responsive">
+                                    <form id="tegetherTableForm">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>출고송장번호</th>
+                                                    <th>자산코드</th>
+                                                    <th>삭제</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="deliveryScanTable"></tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+        <button type="button" class="btn btn-sm btn-secondary float-right" onclick="togetherSave()">저장</button>
+    </div>
+</div>
+</div>
+</div>
+
+<th:block th:replace="delivery/modal/barcodeModal.html"/>
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/plugins/ui/dragula.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 드래그&드랍 -->
+<script th:src="@{/assets/js/demo_pages/extension_dnd.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+<script>
+    var orderTable = $('#orderTable').DataTable({
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/orders/orders.dataTable?'+$('#orderTableForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+
+            {'title':'주문코드','data':'O_CODE','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="orderDetail('+full.O_IDX+')">'+data+'</a>';
+                }}
+
+        ]
+    });
+
+
+    $('#orderGoodsStockTable').DataTable({
+        dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/delivery/orderGoodsDetail.dataTable',
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            // {'class':'select-checkbox m-w-2', 'title':'선택','data':'OG_IDX','defaultContent':'','render':function(data,type,full,meta){
+            //         return '<input type="hidden" name="OG_IDX" value="'+data+'">';
+            //     }}
+            // ,
+            {'title':'주문상품코드','data':'OG_IDX'}
+            ,{'title':'쇼핑몰명','data':'SHOP_NAME','defaultContent':''}
+            ,{'title':'재고코드','data':'GS_CODE','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'주문자명','data':'O_NAME','defaultContent':''}
+            ,{'title':'주문자연락처','data':'O_PHONE','defaultContent':''}
+            ,{'title':'출고택배사','data':'DN_COMPANY','defaultContent':''}
+            ,{'title':'출고송장번호','data':'DN_NUM','defaultContent':''}
+            ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'출고일','data':'DN_RELEASE','defaultContent':''}
+        ]
+    });
+
+
+
+
+
+
+
+
+</script>
+
+<script>
+    function orderDetail(O_IDX){
+        var table = $('#orderGoodsStockTable').DataTable();
+        table.ajax.url('/delivery/orderGoodsDetail.dataTable?O_IDX='+O_IDX).load(null,false);
+        $('#barButton').attr('onclick', 'barcodeModal('+O_IDX+')');
+        $('#deliveryScanTable').html('');
+    }
+
+    function deleteBarcode(OG_IDX){
+        $('#OG_IDX'+OG_IDX).remove();
+    }
+
+    function togetherSave(){
+        $.ajax({
+            url:'/delivery/together.ajax',
+            type:'POST',
+            data:$('#tegetherTableForm').serialize(),
+            success:function(res){
+                $('#deliveryScanTable').html('');
+                $('#orderGoodsStockTable').DataTable().ajax.reload();
+            }
+        })
+    }
+</script>
+
+
+</body>
+
+
+
+</html>

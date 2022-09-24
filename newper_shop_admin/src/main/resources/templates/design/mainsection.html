@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>메인섹션관리</title>
+    <title th:text="${subTitle}"></title>
     <th:block th:replace="common/css.html"></th:block>
     <style>
         .group{
@@ -28,6 +28,15 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
+
                                     </div>
                                 </h6>
                                 <div class="header-elements text-right">
@@ -75,7 +84,7 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1" onclick="insertMainSectionPop()">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="mainSectionPop('new')">신규등록</a>
                             </div>
 
                             <table class="table" id="mainsectionTable"></table>
@@ -145,10 +154,10 @@ $(document).ready(function(){
                 }
             ]
         },
-        'pageLength':3,
+        'pageLength':2,
         'lengthMenu': [
-            [1, 2, 3, 5]
-            , ['1개', '2개', '3개', '5개']
+            [1, 2, 3]
+            , ['1개', '2개', '3개']
         ],
         "columnDefs": [
             { "visible": false, "targets": 0 }
@@ -160,7 +169,7 @@ $(document).ready(function(){
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/page/mainsection.dataTable',
+            url:'/design/mainsection.dataTable',
             type:'post'
         },
         "columns" : [
@@ -193,7 +202,7 @@ $(document).ready(function(){
                 if(data == null){
                     return '데이터 없음';
                 }else{
-                    return '<a class="btn btn-sm badge-primary" onclick="test('+full.MS_IDX+')">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-primary" onclick="mainSectionPop('+full.MS_IDX+')">'+data+'</a>';
                 }
             }}
             ,{'class':'m-w-4 w-10', 'title':'삭제','data':'MS_IDX','render':function(data,type,full,meta){
@@ -220,7 +229,7 @@ $(document).ready(function(){
                 }
 
                 $.ajax({
-                    url:'/page/mainsection.ajax'
+                    url:'/design/mainsection.ajax'
                     ,type:'post'
                     ,data:param
                 }).always(function(res){
@@ -250,18 +259,28 @@ $(document).ready(function(){
 </script>
 
 <script>
-    function insertMainSectionPop(){
-        var focusPopup = window.open('/page/mainsection/new', 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
+    function mainSectionPop(msIdx){
+        var focusPopup = window.open('/design/mainsection/'+msIdx, 'mainsectionNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
-    function test(){
-        alert('준비중');
+    function toggleMainSectionDisplay(msIdx){
+        $.ajax({
+            url:'/design/mainsection/toggle.ajax',
+            type:'post',
+            data:{
+                msIdx: msIdx
+            },
+            success:function(res){
+                $('#mainsectionTable').DataTable().ajax.reload();
+            }
+            ,error:function(){}
+        })
     }
 
     function deleteMainsection(msIdx){
         if(confirm("메인섹션을 삭제하시겠습니까?")){
             $.ajax({
-                url:'/page/mainsection/delete.ajax',
+                url:'/design/mainsection/delete.ajax',
                 type:'post',
                 data:{
                     msIdx: msIdx

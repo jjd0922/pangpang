@@ -43,16 +43,4 @@ public class Common {
         paramMap.getMap().put(key, value_arr);
     }
 
-    /**비밀번호 암호화*/
-    public static String parseSHA(String str){
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-512");
-            digest.reset();
-            digest.update(str.getBytes(StandardCharsets.UTF_8));
-            String result = String.format("%0128x", new BigInteger(1, digest.digest()));
-            return result;
-        }catch (NoSuchAlgorithmException nae){
-            throw new MsgException("해쉬 암호화 중 에러발생");
-        }
-    }
 }

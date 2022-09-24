@@ -22,26 +22,6 @@ import java.util.Map;
 public class ProductController {
 
     private final ShopCategoryRepo shopCategoryRepo;
-private final ShopCategoryMapper shopCategoryMapper;
-
-    /**상품 관리*/
-    @GetMapping("")
-    public ModelAndView product(){
-        ModelAndView mav = new ModelAndView("product/product");
-
-        return mav;
-    }
-
-    @GetMapping("detail")
-    public ModelAndView detail(){
-        ModelAndView mav = new ModelAndView("product/detail");
-        List<Map<String, Object>> shopCategory = shopCategoryMapper.selectShopCategoryDatatableByParent();
-        List<Map<String, Object>> category = shopCategoryMapper.selectCategoryListByParent();
-        mav.addObject("shopCategory",shopCategory);
-        mav.addObject("category",category);
-
-        return mav;
-    }
 
     /**전시대분류 관리*/
     @GetMapping("shopCategory")

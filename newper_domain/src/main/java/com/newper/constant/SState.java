@@ -18,6 +18,6 @@ public enum SState implements EnumOption {
     /**미팅일정변경*/
     RESCHEDULE("미팅일정변경");
 
-    public String option;
+    private String option;
 
 }

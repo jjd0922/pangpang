@@ -42,11 +42,16 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">분양몰</span>
                                                         </span>
-                                                        <input type="hidden" name="shopIdx">
-                                                        <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
-                                                        <span class="input-group-append" onclick="openShopModal()">
-                                                            <a class="input-group-text"><i class="icon-home"></i></a>
-                                                        </span>
+                                                        <th:block th:if="${mainsection == null}">
+                                                            <input type="hidden" name="shopIdx">
+                                                            <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
+                                                            <span class="input-group-append" onclick="openShopModal()">
+                                                                <a class="input-group-text"><i class="icon-home"></i></a>
+                                                            </span>
+                                                        </th:block>
+                                                        <th:block th:unless="${mainsection == null}">
+                                                            <input class="form-control" type="text" readonly th:value="${mainsection?.shop.shopName}">
+                                                        </th:block>
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,7 +61,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">섹션 타이틀</span>
                                                         </span>
-                                                        <input type="text" class="form-control" name="msName">
+                                                        <input type="text" class="form-control" name="msName" th:value="${mainsection?.msName}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -67,7 +72,7 @@
                                                             <span class="input-group-text">메인 섹션 타입</span>
                                                         </span>
                                                         <select class="form-control select" name="msType">
-                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}"></option>
+                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -79,20 +84,8 @@
                                                             <span class="input-group-text">노출 상태</span>
                                                         </span>
                                                         <select class="form-control select" name="msOrder">
-                                                            <option value="-1">미노출</option>
-                                                            <option value="1">노출</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-6" id="msColumnForm" style="display: none;">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">단수</span>
-                                                        </span>
-                                                        <select class="form-control select" name="msColumn">
-                                                            <option th:each="i :${#numbers.sequence(1, maxColumn)}" th:text="${i}+'단'" th:value="${i}"></option>
+                                                            <option value="-1" th:selected="${mainsection?.msOrder < 1}">미노출</option>
+                                                            <option value="1" th:selected="${mainsection?.msOrder > 1}">노출</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -104,10 +97,6 @@
                                     <fieldset class="mb-0">
                                         <legend class="d-flex justify-content-between">
                                             <span>2. 섹션 상세 정보</span>
-                                            <div>
-                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertBanner()">배너 그룹 생성</a>
-                                                <a class="btn btn-primary btn-sm pull-right" onclick="popInsertProduct()">상품 그룹 생성</a>
-                                            </div>
                                         </legend>
                                         <div class="row" th:each="i :${#numbers.sequence(1, maxColumn)}" th:classappend="'ms_section'+${i}">
                                             <div class="col-sm-12 col-md-6">
@@ -188,16 +177,9 @@
 
 <!--shop modal-->
 <th:block th:replace="shop/modal/shopModal.html"></th:block>
+<th:block th:replace=""
 
 <script th:inline="javascript">
-    function popInsertBanner(){
-        var focusPopup = window.open('/page/mainsection/banner/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
-    function popInsertProduct(){
-        var focusPopup = window.open('/page/mainsection/shopProduct/new', 'bannerNew', 'width=900, height=450, scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
     function saveBtn(){
         if(window.confirm('저장하시겠습니까?')){
             $.ajax({

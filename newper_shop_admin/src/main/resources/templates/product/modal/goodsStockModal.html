@@ -51,15 +51,16 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
+                <button type="button" class="btn btn-danger" id="gsSelect">선택</button>
             </div>
         </div>
     </div>
 </div>
 
 <script th:inline="javascript">
-    function showGoodsStockModal(res) {
+    function showGoodsStockModal(res,boolean) {
         $('#searchGoodsStockModal').modal('show');
-        selectGoodsStockDatatable(res);
+        selectGoodsStockDatatable(res,boolean);
     }
 
     function searchGoodsStockDataTable() {
@@ -68,10 +69,10 @@
 
 </script>
 <script th:inline="javascript">
-    function selectGoodsStockDatatable(cnt) {
-
+    function selectGoodsStockDatatable(cnt,boolean) {
+            $('#gsSelect').attr('onclick', 'selectProduct('+cnt+','+boolean+')');
             $("#goodsStockModalTable").DataTable({
-                dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+                dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
                 ordering: false,
                 autoWidth: true,
                 destroy: true,
@@ -89,8 +90,8 @@
                     targets: [0]
                 } ],
                 columns : [
-                    {'title':'No','data':'No','render':function(data,type,full,meta){
-                            return meta.settings._iDisplayStart+meta.row+1;
+                    {'class':'select-checkbox m-w-2', 'title':'선택','data':'GS__IDX','defaultContent':'','render':function(data,type,full,meta){
+                            return '<input type="hidden" name="SP_IDX" value="'+data+'">';
                         }}
                     ,{'title':'대표썸네일','data':'GS_THUMB_FILE1','render':function(data,type,full,meta){
                             if(data==''){
@@ -107,9 +108,9 @@
                     ,{'title':'옵션2','data':'OPTION2','defaultContent':''}
                     ,{'title':'옵션3','data':'OPTION3','defaultContent':''}
                     ,{'title':'스펙','data':'SPEC_LOOKUP','defaultContent':''}
-                    ,{'title':'선택','data':'GS_IDX', 'render': function (data, type, full, meta) {
-                            return '<a onclick="selectProduct('+meta.row+','+cnt+')" class="badge badge-primary">선택</a>';
-                        }}
+                    // ,{'title':'선택','data':'GS_IDX', 'render': function (data, type, full, meta) {
+                    //         return '<a onclick="selectProduct('+meta.row+','+cnt+')" class="badge badge-primary">선택</a>';
+                    //     }}
                 ]
             });
 

@@ -25,12 +25,13 @@ public class DSConfig {
     @Bean(name = "dataSource")
     public DataSource dataSource() {
         AesEncrypt aesEncrypt = new AesEncrypt();
-
+//        System.out.println("decrypt===="+aesEncrypt.decrypt("OX8gM7VWPhTuWFo6bJaSUGn582qhkJX4OiH+RMPoSNt+R2oVNOX/T5gXGwP9nryFg40nr1R8MDQXB4h2w/D2zoQObMPu6ZacsKBQoFXtb6ie22LNXVBc8r+WxCdHiSJW7vSPHvhSb9bQe+ETJ7uW1A=="));
         DataSource dataSource = DataSourceBuilder.create()
                 .url("jdbc:mysql://"+aesEncrypt.decrypt(url))
                 .username(aesEncrypt.decrypt(username))
                 .password(aesEncrypt.decrypt(password))
                 .driverClassName(driver)
+                .driverClassName("com.mysql.cj.jdbc.Driver")
                 .build();
         return dataSource;
     }
