@@ -44,6 +44,8 @@ public class CheckService {
         User user = paramMap.mapParam(User.class);
         checkGroup.setUser(user);
 
+        checkGroup.setCgType(CgType.valueOf(paramMap.getString("cgType")));
+
         checkGroupRepo.save(checkGroup);
 
         GState gState = GState.valueOf(paramMap.getString("gState"));
@@ -99,7 +101,7 @@ public class CheckService {
 
         Map<String, Object> gJson = goods.getGJson();
         // 자산 이미지 업로드
-        if (gFile != null) {
+        if (!gFile[0].getOriginalFilename().equals("")) {
             List<String> file = (List<String>) gJson.get("gFile");
             List<String> fileName = (List<String>) gJson.get("gFileName");
 
@@ -119,7 +121,7 @@ public class CheckService {
         gJson.put("inSpec2", inSpec2);
 
         // 자산 상태 변경
-        goods.setGState(GState.CHECK);
+        goods.setGState(GState.CHECK_NEED);
 
         // CHECK_GOODS 예상비용 업데이트
         int expectedCost = paramMap.getInt("paintCost") + paramMap.getInt("fixCost") + paramMap.getInt("processCost");
@@ -294,18 +296,18 @@ public class CheckService {
 
 
         // 가공예정 SPEC
-        List<String> spec4 = paramMap.getList("spec4");
-        List<Long> psIdx_list = paramMap.getListLong("psIdx");
-        List<Long> psCost_list = paramMap.getListLong("");
-        for (int i = 0; i < spec4.size(); i++) {
-            ProcessSpec processSpec = processSpecRepo.findById(psIdx_list.get(i).intValue()).get();
-            processSpec.setPsCost(psCost_list.get(i).intValue());
-            processSpec.setPsType(psType);
-            processSpecRepo.save(processSpec);
-        }
+//        List<String> spec4 = paramMap.getList("spec4");
+//        List<Long> psIdx_list = paramMap.getListLong("psIdx");
+//        List<Long> psCost_list = paramMap.getListLong("");
+//        for (int i = 0; i < spec4.size(); i++) {
+//            ProcessSpec processSpec = processSpecRepo.findById(psIdx_list.get(i).intValue()).get();
+//            processSpec.setPsCost(psCost_list.get(i).intValue());
+//            processSpec.setPsType(psType);
+//            processSpecRepo.save(processSpec);
+//        }
 
 
-        gJson.put("pSpec1", spec4);
+//        gJson.put("pSpec1", spec4);
         goods.setGJson(gJson);
         goods.setGState(gState);
         goodsRepo.save(goods);

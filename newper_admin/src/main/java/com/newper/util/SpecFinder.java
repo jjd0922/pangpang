@@ -22,20 +22,21 @@ public class SpecFinder {
 
     /** specl_name, specl_value로 specl_idx 가져오기*/
     public SpecList findSpecList(String speclName, String speclValue){
-        Map<String, SpecList> specValueMap = null;
-        if(!specNameMap.containsKey(speclName)){
-            specValueMap = specMapper.selectSpecListMap(speclName);
-            specNameMap.put(speclName, specValueMap);
-        }else{
-            specValueMap = specNameMap.get(speclName);
-        }
+//        Map<String, SpecList> specValueMap = null;
+//        if(!specNameMap.containsKey(speclName)){
+//            specValueMap = specMapper.selectSpecListMap(speclName);
+//            specNameMap.put(speclName, specValueMap);
+//        }else{
+//            specValueMap = specNameMap.get(speclName);
+//        }
+//
+//        if(specValueMap == null){
+//            specValueMap = new HashMap<>();
+//            specNameMap.put(speclName, specValueMap);
+//        }
 
-        if(specValueMap == null){
-            specValueMap = new HashMap<>();
-            specNameMap.put(speclName, specValueMap);
-        }
-
-        SpecList specList = specValueMap.get(speclValue);
+//        SpecList specList = specValueMap.get(speclValue);
+        SpecList specList = specListRepo.findSpecListBySpeclNameAndSpeclValue(speclName, speclValue);
         //해당 스펙 처음 사용하는 경우 db에 insert
         if(specList == null){
             specList = SpecList.builder()
@@ -43,7 +44,7 @@ public class SpecFinder {
                     .speclValue(speclValue)
                     .build();
             specListRepo.save(specList);
-            specValueMap.put(speclValue, specList);
+//            specValueMap.put(speclValue, specList);
         }
 
         return specList;

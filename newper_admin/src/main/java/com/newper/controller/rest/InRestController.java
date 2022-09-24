@@ -120,10 +120,10 @@ public class InRestController {
 
     /** 입고등록 발주서 상품 바코드 삭제 */
     @PostMapping("po/barcode/delete.ajax")
-    public ReturnMap barcodeDelete(long g_idx) {
+    public ReturnMap barcodeDelete(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
 
-        goodsService.barcodeDelete(g_idx);
+        goodsService.barcodeDelete(paramMap);
         rm.setMessage("삭제 완료");
 
         return rm;
@@ -205,6 +205,14 @@ public class InRestController {
         ReturnMap rm = new ReturnMap();
         poMapper.selectReceivedByPo(paramMap.getMap());
 
+        return rm;
+    }
+
+    /** 입고등록시 새상품 등록 */
+    @PostMapping("insertInProduct.ajax")
+    public ReturnMap insertInProduct(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        inService.insertInProduct(paramMap);
         return rm;
     }
 }

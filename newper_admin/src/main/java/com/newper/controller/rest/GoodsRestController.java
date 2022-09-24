@@ -138,6 +138,14 @@ public class GoodsRestController {
         return rm;
     }
 
+    /** 해당자산들 재검수인지 자산값 체크 */
+    @PostMapping("goodsReCheck.ajax")
+    public ReturnMap goodsReCheck(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.goodsReCheck(paramMap);
+        return rm;
+    }
+
     /** 해당 자산들 해당 공정 가능한지 체크 */
     @PostMapping("goodsProcessCheck.ajax")
     public ReturnMap goodsProcessCheck(ParamMap paramMap) {
@@ -154,4 +162,12 @@ public class GoodsRestController {
         return rm;
     }
 
+    /** 자산 상태 변경 */
+    @PostMapping("updateGoodsState.ajax")
+    public ReturnMap updateGoodsState(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.updateGoodsState(paramMap);
+        rm.setMessage("영업검수 요청 완료");
+        return rm;
+    }
 }

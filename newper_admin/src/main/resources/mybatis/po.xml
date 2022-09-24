@@ -234,7 +234,7 @@
         </where>
     </select>
     <sql id="includePoApprovedDatatable">
-        (PO_TYPE = 'EMERGENCY' OR HW_STATE = 'APPROVED')
+        (PO_STATE = 'APPROVAL')
 
     </sql>
     <select id="selectPoApprovedDatatable" resultType="map" parameterType="map">
@@ -411,7 +411,7 @@
             P_IDX,
             P_NAME,
             P_MODEL,
-            IFNULL(PP_COUNT, 0),
+            IFNULL(SUM(PP_COUNT), 0) AS PP_COUNT,
             IP_COUNT
         FROM
             PRODUCT
@@ -420,6 +420,8 @@
                 LEFT JOIN PO_PRODUCT ON PP_P_IDX = IP_P_IDX AND PP_PO_IDX = IG_PO_IDX
         WHERE
             IG_PO_IDX = #{po_idx}
+        GROUP BY
+            IP_P_IDX
     </select>
     <select id="selectPoProductIdxList" resultType="Integer">
         SELECT DISTINCT(PP_P_IDX) FROM PO_PRODUCT

@@ -8,8 +8,8 @@
             LOC_WH_IDX,
             CONCAT(POST, ' ', ADDR1, ' ', ADDR2, ' ', ADDR3, ' ', ADDR4, ' ') AS 'ADDRESS'
         FROM
-            warehouse
-                LEFT JOIN ON LOCATION LOC_WH_IDX=WH_IDX
+            WAREHOUSE
+                LEFT JOIN LOCATION ON WH_IDX = LOC_WH_IDX
         LIMIT
             #{start}, #{length}
     </select>
@@ -124,7 +124,11 @@
         <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
         <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
         <if test="poIdx != null and poIdx != ''">AND PO_IDX = #{poIdx}</if>
-
+        <if test="gState != null and gState != ''">
+            <foreach collection="gState" open="AND G_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
         <if test="gIdxList != null and gIdxList != ''">
             <foreach collection="gIdxList" open="AND G_IDX IN (" separator="," close=")" item="item">
                 #{item}

@@ -62,4 +62,7 @@ public interface ProcessMapper {
 
     /** 해당자산 공정완료시 남은 공정 개수 조회 */
     int selectProcessNeedByGoods(@Param("gIdx") Long gIdx);
+
+    /** 해당자산 공정필요 공정타입 횟수 조히 */
+    int selectProcessNeedCount(@Param("gIdx") Long gIdx, @Param("pnType") String pnType);
 }

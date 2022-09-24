@@ -1,6 +1,5 @@
 package com.newper.service;
 
-import com.newper.component.Common;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
@@ -45,7 +44,8 @@ public class GoodsService {
     @Transactional
     public void insertGoods(int p_idx, int po_idx, String barcode) {
         Po po = poRepo.getReferenceById(po_idx);
-        Product product = productRepo.getReferenceById(p_idx);
+        Product product = productRepo.findById(p_idx).get();
+
 
         InGroup inGroup = inGroupRepo.findByPo(po);
 
@@ -59,15 +59,25 @@ public class GoodsService {
                 .product(product)
                 .build();
 
+        if (product.getPType1().equals(PType1.NORMAL)) {
+            goods.setGState(GState.CHECK_DONE);
+        }
+
         Goods save = goodsRepo.save(goods);
 
         poMapper.updategoods(po_idx, p_idx);
     }
     /**입고등록팝업 바코드 삭제 */
     @Transactional
-    public void barcodeDelete(long g_idx){
+    public void barcodeDelete(ParamMap paramMap){
         //조건 체크 GOODS.java 에 생성 함
-        Goods goods = goodsRepo.findById(g_idx).orElseThrow(()->new MsgException(("존재하지 않는 자산코드입니다.")));
+        InGroup inGroup = inGroupRepo.findById(paramMap.getInt("igIdx")).get();
+        if (inGroup.getIgState().equals(IgState.DONE)) {
+            throw new MsgException("해당 발주건은 입고완료되었습니다.");
+        }
+
+
+        Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).orElseThrow(()->new MsgException(("존재하지 않는 자산코드입니다.")));
         goodsRepo.delete(goods);
         goodsRepo.flush();
         poMapper.updategoods(goods.getPo().getPoIdx(), goods.getProduct().getPIdx());
@@ -108,7 +118,7 @@ public class GoodsService {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
             // 반품필요 & 입고검수 상태의 자산을 반품요청으로 상태값 변경
             if (gState.equals(GState.CANCEL_REQ)) {
-                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK)) {
+                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK_NEED)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
                 } else {
@@ -116,7 +126,7 @@ public class GoodsService {
                 }
                 msg = "반품신청 완료";
             // 반품필요 자산을 입고검수 상태로 변경
-            } else if (gState.equals(GState.CHECK)) {
+            } else if (gState.equals(GState.CHECK_NEED)) {
                 if (goods.getGState().equals(GState.CANCEL_NEED)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
@@ -231,6 +241,18 @@ public class GoodsService {
         }
     }
 
+    /** 해당자산들 재검수인지 자산값 체크 */
+    public void goodsReCheck(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gIdx").split(",");
+
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+            if (!goods.getGState().equals(GState.CHECK_NEED)) {
+                throw new MsgException(goods.getGBarcode() + "는 재검수에 해당되는 자산이 아닙니다.");
+            }
+        }
+    }
+
     /** 자산 반품 가능한지 체크 */
     public void goodsResellCheck(ParamMap paramMap) {
         String[] gIdx = paramMap.getString("gIdx").split(",");
@@ -248,5 +270,16 @@ public class GoodsService {
         }
     }
 
+    /** 자산상태값 변경 */
+    @Transactional
+    public void updateGoodsState(ParamMap paramMap) {
+        String[] gIdx = paramMap.getString("gIdxs").split(",");
+        GState gState = GState.valueOf(paramMap.getString("gState"));
 
+        for (int i = 0; i < gIdx.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+            goods.setGState(gState);
+            goodsRepo.save(goods);
+        }
+    }
 }

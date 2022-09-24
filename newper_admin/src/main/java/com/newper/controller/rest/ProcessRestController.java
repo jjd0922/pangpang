@@ -125,6 +125,7 @@ public class ProcessRestController {
         ReturnMap rm = new ReturnMap();
         paramMap.put("gState", GState.CHECK_NEED);
         paramMap.put("cgsType", CgsType.IN);
+        paramMap.put("cgType", CgsType.IN);
         checkService.insertCheckGroup(paramMap);
         rm.setMessage("입고검수 요청 완료");
         return rm;
@@ -134,8 +135,9 @@ public class ProcessRestController {
     @PostMapping("recheckPop.ajax")
     public ReturnMap recheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-//        paramMap.put("gState", GState.CHECK_RE);
+        paramMap.put("gState", GState.CHECK_NEED);
         paramMap.put("cgsType", CgsType.RE);
+        paramMap.put("cgType", CgsType.RE);
         checkService.insertCheckGroup(paramMap);
         rm.setMessage("재검수 요청 완료");
         return rm;
@@ -223,4 +225,12 @@ public class ProcessRestController {
         return processMapper.selectProcessNeedDatatable(paramMap.getMap());
     }
 
+    /** 검수 - 자산 정보 업데이트 */
+    @PostMapping(value = "updateCheckGoods.ajax")
+    public ReturnMap updateCheckGoods(ParamMap paramMap, MultipartFile[] cgsFile) {
+        ReturnMap rm = new ReturnMap();
+        processService.updateCheckGoods(paramMap, cgsFile);
+        rm.setMessage("자산 필요 공정 내용 업데이트 완료");
+        return rm;
+    }
 }

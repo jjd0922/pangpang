@@ -80,4 +80,12 @@ public class InController {
         mav.addObject("poReceived", poMapper.selectPoReceivedByPoIdx(poIdx));
         return mav;
     }
+
+    /** 영업검수 자산 페이지*/
+    @GetMapping("checksGoods")
+    public ModelAndView checksGoods(){
+        ModelAndView mav = new ModelAndView("in/checksGoods");
+
+        return mav;
+    }
 }

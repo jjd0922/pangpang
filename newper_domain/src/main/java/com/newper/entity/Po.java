@@ -62,8 +62,6 @@ public class Po extends BaseEntity {
     private String poBuyChannel;
     private long poBuyReceiveAmount;
     private long poBuyUnpaidAmount;
-    @Enumerated(EnumType.STRING)
-    private PType1 poBuyProductType;
     private String poBuyOriUse;
     private String poBuySellPeriod;
     @Enumerated(EnumType.STRING)
@@ -87,6 +85,12 @@ public class Po extends BaseEntity {
     private String poFile;
     private String poFileName;
 
+    @Enumerated(EnumType.STRING)
+    private CcCycle poCycle;
+
+    @Enumerated(EnumType.STRING)
+    private CcCalType poCalType;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "po", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
@@ -96,14 +100,10 @@ public class Po extends BaseEntity {
     public void preSave(){
         if (getCompany() == null) {
             throw new MsgException("매입처를 선택해 주세요");
-        } else if (getCompany_sell() == null) {
-            throw new MsgException("판매처를 선택해 주세요");
         } else if (getWarehouse() == null) {
             throw new MsgException("입고예정창고를 선택해주세요");
         } else if (getPoType() == null) {
             throw new MsgException("긴급발주 여부를 선택해주세요");
-        } else if (getPoBuyProductType() == null) {
-            throw new MsgException("제품상태(품목구분1)을 선택해주세요");
         } else if (getPoSellChannel() == null) {
             throw new MsgException("판매채널유형을 선택해주세요");
         } else if (getPoInDate() == null || getPoInDate().isBefore(LocalDate.now())) {
@@ -130,7 +130,6 @@ public class Po extends BaseEntity {
         setPoBuyChannel(po.getPoBuyChannel());
         setPoBuyReceiveAmount(po.getPoBuyReceiveAmount());
         setPoBuyUnpaidAmount(po.getPoBuyUnpaidAmount());
-        setPoBuyProductType(po.getPoBuyProductType());
         setPoBuyOriUse(po.getPoBuyOriUse());
         setPoBuySellPeriod(po.getPoBuySellPeriod());
         setPoSellChannel(po.getPoSellChannel());

@@ -11,8 +11,11 @@ public enum PoState implements EnumOption {
 
 
     WAITING("발주대기")
+    ,REQUEST("승인요청")
+    ,REJECT("승인반려")
+    ,APPROVAL("승인완료")
     ,CANCEL("발주취소")
-    ,APPROVAL("발주완료")
+    ,COMPLETE("발주완료")
     ;
 
     private String option;

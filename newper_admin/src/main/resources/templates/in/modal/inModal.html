@@ -207,7 +207,10 @@
             $.ajax({
                 url:'/in/po/barcode/delete.ajax',
                 type:'post',
-                data:'g_idx='+g_idx,
+                data: {
+                    'gIdx':g_idx,
+                    'igIdx':$('#igIdx').val()
+                },
                 success:function(){
                     $('#inModalProductTable').DataTable().ajax.reload();
                 }
@@ -225,7 +228,7 @@
             $('#inModalProductTable').DataTable().page('first').ajax.url('/in/product.dataTable?'+$('#inModalForm').serialize()).load(null, false);
         }else {
             $('#inModalProductTable').DataTable({
-                ordering: false,
+                order: [0, 'desc'],
                 serverSide: true,
                 ajax: {
                     url: '/in/product.dataTable?' + $('#inModalForm').serialize(),
@@ -253,7 +256,9 @@
 
     $('#inProductModal').on('show.bs.modal',function (e){
         $('#inModalForm').hide();
-    });$('#inProductModal').on('hide.bs.modal',function (e){
+    });
+
+    $('#inProductModal').on('hide.bs.modal',function (e){
         refreshTable('#inProductTable');
     });
 

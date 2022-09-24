@@ -147,21 +147,22 @@
                                         </a>
                                     </div>
                                     <div class="btn-group ml-1">
-                                        <a type="button" class="btn btn-sm btn-primary">
+                                        <a type="button" onclick="poHiworksApply()" class="btn btn-sm btn-primary">
                                             승인요청
                                         </a>
                                     </div>
 
                                     <div class="btn-group ml-1">
-                                        <a onclick="poHiworksApply()" type="button" class="btn btn-sm btn-primary">
-                                            하이웍스 승인요청 TEST
+                                        <a onclick="poHiworksResponse('y')" type="button" class="btn btn-sm btn-primary">
+                                            하이웍스 승인TEST
                                         </a>
                                     </div>
                                     <div class="btn-group ml-1">
-                                        <a onclick="poHiworksResponse()" type="button" class="btn btn-sm btn-primary">
-                                            하이웍스 승인&반려 TEST
+                                        <a onclick="poHiworksResponse('n')" type="button" class="btn btn-sm btn-primary">
+                                            하이웍스 반려TEST
                                         </a>
                                     </div>
+
 
                                     <div class="btn-group ml-1">
                                         <a onclick="poDelete()" type="button" class="btn btn-sm btn-danger">
@@ -282,6 +283,11 @@
     }
 
     function poHiworksApply() {
+        if ($('.selected').length == 0) {
+            alert('발주건을 선택해주세요');
+            return false;
+        }
+
         var poIdxs = '';
         $.each($('.selected'), function (index, value) {
             poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
@@ -300,7 +306,7 @@
         });
     }
 
-    function poHiworksResponse() {
+    function poHiworksResponse(type) {
         var poIdxs = '';
         $.each($('.selected'), function (index, value) {
             poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
@@ -310,7 +316,8 @@
         $.ajax({
             url: '/po/poHiworksResponse.ajax',
             data: {
-                'poIdxs' : poIdxs
+                'poIdxs' : poIdxs,
+                'type': type
             },
             type: 'POST',
             success: function (result) {
@@ -320,6 +327,11 @@
     }
 
     function poDelete() {
+        if ($('.selected').length == 0) {
+            alert('발주건을 선택해주세요');
+            return false;
+        }
+
         var poIdxs = '';
         $.each($('.selected'), function (index, value) {
             poIdxs += $(this).children('.select-checkbox').children('input').val() + ',';

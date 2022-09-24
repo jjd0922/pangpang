@@ -36,6 +36,7 @@
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                     <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).RECEIVED}">
                                                     <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).PROCESS}">
+                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK_NEED}">
                                                 </div>
 
                                                 <div class="form-group">
@@ -366,6 +367,7 @@
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
             ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent': ''}
+            ,{'title':'발주코드','data':'G_PO_IDX', 'defaultContent': ''}
             ,{'title':'자산처리<br>담당자','data':'', 'defaultContent': ''}
             ,{'title':'자산<br>처리일','data':'G_IDX', 'defaultContent': ''}
             ,{'title':'자산<br>코드','data':'G_IDX', 'defaultContent': ''}
@@ -406,6 +408,30 @@
     $('#boardForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
+
+    function goodsReCheck(url, type) {
+        var flag = false;
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        if(g_idxs.length > 0){
+            $.ajax({
+                url:'/goods/goodsReCheck.ajax'
+                ,type:'post'
+                ,data: {
+                    "gIdx" : g_idxs
+                }
+                ,async: false
+                ,success() {
+                    flag = true;
+                }
+            })
+
+            if (flag == false) {
+                return false;
+            }
+
+            tempGoodsGroup(url, type);
+        }
+    }
 
     function goodsInCheck(url, type) {
         var flag = false;

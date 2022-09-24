@@ -38,21 +38,10 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">입고코드</span>
-                                                    </span>
-                                                        <input class="form-control" name="igIdx" th:value="${ig.igIdx}" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                    <span class="input-group-prepend">
                                                         <span class="input-group-text">입고상태</span>
                                                     </span>
                                                         <input class="form-control" th:value="${ig.igState.option}" readonly>
+                                                        <input type="hidden" id="igIdx" th:value="${ig.igIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -64,20 +53,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">입고창고<a onclick="openWarehouseModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="whName" class="form-control" placeholder="검색" th:value="${ig?.warehouse?.whName}" readonly>
-                                                        <input type="hidden" name="whIdx" th:value="${ig?.warehouse?.whIdx}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 입력필드 -->
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">세금계산서 발행일</span>
-                                                    </span>
-                                                        <input type="text" name="igTaxDate" class="form-control w-datarange daterange-single" placeholder="입력">
+                                                        <input type="text" name="whName" class="form-control" placeholder="검색" th:value="${po?.warehouse?.whName}" readonly>
+                                                        <input type="hidden" name="whIdx" th:value="${po?.warehouse?.whIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,7 +79,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">입고완료일</span>
                                                     </span>
-                                                        <input type="text" name="igDate" class="form-control w-datarange daterange-single" placeholder="입력" th:value="${ig?.igDate}">
+                                                        <input type="text" name="igDate" class="form-control" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,6 +303,16 @@
             return false;
         }
 
+        if ($('input[name=uIdx]').val() == '') {
+            alert('입고담당자를 선택해 주세요');
+            return false;
+        }
+
+        if ($('input[name=whIdx]').val() == '') {
+            alert('입고창고를 선택해 주세요');
+            return false;
+        }
+
         $.ajax({
             url: '/in/inGroupSave.ajax',
             processData: false,
@@ -386,10 +373,10 @@
             ,{'title':'상품코드','data':'P_IDX'}
             ,{'title':'상품명','data':'P_NAME'}
             ,{'title':'모델명','data':'P_MODEL'}
-            ,{'title':'매입수량','data':'PP_COUNT','render':function(data,type,full,meta){
-                return comma(data);
-            }}
-            ,{'title':'입고 수량','data':'IP_COUNT','render':function(data,type,full,meta){
+            ,{'title':'매입예정 수량','data':'PP_COUNT','render':function(data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'실입고 수량','data':'IP_COUNT','render':function(data,type,full,meta){
                 return comma(data);
             }}
             ,{'title':'자산코드','data':'','render':function(data,type,full,meta){

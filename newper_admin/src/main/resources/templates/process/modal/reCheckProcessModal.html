@@ -58,7 +58,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">IMEI</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="gImei" id="IMEI">
+                                                    <input type="text" class="form-control" name="gImei" id="IMEI" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,17 +103,17 @@
                                                 <tr>
                                                     <td>도색</td>
                                                     <td><input type="text" name="paintMemo" class="form-control"></td>
-                                                    <td><input type="text" name="paintCost" class="form-control"></td>
+                                                    <td><input type="text" name="paintCost" value="0" class="form-control"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>수리</td>
                                                     <td><input type="text" name="fixMemo" class="form-control"></td>
-                                                    <td><input type="text" name="fixCost" class="form-control"></td>
+                                                    <td><input type="text" name="fixCost" value="0" class="form-control"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>가공</td>
                                                     <td><input type="text" name="processMemo" class="form-control"></td>
-                                                    <td><input type="text" name="processCost" class="form-control"></td>
+                                                    <td><input type="text" name="processCost" value="0" class="form-control"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -130,7 +130,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">첨부파일</span>
                                                     </span>
-                                                    <input type="file" class="form-control" name="cgsFile" multiple>
+                                                    <input type="file" class="form-control" name="gFile" multiple>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">메모</span>
                                                     </span>
-                                                    <input type="input" class="form-control" name="cgsMemo">
+                                                    <input type="input" class="form-control" name="gMemo">
                                                 </div>
                                             </div>
                                         </div>
@@ -177,21 +177,44 @@
             url:"/process/updateCheckGoods.ajax?" + $('#checkGoodsForm').serialize(),
             async: false,
             success : function(result){
-                $('#pIdx').val('');
-                $('#pName').val('');
-                $('#gIdx').val('');
-                $('#porIdx').val('');
-                $('#IMEI').val('');
-                $('#specList').empty();
-                $('#paintMemo').val('');
-                $('#paintCost').val('');
-                $('#fixMemo').val('');
-                $('#fixCost').val('');
-                $('#processMemo').val('');
-                $('#processCost').val('');
 
                 $('#checkGoodsModal').hide();
                 searchBtn();
+            }
+        });
+    }
+
+    function setProcessNeed(gIdx) {
+        $('#processNeedTable').empty();
+        // var process_name = [[${T(com.newper.constant.PnProcess).values()}]];
+        var option = '';
+
+        $.each(process_name, function (index, value) {
+            option += '<option value="'+value+'">'+value+'</option>';
+        });
+
+        $.ajax({
+            type: "POST",
+            url:"/process/selectProcessNeedByGoods.ajax",
+            data: {
+                "gIdx":gIdx,
+                "pnCount":1
+            },
+            async:false,
+            success : function(result){
+                var html = '';
+                $.each(result, function(index, value) {
+                    html += '<tr>';
+                    html += '<td>'+value.PN_TYPE_STR+'</td>';
+                    html += '<td>'+value.PN_CONTENT+'</td>';
+                    html += '<td>'+value.PN_EXPECTED_COST+'</td>';
+                    html += '<td><select id="pnProcess_'+index+'" name="pnProcess" class="form-control">'+option+'</select></td>';
+                    html += '<input type="hidden" name="pnIdx" value="'+value.PN_IDX+'">';
+                    html += '</tr>';
+                    $('#processNeedTable').append(html);
+
+                    $('#pnProcess_'+index+' option[value='+value.PN_PROCESS+']').prop('selected', true);
+                });
             }
         });
     }
@@ -201,29 +224,35 @@
         var dataMap = getDatatablemap(id, rowIdx);
 
         if(dataMap.CATE_SPEC_LIST != null){
+            var gJson = JSON.parse(dataMap.G_JSON);
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+
+            var inSpec1 = gJson.inSpec1
+            var inSpec2 = gJson.inSpec2;
+            var sellSpec1 = gJson.sellSpec1;
+            var sellSpec2 = gJson.sellSpec2;
+            var pSpec1 = gJson.pSpec1;
+            var pSpec2 = gJson.pSpec2;
+
+            if (pSpec2 == null) {
+                pSpec2 = [];
+                for (var i = 0; i < specList.length; i++) {
+                    pSpec2.push('');
+                }
+            }
+
             $('#specList').empty();
             for (var i = 0; i < specList.length; i++) {
-                var specValue = "";
-                var specValue2 = "";
-                if (dataMap.SPEC1 != null) {
-                    specValue = dataMap.SPEC1.split("/")[i].split(":")[1]
-                }
-
-                if (dataMap.SPEC2 != null) {
-                    specValue2 = dataMap.SPEC2.split("/")[i].split(":")[1]
-                }
-
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" name="spec" class="form-control" value="' + specValue2 + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+inSpec1[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+sellSpec1[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+pSpec1[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+sellSpec2[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" name="spec" class="form-control" value="' + pSpec2[i] + '"></td>'
                     +'</tr>';
 
                 $('#specList').append(specTr);
@@ -267,13 +296,6 @@
             $('#gIdx').val(dataMap.G_IDX);
             $('#cgsIdx').val(dataMap.CGS_IDX);
             $('#poIdx').val(dataMap.PO_IDX);
-
-            $('input[name=paintMemo]').val(dataMap.CGS_PAINT_MEMO);
-            $('input[name=paintCost]').val(dataMap.CGS_PAINT_COST);
-            $('input[name=fixMemo]').val(dataMap.CGS_FIX_MEMO);
-            $('input[name=fixCost]').val(dataMap.CGS_FIX_COST);
-            $('input[name=processMemo]').val(dataMap.CGS_PROCESS_MEMO);
-            $('input[name=processCost]').val(dataMap.CGS_PROCESS_COST);
 
         }
     }

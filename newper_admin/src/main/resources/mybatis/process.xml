@@ -259,4 +259,19 @@
         AND
             PN_STATE = 'REQUEST'
     </select>
+
+    <select id="selectProcessNeedCount" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_NEED
+        WHERE
+            PN_G_IDX = #{gIdx}
+        AND
+            PN_TYPE = #{pnType}
+        ORDER BY
+            PN_COUNT DESC
+        LIMIT
+            0, 1
+    </select>
 </mapper>

@@ -241,6 +241,7 @@
         $('#process_pName').val(dataMap.P_NAME);
         $('#process_barcode').val(dataMap.G_BARCODE);
         $('#process_gImei').val(dataMap.G_IMEI);
+        $('input[name=pnContent]').val(dataMap.PN_CONTENT);
     }
 
     // 공정항목 세팅
@@ -253,7 +254,6 @@
             async: false,
             success(result) {
                 $('#processCompSpec').empty();
-                console.log(result);
                 $.each(result, function (index, value) {
                     var html = '<tr>' +
                         '<td>'+value.P_NAME+'</td>' +
@@ -279,11 +279,11 @@
             type: 'POST',
             async: false,
             success(data) {
-                dataMap = data;
+                dataMap = data.data[0];
             }
         })
 
-        $('select[name=pnState]')
+        $('select[name=pnState] option[value='+dataMap.PN_STATE+']').prop('selected', true);
         $('input[name=pnContent]').val(dataMap.PN_CONTENT);
     }
 

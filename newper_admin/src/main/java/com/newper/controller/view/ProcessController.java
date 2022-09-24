@@ -194,13 +194,4 @@ public class ProcessController {
         mav.addObject("check", checkGroupRepo.findCheckGroupByCgIdx(cgIdx));
         return mav;
     }
-
-    /** 검수 - 자산 정보 업데이트 */
-    @PostMapping(value = "updateCheckGoods.ajax")
-    public ReturnMap updateCheckGoods(ParamMap paramMap, MultipartFile[] cgsFile) {
-        ReturnMap rm = new ReturnMap();
-        processService.updateCheckGoods(paramMap, cgsFile);
-        rm.setMessage("자산 필요 공정 내용 업데이트 완료");
-        return rm;
-    }
 }

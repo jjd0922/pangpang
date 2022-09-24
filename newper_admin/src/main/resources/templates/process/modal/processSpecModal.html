@@ -231,12 +231,22 @@
             var gsIdx = gJson.gsIdx;
 
             if (pSpec2 == null) {
+                inSpec1 = [];
+                inSpec2 = []
+                sellSpec1 = []
+                sellSpec2 = []
+                pSpec1 = []
                 pSpec2 = [];
                 changeSpecIdx = [];
                 removeSpecIdx = [];
                 removeSpecName = [];
                 gsIdx = [];
                 for (var i = 0; i < specList.length; i++) {
+                    inSpec1.push('등록');
+                    inSpec2.push('등록');
+                    sellSpec1.push('')
+                    sellSpec2.push('')
+                    pSpec1.push('')
                     pSpec2.push('등록');
                     changeSpecIdx.push('');
                     removeSpecIdx.push('');
@@ -245,7 +255,7 @@
                 }
             }
 
-
+            var psIdx = [7,9,10];
 
             $('#processSpec').empty();
             for (var i = 0; i < specList.length; i++) {
@@ -255,19 +265,19 @@
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" id="spec1_'+i+'" class="form-control" value="'+inSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" id="spec2_'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" id="spec3_'+i+'" class="form-control" value="'+sellSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" id="spec5_'+i+'" class="form-control" value="'+sellSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" id="spec4_'+i+'" class="form-control" value="'+pSpec1[i]+'" readonly></td>'
-                    +'<td><button type="button" specName="'+specList[i]+'" class="badge badge-primary" id="specBtn'+i+'" onclick="openStockDiv(\''+specList[i]+'\','+i+')">'+pSpec2[i]+'</button></td>'
-                    +'<input type="hidden" id="change_spec_idx_'+i+'" name="changeSpecIdx" value="'+changeSpecIdx[i]+'">'
-                    +'<input type="hidden" id="change_spec_name_'+i+'" name="changeSpecName" value="'+pSpec2[i]+'">'
-                    +'<td><input type="text" name="psCost" class="form-control" value="'+psCost[i]+'"></td>'
+                    +'<td><input type="text" id="spec1_'+i+'" class="form-control" value="" readonly></td>'
+                    +'<td><input type="text" id="spec2_'+i+'" class="form-control" value="" readonly></td>'
+                    +'<td><input type="text" id="spec3_'+i+'" class="form-control" value="" readonly></td>'
+                    +'<td><input type="text" id="spec5_'+i+'" class="form-control" value="" readonly></td>'
+                    +'<td><input type="text" id="spec4_'+i+'" class="form-control" value="" readonly></td>'
+                    +'<td><button type="button" specName="'+specList[i]+'" class="badge badge-primary" id="specBtn'+i+'" onclick="openStockDiv(\''+specList[i]+'\','+i+')">등록</button></td>'
+                    +'<input type="hidden" id="change_spec_idx_'+i+'" name="changeSpecIdx" value="">'
+                    +'<input type="hidden" id="change_spec_name_'+i+'" name="changeSpecName" value="">'
+                    +'<td><input type="text" name="psCost" class="form-control" value=""></td>'
                     +'<input type="hidden" name="psIdx"  value="'+psIdx[i]+'">'
-                    +'<td><input type="text" id="remove_spec_name_'+i+'" class="form-control" name="removeSpecName" value="'+removeSpecName[i]+'" readonly></td>'
-                    +'<input type="hidden" id="remove_spec_idx'+i+'" name="removeSpecIdx" value="'+removeSpecIdx[i]+'">'
-                    +'<input type="hidden" id="gsIdx_'+i+'" name="gsIdx" value="'+gsIdx[i]+'">'
+                    +'<td><input type="text" id="remove_spec_name_'+i+'" class="form-control" name="removeSpecName" value="" readonly></td>'
+                    +'<input type="hidden" id="remove_spec_idx'+i+'" name="removeSpecIdx" value="">'
+                    +'<input type="hidden" id="gsIdx_'+i+'" name="gsIdx" value="">'
                     +'</tr>';
 
                 $('#processSpec').append(specTr);

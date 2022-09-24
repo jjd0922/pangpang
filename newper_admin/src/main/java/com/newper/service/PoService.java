@@ -42,6 +42,7 @@ public class PoService {
     private final HiworksRepo hiworksRepo;
     private final ProductRepo productRepo;
     private final InGroupRepo inGroupRepo;
+    private final InProductRepo inProductRepo;
 
 
     private final GoodsRepo goodsRepo;
@@ -57,7 +58,6 @@ public class PoService {
 
         // set many to one 친구들
         po.setCompany(companyRepo.getReferenceById(paramMap.getInt("comIdxBuy", "매입처를 선택해주세요")));
-        po.setCompany_sell(companyRepo.getReferenceById(paramMap.getInt("comIdxSell", "판매처를 선택해주세요")));
         po.setWarehouse(warehouseRepo.getReferenceById(paramMap.getInt("whIdx", "입고예정창고를 선택해주세요")));
 
         String ccIdx = paramMap.getString("ccIdx").replaceAll("[^0-9]", "");
@@ -171,6 +171,10 @@ public class PoService {
 
         Po poParam = paramMap.mapParam(Po.class);
         po.updateAll(poParam);
+
+        if (po.getPoState().equals(PoState.REQUEST)) {
+            throw new MsgException("이미 승인요청된 발주건 입니다.");
+        }
 
         // set many to one 친구들
         po.setCompany(companyRepo.getReferenceById(paramMap.getInt("comIdxBuy", "매입처를 선택해주세요")));
@@ -415,23 +419,30 @@ public class PoService {
         String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
         int count = 0;
         for (int i = 0; i < poIdxs.length; i++) {
-            Optional<Po> po = poRepo.findById(Integer.parseInt(poIdxs[i]));
+            Po po = poRepo.findById(Integer.parseInt(poIdxs[i])).get();
 
-            if (po.get().getHiworks() == null) {
+            // 발주대기인 건들 제한
+            if (!po.getPoState().equals(PoState.WAITING)) {
+                throw new MsgException("이미 승인요청한 발주건 입니다.");
+            }
+
+            if (po.getHiworks() == null) {
                 Hiworks hiworks = Hiworks
                         .builder()
                         .hwState(HwState.REQ)
                         .hwReqDate(LocalDate.now())
                         .hwReqTime(LocalTime.now())
                         .hwAprvId("")
+                        .hwMemo("")
                         .user(user)
                         .build();
 
                 hiworksRepo.save(hiworks);
 
-                po.get().setHiworks(hiworks);
+                po.setHiworks(hiworks);
+                po.setPoState(PoState.REQUEST);
 
-                poRepo.save(po.get());
+                poRepo.save(po);
                 count++;
             }
         }
@@ -441,6 +452,7 @@ public class PoService {
     /** 발주 하이웍스 승인 요청 응답 (반려 & 승인)*/
     @Transactional
     public void poHiworksResponse(ParamMap paramMap) {
+
         String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
         for (int i = 0; i < poIdxs.length; i++) {
             Po po = poRepo.findPoByPoIdx(Integer.parseInt(poIdxs[i]));
@@ -449,7 +461,12 @@ public class PoService {
                 hiworks.get().setHwAprvDate(LocalDate.now());
                 hiworks.get().setHwAprvTime(LocalTime.now());
                 hiworks.get().setHwAprvId("TEST");
-                hiworks.get().setHwState(HwState.APPROVED);
+
+                if (paramMap.getString("type").equals("y")) {
+                    hiworks.get().setHwState(HwState.APPROVED);
+                } else {
+                    hiworks.get().setHwState(HwState.REJECT);
+                }
 
                 hiworksRepo.save(hiworks.get());
                 poRepo.save(po);
@@ -466,6 +483,10 @@ public class PoService {
 
         for (int i = 0; i < poIdxs.length; i++) {
             Po po = poRepo.findPoByPoIdx(Integer.parseInt(poIdxs[i]));
+            if (!po.getPoState().equals(PoState.WAITING)) {
+                throw new MsgException("승인요청한 발주건을 삭제할 수 없습니다.");
+            }
+
             if (po.getHiworks() == null) {
                 List<PoProduct> poProducts = poProductRepo.findPoProductByPo_PoIdx(po.getPoIdx());
                 for (int j = 0; j < poProducts.size(); j++) {
@@ -481,23 +502,25 @@ public class PoService {
 
     @Transactional
     public String poStateUpdate(ParamMap paramMap) {
+        System.out.println("asdfkl;: " + paramMap.getMap().entrySet());
         String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
         int count = 0;
         String state_msg = "";
         for (int i = 0; i < poIdxs.length; i++) {
-            Optional<Po> po = poRepo.findById(Integer.parseInt(poIdxs[i]));
-            if (po.get().getPoState().equals(PoState.WAITING)) {
-                String state = paramMap.get("state").toString();
-                if (state.equals("comp")) {
-                    po.get().setPoState(PoState.APPROVAL);
-                    state_msg = "완료";
-                } else {
-                    po.get().setPoState(PoState.CANCEL);
-                    state_msg = "취소";
-                }
-
+            Po po = poRepo.findById(Integer.parseInt(poIdxs[i])).get();
+            // 승인완료일때만 발주완료 가능
+            if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.COMPLETE) && po.getPoState().equals(PoState.APPROVAL)){
+                po.setPoState(PoState.COMPLETE);
+                poRepo.save(po);
                 count++;
-                poRepo.save(po.get());
+            }
+            // 승인반려일때만 발주취소 가능
+            else if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.CANCEL) && po.getPoState().equals(PoState.REJECT)) {
+                po.setPoState(PoState.CANCEL);
+                poRepo.save(po);
+                count++;
+            } else {
+                throw new MsgException("해당 발주건은 처리할 수 없습니다.");
             }
         }
         return "총 " + count + "개의 발주건을 " + state_msg + " 처리했습니다.";
@@ -537,7 +560,6 @@ public class PoService {
             goods.setPoReceived(poReceived);
             goodsRepo.save(goods);
         }
-
     }
 }
 

@@ -9,9 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CcCalType implements EnumOption {
 
-    /**선지급*/
     EARLIER("선지급")
-    /**후지급*/
     ,LATER("후지급")
     ;
 

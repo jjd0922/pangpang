@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.CgState;
+import com.newper.constant.CgType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -55,7 +56,9 @@ public class CheckGroup extends CreatedEntity {
     @JoinColumn(name="CG_U_IDX2", referencedColumnName = "uIdx")
     private User user2;
 
-    private String cgType;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private CgType cgType = CgType.IN;
 
 
 }

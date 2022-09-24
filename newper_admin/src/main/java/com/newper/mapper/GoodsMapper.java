@@ -35,7 +35,7 @@ public interface GoodsMapper {
     void deleteGoodsGroupTempByGGT_IDX(@Param("ggtIdx") long ggt_idx);
 
     /** 자산조회 */
-    List selectGoodsDataTable(Map<String, Object> map);
+    List<Map<String,Object>> selectGoodsDataTable(Map<String, Object> map);
 
     /** 자산 개수 조회 */
     long countGoodsDataTable(Map<String, Object> map);

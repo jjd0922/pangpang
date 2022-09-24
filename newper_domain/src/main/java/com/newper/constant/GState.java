@@ -10,10 +10,13 @@ import lombok.Getter;
 public enum GState implements EnumOption {
 
     RECEIVED("입고")
-    ,CHECK_NEED("검수요청")
 
-    ,CHECK("검수")
+    ,CHECK_NEED("검수필요")
+    ,CHECK_ING("검수중")
+    ,CHECK_DONE("검수완료")
+
     ,PROCESS("공정")
+
     ,STOCK("상품화완료")
 
     ,CANCEL_NEED("반품필요")

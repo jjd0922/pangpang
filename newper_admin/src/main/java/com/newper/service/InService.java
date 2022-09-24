@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,8 @@ public class InService {
     private final ChecksMapper checkMapper;
     private final CheckGroupRepo checkGroupRepo;
     private final PoReceivedRepo poReceivedRepo;
+    private final UserRepo userRepo;
+    private final WarehouseRepo warehouseRepo;
 
     /** 발주서에 입고그룹 없는 경우 생성. */
     @Transactional
@@ -59,8 +62,23 @@ public class InService {
     /** 입고완료 처리 */
     @Transactional
     public void updateInGroup(ParamMap paramMap) {
-        InGroup inGroup = paramMap.mapParam(InGroup.class);
-        inGroup.setIgState(IgState.DONE);
+        System.out.println("sadf: " + paramMap.getMap().entrySet());
+        Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
+        InGroup inGroup = inGroupRepo.findByPo(po);
+
+        if (inGroup.getIgState().equals(IgState.DONE)) {
+            throw new MsgException("이미 입고처리된 발주건 입니다.");
+        }
+
+        User user = userRepo.getReferenceById(paramMap.getInt("uIdx"));
+        Warehouse warehouse = warehouseRepo.getReferenceById(paramMap.getInt("whIdx"));
+
+        inGroup.setWarehouse(warehouse);
+        inGroup.setUser(user);
+        inGroup.setIgDate(LocalDate.now());
+        inGroup.setIgMemo(paramMap.getString("igMemo"));
+        inGroup.setIgDoneMemo("igDoneMemo");
+
         inGroupRepo.save(inGroup);
     }
 
@@ -85,6 +103,32 @@ public class InService {
                 throw new MsgException("해당건은 작업중이거나 작업이 완료되어 처리가 불가능합니다.");
             }
         }
+    }
 
+    /** 입고등록시 새상품 등록 */
+    @Transactional
+    public void insertInProduct(ParamMap paramMap) {
+        Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
+        Product product = productRepo.getReferenceById(paramMap.getInt("pIdx"));
+        InGroup inGroup = inGroupRepo.findByPo(po);
+
+        if (inGroup.getIgState().equals(IgState.DONE)) {
+            throw new MsgException("해당 불주건은 이미 입고완료된 발주건 입니다.");
+        }
+
+        InProduct inProduct = inProductRepo.findByProductAndInGroup(product, inGroup);
+
+        if (inProduct != null) {
+            throw new MsgException("이미 등록되어있는 상품입니다.");
+        }
+
+        inProduct = InProduct
+                .builder()
+                .product(product)
+                .inGroup(inGroup)
+                .ipCount(0)
+                .build();
+
+        inProductRepo.save(inProduct);
     }
 }

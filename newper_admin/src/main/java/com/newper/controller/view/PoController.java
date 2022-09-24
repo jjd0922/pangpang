@@ -60,6 +60,16 @@ public class PoController {
         return mav;
     }
 
+    /** 발주관리 - 상세페이지 */
+    @GetMapping(value = "poPop2/{poIdx}")
+    public ModelAndView poPopDetail2(@PathVariable Integer poIdx){
+        ModelAndView mav = new ModelAndView("po/poPop2");
+        mav.addObject("po", poRepo.findPoByPoIdx(poIdx));
+        mav.addObject("poProduct", poMapper.selectPoProductByPoIdx(poIdx));
+//        mav.addObject("poHiworks", poMapper.selectPoHiworksByPoIdx(poIdx));
+        return mav;
+    }
+
     /** 견적서 관리 페이지 **/
     @GetMapping(value = "estimate")
     public ModelAndView estimate(){
