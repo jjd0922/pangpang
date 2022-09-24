@@ -258,36 +258,27 @@
     }
 
     function setGoodsSpec(dataMap)  {
+        var gJson = dataMap.G_JSON;
         if(dataMap.CATE_SPEC_LIST != null){
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
-            var psCost = JSON.parse(dataMap.G_JSON).psCost;
-            var psIdx = JSON.parse(dataMap.G_JSON).psIdx;
+            var psCost = JSON.parse(gJson).psCost;
+            var psIdx = JSON.parse(gJson).psIdx;
+
+            var inSpec2 = JSON.parse(gJson).inSpec2;
+            var pSpec1 = JSON.parse(gJson).pSpec1;
+            var sellSpec2 = JSON.parse(gJson).sellSpec2;
+            console.log(pSpec1);
             $('#goodsSpec').empty();
             for (var i = 0; i < specList.length; i++) {
-                var specValue3 = "";
-                var specValue4 = "";
-                var specValue5 = "";
-                if (dataMap.SPEC3 != null) {
-                    specValue3 = dataMap.SPEC3.split("/")[i].split(":")[1]
-                }
-
-                if (dataMap.SPEC4 != null) {
-                    specValue4 = dataMap.SPEC4.split("/")[i].split(":")[1]
-                }
-
-                if (dataMap.SPEC5 != null) {
-                    specValue5 = dataMap.SPEC5.split("/")[i].split(":")[1]
-                }
-
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" id="spec3_'+i+'" class="form-control" value="'+specValue3+'" readonly></td>'
-                    +'<td><input type="text" id="spec4_'+i+'" name="spec4" class="form-control" value="'+specValue4+'"></td>'
+                    +'<td><input type="text" id="spec3_'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
+                    +'<td><input type="text" id="spec4_'+i+'" name="spec4" class="form-control" value="'+pSpec1[i]+'"></td>'
                     +'<td><input type="text" name="psCost" class="form-control" value="'+psCost[i]+'"></td>'
                     +'<input type="hidden" name="psIdx"  value="'+psIdx[i]+'">'
-                    +'<td><input type="text" id="spec5_'+i+'" name="spec5" class="form-control" value="'+specValue5+'"></td>'
+                    +'<td><input type="text" id="spec5_'+i+'" name="spec5" class="form-control" value="'+sellSpec2[i]+'"></td>'
                     +'</tr>';
 
                 $('#goodsSpec').append(specTr);

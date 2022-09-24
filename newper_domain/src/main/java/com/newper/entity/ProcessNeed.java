@@ -4,13 +4,14 @@ import com.newper.constant.PnProcess;
 import com.newper.constant.PnState;
 import com.newper.constant.PnType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Map;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -31,7 +32,9 @@ public class ProcessNeed {
     @JoinColumn(name="PN_PG_IDX", referencedColumnName = "pgIdx")
     private ProcessGroup processGroup;
 
-    private PnType pnType;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PnType pnType = PnType.PROCESS;
 
     private Integer pnCount;
 
@@ -43,8 +46,13 @@ public class ProcessNeed {
 
     private Integer pnLast;
 
-    private PnProcess pnProcess;
-    private PnState pnState;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PnProcess pnProcess = PnProcess.BEFORE;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PnState pnState = PnState.NEED;
 
     private Map<String, Object> pnJson;
 

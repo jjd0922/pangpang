@@ -78,7 +78,6 @@
         <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
         <if test="pName != null and pName != ''">AND P_IDX LIKE CONCAT('%', #{pName}, '%')</if>
         <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
-        <if test="onlyParts == 'true'">AND P_TYPE2 = 'PARTS'</if>
         <if test="speclName != null and speclName != ''">AND SPECL_NAME = #{speclName}</if>
         <if test="gsIdx != null and gsIdx != ''">AND GS_IDX = #{gsIdx}</if>
     </sql>
@@ -141,5 +140,39 @@
         <where>
             <include refid="includeStockDataTable"></include>
         </where>
+    </select>
+
+    <select id="selectSpecParts" resultType="Map">
+        SELECT
+            *
+        FROM
+            SPEC_LIST
+                LEFT JOIN SPEC_ITEM ON SPECL_IDX = SPECI_SPECL_IDX
+                LEFT JOIN SPEC ON SPECI_SPEC_IDX = SPEC_IDX
+                LEFT JOIN GOODS_STOCK ON SPEC_IDX = GS_SPEC_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX AND P_TYPE2 = 'PARTS'
+        WHERE
+            SPECL_NAME = #{speclName}
+        AND
+            GS_IDX IS NOT NULL
+        <if test="length != -1">
+        LIMIT
+            #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countSpecParts" resultType="Long">
+        SELECT
+            count(*)
+        FROM
+            SPEC_LIST
+                LEFT JOIN SPEC_ITEM ON SPECL_IDX = SPECI_SPECL_IDX
+                LEFT JOIN SPEC ON SPECI_SPEC_IDX = SPEC_IDX
+                LEFT JOIN GOODS_STOCK ON SPEC_IDX = GS_SPEC_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX AND P_TYPE2 = 'PARTS'
+        WHERE
+            SPECL_NAME = #{speclName}
+        AND
+            GS_IDX IS NOT NULL
     </select>
 </mapper>

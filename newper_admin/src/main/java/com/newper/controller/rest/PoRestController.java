@@ -131,4 +131,14 @@ public class PoRestController {
     public Map<String, Object> poProduct(ParamMap paramMap){
         return poMapper.selectPoProductByPpIdx(paramMap.getInt("ppIdx"));
     }
+
+    /** 영업검수 입고그룹 맵핑 */
+    @PostMapping("insertPoReceived.ajax")
+    public ReturnMap insertPoReceived(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        poService.insertPoReceived(paramMap);
+        rm.setMessage("매핑 완료");
+        return rm;
+    }
+
 }

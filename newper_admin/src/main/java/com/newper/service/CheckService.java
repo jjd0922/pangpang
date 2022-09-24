@@ -6,10 +6,7 @@ import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
-import com.newper.mapper.ChecksMapper;
-import com.newper.mapper.GoodsMapper;
-import com.newper.mapper.PoMapper;
-import com.newper.mapper.SpecMapper;
+import com.newper.mapper.*;
 import com.newper.repository.*;
 import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ public class CheckService {
     private final ProcessGroupRepo processGroupRepo;
     private final ProcessNeedRepo processNeedRepo;
     private final ProcessSpecRepo processSpecRepo;
+    private final ProcessMapper processMapper;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -106,7 +104,7 @@ public class CheckService {
             List<String> fileName = (List<String>) gJson.get("gFileName");
 
             for (int i = 0; i < gFile.length; i++) {
-                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGBarcode() + "/", AdminBucket.SECRET));
+                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGIdx() + "/", AdminBucket.SECRET));
                 fileName.add(gFile[i].getOriginalFilename());
             }
 
@@ -117,8 +115,8 @@ public class CheckService {
         // 입고SPEC(확정)
         SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
         List<String> specName = paramMap.getList("specName");
-        List<String> specValue3 = paramMap.getList("specValue3");
-        gJson.put("spec3", specFinder.findSpec(specName, specValue3).getSpecIdx());
+        List<String> inSpec2 = paramMap.getList("inSpec2");
+        gJson.put("inSpec2", inSpec2);
 
         // 자산 상태 변경
         goods.setGState(GState.CHECK);
@@ -213,7 +211,7 @@ public class CheckService {
                         .processNeed(processNeed)
                         .psCost(psCost.get(i).intValue())
                         .specList1(specLists.get(i))
-                        .psType(PsType.EXPECTED)
+                        .psType("EXPECTED")
                         .build();
 
                 processSpecRepo.save(processSpec);
@@ -232,22 +230,26 @@ public class CheckService {
     @Transactional
     public void goodsInfoComplete(ParamMap paramMap, MultipartFile[] gFile) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+        if (!goods.getGStockState().equals(GStockState.N)) {
+            throw new MsgException("이미 재고인계요청 이상 진행된 자산입니다.");
+        }
 
+        GState gState = GState.STOCK;
         Map<String, Object> gJson = goods.getGJson();
         // 자산 이미지 업로드
-        if (gFile != null) {
+        if (!gFile[0].getOriginalFilename().equals("")) {
             List<String> file = (List<String>) gJson.get("gFile");
             List<String> fileName = (List<String>) gJson.get("gFileName");
 
             for (int i = 0; i < gFile.length; i++) {
-                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGBarcode() + "/", AdminBucket.SECRET));
+                file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGIdx() + "/", AdminBucket.SECRET));
                 fileName.add(gFile[i].getOriginalFilename());
             }
 
             gJson.put("gFile", file);
             gJson.put("gFileName", fileName);
         }
-        goods.setGJson(gJson);
+
         goods.setGVendor(paramMap.getString("gVendor"));
         goods.setGRank(GRank.valueOf(paramMap.getString("gRank")));
         goods.setGMemo(paramMap.getString("gMemo"));
@@ -256,10 +258,12 @@ public class CheckService {
         List<String> gOption = paramMap.getList("goodsOption");
         List<Map<String, Object>> optionList = new ArrayList<>();
         for (int i = 0; i < gOption.size(); i++) {
-            Map<String, Object> optionMap = new HashMap<>();
-            optionMap.put("title", gOption.get(i).split(":")[0]);
-            optionMap.put("value", gOption.get(i).split(":")[1]);
-            optionList.add(optionMap);
+            if (!gOption.get(i).equals("")) {
+                Map<String, Object> optionMap = new HashMap<>();
+                optionMap.put("title", gOption.get(i).split(":")[0]);
+                optionMap.put("value", gOption.get(i).split(":")[1]);
+                optionList.add(optionMap);
+            }
         }
         goods.setGOption(optionList);
 
@@ -270,20 +274,21 @@ public class CheckService {
         Spec spec5 = specFinder.findSpec(specName, spec5_list);
         goods.setSellSpec(spec5);
 
-
-
         // PROCESS_NEED 공정필요 진행여부
         List<Long> pnIdx_list = paramMap.getListLong("pnIdx");
         List<String> pnProcess_list = paramMap.getList("pnProcess");
-        PsType psType = PsType.EXPECTED;
+        String psType = "EXPECTED";
         for (int i = 0; i < pnIdx_list.size(); i++) {
-            ProcessNeed processNeed = processNeedRepo.findById(pnIdx_list.get(i)).get();
+            ProcessNeed processNeed = processNeedRepo.findById(pnIdx_list.get(i).intValue()).get();
             processNeed.setPnProcess(PnProcess.valueOf(pnProcess_list.get(i)));
 
-            if (processNeed.getPnType().equals(PnType.PROCESS) && processNeed.getPnProcess().equals(PnProcess.Y)) {
-                psType = PsType.CONFIRM;
+            if (processNeed.getPnProcess().equals("YES")) {
+                gState = GState.PROCESS;
+                if (processNeed.getPnType().equals(PnType.PROCESS)) {
+                    psType = "CONFIRM";
+                }
             }
-            
+
             processNeedRepo.save(processNeed);
         }
 
@@ -299,6 +304,10 @@ public class CheckService {
             processSpecRepo.save(processSpec);
         }
 
+
+        gJson.put("pSpec1", spec4);
+        goods.setGJson(gJson);
+        goods.setGState(gState);
         goodsRepo.save(goods);
     }
 
@@ -318,24 +327,23 @@ public class CheckService {
         processGroup.setPgLastState("");
         processGroupRepo.save(processGroup);
 
+        Map<String, Object> param = new HashMap<>();
+        param.put("pnType", paramMap.getString("type"));
+        param.put("pnState", "NEED");
         //check goods
         List<Long> gIdx = paramMap.getListLong("gIdx");
-
         for (int i = 0; i < gIdx.size(); i++) {
-            Goods goods = Goods
-                    .builder()
-                    .gIdx(gIdx.get(i))
-                    .gState(GState.PROCESS)
-                    .build();
+            param.put("gIdx", gIdx.get(i));
 
-
-            ProcessNeed processNeed = processNeedRepo.findTopByGoods_gIdxAndPnProcessAndPnTypeAndProcessGroup_pgIdxIsNullOrderByPnIdxDesc(goods.getGIdx(), "Y", paramMap.getString("pgType"));
+            ProcessNeed processNeed = processMapper.selectProcessNeedEntity(param);
             if (processNeed == null) {
-                continue;
+                throw new MsgException("잘못된 접근입니다.");
             }
             processNeed.setProcessGroup(processGroup);
+            processNeed.setPnState(PnState.REQUEST);
 
-            processNeedRepo.save(processNeed);
+            processMapper.updateProcessNeed(processNeed);
+//            processNeedRepo.save(processNeed);
         }
 
         long ggt_idx = paramMap.getLong("ggt_idx");

@@ -26,4 +26,10 @@ public interface StockMapper {
 
     /** 재고상품중 소모품만 카운트 */
     long countStockParts(Map<String, Object> map);
+
+    /** 부품 스펙 조회 */
+    List selectSpecParts(Map<String, Object> map);
+
+    /** 부품 스펙 개수 조회 */
+    long countSpecParts(Map<String, Object> map);
 }

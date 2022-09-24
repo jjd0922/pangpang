@@ -7,6 +7,7 @@ import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
+import com.newper.mapper.ProcessMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.util.SpecFinder;
@@ -38,6 +39,7 @@ public class GoodsService {
     private final SpecRepo specRepo;
     private final ProcessNeedRepo processNeedRepo;
     private final InGroupRepo inGroupRepo;
+    private final ProcessMapper processMapper;
 
     /** 자산 등록. 발주코드, 상품코드, 바코드만 먼저등록 입고검수가 되어야 입고확정스펙 나옴 */
     @Transactional
@@ -81,16 +83,6 @@ public class GoodsService {
                     .build();
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
-        }
-
-        // 해당 요청이 입고검수일경우 해당자산의 상태값이 RECEIVED 입고 상태일때만
-        if (ggtType.equals(GgtType.IN_CHECK)) {
-            for (int i = 0; i < gIdxs.length; i++) {
-                Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-                if (!goods.getGState().equals(GState.RECEIVED)) {
-                    throw new MsgException(goods.getGBarcode() + "는 이미 입고검수한 자산입니다.");
-                }
-            }
         }
 
         //임시그룹에 바코드 추가
@@ -138,12 +130,12 @@ public class GoodsService {
         return msg;
     }
 
-    /** 영업검수 자산-상품 관계 체크 */
+    /** 같은 상품코드와 같은 옵션끼리만 */
     public List<Map<String, Object>> checkGoodsProduct(ParamMap paramMap) {
         paramMap.put("gIdxs", paramMap.getString("gIdxs").split(","));
         List<Map<String, Object>> goods = goodsMapper.goodsProductCheck(paramMap.getMap());
         if (goods.size() != 1) {
-            throw new MsgException("같은 상품의 자산만 선택해 주세요");
+            throw new MsgException("발주매핑 작업을 하지 않은 같은 상품과 옵션인 자산만 선택해 주세요");
         }
 
         return goods;
@@ -159,7 +151,7 @@ public class GoodsService {
         return goods;
     }
 
-    /** 영업검수 확정 */
+    /** 재검수 확정 */
     public void checkGoods(ParamMap paramMap) {
         String[] gIdxs = paramMap.getString("gidxs").split(",");
 
@@ -183,14 +175,59 @@ public class GoodsService {
             goods.setGVendor(gVendor);
 
             // 공정여부중 하나라도 Y가 있을경우 자산 상태값 Y 아니면 재고인계요청
-            List<ProcessNeed> processNeed = processNeedRepo.findByGoods_gIdxAndPnType(goods.getGIdx(), PnProcess.Y);
+            List<ProcessNeed> processNeed = processNeedRepo.findByGoods_gIdxAndPnType(goods.getGIdx(), "YES");
             if (processNeed.size() != 0) {
                 goods.setGState(GState.PROCESS);
             } else {
-            /*    goods.setGState(GState.STOCK_REQ);*/
+                goods.setGState(GState.STOCK);
+                goods.setGStockState(GStockState.STOCK_REQ);
             }
 
             goodsRepo.save(goods);
+        }
+    }
+
+
+    /** 자산 망실 처리 */
+    @Transactional
+    public void updateGoodsLost(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gIdxs").split(",");
+
+        Map<String, Object> lost = new HashMap<>();
+        lost.put("lostDate", paramMap.getString("lostDate"));
+        lost.put("lostBy", paramMap.getString("lostBy"));
+        lost.put("lostReason", paramMap.getString("lostReason"));
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+            Map<String, Object> gJson = goods.getGJson();
+            gJson.put("lostInfo", lost);
+            goods.setGJson(gJson);
+            goods.setGState(GState.LOST);
+            goodsRepo.save(goods);
+        }
+    }
+
+    /** 해당 자산들 입고검수 요청가능한지 자산값 체크 */
+    public void goodsInCheck(ParamMap paramMap) {
+        String[] gIdxs = paramMap.getString("gIdx").split(",");
+
+        for (int i = 0; i < gIdxs.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
+            if (!goods.getGState().equals(GState.RECEIVED)) {
+                throw new MsgException(goods.getGBarcode() + "는 이미 입고검수한 자산입니다.");
+            }
+        }
+    }
+
+    /** 해당 자산들 해당 공정 가능한지 체크 */
+    public void goodsProcessCheck(ParamMap paramMap) {
+        String[] gIdx = paramMap.getString("gIdx").split(",");
+        for (int i = 0; i < gIdx.length; i++) {
+            Map<String, Object> processNeed = processMapper.goodsProcessCheck(gIdx[i], paramMap.getString("type"));
+
+            if (processNeed == null) {
+                throw new MsgException(PnType.valueOf(paramMap.getString("type")).getOption() + "요청 할 수 없는 자산입니다.");
+            }
         }
     }
 
@@ -211,22 +248,5 @@ public class GoodsService {
         }
     }
 
-    /** 자산 망실 처리 */
-    @Transactional
-    public void updateGoodsLost(ParamMap paramMap) {
-        String[] gIdxs = paramMap.getString("gIdxs").split(",");
 
-        Map<String, Object> lost = new HashMap<>();
-        lost.put("lostDate", paramMap.getString("lostDate"));
-        lost.put("lostBy", paramMap.getString("lostBy"));
-        lost.put("lostReason", paramMap.getString("lostReason"));
-        for (int i = 0; i < gIdxs.length; i++) {
-            Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-            Map<String, Object> gJson = goods.getGJson();
-            gJson.put("lostInfo", lost);
-            goods.setGJson(gJson);
-            goods.setGState(GState.LOST);
-            goodsRepo.save(goods);
-        }
-    }
 }

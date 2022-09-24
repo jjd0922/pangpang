@@ -5,8 +5,21 @@
         <if test="gIdx != null and gIdx != ''">AND PN_G_IDX = #{gIdx}</if>
         <if test="pgIdx != null and pgIdx != ''">AND PN_PG_IDX = #{pgIdx}</if>
         <if test="pnIdx != null and pnIdx != ''">AND PN_IDX = #{pnIdx}</if>
+        <if test="pnType != null and pnType != ''">AND PN_TYPE = #{pnType}</if>
+        <if test="pnState != null and pnState != ''">AND PN_STATE = #{pnState}</if>
     </sql>
     <select id="selectProcessNeed" resultType="Map">
+        SELECT
+            *
+        FROM
+            PROCESS_NEED
+                LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+        <where>
+            <include refid="includeProcessNeedDataTable"></include>
+        </where>
+    </select>
+
+    <select id="selectProcessNeedEntity" resultType="com.newper.entity.ProcessNeed">
         SELECT
             *
         FROM
@@ -50,20 +63,34 @@
                 #{item}
             </foreach>
         </if>
+        AND GS_IDX IS NOT NULL
     </sql>
+
     <select id="selectProcessSpec" resultType="Map">
         SELECT
             IFNULL(specl_name, '') AS SPECL_NAME,
             IFNULL(specl_value, '') AS SPECL_VALUE,
-            PS_COST
+            PS_COST,
+            GS_IDX,
+            P_IDX,
+            P_NAME,
+            P_COST,
+            PS_IDX,
+            PN_IDX
         FROM
             GOODS
                 LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
                 LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
                 LEFT JOIN SPEC_LIST ON PS_SPECL_IDX1 = SPECL_IDX
+                LEFT JOIN SPEC_ITEM ON SPECL_IDX = SPECI_SPECL_IDX
+                LEFT JOIN SPEC ON SPECI_SPEC_IDX = SPEC_IDX
+                LEFT JOIN GOODS_STOCK ON SPEC_IDX = GS_SPEC_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX AND P_TYPE2 = 'PARTS'
         <where>
             <include refid="includeProcessSpec"></include>
         </where>
+        GROUP BY
+            SPECL_IDX
     </select>
 
     <insert id="insertResellGoods">
@@ -192,5 +219,44 @@
         <where>
             <include refid="includeProcessNeedDatatable"></include>
         </where>
+    </select>
+
+    <select id="goodsProcessCheck" resultType="Map">
+        SELECT
+            *
+        FROM
+            PROCESS_NEED
+        WHERE
+            PN_TYPE = #{type}
+        AND
+            PN_STATE = 'NEED'
+        AND
+            PN_PROCESS = 'YES'
+        AND
+            PN_G_IDX = #{gIdx}
+    </select>
+
+    <update id="updateProcessNeed">
+        UPDATE
+            PROCESS_NEED
+        SET
+            PN_PROCESS = #{pnProcess},
+            PN_STATE = #{pnState},
+            PN_PG_IDX = #{processGroup.pgIdx}
+        WHERE
+            PN_IDX = #{pnIdx}
+    </update>
+
+    <select id="selectProcessNeedByGoods" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_NEED
+        WHERE
+            PN_G_IDX = #{gIdx}
+        AND
+            PN_PROCESS = 'YES'
+        AND
+            PN_STATE = 'REQUEST'
     </select>
 </mapper>

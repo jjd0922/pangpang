@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import com.newper.dto.ParamMap;
+import com.newper.entity.ProcessNeed;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,6 +14,8 @@ public interface ProcessMapper {
     /** 공정필요 조회 */
     List selectProcessNeed(Map<String, Object> map);
 
+    ProcessNeed selectProcessNeedEntity(Map<String, Object> param);
+
     /** 공정그룹 조회 */
     List selectProcessGroupDatatable(Map<String, Object> map);
 
@@ -20,7 +23,7 @@ public interface ProcessMapper {
     long countProcessGroupDatatable(Map<String, Object> map);
 
     /** 공정스펙 조회 */
-    List selectProcessSpec(Map<String, Object> map);
+    List<Map<String, Object>> selectProcessSpec(Map<String, Object> map);
 
     /** 반품그룹 - 자산 관계 데이터 생성 */
     void insertResellGoods(Map<String, Object> resellGoods);
@@ -51,4 +54,12 @@ public interface ProcessMapper {
 
     /** 해당자산 공정 필요 데이터 조회 */
     List<Map<String, Object>> selectProcessNeedDatatable(Map<String, Object> param);
+
+    /** 해당자산 해당 공정 요청 가능한지 체크 */
+    Map<String, Object> goodsProcessCheck(String gIdx, String type);
+
+    void updateProcessNeed(ProcessNeed processNeed);
+
+    /** 해당자산 공정완료시 남은 공정 개수 조회 */
+    int selectProcessNeedByGoods(@Param("gIdx") Long gIdx);
 }

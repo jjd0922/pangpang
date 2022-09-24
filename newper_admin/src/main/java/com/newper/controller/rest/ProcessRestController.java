@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -181,9 +182,9 @@ public class ProcessRestController {
 
     /** 공정결과 업로드 */
     @PostMapping("saveProcess.ajax")
-    public ReturnMap saveProcess(ParamMap paramMap){
+    public ReturnMap saveProcess(ParamMap paramMap, MultipartFile[] pnFile){
         ReturnMap rm = new ReturnMap();
-        processService.saveProcess(paramMap);
+        processService.saveProcess(paramMap, pnFile);
         rm.setMessage("공정 업로드 완료");
         return rm;
     }

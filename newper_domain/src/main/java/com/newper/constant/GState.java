@@ -21,9 +21,7 @@ public enum GState implements EnumOption {
     ,CANCEL_ING("반품진행중")
     ,CANCEL_DONE("반품완료")
 
-    ,LOST("망실")
-
-    ;
+    ,LOST("망실");
 
     private String option;
 

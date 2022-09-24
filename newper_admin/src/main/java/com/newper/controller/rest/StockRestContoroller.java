@@ -103,6 +103,16 @@ public class StockRestContoroller {
         return rd;
     }
 
+    /** 부품 조회 */
+    @PostMapping("selectSpecParts.dataTable")
+    public ReturnDatatable selectSpecParts(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(stockMapper.selectSpecParts(paramMap.getMap()));
+        rd.setRecordsTotal(stockMapper.countSpecParts(paramMap.getMap()));
+        return rd;
+    }
+
+
 
 /*
     *//** 창고이동관리 팝업 출고창고 데이터테이블 *//*

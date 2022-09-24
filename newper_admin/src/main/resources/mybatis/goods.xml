@@ -96,10 +96,6 @@
             P_NAME,
             P_IDX,
             G_OPTION,
-            PN_JSON,
-            SPEC3.SPEC_LOOKUP AS SPEC3,
-            SPEC4.SPEC_LOOKUP AS SPEC4,
-            SPEC5.SPEC_LOOKUP AS SPEC5,
             CATE_SPEC_LIST,
             G_MEMO,
             G_VENDOR,
@@ -108,10 +104,8 @@
             GOODS
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
-                LEFT JOIN SPEC AS SPEC3 ON JSON_EXTRACT(G_JSON, '$.spec3[0]') = SPEC3.SPEC_IDX
-                LEFT JOIN PROCESS_NEED ON PN_G_IDX = G_IDX AND PN_COUNT = 1 AND PN_TYPE = 'PROCESS'
-                LEFT JOIN SPEC AS SPEC4 ON JSON_EXTRACT(PN_JSON, '$.spec4[0]') = SPEC4.SPEC_IDX
-                LEFT JOIN SPEC AS SPEC5 ON G_SELL_SPEC_IDX = SPEC5.SPEC_IDX
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
         WHERE
             G_IDX = #{gIdx}
     </select>
@@ -224,8 +218,11 @@
             <foreach collection="gIdxs" open="G_IDX IN (" separator="," close=")" item="item">
                 #{item}
             </foreach>
+        AND
+            G_POR_IDX IS NULL
         GROUP BY
-            G_P_IDX
+            G_P_IDX,
+            G_OPTION
     </select>
 
     <select id="checkGoodsReceived" resultType="Map">

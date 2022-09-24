@@ -108,7 +108,7 @@ public class GoodsRestController {
     }
 
 
-    /** 영업검수 확정 */
+    /** 재검수 확정 */
     @PostMapping("checkGoods.ajax")
     public ReturnMap checkGoods(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
@@ -122,6 +122,29 @@ public class GoodsRestController {
         return goodsMapper.selectGoodsByG_IDX(paramMap.getLong("gIdx"));
     }
 
+    /** 자산 망실 처리 */
+    @PostMapping("updateGoodsLost.ajax")
+    public ReturnMap updateGoodsLost(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.updateGoodsLost(paramMap);
+        return rm;
+    }
+
+    /** 해당 자산들 입고검수 요청가능한지 자산값 체크 */
+    @PostMapping("goodsInCheck.ajax")
+    public ReturnMap goodsInCheck(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.goodsInCheck(paramMap);
+        return rm;
+    }
+
+    /** 해당 자산들 해당 공정 가능한지 체크 */
+    @PostMapping("goodsProcessCheck.ajax")
+    public ReturnMap goodsProcessCheck(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        goodsService.goodsProcessCheck(paramMap);
+        return rm;
+    }
 
     /** 자산 반품 가능한지 체크 */
     @PostMapping("goodsResellCheck.ajax")
@@ -131,11 +154,4 @@ public class GoodsRestController {
         return rm;
     }
 
-    /** 자산 망실 처리 */
-    @PostMapping("updateGoodsLost.ajax")
-    public ReturnMap updateGoodsLost(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        goodsService.updateGoodsLost(paramMap);
-        return rm;
-    }
 }

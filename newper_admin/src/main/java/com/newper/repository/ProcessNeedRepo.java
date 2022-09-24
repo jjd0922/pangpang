@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Long> {
+public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Integer> {
 
-    List<ProcessNeed> findByGoods_gIdxAndPnType(long gIdx, PnProcess pnType);
-    ProcessNeed findTopByGoods_gIdxAndPnProcessAndPnTypeAndProcessGroup_pgIdxIsNullOrderByPnIdxDesc(long gIdx, String pnProcess, String pnType);
+    List<ProcessNeed> findByGoods_gIdxAndPnType(long gIdx, String pnType);
 
-    @EntityGraph(attributePaths = {"goods", "goods.product"})
-    List<ProcessNeed> findByProcessGroup_pgIdx(int pgIdx);
 
     ProcessNeed findByGoodsAndPnCount(Goods goods, int pnCount);
+
+    @EntityGraph(attributePaths = {"goods"})
+    ProcessNeed findByPnIdx(int pnIdx);
 }

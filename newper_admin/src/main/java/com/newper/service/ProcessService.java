@@ -3,18 +3,14 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.GState;
-import com.newper.constant.PsType;
+import com.newper.constant.PnState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
-import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.ProcessMapper;
-import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
-import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Proc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,40 +31,49 @@ public class ProcessService {
     private final ResellRepo resellRepo;
     private final ResellGoodsRepo resellGoodsRepo;
     private final CheckGoodsRepo checkGoodsRepo;
+    private final SpecListRepo specListRepo;
+    private final GoodsStockRepo goodsStockRepo;
 
 
     /** 공정 가공 데이터 생성 */
     @Transactional
     public void saveProcessSpec(ParamMap paramMap) {
-        System.out.println(paramMap.getMap().entrySet());
-        List<Long> speclIdx = paramMap.getListLong("psBomIdx");
-        List<Long> gsIdx = paramMap.getListLong("gsIdx");
-        List<String> psRemove = paramMap.getList("psRemove");
-        ProcessNeed processNeed = paramMap.mapParam((ProcessNeed.class));
+        Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+        Map<String, Object> gJson = goods.getGJson();
 
-        for (int i = 0; i < speclIdx.size(); i++) {
-            GoodsStock goodsStock = GoodsStock
-                    .builder()
-                    .gsIdx(gsIdx.get(i).intValue())
-                    .build();
+        List<Long> psIdx = paramMap.getListLong("psIdx");
+        List<Long> psCost = paramMap.getListLong("psCost");
+        List<String> changeSpec = paramMap.getList("changeSpecIdx");
+        List<String> removeSpec = paramMap.getList("removeSpecIdx");
+        List<String> gsIdx = paramMap.getList("gsIdx");
 
-            SpecList specList = SpecList
-                    .builder()
-                    .speclIdx(speclIdx.get(i).intValue())
-                    .build();
+        for (int i = 0; i < psIdx.size(); i++) {
+            ProcessSpec processSpec = processSpecRepo.findById(psIdx.get(i).intValue()).get();
+            processSpec.setPsCost(psCost.get(i).intValue());
+            if (!changeSpec.get(i).equals("")) {
+                processSpec.setSpecList1(specListRepo.getReferenceById(Integer.valueOf(changeSpec.get(i))));
+            }
 
-            ProcessSpec processSpec = ProcessSpec
-                    .builder()
-                    .processNeed(processNeed)
-//                    .specList(specList)
-                    .goodsStock(goodsStock)
-//                    .psRemove(psRemove.get(i))
-                    .psType(PsType.CONFIRM)
-                    .build();
+            if (!removeSpec.get(i).equals("")) {
+                processSpec.setSpecList2(specListRepo.getReferenceById(Integer.valueOf(removeSpec.get(i))));
+            }
+
+            if (!gsIdx.get(i).equals("")) {
+                GoodsStock goodsStock = goodsStockRepo.getReferenceById(Integer.valueOf(gsIdx.get(i)));
+                processSpec.setGoodsStock(goodsStock);
+            }
 
             processSpecRepo.save(processSpec);
         }
 
+        gJson.put("pSpec2", paramMap.getList("changeSpecName"));
+        gJson.put("changeSpecIdx", paramMap.getList("changeSpecIdx"));
+        gJson.put("removeSpecName", paramMap.getList("removeSpecName"));
+        gJson.put("removeSpecIdx", paramMap.getList("removeSpecIdx"));
+        gJson.put("gsIdx", paramMap.getList("gsIdx"));
+
+        goods.setGJson(gJson);
+        goodsRepo.save(goods);
     }
 
     /** 공정 삭제 내역 */
@@ -76,7 +81,7 @@ public class ProcessService {
     public void deleteProcessSpec(ParamMap paramMap) {
         int pnIdx = paramMap.getInt("pnIdx");
 
-        ProcessNeed processNeed = processNeedRepo.findById(Long.valueOf(pnIdx)).get();
+        ProcessNeed processNeed = processNeedRepo.findById(pnIdx).get();
         if (processNeed.getPnState().equals("COMP")) {
             throw new MsgException("해당 공정 내역은 이미 완료된 건입니다.");
         }
@@ -87,22 +92,63 @@ public class ProcessService {
 
     /** 공정결과 업로드 */
     @Transactional
-    public void saveProcess(ParamMap paramMap) {
+    public void saveProcess(ParamMap paramMap, MultipartFile[] pnFile) {
         // 공정 필요 수정
-        ProcessNeed processNeed = paramMap.mapParam(ProcessNeed.class);
+        ProcessNeed processNeed = processNeedRepo.findByPnIdx(paramMap.getInt("pnIdx"));
+
+        if (processNeed.getPnState().equals(PnState.COMPLETE.name())) {
+            throw new MsgException("해당 공정은 이미 완료된 건입니다.");
+        }
+
+        processNeed.setPnState(PnState.valueOf(paramMap.getString("pnState")));
+        processNeed.setPnContent(paramMap.getString("pnContent"));
+
+        Map<String, Object> pnJson = processNeed.getPnJson();
+        if (!pnFile[0].getOriginalFilename().equals("")) {
+            List<String> file = (List<String>) pnJson.get("pnFile");
+            List<String> fileName = (List<String>) pnJson.get("pnFileName");
+
+            for (int i = 0; i < pnFile.length; i++) {
+                file.add(Common.uploadFilePath(pnFile[i], "goods/process/" + processNeed.getPnIdx() + "/", AdminBucket.SECRET));
+                fileName.add(pnFile[i].getOriginalFilename());
+            }
+
+            pnJson.put("pnFile", file);
+            pnJson.put("pnFileName", fileName);
+        }
         processNeedRepo.save(processNeed);
 
         List<Long> psIdx = paramMap.getListLong("psIdx");
-        List<Long> psRealCost = paramMap.getListLong("psRealCost");
-
+        List<Long> psCost = paramMap.getListLong("psCost");
         for (int i = 0; i < psIdx.size(); i++) {
+            ProcessSpec processSpec = processSpecRepo.findById(psIdx.get(i).intValue()).get();
+            processSpec.setPsCost(psCost.get(i).intValue());
+            processSpecRepo.save(processSpec);
+        }
+
+        List<Long> gsIdx = paramMap.getListLong("gsIdx");
+        List<Long> gsCost = paramMap.getListLong("gsCost");
+        for (int i = 0; i < gsIdx.size(); i++) {
             ProcessSpec processSpec = ProcessSpec
                     .builder()
-                    .psIdx(psIdx.get(i).intValue())
-//                    .psRealCost(psRealCost.get(i).intValue())
+                    .processNeed(processNeed)
+                    .goodsStock(goodsStockRepo.getReferenceById(gsIdx.get(i).intValue()))
+                    .psCost(gsCost.get(i).intValue())
+                    .psType("CONFIRM")
                     .build();
-
             processSpecRepo.save(processSpec);
+        }
+
+        // 공정 완료 처리시 자산 상태값 변경
+        if (PnState.COMPLETE.name().equals(PnState.valueOf(paramMap.getString("pnState")).name())) {
+
+            Goods goods = processNeed.getGoods();
+            int process = processMapper.selectProcessNeedByGoods(goods.getGIdx());
+            if (process == 0) {
+                goods.setGState(GState.CHECK);
+            } else {
+                goods.setGState(GState.PROCESS);
+            }
         }
     }
 

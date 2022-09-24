@@ -36,6 +36,6 @@ public class ProcessSpec {
     @JoinColumn(name = "PS_GS_IDX1", referencedColumnName = "gsIdx")
     private GoodsStock goodsStock;
 
-    private PsType psType;
+    private String psType;
     private int psCost;
 }

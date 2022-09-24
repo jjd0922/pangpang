@@ -479,6 +479,7 @@ public class PoService {
         return "총 " + count + "개의 발주건을 삭제했습니다.";
     }
 
+    @Transactional
     public String poStateUpdate(ParamMap paramMap) {
         String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
         int count = 0;
@@ -500,6 +501,43 @@ public class PoService {
             }
         }
         return "총 " + count + "개의 발주건을 " + state_msg + " 처리했습니다.";
+    }
+
+    /** 영업검수 발주 그룹 매핑 */
+    @Transactional
+    public void insertPoReceived(ParamMap paramMap) {
+        Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
+        Product product = productRepo.getReferenceById(paramMap.getInt("pIdx"));
+        PoReceived poReceived = poReceivedRepo.findByPoAndProductAndPorSellPrice(po, product, paramMap.getInt("porSellPrice"));
+        PoProduct poProduct = null;
+        if (paramMap.getString("ppIdx") != null) {
+            poProduct = poProductRepo.getReferenceById(paramMap.getInt("ppIdx"));
+        }
+
+        if (poReceived == null) {
+            poReceived = PoReceived
+                    .builder()
+                    .po(po)
+                    .product(product)
+                    .poProduct(poProduct)
+                    .porSellPrice(paramMap.getInt("porSellPrice"))
+                    .porCost(paramMap.getInt("porCost"))
+                    .porCount(paramMap.getInt("porCount"))
+                    .porMemo(paramMap.getString("porMemo"))
+                    .build();
+        } else {
+            poReceived.setPorCount(poReceived.getPorCount() + paramMap.getInt("porCount"));
+        }
+
+        poReceivedRepo.save(poReceived);
+
+        String[] gIdx = paramMap.getString("gIdxs").split(",");
+        for (int i = 0; i < gIdx.length; i++) {
+            Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+            goods.setPoReceived(poReceived);
+            goodsRepo.save(goods);
+        }
+
     }
 }
 

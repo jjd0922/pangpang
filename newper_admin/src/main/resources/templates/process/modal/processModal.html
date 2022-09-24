@@ -24,7 +24,6 @@
                                                 </span>
                                                     <input type="text" class="form-control" id="process_pIdx" readonly>
                                                     <input type="hidden" name="pnIdx">
-                                                    <input type="hidden" name="psType" th:value="${T(com.newper.constant.PsType).EXPECTED}">
                                                 </div>
                                             </div>
                                         </div>
@@ -247,31 +246,27 @@
     // 공정항목 세팅
     function setProcessSpecInfo(pnIdx) {
         $('input[name=pnIdx]').val(pnIdx);
-
-        var dataMap;
         $.ajax({
             url: '/process/selectProcessSpec.ajax',
-            data: $('#processCompModal').serialize(),
+            data: {"pnIdx":pnIdx},
             type: 'POST',
             async: false,
-            success(data) {
-                dataMap = data;
+            success(result) {
+                $('#processCompSpec').empty();
+                console.log(result);
+                $.each(result, function (index, value) {
+                    var html = '<tr>' +
+                        '<td>'+value.P_NAME+'</td>' +
+                        '<td>'+value.P_IDX+'</td>' +
+                        '<td>'+value.P_COST+'</td>' +
+                        '<td><input type="text" name="psCost" value="'+value.PS_COST+'"></td>' +
+                        '<input type="hidden" name="psIdx" value="'+value.PS_IDX+'">' +
+                        '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+value.PS_IDX+','+value.PN_IDX+');">삭제</button></td>' +
+                        '</tr>';
+                    $('#processCompSpec').append(html);
+                });
             }
         })
-
-
-        $('#processCompSpec').empty();
-        $.each(dataMap.data, function (index, value) {
-            var html = '<tr>' +
-                '<td>'+value.P_NAME+'</td>' +
-                '<td>'+value.P_IDX+'</td>' +
-                '<td>'+value.P_COST+'</td>' +
-                '<td><input type="text" name="psRealCost" value="'+value.PS_REAL_COST+'"></td>' +
-                '<input type="hidden" name="psIdx" value="'+value.PS_IDX+'">' +
-                '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+value.PS_IDX+','+value.PN_IDX+');">삭제</button></td>' +
-                '</tr>';
-            $('#processCompSpec').append(html);
-        });
     }
 
     function setProcessNeedInfo(pnIdx) {
@@ -312,7 +307,9 @@
     function saveProcessComp() {
         $.ajax({
             url: '/process/saveProcess.ajax',
-            data: $('#processCompModal').serialize(),
+            data: new FormData($('#processCompModal')[0]),
+            processData: false,
+            contentType: false,
             type: 'POST',
             async: false
         })
@@ -336,8 +333,8 @@
             '<td>'+dataMap.P_NAME+'</td>' +
             '<td>'+dataMap.P_IDX+'</td>' +
             '<td>'+dataMap.P_COST+'</td>' +
-            '<td><input type="text" name="psRealCost" value="0"></td>' +
-            '<input type="hidden" name="psIdx" value="'+dataMap.PS_IDX+'">' +
+            '<td><input type="text" name="gsCost" value="0"></td>' +
+            '<input type="hidden" name="gsIdx" value="'+dataMap.GS_IDX+'">' +
             '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+dataMap.PS_IDX+','+dataMap.PN_IDX+');">삭제</button></td>' +
             '</tr>';
         $('#processCompSpec').append(html);
