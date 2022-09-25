@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.CategoryMapper">
+    <select id="selectAllCategoryByShopProduct" resultType="map" parameterType="map">
+        SELECT
+            CATE_NAME
+             ,CATE_NICK
+             ,CATE_ICON
+             ,CATE_THUMBNAIL
+             ,CATE_IMAGE
+             ,CATE_ORDER
+             ,CATE_SPEC
+             ,CATE_SPEC_LIST
+             ,CATE_INFO
+        FROM (
+            SELECT
+                DISTINCT(SP_CATE_IDX) SP_CATE_IDX
+            FROM
+                shop_product
+               ,CATEGORY
+            WHERE SP_CATE_IDX = CATE_IDX
+              AND SP_SHOP_IDX=#{shopIdx}
+        ) SP_CATE
+           ,CATEGORY
+           ,SHOP_CATEGORY
+           ,CATEGORY_SHOP_CATEGORY
+        WHERE
+            SP_CATE_IDX = CATE_IDX
+          AND CSC_SCATE_IDX = SCATE_IDX
+          AND CSC_CATE_IDX = CATE_IDX
+          AND CATE_TYPE = 'CATEGORY'
+          AND CATE_DEPTH = '2'
+          AND SCATE_IDX = #{scateIdx}
+
+    </select>
+</mapper>

@@ -53,6 +53,18 @@
             limit #{start},#{length}
         </if>
     </select>
+    <select id="countCategoryDatatableByTwoDetph" resultType="Long">
+        SELECT
+            COUNT(*) CNT
+        FROM
+            category
+                LEFT JOIN CATEGORY_SHOP_CATEGORY
+                          ON CSC_CATE_IDX=CATE_IDX
+                LEFT JOIN SHOP_CATEGORY
+                          ON CSC_SCATE_IDX=SCATE_IDX
+        WHERE
+            CATE_DEPTH=2
+    </select>
 
     <select id="selectCategoryDetailByTwoDetph" resultType="map">
         SELECT

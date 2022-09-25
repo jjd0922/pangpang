@@ -2,7 +2,6 @@ package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
 import com.newper.mapper.IamportMapper;
-import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final ShopRepo shopRepo;
     private final IamportMapper iamportMapper;
 
     @GetMapping(value = { "", "index"})
@@ -90,12 +88,6 @@ public class MainController {
         return mav;
     }
 
-    /* product - 카테고리 대분류/중분류 목록페이지 */
-    @GetMapping(value = "category")
-    public ModelAndView category(){
-        ModelAndView mav = new ModelAndView("product/category");
-        return mav;
-    }
 
     /* order 주문프로세서 - 장바구니 */
     @GetMapping(value = "cart")
