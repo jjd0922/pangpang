@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -68,15 +70,15 @@ public class DesignRestController {
     }
     /** mainsection insert/update */
     @PostMapping(value = {"mainsection/{msIdx}.load", "mainsection/new.load"})
-    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap){
+    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
         ModelAndView mav = new ModelAndView("main/alertMove");
 
         if(msIdx != null){
             paramMap.put("msIdx",msIdx);
-            mainsectionService.mainsectionUpdate(paramMap);
+            mainsectionService.mainsectionUpdate(paramMap, mfRequest);
             mav.addObject("msg","수정 완료");
         }else{
-            msIdx = mainsectionService.mainsectionSave(paramMap);
+            msIdx = mainsectionService.mainsectionSave(paramMap, mfRequest);
             mav.addObject("msg","생성 완료");
         }
         mav.addObject("loc","/design/mainsection/"+msIdx);

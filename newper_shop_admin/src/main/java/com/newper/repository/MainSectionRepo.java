@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MainSectionRepo extends JpaRepository<MainSection,Long> {
 
-    @EntityGraph(attributePaths = {"shop"})
+    @EntityGraph(attributePaths = {"shop", "mainSectionBanners"})
     MainSection findMainSectionBymsIdx(Long msIdx);
 
     @EntityGraph(attributePaths = {"shop"})

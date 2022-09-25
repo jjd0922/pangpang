@@ -31,7 +31,7 @@
 
                     <div class="col-lg-12">
                         <div class="card">
-                            <form id="mainSectionForm" method="post" th:with="maxColumn=1">
+                            <form id="mainSectionForm" method="post" enctype="multipart/form-data">
                                 <div class="card-body popup-contents">
                                     <fieldset class="mb-0">
                                         <legend class="">1. 분양몰 등록정보</legend>
@@ -127,16 +127,13 @@
         <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
             <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerDom(this)">삭제</a>
         </div>
-        <div class="col-sm-12 col-md-6" style="display: none;">
+        <div class="col-sm-12 col-md-6">
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-prepend">
-                        <span class="input-group-text">노출상태</span>
+                        <span class="input-group-text">노출순서</span>
                     </span>
-                    <select class="form-control" name="bnDisplay">
-                        <option th:value="1">노출</option>
-                        <option th:value="-1">미노출</option>
-                    </select>
+                    <input type="number" class="form-control" name="msbnOrder" min="1">
                 </div>
             </div>
         </div>
@@ -147,7 +144,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">배너이미지(WEB)</span>
                     </span>
-                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="bnImage" accept="image/*">
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnWebFile" accept="image/*">
                 </div>
             </div>
         </div>
@@ -158,7 +155,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">배너이미지(MOBILE)</span>
                     </span>
-                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="bnImageMobile" accept="image/*">
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnMobileFile" accept="image/*">
                 </div>
             </div>
         </div>
@@ -169,7 +166,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">링크(URL)</span>
                     </span>
-                    <input class="form-control" type="text" name="bnUrl">
+                    <input class="form-control" type="text" name="msbnUrl">
                 </div>
             </div>
         </div>
@@ -215,7 +212,7 @@
         var msType = $('select[name="msType"]').val();
         if(msType != ''){
             $.ajax({
-                url:'/design/fragment/mainsection/'+msType+'.load'
+                url:location.pathname+'/'+msType+'.load'
                 ,type: 'post'
                 ,success:function(res){
                     $('#sectionContent').empty();

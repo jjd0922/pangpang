@@ -1,8 +1,10 @@
 package com.newper.controller.view;
 
 import com.newper.entity.MainSection;
+import com.newper.entity.MainSectionBanner;
 import com.newper.exception.MsgException;
 import com.newper.mapper.ShopMapper;
+import com.newper.repository.MainSectionBannerRepo;
 import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping(value = "/design/")
@@ -22,6 +25,7 @@ public class DesignController {
 
     private final ShopRepo shopRepo;
     private final MainSectionRepo mainSectionRepo;
+    private final MainSectionBannerRepo mainSectionBannerRepo;
     private final ShopMapper shopMapper;
 
     /** 공통 디자인 영역*/
@@ -91,9 +95,13 @@ public class DesignController {
     }
 
     /** 메인섹션 상세 메인섹션타입 배너 load */
-    @PostMapping("fragment/mainsection/{msType}.load")
-    public ModelAndView mainSectionBanner(@PathVariable String msType){
+    @PostMapping(value = {"mainsection/{msIdx}/{msType}.load","mainsection/new/{msType}.load"})
+    public ModelAndView mainSectionBanner(@PathVariable String msType, @PathVariable(required = false) Long msIdx){
         ModelAndView mav = new ModelAndView("design/fragment/mainsection_fragment :: " + msType);
+        if(msIdx != null){
+            List<MainSectionBanner> mainSectionBanners = mainSectionBannerRepo.findByMainSection_msIdxOrderByMsbnOrder(msIdx);
+            mav.addObject("mainSectionBanners", mainSectionBanners);
+        }
 
         return mav;
     }

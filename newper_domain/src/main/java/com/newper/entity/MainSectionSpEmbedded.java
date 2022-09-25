@@ -15,6 +15,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class MainSectionSpEmbedded implements Serializable {
 
+    public MainSectionSpEmbedded(MainSection mainSection, ShopProduct shopProduct){
+        this.mainSection = mainSection;
+        this.shopProduct = shopProduct;
+    }
+
     /** 메인섹션 idx*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MSSP_MS_IDX", referencedColumnName = "msIdx")

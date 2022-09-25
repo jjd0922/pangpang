@@ -57,7 +57,7 @@
         <a onclick="addBanner()" class="btn btn-sm btn-primary ml-1">배너 추가</a>
     </legend>
 
-    <div class="row" th:if="${mainsection != null and not mainsection?.mainSectionBanner.isEmpty }" th:each="banner : ${bannerGroup?.banners}">
+    <div class="row" th:if="${mainSectionBanners != null and not mainSectionBanners.isEmpty }" th:each="banner : ${mainSectionBanners}">
         <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
             <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerDom(this)">삭제</a>
         </div>
@@ -67,10 +67,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">노출순서</span>
                     </span>
-                    <select class="form-control select" name="msbnOrder">
-                        <option th:value="1" th:selected="${mainsection?.mainSectionBanner?.msbnOrder > 0}">노출</option>
-                        <option th:value="-1" th:selected="${mainsection?.mainSectionBanner?.msbnOrder < 0}">미노출</option>
-                    </select>
+                    <input type="number" class="form-control" name="msbnOrder" th:value="${banner.msbnOrder}" min="1">
                 </div>
             </div>
         </div>
@@ -100,7 +97,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">링크(URL)</span>
                     </span>
-                    <input class="form-control" type="text" name="msbnUrl">
+                    <input class="form-control" type="text" name="msbnUrl" th:value="${banner.msbnUrl}">
                 </div>
             </div>
         </div>
@@ -111,7 +108,7 @@
         function addBanner(){
             $('#sectionContent').append($('#bannerDom').clone().html());
 
-            $('#popBannerForm select[name=bnDisplay]').select2({
+            $('#popBannerForm select[name=msbnOrder]').select2({
                 minimumResultsForSearch: Infinity
             });
         }
