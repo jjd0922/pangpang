@@ -10,4 +10,7 @@ public interface MainSectionRepo extends JpaRepository<MainSection,Long> {
 
     @EntityGraph(attributePaths = {"shop"})
     MainSection findMainSectionBymsIdx(Long msIdx);
+
+    @EntityGraph(attributePaths = {"shop"})
+    List<MainSection> findByShop_shopIdx(Integer shopIdx);
 }

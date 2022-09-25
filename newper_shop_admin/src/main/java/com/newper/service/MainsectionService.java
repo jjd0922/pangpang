@@ -15,10 +15,11 @@ public class MainsectionService {
     private final MainSectionRepo mainSectionRepo;
 
     /** mainsection 순서 변경*/
-    public void mainsectionOrder(List<String> msIdxs) {
-        for(int i=0; i<msIdxs.size() -1; i++){
-            MainSection mainSection = mainSectionRepo.findById(Long.parseLong(msIdxs.get(i))).orElseThrow(()->new MsgException("존재하지 않는 메인섹션 입니다."));
-            mainSection.updateMainsectionOrder(i+1);
+    @Transactional
+    public void mainsectionOrder(long[] msIdxs) {
+        for(int i=0; i<msIdxs.length -1; i++){
+            MainSection mainSection = mainSectionRepo.getReferenceById(msIdxs[i]);
+            mainSection.updateMsOrder(i+1);
         }
     }
 
@@ -46,10 +47,11 @@ public class MainsectionService {
     public Long mainsectionSave(ParamMap paramMap) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
         mainSection.setMsJson("test");
+        int size = mainSectionRepo.findByShop_shopIdx(mainSection.getShop().getShopIdx()).size();
+        mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
+
         mainSectionRepo.save(mainSection);
 
-//        mainSectionRepo.f
-//        mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
         return mainSection.getMsIdx();
     }
 

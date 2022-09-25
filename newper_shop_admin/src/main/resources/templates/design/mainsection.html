@@ -178,7 +178,7 @@ $(document).ready(function(){
                 if(data == null){
                     return '';
                 }else{
-                    return '<i class="icon-menu-open">'+Math.abs(data)+'</i><input type="hidden" name="MS_IDX" shop="'+full.MS_SHOP_IDX+'" value="'+full.MS_IDX+'">';
+                    return '<i class="icon-menu-open">'+Math.abs(full.MS_ORDER)+'</i><input type="hidden" name="MS_IDX" shop="'+full.MS_SHOP_IDX+'" value="'+full.MS_IDX+'">';
                 }
             }}
             ,{'class':'m-w-5 w-10', 'title':'노출상태','data':'MS_ORDER','defaultContent':'','render':function(data,type,full,meta){
@@ -229,7 +229,7 @@ $(document).ready(function(){
                 }
 
                 $.ajax({
-                    url:'/design/mainsection.ajax'
+                    url:'/design/mainsection/order.ajax'
                     ,type:'post'
                     ,data:param
                 }).always(function(res){

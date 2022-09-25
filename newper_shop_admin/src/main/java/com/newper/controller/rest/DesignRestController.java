@@ -24,6 +24,8 @@ import java.util.Map;
 public class DesignRestController {
 
     private final DesignService designService;
+    private final MainsectionService mainsectionService;
+    private final MainsectionMapper mainsectionMapper;
 
     @PostMapping(value = "test.dataTable")
     public ReturnDatatable testDt(){
@@ -51,11 +53,6 @@ public class DesignRestController {
 
         return rm;
     }
-
-
-
-    private final MainsectionService mainsectionService;
-    private final MainsectionMapper mainsectionMapper;
 
     /** mainsection DataTable*/
     @PostMapping("mainsection.dataTable")
@@ -87,13 +84,10 @@ public class DesignRestController {
         return mav;
     }
     /** mainsection 순서 변경*/
-    @PostMapping("mainsection.ajax")
-    public ReturnMap mainsectionOrder(ParamMap paramMap){
+    @PostMapping("mainsection/order.ajax")
+    public ReturnMap mainsectionOrder(long[] idxs){
         ReturnMap rm = new ReturnMap();
-        List<String> msIdxs = paramMap.getList("msIdxs[]");
-
-        mainsectionService.mainsectionOrder(msIdxs);
-
+        mainsectionService.mainsectionOrder(idxs);
         return rm;
     }
     /** mainsection 노출상태 토글 */

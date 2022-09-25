@@ -53,7 +53,7 @@ public class MainSection extends BaseEntity {
         }
     }
 
-    public void updateMainsectionOrder(int msOrder) {
+    public void updateMsOrder(int msOrder) {
         if(getMsOrder() < 0){
             setMsOrder(msOrder * -1);
         }else{

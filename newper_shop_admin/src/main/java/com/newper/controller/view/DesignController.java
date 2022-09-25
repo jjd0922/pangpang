@@ -90,23 +90,10 @@ public class DesignController {
         return mav;
     }
 
+    /** 메인섹션 상세 메인섹션타입 배너 load */
     @PostMapping("fragment/mainsection/{msType}.load")
     public ModelAndView mainSectionBanner(@PathVariable String msType){
         ModelAndView mav = new ModelAndView("design/fragment/mainsection_fragment :: " + msType);
-
-        return mav;
-    }
-    /** 메인섹션 배너 신규, 상세*/
-    @GetMapping(value = {"mainsection/banner/{msbnIdx}","mainsection/banner/new"})
-    public ModelAndView mainSectionBanner(@PathVariable(required = false) Long msbnIdx){
-        ModelAndView mav = new ModelAndView("design/mainsection_msbnIdx");
-
-        return mav;
-    }
-    /** 메인섹션 배너 신규, 상세*/
-    @GetMapping(value = {"mainsection/shopProduct/{msspIdx}","mainsection/shopProduct/new"})
-    public ModelAndView mainSectionShopProduct(@PathVariable(required = false) Long msspIdx){
-        ModelAndView mav = new ModelAndView("design/mainsection_msspIdx");
 
         return mav;
     }
