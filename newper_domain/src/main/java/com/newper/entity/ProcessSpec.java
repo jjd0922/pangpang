@@ -36,6 +36,8 @@ public class ProcessSpec {
     @JoinColumn(name = "PS_GS_IDX1", referencedColumnName = "gsIdx")
     private GoodsStock goodsStock;
 
-    private String psType;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private PsType psType = PsType.EXPECTED;
     private int psCost;
 }

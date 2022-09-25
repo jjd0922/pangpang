@@ -163,7 +163,7 @@ public class InRestController {
         return rd;
     }
 
-    /** 입고검수 작업요청취소 */
+    /** 입고검수 취소, 작업중, 완료 처리 */
     @PostMapping("checkGroupStateUpdate.ajax")
     public ReturnMap checkGroupStateUpdate(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();

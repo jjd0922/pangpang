@@ -7,6 +7,8 @@
         <if test="pnIdx != null and pnIdx != ''">AND PN_IDX = #{pnIdx}</if>
         <if test="pnType != null and pnType != ''">AND PN_TYPE = #{pnType}</if>
         <if test="pnState != null and pnState != ''">AND PN_STATE = #{pnState}</if>
+        <if test="pnProcess != null and pnProcess != ''">AND PN_PROCESS = #{pnProcess}</if>
+        <if test="cgIdx != null and cgIdx != ''">AND PN_CG_IDX = #{cgIdx}</if>
     </sql>
     <select id="selectProcessNeed" resultType="Map">
         SELECT
@@ -14,6 +16,8 @@
         FROM
             PROCESS_NEED
                 LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
         <where>
             <include refid="includeProcessNeedDataTable"></include>
         </where>
@@ -68,29 +72,15 @@
 
     <select id="selectProcessSpec" resultType="Map">
         SELECT
-            IFNULL(specl_name, '') AS SPECL_NAME,
-            IFNULL(specl_value, '') AS SPECL_VALUE,
-            PS_COST,
-            GS_IDX,
-            P_IDX,
-            P_NAME,
-            P_COST,
-            PS_IDX,
-            PN_IDX
+            *
         FROM
-            GOODS
-                LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
+            PROCESS_NEED
                 LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
-                LEFT JOIN SPEC_LIST ON PS_SPECL_IDX1 = SPECL_IDX
-                LEFT JOIN SPEC_ITEM ON SPECL_IDX = SPECI_SPECL_IDX
-                LEFT JOIN SPEC ON SPECI_SPEC_IDX = SPEC_IDX
-                LEFT JOIN GOODS_STOCK ON SPEC_IDX = GS_SPEC_IDX
-                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX AND P_TYPE2 = 'PARTS'
+                LEFT JOIN GOODS_STOCK ON PS_GS_IDX1 = GS_IDX
+                LEFT JOIN PRODUCT ON GS_P_IDX = P_IDX
         <where>
             <include refid="includeProcessSpec"></include>
         </where>
-        GROUP BY
-            SPECL_IDX
     </select>
 
     <insert id="insertResellGoods">
@@ -273,5 +263,89 @@
             PN_COUNT DESC
         LIMIT
             0, 1
+    </select>
+
+    <insert id="insertGoodsTemp">
+        INSERT INTO GOODS_TEMP (
+            GT_GGT_IDX,
+            GT_G_IDX,
+            GT_CREATED_DATETIME
+        ) VALUES (
+            #{ggtIdx},
+            #{gIdx},
+            NOW()
+        )
+    </insert>
+
+    <select id="selectGoodsTemp" resultType="Long">
+        SELECT
+            GT_G_IDX
+        FROM
+            GOODS_TEMP
+        WHERE
+            GT_GGT_IDX = #{ggtIdx}
+    </select>
+
+    <select id="checkProcessNeed" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_NEED
+                LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+        WHERE
+            PN_TYPE = #{pnType}
+        AND
+            G_IDX = #{gIdx}
+        AND
+            PN_STATE = 'NEED'
+        AND
+            PN_PROCESS = 'Y'
+    </select>
+
+    <select id="selectProcessNeedByGroup" resultType="Map">
+        SELECT
+            *
+        FROM
+            PROCESS_GROUP
+                LEFT JOIN PROCESS_NEED ON PG_IDX = PN_PG_IDX
+                LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+        <where>
+            <include refid="includeProcessNeedDataTable"></include>
+        </where>
+    </select>
+
+    <select id="countProcessNeedByGroup" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_GROUP
+                LEFT JOIN PROCESS_NEED ON PG_IDX = PN_PG_IDX
+                LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+        <where>
+            <include refid="includeProcessNeedDataTable"></include>
+        </where>
+    </select>
+
+    <select id="checkProcessNeedOther" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_NEED
+        WHERE
+            PN_G_IDX = #{gIdx}
+        AND
+            PN_STATE = 'NEED'
+    </select>
+
+    <select id="checkProcessSpec" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PROCESS_SPEC
+                LEFT JOIN PROCESS_NEED ON PS_PN_IDX = PN_IDX
+        WHERE
+            PS_PN_IDX = #{pnIdx}
+        AND
+            PN_TYPE = #{pnType}
     </select>
 </mapper>

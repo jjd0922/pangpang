@@ -118,19 +118,23 @@
             data: {
                 "poIdx" : $('#poIdx').val(),
                 "pIdx" : dataMap.P_IDX
+            },
+            success() {
+                var html = '<tr>' +
+                    '<td>'+$('#inProductTable').children('tbody').children('tr').length+'</td>' +
+                    '<td>'+dataMap.P_IDX+'</td>' +
+                    '<td>'+dataMap.P_NAME+'</td>' +
+                    '<td>'+dataMap.P_MODEL+'</td>' +
+                    '<td>0</td>' +
+                    '<td>0</td>' +
+                    '<td><a class="btn btn-sm badge-indigo" onclick="openInModal('+dataMap.P_IDX+',\''+dataMap.P_NAME+'\')">등록</a></td>' +
+                    '</tr>'
+
+                $('#inProductTable').append(html)
             }
         })
 
-        var html = '<tr>' +
-            '<td>'+$('#inProductTable').children('tbody').children('tr').length+'</td>' +
-            '<td>'+dataMap.P_IDX+'</td>' +
-            '<td>'+dataMap.P_NAME+'</td>' +
-            '<td>'+dataMap.P_MODEL+'</td>' +
-            '<td>0</td>' +
-            '<td><a class="btn btn-sm badge-indigo" onclick="openInModal('+dataMap.P_IDX+',\''+dataMap.P_NAME+'\')">등록</a></td>' +
-            '</tr>'
 
-        $('#inProductTable').append(html)
 
         $('#poNewProductModal').modal('hide');
     }

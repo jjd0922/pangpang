@@ -40,7 +40,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">발주코드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" th:value="${ig?.po?.poIdx}" readonly>
+                                                    <input type="text" class="form-control" id="poIdx" th:value="${ig?.po?.poIdx}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -448,7 +448,8 @@
         <!-- Footer -->
         <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
             <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-            <button th:if="${ig?.po?.hiworks == null}" type="button" class="btn btn-sm btn-secondary ml-1" id="saveBtn"><i class="icon-floppy-disk mr-1"></i>저장</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="poApply();" style="left: 40%"><i class="icon-floppy-disk mr-1"></i>재승인 요청</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="poComplete();"><i class="icon-floppy-disk mr-1"></i>재승인 생략</button>
         </div>
         <!-- /footer -->
     </div>
@@ -486,6 +487,25 @@
 <th:block th:replace="in/modal/poReceivedModal.html"/>
 
 <script>
+    function poApply() {
+        $.ajax({
+            url: '/po/poCompleteHiworksReq.ajax',
+            type: 'post',
+            data: {
+                "poIdx" : $('#poIdx').val()
+            }
+        });
+    }
+    function poComplete() {
+        $.ajax({
+            url: '/po/poComplete.ajax',
+            type: 'post',
+            data: {
+                "poIdx" : $('#poIdx').val()
+            }
+        });
+    }
+
     function goodsStateUpdate(gState) {
         var gIdxs = '';
         if ($('.selected').length == 0) {
@@ -497,14 +517,7 @@
         });
         gIdxs = gIdxs.slice(0, -1);
 
-        $.ajax({
-            url: '/goods/goodsStateUpdateByCheck.ajax',
-            type: 'post',
-            data: {
-                'gIdxs' : gIdxs,
-                'gState' : gState
-            }
-        });
+
     }
 
     function searchGoods() {

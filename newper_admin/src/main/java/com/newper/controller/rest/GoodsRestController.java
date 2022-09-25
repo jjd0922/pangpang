@@ -56,8 +56,7 @@ public class GoodsRestController {
     public ReturnMap ggtGoodsInsert(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         String ggtIdx = paramMap.get("ggtIdx").toString();
-        String[] gIdxs = paramMap.get("gIdx").toString().split(",");
-        goodsService.insertGoodsTemp(ggtIdx, gIdxs, GgtType.IN_CHECK);
+        goodsService.insertGoodsTemp(ggtIdx, GgtType.IN_CHECK);
         return rm;
     }
 
@@ -167,7 +166,6 @@ public class GoodsRestController {
     public ReturnMap updateGoodsState(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         goodsService.updateGoodsState(paramMap);
-        rm.setMessage("영업검수 요청 완료");
         return rm;
     }
 }

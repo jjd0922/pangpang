@@ -184,40 +184,6 @@
         });
     }
 
-    function setProcessNeed(gIdx) {
-        $('#processNeedTable').empty();
-        // var process_name = [[${T(com.newper.constant.PnProcess).values()}]];
-        var option = '';
-
-        $.each(process_name, function (index, value) {
-            option += '<option value="'+value+'">'+value+'</option>';
-        });
-
-        $.ajax({
-            type: "POST",
-            url:"/process/selectProcessNeedByGoods.ajax",
-            data: {
-                "gIdx":gIdx,
-                "pnCount":1
-            },
-            async:false,
-            success : function(result){
-                var html = '';
-                $.each(result, function(index, value) {
-                    html += '<tr>';
-                    html += '<td>'+value.PN_TYPE_STR+'</td>';
-                    html += '<td>'+value.PN_CONTENT+'</td>';
-                    html += '<td>'+value.PN_EXPECTED_COST+'</td>';
-                    html += '<td><select id="pnProcess_'+index+'" name="pnProcess" class="form-control">'+option+'</select></td>';
-                    html += '<input type="hidden" name="pnIdx" value="'+value.PN_IDX+'">';
-                    html += '</tr>';
-                    $('#processNeedTable').append(html);
-
-                    $('#pnProcess_'+index+' option[value='+value.PN_PROCESS+']').prop('selected', true);
-                });
-            }
-        });
-    }
 
     function openProcessModal (id, rowIdx) {
         $('#checkGoodsModal').modal('show');
@@ -263,7 +229,7 @@
             for (var i = 0; i < specListTd.length; i++) {
                 $.ajax({
                     type: "GET",
-                    url:"/goods/specList.ajax?specName=" + specListTd[i].innerHTML,
+                    url:"/goods/specList.ajax?speclName=" + specListTd[i].innerHTML,
                     async:false,
                     success : function(result){
                         $('input[specList='+i+']').autocomplete({

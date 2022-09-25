@@ -53,8 +53,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">입고창고<a onclick="openWarehouseModal();" class="badge badge-sm badge-primary ml-1">검색</a></span>
                                                         </span>
-                                                        <input type="text" name="whName" class="form-control" placeholder="검색" th:value="${po?.warehouse?.whName}" readonly>
-                                                        <input type="hidden" name="whIdx" th:value="${po?.warehouse?.whIdx}">
+                                                        <input type="text" name="whName" class="form-control" placeholder="검색" th:value="${ig?.warehouse?.whName}" readonly>
+                                                        <input type="hidden" name="whIdx" th:value="${ig?.warehouse?.whIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -68,6 +68,18 @@
                                                         </span>
                                                         <input type="text" name="uName" class="form-control" placeholder="검색" th:value="${ig?.user?.uName}" readonly>
                                                         <input type="hidden" name="uIdx" th:value="${ig?.user?.uIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 입력필드 -->
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산수령일</span>
+                                                    </span>
+                                                        <input type="text" class="form-control" th:value="${ig?.igReceiveDate}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -293,7 +305,10 @@
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#createForm')[0])
+            data: new FormData($('#createForm')[0]),
+            success() {
+                location.reload();
+            }
         });
     }
 
@@ -318,7 +333,10 @@
             processData: false,
             contentType: false,
             type: 'post',
-            data: new FormData($('#createForm')[0])
+            data: new FormData($('#createForm')[0]),
+            success() {
+                location.reload();
+            }
         });
     }
 

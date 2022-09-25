@@ -38,165 +38,150 @@
             </div>
                 <div class="card">
                     <div class="card-body popup-contents">
-                        <fieldset class="mb-0">
-                            <div class="row">
-                                <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'cancel')|">
-                                        <i class="icon-popout mr-1"></i>작업요청취소
-                                    </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'ing')|">
-                                        <i class="icon-popout mr-1"></i>작업중(출고)
-                                    </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="finishBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'finish')|">
-                                        <i class="icon-popout mr-1"></i>작업완료(입고)
-                                    </a>
+                        <form id="checkForm">
+                            <fieldset class="mb-0">
+                                <div class="row">
+                                    <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                    <div class="btn-group">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_NEED')|">
+                                            <i class="icon-popout mr-1"></i>작업요청취소
+                                        </a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_ING')|">
+                                            <i class="icon-popout mr-1"></i>작업중(출고)
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <!-- 입력필드 -->
-                                <div class="col-sm-12 ">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <!-- 입력필드 -->
+                                    <div class="col-sm-12 ">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수코드</span>
                                             </span>
-                                            <input type="text" th:value="${check?.cgIdx}" class="form-control" readonly>
+                                                <input type="text" name="cgIdx" id="cgIdx" th:value="${check?.cgIdx}" class="form-control" readonly>
 
-                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">작업지시자(내부)</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.user?.uName}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.user?.uName}" readonly>
 
-                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수업체</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.company?.comName}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.company?.comName}" readonly>
 
-                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">작업시작일</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgStartDate}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.cgStartDate}" readonly>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수 상태</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgState.option}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.cgState.option}" readonly>
 
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">완료처리자(내부)</span>
+                                                <span class="input-group-prepend">
+                                                <span class="input-group-text" >
+                                                    완료처리자(내부)
+                                                    <a class="badge badge-sm badge-primary ml-1" onclick="inOperationModal();">검색</a>
+                                                </span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.user2?.uName}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.user2?.uName}" readonly>
 
-                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수담당자(업체)</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.company?.user?.uName}" readonly>
-                                            <span class="input-group-prepend">
+                                                <input type="text" class="form-control" th:value="${check?.company?.user?.uName}" readonly>
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">작업종료일</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgEndDate}" readonly>
+                                                <input type="text" class="form-control w-datarange daterange-single" name="cgEndDate" th:value="${check?.cgEndDate}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">
                                                    요청일
                                                </span>
                                            </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgRequestDate}" readonly>
+                                                <input type="text" class="form-control" th:value="${check?.cgRequestDate}" readonly>
 
-                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수비(확정)합계</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}" readonly>
-
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">완료/요청건</span>
-                                            </span>
-                                            <input type="text" class="form-control">
+                                                <input type="text" class="form-control" name="cgCost" th:value="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                    <span class="input-group-text">요청메모</span>
                                                </span>
-                                            <input type="text" class="form-control" id="cgReqMemo" th:value="${check?.cgReqMemo}" readonly>
+                                                <input type="text" class="form-control" id="cgReqMemo" th:value="${check?.cgReqMemo}" readonly>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">작업메모</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgCheckMemo}" readonly>
+                                                <input type="text" class="form-control" name="cgCheckMemo" th:value="${check?.cgCheckMemo}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
                                             <span class="input-group-prepend">
                                                <span class="input-group-text">작업완료메모</span>
                                             </span>
-                                            <input type="text" class="form-control" th:value="${check?.cgDoneMemo}" readonly>
+                                                <input type="text" class="form-control" name="cgDoneMemo" th:value="${check?.cgDoneMemo}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body popup-contents">
-                                    <fieldset class="mb-0">
-                                        <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
-                                        <div class="btn-group2">
-                                            <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="openGoodsStateModal('LOST')">
-                                                <i class="icon-popout mr-1"></i>망실
-                                            </a>
+                                <div class="card">
+                                    <div class="card-body popup-contents">
+                                        <fieldset class="mb-0">
+                                            <legend class="">2.자산정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                                            <div class="btn-group2">
+                                                <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="openGoodsStateModal('LOST')">
+                                                    <i class="icon-popout mr-1"></i>망실
+                                                </a>
 
-                                            <a type="button" class="btn btn-sm btn-secondary ml-1" id="handoverBtn" onclick="openGoodsStateModal('CANCEL_NEED')">
-                                                <i class="icon-popout mr-1"></i>반품필요
-                                            </a>
-                                        </div>
+                                                <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="openGoodsStateModal('CANCEL_NEED')">
+                                                    <i class="icon-popout mr-1"></i>반품필요
+                                                </a>
 
-<!--                                        <div class="btn-group3">-->
-<!--                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="reportuploadBtn"-->
-<!--                                               onclick="reportuploadBtn()">-->
-<!--                                                <i class="icon-popout mr-1"></i>(1)검수리포트 업로드-->
-<!--                                            </a>-->
-
-
-<!--                                            <a type="button" class="btn btn-sm btn-warning ml-1" id="resultuploadBtn"-->
-<!--                                               onclick="resultuploadBtn()">-->
-<!--                                                <i class="icon-popout mr-1"></i>공정결과 업로드-->
-<!--                                            </a>-->
-<!--                                        </div>-->
-                                        <div class="collapse show" id="collapse-button-collapsed">
-                                            <div class="card-body pt-0">
-                                                <form id="goodsForm">
-                                                    <input type="hidden" name="cgIdx" th:value="${check?.cgIdx}">
+                                                <a type="button" class="btn btn-sm btn-primary ml-1" onclick="checkDone()">
+                                                    <i class="icon-popout mr-1"></i>작업완료(입고)
+                                                </a>
+                                            </div>
+                                            <div class="collapse show" id="collapse-button-collapsed">
+                                                <div class="card-body pt-0">
                                                     <div class="row">
                                                         <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                             <div class="form-group">
@@ -228,14 +213,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <table class="table" id="goodsTable"></table>
-                                    </fieldset>
+                                            <table class="table" id="checkTable"></table>
+                                        </fieldset>
+                                    </div>
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
         </div>
@@ -284,22 +269,26 @@
 
 <th:block th:replace="product/modal/productModal_checkGroup.html"/>
 <th:block th:replace="goods/modal/goodsStateModal.html"/>
-
+<th:block th:replace="modal/inOperationModal.html"/>
 
 <script th:inline="javascript">
+    function selectUser(obj, u_idx) {
+        $('input[name=uName2]').val(obj.innerText);
+        $('input[name=uIdx2]').val(u_idx);
+        $('#operationModal').modal('hide');
+    }
+
     function stateUpdate(cgIdx, state) {
         var confirm_str = "";
-        if (state == 'cancel') {
+        if (state == 'CHECK_NEED') {
             confirm_str = "요청중인 자산이 입고검수 대기 상태로 돌아가며,  \n해당 입고코드는 삭제 됩니다. \n취소 하시겠습니까?";
-        } else if (state == 'ing') {
+        } else if (state == 'CHECK_ING') {
             var cgReqMemo = $('#cgReqMemo').val();
             if (cgReqMemo == '') {
                 confirm_str = "요청메모 정보가 없습니다. 진행하시겠습니까?"
             } else {
                 confirm_str = "입고검수 작업중(출고) 처리 하시겠습니까?"
             }
-        } else {
-
         }
 
         if(confirm(confirm_str)) {
@@ -311,9 +300,9 @@
                 },
                 type: 'post',
                 success(result) {
-                    if (state == 'cancel') {
+                    if (state == 'CHECK_NEED') {
                         window.close();
-                    } else if (state == 'ing') {
+                    } else {
                         location.reload();
                     }
                 }
@@ -321,19 +310,62 @@
         }
     }
 
+    function checkDone() {
+        if(confirm("선택한 자산들을 검수완료 처리 하시겠습니까?")) {
+            if ($('.selected').length == 0) {
+                alert('자산을 선택해 주세요');
+                return false;
+            }
+
+            var gIdxs = '';
+
+            $.each($('.selected'), function (index, value) {
+                gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+            });
+            gIdxs = gIdxs.slice(0, -1);
+
+            $.ajax({
+                url: '/goods/updateGoodsState.ajax',
+                data: {
+                    "gIdx" : gIdxs,
+                    "gState" : "CHECK_DONE"
+                },
+                type: 'post',
+                success(result) {
+                    checksDone();
+                }
+            });
+        }
+    }
+
+    // 검수 완료 체크
+    function checksDone(){
+        $.ajax({
+            url: '/process/checkDone.ajax',
+            data: {
+                "cgIdx" : [[${check.cgIdx}]],
+                "gState" : "CHECK_DONE"
+            },
+            type: 'post',
+            success(result) {
+                location.reload();
+            }
+        });
+    }
+
     function inOperationModal() {
         $('#operationModal').modal('show');
     }
 
     function searchBtn() {
-        var table = $('#goodsTable').DataTable();
-        table.page('first').ajax.url('/in/checkGoods.dataTable?' + $('#goodsForm').serialize()).load(null, false);
+        var table = $('#checkTable').DataTable();
+        table.page('first').ajax.url('/in/checkGoods.dataTable?' + $('#checkForm').serialize()).load(null, false);
     }
 </script>
 
 
 <script>
-    var goodsTable = $('#goodsTable').DataTable({
+    var checkTable = $('#checkTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering: false,
         select: {
@@ -342,7 +374,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/in/checkGoods.dataTable?' + $('#goodsForm').serialize(),
+            url: '/in/checkGoods.dataTable?' + $('#checkForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -362,6 +394,11 @@
             }
             , {'title': '발주코드', 'data': 'PO_IDX'}
             , {'title': '자산상태', 'data': 'G_STATE_STR'}
+            , {'title': '자산번호', 'data': 'G_IDX'}
+            , {'title': '자산바코드', 'data': 'G_BARCODE'}
+            , {'title': '자산바코드', 'data': 'G_BARCODE', 'defaultContent': '', 'render': function (data, type, full, meta) {
+                    return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
+                }}
             , {'title': '자산처리담당자', 'data': '', 'defaultContent': ''}
             , {'title': '자산처리일', 'data': '', 'defaultContent': ''}
             , {'title': '상품코드', 'data': '', 'defaultContent': ''}
@@ -371,13 +408,7 @@
             , {'title': 'IMEI', 'data': '', 'defaultContent': ''}
             , {'title': '시리얼', 'data': '', 'defaultContent': ''}
             , {'title': '입고SPEC(예정)', 'data': '', 'defaultContent': ''}
-            , {'title': '입고SPEC(확정)', 'data': 'INSPEC', 'defaultContent': '', 'render': function (data, type, full, meta) {
-                    if (data == null) {
-                        return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
-                    } else {
-                        return '<a href="javascript: openInGoodsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
-                    }
-                }}
+
             , {'title': '판매SPEC(예정)', 'data': '', 'defaultContent': ''}
             , {'title': '판매SPEC(확정)', 'data': '', 'defaultContent': ''}
             , {'title': '가공', 'data': '', 'defaultContent': ''}
@@ -400,11 +431,58 @@
     });
 
 
-    $('#goodsForm').on('keyup', function (event) {
+    $('#checkForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
             return false;
         }
+    });
+</script>
+<script th:inline="javascript">
+    $('#userTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/process/user.dataTable?'+$('#userForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
+                    return '<a class="btn btn-secondary" onclick="selectUser(this, '+full.U_IDX+')">'+data+'</a>';
+                }}
+            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
+            ,{'class':'m-w-max', 'title':'직급','data':'U_POSITION'}
+            ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL', 'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'class':'m-w-max', 'title':'전화번호','data':' U_PHONE' ,'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+        ]
+    });
+
+    $('#userForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
     });
 </script>
 </body>

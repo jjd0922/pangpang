@@ -140,7 +140,7 @@
         table.page('first').ajax.url('/in/incheck.dataTable?' + $('#incheckForm').serialize()).load(null, false);
     }
 
-    function incheckPop(idx){
+    function inCheckPop(idx){
         var focusPopup = window.open('/in/incheckManagePop/' + idx,'incheckManagePop',  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
@@ -160,7 +160,7 @@
                 return meta.settings._iDisplayStart+meta.row+1;
             }}
             ,{'title':'입고검수코드','data':'CG_IDX', 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: incheckPop('+ full.CG_IDX +')" class="badge badge-primary">' + full.CG_IDX + '</a>';
+                    return '<a href="javascript: inCheckPop('+ full.CG_IDX +')" class="badge badge-primary">' + full.CG_IDX + '</a>';
                 }}
             ,{'title':'입고검수<br>작업상태값','data':"CG_STATE_STR"}
             ,{'title':'입고검수<br>업체','data':'COM_NAME', defaultContent:''}

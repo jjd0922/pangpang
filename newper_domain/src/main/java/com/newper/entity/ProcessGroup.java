@@ -1,6 +1,5 @@
 package com.newper.entity;
 
-import com.newper.constant.PgType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -44,7 +43,7 @@ public class ProcessGroup extends CreatedEntity {
 
     private String pgDoneMemo;
 
-    private String pgStartDate;
+    private LocalDate pgStartDate;
 
-    private String pgEndDate;
+    private LocalDate pgEndDate;
 }

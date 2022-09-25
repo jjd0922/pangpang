@@ -103,22 +103,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                 <span class="input-group-prepend">
-                                                    <span class="input-group-text">공정결과</span>
-                                                </span>
-                                                    <select name="pnState" class="form-control">
-                                                        <option th:each="opt: ${T(com.newper.constant.PnState).values()}" th:value="${opt.name()}" th:text="${opt.getOption()}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-12">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                <span class="input-group-prepend">
-                                                    <span class="input-group-text">공정결과 상세</span>
+                                                    <span class="input-group-text">공정 상세</span>
                                                 </span>
                                                     <input type="text" class="form-control" name="pnContent">
                                                 </div>
@@ -211,7 +196,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="saveProcessComp();">공정업로드</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="pnUpload" onclick="saveProcessComp();">공정업로드</button>
             </div>
             <!-- /footer -->
         </div>
@@ -220,6 +205,8 @@
 <script>
     function openProcessModal(gIdx, pnIdx) {
         $('#processModal').modal('show');
+
+
         setProductInfo(gIdx);
         setProcessSpecInfo(pnIdx);
         setProcessNeedInfo(pnIdx);
@@ -237,11 +224,11 @@
             }
         })
 
+
         $('#process_pIdx').val(dataMap.P_IDX);
         $('#process_pName').val(dataMap.P_NAME);
         $('#process_barcode').val(dataMap.G_BARCODE);
         $('#process_gImei').val(dataMap.G_IMEI);
-        $('input[name=pnContent]').val(dataMap.PN_CONTENT);
     }
 
     // 공정항목 세팅
@@ -279,12 +266,16 @@
             type: 'POST',
             async: false,
             success(data) {
-                dataMap = data.data[0];
+                console.log(data)
+                dataMap = data;
             }
         })
 
         $('select[name=pnState] option[value='+dataMap.PN_STATE+']').prop('selected', true);
         $('input[name=pnContent]').val(dataMap.PN_CONTENT);
+        if (dataMap.PN_STATE == 'COMPLETE') {
+            $('#pnUpload').remove();
+        }
     }
 
     function deleteProcessSpec(psIdx, pnIdx) {

@@ -43,24 +43,27 @@ public class ProcessController {
 
 
     /**입고검수 팝업**/
-    @GetMapping(value = "incheckPop")
-    public ModelAndView incheckPopup() {
-        ModelAndView mav = new ModelAndView("process/incheckPop");
+    @GetMapping(value = "inCheckPop")
+    public ModelAndView inCheckPopup(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/inCheckPop");
+        mav.addObject("param", paramMap.getMap());
         return mav;
     }
 
     /**가공요청 팝업**/
     @GetMapping(value = "needPop")
-    public ModelAndView needPopup(String type) {
+    public ModelAndView needPopup(ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("process/needPop");
-        mav.addObject("type", PnType.valueOf(type));
+        mav.addObject("type", PnType.valueOf(paramMap.getString("type")));
+        mav.addObject("param", paramMap.getMap());
         return mav;
     }
 
     /**재검수요청 팝업**/
-    @GetMapping(value = "recheckPop")
-    public ModelAndView recheckPopup() {
-        ModelAndView mav = new ModelAndView("process/recheckPop");
+    @GetMapping(value = "reCheckPop")
+    public ModelAndView reCheckPopup(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/reCheckPop");
+        mav.addObject("param", paramMap.getMap());
 
         return mav;
     }

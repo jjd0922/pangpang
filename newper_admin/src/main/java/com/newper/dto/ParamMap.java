@@ -51,7 +51,11 @@ public class ParamMap {
             List<Long> returnList = new ArrayList<>();
             if (list != null) {
                 for (Object o : list) {
-                    returnList.add(Long.parseLong(o + ""));
+                    if (o.equals("")){
+                        returnList.add(0L);
+                    } else {
+                        returnList.add(Long.parseLong(o + ""));
+                    }
                 }
             }
             return returnList;

@@ -141,4 +141,28 @@ public class PoRestController {
         return rm;
     }
 
+    /** 발주 영업검수 재승인 생략 **/
+    @PostMapping("poComplete.ajax")
+    public ReturnMap poComplete(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        poService.poCompleteCheck(paramMap);
+        poService.poComplete(paramMap);
+        rm.setMessage("발주완료");
+        return rm;
+    }
+
+    /** 발주 재승인 요청 */
+    @PostMapping("poCompleteHiworksReq.ajax")
+    public ReturnMap poCompleteHiworksReq(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        poService.poCompleteCheck(paramMap);
+        rm.setMessage("발주 재승인요청 완료");
+        return rm;
+    }
+
+    /** 발주 승인요청 결과 */
+    @PostMapping("poCompleteHiworksRes.ajax")
+    public void poCompleteHiworksRes(ParamMap paramMap) {
+        poService.poComplete(paramMap);
+    }
 }

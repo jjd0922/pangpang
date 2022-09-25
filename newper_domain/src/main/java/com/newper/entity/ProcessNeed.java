@@ -32,6 +32,10 @@ public class ProcessNeed {
     @JoinColumn(name="PN_PG_IDX", referencedColumnName = "pgIdx")
     private ProcessGroup processGroup;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PN_CG_IDX", referencedColumnName = "cgIdx")
+    private CheckGroup checkGroup;
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PnType pnType = PnType.PROCESS;
@@ -48,7 +52,7 @@ public class ProcessNeed {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private PnProcess pnProcess = PnProcess.BEFORE;
+    private PnProcess pnProcess = PnProcess.N;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

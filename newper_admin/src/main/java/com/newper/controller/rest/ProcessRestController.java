@@ -16,6 +16,7 @@ import com.newper.service.CheckService;
 import com.newper.service.GoodsService;
 import com.newper.service.ProcessService;
 import lombok.RequiredArgsConstructor;
+import org.junit.experimental.theories.ParametersSuppliedBy;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,13 +116,12 @@ public class ProcessRestController {
     @PostMapping("in/temp.ajax")
     public String inTemp(ParamMap paramMap){
         String idx = paramMap.getString("idx");
-        String g_idxs = paramMap.getString("g_idxs");
         GgtType ggtType = GgtType.valueOf(paramMap.getString("type"));
-        return goodsService.insertGoodsTemp(idx, g_idxs.split(","), ggtType);
+        return goodsService.insertGoodsTemp(idx, ggtType);
     }
     /**입고검수 그룹 등록*/
-    @PostMapping("incheckPop.ajax")
-    public ReturnMap incheckPop(ParamMap paramMap){
+    @PostMapping("inCheckPop.ajax")
+    public ReturnMap inCheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         paramMap.put("gState", GState.CHECK_NEED);
         paramMap.put("cgsType", CgsType.IN);
@@ -132,8 +132,8 @@ public class ProcessRestController {
     }
 
     /**입고검수 그룹 등록*/
-    @PostMapping("recheckPop.ajax")
-    public ReturnMap recheckPop(ParamMap paramMap){
+    @PostMapping("reCheckPop.ajax")
+    public ReturnMap reCheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         paramMap.put("gState", GState.CHECK_NEED);
         paramMap.put("cgsType", CgsType.RE);
@@ -153,9 +153,17 @@ public class ProcessRestController {
 
     /** 공정필요 자산 select */
     @PostMapping("selectProcessNeed.ajax")
-    public ReturnDatatable selectProcessNeed(ParamMap paramMap){
-        ReturnDatatable rd = new ReturnDatatable();
-        rd.setData(processMapper.selectProcessNeed(paramMap.getMap()));
+    public Map<String, Object> selectProcessNeed(ParamMap paramMap){
+        return processMapper.selectProcessNeed(paramMap.getMap());
+    }
+
+    /** 공정필요 자산 조회 */
+    @PostMapping("selectProcessNeedByGroup.ajax")
+    public ReturnDatatable selectProcessNeedByGroup(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable("재검수관리");
+        paramMap.put("cgType", "RE");
+        rd.setData(processMapper.selectProcessNeedByGroup(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countProcessNeedByGroup(paramMap.getMap()));
         return rd;
     }
 
@@ -231,6 +239,31 @@ public class ProcessRestController {
         ReturnMap rm = new ReturnMap();
         processService.updateCheckGoods(paramMap, cgsFile);
         rm.setMessage("자산 필요 공정 내용 업데이트 완료");
+        return rm;
+    }
+
+    /** 공정보드 입시그룹 자산 추가 */
+    @PostMapping(value = "temp/barcode.ajax")
+    public ReturnMap tempBarcode(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.insertTempBarcode(paramMap);
+        return rm;
+    }
+
+    /** 해당 검수그룹 완료 체크 */
+    @PostMapping(value = "checkDone.ajax")
+    public ReturnMap checkDone(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.checkDone(paramMap);
+        return rm;
+    }
+
+    /** 해당 공정 그룹 상태값 변경 */
+    @PostMapping("updateProcessState.ajax")
+    public ReturnMap updateProcessState(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.updateProcessState(paramMap);
+        rm.setMessage("처리완료");
         return rm;
     }
 }
