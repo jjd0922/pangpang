@@ -71,7 +71,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">메인 섹션 타입</span>
                                                         </span>
-                                                        <select class="form-control select" name="msType">
+                                                        <select class="form-control select" name="msType" onchange="onChangeMsType()">
                                                             <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}"></option>
                                                         </select>
                                                     </div>
@@ -84,8 +84,8 @@
                                                             <span class="input-group-text">노출 상태</span>
                                                         </span>
                                                         <select class="form-control select" name="msOrder">
-                                                            <option value="-1" th:selected="${mainsection?.msOrder < 1}">미노출</option>
-                                                            <option value="1" th:selected="${mainsection?.msOrder > 1}">노출</option>
+                                                            <option value=-1 th:selected="${mainsection?.msOrder < 1}">미노출</option>
+                                                            <option value=1 th:selected="${mainsection?.msOrder > 1}">노출</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -94,37 +94,8 @@
                                     </fieldset>
                                 </div>
                                 <div class="card-body popup-contents">
-                                    <fieldset class="mb-0">
-                                        <legend class="d-flex justify-content-between">
-                                            <span>2. 섹션 상세 정보</span>
-                                        </legend>
-                                        <div class="row" th:each="i :${#numbers.sequence(1, maxColumn)}" th:classappend="'ms_section'+${i}">
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">메인 섹션 타입</span>
-                                                        </span>
-                                                        <input type="hidden" name="msoType" readonly>
-                                                        <input type="text" class="form-control" name="msTypeStr" readonly>
-                                                        <span class="input-group-append msoType" th:attr="onclick=|openSectionModalIndex(${i})|">
-                                                          <a class="input-group-text"><i class="icon-store"></i></a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-6">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <span class="input-group-text">이름</span>
-                                                        </span>
-                                                        <input class="form-control" name="section_name" readonly>
-                                                        <input type="hidden" name="section_idx">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <fieldset class="mb-0" id="sectionContent">
+
                                     </fieldset>
                                 </div>
                             </form>
@@ -150,6 +121,60 @@
     </div>
 </div>
 
+<div style="display:none;" id="bannerDom">
+    <!-- 배너 dom-->
+    <div class="row">
+        <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
+            <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerDom(this)">삭제</a>
+        </div>
+        <div class="col-sm-12 col-md-6" style="display: none;">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">노출상태</span>
+                    </span>
+                    <select class="form-control" name="bnDisplay">
+                        <option th:value="1">노출</option>
+                        <option th:value="-1">미노출</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(WEB)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="bnImage" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(MOBILE)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="bnImageMobile" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">링크(URL)</span>
+                    </span>
+                    <input class="form-control" type="text" name="bnUrl">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
@@ -177,27 +202,43 @@
 
 <!--shop modal-->
 <th:block th:replace="shop/modal/shopModal.html"></th:block>
-<th:block th:replace=""
 
 <script th:inline="javascript">
     function saveBtn(){
         if(window.confirm('저장하시겠습니까?')){
-            $.ajax({
-                url: location.pathname + '.ajax',
-                type: 'post',
-                data: $('#mainSectionForm').serialize(),
-                success: function(res){
-                    opener.refreshTable('#mainsectionTable');
-                    location.reload();
-                },
-                error: function(){}
-            });
+            // $.ajax({
+            //     url: location.pathname + '.ajax',
+            //     type: 'post',
+            //     data: $('#mainSectionForm').serialize(),
+            //     success: function(res){
+            //         opener.refreshTable('#mainsectionTable');
+            //         location.reload();
+            //     },
+            //     error: function(){}
+            // });
+            $('#mainSectionForm').attr('action',location.pathname+'.load');
+            $('#mainSectionForm').submit();
         }
 
+    }
+    function onChangeMsType(){
+        var msType = $('select[name="msType"]').val();
+        if(msType != ''){
+            $.ajax({
+                url:'/design/fragment/mainsection/'+msType+'.load'
+                ,type: 'post'
+                ,success:function(res){
+                    $('#sectionContent').empty();
+                    $('#sectionContent').append(res);
+                }
+                ,error(){}
+            })
+        }
     }
 </script>
 <script th:inline="javascript">
     window.onload=function(){
+        onChangeMsType();
     }
 </script>
 </html>

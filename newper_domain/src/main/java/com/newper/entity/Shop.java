@@ -65,11 +65,6 @@ public class Shop extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
     private List<CouponGroup> couponGroups;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.ALL)
-    @OrderBy(value = "ms_order asc")
-    @Builder.Default
-    private List<MainSection> mainSections = new ArrayList<>();
-
     @PrePersist
     public void savePre(){
         if(StringUtils.hasText(getShopName())){

@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainsectionService {
     private final MainSectionRepo mainSectionRepo;
+
     /** mainsection 순서 변경*/
     public void mainsectionOrder(List<String> msIdxs) {
         for(int i=0; i<msIdxs.size() -1; i++){
@@ -29,6 +30,7 @@ public class MainsectionService {
     }
 
     /** mainsection update*/
+    @Transactional
     public void mainsectionUpdate(ParamMap paramMap) {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
         MainSection mainSectionParam = paramMap.mapParam(MainSection.class);
@@ -36,16 +38,19 @@ public class MainsectionService {
         mainSection.setMsName(mainSectionParam.getMsName());
         mainSection.setMsType(mainSectionParam.getMsType());
         mainSection.setMsOrder(mainSection.getMsOrder()*mainSectionParam.getMsOrder());
-
+        mainSection.setMsJson("test");
     }
 
     /** mainsection insert*/
     @Transactional
-    public void mainsectionSave(ParamMap paramMap) {
+    public Long mainsectionSave(ParamMap paramMap) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
-
+        mainSection.setMsJson("test");
         mainSectionRepo.save(mainSection);
-        mainSection.setMsOrder(mainSection.getShop().getMainSections().size()*mainSection.getMsOrder());
+
+//        mainSectionRepo.f
+//        mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
+        return mainSection.getMsIdx();
     }
 
     /** mainsection 노출상태 토글 */

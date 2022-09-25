@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,6 +87,13 @@ public class DesignController {
             MainSection mainsection = mainSectionRepo.findMainSectionBymsIdx(msIdx);
             mav.addObject("mainsection", mainsection);
         }
+        return mav;
+    }
+
+    @PostMapping("fragment/mainsection/{msType}.load")
+    public ModelAndView mainSectionBanner(@PathVariable String msType){
+        ModelAndView mav = new ModelAndView("design/fragment/mainsection_fragment :: " + msType);
+
         return mav;
     }
     /** 메인섹션 배너 신규, 상세*/
