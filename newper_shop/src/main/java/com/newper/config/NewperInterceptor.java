@@ -34,9 +34,9 @@ public class NewperInterceptor implements HandlerInterceptor {
         }
 
         //세션에 분양몰 idx 세팅
-//        if(shopSession.getShopIdx() == null){
-//            shopSession.setShopIdx(shopComp.getShopMap().get(request.getServerName()).getShopIdx());
-//        }
+        if(shopSession.getShopIdx() == null){
+            shopSession.setShopIdx(shopComp.getShopMap().get(request.getServerName()).getShopIdx());
+        }
 
 //        String requestURI = request.getRequestURI();
 //        requestURI=requestURI.substring(request.getContextPath().length());
