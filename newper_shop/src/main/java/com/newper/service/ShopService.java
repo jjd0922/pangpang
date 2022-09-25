@@ -3,10 +3,13 @@ package com.newper.service;
 
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;
+import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
 import com.newper.mapper.CategoryMapper;
+import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
+import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopCategoryRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,9 @@ public class ShopService {
     private final ShopMapper shopMapper;
     private final CategoryMapper categoryMapper;
     private final ShopCategoryRepo shopCategoryRepo;
+    private final MainSectionMapper mainSectionMapper;
+    private final MainSectionRepo mainSectionRepo;
+
 
     /** shop 정보 가져오기 */
     public void setShopComp() {
@@ -60,6 +66,13 @@ public class ShopService {
 
             // 카테고리 정보
             shopComp.setShopCategoryList(shopCategoryRepo.findAll());
+
+            // 메인섹션 정보
+            List<MainSection> mainSectionBannerList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+            List<Map<String,Object>> mainSectionSpList = mainSectionMapper.selectMainSectionSp(shop.getShopIdx());
+
+            shopComp.setMainSectionBannerList(mainSectionBannerList);
+            shopComp.setMainSectionSpList(mainSectionSpList);
         }
     }
 

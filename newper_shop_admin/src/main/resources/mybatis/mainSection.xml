@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newper.mapper.MainsectionMapper">
+<mapper namespace="com.newper.mapper.MainSectionMapper">
     <sql id="includeMainsectionDatatable">
         AND SHOP_IDX = #{shopIdx}
         <if test="msName != null and msName != ''">
@@ -77,4 +77,13 @@
                 AND MSSP_SP_IDX = #{msspSpIdx}
             </if>
     </delete>
+
+    <select id="selectMainSectionMsJson" resultType="map">
+        SELECT
+            if(MS_JSON!='',replace(JSON_EXTRACT(MS_JSON,'$.DESIGN_WEB'),'"',''),'') DESIGN_WEB
+        FROM
+            MAIN_SECTION
+        WHERE MS_IDX = #{msIdx}
+
+    </select>
 </mapper>

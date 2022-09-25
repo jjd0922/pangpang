@@ -3,7 +3,7 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
-import com.newper.mapper.MainsectionMapper;
+import com.newper.mapper.MainSectionMapper;
 import com.newper.service.DesignService;
 import com.newper.service.MainsectionService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +26,7 @@ public class DesignRestController {
 
     private final DesignService designService;
     private final MainsectionService mainsectionService;
-    private final MainsectionMapper mainsectionMapper;
+    private final MainSectionMapper mainsectionMapper;
 
     @PostMapping(value = "test.dataTable")
     public ReturnDatatable testDt(){

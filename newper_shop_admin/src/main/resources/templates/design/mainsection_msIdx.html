@@ -82,6 +82,23 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-12 col-md-6" id="DESIGN_WEB" style="display: none;">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">디스플레이 타입</span>
+                                                        </span>
+                                                        <select class="form-control select" name="DESIGN_WEB">
+                                                            <option value="design1" th:selected="${msJson?.get('DESIGN_WEB') == 'design1'}">디자인1</option>
+                                                            <option value="design2" th:selected="${msJson?.get('DESIGN_WEB') == 'design2'}">디자인2</option>
+                                                            <option value="design3" th:selected="${msJson?.get('DESIGN_WEB') == 'design3'}">디자인3</option>
+                                                            <option value="design4" th:selected="${msJson?.get('DESIGN_WEB') == 'design4'}">디자인4</option>
+                                                            <option value="design5" th:selected="${msJson?.get('DESIGN_WEB') == 'design5'}">디자인5</option>
+                                                            <option value="design6" th:selected="${msJson?.get('DESIGN_WEB') == 'design6'}">디자인6</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </fieldset>
                                 </div>
@@ -206,6 +223,14 @@
                 ,success:function(res){
                     $('#sectionContent').empty();
                     $('#sectionContent').append(res);
+
+                    if(msType == "BANNER"){
+                        $('#DESIGN_WEB').hide();
+                        $('input[name="DESIGN_WEB"]').attr("disabled","disabled")
+                    }else if(msType == 'PRODUCT'){
+                        $('#DESIGN_WEB').show();
+                        $('input[name="DESIGN_WEB"]').removeAttr("disabled");
+                    }
                 }
                 ,error(){}
             })

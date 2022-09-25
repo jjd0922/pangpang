@@ -109,14 +109,6 @@ public class MainController {
         ModelAndView mav = new ModelAndView("orderProcess/order");
         return mav;
     }
-
-    /*테스트용 페이지*/
-    @GetMapping(value = "mainMenu/index")
-    public ModelAndView mainIndex(){
-        ModelAndView mav = new ModelAndView("mainMenu/index");
-        return mav;
-    }
-
     @GetMapping(value = "iamportTest")
     public ModelAndView iamportTest(){
         ModelAndView mav = new ModelAndView("iamport/payment");

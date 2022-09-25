@@ -5,7 +5,7 @@ import com.newper.entity.MainSection;
 import com.newper.entity.MainSectionBanner;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
-import com.newper.mapper.MainsectionMapper;
+import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.MainSectionBannerRepo;
 import com.newper.repository.MainSectionRepo;
@@ -29,7 +29,7 @@ public class DesignController {
     private final ShopRepo shopRepo;
     private final MainSectionRepo mainSectionRepo;
     private final MainSectionBannerRepo mainSectionBannerRepo;
-    private final MainsectionMapper mainsectionMapper;
+    private final MainSectionMapper mainsectionMapper;
     private final ShopMapper shopMapper;
 
     /** 공통 디자인 영역*/
@@ -94,6 +94,8 @@ public class DesignController {
         if(msIdx != null){
             MainSection mainsection = mainSectionRepo.findMainSectionBymsIdx(msIdx);
             mav.addObject("mainsection", mainsection);
+            Map<String,Object> msJson = mainsectionMapper.selectMainSectionMsJson(msIdx);
+            mav.addObject("msJson", msJson);
         }
         Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
         mav.addObject("shop", shop);
