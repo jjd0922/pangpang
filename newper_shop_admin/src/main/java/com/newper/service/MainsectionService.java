@@ -4,8 +4,12 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.MsType;
 import com.newper.dto.ParamMap;
-import com.newper.entity.*;
+import com.newper.entity.MainSection;
+import com.newper.entity.MainSectionBanner;
+import com.newper.entity.MainSectionSp;
+import com.newper.entity.ShopProduct;
 import com.newper.exception.MsgException;
+import com.newper.mapper.MainsectionMapper;
 import com.newper.repository.MainSectionBannerRepo;
 import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopProductRepo;
@@ -16,12 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class MainsectionService {
     private final MainSectionRepo mainSectionRepo;
     private final MainSectionBannerRepo mainSectionBannerRepo;
+    private final MainsectionMapper mainsectionMapper;
     private final ShopProductRepo shopProductRepo;
 
     /** mainsection 순서 변경*/
@@ -50,15 +58,21 @@ public class MainsectionService {
         mainSection.setMsType(mainSectionParam.getMsType());
         mainSection.setMsOrder(mainSection.getMsOrder()*mainSectionParam.getMsOrder());
 
-        List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
-        List<String> msbnOrders = paramMap.getList("msbnOrder");
-        List<MultipartFile> msbnWebFiles = mfRequest.getFiles("msbnWebFile");
-        List<MultipartFile> msbnMobileFiles = mfRequest.getFiles("msbnMobileFile");
-        List<String> msbnUrls = paramMap.getList("msbnUrl");
-        int size = Math.max(mainSectionBanners.size(), msbnOrders.size());
 
+        // 배너 제거
         mainSection.setMainSectionBanners(new ArrayList<>());
+        // 상품 제거
+        Map<String,Object> msspMap = new HashMap<>();
+        msspMap.put("msspMsIdx", mainSection.getMsIdx());
+        mainsectionMapper.deleteMainSectionSp(msspMap);
         if(mainSection.getMsType().equals(MsType.BANNER)){
+            List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
+            List<String> msbnOrders = paramMap.getList("msbnOrder");
+            List<MultipartFile> msbnWebFiles = mfRequest.getFiles("msbnWebFile");
+            List<MultipartFile> msbnMobileFiles = mfRequest.getFiles("msbnMobileFile");
+            List<String> msbnUrls = paramMap.getList("msbnUrl");
+            int size = Math.max(mainSectionBanners.size(), msbnOrders.size());
+
             for(int i=0;i<size;i++){
                 String webFile="";
                 String webFileName="";
@@ -125,6 +139,34 @@ public class MainsectionService {
                     mainSectionBannerRepo.delete(msbn);
                 }
             }
+        }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
+            List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(mainSection.getMsIdx());
+            List<String> msspSpIdxs = paramMap.getList("spIdx");
+            int size = Math.max(mainSectionSps.size(), msspSpIdxs.size());
+            for(int i=0;i<size;i++){
+                if(msspSpIdxs.size() > i){
+                    if(mainSectionSps.size() > i){
+                        Map<String,Object> map = new HashMap<>();
+                        // update
+                        Map<String,Object> mssp = mainSectionSps.get(i);
+                        map.put("msspOrder", i+1);
+                        map.put("msspMsIdx", mssp.get("MSSP_MS_IDX"));
+                        map.put("msspSpIdx", mssp.get("MSSP_SP_IDX"));
+                        mainsectionMapper.updateMainSectionSp(map);
+                    }else{
+                        List<String> spIdxs = paramMap.getList("spIdx");
+                        ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("msspMsIdx", mainSection.getMsIdx());
+                        map.put("msspSpIdx", shopProduct.getSpIdx());
+                        map.put("msspOrder", i+1);
+                        mainsectionMapper.insertMainSectionSp(map);
+                    }
+                }else{
+                    msspMap.put("msspSpIdx", msspSpIdxs.get(i));
+                    mainsectionMapper.deleteMainSectionSp(msspMap);
+                }
+            }
         }
     }
 
@@ -165,13 +207,14 @@ public class MainsectionService {
                 mainSectionBannerRepo.save(msbn);
             }
         }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
-
-            for(int i=0;i<paramMap.getListLong("").size(); i++){
-                ShopProduct shopProduct = shopProductRepo.getReferenceById(paramMap.getLong(""));
-                MainSectionSp mssp = MainSectionSp.builder()
-                        .msspOrder(i)
-                        .msspIdx(new MainSectionSpEmbedded(mainSection, shopProduct))
-                        .build();
+            List<String> spIdxs = paramMap.getList("spIdx");
+            for(int i=0;i<spIdxs.size(); i++){
+                ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
+                Map<String,Object> map = new HashMap<>();
+                map.put("msspMsIdx", mainSection.getMsIdx());
+                map.put("msspSpIdx", shopProduct.getSpIdx());
+                map.put("msspOrder", i+1);
+                mainsectionMapper.insertMainSectionSp(map);
             }
         }
 

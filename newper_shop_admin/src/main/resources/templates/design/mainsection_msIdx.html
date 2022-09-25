@@ -42,16 +42,8 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">분양몰</span>
                                                         </span>
-                                                        <th:block th:if="${mainsection == null}">
-                                                            <input type="hidden" name="shopIdx">
-                                                            <input class="form-control" name="shopName" readonly placeholder="분양몰 선택" onclick="openShopModal()" style="cursor:pointer;">
-                                                            <span class="input-group-append" onclick="openShopModal()">
-                                                                <a class="input-group-text"><i class="icon-home"></i></a>
-                                                            </span>
-                                                        </th:block>
-                                                        <th:block th:unless="${mainsection == null}">
-                                                            <input class="form-control" type="text" readonly th:value="${mainsection?.shop.shopName}">
-                                                        </th:block>
+                                                        <input class="form-control" type="text" readonly th:value="${shop.shopName}">
+                                                        <input type="hidden" name="shopIdx" th:value="${shop.shopIdx}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,9 +188,6 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 </body>
-
-<!--shop modal-->
-<th:block th:replace="shop/modal/shopModal.html"></th:block>
 
 <script th:inline="javascript">
     function saveBtn(){

@@ -69,8 +69,8 @@ public class DesignRestController {
         return rd;
     }
     /** mainsection insert/update */
-    @PostMapping(value = {"mainsection/{msIdx}.load", "mainsection/new.load"})
-    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
+    @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}.load", "mainsection/new/{shopIdx}.load"})
+    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx,@PathVariable("shopIdx") Long shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
         ModelAndView mav = new ModelAndView("main/alertMove");
 
         if(msIdx != null){
@@ -81,7 +81,7 @@ public class DesignRestController {
             msIdx = mainsectionService.mainsectionSave(paramMap, mfRequest);
             mav.addObject("msg","생성 완료");
         }
-        mav.addObject("loc","/design/mainsection/"+msIdx);
+        mav.addObject("loc","/design/mainsection/"+msIdx+"/"+shopIdx);
 
         return mav;
     }
