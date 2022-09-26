@@ -55,18 +55,19 @@ public class MainsectionService {
     public void mainsectionUpdate(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
         MainSection mainSectionParam = paramMap.mapParam(MainSection.class);
-        if(mainSection.getMsType().equals(MsType.PRODUCT)) {
+
+        if(mainSection.getMsType().equals(MsType.PRODUCT)){
             try {
-                String[] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
+                String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
                 String key;
                 String mainSectionDesignKey;
-                Map<String, Object> msJsonMap = new HashMap<>();
-                for (int i = 0; i < paramKeys.length; i++) {
+                Map<String,Object> msJsonMap = new HashMap<>();
+                for(int i=0;i<paramKeys.length;i++){
                     key = paramKeys[i];
-                    for (int k = 0; k < MsType.values().length; k++) {
+                    for(int k=0;k<MsType.values().length;k++){
                         mainSectionDesignKey = String.valueOf(MsType.values()[k]);
-                        if (key.equals(mainSectionDesignKey)) {
-                            msJsonMap.put(key, paramMap.get(key));
+                        if(key.equals(mainSectionDesignKey)){
+                            msJsonMap.put(key,paramMap.get(key));
                         }
                     }
                 }
@@ -75,7 +76,7 @@ public class MainsectionService {
                 om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
                 String msJson = om.writeValueAsString(msJsonMap);
                 mainSection.setMsJson(msJson);
-            } catch (JsonProcessingException e) {
+            } catch (JsonProcessingException e){
                 System.out.println(e);
                 throw new MsgException("잠시 후 다시 시도해주세요.");
             }
@@ -202,19 +203,19 @@ public class MainsectionService {
     @Transactional
     public Long mainsectionSave(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
-        if(mainSection.getMsType().equals(MsType.PRODUCT)) {
+        if(mainSection.getMsType().equals(MsType.PRODUCT)){
             try {
-                String[] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
+                String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
                 String key;
                 String mainSectionDesignKey;
 
-                Map<String, Object> msJsonMap = new HashMap<>();
-                for (int i = 0; i < paramKeys.length; i++) {
+                Map<String,Object> msJsonMap = new HashMap<>();
+                for(int i=0;i<paramKeys.length;i++){
                     key = paramKeys[i];
-                    for (int k = 0; k < MsType.values().length; k++) {
+                    for(int k=0;k<MsType.values().length;k++){
                         mainSectionDesignKey = String.valueOf(MsType.values()[k]);
-                        if (key.equals(mainSectionDesignKey)) {
-                            msJsonMap.put(key, paramMap.get(key));
+                        if(key.equals(mainSectionDesignKey)){
+                            msJsonMap.put(key,paramMap.get(key));
                         }
                     }
                 }
@@ -223,7 +224,7 @@ public class MainsectionService {
                 om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
                 String msJson = om.writeValueAsString(msJsonMap);
                 mainSection.setMsJson(msJson);
-            } catch (JsonProcessingException e) {
+            } catch (JsonProcessingException e){
                 System.out.println(e);
                 throw new MsgException("잠시 후 다시 시도해주세요.");
             }
