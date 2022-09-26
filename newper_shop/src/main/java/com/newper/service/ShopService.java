@@ -80,7 +80,7 @@ public class ShopService {
                     mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
 //                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName());
                 }
-                if(!mainSectionList.get(i).getMsJson().equals("") || mainSectionList.get(i).getMsJson() !=null){
+                if(!mainSectionList.get(i).getMsJson().equals("") && mainSectionList.get(i).getMsJson() !=null){
 
                     ObjectMapper mapper = new ObjectMapper();
                     String json = mainSectionList.get(i).getMsJson();

@@ -92,19 +92,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-6" id="DESIGN_WEB" style="display: none;">
+                                            <div class="col-sm-12 col-md-6" id="PRODUCT" style="display: none;">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">썸네일 타입</span>
                                                         </span>
                                                         <select class="form-control select" name="PRODUCT">
-                                                            <option value="design1" th:selected="${msJson?.get('PRODUCT') == 'design1'}">디자인1</option>
-                                                            <option value="design2" th:selected="${msJson?.get('PRODUCT') == 'design2'}">디자인2</option>
-                                                            <option value="design3" th:selected="${msJson?.get('PRODUCT') == 'design3'}">디자인3</option>
-                                                            <option value="design4" th:selected="${msJson?.get('PRODUCT') == 'design4'}">디자인4</option>
-                                                            <option value="design5" th:selected="${msJson?.get('PRODUCT') == 'design5'}">디자인5</option>
-                                                            <option value="design6" th:selected="${msJson?.get('PRODUCT') == 'design6'}">디자인6</option>
+                                                            <option value="design1" th:selected="${msJson?.get('PRODUCT') == 'design1'}">뉴퍼딜</option>
+                                                            <option value="design2" th:selected="${msJson?.get('PRODUCT') == 'design2'}">반값+습니다</option>
+                                                            <option value="design3" th:selected="${msJson?.get('PRODUCT') == 'design3'}">일일특가</option>
+                                                            <option value="design4" th:selected="${msJson?.get('PRODUCT') == 'design4'}">숨은꿀템</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -235,11 +233,11 @@
                     $('#sectionContent').append(res);
 
                     if(msType == "BANNER"){
-                        $('#DESIGN_WEB').hide();
-                        $('input[name="DESIGN_WEB"]').attr("disabled","disabled")
+                        $('#PRODUCT').hide();
+                        $('input[name="PRODUCT"]').attr("disabled","disabled")
                     }else if(msType == 'PRODUCT'){
-                        $('#DESIGN_WEB').show();
-                        $('input[name="DESIGN_WEB"]').removeAttr("disabled");
+                        $('#PRODUCT').show();
+                        $('input[name="PRODUCT"]').removeAttr("disabled");
                     }
                 }
                 ,error(){}
