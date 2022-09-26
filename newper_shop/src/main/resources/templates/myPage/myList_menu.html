@@ -60,10 +60,47 @@
 
 <!-- 이벤트응모내역-->
 <th:block th:fragment="eventHistory">
-이벤트 응모내역
-    <div>
-        <a onclick="eventWinnerModal()">당첨자보기</a>
+    <div class="eventHistory-page-des">
+        <p><span class="color-red font-sm">※</span>&nbsp;&nbsp;공지사항 목록에서 당첨자 발표글을 확인하세요.</p>
     </div>
+
+    <!-- 테이블 -->
+    <div>
+        <!-- 이벤트응모 내역 테이블 제목 -->
+        <ul class="table-title2 eventApp-table-title font-sm">
+            <li>응모일자</li>
+            <li>내용</li>
+            <li>당첨자발표일</li>
+            <li>당첨확인</li>
+        </ul>
+        <!-- 이벤트응모 내역 리스트 -->
+        <ul>
+            <!-- 상품 1 -->
+            <li>
+                <ul class="table-content2 eventApp-table-content">
+                    <!-- 응모일자 -->
+                    <li>
+                        <p class="semi-bold">2022.07.30</p>
+                    </li>
+                    <!-- 내용 -->
+                    <li class="eventApp-title">
+                        <p class="semi-bold">백원딜 발뮤다 뉴 토스터 당첨</p>
+                    </li>
+                    <!-- 당첨자발표일 -->
+                    <li>
+                        <p class="bold">2022.08.10</p>
+                    </li>
+                    <!-- 당첨확인 -->
+                    <li class="flex-column button-vertical-group">
+                        <div class="btn btn2">
+                            <a onclick="eventWinnerModal()">당첨자보기</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
 
     <script>
         function eventWinnerModal(){
