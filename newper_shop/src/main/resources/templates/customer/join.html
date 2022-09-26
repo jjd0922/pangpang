@@ -93,7 +93,7 @@
         <li>
             <div class="table-title font-md semi-bold">추천인</div>
             <div class="table-content recommender">
-                <input type="text" id="recommender" name="recommender" class="form-control" maxlength="20" title="추천인" placeholder="(선택) 추천인 아이디 입력" value="">
+                <input type="text" id="recommender" name="cuRecommender" class="form-control" maxlength="20" title="추천인" placeholder="(선택) 추천인 아이디 입력">
             </div>
         </li>
     </ul>
@@ -163,13 +163,13 @@
         if(window.confirm("가입 하시겠습니까?")){
             // 아이디 유효성 검사
             var id = $('#joinID');
-            var idRegex = /[0-9a-zA-Z]{6,12}/g;
+            var idRegex = /\w+[@]+\w+[.]+\w+/g
             if (id.val() == null || id.val() == '') {
                 alert('아이디를 입력해주세요.');
                 id.focus();
                 return false;
-            } else if (!id.val().match(idRegex)) {
-                alert('아이디는 6~12자의 영문, 숫자로 구성해야합니다.');
+            } else if (!idRegex.test(id.val())) {
+                alert('아이디는 이메일 주소를 입력해주세요');
                 id.focus();
                 return false;
             } else if (!id.attr('is-checked') || id.attr('checked-id') != id.val()) {
@@ -185,7 +185,7 @@
                 alert('비밀번호를 입력해주세요.')
                 pw.focus();
                 return false;
-            } else if (!pw.val().match(pwRegex)) {
+            } else if (!pwRegex.test(pw.val())) {
                 alert('비밀번호는 영문과 숫자를 혼합하여 8~12자로 구성해야합니다.');
                 pw.focus();
                 return false;
@@ -195,37 +195,10 @@
                 return false;
             }
 
-            //이름 유효성검사
-            var cuName = $('#joinName');
-            var nameRegex = /[가-힣]{2,}/g;
-            if (cuName.val() == null || cuName.val() == '') {
-                alert('이름을 입력해주세요.');
-                cuName.focus();
-                return false;
-            } else if (!cuName.val().match(nameRegex)) {
-                alert('이름은 한글로 2자 이상 입력해주세요.');
-                cuName.focus();
-                return false;
-            }
-
-            // 이메일 유효성 검사
-            var email = $('#joinEmail');
-            var domain = $('#emailDomain');
-            var domainRegex = '^[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$';
-            if (email.val() == null || email.val() == '') {
-                alert('이메일을 입력해주세요.');
-                email.focus();
-                return false;
-            } else if (!domain.val().match(domainRegex)) {
-                alert('이메일 도메인 오류입니다.');
-                domain.focus();
-                return false;
-            }
-
             // 약관체크 확인
-            var essential = $('input[opt=essential]');
+            var essential = $('input[opt=essential]').length;
             var isAgreed = $('input[opt=essential]:checked').length;
-            if (essential.length != isAgreed) {
+            if (essential != isAgreed) {
                 alert('필수약관에 동의해주세요.');
                 return false;
             }
@@ -239,32 +212,27 @@
                 }
             });
 
-
             $.ajax({
                 url: '/customer/join.ajax'
                 ,type: 'post'
                 ,data: $('#joinForm').serialize()
                 ,success:function(res){
-                    if(res.location != null){
-                        alert(res.message);
-                        location.href=res.location;
-                    }
+                    location.href=res.location;
                 }
-                ,error: function(){}
             });
         }
     }
 
     /**아이디 중복체크*/
     function checkId() {
-        var id=$('#joinID');
-        var idRegex = /[0-9a-zA-Z]{6,12}/g;
+        var id = $('#joinID');
+        var idRegex = /\w+[@]+\w+[.]+\w+/g
         if (id.val() == null || id.val() == '') {
-            alert('아이디를 입력해주세요');
+            alert('아이디를 입력해주세요.');
             id.focus();
             return false;
-        } else if (!id.val().match(idRegex)) {
-            alert('아이디는 6~12자의 영문, 숫자로 구성해야합니다.');
+        } else if (!idRegex.test(id.val())) {
+            alert('아이디는 이메일 주소로 입력해주세요');
             id.focus();
             return false;
         }
@@ -335,14 +303,8 @@
     $('input[attr=agree]').change(function () {
         isCheckedAll('input[attr=agree]', 'allConsent');
     });
-    $('#joinID').keyup(function () {
-        replaceValue($(this),/[^0-9a-zA-Z]/g);
-    });
     $('#joinPW').keyup(function () {
         replaceValue($(this),/[^0-9a-zA-Z]/g);
-    });
-    $('#joinName').keyup(function () {
-        replaceValue($(this),/[^ㄱ-ㅎ가-힣]/g);
     });
     $('#domainSelector').change(function () {
         selectDomain($(this));

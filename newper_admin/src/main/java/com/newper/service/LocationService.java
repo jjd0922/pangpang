@@ -1,6 +1,7 @@
 package com.newper.service;
 
 import com.newper.constant.GState;
+import com.newper.constant.GStockState;
 import com.newper.constant.LmState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
@@ -109,18 +110,16 @@ public class LocationService {
      */
 
     @Transactional
-    public void changeLocation(ParamMap paramMap,int[] locIdx,long[] gIdx) {
+    public void changeLocation(ParamMap paramMap, int[] locIdx, long[] gIdx) {
         int loc_idx_out = locIdx[0];
         int loc_idx_in = locIdx[1];
-        paramMap.put("LM_STATE",LmState.FINISHWORK);
+        paramMap.put("LM_STATE", LmState.FINISHWORK);
         Location location1 = locationRepo.getReferenceById(loc_idx_out);
         Location location2 = locationRepo.getReferenceById(loc_idx_in);
         User user = userRepo.getReferenceById(1);
 
         Integer whIdx1 = location1.getWarehouse().getWhIdx();
         Integer whIdx2 = location2.getWarehouse().getWhIdx();
-
-
 
 
         LocationMove locationMove =
@@ -130,12 +129,12 @@ public class LocationService {
         locationMove.setLocation2(location2);
         locationMove.setLocation1(location1);
         locationMove.setLmInDate(LocalDate.now());
-        if(whIdx1==whIdx2){
+        if (whIdx1 == whIdx2) {
             locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
 
             System.out.println("locationMove = " + locationMove);
             locationMove.setUser(user);
-        }else{
+        } else {
             locationMove.setLmState(LmState.WORKING);
         }
         locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
@@ -149,16 +148,16 @@ public class LocationService {
             Goods goods = goodsRepo.getReferenceById(G_IDX);
 
             goods.setLocation(locationMove.getLocation2());
+            goods.setGStockState(GStockState.STOCK);
             /*locationRepo.save(location2);*/
             goodsRepo.save(goods);
 
         }
         //관계테이블 인서트
-       locationMapper.insertLocationMoveGoods(lmIdx,gIdx);
+        locationMapper.insertLocationMoveGoods(lmIdx, gIdx);
         System.out.println("whIdx2 = " + whIdx2);
         System.out.println("whIdx1 = " + whIdx1);
     }
-
 
 
 //        int locIdx_in = locIdx[0];
@@ -183,7 +182,7 @@ public class LocationService {
 //        }
 //
 
-        //출고 로케이션에 있던 자산들을 입고 로케이션으로 변경
+    //출고 로케이션에 있던 자산들을 입고 로케이션으로 변경
 //        Location location = paramMap.mapParam(Location.class);
 //        Goods goods = paramMap.mapParam(Goods.class);
 
@@ -193,6 +192,198 @@ public class LocationService {
 
 //        System.out.println("location = " + location);
 
- 
 
+    /**
+     * 창고이동관리 작업중(출고)처리
+     */
+
+    @Transactional
+    public void changeLocation2(ParamMap paramMap, int[] locIdx, long[] gIdx) {
+
+        int loc_idx_out = locIdx[0];
+        int loc_idx_in = locIdx[1];
+        paramMap.put("LM_STATE", LmState.WORKING);
+        Location location1 = locationRepo.getReferenceById(loc_idx_out);
+        Location location2 = locationRepo.getReferenceById(loc_idx_in);
+        User user = userRepo.getReferenceById(1);
+
+        Integer whIdx1 = location1.getWarehouse().getWhIdx();
+        Integer whIdx2 = location2.getWarehouse().getWhIdx();
+
+
+        LocationMove locationMove =
+                LocationMove.builder()
+                        .build();
+        locationMove.setUser(User.builder().build());
+        locationMove.setLocation2(location2);
+        locationMove.setLocation1(location1);
+        locationMove.setLmInDate(LocalDate.now());
+        if (whIdx1 != whIdx2) {
+            locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
+
+            System.out.println("locationMove = " + locationMove);
+            locationMove.setUser(user);
+/*    }else{
+        locationMove.setLmState(LmState.WORKING);
+    }*/
+            locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
+            locationMoveRepo.saveAndFlush(locationMove);
+
+            long lmIdx = locationMove.getLmIdx();
+
+            for (int i = 0; i < gIdx.length; i++) {
+                System.out.println(gIdx[i]);
+                Long G_IDX = gIdx[i];
+                Goods goods = goodsRepo.getReferenceById(G_IDX);
+
+                goods.setLocation(locationRepo.getReferenceById(whIdx2));
+                goods.setLocation(locationMove.getLocation2());
+                goods.setGStockState(GStockState.MOVE);
+                /*locationRepo.save(location2);*/
+                goodsRepo.save(goods);
+
+            }
+            //관계테이블 인서트
+            locationMapper.insertLocationMoveGoods(lmIdx, gIdx);
+            System.out.println("whIdx2 = " + whIdx2);
+            System.out.println("whIdx1 = " + whIdx1);
+        }
+
+
+       /* if (locationMove.getLmState()== LmState.CANCELWORK) {
+        locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
+
+        System.out.println("locationMove = " + locationMove);
+        locationMove.setUser(user);
+*//*    }else{
+        locationMove.setLmState(LmState.WORKING);
+    }*//*
+        locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
+        locationMoveRepo.saveAndFlush(locationMove);
+
+        long lmIdx = locationMove.getLmIdx();
+
+        for (int i = 0; i < gIdx.length; i++) {
+            System.out.println(gIdx[i]);
+            Long G_IDX = gIdx[i];
+            Goods goods = goodsRepo.getReferenceById(G_IDX);
+
+            goods.setLocation(locationRepo.getReferenceById(whIdx1));
+            goods.setLocation(locationMove.getLocation1());
+            goods.setGStockState(GStockState.STOCK);
+            *//*locationRepo.save(location2);*//*
+            goodsRepo.save(goods);
+
+        }
+        //관계테이블 인서트
+        locationMapper.insertLocationMoveGoods(lmIdx, gIdx);
+        System.out.println("whIdx2 = " + whIdx2);
+        System.out.println("whIdx1 = " + whIdx1);
+    }*/
+
+}
+
+
+/*
+
+    */
+/**
+     * 창고이동관리 취소처리
+     *//*
+
+
+    @Transactional
+    public void changeLocation3(ParamMap paramMap, int[] locIdx, long[] gIdx) {
+
+        int loc_idx_out = locIdx[0];
+        int loc_idx_in = locIdx[1];
+        paramMap.put("LM_STATE", LmState.CANCELWORK);
+        Location location1 = locationRepo.getReferenceById(loc_idx_out);
+        Location location2 = locationRepo.getReferenceById(loc_idx_in);
+        User user = userRepo.getReferenceById(1);
+
+        Integer whIdx1 = location1.getWarehouse().getWhIdx();
+        Integer whIdx2 = location2.getWarehouse().getWhIdx();
+
+
+        LocationMove locationMove =
+                LocationMove.builder()
+                        .build();
+        locationMove.setUser(User.builder().build());
+        locationMove.setLocation2(location2);
+        locationMove.setLocation1(location1);
+        locationMove.setLmInDate(LocalDate.now());
+        if (whIdx1 != whIdx2) {
+            locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
+
+            System.out.println("locationMove = " + locationMove);
+            locationMove.setUser(user);
+*/
+/*    }else{
+        locationMove.setLmState(LmState.WORKING);
+    }*//*
+
+            locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
+            locationMoveRepo.saveAndFlush(locationMove);
+
+            long lmIdx = locationMove.getLmIdx();
+
+            for (int i = 0; i < gIdx.length; i++) {
+                System.out.println(gIdx[i]);
+                Long G_IDX = gIdx[i];
+                Goods goods = goodsRepo.getReferenceById(G_IDX);
+
+                goods.setLocation(locationRepo.getReferenceById(whIdx2));
+                goods.setLocation(locationMove.getLocation2());
+                goods.setGStockState(GStockState.MOVE);
+                */
+/*locationRepo.save(location2);*//*
+
+                goodsRepo.save(goods);
+
+            }
+            //관계테이블 인서트
+            locationMapper.insertLocationMoveGoods(lmIdx, gIdx);
+            System.out.println("whIdx2 = " + whIdx2);
+            System.out.println("whIdx1 = " + whIdx1);
+        }
+
+        if (location1.getGoodsList()== null) {
+            locationMove.setLmState(LmState.valueOf(paramMap.getString("LM_STATE")));
+
+            System.out.println("locationMove = " + locationMove);
+            locationMove.setUser(user);
+*/
+/*    }else{
+        locationMove.setLmState(LmState.WORKING);
+    }*//*
+
+            locationMove.setLmMemo(paramMap.getString("LM_MEMO"));
+            locationMoveRepo.saveAndFlush(locationMove);
+
+            long lmIdx = locationMove.getLmIdx();
+
+            for (int i = 0; i < gIdx.length; i++) {
+                System.out.println(gIdx[i]);
+                Long G_IDX = gIdx[i];
+                Goods goods = goodsRepo.getReferenceById(G_IDX);
+
+                goods.setLocation(locationRepo.getReferenceById(whIdx1));
+                goods.setLocation(locationMove.getLocation1());
+                goods.setGStockState(GStockState.STOCK);
+                */
+/*locationRepo.save(location2);*//*
+
+                goodsRepo.save(goods);
+
+            }
+            //관계테이블 인서트
+            locationMapper.insertLocationMoveGoods(lmIdx, gIdx);
+            System.out.println("whIdx2 = " + whIdx2);
+            System.out.println("whIdx1 = " + whIdx1);
+        }
+
+    }
+
+*/
 }
