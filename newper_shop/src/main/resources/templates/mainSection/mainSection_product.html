@@ -178,7 +178,7 @@
     <!-- 뉴퍼마켓 숨은 꿀템 -->
     <section class="padding-section section-title-padding">
         <div class="container">
-            <h2 class="section-title">뉴퍼마켓 숨은 꿀템</h2>
+            <h2 class="section-title" th:text="${mainsection.msName}">뉴퍼마켓 숨은 꿀템</h2>
         </div>
     </section>
     <section class="padding-section sm-container-full">
@@ -237,7 +237,7 @@
     <!-- 알짜만 모아모아 기획전 -->
     <section class="padding-section section-title-padding">
         <div class="container">
-            <h2 class="section-title">알짜만 모아모아 기획전</h2>
+            <h2 class="section-title" th:text="${mainsection.msName}">알짜만 모아모아 기획전</h2>
         </div>
     </section>
     <section class="padding-section sm-container-full thumbnail-wide">
@@ -268,7 +268,7 @@
                                         </div>
                                         <div class="buy-count color-blue">판매수 37</div>
                                     </div>
-                                    <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                    <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                     <div class="item-color">
                                         <span><span></span></span>
                                         <span><span></span></span>
@@ -276,49 +276,8 @@
                                     </div>
                                     <div class="item-inner-wrap">
                                         <div class="item-price">
-                                            <p><span class="discount-price">359,000</span>원</p>
-                                            <span class="real-price">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                        &nbsp
-                                        <span><i class="card"></i>무이자</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-list">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                    </a>
-                                </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                            <span class="item-condition item-conditionB-1">스크래치</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                    <div class="item-color">
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <p><span class="discount-price">359,000</span>원</p>
-                                            <span class="real-price">897,000</span>
+                                            <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
+                                            <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
                                         </div>
                                         <div class="discount-rate">57%</div>
                                     </div>
@@ -343,88 +302,6 @@
                                     <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">
                                 </div>
                             </a>
-                            <div class="item-list">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                    </a>
-                                </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                            <span class="item-condition item-conditionB-1">스크래치</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                    <div class="item-color">
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <p><span class="discount-price">359,000</span>원</p>
-                                            <span class="real-price">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                        &nbsp
-                                        <span><i class="card"></i>무이자</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-list">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                    </a>
-                                </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                            <span class="item-condition item-conditionB-1">스크래치</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                    <div class="item-color">
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                        <span><span></span></span>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <p><span class="discount-price">359,000</span>원</p>
-                                            <span class="real-price">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                        &nbsp
-                                        <span><i class="card"></i>무이자</span>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="item-list">
                                 <div class="item-img">
                                     <a href="javascript:;">
@@ -493,8 +370,8 @@
     <!-- TODAY BEST -->
     <section class="padding-section section-title-padding">
         <div class="container">
-            <h2 class="section-title">TODAY BEST</h2>
-            <p class="section-sub-title">오늘 가장 많이 판매된 상품이에요.</p>
+            <h2 class="section-title" th:text="${mainsection.msName}">TODAY BEST</h2>
+            <p class="section-sub-title" th:text="${mainsection.msSubName}">오늘 가장 많이 판매된 상품이에요.</p>
         </div>
     </section>
     <section class="padding-section">
@@ -746,7 +623,7 @@
     <!-- MD 추천 카테고리 -->
     <section class="padding-section section-title-padding">
         <div class="container">
-            <h2 class="section-title">MD 추천 카테고리</h2>
+            <h2 class="section-title" th:text="${mainsection.msName}">MD 추천 카테고리</h2>
         </div>
     </section>
     <!--썸네일 카테고리 메뉴 : 전체 없음-->
