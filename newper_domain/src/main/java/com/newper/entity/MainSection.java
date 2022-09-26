@@ -9,9 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -39,6 +37,14 @@ public class MainSection extends BaseEntity {
     /** 섹션 정보*/
     private String msJson;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mainSection", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<MainSectionBanner> mainSectionBanners = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mainSection", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<MainSectionSp> mainSectionSps = new ArrayList<>();
+
     @PreUpdate
     @PrePersist
     public void preSave(){
@@ -53,7 +59,7 @@ public class MainSection extends BaseEntity {
         }
     }
 
-    public void updateMainsectionOrder(int msOrder) {
+    public void updateMsOrder(int msOrder) {
         if(getMsOrder() < 0){
             setMsOrder(msOrder * -1);
         }else{

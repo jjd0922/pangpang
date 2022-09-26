@@ -94,7 +94,7 @@ public class ProductRestController {
         ReturnDatatable returnDatatable = new ReturnDatatable();
         List<Map<String, Object>> list = shopCategoryMapper.selectCategoryDatatableByTwoDetph(paramMap.getMap());
         returnDatatable.setData(list);
-        returnDatatable.setRecordsTotal(list.size());
+        returnDatatable.setRecordsTotal(shopCategoryMapper.countCategoryDatatableByTwoDetph(paramMap.getMap()));
 
         return returnDatatable;
     }

@@ -3,9 +3,13 @@ package com.newper.service;
 
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;
+import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
+import com.newper.mapper.CategoryMapper;
+import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
+import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopCategoryRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +28,11 @@ public class ShopService {
     private final ShopRepo shopRepo;
     private final DomainRepo domainRepo;
     private final ShopMapper shopMapper;
+    private final CategoryMapper categoryMapper;
     private final ShopCategoryRepo shopCategoryRepo;
+    private final MainSectionMapper mainSectionMapper;
+    private final MainSectionRepo mainSectionRepo;
+
 
     /** shop 정보 가져오기 */
     public void setShopComp() {
@@ -43,8 +51,28 @@ public class ShopService {
             shopComp.setShopDesignClass(shopDesignMap);
             shopComp.setShopColorMap(shopDesignMap);
 
+//            List<ShopCategory> shopCategoryList = shopCategoryRepo.findAll();
+//            List<Map<String,Object>> allCateList = new ArrayList<>();
+//            for(int i = 0; i< shopCategoryList.size();i++){
+//                Integer scateIdx = shopCategoryList.get(i).getScateIdx();
+//                Map<String,Object> map = new HashMap<>();
+//                map.put("scateIdx", scateIdx);
+//                map.put("shopIdx", shop.getShopIdx());
+//                List<Map<String, Object>> cateList= categoryMapper.selectAllCategoryByShopProduct(map);
+//                for(int k=0;k<cateList.size();k++){
+//                    allCateList.add(cateList.get(k));
+//                }
+//            }
+
             // 카테고리 정보
             shopComp.setShopCategoryList(shopCategoryRepo.findAll());
+
+            // 메인섹션 정보
+            List<MainSection> mainSectionBannerList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+            List<Map<String,Object>> mainSectionSpList = mainSectionMapper.selectMainSectionSp(shop.getShopIdx());
+
+            shopComp.setMainSectionBannerList(mainSectionBannerList);
+            shopComp.setMainSectionSpList(mainSectionSpList);
         }
     }
 
