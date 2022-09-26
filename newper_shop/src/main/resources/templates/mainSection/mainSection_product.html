@@ -1,0 +1,54 @@
+<th:block th:fragment="product(design)">
+    <section class="padding-section section-title-padding">
+        <div class="container">
+            <h2 class="section-title">뉴퍼딜&nbsp;<span class="color-blue">ON!</span></h2>
+        </div>
+    </section>
+    <section class="padding-section sm-container-full newperDeal">
+        <div class="container">
+            <div class="swiper-all">
+                <div class="swiper swiper-thumbnail swiper-newperDeal">
+                    <ul class="swiper-wrapper" th:each="shopProduct : ${mainsection.mainSectionSps}">
+                        <li class="swiper-slide">
+                            <div class="time color-red">
+                                <span class="time-remaining"><i></i>남은시간</span>
+                                <span class="time-num">10 : 07 : 15</span>
+                            </div>
+                            <div class="item-img">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-inner-wrap">
+                                    <div class="item-bedge">
+                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
+                                    </div>
+                                    <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>
+                                </div>
+                                <div class="item-title" th:text="${shopProduct.spName}">[하성] MG - 201 매직기 스트레이트 웨이브 고데기</div>
+                                <div class="item-inner-wrap">
+                                    <div class="item-price">
+                                        <span class="discount-price" th:text="${#numbers.formatInteger(shopProduct.spMinPrice,0,'COMMA')}">99,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(shopProduct.spMaxPrice,0,'COMMA')}">319,550</span>
+                                        <div class="discount-rate">69%</div>
+                                    </div>
+                                    <div class="purchase-btn color-blue">구매하기</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="newperDeal-prev prev-custom">
+                    <img src="image/thumb-arrow-left.png" alt="이전딜">
+                    <span>이전딜</span>
+                </div>
+                <div class="newperDeal-next next-custom">
+                    <span>다음딜</span>
+                    <img src="image/thumb-arrow-right.png" alt="이전딜">
+                </div>
+            </div>
+        </div>
+    </section><!-- // 뉴퍼딜 이벤트 끝 -->
+</th:block>
+
+<th:block th:fragment="design1">

@@ -57,8 +57,19 @@ public class MainsectionService {
         MainSection mainSectionParam = paramMap.mapParam(MainSection.class);
 
         try {
+            String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
+            String key;
+            String mainSectionDesignKey;
             Map<String,Object> msJsonMap = new HashMap<>();
-            msJsonMap.put("DESIGN_WEB",paramMap.get("DESIGN_WEB"));
+            for(int i=0;i<paramKeys.length;i++){
+                key = paramKeys[i];
+                for(int k=0;k<MsType.values().length;k++){
+                    mainSectionDesignKey = String.valueOf(MsType.values()[k]);
+                    if(key.equals(mainSectionDesignKey)){
+                        msJsonMap.put(key,paramMap.get(key));
+                    }
+                }
+            }
 
             ObjectMapper om = new ObjectMapper();
             om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
@@ -70,6 +81,7 @@ public class MainsectionService {
         }
 
         mainSection.setMsName(mainSectionParam.getMsName());
+        mainSection.setMsSubName(mainSectionParam.getMsSubName());
         mainSection.setMsType(mainSectionParam.getMsType());
         mainSection.setMsOrder(mainSection.getMsOrder()*mainSectionParam.getMsOrder());
 
@@ -190,8 +202,20 @@ public class MainsectionService {
     public Long mainsectionSave(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
         try {
+            String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
+            String key;
+            String mainSectionDesignKey;
+
             Map<String,Object> msJsonMap = new HashMap<>();
-            msJsonMap.put("DESIGN_WEB",paramMap.get("DESIGN_WEB"));
+            for(int i=0;i<paramKeys.length;i++){
+                key = paramKeys[i];
+                for(int k=0;k<MsType.values().length;k++){
+                    mainSectionDesignKey = String.valueOf(MsType.values()[k]);
+                    if(key.equals(mainSectionDesignKey)){
+                        msJsonMap.put(key,paramMap.get(key));
+                    }
+                }
+            }
 
             ObjectMapper om = new ObjectMapper();
             om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
@@ -203,7 +227,6 @@ public class MainsectionService {
         }
 
 
-        mainSection.setMsJson("test");
         int size = mainSectionRepo.findByShop_shopIdx(mainSection.getShop().getShopIdx()).size();
         mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
 

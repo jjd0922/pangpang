@@ -35,8 +35,6 @@ public class ShopComp {
     private List<ShopCategory> shopCategoryList;
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
-    /** 메인섹션 상품*/
-    private List<Map<String,Object>> mainSectionSpList;
 
     /** 분양몰 디자인 class*/
     public String setShopDesignClass(Map<String, Object> shopDesignMap){
