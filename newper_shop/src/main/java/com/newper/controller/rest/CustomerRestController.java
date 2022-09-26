@@ -31,13 +31,8 @@ public class CustomerRestController {
     public ReturnMap join(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         customerService.join(paramMap);
-        String resCode = "0000";
-        if(resCode.equals("0000")){
-            rm.setLocation("/joinComplete");
-            rm.setMessage("회원가입 완료!");
-        }else{
-            rm.setMessage("잠시 후 다시 시도해주세요.");
-        }
+
+        rm.setLocation("/customer/joinComplete");
         return rm;
     }
 
@@ -55,14 +50,5 @@ public class CustomerRestController {
         }
         return rm;
     }
-
-    /**회원가입 페이지에 nice 본인인증 요청데이터 return*/
-    @PostMapping(value="auth/response.ajax")
-    public ReturnMap authResponse(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        rm.put("map", paramMap.getMap());
-        return rm;
-    }
-
 
 }

@@ -63,7 +63,7 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/auth_response");
         // nice 응답 데이터
         Map<String, Object> niceReturn = niceApi.getNiceReturn(paramMap);
-        mav.addObject("data", niceReturn);
+        mav.addObject("nice", niceReturn);
         // 요청정보 db update
         selfAuthService.updateSelfAuth(niceReturn);
         return mav;
