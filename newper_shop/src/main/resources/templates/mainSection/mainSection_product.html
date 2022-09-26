@@ -1,7 +1,7 @@
 <th:block th:fragment="design1">
     <section class="padding-section section-title-padding">
         <div class="container">
-            <h2 th:text="${mainsection.msName}" class="section-title">뉴퍼딜&nbsp;<span th:text="${mainsection.msSubName != ''}? ${mainsection.msSubName}:''" class="color-blue">ON!</span></h2>
+            <h2 class="section-title">[[${mainsection.msName}]]&nbsp;<span th:text="${mainsection.msSubName}" class="color-blue">ON!</span></h2>
         </div>
     </section>
     <section class="padding-section sm-container-full newperDeal">
@@ -63,47 +63,45 @@
             <div class="swiper-all">
                 <div class="swiper swiper-thumbnail swiper-event-group1">
                     <ul class="swiper-wrapper">
-                        <th:block th:each="mainSectionSp : ${mainsection.mainSectionSps}">
-                            <li class="swiper-slide">
-                                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                    </a>
+                        <li class="swiper-slide">
+                            <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                        </li>
+                        <li class="swiper-slide" th:each="mainSectionSp : ${mainsection.mainSectionSps}">
+                            <div class="item-img">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-inner-wrap item-bedge-wrap">
+                                    <div class="item-bedge">
+                                        <span class="item-condition item-conditionA-1">새상품</span>
+                                    </div>
+                                    <div class="buy-count color-blue">판매수 37</div>
                                 </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-1">새상품</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
-                                    <div class="item-color">
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
-                                            <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart active"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        <span><i class="card"></i>무이자</span>
-                                        &nbsp
-                                    </div>
+                                <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
+                                <div class="item-color">
                                 </div>
-                            </li>
-                        </th:block>
+                                <div class="item-inner-wrap">
+                                    <div class="item-price">
+                                        <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
+                                        <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
+                                    </div>
+                                    <div class="discount-rate">57%</div>
+                                </div>
+                                <div class="item-inner-wrap">
+                                    <div class="grade-wrap">
+                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
+                                        <span>남은수량 4</span>
+                                    </div>
+                                    <div class="wish">25<i class="heart active"></i></div>
+                                </div>
+                                <div class="item-footer">
+                                    <span><i class="card"></i>무이자</span>
+                                    &nbsp
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="swiper-event-group1-prev prev-custom"></div>
@@ -124,48 +122,46 @@
             <div class="swiper-all">
                 <div class="swiper-event-group2 swiper swiper-thumbnail">
                     <ul class="swiper-wrapper">
-                        <th:block th:each="mainSectionSp : ${mainsection.mainSectionSps}">
-                            <li class="swiper-slide">
-                                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
-                                    </a>
+                        <li class="swiper-slide">
+                            <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                        </li>
+                        <li class="swiper-slide"  th:each="mainSectionSp : ${mainsection.mainSectionSps}">
+                            <div class="item-img">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-inner-wrap item-bedge-wrap">
+                                    <div class="item-bedge">
+                                        <span class="item-condition item-conditionA-1">새상품</span>
+                                    </div>
+                                    <div class="buy-count color-blue">판매수 37</div>
                                 </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-1">새상품</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
-                                    <div class="item-color">
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
-                                            <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart active"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                        &nbsp
-                                        <span><i class="card"></i>무이자</span>
-                                    </div>
+                                <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
+                                <div class="item-color">
                                 </div>
-                            </li>
-                        </th:block>
+                                <div class="item-inner-wrap">
+                                    <div class="item-price">
+                                        <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
+                                        <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
+                                    </div>
+                                    <div class="discount-rate">57%</div>
+                                </div>
+                                <div class="item-inner-wrap">
+                                    <div class="grade-wrap">
+                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
+                                        <span>남은수량 4</span>
+                                    </div>
+                                    <div class="wish">25<i class="heart active"></i></div>
+                                </div>
+                                <div class="item-footer">
+                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
+                                    &nbsp
+                                    <span><i class="card"></i>무이자</span>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="swiper-event-group2-prev prev-custom"></div>
@@ -186,45 +182,43 @@
             <div class="swiper-all">
                 <div class="swiper-event-group3 swiper swiper-thumbnail">
                     <ul class="swiper-wrapper">
-                        <th:block th:each="mainSectionSp : ${mainsection.mainSectionSps}">
-                            <li class="swiper-slide">
-                                <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="item-img">
-                                    <a href="javascript:;">
-                                        <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                    </a>
+                        <li class="swiper-slide">
+                            <div th:replace="part/thumbnail :: thumbnail-default"></div>
+                        </li>
+                        <li class="swiper-slide" th:each="mainSectionSp : ${mainsection.mainSectionSps}">
+                            <div class="item-img">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-inner-wrap item-bedge-wrap">
+                                    <div class="item-bedge">
+                                        <span class="item-condition item-conditionA-1">새상품</span>
+                                    </div>
+                                    <div class="buy-count color-blue">판매수 37</div>
                                 </div>
-                                <div class="item-info">
-                                    <div class="item-inner-wrap item-bedge-wrap">
-                                        <div class="item-bedge">
-                                            <span class="item-condition item-conditionA-1">새상품</span>
-                                        </div>
-                                        <div class="buy-count color-blue">판매수 37</div>
-                                    </div>
-                                    <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
-                                    <div class="item-color">
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="item-price">
-                                            <span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
-                                        </div>
-                                        <div class="discount-rate">57%</div>
-                                    </div>
-                                    <div class="item-inner-wrap">
-                                        <div class="grade-wrap">
-                                            <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                            <span>남은수량 4</span>
-                                        </div>
-                                        <div class="wish">25<i class="heart active"></i></div>
-                                    </div>
-                                    <div class="item-footer">
-                                        &nbsp
-                                    </div>
+                                <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량</div>
+                                <div class="item-color">
                                 </div>
-                            </li>
-                        </th:block>
+                                <div class="item-inner-wrap">
+                                    <div class="item-price">
+                                        <span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
+                                    </div>
+                                    <div class="discount-rate">57%</div>
+                                </div>
+                                <div class="item-inner-wrap">
+                                    <div class="grade-wrap">
+                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
+                                        <span>남은수량 4</span>
+                                    </div>
+                                    <div class="wish">25<i class="heart active"></i></div>
+                                </div>
+                                <div class="item-footer">
+                                    &nbsp
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="swiper-event-group3-prev prev-custom"></div>
@@ -233,7 +227,7 @@
         </div>
     </section><!-- // 뉴퍼마켓 숨은 꿀템 끝 -->
 </th:block>
-<th:block th:fragment="design5">
+<th:block th:fragment="BOTH">
     <!-- 알짜만 모아모아 기획전 -->
     <section class="padding-section section-title-padding">
         <div class="container">
@@ -268,7 +262,7 @@
                                         </div>
                                         <div class="buy-count color-blue">판매수 37</div>
                                     </div>
-                                    <div class="item-title" th:text="${mainSectionSp.shopProduct.spName}">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
+                                    <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
                                     <div class="item-color">
                                         <span><span></span></span>
                                         <span><span></span></span>
@@ -276,8 +270,8 @@
                                     </div>
                                     <div class="item-inner-wrap">
                                         <div class="item-price">
-                                            <p><span class="discount-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMinPrice,0,'COMMA')}">359,000</span>원</p>
-                                            <span class="real-price" th:text="${#numbers.formatInteger(mainSectionSp.shopProduct.spMaxPrice,0,'COMMA')}">897,000</span>
+                                            <p><span class="discount-price">359,000</span>원</p>
+                                            <span class="real-price">897,000</span>
                                         </div>
                                         <div class="discount-rate">57%</div>
                                     </div>
@@ -366,7 +360,7 @@
         </div>
     </section><!-- // 알짜만 모아모아 기획전 끝 -->
 </th:block>
-<th:block th:fragment="design6">
+<th:block th:fragment="BEST">
     <!-- TODAY BEST -->
     <section class="padding-section section-title-padding">
         <div class="container">
@@ -619,7 +613,7 @@
         </div>
     </section><!-- // TODAY BEST 끝 -->
 </th:block>
-<th:block th:fragment="design7">
+<th:block th:fragment="mdRecommend">
     <!-- MD 추천 카테고리 -->
     <section class="padding-section section-title-padding">
         <div class="container">

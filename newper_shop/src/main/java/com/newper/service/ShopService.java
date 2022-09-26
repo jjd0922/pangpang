@@ -80,7 +80,7 @@ public class ShopService {
                     mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
 //                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName());
                 }
-                if(!mainSectionList.get(i).getMsJson().equals("") && mainSectionList.get(i).getMsJson() !=null){
+                if(mainSectionList.get(i).getMsJson() !=null && !mainSectionList.get(i).getMsJson().equals("")){
                     ObjectMapper mapper = new ObjectMapper();
                     String json = mainSectionList.get(i).getMsJson();
                     try {
@@ -93,6 +93,16 @@ public class ShopService {
                     }
                 }
             }
+//
+//            for(int i=0;i<mainSectionList.size();i++){
+//                for(int k=0;k<jsonList.size();k++){
+//                    System.out.println("in \n");
+//                    System.out.println(jsonList.get(k).get("msIdx").equals(String.valueOf(mainSectionList.get(i).getMsIdx())));
+//                    System.out.println(jsonList.get(k).get("msIdx"));
+//                    System.out.println(mainSectionList.get(i).getMsIdx());
+//                    System.out.println("\n");
+//                }
+//            }
 
 
             shopComp.setMainSectionList(mainSectionList);
