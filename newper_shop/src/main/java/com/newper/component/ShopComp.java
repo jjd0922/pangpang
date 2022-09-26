@@ -35,6 +35,7 @@ public class ShopComp {
     private List<ShopCategory> shopCategoryList;
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
+    private List<Map<String,Object>> msJsonList;
 
     /** 분양몰 디자인 class*/
     public String setShopDesignClass(Map<String, Object> shopDesignMap){

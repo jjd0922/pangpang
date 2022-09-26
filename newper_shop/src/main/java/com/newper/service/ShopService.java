@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,34 +71,33 @@ public class ShopService {
 
             // 메인섹션리스트
             List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+            List<Map<String,Object>> jsonList = new ArrayList<>();
             for(int i=0;i<mainSectionList.size();i++){
                 for(int k=0;k<mainSectionList.get(i).getMainSectionBanners().size();k++){
                     mainSectionList.get(i).getMainSectionBanners().get(k);
-                    System.out.println("banner~~");
-                    System.out.println(mainSectionList.get(i).getMainSectionBanners().get(k).getMsbnIdx());
                 }
                 for(int k=0;k<mainSectionList.get(i).getMainSectionSps().size();k++){
-                    mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct();
-                    System.out.println("product~~");
-                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpIdx());
+                    mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
+//                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName());
                 }
                 if(!mainSectionList.get(i).getMsJson().equals("") || mainSectionList.get(i).getMsJson() !=null){
+
                     ObjectMapper mapper = new ObjectMapper();
                     String json = mainSectionList.get(i).getMsJson();
                     try {
-                        Map<String,String> map = mapper.readValue(json,Map.class);
-                        System.out.println("entry : " + map.entrySet());
+                        Map<String,Object> map = mapper.readValue(json,Map.class);
+                        map.put("msIdx", String.valueOf(mainSectionList.get(i).getMsIdx()));
+                        jsonList.add(map);
                     }catch (IOException e){
                         System.out.println(e);
                         throw new MsgException("잠시 후 다시 시도해주세요.");
                     }
                 }
-
-
             }
 
 
             shopComp.setMainSectionList(mainSectionList);
+            shopComp.setMsJsonList(jsonList);
 
 
         }
