@@ -70,7 +70,7 @@ public class ShopService {
             shopComp.setShopCategoryList(shopCategoryRepo.findAll());
 
             // 메인섹션리스트
-            List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+            List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxAndMsOrderGreaterThanOrderByMsOrderAsc(shop.getShopIdx(), 0);
             List<Map<String,Object>> jsonList = new ArrayList<>();
             for(int i=0;i<mainSectionList.size();i++){
                 for(int k=0;k<mainSectionList.get(i).getMainSectionBanners().size();k++){
