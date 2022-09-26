@@ -255,6 +255,17 @@ public class StockRestContoroller {
         return rm;
     }
 
+    /** 창고이동관리 데이터테이블 */
+    @PostMapping("stockMove.dataTable")
+    public ReturnDatatable stockMove(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+
+        rd.setData(locationMapper.selectStockMoveDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(locationMapper.countStockMoveDatatable(paramMap.getMap()));
+
+        return rd;
+    }
+
     /** 창고이동관리 작업완료 처리 */
     @PostMapping(value = "changeLocation.ajax")
     public ReturnMap changeLocation(ParamMap paramMap,int[] locIdx, long[] gIdx) {
@@ -269,4 +280,32 @@ public class StockRestContoroller {
     }
 
 
+
+    /** 창고이동관리 작업중 처리 */
+    @PostMapping(value = "changeLocation2.ajax")
+    public ReturnMap changeLocation2(ParamMap paramMap,int[] locIdx, long[] gIdx) {
+        ReturnMap rm = new ReturnMap();
+        System.out.println(locIdx);
+        paramMap.getMap();
+        System.out.println("paramMap = " + paramMap);
+        locationService.changeLocation2(paramMap,locIdx,gIdx);
+        rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
+
+        return rm;
+    }
+
+
+
+/*    *//** 창고이동관리 작업취소 처리 *//*
+    @PostMapping(value = "changeLocation3.ajax")
+    public ReturnMap changeLocation3(ParamMap paramMap,int[] locIdx, long[] gIdx) {
+        ReturnMap rm = new ReturnMap();
+        System.out.println(locIdx);
+        paramMap.getMap();
+        System.out.println("paramMap = " + paramMap);
+        locationService.changeLocation2(paramMap,locIdx,gIdx);
+        rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
+
+        return rm;
+    }*/
 }

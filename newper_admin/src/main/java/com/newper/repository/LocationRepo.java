@@ -8,4 +8,6 @@ public interface LocationRepo extends JpaRepository<Location, Integer> {
 
     @EntityGraph(attributePaths = {"warehouse", "user"})
     public Location findLocationByLocIdx(Integer locIdx);
+
+
 }

@@ -44,4 +44,12 @@ public interface LocationMapper {
 
     /** 임시 테이블에 insert */
     void insertLocationMoveGoods(@Param("lm_idx") long lm_idx, @Param("g_idxs") long[] g_idxs);
+
+
+    /**창고이동 데이터테이블 조회*/
+    List<Map<String,Object>> selectStockMoveDatatable(Map<String, Object> map);
+    Integer countStockMoveDatatable(Map<String, Object> map);
+
+
+
 }

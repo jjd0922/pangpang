@@ -163,8 +163,8 @@
         focusPopup.focus();
     }
 
-    function popStockMoveDetail(idx) {
-        var focusPopup = window.open('/stock/move/pop/'+idx,'stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function popStockMoveDetail(lmIdx) {
+        var focusPopup = window.open('/stock/move/pop/'+lmIdx,'stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -179,31 +179,31 @@
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/coupon/couponGroup.dataTable',
+            url:'/stock/stockMove.dataTable',
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+            {'class':'select-checkbox', 'title':'선택','data':"LM_IDX",'defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'창고이동상태','data':'','defaultContent':''}
-            ,{'title':'창고이동작업코드','data':'','render': function () {
-                return '<a onclick="popStockMoveDetail(0)" class="badge badge-primary">조회</a>';
+            ,{'title':'창고이동상태','data':'LM_STATE','defaultContent':''}
+            ,{'title':'창고이동작업코드','data':'LM_IDX','render': function (data,type,full,meta) {
+                return '<a onclick="popStockMoveDetail('+full.LM_IDX+')" class="badge badge-primary">조회</a>';
             }}
-            ,{'title':'요청자','data':'','defaultContent':''}
-            ,{'title':'처리자','data':'','defaultContent':''}
-            ,{'title':'창고이동요청일','data':'','defaultContent':''}
-            ,{'title':'창고이동출고일','data':'','defaultContent':''}
-            ,{'title':'창고이동입고일','data':'','defaultContent':''}
-            ,{'title':'출고창고','data':'','defaultContent':''}
-            ,{'title':'출고적재형태','data':'','defaultContent':''}
-            ,{'title':'출고로케이션','data':'','defaultContent':''}
-            ,{'title':'입고창고','data':'','defaultContent':''}
-            ,{'title':'입고적재형태','data':'','defaultContent':''}
-            ,{'title':'입고로케이션','data':'','defaultContent':''}
+            ,{'title':'요청자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'처리자','data':'LM_U_IDX','defaultContent':''}
+            // ,{'title':'창고이동요청일','data':'','defaultContent':''}
+            ,{'title':'창고이동출고일','data':'LM_OUT_DATE','defaultContent':''}
+            ,{'title':'창고이동입고일','data':'LM_IN_DATE','defaultContent':''}
+            ,{'title':'출고창고','data':'LOC_WH_IDX','defaultContent':''}
+            ,{'title':'출고적재형태','data':'LOC_FORM','defaultContent':''}
+            ,{'title':'출고로케이션','data':'LOC_CODE','defaultContent':''}
+            ,{'title':'입고창고','data':'LOC_WH_IDX','defaultContent':''}
+            ,{'title':'입고적재형태','data':'LOC_FORM','defaultContent':''}
+            ,{'title':'입고로케이션','data':'LOC_CODE','defaultContent':''}
             ,{'title':'수량','data':'','defaultContent':''}
         ]
     });

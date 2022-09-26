@@ -2,6 +2,10 @@ package com.newper.controller.view;
 
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
+import com.newper.entity.Location;
+import com.newper.entity.LocationMove;
+import com.newper.repository.LocationMoveRepo;
+import com.newper.repository.LocationRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/stock/")
 public class StockController {
+
+    private final LocationMoveRepo locationMoveRepo;
+
+    private final LocationRepo locationRepo;
 
     /**적재관리 메인페이지*/
     @GetMapping("load")
@@ -84,10 +92,14 @@ public class StockController {
     }
 
     /**창고이동관리 > 창고이동 조회/수정 페이지*/
-    @GetMapping("move/pop/{idx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
-    public ModelAndView stockMovePopDetail(@PathVariable Integer idx) {
+    @GetMapping("move/pop/{lmIdx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
+    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
-        mav.addObject("tempObject", " ");
+        LocationMove locationMove=locationMoveRepo.findLocationMoveByLmIdx(lmIdx);
+//        Location location=locationRepo.findLocationByLocIdx(locationMove.getLocation2().getLocIdx());
+
+        mav.addObject("locationMove", locationMove);
+//        mav.addObject("location", location);
         return mav;
     }
 
