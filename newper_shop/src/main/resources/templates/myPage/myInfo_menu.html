@@ -21,9 +21,47 @@
 
 <!-- 환불계좌관리-->
 <th:block th:fragment="refundAccount">
-    환불계좌관리
-    <button onclick="refundUpdate('refundDelete')">계좌삭제</button>
-    <button onclick="refundUpdate('refundUpdate')">환불계좌수정</button>
+    <div class="page-des mt-30">
+        <p><span class="color-red">※</span>&nbsp;&nbsp;고객님 본인계좌만 등록 가능하며, 타인 계좌 등록으로 환불이 된 경우 이에 대한 책임을 지지 않습니다.
+        </p>
+        <p><span class="color-red">※</span>&nbsp;&nbsp;계좌의 폐기 또는 중지로 인해 환불이 지연될 수 있으니 고객님의 주거래 은행계좌를 등록 부탁 드립니다.</p>
+    </div>
+
+    <!-- 테이블 -->
+    <ul class="refundAccount-table bold">
+        <li>
+            <div class="refundAccount-title">은행명</div>
+            <div class="refundAccount-content">기업은행</div>
+        </li>
+        <li>
+            <div class="refundAccount-title">계좌번호</div>
+            <div class="refundAccount-content">1234-56789-45******</div>
+        </li>
+        <li>
+            <div class="refundAccount-title">예금주</div>
+            <div class="refundAccount-content">홍길*</div>
+        </li>
+    </ul>
+
+    <!-- 동의 체크 -->
+    <div class="refundAccount-agree-wrap">
+        <input type="checkbox" class="color-grey666" id="refundAccount-agree">
+        <label for="refundAccount-agree">등록된 환불계좌를 삭제하는 것에 동의합니다.</label>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="display-flex center">
+        <div class="btn btn3">
+            <a onclick="refundUpdate('refundDelete')">계좌삭제</a>
+        </div>
+        <div class="btn btn2">
+            <a onclick="refundUpdate('refundUpdate')">환불계좌수정</a>
+        </div>
+    </div>
+
+
+
+
     <script>
         function refundUpdate(menu){
             $.ajax({
@@ -48,17 +86,123 @@
 
 <!-- 환불계좌 수정-->
 <th:block th:fragment="refundUpdate">
-    계좌 수정
+    <div class="page-des mt-30">
+        <p><span class="color-red">※</span>&nbsp;&nbsp;고객님 본인계좌만 등록 가능하며, 타인 계좌 등록으로 환불이 된 경우 이에 대한 책임을 지지 않습니다.
+        </p>
+        <p><span class="color-red">※</span>&nbsp;&nbsp;계좌의 폐기 또는 중지로 인해 환불이 지연될 수 있으니 고객님의 주거래 은행계좌를 등록 부탁 드립니다.</p>
+    </div>
 
-    <button onclick="openMyInfoMenu('refundAccount');">취소</button>
-    <button onclick="alert('준비중')">환불계좌등록</button>
+    <!-- 테이블 -->
+    <ul class="refundAccount-table bold">
+        <li>
+            <div class="refundAccount-title">은행명</div>
+            <div class="refundAccount-content">
+                <select class="form-control">
+                    <option value="직접입력">은행선택</option>
+                    <option value="기업은행">기업은행</option>
+                    <option value="국민은행">국민은행</option>
+                    <option value="우리은행">우리은행</option>
+                    <option value="신한은행">신한은행</option>
+                    <option value="하나은행">하나은행</option>
+                    <option value="농협은행">농협은행</option>
+                    <option value="SC은행">SC은행</option>
+                    <option value="새마을금고">새마을금고</option>
+                    <option value="우체국">우체국</option>
+                    <option value="카카오뱅크">카카오뱅크</option>
+                    <option value="케이뱅크">케이뱅크</option>
+                    <option value="토스뱅크">토스뱅크</option>
+                </select>
+            </div>
+        </li>
+        <li>
+            <div class="refundAccount-title">계좌번호</div>
+            <div class="refundAccount-content">
+                <input type="number" placeholder="계좌번호입력 (-없이 입력)" class="form-control">
+            </div>
+        </li>
+        <li>
+            <div class="refundAccount-title">예금주</div>
+            <div class="refundAccount-content">
+                <input type="text" placeholder="예금주명" class="form-control">
+            </div>
+        </li>
+    </ul>
+
+    <!-- 동의 체크 -->
+    <div class="refundAccount-agree-wrap">
+        <input type="checkbox" class="color-grey666" id="refundAccount-agree">
+        <label for="refundAccount-agree">등록된 환불계좌를 삭제하는 것에 동의합니다.</label>
+    </div>
+
+    <div class="display-flex center">
+        <div class="btn btn3">
+            <a onclick="openMyInfoMenu('refundAccount');">취소</a>
+        </div>
+        <div class="btn btn2">
+            <a onclick="alert('준비중')">환불계좌등록</a>
+        </div>
+    </div>
 </th:block>
 <!-- 환불계좌 수정 end-->
 
 
 <!-- 배송지관리-->
 <th:block th:fragment="delivery">
-    배송지관리
+    <div class="delivery-page-des">
+        <div>
+            <p><span class="color-red">※</span>&nbsp;&nbsp;자주 사용하시는 배송지를 최대 20개 까지 등록하실 수 있습니다.
+            </p>
+        </div>
+        <div class="btn btn3">
+            <a href="javascript:;">신규배송지 등록</a>
+        </div>
+    </div>
+
+    <div>
+        <!-- 배송지관리 테이블 제목 -->
+        <ul class="table-title2 addrManagement-table-title font-md">
+            <li>배송지명</li>
+            <li>주소</li>
+            <li>연락처</li>
+            <li>수정/삭제</li>
+        </ul>
+        <!-- 배송지관리 리스트 -->
+        <ul>
+            <!-- 상품 1 -->
+            <li>
+                <ul class="table-content2 addrManagement-table-content font-md">
+                    <!-- 배송지명 -->
+                    <li>
+                        <div class="display-flex flex-column alignItems-center">
+                            <p>집</p>
+                            <p class="bold">홍길동</p>
+                            <!-- 기본배송지 아닐 경우 아래 <div>태그 삭제 -->
+                            <div class="defaultAddr font-xsm">기본배송지</div>
+                        </div>
+                    </li>
+                    <!-- 주소 -->
+                    <li>
+                        <div class="display-flex">
+                            <p>15290</p>
+                            <div>
+                                <p class="bold">서울특별시 송파구 법원로 11길 11</p>
+                                <p>901호</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 연락처 -->
+                    <li>
+                        <p>010-1234-5678</p>
+                    </li>
+                    <!-- 수정/삭제 -->
+                    <li class="flex-column button-vertical-group">
+                        <div class="btn btn2 addrManagement-btn"><a href="javascript:;">수정</a></div>
+                        <div class="btn btn3 addrManagement-btn"><a href="javascript:;">삭제</a></div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
 </th:block>
 <!-- 배송지관리 end-->
