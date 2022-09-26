@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +58,7 @@ public class Customer {
     private LocalDate cuMarketingMailDate;
     private boolean cuMarketingSms;
     private LocalDate cuMarketingSmsDate;
+    private String cuRecommender;
     private String cuCi;
     private String cuDi;
 
@@ -70,24 +72,29 @@ public class Customer {
         setCuLastTime(now.toLocalTime());
     }
 
-    public void join(String phone, Map<String,Object> param, Map<String,Object> niceReturn) {
-        setCuPhone(phone);
-//        setCuEmail(email);
+    public void join(Map<String,Object> nice) {
+        setCuName(nice.get("NAME").toString());
+        setCuPhone(nice.get("MOBILE_NO").toString());
+        setCuCi(getCuId()); // 임시값
+        setCuDi(nice.get("DI").toString());
+        setCuBirth(LocalDate.parse(nice.get("BIRTHDATE").toString(), DateTimeFormatter.ofPattern("yyyyMMdd")));
         setCuState(CuState.NORMAL);
         setCuRate(CuRate.SPECIAL); // 이게 제일 낮은지 확인
-        setCuCi(getCuId());// 임시값.
         setCuMileage(0);
         setCuPoint(0);
-        setCuDi(param.get("cuPw").toString()); // 임시값
         setCuJoinDate(LocalDate.now());
         setCuJoinTime(LocalTime.now());
         setCuLastDate(LocalDate.now());
         setCuLastTime(LocalTime.now());
         setCuPwChange(LocalDate.now());
+        setCuMarketingMailDate(LocalDate.now());
+        setCuMarketingSmsDate(LocalDate.now());
 
-        // notnull위해서 잠시
-        setCuGender(CuGender.M);
-
+        if (nice.get("GENDER").toString().equals("0")) {
+            setCuGender(CuGender.F);
+        } else {
+            setCuGender(CuGender.M);
+        }
     }
 
 }

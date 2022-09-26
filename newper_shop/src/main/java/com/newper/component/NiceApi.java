@@ -31,7 +31,7 @@ public class NiceApi {
         // CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
         //리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
         String sReturnUrl = domain+"/customer/auth/response";      // 성공시 이동될 URL
-        String sErrorUrl = "localhost:9200/customer/error.ajax";          // 실패시 이동될 URL
+//        String sErrorUrl = "localhost:9200/customer/error.ajax";          // 실패시 이동될 URL
 
         // 입력될 plain 데이타를 만든다.
         String sPlainData =
@@ -39,7 +39,7 @@ public class NiceApi {
                         "8:SITECODE" + auth_sitecode.getBytes().length + ":" + auth_sitecode +
                         "9:AUTH_TYPE" + sAuthType.getBytes().length + ":" + sAuthType +
                         "7:RTN_URL" + sReturnUrl.getBytes().length + ":" + sReturnUrl +
-                        "7:ERR_URL" + sErrorUrl.getBytes().length + ":" + sErrorUrl +
+//                        "7:ERR_URL" + sErrorUrl.getBytes().length + ":" + sErrorUrl +
                         "9:CUSTOMIZE" + customize.getBytes().length + ":" + customize;
 
         String sMessage = null;
