@@ -15,17 +15,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class MainSectionSpEmbedded implements Serializable {
 
-    public MainSectionSpEmbedded(MainSection mainSection, ShopProduct shopProduct){
-        this.mainSection = mainSection;
-        this.shopProduct = shopProduct;
-    }
+    private Long msIdx;
+    private Long spIdx;
+//    public MainSectionSpEmbedded(MainSection mainSection, ShopProduct shopProduct){
+//        this.mainSection = mainSection;
+//        this.shopProduct = shopProduct;
+//    }
 
-    /** 메인섹션 idx*/
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MSSP_MS_IDX", referencedColumnName = "msIdx")
-    private MainSection mainSection;
-    /** 분양몰상품 idx*/
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MSSP_SP_IDX", referencedColumnName ="spIdx")
-    private ShopProduct shopProduct;
+
 }

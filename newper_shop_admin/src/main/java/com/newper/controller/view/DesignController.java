@@ -92,10 +92,12 @@ public class DesignController {
         ModelAndView mav = new ModelAndView("design/mainsection_msIdx");
 
         if(msIdx != null){
-            MainSection mainsection = mainSectionRepo.findMainSectionBymsIdx(msIdx);
+            MainSection mainsection = mainSectionRepo.findById(msIdx).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션입니다."));
             mav.addObject("mainsection", mainsection);
             Map<String,Object> msJson = mainsectionMapper.selectMainSectionMsJson(msIdx);
             mav.addObject("msJson", msJson);
+
+            MainSection mainSetionssss = mainSectionRepo.findMainSectionBymsIdx(msIdx);
         }
         Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
         mav.addObject("shop", shop);

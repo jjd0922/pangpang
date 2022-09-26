@@ -41,6 +41,9 @@ public class MainSection extends BaseEntity {
     @Builder.Default
     private List<MainSectionBanner> mainSectionBanners = new ArrayList<>();
 
+    @OneToMany(mappedBy = "mainSection", cascade = CascadeType.ALL)
+    private List<MainSectionSp> mainSectionSps = new ArrayList<>();
+
     @PreUpdate
     @PrePersist
     public void preSave(){
