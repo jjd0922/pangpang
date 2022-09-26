@@ -43,6 +43,44 @@
             <ul class="ctg-all">
                 <li th:each="shopCategory : ${@shopComp.shopCategoryList}">
                     <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
+                    <div class="ctg-open">
+                        <div class="ctg-first-area">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">LG전자</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">한성컴퓨터</a>
+                                    <ul class="first-area-sub">
+                                        <li>
+                                            <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">벤큐</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="ctg-second-area">
+                            <ul class="second-area-1">
+                                <li>
+                                    <a href="javascript:;">
+                                        <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">
+                                        <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
+                                        <div class="item-price">
+                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span></p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="second-area-2" th:if="${shopCategory.scateThumbnail != ''}">
+                                <a href="javascript:;">
+                                    <img th:src="@{${shopCategory.scateThumbnail}}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
 <!--                <li>-->
 <!--                    <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>-->

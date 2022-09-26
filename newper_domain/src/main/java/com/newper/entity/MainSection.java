@@ -41,7 +41,7 @@ public class MainSection extends BaseEntity {
     @Builder.Default
     private List<MainSectionBanner> mainSectionBanners = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mainSection", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mainSection", cascade = CascadeType.ALL)
     @Builder.Default
     private List<MainSectionSp> mainSectionSps = new ArrayList<>();
 

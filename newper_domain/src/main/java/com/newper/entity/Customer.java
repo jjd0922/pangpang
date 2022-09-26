@@ -39,7 +39,6 @@ public class Customer {
     private String cuPw;
     private String cuTelecom;
     private String cuPhone;
-    private String cuEmail;
     @Enumerated(EnumType.STRING)
     private CuRate cuRate;
 

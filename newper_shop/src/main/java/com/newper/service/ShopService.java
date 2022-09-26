@@ -68,11 +68,28 @@ public class ShopService {
             shopComp.setShopCategoryList(shopCategoryRepo.findAll());
 
             // 메인섹션 정보
-            List<MainSection> mainSectionBannerList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
-            List<Map<String,Object>> mainSectionSpList = mainSectionMapper.selectMainSectionSp(shop.getShopIdx());
+//            List<MainSection> mainSectionBannerList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+//            List<Map<String,Object>> mainSectionSpList = mainSectionMapper.selectMainSectionSp(shop.getShopIdx());
 
-            shopComp.setMainSectionBannerList(mainSectionBannerList);
-            shopComp.setMainSectionSpList(mainSectionSpList);
+            List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
+
+            for(int i=0;i<mainSectionList.size();i++){
+                for(int k=0;k<mainSectionList.get(i).getMainSectionBanners().size();k++){
+                    mainSectionList.get(i).getMainSectionBanners().get(k);
+                    System.out.println("banner~~");
+                    System.out.println(mainSectionList.get(i).getMainSectionBanners().get(k).getMsbnIdx());
+                }
+                for(int k=0;k<mainSectionList.get(i).getMainSectionSps().size();k++){
+                    mainSectionList.get(i).getMainSectionSps().get(k);
+                    System.out.println("product~~");
+                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpIdx());
+                }
+            }
+
+
+            shopComp.setMainSectionList(mainSectionList);
+
+
         }
     }
 

@@ -34,7 +34,7 @@ public class ShopComp {
     /** 전시 대분류 */
     private List<ShopCategory> shopCategoryList;
     /** 메인섹션 */
-    private List<MainSection> mainSectionBannerList;
+    private List<MainSection> mainSectionList;
     /** 메인섹션 상품*/
     private List<Map<String,Object>> mainSectionSpList;
 
