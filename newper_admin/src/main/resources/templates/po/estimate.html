@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>견적서관리</title>
+    <title th:text="${subTitle}">견적서관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -22,17 +22,16 @@
                                 <div class="card-header header-elements-inline">
                                     <h6 class="card-title">
                                         <div class="breadcrumb breadcrumb-caret">
-                                                <span class="breadcrumb-item">
-                                                </span>
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                            <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
                                         </div>
                                     </h6>
-                                    <div class="header-elements text-right">
-                                        <div class="d-inline-block d-md-flex d-md-flex-row justify-content-between">
-                                            <div class="list-icons ml-2">
-                                                <a class="list-icons-item" data-action="collapse"></a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
     
                                 <div class="collapse show" id="collapse-button-collapsed">
