@@ -97,7 +97,7 @@ public class DesignController {
             Map<String,Object> msJson = mainsectionMapper.selectMainSectionMsJson(msIdx);
             mav.addObject("msJson", msJson);
 
-            MainSection mainSetionssss = mainSectionRepo.findMainSectionBymsIdx(msIdx);
+//            MainSection mainSetionssss = mainSectionRepo.findMainSectionBymsIdxAndMsType(msIdx, MsType.BANNER.name());
         }
         Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
         mav.addObject("shop", shop);
