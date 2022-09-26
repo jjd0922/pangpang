@@ -7,6 +7,7 @@ import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
+import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
@@ -46,6 +47,7 @@ public class PoService {
 
 
     private final GoodsRepo goodsRepo;
+    private final GoodsMapper goodsMapper;
     private final PoReceivedRepo poReceivedRepo;
     private final ProcessNeedRepo processNeedRepo;
     private final ProcessSpecRepo processSpecRepo;
@@ -403,6 +405,8 @@ public class PoService {
         if (inGroup.getIgState().equals(IgState.DONE)) {
             throw new MsgException("이미 완료된 발주 정보 입니다.");
         }
+        inGroup.setIgReceiveDate(LocalDate.now());
+        inGroup.setIgReceiveTime(LocalTime.now());
 
         inGroup.setIgState(IgState.ING);
         inGroupRepo.save(inGroup);
@@ -435,6 +439,7 @@ public class PoService {
                         .hwAprvId("")
                         .hwMemo("")
                         .user(user)
+                        .hwType(HwType.CC)
                         .build();
 
                 hiworksRepo.save(hiworks);
@@ -452,7 +457,6 @@ public class PoService {
     /** 발주 하이웍스 승인 요청 응답 (반려 & 승인)*/
     @Transactional
     public void poHiworksResponse(ParamMap paramMap) {
-
         String[] poIdxs = paramMap.get("poIdxs").toString().split(",");
         for (int i = 0; i < poIdxs.length; i++) {
             Po po = poRepo.findPoByPoIdx(Integer.parseInt(poIdxs[i]));
@@ -462,10 +466,12 @@ public class PoService {
                 hiworks.get().setHwAprvTime(LocalTime.now());
                 hiworks.get().setHwAprvId("TEST");
 
-                if (paramMap.getString("type").equals("y")) {
+                if (paramMap.getString("type").equals("Y")) {
                     hiworks.get().setHwState(HwState.APPROVED);
+                    po.setPoState(PoState.APPROVAL);
                 } else {
                     hiworks.get().setHwState(HwState.REJECT);
+                    po.setPoState(PoState.REJECT);
                 }
 
                 hiworksRepo.save(hiworks.get());
@@ -560,6 +566,41 @@ public class PoService {
             goods.setPoReceived(poReceived);
             goodsRepo.save(goods);
         }
+    }
+
+    /** 발주 품의 완료 가능한지 체크 */
+    public void poCompleteCheck(ParamMap paramMap) {
+        int poIdx = paramMap.getInt("poIdx");
+
+        int check = goodsMapper.checkGoodsPoReceived(poIdx);
+        if (check != 0) {
+            throw new MsgException("해당 발주에 아직 입고그룹 매핑이 되지 않은 자산이 있습니다.");
+        }
+    }
+
+    /** 해당 발주 완료 & 자산값 처리 */
+    public void poComplete(ParamMap paramMap) {
+        int poIdx = paramMap.getInt("poIdx");
+        Po po = poRepo.findById(poIdx).get();
+        po.setPoState(PoState.COMPLETE);
+
+
+        // 자산값 처리
+        List<Goods> goodsList = goodsRepo.findByPo(po);
+        for (int i = 0; i < goodsList.size(); i++) {
+            Goods goods = goodsList.get(i);
+
+            //공정 체크
+            List<ProcessNeed> processNeedList = processNeedRepo.findByGoodsAndPnProcessAndPnState(goods, PnProcess.Y, PnState.NEED);
+            if (processNeedList.size() == 0) {
+                goods.setGState(GState.STOCK);
+            } else {
+                goods.setGState(GState.PROCESS);
+            }
+
+            goodsRepo.save(goods);
+        }
+        poRepo.save(po);
     }
 }
 

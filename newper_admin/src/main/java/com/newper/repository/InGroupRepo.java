@@ -9,6 +9,6 @@ public interface InGroupRepo extends JpaRepository<InGroup, Integer> {
 
     InGroup findByPo(Po po);
 
-    @EntityGraph(attributePaths = {"po"})
+    @EntityGraph(attributePaths = {"po", "user", "warehouse"})
     InGroup findInGroupByPoPoIdx (Integer poIdx);
 }

@@ -31,4 +31,7 @@ public interface ChecksMapper {
 
     /** 해당 입고검수 자산 관계테이블 제거 */
     void deleteCheckGoodsByCG_IDX(int cgIdx);
+
+    /** 해당 검수그룹 완료 체크 */
+    int selectCheckGroupGoods(Map<String, Object> param);
 }

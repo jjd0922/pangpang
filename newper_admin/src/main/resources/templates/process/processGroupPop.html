@@ -27,12 +27,12 @@
                     </div>
                 </div>
             </div>
-            <form id="tempForm">
+            <form id="processForm">
                 <div class="card">
                     <div class="card-body popup-contents">
                         <fieldset class="mb-0">
-                            <legend class="">1. 공정관리 등록정보<span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                             <div class="row">
+                                <legend class="">1. 공정관리 등록정보<span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <!-- 입력필드 -->
                                 <div class="col-sm-12 ">
                                     <div class="form-group">
@@ -146,14 +146,10 @@
                                     <fieldset class="mt-4 mb-4">
                                         <legend class="">2.자산정보</legend>
                                         <div class="justify-content-end mt-2 mb-2">
-                                            <button type="button" class="btn btn-sm btn-primary">공정입고</button>
-                                            <button type="button" class="btn btn-sm btn-primary">공정보류</button>
-
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업요청취소</a>
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업중(출고)</a>
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업완료(입고)</a>
-
-                                            <button type="button" class="btn btn-sm btn-secondary">망실</button>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="updateProcess('OUT');">작업중(출고)</button>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="updateProcess('COMPLETE');">작업완료(입고)</button>
+                                            <button type="button" class="btn btn-sm btn-secondary" onclick="updateProcess('HOLD');">공정보류</button>
+                                            <button type="button" class="btn btn-sm btn-secondary" onclick="openGoodsStateModal('LOST')">망실</button>
                                         </div>
 
                                         <table class="table" id="processTable"></table>
@@ -215,7 +211,45 @@
 
 <th:block th:replace="modal/inOperationModal.html"/>
 <th:block th:replace="process/modal/processModal.html"/>
+<th:block th:replace="goods/modal/goodsStateModal.html"/>
 <script>
+    function updateProcess(state) {
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해주세요');
+            return false;
+        }
+
+
+        var confirm_str = '';
+        if (state == 'COMPLETE') {
+            confirm_str = '요청한 자산의 남은 공정이 없을시 재검수상태가 됩니다..';
+        } else if (state == 'HOLD') {
+            confirm_str = '요청중인 자산이 공정 대기 상태로 돌아가며, \n' + '해당 가공코드는 삭제 됩니다. 취소 하시겠습니까?';
+        } else if (state == 'OUT') {
+            confirm_str = '요청한 자산이 공정 출고상태가 됩니다.';
+        }
+
+        if (confirm(confirm_str)) {
+            var pnIdx = '';
+            $.each($('.selected'), function (index, value) {
+                pnIdx += $(this).children('.select-checkbox').children('input').val() + ',';
+            });
+            pnIdx = pnIdx.slice(0, -1);
+
+            $.ajax({
+                url: '/process/updateProcessState.ajax',
+                type: 'post',
+                data: {
+                    "pnIdx":pnIdx,
+                    "pnState":state
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    }
+
     var userFlag = '';
     function inOperationModal(flag){
         $('#operationModal').modal('show');
@@ -281,17 +315,22 @@
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
         ajax:{
-            url:'/process/selectProcessNeed.ajax?pgIdx='+[[${group.pgIdx}]],
+            url:'/process/selectProcessNeedByGroup.ajax?pgIdx='+[[${group.pgIdx}]],
             type:'post'
         },
         buttons: buttonsSelect(false),
         "columns" : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox', 'title':'선택','data':'PN_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="pnIdx" value="'+data+'">';
                 }}
             ,{'class':'m-w-max', 'title':'자산코드','data':'G_IDX'}
             ,{'class':'m-w-max', 'title':'바코드','data':'G_BARCODE'}
+            ,{'class':'m-w-max', 'title':'공정상태','data':'PN_STATE'}
             ,{'class':'m-w-max', 'title':'공정결과','data':'G_BARCODE','render':  function(data,type,full,meta){
                     return '<a onclick="openProcessModal('+ full.G_IDX +','+full.PN_IDX+')" class="badge badge-primary">업로드</a>';
                 }}
@@ -299,5 +338,23 @@
     });
 </script>
 
+<script>
+    function processCancel() {
+        if (confirm('요청중인 자산이 공정 대기 상태로 돌아가며, \n' +
+            '해당 가공코드는 삭제 됩니다. 취소 하시겠습니까?')) {
+            $.ajax({
+                url: '/process/processCancel.ajax',
+                data: {
+                    "pgIdx":[[${group.pgIdx}]]
+                },
+                type: 'POST',
+                async: '',
+                success() {
+                    window.close();
+                }
+            })
+        }
+    }
+</script>
 </body>
 </html>

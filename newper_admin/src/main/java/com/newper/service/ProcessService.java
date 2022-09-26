@@ -6,6 +6,7 @@ import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
+import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.ProcessMapper;
 import com.newper.mapper.SpecMapper;
@@ -36,37 +37,72 @@ public class ProcessService {
     private final GoodsStockRepo goodsStockRepo;
     private final SpecMapper specMapper;
     private final SpecRepo specRepo;
-
+    private final ChecksMapper checksMapper;
+    private final CheckGroupRepo checkGroupRepo;
+    private final ProcessGroupRepo processGroupRepo;
 
     /** 공정 가공 데이터 생성 */
     @Transactional
     public void saveProcessSpec(ParamMap paramMap) {
+        ProcessNeed processNeed = processNeedRepo.findById(paramMap.getInt("pnIdx")).get();
+
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
         Map<String, Object> gJson = goods.getGJson();
 
-        List<Long> psIdx = paramMap.getListLong("psIdx");
-        List<Long> psCost = paramMap.getListLong("psCost");
+        List<String> psIdx = paramMap.getList("psIdx");
+        List<String> psCost = paramMap.getList("psCost");
         List<String> changeSpec = paramMap.getList("changeSpecIdx");
+        List<String> changeSpecName = paramMap.getList("changeSpecName");
         List<String> removeSpec = paramMap.getList("removeSpecIdx");
+        List<String> removeSpecName = paramMap.getList("removeSpecName");
         List<String> gsIdx = paramMap.getList("gsIdx");
 
-        for (int i = 0; i < psIdx.size(); i++) {
-            ProcessSpec processSpec = processSpecRepo.findById(psIdx.get(i).intValue()).get();
-            processSpec.setPsCost(psCost.get(i).intValue());
-            if (!changeSpec.get(i).equals("")) {
-                processSpec.setSpecList1(specListRepo.getReferenceById(Integer.valueOf(changeSpec.get(i))));
-            }
+        List<String> specName = paramMap.getList("specName");
 
-            if (!removeSpec.get(i).equals("")) {
-                processSpec.setSpecList2(specListRepo.getReferenceById(Integer.valueOf(removeSpec.get(i))));
-            }
+        Map<String, Object> pnJson = processNeed.getPnJson();
+        pnJson.put("psIdx", psIdx);
+        pnJson.put("psCost", psCost);
+        pnJson.put("changeSpec", changeSpec);
+        pnJson.put("changeSpecName", changeSpecName);
+        pnJson.put("removeSpec", removeSpec);
+        pnJson.put("removeSpecName", removeSpecName);
+        pnJson.put("gsIdx", gsIdx);
+        processNeed.setPnJson(pnJson);
 
+        SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+
+
+        for (int i = 0; i < gsIdx.size(); i++) {
             if (!gsIdx.get(i).equals("")) {
-                GoodsStock goodsStock = goodsStockRepo.getReferenceById(Integer.valueOf(gsIdx.get(i)));
-                processSpec.setGoodsStock(goodsStock);
-            }
+                ProcessSpec processSpec = processSpecRepo.findById(Integer.parseInt(psIdx.get(i))).get();
+                if (processSpec == null) {
+                    processSpec = ProcessSpec
+                            .builder()
+                            .processNeed(processNeed)
+                            .specList1(specFinder.findSpecList(specName.get(i), changeSpecName.get(i)))
+                            .specList2(specFinder.findSpecList(specName.get(i), removeSpecName.get(i)))
+                            .goodsStock(goodsStockRepo.getReferenceById(Integer.parseInt(gsIdx.get(i))))
+                            .psType(PsType.CONFIRM)
+                            .psCost(Integer.parseInt(psCost.get(i)))
+                            .build();
+                }
 
-            processSpecRepo.save(processSpec);
+                processSpec.setPsCost(Integer.parseInt(psCost.get(i)));
+                if (!changeSpec.get(i).equals("")) {
+                    processSpec.setSpecList1(specListRepo.getReferenceById(Integer.valueOf(changeSpec.get(i))));
+                }
+
+                if (!removeSpec.get(i).equals("")) {
+                    processSpec.setSpecList2(specListRepo.getReferenceById(Integer.valueOf(removeSpec.get(i))));
+                }
+
+                if (!gsIdx.get(i).equals("")) {
+                    GoodsStock goodsStock = goodsStockRepo.getReferenceById(Integer.valueOf(gsIdx.get(i)));
+                    processSpec.setGoodsStock(goodsStock);
+                }
+
+                processSpecRepo.save(processSpec);
+            }
         }
 
         goods.setGJson(gJson);
@@ -92,12 +128,6 @@ public class ProcessService {
     public void saveProcess(ParamMap paramMap, MultipartFile[] pnFile) {
         // 공정 필요 수정
         ProcessNeed processNeed = processNeedRepo.findByPnIdx(paramMap.getInt("pnIdx"));
-
-        if (processNeed.getPnState().equals(PnState.COMPLETE)) {
-            throw new MsgException("해당 공정은 이미 완료된 건입니다.");
-        }
-
-        processNeed.setPnState(PnState.valueOf(paramMap.getString("pnState")));
         processNeed.setPnContent(paramMap.getString("pnContent"));
 
         Map<String, Object> pnJson = processNeed.getPnJson();
@@ -115,6 +145,7 @@ public class ProcessService {
         }
         processNeedRepo.save(processNeed);
 
+
         List<Long> psIdx = paramMap.getListLong("psIdx");
         List<Long> psCost = paramMap.getListLong("psCost");
         for (int i = 0; i < psIdx.size(); i++) {
@@ -131,22 +162,12 @@ public class ProcessService {
                     .processNeed(processNeed)
                     .goodsStock(goodsStockRepo.getReferenceById(gsIdx.get(i).intValue()))
                     .psCost(gsCost.get(i).intValue())
-                    .psType("CONFIRM")
+                    .psType(PsType.CONFIRM)
                     .build();
             processSpecRepo.save(processSpec);
         }
 
-        // 공정 완료 처리시 자산 상태값 변경
-        if (PnState.COMPLETE.name().equals(PnState.valueOf(paramMap.getString("pnState")).name())) {
 
-            Goods goods = processNeed.getGoods();
-            int process = processMapper.selectProcessNeedByGoods(goods.getGIdx());
-            if (process == 0) {
-                goods.setGState(GState.CHECK_NEED);
-            } else {
-                goods.setGState(GState.PROCESS);
-            }
-        }
     }
 
     /** 반품 그룹 생성 */
@@ -239,7 +260,7 @@ public class ProcessService {
                         .pnCount(pnCount + 1)
                         .pnExpectedCost(paramMap.getInt("paintCost"))
                         .pnRealCost(0)
-                        .pnProcess(PnProcess.BEFORE)
+                        .pnProcess(PnProcess.N)
                         .pnJson(new HashMap<>())
                         .pnState(PnState.NEED)
                         .pnLast(0)
@@ -262,7 +283,7 @@ public class ProcessService {
                         .pnType(PnType.FIX)
                         .pnCount(pnCount + 1)
                         .pnRealCost(0)
-                        .pnProcess(PnProcess.BEFORE)
+                        .pnProcess(PnProcess.N)
                         .pnJson(new HashMap<>())
                         .pnState(PnState.NEED)
                         .pnLast(0)
@@ -293,7 +314,7 @@ public class ProcessService {
                         .pnType(PnType.PROCESS)
                         .pnCount(pnCount + 1)
                         .pnRealCost(0)
-                        .pnProcess(PnProcess.BEFORE)
+                        .pnProcess(PnProcess.N)
                         .pnJson(new HashMap<>())
                         .pnState(PnState.NEED)
                         .pnLast(0)
@@ -314,7 +335,7 @@ public class ProcessService {
                         .processNeed(processNeed)
                         .psCost(psCost.get(i).intValue())
                         .specList1(specLists.get(i))
-                        .psType("EXPECTED")
+                        .psType(PsType.EXPECTED)
                         .build();
 
                 processSpecRepo.save(processSpec);
@@ -329,4 +350,148 @@ public class ProcessService {
         goodsRepo.save(goods);
     }
 
+    /** 공정보드 입시그룹 자산 추가 */
+    @Transactional
+    public void insertTempBarcode(ParamMap paramMap) {
+        // 자산 체크
+        Goods goods = goodsRepo.findBygBarcode(paramMap.getString("gBarcode"));
+        if (goods == null) {
+            throw new MsgException("해당 자산 바코드는 없는 자산 입니다.");
+        }
+
+        String type = paramMap.getString("type");
+        GState gstate = goods.getGState();
+        if (type.equals("RE_CHECK")) {
+            if (!gstate.equals(GState.CHECK_NEED)) {
+                throw new MsgException("해당자산은 재검수요청 할 수 없는 자산 입니다.");
+            }
+        } else if (type.equals("IN_CHECK")) {
+            if (!gstate.equals(GState.RECEIVED)) {
+                throw new MsgException("해당자산은 입고검수요청 할 수 없는 자산 입니다.");
+            }
+        }  if (type.equals("PROCESS") || type.equals("FIX") || type.equals("PAINT")) {
+            // 해당 자산의 필요 공정중 진행 합의된 자산들 SELECT
+            int check = processMapper.checkProcessNeed(goods.getGIdx(), type);
+            if (!gstate.equals(GState.PROCESS) || check != 1) {
+                throw new MsgException("해당자산은 공정요청 할 수 없는 자산 입니다.");
+            }
+        } else if (type.equals("RESELL")) {
+            if (!gstate.equals(GState.CANCEL_REQ)) {
+                throw new MsgException("해당자산은 반품 할 수 없는 자산 입니다.");
+            }
+        }
+
+        processMapper.insertGoodsTemp(goods.getGIdx(), paramMap.getInt("ggtIdx"));
+    }
+
+    /** 해당 검수그룹 완료 체크 */
+    public void checkDone(ParamMap paramMap) {
+        int count = checksMapper.selectCheckGroupGoods(paramMap.getMap());
+        if (count == 0) {
+            int cgIdx = paramMap.getInt("cgIdx");
+            CheckGroup checkGroup = checkGroupRepo.findById(cgIdx).get();
+            checkGroup.setCgState(CgState.FINISH);
+            checkGroupRepo.save(checkGroup);
+        }
+    }
+
+    /** 공정필요 생성 */
+    public void insertProcessNeed(Goods goods, ParamMap paramMap, PnType pnType) {
+        String type = pnType.name();
+        if (type.equals("PAINT")) {type = "paint";}
+        else if (type.equals("FIX")) {type = "fix";}
+        else {type = "process";}
+        // 해당 자산에 필요공정중 공정타입, 필요상태인 필요공정을 검색후 없으면 새로생성 있으면 update
+        CheckGroup checkGroup = checkGroupRepo.findById(paramMap.getInt("cgIdx")).get();
+        ProcessNeed processNeed = processNeedRepo.findByGoodsAndCheckGroupAndPnType(goods, checkGroup, pnType);
+
+        if (processNeed == null) {
+            processNeed = ProcessNeed
+                    .builder()
+                    .goods(goods)
+                    .checkGroup(checkGroup)
+                    .pnType(pnType)
+                    .pnCount(1)
+                    .pnRealCost(0)
+                    .pnProcess(PnProcess.BEFORE)
+                    .pnJson(new HashMap<>())
+                    .pnState(PnState.NEED)
+                    .pnLast(0)
+                    .build();
+        }
+
+        processNeed.setPnContent(paramMap.getString(type+"Memo"));
+        processNeed.setPnExpectedCost(paramMap.getIntZero(type+"Cost"));
+        if (paramMap.getString(type+"Process") != null) {
+            processNeed.setPnProcess(PnProcess.valueOf(paramMap.getString(type+"Process")));
+        }
+
+        processNeedRepo.save(processNeed);
+        if (pnType.equals(PnType.PROCESS)) {
+            Map<String, Object> pnJson = processNeed.getPnJson();
+            List<Long> psCost = paramMap.getListLong("psCost");
+            pnJson.put("psCost", psCost);
+
+            int specCheck = processMapper.checkProcessSpec(processNeed.getPnIdx(), PnType.PROCESS);
+            List<Integer> psIdx = new ArrayList<>();
+            if (specCheck != 0) {
+                List<String> specName = paramMap.getList("specName");
+                for (int i = 0; i < specName.size(); i++) {
+                    ProcessSpec processSpec = ProcessSpec
+                            .builder()
+                            .processNeed(processNeed)
+                            .psCost(psCost.get(i).intValue())
+                            .psType(PsType.EXPECTED)
+                            .build();
+
+                    processSpecRepo.save(processSpec);
+                    psIdx.add(processSpec.getPsIdx());
+                }
+            }
+            pnJson.put("psIdx", psIdx);
+
+
+            processNeed.setPnJson(pnJson);
+        }
+
+        processNeedRepo.save(processNeed);
+    }
+
+    /** 해당 공정 그룹 상태값 변경 */
+    @Transactional
+    public void updateProcessState(ParamMap paramMap) {
+        ProcessNeed processNeed = processNeedRepo.findByPnIdx(paramMap.getInt("pnIdx"));
+
+        PnState pnState_ori = processNeed.getPnState();
+        PnState pnState = PnState.valueOf(paramMap.getString("pnState"));
+        if (pnState.equals(PnState.OUT) || pnState.equals(PnState.HOLD)) {
+            if (pnState_ori.equals(PnState.OUT) || pnState_ori.equals(PnState.COMPLETE)) {
+                throw new MsgException("이미 공정출고 되었거나 공정완료된 자산입니다.");
+            }
+
+            if (pnState.equals(PnState.HOLD)) {
+                processNeed.setProcessGroup(null);
+            }
+
+
+        } else if (pnState.equals(PnState.COMPLETE)) {
+            if (pnState_ori.equals(PnState.COMPLETE)) {
+                throw new MsgException("이미 공정완료된 자산입니다.");
+            }
+
+            Goods goods = processNeed.getGoods();
+            int check = processMapper.checkProcessNeedOther(goods.getGIdx());
+
+            if (check == 0) {
+                goods.setGState(GState.STOCK);
+            } else {
+                goods.setGState(GState.PROCESS);
+            }
+
+            goodsRepo.save(goods);
+        }
+
+        processNeed.setPnState(pnState);
+        processNeedRepo.save(processNeed);
+    }
 }

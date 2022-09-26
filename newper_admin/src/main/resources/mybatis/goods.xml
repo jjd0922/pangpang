@@ -91,23 +91,14 @@
 
     <select id="selectGoodsByG_IDX" resultType="Map">
         SELECT
-            G_IDX,
-            G_BARCODE,
-            G_IMEI,
-            G_JSON,
-            P_NAME,
-            P_IDX,
-            G_OPTION,
-            CATE_SPEC_LIST,
-            G_MEMO,
-            G_VENDOR,
-            G_RANK
+            *
         FROM
             GOODS
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
                 LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
                 LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX AND CGS_TYPE = 'IN'
         WHERE
             G_IDX = #{gIdx}
     </select>
@@ -288,12 +279,35 @@
             G_STATE
     </select>
 
-    <select id="">
+    <select id="selectGoodsByCheckGroup" resultType="Long">
         SELECT
-            *
+            CGS_G_IDX
         FROM
+            CHECK_GOODS
+        WHERE
+            CGS_CG_IDX = #{cgIdx}
+    </select>
+
+    <update id="updateGoodsState">
+        UPDATE
             GOODS
-                LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX
-                LEFT JOIN PROCESS_SPEC ON PN_IDX = PS_PN_IDX
+        SET
+            G_STATE = #{gState}
+        WHERE
+            <foreach collection="gIdx" item="gIdx" open="G_IDX IN (" separator="," close=")">
+            #{gIdx}
+            </foreach>
+    </update>
+
+    <select id="checkGoodsPoReceived" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            PO
+                LEFT JOIN GOODS ON PO_IDX = G_PO_IDX
+        WHERE
+            PO_IDX = #{po_idx}
+        AND
+            G_POR_IDX IS NULL
     </select>
 </mapper>

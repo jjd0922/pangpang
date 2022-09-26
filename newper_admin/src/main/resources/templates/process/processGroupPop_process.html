@@ -146,14 +146,10 @@
                                     <fieldset class="mt-4 mb-4">
                                         <legend class="">2.자산정보</legend>
                                         <div class="justify-content-end mt-2 mb-2">
-                                            <button type="button" class="btn btn-sm btn-primary">가공입고</button>
-                                            <button type="button" class="btn btn-sm btn-primary">가공보류</button>
-
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업요청취소</a>
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업중(출고)</a>
-                                            <a type="button" class="btn btn-sm btn-primary ml-1"><i class="icon-popout mr-1"></i>작업완료(입고)</a>
-
-                                            <button type="button" class="btn btn-sm btn-secondary">망실</button>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="updateProcess('OUT');">작업중(출고)</button>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="updateProcess('COMPLETE');">작업완료(입고)</button>
+                                            <button type="button" class="btn btn-sm btn-secondary" onclick="updateProcess('HOLD');">공정보류</button>
+                                            <button type="button" class="btn btn-sm btn-secondary" onclick="openGoodsStateModal('LOST')">망실</button>
                                         </div>
 
                                         <table class="table" id="processTable"></table>
@@ -214,7 +210,46 @@
 <th:block th:replace="modal/inOperationModal.html"/>
 <th:block th:replace="process/modal/processSpecModal.html"/>
 <th:block th:replace="process/modal/processModal.html"/>
+<th:block th:replace="goods/modal/goodsStateModal.html"/>
+
 <script>
+    function updateProcess(state) {
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해주세요');
+            return false;
+        }
+
+
+        var confirm_str = '';
+        if (state == 'COMPLETE') {
+            confirm_str = '요청한 자산의 남은 공정이 없을시 재검수상태가 됩니다..';
+        } else if (state == 'HOLD') {
+            confirm_str = '요청중인 자산이 공정 대기 상태로 돌아가며, \n' + '해당 가공코드는 삭제 됩니다. 취소 하시겠습니까?';
+        } else if (state == 'OUT') {
+            confirm_str = '요청한 자산이 공정 출고상태가 됩니다.';
+        }
+
+        if (confirm(confirm_str)) {
+            var pnIdx = '';
+            $.each($('.selected'), function (index, value) {
+                pnIdx += $(this).children('.select-checkbox').children('input').val() + ',';
+            });
+            pnIdx = pnIdx.slice(0, -1);
+
+            $.ajax({
+                url: '/process/updateProcessState.ajax',
+                type: 'post',
+                data: {
+                    "pnIdx":pnIdx,
+                    "pnState":state
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    }
+
     var userFlag = '';
     function inOperationModal(flag){
         $('#operationModal').modal('show');
@@ -285,13 +320,13 @@
             selector: 'td:first-child'
         },
         ajax:{
-            url:'/process/selectProcessNeed.ajax?pgIdx='+[[${group.pgIdx}]],
+            url:'/process/selectProcessNeedByGroup.ajax?pgIdx='+[[${group.pgIdx}]],
             type:'post'
         },
         buttons: buttonsSelect(false),
         "columns" : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox', 'title':'선택','data':'PN_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="pnIdx" value="'+data+'">';
                 }}
             ,{'class':'m-w-max', 'title':'자산코드','data':'G_IDX'}
             ,{'class':'m-w-max', 'title':'바코드','data':'G_BARCODE'}

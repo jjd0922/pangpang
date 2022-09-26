@@ -108,7 +108,7 @@
                                                   작업종료일
                                                 </span>
                                             </span>
-                                            <input type="text" name="cgEndDate" class="form-control w-datarange daterange-single">
+                                            <input type="text" name="cgEndDate" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -134,31 +134,27 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                   <span class="input-group-text">
-                                                       작업메모
-                                                   </span>
-                                               </span>
-                                            <input type="text" name="cgCheckMemo" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </fieldset>
 
                         <fieldset class="mt-4 mb-4">
-                            <legend class="">2.자산정보</legend>
-                            <div class="btn-group mr-1" style="z-index: 1;float: left;">
-                                <a type="button" class="btn btn-sm btn-primary ml-1" id="barcodeBtn" onclick="openGoodsModal();">
-                                    자산 추가
-                                </a>
-                            </div>
+                            <legend class="">2.자산등록</legend>
+                            <form id="inModalForm" onsubmit="inModalFormSubmit()">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">바코드</span>
+                                                </span>
+                                                <input type="text" name="barcode" onkeyup="if(window.event.keyCode==13){inModalFormSubmit()}" onfocus="focusOnBarcode()" class="form-control" placeholder="바코드 입력 후 엔터를 눌러주세요">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </fieldset>
 
+                        <fieldset class="mt-4 mb-4">
                             <table id="goodsTempTable" class="table"></table>
                         </fieldset>
                     </div>
@@ -205,7 +201,6 @@
 <th:block th:replace="modal/inOperationModal.html"/>
 <th:block th:replace="modal/companyModal.html"/>
 <th:block th:replace="modal/userModal.html"/>
-<th:block th:replace="process/modal/tempModal.html"/>
-
+<th:block th:replace="process/modal/tempScriptModal.html"/>
 </body>
 </html>

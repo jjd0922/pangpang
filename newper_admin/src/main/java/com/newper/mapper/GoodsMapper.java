@@ -1,5 +1,6 @@
 package com.newper.mapper;
 
+import com.newper.constant.GState;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -56,6 +57,15 @@ public interface GoodsMapper {
     /** 자산 반품요청값으로 GROUP BY */
     List<Map<String, Object>> selectGoodsGroupByCANCEL_REQ(Map<String, Object> map);
 
-    /** 자산상태 변경 */
-    void updateGoodsState();
+    /** 해당 검수그룹에 해당하는 자산 조회 */
+    List<Long> selectGoodsByCheckGroup(@Param("cgIdx") int cgIdx);
+
+    /** 자산들 상태값 변경 */
+    void updateGoodsState(@Param("gIdx") List<Long> gIdx, @Param("gState") String gState);
+
+
+    List<Map<String, Object>> selectGoodsByPo(int poIdx);
+
+    /** 해당 발주건에 해당하는 자산들이 실입고 그룹으로 매핑되어있는지 체크 */
+    int checkGoodsPoReceived(int poIdx);
 }

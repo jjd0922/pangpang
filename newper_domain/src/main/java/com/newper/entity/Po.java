@@ -84,6 +84,7 @@ public class Po extends BaseEntity {
     private String poPayAccount;
     private String poFile;
     private String poFileName;
+    private String poBuyProductType;
 
     @Enumerated(EnumType.STRING)
     private CcCycle poCycle;

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class GoodsService {
 
     /**입고검수 임시 그룹 생성 및 바코드 추가.*/
     @Transactional
-    public String insertGoodsTemp(String idx, String[] gIdxs, GgtType ggtType){
+    public String insertGoodsTemp(String idx, GgtType ggtType){
         //임시그룹 생성
         if (idx == null) {
             GoodsGroupTemp goodsGroupTemp = GoodsGroupTemp.builder()
@@ -94,9 +95,6 @@ public class GoodsService {
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
         }
-
-        //임시그룹에 바코드 추가
-        goodsMapper.insertGoodsTemp(idx, gIdxs);
 
         return idx;
     }
@@ -184,13 +182,12 @@ public class GoodsService {
             goods.setGMemo(gMemo);
             goods.setGVendor(gVendor);
 
-            // 공정여부중 하나라도 Y가 있을경우 자산 상태값 Y 아니면 재고인계요청
+            // 공정여부중 하나라도 Y가 있을경우 자산 상태값 Y 아니면 재검수
             List<ProcessNeed> processNeed = processNeedRepo.findByGoods_gIdxAndPnType(goods.getGIdx(), "YES");
             if (processNeed.size() != 0) {
                 goods.setGState(GState.PROCESS);
             } else {
-                goods.setGState(GState.STOCK);
-                goods.setGStockState(GStockState.STOCK_REQ);
+                goods.setGState(GState.CHECK_NEED);
             }
 
             goodsRepo.save(goods);
@@ -273,13 +270,11 @@ public class GoodsService {
     /** 자산상태값 변경 */
     @Transactional
     public void updateGoodsState(ParamMap paramMap) {
-        String[] gIdx = paramMap.getString("gIdxs").split(",");
-        GState gState = GState.valueOf(paramMap.getString("gState"));
-
-        for (int i = 0; i < gIdx.length; i++) {
-            Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
-            goods.setGState(gState);
-            goodsRepo.save(goods);
+        String[] gIdxs = paramMap.getString("gIdx").split(",");
+        List<Long> gIdx = new ArrayList<>();
+        for (int i = 0; i < gIdxs.length; i++) {
+            gIdx.add(Long.parseLong(gIdxs[i]));
         }
+        goodsMapper.updateGoodsState(gIdx, paramMap.getString("gState"));
     }
 }

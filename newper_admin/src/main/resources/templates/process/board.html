@@ -268,22 +268,22 @@
                         <div class="card">
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="goodsInCheck('incheckPop', 'IN_CHECK')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('inCheckPop', 'IN_CHECK')">
                                         입고검수
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="goodsProcessCheck('needPop', 'PROCESS')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PROCESS')">
                                         가공요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="goodsProcessCheck('needPop', 'FIX')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'FIX')">
                                         수리요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="goodsProcessCheck('needPop', 'PAINT')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PAINT')">
                                         도색요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="goodsReCheck('recheckPop', 'RE_CHECK')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('reCheckPop', 'RE_CHECK')">
                                         재검수요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="goodsResellCheck('resellPop', 'RESELL')">
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="tempGoodsGroup('resellPop', 'RESELL')">
                                         반품
                                     </a>
                                     <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
@@ -368,6 +368,7 @@
             }}
             ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent': ''}
             ,{'title':'발주코드','data':'G_PO_IDX', 'defaultContent': ''}
+            ,{'title':'자산바코드','data':'G_BARCODE', 'defaultContent': ''}
             ,{'title':'자산처리<br>담당자','data':'', 'defaultContent': ''}
             ,{'title':'자산<br>처리일','data':'G_IDX', 'defaultContent': ''}
             ,{'title':'자산<br>코드','data':'G_IDX', 'defaultContent': ''}
@@ -409,121 +410,20 @@
         if(event.keyCode==13){searchBtn();return false;}
     });
 
-    function goodsReCheck(url, type) {
-        var flag = false;
-        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
-        if(g_idxs.length > 0){
-            $.ajax({
-                url:'/goods/goodsReCheck.ajax'
-                ,type:'post'
-                ,data: {
-                    "gIdx" : g_idxs
-                }
-                ,async: false
-                ,success() {
-                    flag = true;
-                }
-            })
-
-            if (flag == false) {
-                return false;
-            }
-
-            tempGoodsGroup(url, type);
-        }
-    }
-
-    function goodsInCheck(url, type) {
-        var flag = false;
-        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
-        if(g_idxs.length > 0){
-            $.ajax({
-                url:'/goods/goodsInCheck.ajax'
-                ,type:'post'
-                ,data: {
-                    "gIdx" : g_idxs
-                }
-                ,async: false
-                ,success() {
-                    flag = true;
-                }
-            })
-
-            if (flag == false) {
-                return false;
-            }
-
-            tempGoodsGroup(url, type);
-        }
-    }
-
-    function goodsProcessCheck(url, type) {
-        var flag = false;
-        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
-        if(g_idxs.length > 0){
-            $.ajax({
-                url:'/goods/goodsProcessCheck.ajax'
-                ,type:'post'
-                ,data: {
-                    "gIdx":g_idxs,
-                    "type":type
-                }
-                ,async: false
-                ,success() {
-                    flag = true;
-                }
-            })
-
-            if (flag == false) {
-                return false;
-            }
-
-            tempGoodsGroup(url, type);
-        }
-    }
-
-    function goodsResellCheck(url, type) {
-        var flag = false;
-        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
-        if(g_idxs.length > 0){
-            $.ajax({
-                url:'/goods/goodsResellCheck.ajax'
-                ,type:'post'
-                ,data: {
-                    "gIdx" : g_idxs
-                }
-                ,async: false
-                ,success() {
-                    flag = true;
-                }
-            })
-
-            if (flag == false) {
-                return false;
-            }
-
-            tempGoodsGroup(url, type);
-        }
-    }
-
     function tempGoodsGroup(url, type) {
-        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
-        if(g_idxs.length > 0){
-            $.ajax({
-                url:'/process/in/temp.ajax'
-                ,type:'post'
-                ,data: {
-                    "g_idxs" : g_idxs,
-                    "type" : type
-                }
-                ,async: false
-            }).done(function(res){
-                var focusPopup = window.open('/process/'+ url +'?ggt_idx=' + res + '&type=' + type, url, 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-                focusPopup.focus();
-            }).fail(function(){
-                return false;
-            });
-        }
+        $.ajax({
+            url:'/process/in/temp.ajax'
+            ,type:'post'
+            ,data: {
+                "type" : type
+            }
+            ,async: false
+        }).done(function(res){
+            var focusPopup = window.open('/process/'+ url +'?ggt_idx=' + res + '&type=' + type, url, 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        }).fail(function(){
+            return false;
+        });
     }
 </script>
 </html>

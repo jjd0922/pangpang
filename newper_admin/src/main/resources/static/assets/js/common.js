@@ -511,3 +511,15 @@ function numCommaKeyUp(){
     var tar=$(event.target);
     $(tar).val(comma($(tar).val()));
 }
+
+function listNullCheck(param, count) {
+    var list = [];
+    if (param == null) {
+        for (var i = 0; i < count; i++) {
+            list.push('');
+        }
+        return list;
+    } else {
+        return param;
+    }
+}
