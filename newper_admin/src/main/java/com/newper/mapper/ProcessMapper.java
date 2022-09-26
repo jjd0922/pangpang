@@ -86,4 +86,9 @@ public interface ProcessMapper {
 
     /** 해당 공정, 공정타입 조회 */
     int checkProcessSpec(@Param("pnIdx") int pnIdx, @Param("pnType") PnType pnType);
+
+    /**  */
+    List selectCheckGoods(Map<String, Object> map);
+
+    long countCheckGoods(Map<String, Object> map);
 }

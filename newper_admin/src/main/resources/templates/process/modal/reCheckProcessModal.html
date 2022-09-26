@@ -99,23 +99,7 @@
                                                     <th>예상비용</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>도색</td>
-                                                    <td><input type="text" name="paintMemo" class="form-control"></td>
-                                                    <td><input type="text" name="paintCost" value="0" class="form-control"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>수리</td>
-                                                    <td><input type="text" name="fixMemo" class="form-control"></td>
-                                                    <td><input type="text" name="fixCost" value="0" class="form-control"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>가공</td>
-                                                    <td><input type="text" name="processMemo" class="form-control"></td>
-                                                    <td><input type="text" name="processCost" value="0" class="form-control"></td>
-                                                </tr>
-                                            </tbody>
+                                            <tbody id="checkProcessTbody"></tbody>
                                         </table>
                                     </div>
                                 </fieldset>
@@ -185,45 +169,63 @@
     }
 
 
-    function openProcessModal (id, rowIdx) {
+    function openProcessModal (gIdx, cgIdx) {
+        setGoods(gIdx);
         $('#checkGoodsModal').modal('show');
-        var dataMap = getDatatablemap(id, rowIdx);
+    }
 
+
+    function setGoods(gIdx) {
+        var dataMap;
+        $.ajax({
+            url: '/goods/selectGoods.ajax',
+            type: 'POST',
+            data: {"gIdx" : gIdx},
+            async: false,
+            success(data) {
+                dataMap = data;
+            }
+        });
+
+        // 상품 & 자산 정보 세팅
+        $('#pIdx').val(dataMap.P_IDX);
+        $('#pName').val(dataMap.P_NAME);
+        $('#gIdx').val(dataMap.G_IDX)
+        $('#gBarcode').val(dataMap.G_BARCODE);
+        $('#gImei').val(dataMap.G_IMEI);
+        $('input[name=gMemo]').val(dataMap.G_MEMO);
+
+        // 상품 스펙 정보
+        setGoodsSpec(dataMap);
+
+        // 예상비용
+        setProcessNeed();
+    }
+
+    function setGoodsSpec(dataMap)  {
+        var gJson = JSON.parse(dataMap.G_JSON);
         if(dataMap.CATE_SPEC_LIST != null){
-            var gJson = JSON.parse(dataMap.G_JSON);
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
 
-            var inSpec1 = gJson.inSpec1
-            var inSpec2 = gJson.inSpec2;
-            var sellSpec1 = gJson.sellSpec1;
-            var sellSpec2 = gJson.sellSpec2;
-            var pSpec1 = gJson.pSpec1;
-            var pSpec2 = gJson.pSpec2;
+            var inSpec2 = listNullCheck(gJson.inSpec2, specList.length);
+            var pSpec1 = listNullCheck(gJson.pSpec1, specList.length);
+            var psCost = listNullCheck(gJson.psCost, specList.length);
+            var sellSpec2 = listNullCheck(gJson.sellSpec2, specList.length);
 
-            if (pSpec2 == null) {
-                pSpec2 = [];
-                for (var i = 0; i < specList.length; i++) {
-                    pSpec2.push('');
-                }
-            }
-
-            $('#specList').empty();
+            $('#goodsSpec').empty();
             for (var i = 0; i < specList.length; i++) {
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+inSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+sellSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+pSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" class="form-control" value="'+sellSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" specList="'+i+'" name="spec" class="form-control" value="' + pSpec2[i] + '"></td>'
+                    +'<td><input type="text" specList="'+i+'" id="inSpec2_'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" id="pSpec1_'+i+'" name="pSpec1" class="form-control" value="'+pSpec1[i]+'"></td>'
+                    +'<td><input type="text" id="psCost_'+i+'" name="psCost" class="form-control" value="'+psCost[i]+'"></td>'
+                    +'<td><input type="text" specList="'+i+'" id="sellSpec2_'+i+'" name="sellSpec2" class="form-control" value="'+sellSpec2[i]+'"></td>'
                     +'</tr>';
 
-                $('#specList').append(specTr);
+                $('#goodsSpec').append(specTr);
             }
-
 
             var specListTd = $('.specListTd');
             for (var i = 0; i < specListTd.length; i++) {
@@ -239,30 +241,67 @@
                     }
                 });
             }
+        }
+    }
 
-            var options = JSON.parse(dataMap.P_OPTION);
-            for (var i = 0; i < 3; i++) {
-                var num = parseInt(i) + 1;
-                $('#productOption' + num).empty();
-                $('#productOption' + num).append('<option value="">없음</option>');
-            }
+    function setProcessNeed() {
+        $('#checkProcessTbody').empty();
+        var pnProcess = [[${T(com.newper.constant.PnProcess).values()}]];
+        var option = '';
+        for (var i = 0; i < pnProcess.length; i++) {
+            option += '<option value="'+pnProcess[i]+'">'+pnProcess[i]+'</option>';
+        }
 
-            for (var i = 0; i < options.length; i++) {
-                var text = '';
-                for (var j = 0; j < options[i].values.length; j++) {
-                    text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+
+        for (var i = 0; i < 3; i++) {
+            var type = '';
+            var type_kor = '';
+            var type_name = '';
+            if (i == 0) {type = "PAINT"; type_kor = "도색"; type_name="paint"}
+            else if (i == 1) {type = "FIX"; type_kor = "수리"; type_name="fix"}
+            else {type = "PROCESS"; type_kor = "가공"; type_name="process"}
+
+
+
+            $.ajax({
+                type: "POST",
+                url:"/process/selectProcessNeed.ajax",
+                data: {
+                    "gIdx":$('#gIdx').val(),
+                    "cgIdx":$('#cgIdx').val(),
+                    "pnType":type
+                },
+                async:false,
+                success : function(result){
+                    var html = ''
+                    var content = '';
+                    var cost = '';
+                    var process = '';
+                    if (result != '') {
+                        content = result.PN_CONTENT;
+                        cost = result.PN_EXPECTED_COST;
+                        process = result.PN_PROCESS;
+                    }
+
+                    if (type == 'PROCESS' && result.PN_JSON != null) {
+                        setProcessCost(result.PN_JSON);
+                    }
+
+                    html = '<tr>' +
+                        '<td>'+type_kor+'</td>'+
+                        '<td><input type="text" name="'+type_name+'Memo" class="form-control" value="'+content+'"></td>' +
+                        '<td><input type="text" name="'+type_name+'Cost" class="form-control" value="'+cost+'"></td>' +
+                        '<td>' +
+                        '<select name="'+type_name+'Process" class="form-control">' +
+                        option
+                    '</select>' +
+                    '</td>'
+                    '</tr>'
+
+                    $('#checkProcessTbody').append(html);
+                    $('select[name='+type_name+'Process] option[value="'+process+'"]').prop("selected",true);
                 }
-                var num = parseInt(i) + 1;
-                $('#productOption' + num).empty();
-                $('#productOption' + num).append(text);
-            }
-            
-            $('#pIdx').val(dataMap.P_IDX);
-            $('#pName').val(dataMap.P_NAME);
-            $('#gIdx').val(dataMap.G_IDX);
-            $('#cgsIdx').val(dataMap.CGS_IDX);
-            $('#poIdx').val(dataMap.PO_IDX);
-
+            });
         }
     }
 </script>

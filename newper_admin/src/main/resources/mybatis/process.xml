@@ -348,4 +348,32 @@
         AND
             PN_TYPE = #{pnType}
     </select>
+
+    <select id="selectCheckGoods" resultType="Map">
+        SELECT
+            *
+        FROM
+            CHECK_GROUP
+                LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
+                LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+        WHERE
+            CG_IDX = #{cgIdx}
+        <if test="length != -1">
+        LIMIT
+            #{start}, #{length}
+        </if>
+    </select>
+
+    <select id="countCheckGoods" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            CHECK_GROUP
+                LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
+                LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+        WHERE
+            CG_IDX = #{cgIdx}
+    </select>
 </mapper>

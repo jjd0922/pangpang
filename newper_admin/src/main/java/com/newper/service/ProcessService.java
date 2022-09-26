@@ -434,7 +434,7 @@ public class ProcessService {
 
             int specCheck = processMapper.checkProcessSpec(processNeed.getPnIdx(), PnType.PROCESS);
             List<Integer> psIdx = new ArrayList<>();
-            if (specCheck != 0) {
+            if (specCheck == 0) {
                 List<String> specName = paramMap.getList("specName");
                 for (int i = 0; i < specName.size(); i++) {
                     ProcessSpec processSpec = ProcessSpec
@@ -443,7 +443,6 @@ public class ProcessService {
                             .psCost(psCost.get(i).intValue())
                             .psType(PsType.EXPECTED)
                             .build();
-
                     processSpecRepo.save(processSpec);
                     psIdx.add(processSpec.getPsIdx());
                 }

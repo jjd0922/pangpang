@@ -266,4 +266,13 @@ public class ProcessRestController {
         rm.setMessage("처리완료");
         return rm;
     }
+
+    /**재검수 그룹 자산 조회*/
+    @PostMapping("reCheckGoods.dataTable")
+    public ReturnDatatable reCheckGoods(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(processMapper.selectCheckGoods(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countCheckGoods(paramMap.getMap()));
+        return rd;
+    }
 }
