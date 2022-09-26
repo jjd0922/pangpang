@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -39,7 +38,6 @@ public class Customer {
     private String cuPw;
     private String cuTelecom;
     private String cuPhone;
-    private String cuEmail;
     @Enumerated(EnumType.STRING)
     private CuRate cuRate;
 
