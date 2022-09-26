@@ -212,11 +212,11 @@
             <div class="table-content">
                 <ul class="progressStep">
                     <!-- 진행 현황에 class="on" 추가 -->
-                    <li class="on">
+                    <li class="progress-100per on">
                         <i class="dot"></i>
                         <p>접수완료</p>
                     </li>
-                    <li class="on">
+                    <li class="progress-100per on">
                         <i class="dot"></i>
                         <p>처리중</p>
                     </li>
@@ -260,11 +260,14 @@
                 <div class="font-md bold">
                     <p>결제금액 : 600,000원</p>
                 </div>
+                <div class="openClose">
+                    <img class='openClose1' th:attr="src=@{/image/arrow/open-arrow4.png},title='열기',alt='열기'">
+                    <img class='openClose2' th:attr="src=@{/image/arrow/close-arrow2.png},title='닫기',alt='닫기'">
+                </div>
             </div>
-
         </li>
         <!-- 접수 상세내용 -->
-        <li>
+        <li class="receiptDetail-wrap">
             <div class="table-title">접수 상세내용</div>
             <div class="table-content">
                 <ul class="receiptDetail">
@@ -312,4 +315,21 @@
             </div>
         </li>
     </ul>
+
+    <script>
+
+        $('.receiptDetail-wrap').hide();
+
+        $('.openClose1').click(function() {
+            $(this).hide();
+            $('.openClose2').show();
+            $('.receiptDetail-wrap').show();
+
+        })
+        $('.openClose2').click(function() {
+            $(this).hide();
+            $('.openClose1').show();
+            $('.receiptDetail-wrap').hide();
+        })
+    </script>
 </th:block>

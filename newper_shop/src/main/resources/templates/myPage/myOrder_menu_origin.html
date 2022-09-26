@@ -1,7 +1,65 @@
 <!-- 정품등록하기 STEP.1-->
 <th:block th:fragment="originStep1">
-정품등록하기 step1
-<button onclick="nextStep()">다음</button>
+    <div class="genuine-progress-wrap">
+        <h5>어디에서나 볼 수 없는 강력한 정품 등록혜택으로 AS케어를 연장하세요.</h5>
+        <ul class="progressStep">
+            <!-- 진행 현황에 class="on" 추가 -->
+            <li class="progress-50per on">
+                <i class="dot"></i>
+                <p><span class="num">01</span><span>구매처 선택</span></p>
+            </li>
+            <li class="progress-50per">
+                <i class="dot"></i>
+                <p><span class="num">02</span><span>제품 선택</span></p>
+            </li>
+            <li>
+                <i class="dot"></i>
+                <p><span class="num">03</span><span>등록완료</span></p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="originStep">
+        <h2><span class="color-blue">01.</span>어디서 무엇을 구매하셨나요?</h2>
+        <ul class="WhereToBuy">
+            <li>
+                <h3>뉴퍼마켓에서 구매</h3>
+                <div>
+                    <img th:attr="src=@{/image/notebook.png},title='메뉴아이콘',alt='메뉴아이콘'">
+                    <p>노트북/데스크탑</p>
+                </div>
+                <div>
+                    <img th:attr="src=@{/image/phone.png},title='메뉴아이콘',alt='메뉴아이콘'">
+                    <p>애플/모바일</p>
+                </div>
+            </li>
+            <li>
+                <h3>타 온라인몰에서 구매</h3>
+                <div>
+                    <img th:attr="src=@{/image/notebook.png},title='메뉴아이콘',alt='메뉴아이콘'">
+                    <p>노트북/데스크탑</p>
+                </div>
+                <div>
+                    <img th:attr="src=@{/image/phone.png},title='메뉴아이콘',alt='메뉴아이콘'">
+                    <p>애플/모바일</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="genuineRegistration-coupon">
+        <h4>뉴퍼마켓의 인증된 상품을 정품 등록하시면 <span class="color-blue">10% 할인쿠폰</span> 을 받으실 수 있습니다.</h4>
+        <p class="color-grey666">(데스크탑, 노트북, 태블릿, 모니터, 애플제품 구매에 한해 정품 등록이 가능합니다.)</p>
+        <div>
+            <img th:attr="src=@{/image/genuineRegistration-coupon.png},title='쿠폰이미지',alt='쿠폰이미지'">
+        </div>
+        <div class="newper-care"><i class="newper"></i><span>뉴퍼케어란?</span>구매 후 60일 동안 깨지거나 파손된 경우에도 보상이 가능한 서비스입니다.</div>
+    </div>
+
+    <div class="btn btn2">
+        <a onclick="nextStep()">다음</a>
+    </div>
+
     <script>
         function nextStep(){
             $.ajax({
@@ -14,15 +72,94 @@
                 ,error(){}
             })
         }
+
+        $('.WhereToBuy>li').click(function () {
+            $(this).toggleClass('on');
+        });
     </script>
 </th:block>
 <!-- 정품등록하기 STEP.1 end-->
 
 <!-- 정품등록하기 STEP.2-->
 <th:block th:fragment="originStep2">
-    정품등록하기 step2
-    <button onclick="goStep1()">이전으로</button>
-    <button onclick="goStep3()">정품등록</button>
+    <div class="genuine-progress-wrap">
+        <h5>어디에서나 볼 수 없는 강력한 정품 등록혜택으로 AS케어를 연장하세요.</h5>
+        <ul class="progressStep">
+            <!-- 진행 현황에 class="on" 추가 -->
+            <li class="progress-100per on">
+                <i class="dot"></i>
+                <p><span class="num">01</span><span>구매처 선택</span></p>
+            </li>
+            <li class="progress-100per on">
+                <i class="dot"></i>
+                <p><span class="num">02</span><span>제품 선택</span></p>
+            </li>
+            <li class="progress-50per">
+                <i class="dot"></i>
+                <p><span class="num">03</span><span>등록완료</span></p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="originStep">
+        <h2><span class="color-blue">02.</span>정품등록 받으실 제품을 선택해주세요.</h2>
+        <ul class="table table3">
+            <!-- 주문번호 -->
+            <li>
+                <div class="table-title">주문번호</div>
+                <div class="table-content display-flex space-between">
+                    <p class="font-xlg semi-bold">2022-08-07-36900</p>
+                    <p class="color-grey333">구매일자 2022-08-27</p>
+                </div>
+            </li>
+            <!-- 주문상품 -->
+            <li>
+                <div class="table-title">주문상품</div>
+                <div class="table-content">
+                    <ul>
+                        <!-- 상품 1 -->
+                        <li class="display-flex alignItems-center">
+                            <input type="checkbox" class="custom-checkbox">
+                            <div class="display-flex alignItems-center">
+                                <div class="order-item-thumb as-item-thumb">
+                                    <a href="javascript:;">
+                                        <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                        <p class="font-xsm color-grey999">001762984</p>
+                                    </a>
+                                </div>
+                                <div class="display-flex space-between">
+                                    <div class="order-item-info-wrap">
+                                        <div>
+                                            <a href="javascript:;">
+                                                <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                    듀얼하드 윈10</h3>
+                                            </a>
+                                        </div>
+                                        <div class="font-xxsm order-item-info">
+                                            <p>옵션 : 없음</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-md semi-bold">
+                                        <p>600,000원</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="display-flex">
+        <div class="btn btn3">
+            <a onclick="goStep1()">이전으로</a>
+        </div>
+        <div class="btn btn2">
+            <a onclick="goStep3()">정품등록</a>
+        </div>
+    </div>
 
     <script>
         function goStep1(){

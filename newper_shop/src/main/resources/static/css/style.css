@@ -3297,6 +3297,19 @@ section {
     padding: 20px 45px;
     display: flex;
     align-items: center;
+    position: relative;
+}
+.openClose {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 11px;
+    cursor: pointer;
+}
+.openClose2 {
+    display: none;
 }
 .smsGuide {
     margin-left: 30px;
@@ -4728,16 +4741,22 @@ input[type="number"]::-webkit-inner-spin-button {
     top: 6px;
     left: -99%;
 }
-.progressStep>li.on::before {
+.progressStep>li.progress-100per::before {
     background-color: #314ad7;
 }
-.progressStep>li:first-child::before {
-    content: none;
+.progressStep>li:first-child::before, .progressStep>li:first-child::after {
+    content: none!important;
 }
 .progressStep>li>p {
     position: absolute;
     bottom: 0;
     left: -15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.progressStep>li.on>p {
+    color: #000;
 }
 .progressStep>li.on {
     color: #314ad7;
@@ -4751,6 +4770,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .progressStep>li:last-child {
     margin-right: 0;
 }
+.progressStep>li.on .num {
+    color: #314ad7;
+}
 .dot {
     display: inline-block;
     background: url("../image/dot.png") no-repeat center/contain;
@@ -4758,6 +4780,130 @@ input[type="number"]::-webkit-inner-spin-button {
     height: 13px;
     z-index: 1;
 }
+#myOrderOriginMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.genuine-progress-wrap .progressStep {
+    position: relative;
+    left: 140px;
+    margin-top: 45px;
+}
+.genuine-progress-wrap .progressStep>li {
+    width: 290px;
+}
+.genuine-progress-wrap .progressStep>li>p {
+    bottom: -20px;
+    left: -27px;
+}
+.genuine-progress-wrap {
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.genuine-progress-wrap h5 {
+    font-size: 19px;
+    color: #00184f;
+    font-weight: 500;
+}
+.progressStep>li.progress-50per::after {
+    content: "";
+    background-color: #314ad7;
+    width: 50%;
+    height: 2px;
+    position: absolute;
+    top: 6px;
+    left: -99%;
+}
+.originStep {
+    text-align: center;
+}
+.originStep h2 {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+.WhereToBuy {
+    display: flex;
+    margin-bottom: 70px;
+}
+.WhereToBuy>li {
+    border: 1px solid #d1d1d1;
+    margin: 5px;
+    border-radius: 5px;
+    width: 420px;
+    overflow: hidden;
+}
+.WhereToBuy>li:hover {
+    border: 1px solid #314ad7;
+}
+.WhereToBuy>li.on {
+    border: 1px solid #314ad7;
+}
+.WhereToBuy>li h3 {
+    font-size: 25px;
+    font-weight: 500;
+    padding: 20px;
+    background-color: #f9f8f8;
+}
+.WhereToBuy img {
+    width: 100px;
+}
+.WhereToBuy>li>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    border-top: 1px solid #b1b1b1;
+}
+.WhereToBuy>li>div>p {
+    font-size: 20px;
+    color: #5e6577;
+    margin-top: 7px;
+}
+.genuineRegistration-coupon {
+    text-align: center;
+}
+.genuineRegistration-coupon h4 {
+    font-size: 22px;
+    font-weight: 600;
+}
+.genuineRegistration-coupon p {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.newper-care {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f6f6;
+    width: 860px;
+    margin: 0 auto;
+    padding: 10px 0;
+    font-size: 15px;
+    margin: 30px 0 50px;
+}
+.newper {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../image/newper.png") no-repeat center/contain;
+}
+.table3 {
+    width: 900px;
+}
+.table3 .table-title {
+    background-color: #f9f8f8;
+    font-size: 20px;
+    color: #333;
+}
+#myOrderOriginMenu input
+
+
+
 /*쿠폰·적립금·상품권*/
 .myGift-table {
     border-top: 2px solid #333;
