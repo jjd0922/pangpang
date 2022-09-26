@@ -257,4 +257,37 @@
             LIMIT #{start}, #{length}
         </if>
     </select>
+
+    <select id="selectStockMoveDatatable" resultType="map" parameterType="map">
+        SELECT
+        LM_STATE,
+        LM_IDX,
+--         CREATED_BY,
+        LM_U_IDX,
+        LM_OUT_DATE,
+        LM_IN_DATE,
+        LOC_IDX,
+        LOC_WH_IDX,
+        LOC_FORM,
+        LOC_CODE,
+        LM_COUNT
+        FROM
+        LOCATION
+        LEFT JOIN LOCATION_MOVE ON LOC_IDX = LM_LOC_IDX
+        LEFT JOIN WAREHOUSE ON WH_IDX=LOC_WH_IDX
+        <if test="length != -1">
+            LIMIT #{start}, #{length}
+        </if>
+    </select>
+    <select id="countStockMoveDatatable" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        LOCATION
+        LEFT JOIN LOCATION_MOVE ON LOC_IDX=LM_LOC_IDX
+        LEFT JOIN WAREHOUSE ON WH_IDX=LOC_WH_IDX
+    </select>
+
+
+
 </mapper>
