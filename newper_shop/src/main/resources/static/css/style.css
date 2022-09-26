@@ -1,4 +1,4 @@
-/********** 메인 이미지 slide [swiper] **********/
+/********** 메인 이미지 slide [swiper] : 좌측 메뉴 **********/
 .main-slide {
     position: relative;
     overflow:hidden;
@@ -19,6 +19,26 @@
     width: calc(var(--container-width) - var(--ctg-all-width));
     transform: translateX(140px);
 }
+@media (max-width: 1379px) {
+    .swiper-main-image {
+        width: calc(100% - var(--ctg-all-width));
+        height: auto;
+        transform: translateX(0);
+        margin-left: var(--ctg-all-width);
+    }
+}
+@media (max-width:991px) {
+    .main-slide {
+        min-width: auto;
+    }
+    .swiper-main-image {
+        width: 100%;
+        height: auto;
+        transform: translateX(0);
+        margin-left: 0;
+    }
+}
+
 .item-img {
     display: flex;
     justify-content: center;
@@ -176,7 +196,8 @@
 /* 슬라이드 이미지 내부 고정 - 좌측 nav category all */
 .ctg-all {
     width: var(--ctg-all-width);
-    height: var(--main-slide-height);
+    /*height: var(--main-slide-height);*/
+    height: 100%;
     position: absolute;
     top: 0;
     left: calc(0% - var(--ctg-all-width));
