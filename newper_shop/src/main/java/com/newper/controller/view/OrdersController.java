@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.constant.PayState;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Payment;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,9 +22,15 @@ public class OrdersController {
     private final PaymentService paymentService;
 
     /** 주문 결제 페이지*/
-    @GetMapping("")
-    public ModelAndView orders(){
+    @PostMapping("")
+    public ModelAndView orders(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("orders/orders");
+
+        for (String key : paramMap.keySet()) {
+            if (key.indexOf("spo") == 0) {
+
+            }
+        }
 
 
         return mav;
