@@ -768,9 +768,9 @@
     spo += '    <p>'+name+'</p>';
     spo += '    <div class="prod-op-price-group select-amount-wrap">';
     spo += '      <div class="select-amount">';
-    spo += '        <span class="amount-minus">-</span>';
-    spo += '        <input type="text" name="spo'+val+'" value="1" size="5" readOnly spo_price="'+price+'">';
-    spo += '          <span class="amount-plus">+</span>';
+    spo += '        <span class="amount-minus" onclick="changeSpo(\''+val+'\', -1)">-</span>';
+    spo += '        <input type="text" name="spo'+val+'" value="1" readOnly spo_price="'+price+'">';
+    spo += '          <span class="amount-plus" onclick="changeSpo(\''+val+'\', 1)">+</span>';
     spo += '      </div>';
     spo += '      <div>';
     spo += '        + <span>'+comma(price)+'</span><span class="won">원</span>';
@@ -801,6 +801,15 @@
       }
       $('#spoTotalPrice').html( comma(spoTotalPrice) );
     }
+  }
+  //선택 옵션 수량 변경
+  function changeSpo(val, cnt){
+    var cnt = Number($('input[name=spo'+val+']').val())+cnt;
+    if (cnt < 0) {
+      cnt = 1;
+    }
+    $('input[name=spo'+val+']').val(cnt);
+    calSpo()
   }
 
   //주문하기

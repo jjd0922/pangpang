@@ -5,6 +5,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Payment;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
+import com.newper.repository.ShopProductOptionRepo;
 import com.newper.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class OrdersController {
 
     private final PaymentService paymentService;
+    private final ShopProductOptionRepo shopProductOptionRepo;
 
     /** 주문 결제 페이지*/
     @PostMapping("")
@@ -29,6 +31,16 @@ public class OrdersController {
         for (String key : paramMap.keySet()) {
             if (key.indexOf("spo") == 0) {
 
+                System.out.println(key);
+                System.out.println(key.substring(3));
+
+                String[] spos = key.substring(3).split("_");
+                for (String spo : spos) {
+                    System.out.print("spo==  ");
+                    System.out.println(spo);
+                }
+
+                System.out.println(paramMap.get(key));
             }
         }
 
