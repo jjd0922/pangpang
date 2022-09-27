@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,7 +30,7 @@ public class StockController {
 
     private final LocationRepo locationRepo;
 
-    private LocationMapper locationMapper;
+    private final LocationMapper locationMapper;
 
     private final GoodsRepo goodsRepo;
 
@@ -101,27 +102,34 @@ public class StockController {
 
     /**창고이동관리 > 창고이동 조회/수정 페이지*/
     @GetMapping("move/pop/{lmIdx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
-    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx ,Integer locIdx) {
+    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
         LocationMove locationMove=locationMoveRepo.findLocationMoveByLmIdx(lmIdx);
-        Location location=locationRepo.findLocationByLocIdx(locIdx);
+        Location location2=locationRepo.findLocationByLocIdx(locationMove.getLocation2().getLocIdx()); //입고
+        Location location = locationRepo.findLocationByLocIdx(locationMove.getLocation1().getLocIdx());//출고
         mav.addObject("locationMove", locationMove);
 
-        //   location.getGoodsList().get(locationMove.getLocation2().getLocIdx());
-//        locationMapper.insertLocationMoveGoods(locationMove.getLmIdx(),location.getGoodsList().get(locationMove.getLocation2().getLocIdx().intValue()));
-
-
-//        Location location=locationRepo.getReferenceById(locationMove.getLocation2().getLocIdx());
-       /* location.setLocIdx(locationMove.getLocation2().getLocIdx());*/
-/*        location.setWarehouse(locationMove.getLocation2().getWarehouse());
-        location.setGoodsList(locationMove.getLocation2().getGoodsList());*/
-
-//       Goods goods = goodsRepo.findById(gIdx).orElseThrow(() -> new MsgException("존재하지 않는 자산입니다."));
 
          mav.addObject("location",location);
-//        mav.addObject("goods", locationMapper.selectLocationMoveGoods();
-//         mav.addObject("goods", locationMapper.selectLocationMoveGoods(lmIdx));
-//        mav.addObject("location", location);
+         mav.addObject("location2",location2);
+         mav.addObject("goods",locationMapper.selectLocationMoveGoodsList(lmIdx));
+//        List<Map<String,Object>> list = locationMapper.sqltest(lmIdx);
+//        for(Map<String,Object> map : list){
+//            System.out.println(map.entrySet());
+//        }
+/*
+        try{
+            System.out.println("lmIdx = " + lmIdx);
+            List<Map<String,Object>> list = locationMapper.selectLocationMoveGoodsList(lmIdx);
+            System.out.println("lmIdx = " + lmIdx);
+
+            mav.addObject("goods", list);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("here~~~~~~~~~~~~~");
+        }
+*/
+
         return mav;
     }
 

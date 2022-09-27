@@ -11,7 +11,7 @@ public enum GState implements EnumOption {
 
     RECEIVED("입고")
 
-    ,CHECK_NEED("검수필요")
+    ,CHECK_REQ("검수필요")
     ,CHECK_ING("검수중")
     ,CHECK_DONE("검수완료")
 

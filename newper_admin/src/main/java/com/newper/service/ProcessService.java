@@ -217,7 +217,7 @@ public class ProcessService {
     public void updateCheckGoods(ParamMap paramMap, MultipartFile[] gFile) {
         // 자산 상태 체크
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
-        if (goods.getGState().equals(GState.CHECK_NEED)) {
+        if (goods.getGState().equals(GState.CHECK_REQ)) {
             throw new MsgException("해당건은 이미 영업검수 요청한 자산입니다.");
         }
 
@@ -362,7 +362,7 @@ public class ProcessService {
         String type = paramMap.getString("type");
         GState gstate = goods.getGState();
         if (type.equals("RE_CHECK")) {
-            if (!gstate.equals(GState.CHECK_NEED)) {
+            if (!gstate.equals(GState.CHECK_REQ)) {
                 throw new MsgException("해당자산은 재검수요청 할 수 없는 자산 입니다.");
             }
         } else if (type.equals("IN_CHECK")) {

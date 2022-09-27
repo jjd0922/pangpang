@@ -123,7 +123,7 @@ public class ProcessRestController {
     @PostMapping("inCheckPop.ajax")
     public ReturnMap inCheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("gState", GState.CHECK_NEED);
+        paramMap.put("gState", GState.CHECK_REQ);
         paramMap.put("cgsType", CgsType.IN);
         paramMap.put("cgType", CgsType.IN);
         checkService.insertCheckGroup(paramMap);
@@ -135,7 +135,7 @@ public class ProcessRestController {
     @PostMapping("reCheckPop.ajax")
     public ReturnMap reCheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("gState", GState.CHECK_NEED);
+        paramMap.put("gState", GState.CHECK_REQ);
         paramMap.put("cgsType", CgsType.RE);
         paramMap.put("cgType", CgsType.RE);
         checkService.insertCheckGroup(paramMap);
