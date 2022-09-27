@@ -70,7 +70,21 @@ public class NiceApi {
         return map;
     }
 
-    /** nice 응답 후 받아온 데이터 return   */
+    /** nice 응답 후 받아온 데이터 return
+     * <pre>
+     * 조회시 key : value
+     * REQ_SEQ : NICE본인인증 요청번호
+     * AUTH_TYPE : 인증수단 (M:휴대폰 C:카드 X:인증서 P:삼성패스)
+     * RES_SEQ : 처리결과 고유번호
+     * NAME : 이름
+     * UTF8_NAME : 이름 (UTF-8)
+     * BIRTHDATE : 생년월일(YYYYMMDD)
+     * GENDER : 성별코드 (0:여성 1:남성)
+     * NATIONALINFO : 내/외국인코드 (0:내국인 1:외국인)
+     * DI : DI(중복가입확인값)
+     * MOBILE_CO : 통신사
+     * MOBILE_NO : 휴대폰번호
+     * </pre>*/
     public Map<String,Object> getNiceReturn(ParamMap paramMap) {
         NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
 

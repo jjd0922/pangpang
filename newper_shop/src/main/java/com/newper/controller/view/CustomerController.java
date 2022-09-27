@@ -1,5 +1,6 @@
 package com.newper.controller.view;
 
+import com.newper.component.NaverLogin;
 import com.newper.component.NiceApi;
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
@@ -75,4 +76,46 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/joinComplete");
         return mav;
     }
+
+    /** 네이버 로그인 팝업*/
+    @GetMapping(value = "auth/naver/request")
+    public ModelAndView naverRequest(HttpServletRequest request, NaverLogin naverLogin) {
+        ModelAndView mav = new ModelAndView("customer/auth_naver_request");
+        // naver 요청 정보
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> req = naverLogin.request(callback);
+        mav.addObject("naverReq", req);
+        // self_auth insert
+        Long saIdx = selfAuthService.saveSelfAuth(req);
+        AesEncrypt ae = new AesEncrypt();
+        shopSession.setSaIdx(ae.encryptRandom(saIdx.toString()));
+        return mav;
+    }
+
+    /** 네이버 로그인 > 네이버 회원 profile 받아오기*/
+    @GetMapping(value = "auth/naver/access")
+    public ModelAndView naverAccess(ParamMap paramMap, HttpServletRequest request, NaverLogin naverLogin) {
+        ModelAndView mav = new ModelAndView("customer/auth_naver_access");
+        // naver 응답 데이터
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> profile = naverLogin.getProfile(paramMap, callback);
+        mav.addObject("naverAcc", profile);
+
+        // 요청정보 db update
+        selfAuthService.updateSelfAuth(profile);
+        return mav;
+    }
+
+    @GetMapping(value = "auth/kakao/request")
+    public ModelAndView kakaoRequest() {
+        ModelAndView mav = new ModelAndView("customer/auth_kakao_request");
+        return mav;
+    }
+
+    @GetMapping(value = "auth/kakao/response")
+    public ModelAndView kakaoResponse() {
+        ModelAndView mav = new ModelAndView("customer/auth_kakao_response");
+        return mav;
+    }
+    
 }
