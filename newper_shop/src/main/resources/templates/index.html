@@ -204,7 +204,7 @@
 <th:block th:each="mainsection : ${@shopComp.mainSectionList}">
     <th:block th:each="msJson : ${@shopComp.msJsonList}">
         <th:blcok th:if="${msJson.get('msIdx') == #strings.toString(mainsection.msIdx) && mainsection.msType.name() == 'PRODUCT'}">
-            <th:block th:replace="mainSection/mainSection_product :: __${msJson.get('PRODUCT')}__"></th:block>
+            <th:block th:replace="mainSection/mainSection_product :: __${msJson.get('DISPLAY_TYPE')}__"></th:block>
         </th:blcok>
     </th:block>
     <th:blcok th:unless="${mainsection.msType.name() == 'PRODUCT'}">

@@ -171,6 +171,7 @@ public class MainsectionService {
         }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
             List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(mainSection.getMsIdx());
             List<String> msspSpIdxs = paramMap.getList("spIdx");
+            List<String> msspOrders = paramMap.getList("msspOrder");
             int size = Math.max(mainSectionSps.size(), msspSpIdxs.size());
             for(int i=0;i<size;i++){
                 if(msspSpIdxs.size() > i){
@@ -178,7 +179,7 @@ public class MainsectionService {
                         Map<String,Object> map = new HashMap<>();
                         // update
                         Map<String,Object> mssp = mainSectionSps.get(i);
-                        map.put("msspOrder", i+1);
+                        map.put("msspOrder", msspOrders.get(i));
                         map.put("msspMsIdx", mssp.get("MSSP_MS_IDX"));
                         map.put("msspSpIdx", mssp.get("MSSP_SP_IDX"));
                         mainsectionMapper.updateMainSectionSp(map);
@@ -186,9 +187,9 @@ public class MainsectionService {
                         List<String> spIdxs = paramMap.getList("spIdx");
                         ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
                         Map<String,Object> map = new HashMap<>();
+                        map.put("msspOrder", msspOrders.get(i));
                         map.put("msspMsIdx", mainSection.getMsIdx());
                         map.put("msspSpIdx", shopProduct.getSpIdx());
-                        map.put("msspOrder", i+1);
                         mainsectionMapper.insertMainSectionSp(map);
                     }
                 }else{
@@ -263,12 +264,14 @@ public class MainsectionService {
             }
         }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
             List<String> spIdxs = paramMap.getList("spIdx");
+            List<String> msspOrders = paramMap.getList("msspOrder");
             for(int i=0;i<spIdxs.size(); i++){
                 ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
                 Map<String,Object> map = new HashMap<>();
                 map.put("msspMsIdx", mainSection.getMsIdx());
                 map.put("msspSpIdx", shopProduct.getSpIdx());
-                map.put("msspOrder", i+1);
+//                map.put("msspOrder", i+1);
+                map.put("msspOrder", msspOrders.get(i));
                 mainsectionMapper.insertMainSectionSp(map);
             }
         }

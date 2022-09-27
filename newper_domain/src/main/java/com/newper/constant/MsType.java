@@ -9,8 +9,8 @@ import lombok.Getter;
 public enum MsType implements EnumOption {
      BANNER("배너")
     ,PRODUCT("상품")
-    ,BOTH("기획전")
-    ,BEST("BEST")
+    ,BOTH("배너+상품")
+    ,BEST("대분류 카테고리")
     ;
 
     private String option;

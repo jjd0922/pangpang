@@ -92,17 +92,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-md-6" id="PRODUCT" style="display: none;">
+                                            <div class="col-sm-12 col-md-6" id="DISPLAY_TYPE">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">썸네일 타입</span>
+                                                            <span class="input-group-text">디스플레이 타입</span>
                                                         </span>
-                                                        <select class="form-control select" name="PRODUCT">
-                                                            <option value="design1" th:selected="${msJson?.get('PRODUCT') == 'design1'}">뉴퍼딜</option>
-                                                            <option value="design2" th:selected="${msJson?.get('PRODUCT') == 'design2'}">반값+습니다</option>
-                                                            <option value="design3" th:selected="${msJson?.get('PRODUCT') == 'design3'}">일일특가</option>
-                                                            <option value="design4" th:selected="${msJson?.get('PRODUCT') == 'design4'}">숨은꿀템</option>
+                                                        <select class="form-control select" name="DISPLAY_TYPE">
+                                                            <option value="design1" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design1'}">뉴퍼딜</option>
+                                                            <option value="design2" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design2'}">반값+습니다</option>
+                                                            <option value="design3" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design3'}">일일특가</option>
+                                                            <option value="design4" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design4'}">숨은꿀템</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -190,6 +190,73 @@
     </div>
 </div>
 
+<div style="display:none;" id="bannerShopProductDom">
+    <!-- 배너 dom-->
+    <div class="row">
+        <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
+            <a onclick="openBannerShopProductModal(this)" class="btn btn-sm btn-primary ml-1">상품 추가</a>
+            <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerShopProductDom(this)">삭제</a>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">
+                            노출순서 <br> <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="행의 노출 순서를 100단위로 지정해야합니다."></i>
+                        </span>
+                    </span>
+                    <input type="number" class="form-control" name="msbnOrder" min="100">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(WEB)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnWebFile" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(MOBILE)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnMobileFile" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">링크(URL)</span>
+                    </span>
+                    <input class="form-control" type="text" name="msbnUrl">
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>상품 상태</th>
+                <th>상품명</th>
+                <th>삭제</th>
+            </tr>
+            </thead>
+            <tbody class="bannerShopProductTbody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <!-- 공통 js -->
 <script th:src="@{/assets/js/main/jquery.min.js}"></script>
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -217,6 +284,21 @@
 <script th:inline="javascript">
     function saveBtn(){
         if(window.confirm('저장하시겠습니까?')){
+            var msType = $('select[name="msType"]').val();
+
+            if(msType == 'PRODUCT'){
+                var msspOrders = $('input[name="msspOrder"]');
+                if(msspOrders.length > 0){
+                    for(var i=0;i<msspOrders.length;i++){
+                        if(msspOrders.eq(i).val() == ''){
+                            alert('노출순서를 입력해주세요.');
+                            msspOrders.eq(i).focus();
+                            return false;
+                        }
+                    }
+                }
+            }
+
             $('#mainSectionForm').attr('action',location.pathname+'.load');
             $('#mainSectionForm').submit();
         }
@@ -233,11 +315,16 @@
                     $('#sectionContent').append(res);
 
                     if(msType == "BANNER"){
-                        $('#PRODUCT').hide();
-                        $('input[name="PRODUCT"]').attr("disabled","disabled")
+                        $('#DISPLAY_TYPE option').remove();
+                        $('#DISPLAY_TYPE').append('<option value="design1">뉴퍼딜</option>')
+
+                        <option value="design2" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design2'}">반값+습니다</option>
+                        <option value="design3" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design3'}">일일특가</option>
+                        <option value="design4" th:selected="${msJson?.get('DISPLAY_TYPE') == 'design4'}">숨은꿀템</option>
+
+                        $('select[name="DISPLAY_TYPE"]').attr("disabled","disabled")
                     }else if(msType == 'PRODUCT'){
-                        $('#PRODUCT').show();
-                        $('input[name="PRODUCT"]').removeAttr("disabled");
+                        $('select[name="DISPLAY_TYPE"]').removeAttr("disabled");
                     }
                 }
                 ,error(){}
