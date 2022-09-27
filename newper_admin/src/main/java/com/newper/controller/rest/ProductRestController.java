@@ -235,6 +235,7 @@ public class ProductRestController {
         paramMap.put("P_RETAIL_PRICE", paramMap.get("P_RETAIL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_SELL_PRICE", paramMap.get("P_SELL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("P_DEL_PRICE", paramMap.get("P_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("P_DEL_PRICE_CANCEL", paramMap.get("P_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
         System.out.println(paramMap.getMap());
         int res = productService.productSave(paramMap,P_THUMB_FILE1,P_THUMB_FILE2,P_THUMB_FILE3,P_THUMB_FILE4,P_THUMB_FILE5,P_THUMB_FILE6);
         if(res>0){

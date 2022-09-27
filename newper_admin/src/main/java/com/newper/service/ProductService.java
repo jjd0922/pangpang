@@ -48,6 +48,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
@@ -86,6 +87,15 @@ public class ProductService {
             Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             product.setAfterServiceName(afterService);
         }
+
+        String P_COLOR = paramMap.getString("P_COLOR");
+        String[] color = P_COLOR.split(",");
+        Map<String, Object> pColor = new LinkedHashMap<>();
+        for(int i=0; i<color.length; i++){
+            String[] col = color[i].split(":");
+            pColor.put(col[0], col[1]);
+        }
+        product.setPColor(pColor);
 
         String thumbFilePath1="";
         String thumbFilePath2="";
@@ -176,10 +186,18 @@ public class ProductService {
         ori.setPDelCompany(product.getPDelCompany());
         ori.setPDelTogether(product.getPDelTogether());
         ori.setPFreeInterest(product.isPFreeInterest());
-        ori.setPDelFree(product.isPDelFree());
         ori.setPNaver(product.getPNaver());
         ori.setPInfo(product.getPInfo());
         ori.setPOption(product.getPOption());
+
+        String P_COLOR = paramMap.getString("P_COLOR");
+        String[] color = P_COLOR.split(",");
+        Map<String, Object> pColor = new LinkedHashMap<>();
+        for(int i=0; i<color.length; i++){
+            String[] col = color[i].split(":");
+            pColor.put(col[0], col[1]);
+        }
+        ori.setPColor(pColor);
 
 
         if(!paramMap.get("P_CATE_IDX").equals("")){
