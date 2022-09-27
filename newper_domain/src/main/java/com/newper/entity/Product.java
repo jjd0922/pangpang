@@ -147,6 +147,9 @@ public class Product extends BaseEntity {
         if (getPDelType() == null) {
             throw new MsgException("배송타입을 선택해주세요.");
         }
+        if(getPDelCompany() == null){
+            throw new MsgException("배송주체를 선택해주세요.");
+        }
     }
 
     /** 해당 옵션 문자로 return*/

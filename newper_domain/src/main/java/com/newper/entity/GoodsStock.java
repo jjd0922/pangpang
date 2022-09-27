@@ -49,7 +49,7 @@ public class GoodsStock{
     private String gsThumbFileName3;
     private String gsContent;
     private long gsStock;
-    private long gsOutStock;
+    private long gsOutReqStock;
     private long gsMoveStock;
     private Long gsSafeStock;
     private Long gsProperStock;
@@ -60,6 +60,8 @@ public class GoodsStock{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
     private String gsSabang;
+    private int gsDelPrice;
+    private int gsDelPriceCancel;
 
     @PrePersist
     @PreUpdate

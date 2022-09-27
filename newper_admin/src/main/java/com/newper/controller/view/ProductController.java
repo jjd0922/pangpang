@@ -202,6 +202,16 @@ public class ProductController {
 
         Product product = productRepo.findById(pIdx).orElseThrow(() -> new MsgException("존재하지 않는 상품입니다."));
 
+        Map<String,Object> color=product.getPColor();
+        String p_color = "";
+        for (String key : color.keySet()) {
+            p_color+=key+":"+color.get(key)+"/";
+        }
+        if(p_color.length()>0) {
+            p_color=p_color.substring(0,p_color.length()-1);
+        }
+        System.out.println(p_color);
+        mav.addObject("color", p_color);
         String content1 = product.getPContent1();
         content1= Common.summernoteContent(content1);
 

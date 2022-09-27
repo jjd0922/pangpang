@@ -333,13 +333,15 @@ public class ProductRestController {
 
         paramMap.put("GS_OPTION", option);
         paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("GS_DEL_PRICE", paramMap.get("GS_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("GS_DEL_PRICE_CANCEL", paramMap.get("GS_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
         System.out.println(paramMap.getMap());
-        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
-        if(res>0){
-            rm.setMessage("저장되었습니다.");
-        }else{
-            rm.setMessage("잠시후 시도 해주세요.");
-        }
+//        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
+//        if(res>0){
+//            rm.setMessage("저장되었습니다.");
+//        }else{
+//            rm.setMessage("잠시후 시도 해주세요.");
+//        }
         return rm;
     }
 
@@ -352,6 +354,8 @@ public class ProductRestController {
         paramMap.put("GS_IDX", GS_IDX);
 
         paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("GS_DEL_PRICE", paramMap.get("GS_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("GS_DEL_PRICE_CANCEL", paramMap.get("GS_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
         int res = productService.goodsStockUpdate(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
         if(res>0){
             rm.setMessage("수정되었습니다.");

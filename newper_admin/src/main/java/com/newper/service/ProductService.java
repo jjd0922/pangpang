@@ -89,7 +89,7 @@ public class ProductService {
         }
 
         String P_COLOR = paramMap.getString("P_COLOR");
-        String[] color = P_COLOR.split(",");
+        String[] color = P_COLOR.split("|");
         Map<String, Object> pColor = new LinkedHashMap<>();
         for(int i=0; i<color.length; i++){
             String[] col = color[i].split(":");
@@ -191,8 +191,10 @@ public class ProductService {
         ori.setPOption(product.getPOption());
 
         String P_COLOR = paramMap.getString("P_COLOR");
-        String[] color = P_COLOR.split(",");
+        System.out.println(P_COLOR);
+        String[] color = P_COLOR.split("/");
         Map<String, Object> pColor = new LinkedHashMap<>();
+        System.out.println(color.length);
         for(int i=0; i<color.length; i++){
             String[] col = color[i].split(":");
             pColor.put(col[0], col[1]);
@@ -300,8 +302,6 @@ public class ProductService {
             goodsStock.setProduct(product);
         }
 
-        // 등급 추가 후 설정
-        goodsStock.setGsRank(GRank.A1);
         // 스펙 추가후 설정
         goodsStock.setSpec(null);
 
@@ -311,7 +311,11 @@ public class ProductService {
         //가용재고
         goodsStock.setGsStock(0L);
         //출고재고
-        goodsStock.setGsOutStock(0L);
+        goodsStock.setGsOutReqStock(0L);
+        //안전재고
+        goodsStock.setGsSafeStock(0L);
+        //적정재고
+        goodsStock.setGsProperStock(0L);
 
 
         String thumbFilePath1="";
@@ -391,8 +395,8 @@ public class ProductService {
         ori.setGsContent(goodsStock.getGsContent());
         ori.setGsName(goodsStock.getGsName());
         ori.setGsPrice(goodsStock.getGsPrice());
-
-
+        ori.setGsDelPrice(goodsStock.getGsDelPrice());
+        ori.setGsDelPriceCancel(goodsStock.getGsDelPriceCancel());
 
 
         goodsStockRepo.save(ori);
