@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -61,6 +62,10 @@ public class ShopProduct extends BaseEntity {
      * scate_name(전시분류) : scate_name
      * </pre>*/
     private Map<String,Object> spJson;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProduct", cascade = CascadeType.ALL)
+    @OrderBy(value = "spaRequired desc, spaIdx asc")
+    private List<ShopProductAdd> shopProductAddList;
 
     /** 현재 판매 중인 상품인지 확인*/
     public boolean isSell(){

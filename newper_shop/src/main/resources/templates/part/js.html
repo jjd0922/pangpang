@@ -605,3 +605,18 @@
 
 
 </script>
+<script>
+
+    //3자리마다 컴마 찍힌 값으로 return
+    function comma(strOri){
+        var minus = String(strOri).substring(0,1);
+
+        var str=(strOri+'').replace(/[^0-9.]/gi,'');
+        str=Number(str)+'';
+        str = str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        //음수
+        if(minus == '-')str = '-'+str;
+
+        return str;
+    }
+</script>

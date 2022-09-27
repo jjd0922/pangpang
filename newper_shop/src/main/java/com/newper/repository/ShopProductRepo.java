@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ShopProductRepo extends JpaRepository<ShopProduct, Long> {
 
 
-    @EntityGraph(attributePaths = {"category"})
+    @EntityGraph(attributePaths = {"category", "shopProductAddList"})
     ShopProduct findInfosBySpIdx(long spIdx);
 }
