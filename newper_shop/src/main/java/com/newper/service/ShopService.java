@@ -1,12 +1,13 @@
 package com.newper.service;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;
 import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
-import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
 import com.newper.repository.MainSectionRepo;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +33,6 @@ public class ShopService {
     private final ShopMapper shopMapper;
     private final CategoryMapper categoryMapper;
     private final ShopCategoryRepo shopCategoryRepo;
-    private final MainSectionMapper mainSectionMapper;
     private final MainSectionRepo mainSectionRepo;
 
 
@@ -67,12 +69,46 @@ public class ShopService {
             // 카테고리 정보
             shopComp.setShopCategoryList(shopCategoryRepo.findAll());
 
-            // 메인섹션 정보
-            List<MainSection> mainSectionBannerList = mainSectionRepo.findByShop_shopIdxOrderByMsOrder(shop.getShopIdx());
-            List<Map<String,Object>> mainSectionSpList = mainSectionMapper.selectMainSectionSp(shop.getShopIdx());
+            // 메인섹션리스트
+            List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxAndMsOrderGreaterThanOrderByMsOrderAsc(shop.getShopIdx(), 0);
+            List<Map<String,Object>> jsonList = new ArrayList<>();
+            for(int i=0;i<mainSectionList.size();i++){
+                for(int k=0;k<mainSectionList.get(i).getMainSectionBanners().size();k++){
+                    mainSectionList.get(i).getMainSectionBanners().get(k);
+                }
+                for(int k=0;k<mainSectionList.get(i).getMainSectionSps().size();k++){
+                    mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
+//                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName());
+                }
+                if(mainSectionList.get(i).getMsJson() !=null && !mainSectionList.get(i).getMsJson().equals("")){
+                    ObjectMapper mapper = new ObjectMapper();
+                    String json = mainSectionList.get(i).getMsJson();
+                    try {
+                        Map<String,Object> map = mapper.readValue(json,Map.class);
+                        map.put("msIdx", String.valueOf(mainSectionList.get(i).getMsIdx()));
+                        jsonList.add(map);
+                    }catch (IOException e){
+                        System.out.println(e);
+                        throw new MsgException("잠시 후 다시 시도해주세요.");
+                    }
+                }
+            }
+//
+//            for(int i=0;i<mainSectionList.size();i++){
+//                for(int k=0;k<jsonList.size();k++){
+//                    System.out.println("in \n");
+//                    System.out.println(jsonList.get(k).get("msIdx").equals(String.valueOf(mainSectionList.get(i).getMsIdx())));
+//                    System.out.println(jsonList.get(k).get("msIdx"));
+//                    System.out.println(mainSectionList.get(i).getMsIdx());
+//                    System.out.println("\n");
+//                }
+//            }
 
-            shopComp.setMainSectionBannerList(mainSectionBannerList);
-            shopComp.setMainSectionSpList(mainSectionSpList);
+
+            shopComp.setMainSectionList(mainSectionList);
+            shopComp.setMsJsonList(jsonList);
+
+
         }
     }
 

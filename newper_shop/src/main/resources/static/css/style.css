@@ -20,11 +20,17 @@
     transform: translateX(140px);
 }
 @media (max-width: 1379px) {
+    .main-slide {
+        min-width: auto;
+    }
     .swiper-main-image {
-        width: calc(100% - var(--ctg-all-width));
+        width: 100%;
         height: auto;
         transform: translateX(0);
-        margin-left: var(--ctg-all-width);
+        margin-left: 0;
+    }
+    .ctg-all {
+        display: none;
     }
 }
 @media (max-width:991px) {
@@ -196,8 +202,8 @@
 /* 슬라이드 이미지 내부 고정 - 좌측 nav category all */
 .ctg-all {
     width: var(--ctg-all-width);
-    /*height: var(--main-slide-height);*/
-    height: 100%;
+    height: var(--main-slide-height);
+    /*height: 100%;*/
     position: absolute;
     top: -2px;
     left: calc(0% - var(--ctg-all-width));
@@ -206,10 +212,6 @@
     padding: 2px 0;
     display: flex;
     flex-direction: column;
-}
-
-.menu-height .ctg-all {
-    height: var(--main-slide-height);
 }
 .ctg-all>li {
     width: 100%;
