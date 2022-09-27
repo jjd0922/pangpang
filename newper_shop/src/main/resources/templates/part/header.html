@@ -2,265 +2,345 @@
 <header th:fragment="main-header" xmlns:th="http://www.w3.org/1999/html">
     <!--1행 없음-->
     <!--2행-->
-    <div class="container">
-        <div class="header-top">
-            <div class="header-top-inner">
-                <h1 class="logo">
-                    <a th:href="@{/}">
-                        <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
-                    </a>
-                </h1>
-                <div class="searchSection">
-                    <div class="searchBar">
-                        <form name="searchForm" id="searchForm" action="" method="get" onsubmit="return false;">
-                            <input type="text" id="searchInput" name="i" class="main-search" value="">
-                        </form>
-                        <div class="search-icon"></div>
-                    </div>
-                    <div class="searchBar-open">
-                        <div class="searchBar-banner-slide">
-                            <div class="swiper swiper-searchBar">
-                                <ul class="swiper-wrapper">
-                                    <li class="swiper-slide">폭염주의보 발령! 에어컨 써큘레이터 초특가!</li>
-                                    <li class="swiper-slide">금손이 되기위한 나만의 잇템</li>
+    <div class="main-header-middle">
+        <div class="container">
+            <div class="header-top">
+                <div class="header-top-inner">
+                    <h1 class="logo">
+                        <a th:href="@{/}">
+                            <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
+                        </a>
+                    </h1>
+                    <div class="searchSection">
+                        <div class="searchBar">
+                            <form name="searchForm" id="searchForm" action="" method="get" onsubmit="return false;">
+                                <input type="text" id="searchInput" name="i" class="form-control main-search" value="">
+                            </form>
+                            <div class="search-icon"></div>
+                        </div>
+                        <div class="searchBar-open">
+                            <div class="searchBar-banner-slide">
+                                <div class="swiper swiper-searchBar">
+                                    <ul class="swiper-wrapper">
+                                        <li class="swiper-slide">폭염주의보 발령! 에어컨 써큘레이터 초특가!</li>
+                                        <li class="swiper-slide">금손이 되기위한 나만의 잇템</li>
+                                    </ul>
+                                </div>
+                                <div class="searchBar-prev"></div>
+                                <div class="searchBar-next"></div>
+                            </div>
+                            <div class="searchWord">
+                                <ul class="searchWord-tab">
+                                    <li class="on">인기검색어</li>
+                                    <li>추천검색어</li>
                                 </ul>
-                            </div>
-                            <div class="searchBar-prev"></div>
-                            <div class="searchBar-next"></div>
-                        </div>
-                        <div class="searchWord">
-                            <ul class="searchWord-tab">
-                                <li class="on">인기검색어</li>
-                                <li>추천검색어</li>
-                            </ul>
-                            <div class="searchWord-content">
-                                <div class="popular-searchWord on">
-                                    <ul>
-                                        <li>
-                                            <span class="ranking top-ranking">1</span>
-                                            <a href="javascript:;">노트북</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking top-ranking">2</span>
-                                            <a href="javascript:;">모니터</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking top-ranking">3</span>
-                                            <a href="javascript:;">컴퓨터</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">4</span>
-                                            <a href="javascript:;">아이패드</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">5</span>
-                                            <a href="javascript:;">TV</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">6</span>
-                                            <a href="javascript:;">냉장고</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">7</span>
-                                            <a href="javascript:;">선풍기</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">8</span>
-                                            <a href="javascript:;">그램</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">9</span>
-                                            <a href="javascript:;">맥북</a>
-                                        </li>
-                                        <li>
-                                            <span class="ranking">10</span>
-                                            <a href="javascript:;">lg 그램</a>
-                                        </li>
-                                    </ul>
-                                    <p>2022-08-29 13:40 기준</p>
-                                </div>
-                                <div class="suggestion-searchWord">
-                                    <ul>
-                                        <li><a href="javascript:;">노트북</a></li>
-                                        <li><a href="javascript:;">여름맞이 삼성 에어컨</a></li>
-                                        <li><a href="javascript:;">뉴퍼마켓 런칭 기념</a></li>
-                                        <li><a href="javascript:;">아이패드</a></li>
-                                        <li><a href="javascript:;">데스크탑 세일</a></li>
-                                        <li><a href="javascript:;">여름장마 시작!</a></li>
-                                        <li><a href="javascript:;">에어랩</a></li>
-                                        <li><a href="javascript:;">태블릿</a></li>
-                                        <li><a href="javascript:;">LG 스마트TV 특별혜택</a></li>
-                                        <li><a href="javascript:;">게이밍 할일전</a></li>
-                                    </ul>
+                                <div class="searchWord-content">
+                                    <div class="popular-searchWord on">
+                                        <ul>
+                                            <li>
+                                                <span class="ranking top-ranking">1</span>
+                                                <a href="javascript:;">노트북</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking top-ranking">2</span>
+                                                <a href="javascript:;">모니터</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking top-ranking">3</span>
+                                                <a href="javascript:;">컴퓨터</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">4</span>
+                                                <a href="javascript:;">아이패드</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">5</span>
+                                                <a href="javascript:;">TV</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">6</span>
+                                                <a href="javascript:;">냉장고</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">7</span>
+                                                <a href="javascript:;">선풍기</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">8</span>
+                                                <a href="javascript:;">그램</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">9</span>
+                                                <a href="javascript:;">맥북</a>
+                                            </li>
+                                            <li>
+                                                <span class="ranking">10</span>
+                                                <a href="javascript:;">lg 그램</a>
+                                            </li>
+                                        </ul>
+                                        <p>2022-08-29 13:40 기준</p>
+                                    </div>
+                                    <div class="suggestion-searchWord">
+                                        <ul>
+                                            <li><a href="javascript:;">노트북</a></li>
+                                            <li><a href="javascript:;">여름맞이 삼성 에어컨</a></li>
+                                            <li><a href="javascript:;">뉴퍼마켓 런칭 기념</a></li>
+                                            <li><a href="javascript:;">아이패드</a></li>
+                                            <li><a href="javascript:;">데스크탑 세일</a></li>
+                                            <li><a href="javascript:;">여름장마 시작!</a></li>
+                                            <li><a href="javascript:;">에어랩</a></li>
+                                            <li><a href="javascript:;">태블릿</a></li>
+                                            <li><a href="javascript:;">LG 스마트TV 특별혜택</a></li>
+                                            <li><a href="javascript:;">게이밍 할일전</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="userMenu">
-                    <ul>
-                        <li>
-                            <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="login nosessionClass"><i class="login-icon"></i>로그인</a>
-                            <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="sessionClass"><i class="logout"></i>로그아웃</a>
-                        </li>
-                        <li class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}">
-                            <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" th:href="@{/customer/joinWelcome}" class="color-blue"><i class="signUp"></i>회원가입</a>
-                        </li>
-                        <li class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
-                            <a th:href="@{/myPage}"><i class="myShopping"></i>마이쇼핑</a>
-                        </li>
-                        <li th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
-                            <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
-                        </li>
-                        <li th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
-                            <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
-                        </li>
-                    </ul>
+                    <div class="userMenu">
+                        <ul>
+                            <li>
+                                <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="login nosessionClass"><i class="login-icon"></i>로그인</a>
+                                <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="sessionClass"><i class="logout"></i>로그아웃</a>
+                            </li>
+                            <li class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}">
+                                <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" th:href="@{/customer/joinWelcome}" class="color-blue"><i class="signUp"></i>회원가입</a>
+                            </li>
+                            <li class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                                <a th:href="@{/myPage}"><i class="myShopping"></i>마이쇼핑</a>
+                            </li>
+                            <li th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
+                                <a th:href="@{/cart}"><i class="cart"></i>장바구니</a>
+                            </li>
+                            <li th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
+                                <a th:href="@{/custCenter}"><i class="sc"></i>고객센터</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!--3행-->
-
-    <div class="container">
-        <nav>
-            <div class="menu-btn-wrap">
-                <div class="menu-btn">
+    <div class="main-header-bottom">
+        <div class="container">
+            <nav>
+                <div class="menu-btn-wrap">
+                    <div class="menu-btn">
+                    </div>
+                    <p>전체 카테고리</p>
                 </div>
-                <p>전체 카테고리</p>
-            </div>
-            <div class="swiper swiper-gnb">
-                <ul class="gnb swiper-wrapper">
-                    <li class="swiper-slide" th:each="hm: ${@shopComp.getHeaderMenu(#request.getServerName())}" th:classappend="${hm.getClass(#request.getRequestURI())}" th:if="${hm.hmOrder > 0}">
-                        <a th:text="${hm.hmName}" th:href="${hm.getUrl()}">메뉴명</a>
-                    </li>
-                </ul>
-                <div class="swiper-gnb-next"></div>
-            </div>
-            <div class="snb new"><a href="javascript:;">주간pick</a></div> <!--외부링크-->
-            <!-- 전체 카테고리 클릭 시 펼침 -->
-            <div class="gnb-ctg-all">
-                <ul class="ctg-all">
-                    <li class="">
-                        <a href="javascript:;">노트북<span class="separation"></span>데스크탑</a>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>
-                        <div class="ctg-open" style="display: none;">
-                            <div class="ctg-first-area">
-                                <ul>
-                                    <li>
-                                        <a href="javascript:;">LG전자</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">삼성전자</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">한성컴퓨터</a>
-                                        <ul class="first-area-sub">
-                                            <li>
-                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">키보드 마우스 패드</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">노트북 주변기기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">프린터 복합기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">스피커</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">기타</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">벤큐</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">DELL</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">알파스캔</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">주연테크</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">ASUS</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">HP</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">제이씨현시스템</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">필립스</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">MSI</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">크로스오버존</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ctg-second-area">
-                                <ul class="second-area-1">
-                                    <li>
-                                        <a href="javascript:;">
-                                            <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">
-                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                                            <div class="item-price">
-                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">
-                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                                            <div class="item-price">
-                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="second-area-2">
-                                    <a href="javascript:;">
-                                        <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">
-                                    </a>
+                <div class="swiper swiper-gnb">
+                    <ul class="gnb swiper-wrapper">
+                        <li class="swiper-slide" th:each="hm: ${@shopComp.getHeaderMenu(#request.getServerName())}" th:classappend="${hm.getClass(#request.getRequestURI())}" th:if="${hm.hmOrder > 0}">
+                            <a th:text="${hm.hmName}" th:href="${hm.getUrl()}">메뉴명</a>
+                        </li>
+                    </ul>
+                    <div class="swiper-gnb-next"></div>
+                </div>
+                <div class="snb new"><a href="javascript:;">주간pick</a></div> <!--외부링크-->
+                <!-- 전체 카테고리 클릭 시 펼침 -->
+                <div class="gnb-ctg-all">
+                    <ul class="ctg-all">
+                        <li class="" th:each="shopCategory : ${@shopComp.shopCategoryList}">
+                            <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
+                            <div class="ctg-open" style="display: none;">
+                                <div class="ctg-first-area">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;">LG전자</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">삼성전자</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">한성컴퓨터</a>
+                                            <ul class="first-area-sub">
+                                                <li>
+                                                    <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">키보드<span class="separation"></span>마우스</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">키보드 마우스 패드</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">노트북 주변기기</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">프린터 복합기</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">스피커</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">기타</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">벤큐</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">DELL</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">알파스캔</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">주연테크</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">ASUS</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">HP</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">제이씨현시스템</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">필립스</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">MSI</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">크로스오버존</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class=""><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>
-                    <li class=""><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>
-                    <li class=""><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>
-                    <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>
-                    <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>
-                    <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>
-                    <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>
-                </ul>
-            </div>
-        </nav>
+                        </li>
+    <!--                    <li class="">-->
+    <!--                        <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>-->
+    <!--                        <div class="ctg-open" style="display: none;">-->
+    <!--                            <div class="ctg-first-area">-->
+    <!--                                <ul>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">LG전자</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">삼성전자</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">한성컴퓨터</a>-->
+    <!--                                        <ul class="first-area-sub">-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">키보드 마우스 패드</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">노트북 주변기기</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">프린터 복합기</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">스피커</a>-->
+    <!--                                            </li>-->
+    <!--                                            <li>-->
+    <!--                                                <a href="javascript:;">기타</a>-->
+    <!--                                            </li>-->
+    <!--                                        </ul>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">벤큐</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">DELL</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">알파스캔</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">주연테크</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">ASUS</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">HP</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">제이씨현시스템</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">필립스</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">MSI</a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">크로스오버존</a>-->
+    <!--                                    </li>-->
+    <!--                                </ul>-->
+    <!--                            </div>-->
+    <!--                            <div class="ctg-second-area">-->
+    <!--                                <ul class="second-area-1">-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">-->
+    <!--                                            <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">-->
+    <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+    <!--                                            <div class="item-price">-->
+    <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
+    <!--                                            </div>-->
+    <!--                                        </a>-->
+    <!--                                    </li>-->
+    <!--                                    <li>-->
+    <!--                                        <a href="javascript:;">-->
+    <!--                                            <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">-->
+    <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+    <!--                                            <div class="item-price">-->
+    <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
+    <!--                                            </div>-->
+    <!--                                        </a>-->
+    <!--                                    </li>-->
+    <!--                                </ul>-->
+    <!--                                <div class="second-area-2">-->
+    <!--                                    <a href="javascript:;">-->
+    <!--                                        <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">-->
+    <!--                                    </a>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </li>-->
+    <!--                    <li class=""><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>-->
+    <!--                    <li class=""><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>-->
+    <!--                    <li class=""><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>-->
+    <!--                    <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>-->
+    <!--                    <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>-->
+    <!--                    <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>-->
+    <!--                    <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>-->
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
     <th:block th:replace="part/header :: js"></th:block>
 </header>
@@ -286,7 +366,7 @@
 <script>
     function logout(){
         $.ajax({
-            url:'logout.ajax'
+            url:'/logout.ajax'
             ,type:'get'
         }).done(function(res){
             $('.nosessionClass').show();

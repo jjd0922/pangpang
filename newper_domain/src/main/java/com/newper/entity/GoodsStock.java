@@ -39,6 +39,15 @@ public class GoodsStock{
     private Integer gsPrice;
     @Enumerated(EnumType.STRING)
     private GRank gsRank;
+
+    /**<pre>
+     * color_name : "value"
+     * color_rgb : "value"
+     * option : ["option1","option2","option3"]
+     * </pre>*/
+    @Builder.Default
+    private Map<String,Object> gsOption = new HashMap<>();
+
     private String gsMd;
     private Integer gsOriginalPrice;
     private String gsThumbFile1;
@@ -49,7 +58,7 @@ public class GoodsStock{
     private String gsThumbFileName3;
     private String gsContent;
     private long gsStock;
-    private long gsOutStock;
+    private long gsOutReqStock;
     private long gsMoveStock;
     private Long gsSafeStock;
     private Long gsProperStock;
@@ -60,6 +69,11 @@ public class GoodsStock{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
     private String gsSabang;
+    private int gsDelPrice;
+    private int gsDelPriceCancel;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
+    private List<ShopProductOption> shopProductOptionList;
 
     @PrePersist
     @PreUpdate
@@ -71,9 +85,6 @@ public class GoodsStock{
             throw new MsgException("상품을 선택해주세요.");
         }
     }
-
-    @Builder.Default
-    private Map<String,Object> gsOption = new HashMap<>();
 
     /**판매 가능한 재고*/
     public long getSellStock(){

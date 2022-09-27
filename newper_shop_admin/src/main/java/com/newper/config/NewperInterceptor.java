@@ -42,14 +42,10 @@ public class NewperInterceptor implements HandlerInterceptor {
 
         String requestURI = request.getRequestURI();
         for (Menu menu : MenuList.menus) {
-            request.setAttribute("mainTitle", menu.getMenuName());
-            request.setAttribute("mainIcon", menu.getMenuIcon());
             for (SubMenu subMenu : menu.getSubMenuList()) {
                 if(!subMenu.hasAuth(sessionInfo.getAuthIdx(), requestURI)){
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return false;
-                }else{
-                    request.setAttribute("subTitle", subMenu.getSmName());
                 }
             }
         }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.ShopProductMapper">
+    <select id="selectShopProductOptionList" resultType="map">
+        SELECT
+            SHOP_PRODUCT_OPTION.*
+             ,FORMAT(SPO_PRICE, 0 ) SPO_PRICE_F
+        FROM SHOP_PRODUCT_OPTION, SHOP_PRODUCT_ADD
+        WHERE
+            SPO_SPA_IDX = SPA_IDX
+            AND SPA_SP_IDX = #{sp_idx}
+        ORDER BY SPO_IDX ASC
+    </select>
+
+</mapper>

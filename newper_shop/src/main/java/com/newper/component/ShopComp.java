@@ -1,6 +1,7 @@
 package com.newper.component;
 
 import com.newper.entity.HeaderMenu;
+import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
 import com.newper.entity.ShopCategory;
 import lombok.Getter;
@@ -32,6 +33,9 @@ public class ShopComp {
     private String shopDesign;
     /** 전시 대분류 */
     private List<ShopCategory> shopCategoryList;
+    /** 메인섹션 */
+    private List<MainSection> mainSectionList;
+    private List<Map<String,Object>> msJsonList;
 
     /** 분양몰 디자인 class*/
     public String setShopDesignClass(Map<String, Object> shopDesignMap){

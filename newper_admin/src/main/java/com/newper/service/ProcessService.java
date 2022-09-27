@@ -217,6 +217,10 @@ public class ProcessService {
     /** 검수 내용 업데이트 */
     public void updateCheckGoods(ParamMap paramMap, MultipartFile[] gFile) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+        if (goods.getGState().equals(GState.CHECK_REQ)) {
+            throw new MsgException("해당건은 이미 영업검수 요청한 자산입니다.");
+        }
+
         //메모 저장
         goods.setGMemo(paramMap.getString("gMemo"));
 

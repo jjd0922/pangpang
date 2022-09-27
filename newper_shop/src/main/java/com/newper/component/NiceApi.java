@@ -31,7 +31,7 @@ public class NiceApi {
         // CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
         //리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
         String sReturnUrl = domain+"/customer/auth/response";      // 성공시 이동될 URL
-        String sErrorUrl = "localhost:9200/customer/error.ajax";          // 실패시 이동될 URL
+//        String sErrorUrl = "localhost:9200/customer/error.ajax";          // 실패시 이동될 URL
 
         // 입력될 plain 데이타를 만든다.
         String sPlainData =
@@ -39,7 +39,7 @@ public class NiceApi {
                         "8:SITECODE" + auth_sitecode.getBytes().length + ":" + auth_sitecode +
                         "9:AUTH_TYPE" + sAuthType.getBytes().length + ":" + sAuthType +
                         "7:RTN_URL" + sReturnUrl.getBytes().length + ":" + sReturnUrl +
-                        "7:ERR_URL" + sErrorUrl.getBytes().length + ":" + sErrorUrl +
+//                        "7:ERR_URL" + sErrorUrl.getBytes().length + ":" + sErrorUrl +
                         "9:CUSTOMIZE" + customize.getBytes().length + ":" + customize;
 
         String sMessage = null;
@@ -70,7 +70,21 @@ public class NiceApi {
         return map;
     }
 
-    /** nice 응답 후 받아온 데이터 return   */
+    /** nice 응답 후 받아온 데이터 return
+     * <pre>
+     * 조회시 key : value
+     * REQ_SEQ : NICE본인인증 요청번호
+     * AUTH_TYPE : 인증수단 (M:휴대폰 C:카드 X:인증서 P:삼성패스)
+     * RES_SEQ : 처리결과 고유번호
+     * NAME : 이름
+     * UTF8_NAME : 이름 (UTF-8)
+     * BIRTHDATE : 생년월일(YYYYMMDD)
+     * GENDER : 성별코드 (0:여성 1:남성)
+     * NATIONALINFO : 내/외국인코드 (0:내국인 1:외국인)
+     * DI : DI(중복가입확인값)
+     * MOBILE_CO : 통신사
+     * MOBILE_NO : 휴대폰번호
+     * </pre>*/
     public Map<String,Object> getNiceReturn(ParamMap paramMap) {
         NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
 

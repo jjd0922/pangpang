@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>입고검수</title>
+    <title th:text="${subTitle}">입고검수</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -23,7 +23,14 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                        <span class="breadcrumb-item"></span>
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
                                     </div>
                                 </h6>
                             </div>
@@ -172,6 +179,15 @@
             ,{'title':'요청일','data':'CG_REQUEST_DATE', 'defaultContent':''}
             ,{'title':'작업시작일','data':'CG_START_DATE', 'defaultContent':''}
             ,{'title':'작업종료일','data':'CG_END_DATE', 'defaultContent':''}
+            ,{'title':'입고검수<br>업체','data':'COM_NAME', defaultContent:''}
+            ,{'title':'입고검수<br>담당자','data':'U_NAME3', defaultContent:''}
+            ,{'title':'요청자','data':'CREATED_BY'}
+            ,{'title':'작업지시자','data':'U_NAME1', defaultContent:''}
+            ,{'title':'완료처리자','data':'U_NAME2', defaultContent:''}
+            ,{'title':'요청일','data':'CG_REQUEST_DATE'}
+            ,{'title':'작업시작일','data':'CG_START_DATE', 'defaultContent':''}
+            ,{'title':'작업종료일','data':'CG_END_DATE', 'defaultContent':''}
+            // ,{'title':'작업<br>소요시간','data':'(CG_END_DATE)-(CG_START-DATE)'}
             ,{'title':'공정예정비<br>합계','data':'CGS_EXPECTED_COST', class : 'text-right', render: function (data, type, full, meta) {
                 return comma(data);
             }}

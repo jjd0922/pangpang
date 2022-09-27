@@ -3,7 +3,7 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
-import com.newper.mapper.MainsectionMapper;
+import com.newper.mapper.MainSectionMapper;
 import com.newper.service.DesignService;
 import com.newper.service.MainsectionService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class DesignRestController {
 
     private final DesignService designService;
+    private final MainsectionService mainsectionService;
+    private final MainSectionMapper mainsectionMapper;
 
     @PostMapping(value = "test.dataTable")
     public ReturnDatatable testDt(){
@@ -52,11 +55,6 @@ public class DesignRestController {
         return rm;
     }
 
-
-
-    private final MainsectionService mainsectionService;
-    private final MainsectionMapper mainsectionMapper;
-
     /** mainsection DataTable*/
     @PostMapping("mainsection.dataTable")
     public ReturnDatatable mainsection(ParamMap paramMap){
@@ -70,30 +68,27 @@ public class DesignRestController {
         return rd;
     }
     /** mainsection insert/update */
-    @PostMapping(value = {"mainsection/{msIdx}.load", "mainsection/new.load"})
-    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx, ParamMap paramMap){
+    @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}.load", "mainsection/new/{shopIdx}.load"})
+    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx,@PathVariable("shopIdx") Long shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
         ModelAndView mav = new ModelAndView("main/alertMove");
 
         if(msIdx != null){
             paramMap.put("msIdx",msIdx);
-            mainsectionService.mainsectionUpdate(paramMap);
+            mainsectionService.mainsectionUpdate(paramMap, mfRequest);
             mav.addObject("msg","수정 완료");
         }else{
-            msIdx = mainsectionService.mainsectionSave(paramMap);
+            msIdx = mainsectionService.mainsectionSave(paramMap, mfRequest);
             mav.addObject("msg","생성 완료");
         }
-        mav.addObject("loc","/design/mainsection/"+msIdx);
+        mav.addObject("loc","/design/mainsection/"+msIdx+"/"+shopIdx);
 
         return mav;
     }
     /** mainsection 순서 변경*/
-    @PostMapping("mainsection.ajax")
-    public ReturnMap mainsectionOrder(ParamMap paramMap){
+    @PostMapping("mainsection/order.ajax")
+    public ReturnMap mainsectionOrder(long[] idxs){
         ReturnMap rm = new ReturnMap();
-        List<String> msIdxs = paramMap.getList("msIdxs[]");
-
-        mainsectionService.mainsectionOrder(msIdxs);
-
+        mainsectionService.mainsectionOrder(idxs);
         return rm;
     }
     /** mainsection 노출상태 토글 */

@@ -1,14 +1,17 @@
 package com.newper.controller.view;
 
 import com.newper.constant.PayState;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Payment;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
+import com.newper.repository.ShopProductOptionRepo;
 import com.newper.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +21,32 @@ import org.springframework.web.servlet.ModelAndView;
 public class OrdersController {
 
     private final PaymentService paymentService;
+    private final ShopProductOptionRepo shopProductOptionRepo;
 
+    /** 주문 결제 페이지*/
+    @PostMapping("")
+    public ModelAndView orders(ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("orders/orders");
+
+        for (String key : paramMap.keySet()) {
+            if (key.indexOf("spo") == 0) {
+
+                System.out.println(key);
+                System.out.println(key.substring(3));
+
+                String[] spos = key.substring(3).split("_");
+                for (String spo : spos) {
+                    System.out.print("spo==  ");
+                    System.out.println(spo);
+                }
+
+                System.out.println(paramMap.get(key));
+            }
+        }
+
+
+        return mav;
+    }
     /** 결제 결과*/
     @GetMapping("result/ph{idx}")
     public ModelAndView resultPh(@PathVariable(value = "idx") long ph_idx){

@@ -11,10 +11,10 @@
                     <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
                         <ul class="login-input-group">
                             <li class="input-wrap">
-                                <input type="text" name="id" maxlength="10" placeholder="아이디">
+                                <input type="text" class="form-control" name="id" maxlength="10" placeholder="아이디">
                             </li>
                             <li class="input-wrap">
-                                <input type="password" name="pw" maxlength="15" placeholder="비밀번호">
+                                <input type="password" class="form-control" name="pw" maxlength="15" placeholder="비밀번호">
                             </li>
                         </ul>
                     </form>
@@ -35,8 +35,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="btn btn7">
-                        <a href="javascript:login();">로그인</a>
+                    <div class="flex-center">
+                        <a onclick="login()" class="btn btn-point btn-xlg">로그인</a>
                     </div>
                     <h2 class="font-sm semi-bold center">간편 로그인</h2>
                     <ul class="sns-login-group">
@@ -64,7 +64,7 @@
     <script>
         function login(){
             $.ajax({
-              url:'login.ajax'
+              url:'/login.ajax'
               ,type:'post'
               ,data:$('#loginForm').serialize()
             }).done(function(res){
@@ -121,10 +121,10 @@
             <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
                 <ul class="login-input-group">
                     <li class="input-wrap">
-                        <input type="text" name="id" maxlength="10" placeholder="아이디">
+                        <input type="text" class="form-control" name="id" maxlength="10" placeholder="아이디">
                     </li>
                     <li class="input-wrap">
-                        <input type="password" name="pw" maxlength="15" placeholder="비밀번호">
+                        <input type="password" class="form-control" name="pw" maxlength="15" placeholder="비밀번호">
                     </li>
                 </ul>
             </form>
@@ -145,8 +145,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="btn btn7">
-                <a href="javascript:login();">로그인</a>
+
+            <div class="flex-center">
+                <a onclick="login()" class="btn btn-point btn-xlg">로그인</a>
             </div>
             <h2 class="font-sm semi-bold center">간편 로그인</h2>
             <ul class="sns-login-group">
@@ -171,7 +172,7 @@
     <script>
         function login(){
             $.ajax({
-                url:'login.ajax'
+                url:'/login.ajax'
                 ,type:'post'
                 ,data:$('#loginForm').serialize()
             }).done(function(res){
@@ -235,7 +236,7 @@
                     <p>집</p>
                     <p class="bold">홍길동</p>
                     <!-- 기본배송지 아닐 경우 아래 <div>태그 삭제 -->
-                    <div class="defaultAddr font-xsm">기본배송지</div>
+                    <div class="btn-point font-xsm">기본배송지</div>
                 </li>
                 <li>
                     <p>15205</p>

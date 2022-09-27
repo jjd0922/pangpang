@@ -9,9 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -29,8 +27,10 @@ public class MainSection extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MS_SHOP_IDX", referencedColumnName = "shopIdx")
     private Shop shop;
-    /** 메인섹션명*/
+    /** 메인섹션명 */
     private String msName;
+    /** 메인섹션 부제목*/
+    private String msSubName;
     /** 순서*/
     private int msOrder;
     /** 섹션타입. 기획인 경우 배너,상품그룹의 순서 100자리수를 열로 사용 */
@@ -38,6 +38,16 @@ public class MainSection extends BaseEntity {
     private MsType msType;
     /** 섹션 정보*/
     private String msJson;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mainSection", cascade = CascadeType.ALL)
+    @Builder.Default
+    @OrderBy(value = "msbnOrder asc")
+    private List<MainSectionBanner> mainSectionBanners = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mainSection", cascade = CascadeType.ALL)
+    @Builder.Default
+    @OrderBy(value = "msspOrder asc")
+    private List<MainSectionSp> mainSectionSps = new ArrayList<>();
 
     @PreUpdate
     @PrePersist
@@ -53,7 +63,7 @@ public class MainSection extends BaseEntity {
         }
     }
 
-    public void updateMainsectionOrder(int msOrder) {
+    public void updateMsOrder(int msOrder) {
         if(getMsOrder() < 0){
             setMsOrder(msOrder * -1);
         }else{

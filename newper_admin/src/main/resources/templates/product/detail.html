@@ -489,7 +489,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">기준매입원가</span>
                                             </span>
-                                            <input type="text" name="P_COST" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                            <input type="text" name="P_COST" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -499,7 +499,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">유통가</span>
                                             </span>
-                                            <input type="text" name="P_RETAIL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                            <input type="text" name="P_RETAIL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -509,7 +509,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">기준판매가</span>
                                             </span>
-                                            <input type="text" name="P_SELL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                            <input type="text" name="P_SELL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -519,7 +519,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">배송비</span>
                                             </span>
-                                            <input type="text" name="P_DEL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="text" name="P_DEL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -527,7 +527,17 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">배송주체</span>
+                                                <span class="input-group-text">반품비</span>
+                                            </span>
+                                            <input type="text" name="P_DEL_PRICE_CANCEL" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPriceCancel,0,'COMMA')}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested">배송주체</span>
                                             </span>
                                             <select class="form-control select" data-placeholder="선택" name="P_DEL_COMPANY">
                                                 <option></option>
@@ -560,20 +570,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">무료배송여부</span>
-                                            </span>
-                                            <select class="form-control select" data-placeholder="선택" name="P_DEL_FREE">
-                                                <option></option>
-                                                <option value="true" th:selected="${product?.pDelFree eq true}">Y</option>
-                                                <option value="false" th:selected="${product?.pDelFree eq false}">N</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </fieldset>
                         <fieldset class="mb-0">
@@ -585,7 +582,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">네이버 지식쇼핑 최저가</span>
                                             </span>
-                                            <input type="text" name="P_NAVER1" class="form-control" th:value="${product?.pNaver?.P_NAVER1}" readonly>
+                                            <input type="text" name="P_NAVER1" class="form-control text-right" th:value="${product?.pNaver?.P_NAVER1}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -703,7 +700,22 @@
                             </div>
                         </fieldset>
                         <fieldset class="mb-0">
-                            <legend class="">7.OPTION(MAX3개)<span class="small ml-2"></span> <a class="btn btn-sm badge-indigo legitRipple" onclick="optionAdd()">추가</a></legend>
+                            <legend class="">7.색상<span class="small ml-2"></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">색상</span>
+                                            </span>
+                                            <input type="text" name="P_COLOR" class="form-control" placeholder="색상명:rgb/색상명:rgb/..."  th:value="${color}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mb-0">
+                            <legend class="">8.OPTION(MAX3개)<span class="small ml-2"></span> <a class="btn btn-sm badge-indigo legitRipple" onclick="optionAdd()">추가</a></legend>
                             <div class="row">
                                 <input type="hidden" id="optCnt" th:value="${optionSize}==null? 0:${optionSize}">
                                 <table class="table table-bordered">

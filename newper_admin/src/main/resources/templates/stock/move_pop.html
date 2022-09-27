@@ -22,14 +22,17 @@
                         </div>
                     </div>
                     <div>
-                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test1" style="display: none">작업요청취소</a>
-                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test2" style="display: none">작업중(출고)</a>
-                        <a class="btn btn-sm btn-info" id="test3" style="display: none" href=javascript:finishedBtn();>작업완료(입고)</a>
+                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test1" style="display: none" href="javascript:eqCancelBtn();">작업요청취소</a>
+                        <a class="btn btn-sm btn-info" th:if="${tempObject} == null" id="test2" style="display: none" href="javascript:eqIngBtn();">작업중(출고)</a>
+<!--                        <a class="btn btn-sm btn-info" id="test3" style="display: none" href=javascript:finishedBtn();>작업완료(입고)</a>-->
                         <input type="hidden" id="test4">
                         <input type="hidden" id="test5">
                         <input type="hidden" id="test6">
                         <input type="hidden" id="test7">
+                        <input type="hidden" th:if="${locationMove!=null}" id="test10">
                         <a  class="btn btn-sm btn-info" id="test8" style="display: none"  href=javascript:eqFinishedBtn();>작업완료</a>
+                        <a  class="btn btn-sm btn-info"  id="test9" th:if="${locationMove!=null}"  href=javascript:eqCancelBtn();>작업요청취소</a>
+                        <a  class="btn btn-sm btn-info"  id="test11" th:if="${locationMove!=null}"  href=javascript:eqFinishedBtn2();>작업완료</a>
                     </div>
                 </div>
             </div>
@@ -63,7 +66,12 @@
                                                               &lt;!&ndash;  <option th:each="opt: ${T(com.newper.constant.LmState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" ></option>&ndash;&gt;
 
                                                            </select>-->
-                                                       <input type="text" class="form-control" disabled>
+                                                            <input type="text" class="form-control" readonly th:value="${locationMove?.lmState}">
+<!--                                                        <input type="hidden" class="form-control" name="LM_IDX" th:value="${locationMove?.lmIdx}">-->
+                                                            <input type="hidden" class="form-control" name="LOC_IDX1" th:value="${locationMove?.location1?.locIdx}">
+                                                            <input type="hidden" class="form-control" name="LOC_IDX2" th:value="${locationMove?.location2?.locIdx}">
+                                                            <input type="hidden" class="form-control" name="LM_STATE" th:value="${locationMove?.lmState}">
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,7 +85,7 @@
                                                                       요청자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_U_IDX" class="form-control">
+                                                            <input type="text" name="LM_U_IDX" class="form-control" th:value="${locationMove?.user?.uIdx}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -91,7 +99,7 @@
                                                                       처리자
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_U_IDX" class="form-control">
+                                                            <input type="text" name="LM_U_IDX" class="form-control" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,12 +130,12 @@
                                                                       창고이동코드
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_IDX" class="form-control" disabled>
+                                                            <input type="text" name="LM_IDX" class="form-control" readonly th:value="${locationMove?.lmIdx}">
                                                         </div>
                                                     </div>
                                                 </div>
 
-<!--
+<!--3
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
                                                         <div class="input-group">
@@ -151,7 +159,7 @@
                                                                       창고이동출고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_OUT_DATE" class="form-control daterange-singlenull" readonly>
+                                                            <input type="text" name="LM_OUT_DATE" class="form-control daterange-singlenull" readonly th:value="${locationMove?.lmOutDate}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -165,7 +173,7 @@
                                                                       창고이동입고일
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_IN_DATE" class="form-control daterange-singlenull" readonly>
+                                                            <input type="text" name="LM_IN_DATE" class="form-control daterange-singlenull" readonly th:value="${locationMove?.lmInDate}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,7 +189,7 @@
                                                                       메모
                                                                 </span>
                                                             </span>
-                                                            <input type="text" name="LM_MEMO" class="form-control">
+                                                            <input type="text" name="LM_MEMO" class="form-control" th:value="${locationMove?.lmMemo}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,8 +222,19 @@
                                             <td>삭제</td>
                                             </thead>
                                             <tbody>
-                                            <tr>
+                                            <tr th:if="${locationMove==null}">
                                                 <td colspan="8">창고 정보가 없습니다.</td>
+                                            </tr>
+                                            <tr th:if="${locationMove!=null}">
+                                                <td th:text="${location?.warehouse?.whName}">창고<input type="hidden" name="whIdx1" th:value="${locationMove?.location?.locIdx}"></td>
+                                                <td th:text="${locationMove?.location1?.locForm}">형태</td>
+                                                <td th:text="${locationMove?.location1?.locZone}">존</td>
+                                                <td th:text="${locationMove?.location1?.locColumn}">열</td>
+                                                <td th:text="${locationMove?.location1?.locRow}">행</td>
+                                                <td th:text="${locationMove?.location1?.locCode}">로케이션</td>
+                                                <td th:text="${locationMove?.location1?.locIdx}">코드</td>
+                                                <td th:text="${locationMove?.location1?.locBarcode}">바코드</td>
+                                                <td></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -243,8 +262,19 @@
                                             <td>삭제</td>
                                             </thead>
                                             <tbody>
-                                            <tr>
+                                            <tr th:if="${locationMove==null}">
                                                 <td colspan="8">창고 정보가 없습니다.</td>
+                                            </tr>
+                                            <tr th:if="${locationMove!=null}">
+                                                <td th:text="${location2?.warehouse?.whName}">창고<input type="hidden" name="whIdx2" th:value="${locationMove?.location2?.locIdx}"></td>
+                                                <td th:text="${locationMove?.location2?.locForm}">형태</td>
+                                                <td th:text="${locationMove?.location2?.locZone}">존</td>
+                                                <td th:text="${locationMove?.location2?.locColumn}">열</td>
+                                                <td th:text="${locationMove?.location2?.locRow}">행</td>
+                                                <td th:text="${locationMove?.location2?.locCode}">로케이션</td>
+                                                <td th:text="${locationMove?.location2?.locIdx}">코드</td>
+                                                <td th:text="${locationMove?.location2?.locBarcode}">바코드</td>
+                                                <td></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -256,7 +286,7 @@
                                                     <div class="header-elements">
                                                        <!-- <a onclick="locBarcode($(this))" class="badge badge-primary">자산등록</a>-->
                                                         <a class="badge badge-primary mr-1" id="searchGoodsByBarcode">자산등록</a>
-                                                        <a onclick="deleteRow($(this))" class="badge badge-primary">자산일괄삭제</a>
+                                                        <a onclick="deleteRow($(this))" class="badge badge-primary" id="deleteBtn">자산일괄삭제</a>
                                                     <!--    <a class="badge badge-primary" id="deleteGoods">자산일괄삭제</a>-->
                                                     </div>
                                                 </div>
@@ -283,7 +313,23 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="locationGoodsTbody">
-
+                                                <tr th:if="${locationMove!=null}" th:each="goods:${goods}">
+                                                    <td th:text="${goods['G_STATE']}">자산상태</td>
+                                                    <td th:text="${goods['G_BARCODE']}">자산코드</td>
+                                                    <td th:text="${goods['P_IDX']}">상품코드</td>
+                                                    <td th:text="${goods['P_NAME']}">상품명</td>
+                                                    <td th:text="${goods['PS_TYPE']}">가공SPEC(확정)</td>
+                                                    <td th:text="${goods['LOC_WH_IDX']}">창고</td>
+                                                    <td th:text="${goods['LOC_FORM']}">형태</td>
+                                                    <td th:text="${goods['LOC_ZONE']}">존</td>
+                                                    <td th:text="${goods['LOC_COLUMN']}">열</td>
+                                                    <td th:text="${goods['LOC_ROW']}">행</td>
+                                                    <td th:text="${goods['LOC_CODE']}">로케이션</td>
+                                                    <td th:text="${goods['G_IMEI']}">IMEI</td>
+                                                    <td th:text="${goods['G_IMEI']}">시리얼</td>
+                                                    <td th:text="${goods['G_PO_IDX']}">발주코드</td>
+                                                    <td></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -413,22 +459,23 @@
         if(test6==test7){
             if (test5==test4){
                 alert("해당 경우는 창고와 로케이션이 같습니다.");
-                $('#test3').hide();
+                // $('#test3').hide();
                 $('#test1').hide();
                 $('#test2').hide();
-
+                $('#test8').hide();
 
             }
             else {
                 $('#test8').show();
-                $('#test3').hide();
+                // $('#test3').hide();
                 $('#test1').hide();
                 $('#test2').hide();
             }}else{
             $('#test1').show();
             $('#test2').show();
-            $('#test3').show();
+            // $('#test3').show();
         }
+
         selectLocGoods(data.LOC_IDX);
     }
 
@@ -471,21 +518,22 @@
         if(test6==test7){
             if (test5==test4){
                 alert("해당 경우는 창고와 로케이션이 같습니다.");
-                $('#test3').hide();
+                // $('#test3').hide();
                 $('#test1').hide();
                 $('#test2').hide();
+                $('#test8').hide();
         /*        $('#warehouseTable2').hide();*/
             }
 
             else {
                 $('#test8').show();
-                $('#test3').hide();
+                // $('#test3').hide();
                 $('#test1').hide();
                 $('#test2').hide();
             }}else{
             $('#test1').show();
             $('#test2').show();
-            $('#test3').show();
+            // $('#test3').show();
         }
     }
 
@@ -565,6 +613,21 @@
     }
 
 
+/*
+    if ( $('#test11').finish()){
+        $('#test9').hide();
+        $('#test11').hide();
+    }
+
+    if ( $('#test9').finish()){
+        $('#test9').hide();
+    }
+*/
+
+
+
+
+
     function locBarcode(data) {
         $.ajax({
             url: '/stock/load/barcode.ajax',
@@ -634,7 +697,8 @@
                     ,data:$('#regiForm').serialize(),
 
                     success: function(res){
-                        $('#userTable').DataTable().ajax.reload();
+                        window.close();
+                        opener.location.reload();
                     },
                     error: function(){
                     }
@@ -648,13 +712,80 @@
             type: 'post'
             ,data:$('#regiForm').serialize()+"&LM_STATE=FINISHWORK",
 
-            success: function(res){
-                $('#userTable').DataTable().ajax.reload();
-            },
-            error: function(){
+             success: function(data){
+                 window.close();
+                 opener.location.reload();
+            //     $('#goodsTable').DataTable().ajax.reload();
+            // },
+            // error: function(){
+             }
+        });
+    }
+    function eqCancelBtn(){
+        $.ajax({
+            url:'/stock/cancelLocation.ajax',
+            type: 'post'
+            ,data:$('#regiForm').serialize(),
+
+           success: function(data){
+               $('#test9').hide().data();
+               $('#test11').hide().data();
+               opener.location.reload();
+            //     $('#goodsTable').DataTable().ajax.reload();
+            // },
+            // error: function(){
+             }
+        });
+    }
+    function eqFinishedBtn2(){
+        $.ajax({
+            url:'/stock/finishedLocation.ajax',
+            type: 'post'
+            ,data:$('#regiForm').serialize(),
+
+             success: function(data){
+                 $('#test9').hide().data();
+                 $('#test11').hide().data();
+                 opener.location.reload();
+            //     $('#goodsTable').DataTable().ajax.reload();
+            // },
+            // error: function(){
+             }
+        });
+    }
+
+
+    function eqIngBtn(){
+        $.ajax({
+            url:'/stock/changeLocation2.ajax',
+            type: 'post'
+            ,data:$('#regiForm').serialize()+"&LM_STATE=WORKING",
+
+             success: function(data){
+                 window.close();
+                 opener.location.reload();
+            //     $('#goodsTable').DataTable().ajax.reload();
+            // },
+            // error: function(){
             }
         });
     }
+
+
+
+/*    function eqCancelBtn(){
+        $.ajax({
+            url:'/stock/changeLocation2.ajax',
+            type: 'post'
+            ,data:$('#regiForm').serialize()+"&LM_STATE=CANCELWORK",
+
+            // success: function(data){
+            //     $('#goodsTable').DataTable().ajax.reload();
+            // },
+            // error: function(){
+            // }
+        });
+    }*/
  /*   +"&"+$('#goodsForm').serialize()*/
 
 /*    function finishedBtn(){
@@ -683,6 +814,42 @@
     $('#searchWarehouseBtn').on('click', openWarehouseModal);
     $('#searchWarehouseBtn2').on('click', openWarehouseModal2);
     $('#searchGoodsByBarcode').on('click', showGoodsBarcodeModal);
+
+    window.onload=function() {
+
+
+        if ([[${locationMove?.lmState}]] == 'FINISHWORK') {
+            $('#test11').hide()
+            $('#test9').hide()
+            $('#searchWarehouseBtn').hide()
+            $('#searchWhByBarcode').hide()
+            $('#searchWarehouseBtn2').hide()
+            $('#searchWhByBarcode2').hide()
+            $('#searchGoodsByBarcode').hide()
+            $('#deleteBtn').hide()
+        } else if ([[${locationMove?.lmState}]] == 'CANCELWORK') {
+            $('#test11').hide()
+            $('#test9').hide()
+            $('#searchWarehouseBtn').hide()
+            $('#searchWhByBarcode').hide()
+            $('#searchWarehouseBtn2').hide()
+            $('#searchWhByBarcode2').hide()
+            $('#searchGoodsByBarcode').hide()
+            $('#deleteBtn').hide()
+        }
+        else if ([[${locationMove?.lmState}]] == 'WORKING') {
+            $('#searchWarehouseBtn').hide()
+            $('#searchWhByBarcode').hide()
+            $('#searchWarehouseBtn2').hide()
+            $('#searchWhByBarcode2').hide()
+            $('#searchGoodsByBarcode').hide()
+            $('#deleteBtn').hide()
+        }
+
+        else {
+        }
+    }
+
 </script>
 
 </body>

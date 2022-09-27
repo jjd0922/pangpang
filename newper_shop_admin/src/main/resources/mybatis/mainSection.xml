@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.MainSectionMapper">
+    <sql id="includeMainsectionDatatable">
+        AND SHOP_IDX = #{shopIdx}
+        <if test="msName != null and msName != ''">
+            AND MS_NAME LIKE '%'||#{msName}||'%'
+        </if>
+    </sql>
+    <select id="selectMainSectionDatatable" resultType="map">
+        SELECT
+            *
+        FROM (
+            SELECT
+                SHOP_IDX, SHOP_NAME
+            FROM SHOP
+            ORDER BY SHOP_IDX
+            <if test="length!=-1">
+                limit #{start},#{length}
+            </if>
+        ) SHOP LEFT JOIN MAIN_SECTION ON MS_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeMainsectionDatatable"></include>
+        </where>
+        ORDER BY SHOP_IDX, ABS(MS_ORDER)
+    </select>
+    <select id="countMainSectionDatatable" resultType="map">
+        SELECT
+            COUNT(DISTINCT(SHOP_IDX)) CNT
+        FROM
+            SHOP LEFT JOIN MAIN_SECTION ON MS_SHOP_IDX = SHOP_IDX
+        <where>
+            <include refid="includeMainsectionDatatable"></include>
+        </where>
+    </select>
+
+    <select id="selectMainSectionShopProductByMsIdx" resultType="map" parameterType="Long">
+        SELECT
+            MAIN_SECTION_SP.*
+            ,SP_IDX
+            ,SP_NAME
+            ,SP_STATE
+        FROM
+            MAIN_SECTION
+           ,MAIN_SECTION_SP
+           ,SHOP_PRODUCT
+        WHERE
+            MSSP_MS_IDX = MS_IDX
+          AND MSSP_SP_IDX = SP_IDX
+          AND MS_IDX = #{msIdx}
+        ORDER BY MSSP_ORDER
+    </select>
+
+    <insert id="insertMainSectionSp" parameterType="map">
+        INSERT INTO MAIN_SECTION_SP
+        (
+            MSSP_MS_IDX
+            ,MSSP_SP_IDX
+            ,MSSP_ORDER
+        )
+        VALUES
+            (#{msspMsIdx}, #{msspSpIdx}, #{msspOrder})
+    </insert>
+    <update id="updateMainSectionSp" parameterType="map">
+        UPDATE MAIN_SECTION_SP
+        SET
+            MSSP_ORDER = #{msspOrder}
+        WHERE
+            MSSP_SP_IDX = #{spIdx}
+            AND MSSP_MS_IDX = #{msIdx}
+    </update>
+    <delete id="deleteMainSectionSp" parameterType="map">
+        DELETE FROM MAIN_SECTION_SP
+        WHERE
+            MSSP_MS_IDX = #{msspMsIdx}
+            <if test="msspSpIdx != null and msspSpIdx !=''">
+                AND MSSP_SP_IDX = #{msspSpIdx}
+            </if>
+    </delete>
+
+    <select id="selectMainSectionMsJson" resultType="map">
+        SELECT
+            if(MS_JSON!='',replace(JSON_EXTRACT(MS_JSON,'$.PRODUCT'),'"',''),'') PRODUCT
+        FROM
+            MAIN_SECTION
+        WHERE MS_IDX = #{msIdx}
+
+    </select>
+</mapper>

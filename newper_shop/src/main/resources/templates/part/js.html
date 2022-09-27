@@ -597,10 +597,26 @@
         $(this).siblings().removeClass('on');
     });
 
-    /*** 마이쇼핑 ***/
+    /*** 마이쇼핑정보 ***/
     // 기간조회
     // document.querySelector('#date1').value = new Date().toISOString().substring(0, 10);
     // document.querySelector('#date2').value = new Date().toISOString().substring(0, 10);
 
 
+
+</script>
+<script>
+
+    //3자리마다 컴마 찍힌 값으로 return
+    function comma(strOri){
+        var minus = String(strOri).substring(0,1);
+
+        var str=(strOri+'').replace(/[^0-9.]/gi,'');
+        str=Number(str)+'';
+        str = str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        //음수
+        if(minus == '-')str = '-'+str;
+
+        return str;
+    }
 </script>

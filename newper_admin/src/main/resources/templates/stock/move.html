@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>창고이동관리</title>
+    <title th:text="${subTitle}">창고이동관리</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <th:block th:replace="common/css.html"></th:block>
 </head>
@@ -23,7 +23,14 @@
                             <div class="card-header header-elements-inline">
                                 <h6 class="card-title">
                                     <div class="breadcrumb breadcrumb-caret">
-                                        <span class="breadcrumb-item"></span>
+                                        <span class="breadcrumb-item">
+                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                            <th:block th:text="${mainTitle}"></th:block>
+                                        </span>
+                                        <span class="breadcrumb-item font-weight-bold text-secondary">
+                                            <i class="mr-1" th:classappend="${subIcon}"></i>
+                                            <th:block th:text="${subTitle}"></th:block>
+                                        </span>
                                     </div>
                                 </h6>
                             </div>
@@ -163,8 +170,8 @@
         focusPopup.focus();
     }
 
-    function popStockMoveDetail(idx) {
-        var focusPopup = window.open('/stock/move/pop/'+idx,'stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+    function popStockMoveDetail(lmIdx) {
+        var focusPopup = window.open('/stock/move/pop/'+lmIdx,'stockMovePop','width=950, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
 </script>
@@ -179,31 +186,31 @@
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/coupon/couponGroup.dataTable',
+            url:'/stock/stockMove.dataTable',
             type:'post'
         },
         columns : [
-            {'class':'select-checkbox', 'title':'선택','data':'','defaultContent':'','render':  function(data,type,full,meta){
+            {'class':'select-checkbox', 'title':'선택','data':"LM_IDX",'defaultContent':'','render':  function(data,type,full,meta){
                     return '';
                 }}
             ,{'title':'No','data':'No','render':function(data,type,full,meta){
                     return meta.settings._iDisplayStart+meta.row+1;
                 }}
-            ,{'title':'창고이동상태','data':'','defaultContent':''}
-            ,{'title':'창고이동작업코드','data':'','render': function () {
-                return '<a onclick="popStockMoveDetail(0)" class="badge badge-primary">조회</a>';
+            ,{'title':'창고이동상태','data':'LM_STATE','defaultContent':''}
+            ,{'title':'창고이동작업코드','data':'LM_IDX','render': function (data,type,full,meta) {
+                return '<a onclick="popStockMoveDetail('+full.LM_IDX+')" class="badge badge-primary">조회</a>';
             }}
-            ,{'title':'요청자','data':'','defaultContent':''}
-            ,{'title':'처리자','data':'','defaultContent':''}
-            ,{'title':'창고이동요청일','data':'','defaultContent':''}
-            ,{'title':'창고이동출고일','data':'','defaultContent':''}
-            ,{'title':'창고이동입고일','data':'','defaultContent':''}
-            ,{'title':'출고창고','data':'','defaultContent':''}
-            ,{'title':'출고적재형태','data':'','defaultContent':''}
-            ,{'title':'출고로케이션','data':'','defaultContent':''}
-            ,{'title':'입고창고','data':'','defaultContent':''}
-            ,{'title':'입고적재형태','data':'','defaultContent':''}
-            ,{'title':'입고로케이션','data':'','defaultContent':''}
+            ,{'title':'요청자','data':'CREATED_BY','defaultContent':''}
+            ,{'title':'처리자','data':'LM_U_IDX','defaultContent':''}
+            // ,{'title':'창고이동요청일','data':'','defaultContent':''}
+            ,{'title':'창고이동출고일','data':'LM_OUT_DATE','defaultContent':''}
+            ,{'title':'창고이동입고일','data':'LM_IN_DATE','defaultContent':''}
+            ,{'title':'출고창고','data':'LOC_WH_IDX','defaultContent':''}
+            ,{'title':'출고적재형태','data':'LOC_FORM','defaultContent':''}
+            ,{'title':'출고로케이션','data':'LOC_CODE','defaultContent':''}
+            ,{'title':'입고창고','data':'LOC_WH_IDX','defaultContent':''}
+            ,{'title':'입고적재형태','data':'LOC_FORM','defaultContent':''}
+            ,{'title':'입고로케이션','data':'LOC_CODE','defaultContent':''}
             ,{'title':'수량','data':'','defaultContent':''}
         ]
     });

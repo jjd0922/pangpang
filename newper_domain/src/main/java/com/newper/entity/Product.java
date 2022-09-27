@@ -96,10 +96,10 @@ public class Product extends BaseEntity {
     private String pPriceUrl;
     private String pYoutubeUrl;
 
-    private Integer pCost;
-    private Integer pRetailPrice;
-    private Integer pSellPrice;
-    private Integer pDelPrice;
+    private int pCost;
+    private int pRetailPrice;
+    private int pSellPrice;
+    private int pDelPrice;
 
     @Enumerated(EnumType.STRING)
     private PDelCompany pDelCompany;
@@ -107,6 +107,7 @@ public class Product extends BaseEntity {
     private int pDelTogether;
 
     private boolean pFreeInterest;
+    private int pDelPriceCancel;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
@@ -115,6 +116,12 @@ public class Product extends BaseEntity {
     /** 고시정보. json map*/
     @Builder.Default
     private Map<String,Object> pInfo = new HashMap<String, Object>();
+    /** key(색상명) : value(RGB) */
+    @Builder.Default
+    private Map<String, Object> pColor = new LinkedHashMap<>();
+    /**<pre>
+     * {title : title, values :["opt1", "opt2"]}
+     * </pre> */
     private List<Map<String,Object>> pOption = new ArrayList<>();
     private Map<String,Object> pNaver = new HashMap<>();
 
@@ -139,6 +146,9 @@ public class Product extends BaseEntity {
         }
         if (getPDelType() == null) {
             throw new MsgException("배송타입을 선택해주세요.");
+        }
+        if(getPDelCompany() == null){
+            throw new MsgException("배송주체를 선택해주세요.");
         }
     }
 

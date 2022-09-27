@@ -41,11 +41,8 @@
             <div class="more-view">더보기</div>
             <!-- 좌측 nav category all -->
             <ul class="ctg-all">
-                <li>
-                    <a href="javascript:;">노트북<span class="separation"></span>데스크탑</a>
-                </li>
-                <li>
-                    <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>
+                <li th:each="shopCategory : ${@shopComp.shopCategoryList}">
+                    <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
                     <div class="ctg-open">
                         <div class="ctg-first-area">
                             <ul>
@@ -53,72 +50,15 @@
                                     <a href="javascript:;">LG전자</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">삼성전자</a>
-                                </li>
-                                <li>
                                     <a href="javascript:;">한성컴퓨터</a>
                                     <ul class="first-area-sub">
-                                            <li>
-                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">키보드 마우스 패드</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">노트북 주변기기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">프린터 복합기</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">스피커</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">기타</a>
-                                            </li>
-                                        </ul>
+                                        <li>
+                                            <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a href="javascript:;">벤큐</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">DELL</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">알파스캔</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">주연테크</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">ASUS</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">HP</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">제이씨현시스템</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">필립스</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">MSI</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">크로스오버존</a>
                                 </li>
                             </ul>
                         </div>
@@ -129,1468 +69,1576 @@
                                         <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">
                                         <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
                                         <div class="item-price">
-                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">
-                                        <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                                        <div class="item-price">
-                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span>
+                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span></p>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
-                            <div class="second-area-2">
+                            <div class="second-area-2" th:if="${shopCategory.scateThumbnail != ''}">
                                 <a href="javascript:;">
-                                    <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">
+                                    <img th:src="@{${shopCategory.scateThumbnail}}">
                                 </a>
                             </div>
                         </div>
                     </div>
                 </li>
-                <li><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>
-                <li><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>
-                <li><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>
-                <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>
-                <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>
-                <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>
-                <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>
+<!--                <li>-->
+<!--                    <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>-->
+<!--                    <div class="ctg-open">-->
+<!--                        <div class="ctg-first-area">-->
+<!--                            <ul>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">LG전자</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">삼성전자</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">한성컴퓨터</a>-->
+<!--                                    <ul class="first-area-sub">-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">키보드 마우스 패드</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">노트북 주변기기</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">프린터 복합기</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">스피커</a>-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                <a href="javascript:;">기타</a>-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">벤큐</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">DELL</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">알파스캔</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">주연테크</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">ASUS</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">HP</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">제이씨현시스템</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">필립스</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">MSI</a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">크로스오버존</a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                        <div class="ctg-second-area">-->
+<!--                            <ul class="second-area-1">-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">-->
+<!--                                        <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">-->
+<!--                                        <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                                        <div class="item-price">-->
+<!--                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span></p>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    <a href="javascript:;">-->
+<!--                                        <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">-->
+<!--                                        <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                                        <div class="item-price">-->
+<!--                                            <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span></p>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                            <div class="second-area-2">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>-->
+<!--                <li><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>-->
+<!--                <li><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>-->
+<!--                <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>-->
+<!--                <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>-->
+<!--                <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>-->
+<!--                <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>-->
             </ul>
         </div>
     </div>
 </section><!-- // 메인 이미지 슬라이드 끝 -->
 
-<!-- 뉴퍼딜 이벤트 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">뉴퍼딜&nbsp;<span class="color-blue">ON!</span></h2>
-    </div>
-</section>
-<section class="padding-section sm-container-full newperDeal">
-    <div class="container">
-        <div class="swiper-all">
-            <div class="swiper swiper-thumbnail swiper-newperDeal">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>
-                            </div>
-                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>
-                                    <div class="discount-rate">45%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-1">새상품</span>
-                                    <span class="item-condition item-conditionB-1">무료배송</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>
-                            </div>
-                            <div class="item-title">[캐리어] 클라윈드 560L 양문형 냉장고 CRF-SN560OFC</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">889,000</span>원<span class="real-price">1,105,770</span>
-                                    <div class="discount-rate">51%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>
-                            </div>
-                            <div class="item-title">[하성] MG - 201 매직기 스트레이트 웨이브 고데기</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">99,000</span>원<span class="real-price">319,550</span>
-                                    <div class="discount-rate">69%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>
-                            </div>
-                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>
-                                    <div class="discount-rate">45%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>
-                            </div>
-                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>
-                                    <div class="discount-rate">45%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="time color-red">
-                            <span class="time-remaining"><i></i>남은시간</span>
-                            <span class="time-num">10 : 07 : 15</span>
-                        </div>
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                </div>
-                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>
-                            </div>
-                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>
-                                    <div class="discount-rate">45%</div>
-                                </div>
-                                <div class="purchase-btn color-blue">구매하기</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="newperDeal-prev prev-custom">
-                <img src="image/thumb-arrow-left.png" alt="이전딜">
-                <span>이전딜</span>
-            </div>
-            <div class="newperDeal-next next-custom">
-                <span>다음딜</span>
-                <img src="image/thumb-arrow-right.png" alt="이전딜">
-            </div>
-        </div>
-    </div>
-</section><!-- // 뉴퍼딜 이벤트 끝 -->
+<th:block th:each="mainsection : ${@shopComp.mainSectionList}">
+    <th:block th:each="msJson : ${@shopComp.msJsonList}">
+        <th:blcok th:if="${msJson.get('msIdx') == #strings.toString(mainsection.msIdx) && mainsection.msType.name() == 'PRODUCT'}">
+            <th:block th:replace="mainSection/mainSection_product :: __${msJson.get('PRODUCT')}__"></th:block>
+        </th:blcok>
+    </th:block>
+    <th:blcok th:unless="${mainsection.msType.name() == 'PRODUCT'}">
+        <th:block th:replace="mainSection/mainSection_product :: __${mainsection.msType}__"></th:block>
+    </th:blcok>
+</th:block>
+<!--&lt;!&ndash; 뉴퍼딜 이벤트 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">뉴퍼딜&nbsp;<span class="color-blue">ON!</span></h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section sm-container-full newperDeal">-->
+<!--    <div class="container">-->
+<!--        <div class="swiper-all">-->
+<!--            <div class="swiper swiper-thumbnail swiper-newperDeal">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>-->
+<!--                                    <div class="discount-rate">45%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-1">새상품</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">무료배송</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">[캐리어] 클라윈드 560L 양문형 냉장고 CRF-SN560OFC</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">889,000</span>원<span class="real-price">1,105,770</span>-->
+<!--                                    <div class="discount-rate">51%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">[하성] MG - 201 매직기 스트레이트 웨이브 고데기</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">99,000</span>원<span class="real-price">319,550</span>-->
+<!--                                    <div class="discount-rate">69%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">3</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>-->
+<!--                                    <div class="discount-rate">45%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>-->
+<!--                                    <div class="discount-rate">45%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="time color-red">-->
+<!--                            <span class="time-remaining"><i></i>남은시간</span>-->
+<!--                            <span class="time-num">10 : 07 : 15</span>-->
+<!--                        </div>-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/180x180/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                </div>-->
+<!--                                <p class="stock-quantity">남은수량 <span class="color-red">1</span>개</p>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">199,000</span>원<span class="real-price">243,000</span>-->
+<!--                                    <div class="discount-rate">45%</div>-->
+<!--                                </div>-->
+<!--                                <div class="purchase-btn color-blue">구매하기</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="newperDeal-prev prev-custom">-->
+<!--                <img src="image/thumb-arrow-left.png" alt="이전딜">-->
+<!--                <span>이전딜</span>-->
+<!--            </div>-->
+<!--            <div class="newperDeal-next next-custom">-->
+<!--                <span>다음딜</span>-->
+<!--                <img src="image/thumb-arrow-right.png" alt="이전딜">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // 뉴퍼딜 이벤트 끝 &ndash;&gt;-->
 
-<!-- 반값 이벤트 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">뉴퍼마켓 반값+습니다</h2>
-    </div>
-</section>
-<section class="padding-section halfPrice sm-container-full">
-    <div class="container">
-        <div class="swiper-all">
-            <div class="swiper swiper-thumbnail swiper-event-group1">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide">
-                        <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-1">새상품</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량</div>
-                            <div class="item-color">
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart active"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span><i class="card"></i>무이자</span>
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-6">해외리퍼</span>
-                                    <span class="item-condition item-conditionB-1">신품수준</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-3">박스개봉</span>
-                                    <span class="item-condition item-conditionB-1">가성비</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                                <span><i class="card"></i>무이자</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-6">해외리퍼</span>
-                                    <span class="item-condition item-conditionB-1">신품수준</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                                <span><i class="card"></i>무이자</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="swiper-event-group1-prev prev-custom"></div>
-            <div class="swiper-event-group1-next next-custom"></div>
-        </div>
-    </div>
-</section><!-- // 반값 이벤트 끝 -->
+<!--&lt;!&ndash; 반값 이벤트 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">뉴퍼마켓 반값+습니다</h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section halfPrice sm-container-full">-->
+<!--    <div class="container">-->
+<!--        <div class="swiper-all">-->
+<!--            <div class="swiper swiper-thumbnail swiper-event-group1">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-1">새상품</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량</div>-->
+<!--                            <div class="item-color">-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart active"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-6">해외리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">신품수준</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-3">박스개봉</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">가성비</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-6">해외리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">신품수준</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="swiper-event-group1-prev prev-custom"></div>-->
+<!--            <div class="swiper-event-group1-next next-custom"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // 반값 이벤트 끝 &ndash;&gt;-->
 
-<!-- 한정수량 일일특가 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">한정수량 일일특가 시&#126;작!</h2>
-    </div>
-</section>
-<section class="padding-section sm-container-full thumbnail-wide">
-    <div class="container">
-        <div class="swiper-all">
-            <div class="swiper-event-group2 swiper swiper-thumbnail">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide">
-                        <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-1">새상품</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량</div>
-                            <div class="item-color">
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart active"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                                <span><i class="card"></i>무이자</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-6">해외리퍼</span>
-                                    <span class="item-condition item-conditionB-1">신품수준</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-3">박스개봉</span>
-                                    <span class="item-condition item-conditionB-1">가성비</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <p><span class="discount-price">359,000</span>원</p>
-                                    <span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                                <span><i class="card"></i>무이자</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="swiper-event-group2-prev prev-custom"></div>
-            <div class="swiper-event-group2-next next-custom"></div>
-        </div>
-    </div>
-</section><!-- // 한정수량 일일특가 끝 -->
+<!--&lt;!&ndash; 한정수량 일일특가 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">한정수량 일일특가 시&#126;작!</h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section sm-container-full thumbnail-wide">-->
+<!--    <div class="container">-->
+<!--        <div class="swiper-all">-->
+<!--            <div class="swiper-event-group2 swiper swiper-thumbnail">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-1">새상품</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량</div>-->
+<!--                            <div class="item-color">-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart active"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-6">해외리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">신품수준</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-3">박스개봉</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">가성비</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/220x220/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                    <span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="swiper-event-group2-prev prev-custom"></div>-->
+<!--            <div class="swiper-event-group2-next next-custom"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // 한정수량 일일특가 끝 &ndash;&gt;-->
 
-<!-- 뉴퍼마켓 숨은 꿀템 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">뉴퍼마켓 숨은 꿀템</h2>
-    </div>
-</section>
-<section class="padding-section sm-container-full">
-    <div class="container">
-        <div class="swiper-all">
-            <div class="swiper-event-group3 swiper swiper-thumbnail">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide">
-                        <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-1">새상품</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량</div>
-                            <div class="item-color">
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart active"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-6">해외리퍼</span>
-                                    <span class="item-condition item-conditionB-1">신품수준</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span><i class="card"></i>무이자</span>
-                                &nbsp
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <div class="item-img">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                            </a>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-inner-wrap item-bedge-wrap">
-                                <div class="item-bedge">
-                                    <span class="item-condition item-conditionA-3">박스개봉</span>
-                                    <span class="item-condition item-conditionB-1">가성비</span>
-                                </div>
-                                <div class="buy-count color-blue">판매수 37</div>
-                            </div>
-                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                            <div class="item-color">
-                                <span><span></span></span>
-                                <span><span></span></span>
-                                <span><span></span></span>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="item-price">
-                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>
-                                </div>
-                                <div class="discount-rate">57%</div>
-                            </div>
-                            <div class="item-inner-wrap">
-                                <div class="grade-wrap">
-                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                    <span>남은수량 4</span>
-                                </div>
-                                <div class="wish">25<i class="heart"></i></div>
-                            </div>
-                            <div class="item-footer">
-                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                &nbsp
-                                <span><i class="card"></i>무이자</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="swiper-event-group3-prev prev-custom"></div>
-            <div class="swiper-event-group3-next next-custom"></div>
-        </div>
-    </div>
-</section><!-- // 뉴퍼마켓 숨은 꿀템 끝 -->
+<!--&lt;!&ndash; 뉴퍼마켓 숨은 꿀템 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">뉴퍼마켓 숨은 꿀템</h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section sm-container-full">-->
+<!--    <div class="container">-->
+<!--        <div class="swiper-all">-->
+<!--            <div class="swiper-event-group3 swiper swiper-thumbnail">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-1">새상품</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량</div>-->
+<!--                            <div class="item-color">-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart active"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-6">해외리퍼</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">신품수준</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                                &nbsp-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <div class="item-img">-->
+<!--                            <a href="javascript:;">-->
+<!--                                <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="item-info">-->
+<!--                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                <div class="item-bedge">-->
+<!--                                    <span class="item-condition item-conditionA-3">박스개봉</span>-->
+<!--                                    <span class="item-condition item-conditionB-1">가성비</span>-->
+<!--                                </div>-->
+<!--                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                            <div class="item-color">-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="item-price">-->
+<!--                                    <span class="discount-price">359,000</span>원<span class="real-price">897,000</span>-->
+<!--                                </div>-->
+<!--                                <div class="discount-rate">57%</div>-->
+<!--                            </div>-->
+<!--                            <div class="item-inner-wrap">-->
+<!--                                <div class="grade-wrap">-->
+<!--                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                    <span>남은수량 4</span>-->
+<!--                                </div>-->
+<!--                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                            </div>-->
+<!--                            <div class="item-footer">-->
+<!--                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                &nbsp-->
+<!--                                <span><i class="card"></i>무이자</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="swiper-event-group3-prev prev-custom"></div>-->
+<!--            <div class="swiper-event-group3-next next-custom"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // 뉴퍼마켓 숨은 꿀템 끝 &ndash;&gt;-->
 
-<!-- 알짜만 모아모아 기획전 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">알짜만 모아모아 기획전</h2>
-    </div>
-</section>
-<section class="padding-section sm-container-full thumbnail-wide">
-    <div class="container">
-        <div class="swiper-all">
-            <div class="swiper-event-group4 swiper swiper-thumbnail">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide">
-                        <a href="javascript:;">
-                            <div class="special-exhibition-thumb">
-                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">
-                            </div>
-                        </a>
-                        <div class="item-list">
-                            <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                        </div>
-                        <div class="item-list">
-                            <div class="item-img">
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                </a>
-                            </div>
-                            <div class="item-info">
-                                <div class="item-inner-wrap item-bedge-wrap">
-                                    <div class="item-bedge">
-                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                        <span class="item-condition item-conditionB-1">스크래치</span>
-                                    </div>
-                                    <div class="buy-count color-blue">판매수 37</div>
-                                </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                <div class="item-color">
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
-                                    </div>
-                                    <div class="discount-rate">57%</div>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="grade-wrap">
-                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                        <span>남은수량 4</span>
-                                    </div>
-                                    <div class="wish">25<i class="heart"></i></div>
-                                </div>
-                                <div class="item-footer">
-                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                    &nbsp
-                                    <span><i class="card"></i>무이자</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-list">
-                            <div class="item-img">
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                </a>
-                            </div>
-                            <div class="item-info">
-                                <div class="item-inner-wrap item-bedge-wrap">
-                                    <div class="item-bedge">
-                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                        <span class="item-condition item-conditionB-1">스크래치</span>
-                                    </div>
-                                    <div class="buy-count color-blue">판매수 37</div>
-                                </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                <div class="item-color">
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
-                                    </div>
-                                    <div class="discount-rate">57%</div>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="grade-wrap">
-                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                        <span>남은수량 4</span>
-                                    </div>
-                                    <div class="wish">25<i class="heart"></i></div>
-                                </div>
-                                <div class="item-footer">
-                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                    &nbsp
-                                    <span><i class="card"></i>무이자</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <a href="javascript:;">
-                            <div class="special-exhibition-thumb">
-                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">
-                            </div>
-                        </a>
-                        <div class="item-list">
-                            <div class="item-img">
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                </a>
-                            </div>
-                            <div class="item-info">
-                                <div class="item-inner-wrap item-bedge-wrap">
-                                    <div class="item-bedge">
-                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                        <span class="item-condition item-conditionB-1">스크래치</span>
-                                    </div>
-                                    <div class="buy-count color-blue">판매수 37</div>
-                                </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                <div class="item-color">
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
-                                    </div>
-                                    <div class="discount-rate">57%</div>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="grade-wrap">
-                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                        <span>남은수량 4</span>
-                                    </div>
-                                    <div class="wish">25<i class="heart"></i></div>
-                                </div>
-                                <div class="item-footer">
-                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                    &nbsp
-                                    <span><i class="card"></i>무이자</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-list">
-                            <div class="item-img">
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                </a>
-                            </div>
-                            <div class="item-info">
-                                <div class="item-inner-wrap item-bedge-wrap">
-                                    <div class="item-bedge">
-                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                        <span class="item-condition item-conditionB-1">스크래치</span>
-                                    </div>
-                                    <div class="buy-count color-blue">판매수 37</div>
-                                </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                <div class="item-color">
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
-                                    </div>
-                                    <div class="discount-rate">57%</div>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="grade-wrap">
-                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                        <span>남은수량 4</span>
-                                    </div>
-                                    <div class="wish">25<i class="heart"></i></div>
-                                </div>
-                                <div class="item-footer">
-                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                    &nbsp
-                                    <span><i class="card"></i>무이자</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-list">
-                            <div class="item-img">
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">
-                                </a>
-                            </div>
-                            <div class="item-info">
-                                <div class="item-inner-wrap item-bedge-wrap">
-                                    <div class="item-bedge">
-                                        <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                        <span class="item-condition item-conditionB-1">스크래치</span>
-                                    </div>
-                                    <div class="buy-count color-blue">판매수 37</div>
-                                </div>
-                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                <div class="item-color">
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                    <span><span></span></span>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="item-price">
-                                        <p><span class="discount-price">359,000</span>원</p>
-                                        <span class="real-price">897,000</span>
-                                    </div>
-                                    <div class="discount-rate">57%</div>
-                                </div>
-                                <div class="item-inner-wrap">
-                                    <div class="grade-wrap">
-                                        <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                        <span>남은수량 4</span>
-                                    </div>
-                                    <div class="wish">25<i class="heart"></i></div>
-                                </div>
-                                <div class="item-footer">
-                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                    &nbsp
-                                    <span><i class="card"></i>무이자</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="swiper-slide">
-                        <a href="javascript:;">
-                            <div class="special-exhibition-thumb">
-                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">
-                            </div>
-                        </a>
-                    </li>
-                    <li class="swiper-slide">
-                        <a href="javascript:;">
-                            <div class="special-exhibition-thumb">
-                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="swiper-event-group4-prev prev-custom"></div>
-            <div class="swiper-event-group4-next next-custom"></div>
-        </div>
-    </div>
-</section><!-- // 알짜만 모아모아 기획전 끝 -->
+<!--&lt;!&ndash; 알짜만 모아모아 기획전 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">알짜만 모아모아 기획전</h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section sm-container-full thumbnail-wide">-->
+<!--    <div class="container">-->
+<!--        <div class="swiper-all">-->
+<!--            <div class="swiper-event-group4 swiper swiper-thumbnail">-->
+<!--                <ul class="swiper-wrapper">-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <a href="javascript:;">-->
+<!--                            <div class="special-exhibition-thumb">-->
+<!--                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                        <div class="item-list">-->
+<!--                            <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                        </div>-->
+<!--                        <div class="item-list">-->
+<!--                            <div class="item-img">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="item-info">-->
+<!--                                <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                    <div class="item-bedge">-->
+<!--                                        <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                        <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                <div class="item-color">-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="item-price">-->
+<!--                                        <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                        <span class="real-price">897,000</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="discount-rate">57%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="grade-wrap">-->
+<!--                                        <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                        <span>남은수량 4</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="wish">25<i class="heart"></i></div>-->
+<!--                                </div>-->
+<!--                                <div class="item-footer">-->
+<!--                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                    &nbsp-->
+<!--                                    <span><i class="card"></i>무이자</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="item-list">-->
+<!--                            <div class="item-img">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="item-info">-->
+<!--                                <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                    <div class="item-bedge">-->
+<!--                                        <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                        <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                <div class="item-color">-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="item-price">-->
+<!--                                        <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                        <span class="real-price">897,000</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="discount-rate">57%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="grade-wrap">-->
+<!--                                        <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                        <span>남은수량 4</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="wish">25<i class="heart"></i></div>-->
+<!--                                </div>-->
+<!--                                <div class="item-footer">-->
+<!--                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                    &nbsp-->
+<!--                                    <span><i class="card"></i>무이자</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <a href="javascript:;">-->
+<!--                            <div class="special-exhibition-thumb">-->
+<!--                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                        <div class="item-list">-->
+<!--                            <div class="item-img">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="item-info">-->
+<!--                                <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                    <div class="item-bedge">-->
+<!--                                        <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                        <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                <div class="item-color">-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="item-price">-->
+<!--                                        <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                        <span class="real-price">897,000</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="discount-rate">57%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="grade-wrap">-->
+<!--                                        <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                        <span>남은수량 4</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="wish">25<i class="heart"></i></div>-->
+<!--                                </div>-->
+<!--                                <div class="item-footer">-->
+<!--                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                    &nbsp-->
+<!--                                    <span><i class="card"></i>무이자</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="item-list">-->
+<!--                            <div class="item-img">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="item-info">-->
+<!--                                <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                    <div class="item-bedge">-->
+<!--                                        <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                        <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                <div class="item-color">-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="item-price">-->
+<!--                                        <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                        <span class="real-price">897,000</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="discount-rate">57%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="grade-wrap">-->
+<!--                                        <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                        <span>남은수량 4</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="wish">25<i class="heart"></i></div>-->
+<!--                                </div>-->
+<!--                                <div class="item-footer">-->
+<!--                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                    &nbsp-->
+<!--                                    <span><i class="card"></i>무이자</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="item-list">-->
+<!--                            <div class="item-img">-->
+<!--                                <a href="javascript:;">-->
+<!--                                    <img src="https://dummyimage.com/150x150/eeeeee/777777" alt="">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="item-info">-->
+<!--                                <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                    <div class="item-bedge">-->
+<!--                                        <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                        <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                <div class="item-color">-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                    <span><span></span></span>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="item-price">-->
+<!--                                        <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                        <span class="real-price">897,000</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="discount-rate">57%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item-inner-wrap">-->
+<!--                                    <div class="grade-wrap">-->
+<!--                                        <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                        <span>남은수량 4</span>-->
+<!--                                    </div>-->
+<!--                                    <div class="wish">25<i class="heart"></i></div>-->
+<!--                                </div>-->
+<!--                                <div class="item-footer">-->
+<!--                                    <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                    &nbsp-->
+<!--                                    <span><i class="card"></i>무이자</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <a href="javascript:;">-->
+<!--                            <div class="special-exhibition-thumb">-->
+<!--                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="swiper-slide">-->
+<!--                        <a href="javascript:;">-->
+<!--                            <div class="special-exhibition-thumb">-->
+<!--                                <img src="https://dummyimage.com/440x220/eeeeee/777777" alt="">-->
+<!--                            </div>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="swiper-event-group4-prev prev-custom"></div>-->
+<!--            <div class="swiper-event-group4-next next-custom"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // 알짜만 모아모아 기획전 끝 &ndash;&gt;-->
 
-<!-- TODAY BEST -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">TODAY BEST</h2>
-        <p class="section-sub-title">오늘 가장 많이 판매된 상품이에요.</p>
-    </div>
-</section>
-<section class="padding-section">
-    <div class="container">
-        <div class="todayBest-wrap">
-            <div class="realTime-trend">
-                <h3 class="color-blue">실시간 트렌드</h3>
-                <p>2022-08-29 13:10 기준</p>
-                <ul>
-                    <li>
-                        <a href="javascript:;">1. 게이밍 모니터</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">2. 블루투스 스피커</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">3. 선풍기</a><span class="color-blue"><i class="same"></i></span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">4. 제습기</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">5. 아이패드</a><span class="color-blue"><i class="up"></i>4</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">6. 에어컨</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">7. 건조기</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">8. 카메라</a><span class="color-blue"><i class="down"></i>2</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">9. 면도기</a><span class="color-blue">NEW</span>
-                    </li>
-                    <li>
-                        <a href="javascript:;">10. LG그램</a><span class="color-blue"><i class="up"></i>1</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="todayBest-tab-wrap">
-                <ul class="todayBest-tab">
-                    <li class="all">전체</li>
-                    <li class="on">노트북/데스크탑</li>
-                    <li>모니터/주변기기</li>
-                    <li>태블릿/휴대폰/웨어러블</li>
-                    <li>음향/이어폰/스피커</li>
-                    <li>가전/TV/세탁기/냉장고</li>
-                    <li>주방/생활/레저</li>
-                    <li>차량용품/블랙박스</li>
-                    <li>패션/잡화/뷰티</li>
-                    <li>식품/헬스케어</li>
-                </ul>
-                <ul class="todayBest-content sm-margin-fit">
-                    <li>전체</li>
-                    <li class="on">
-                        <div class="swiper-all">
-                            <div class="swiper-todayBest swiper">
-                                <ul class="swiper-wrapper">
-                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">
-                                        <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                                    </li>
-                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">
-                                        <div class="item-img">
-                                            <a href="javascript:;">
-                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-inner-wrap item-bedge-wrap">
-                                                <div class="item-bedge">
-                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                                </div>
-                                                <div class="buy-count color-blue">판매수 37</div>
-                                            </div>
-                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                            <div class="item-color">
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="item-price">
-                                                    <p><span class="discount-price">359,000</span>원</p>
-                                                    <span class="real-price">897,000</span>
-                                                </div>
-                                                <div class="discount-rate">57%</div>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="grade-wrap">
-                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                    <span>남은수량 4</span>
-                                                </div>
-                                                <div class="wish">25<i class="heart"></i></div>
-                                            </div>
-                                            <div class="item-footer">
-                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                                &nbsp;
-                                                <span><i class="card"></i>무이자</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">
-                                        <div class="item-img">
-                                            <a href="javascript:;">
-                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-inner-wrap item-bedge-wrap">
-                                                <div class="item-bedge">
-                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                                </div>
-                                                <div class="buy-count color-blue">판매수 37</div>
-                                            </div>
-                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                            <div class="item-color">
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="item-price">
-                                                    <p><span class="discount-price">359,000</span>원</p>
-                                                    <span class="real-price">897,000</span>
-                                                </div>
-                                                <div class="discount-rate">57%</div>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="grade-wrap">
-                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                    <span>남은수량 4</span>
-                                                </div>
-                                                <div class="wish">25<i class="heart"></i></div>
-                                            </div>
-                                            <div class="item-footer">
-                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                                &nbsp;
-                                                <span><i class="card"></i>무이자</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">
-                                        <div class="item-img">
-                                            <a href="javascript:;">
-                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-inner-wrap item-bedge-wrap">
-                                                <div class="item-bedge">
-                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                                </div>
-                                                <div class="buy-count color-blue">판매수 37</div>
-                                            </div>
-                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                            <div class="item-color">
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="item-price">
-                                                    <p><span class="discount-price">359,000</span>원</p>
-                                                    <span class="real-price">897,000</span>
-                                                </div>
-                                                <div class="discount-rate">57%</div>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="grade-wrap">
-                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                    <span>남은수량 4</span>
-                                                </div>
-                                                <div class="wish">25<i class="heart"></i></div>
-                                            </div>
-                                            <div class="item-footer">
-                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                                &nbsp;
-                                                <span><i class="card"></i>무이자</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">
-                                        <div class="item-img">
-                                            <a href="javascript:;">
-                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="item-info">
-                                            <div class="item-inner-wrap item-bedge-wrap">
-                                                <div class="item-bedge">
-                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                                    <span class="item-condition item-conditionB-1">스크래치</span>
-                                                </div>
-                                                <div class="buy-count color-blue">판매수 37</div>
-                                            </div>
-                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                            <div class="item-color">
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                                <span><span></span></span>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="item-price">
-                                                    <p><span class="discount-price">359,000</span>원</p>
-                                                    <span class="real-price">897,000</span>
-                                                </div>
-                                                <div class="discount-rate">57%</div>
-                                            </div>
-                                            <div class="item-inner-wrap">
-                                                <div class="grade-wrap">
-                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                    <span>남은수량 4</span>
-                                                </div>
-                                                <div class="wish">25<i class="heart"></i></div>
-                                            </div>
-                                            <div class="item-footer">
-                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                                &nbsp;
-                                                <span><i class="card"></i>무이자</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="todayBest-content-prev prev-custom"></div>
-                            <div class="todayBest-content-next next-custom"></div>
-                        </div>
-                    </li>
-                    <li>모니터/주변기기</li>
-                    <li>태블릿/휴대폰/웨어러블</li>
-                    <li>음향/이어폰/스피커</li>
-                    <li>가전/TV/세탁기/냉장고</li>
-                    <li>주방/생활/레저</li>
-                    <li>차량용품/블랙박스</li>
-                    <li>패션/잡화/뷰티</li>
-                    <li>식품/헬스케어</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section><!-- // TODAY BEST 끝 -->
+<!--&lt;!&ndash; TODAY BEST &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">TODAY BEST</h2>-->
+<!--        <p class="section-sub-title">오늘 가장 많이 판매된 상품이에요.</p>-->
+<!--    </div>-->
+<!--</section>-->
+<!--<section class="padding-section">-->
+<!--    <div class="container">-->
+<!--        <div class="todayBest-wrap">-->
+<!--            <div class="realTime-trend">-->
+<!--                <h3 class="color-blue">실시간 트렌드</h3>-->
+<!--                <p>2022-08-29 13:10 기준</p>-->
+<!--                <ul>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">1. 게이밍 모니터</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">2. 블루투스 스피커</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">3. 선풍기</a><span class="color-blue"><i class="same"></i></span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">4. 제습기</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">5. 아이패드</a><span class="color-blue"><i class="up"></i>4</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">6. 에어컨</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">7. 건조기</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">8. 카메라</a><span class="color-blue"><i class="down"></i>2</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">9. 면도기</a><span class="color-blue">NEW</span>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="javascript:;">10. LG그램</a><span class="color-blue"><i class="up"></i>1</span>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="todayBest-tab-wrap">-->
+<!--                <ul class="todayBest-tab">-->
+<!--                    <li class="all">전체</li>-->
+<!--                    <li class="on">노트북/데스크탑</li>-->
+<!--                    <li>모니터/주변기기</li>-->
+<!--                    <li>태블릿/휴대폰/웨어러블</li>-->
+<!--                    <li>음향/이어폰/스피커</li>-->
+<!--                    <li>가전/TV/세탁기/냉장고</li>-->
+<!--                    <li>주방/생활/레저</li>-->
+<!--                    <li>차량용품/블랙박스</li>-->
+<!--                    <li>패션/잡화/뷰티</li>-->
+<!--                    <li>식품/헬스케어</li>-->
+<!--                </ul>-->
+<!--                <ul class="todayBest-content sm-margin-fit">-->
+<!--                    <li>전체</li>-->
+<!--                    <li class="on">-->
+<!--                        <div class="swiper-all">-->
+<!--                            <div class="swiper-todayBest swiper">-->
+<!--                                <ul class="swiper-wrapper">-->
+<!--                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">-->
+<!--                                        <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                                    </li>-->
+<!--                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">-->
+<!--                                        <div class="item-img">-->
+<!--                                            <a href="javascript:;">-->
+<!--                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-info">-->
+<!--                                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                                <div class="item-bedge">-->
+<!--                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                            <div class="item-color">-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="item-price">-->
+<!--                                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                    <span class="real-price">897,000</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="discount-rate">57%</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="grade-wrap">-->
+<!--                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                    <span>남은수량 4</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-footer">-->
+<!--                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                                &nbsp;-->
+<!--                                                <span><i class="card"></i>무이자</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </li>-->
+<!--                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">-->
+<!--                                        <div class="item-img">-->
+<!--                                            <a href="javascript:;">-->
+<!--                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-info">-->
+<!--                                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                                <div class="item-bedge">-->
+<!--                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                            <div class="item-color">-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="item-price">-->
+<!--                                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                    <span class="real-price">897,000</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="discount-rate">57%</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="grade-wrap">-->
+<!--                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                    <span>남은수량 4</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-footer">-->
+<!--                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                                &nbsp;-->
+<!--                                                <span><i class="card"></i>무이자</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </li>-->
+<!--                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">-->
+<!--                                        <div class="item-img">-->
+<!--                                            <a href="javascript:;">-->
+<!--                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-info">-->
+<!--                                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                                <div class="item-bedge">-->
+<!--                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                            <div class="item-color">-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="item-price">-->
+<!--                                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                    <span class="real-price">897,000</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="discount-rate">57%</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="grade-wrap">-->
+<!--                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                    <span>남은수량 4</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-footer">-->
+<!--                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                                &nbsp;-->
+<!--                                                <span><i class="card"></i>무이자</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </li>-->
+<!--                                    <li class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5">-->
+<!--                                        <div class="item-img">-->
+<!--                                            <a href="javascript:;">-->
+<!--                                                <img src="https://dummyimage.com/230x230/eeeeee/777777" alt="">-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-info">-->
+<!--                                            <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                                <div class="item-bedge">-->
+<!--                                                    <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                                    <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                            <div class="item-color">-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                                <span><span></span></span>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="item-price">-->
+<!--                                                    <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                    <span class="real-price">897,000</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="discount-rate">57%</div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-inner-wrap">-->
+<!--                                                <div class="grade-wrap">-->
+<!--                                                    <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                    <span>남은수량 4</span>-->
+<!--                                                </div>-->
+<!--                                                <div class="wish">25<i class="heart"></i></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="item-footer">-->
+<!--                                                <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                                &nbsp;-->
+<!--                                                <span><i class="card"></i>무이자</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            <div class="todayBest-content-prev prev-custom"></div>-->
+<!--                            <div class="todayBest-content-next next-custom"></div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li>모니터/주변기기</li>-->
+<!--                    <li>태블릿/휴대폰/웨어러블</li>-->
+<!--                    <li>음향/이어폰/스피커</li>-->
+<!--                    <li>가전/TV/세탁기/냉장고</li>-->
+<!--                    <li>주방/생활/레저</li>-->
+<!--                    <li>차량용품/블랙박스</li>-->
+<!--                    <li>패션/잡화/뷰티</li>-->
+<!--                    <li>식품/헬스케어</li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>&lt;!&ndash; // TODAY BEST 끝 &ndash;&gt;-->
 
-<!-- MD 추천 카테고리 -->
-<section class="padding-section section-title-padding">
-    <div class="container">
-        <h2 class="section-title">MD 추천 카테고리</h2>
-    </div>
-</section>
-<!--썸네일 카테고리 메뉴 : 전체 없음-->
-<section th:insert="part/menu :: thumbnailCategory2" class="padding-section padding-menu sm-container-full"></section>
+<!--&lt;!&ndash; MD 추천 카테고리 &ndash;&gt;-->
+<!--<section class="padding-section section-title-padding">-->
+<!--    <div class="container">-->
+<!--        <h2 class="section-title">MD 추천 카테고리</h2>-->
+<!--    </div>-->
+<!--</section>-->
+<!--&lt;!&ndash;썸네일 카테고리 메뉴 : 전체 없음&ndash;&gt;-->
+<!--<section th:insert="part/menu :: thumbnailCategory2" class="padding-section padding-menu sm-container-full"></section>-->
 
-<!--카테고리 상품목록 : 배경색 -->
-<section class="padding-section full-container bg-light-grey">
-    <div class="container">
-            <ul class="ctg-tab-content md-tab-content">
-                <li>내용1</li>
-                <li>내용2</li>
-                <li class="on">
-                    <div class="all-view">
-                        <a href="javascript:;">카테고리 전체보기<i></i></a>
-                    </div>
-                    <div class="swiper-all">
-                        <div class="swiper swiper-md-content">
-                            <ul class="swiper-wrapper">
-                                <li class="swiper-slide">
-                                    <div th:replace="part/thumbnail :: thumbnail-default"></div>
-                                </li>
-                                <li class="swiper-slide">
-                                    <div class="item-img">
-                                        <a href="javascript:;">
-                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-inner-wrap item-bedge-wrap">
-                                            <div class="item-bedge">
-                                                <span class="item-condition item-conditionA-1">새상품</span>
-                                            </div>
-                                            <div class="buy-count color-blue">판매수 37</div>
-                                        </div>
-                                        <div class="item-title">삼성 노트북3 Pro 대용량</div>
-                                        <div class="item-color">
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="item-price">
-                                                <p><span class="discount-price">359,000</span>원</p>
-                                                <span class="real-price">897,000</span>
-                                            </div>
-                                            <div class="discount-rate">57%</div>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="grade-wrap">
-                                                <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                <span>남은수량 4</span>
-                                            </div>
-                                            <div class="wish">25<i class="heart active"></i></div>
-                                        </div>
-                                        <div class="item-footer">
-                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                            &nbsp;
-                                            <span><i class="card"></i>무이자</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="swiper-slide">
-                                    <div class="item-img">
-                                        <a href="javascript:;">
-                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-inner-wrap item-bedge-wrap">
-                                            <div class="item-bedge">
-                                                <span class="item-condition item-conditionA-6">해외리퍼</span>
-                                                <span class="item-condition item-conditionB-1">신품수준</span>
-                                            </div>
-                                            <div class="buy-count color-blue">판매수 37</div>
-                                        </div>
-                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>
-                                        <div class="item-color">
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="item-price">
-                                                <p><span class="discount-price">359,000</span>원</p>
-                                                <span class="real-price">897,000</span>
-                                            </div>
-                                            <div class="discount-rate">57%</div>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="grade-wrap">
-                                                <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                <span>남은수량 4</span>
-                                            </div>
-                                            <div class="wish">25<i class="heart"></i></div>
-                                        </div>
-                                        <div class="item-footer">
-                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                            &nbsp;
-                                            <span><i class="card"></i>무이자</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="swiper-slide">
-                                    <div class="item-img">
-                                        <a href="javascript:;">
-                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-inner-wrap item-bedge-wrap">
-                                            <div class="item-bedge">
-                                                <span class="item-condition item-conditionA-3">박스개봉</span>
-                                                <span class="item-condition item-conditionB-1">가성비</span>
-                                            </div>
-                                            <div class="buy-count color-blue">판매수 37</div>
-                                        </div>
-                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                        <div class="item-color">
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="item-price">
-                                                <p><span class="discount-price">359,000</span>원</p>
-                                                <span class="real-price">897,000</span>
-                                            </div>
-                                            <div class="discount-rate">57%</div>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="grade-wrap">
-                                                <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                <span>남은수량 4</span>
-                                            </div>
-                                            <div class="wish">25<i class="heart"></i></div>
-                                        </div>
-                                        <div class="item-footer">
-                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                            &nbsp;
-                                            <span><i class="card"></i>무이자</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="swiper-slide">
-                                    <div class="item-img">
-                                        <a href="javascript:;">
-                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="item-info">
-                                        <div class="item-inner-wrap item-bedge-wrap">
-                                            <div class="item-bedge">
-                                                <span class="item-condition item-conditionA-2">A급리퍼</span>
-                                                <span class="item-condition item-conditionB-1">스크래치</span>
-                                            </div>
-                                            <div class="buy-count color-blue">판매수 37</div>
-                                        </div>
-                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>
-                                        <div class="item-color">
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                            <span><span></span></span>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="item-price">
-                                                <p><span class="discount-price">359,000</span>원</p>
-                                                <span class="real-price">897,000</span>
-                                            </div>
-                                            <div class="discount-rate">57%</div>
-                                        </div>
-                                        <div class="item-inner-wrap">
-                                            <div class="grade-wrap">
-                                                <span class="grade"><i class="star"></i>5.0 (31)</span>
-                                                <span>남은수량 4</span>
-                                            </div>
-                                            <div class="wish">25<i class="heart"></i></div>
-                                        </div>
-                                        <div class="item-footer">
-                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>
-                                            <span><i class="card"></i>무이자</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="md-content-pagination custom-pagination"></div>
-                        <div class="md-tab-content-prev prev-custom"></div>
-                        <div class="md-tab-content-next next-custom"></div>
-                    </div>
-                </li>
-                <li>내용4</li>
-                <li>내용5</li>
-                <li>내용6</li>
-                <li>내용7</li>
-                <li>내용8</li>
-                <li>내용9</li>
-            </ul>
-        </div>
-</section><!-- // MD 추천 카테고리 끝-->
+<!--&lt;!&ndash;카테고리 상품목록 : 배경색 &ndash;&gt;-->
+<!--<section class="padding-section full-container bg-light-grey">-->
+<!--    <div class="container">-->
+<!--            <ul class="ctg-tab-content md-tab-content">-->
+<!--                <li>내용1</li>-->
+<!--                <li>내용2</li>-->
+<!--                <li class="on">-->
+<!--                    <div class="all-view">-->
+<!--                        <a href="javascript:;">카테고리 전체보기<i></i></a>-->
+<!--                    </div>-->
+<!--                    <div class="swiper-all">-->
+<!--                        <div class="swiper swiper-md-content">-->
+<!--                            <ul class="swiper-wrapper">-->
+<!--                                <li class="swiper-slide">-->
+<!--                                    <div th:replace="part/thumbnail :: thumbnail-default"></div>-->
+<!--                                </li>-->
+<!--                                <li class="swiper-slide">-->
+<!--                                    <div class="item-img">-->
+<!--                                        <a href="javascript:;">-->
+<!--                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <div class="item-info">-->
+<!--                                        <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                            <div class="item-bedge">-->
+<!--                                                <span class="item-condition item-conditionA-1">새상품</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-title">삼성 노트북3 Pro 대용량</div>-->
+<!--                                        <div class="item-color">-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="item-price">-->
+<!--                                                <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                <span class="real-price">897,000</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="discount-rate">57%</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="grade-wrap">-->
+<!--                                                <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                <span>남은수량 4</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="wish">25<i class="heart active"></i></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-footer">-->
+<!--                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                            &nbsp;-->
+<!--                                            <span><i class="card"></i>무이자</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li class="swiper-slide">-->
+<!--                                    <div class="item-img">-->
+<!--                                        <a href="javascript:;">-->
+<!--                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <div class="item-info">-->
+<!--                                        <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                            <div class="item-bedge">-->
+<!--                                                <span class="item-condition item-conditionA-6">해외리퍼</span>-->
+<!--                                                <span class="item-condition item-conditionB-1">신품수준</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스 가나다라 마바사 아자차카 타파하</div>-->
+<!--                                        <div class="item-color">-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="item-price">-->
+<!--                                                <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                <span class="real-price">897,000</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="discount-rate">57%</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="grade-wrap">-->
+<!--                                                <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                <span>남은수량 4</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="wish">25<i class="heart"></i></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-footer">-->
+<!--                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                            &nbsp;-->
+<!--                                            <span><i class="card"></i>무이자</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li class="swiper-slide">-->
+<!--                                    <div class="item-img">-->
+<!--                                        <a href="javascript:;">-->
+<!--                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <div class="item-info">-->
+<!--                                        <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                            <div class="item-bedge">-->
+<!--                                                <span class="item-condition item-conditionA-3">박스개봉</span>-->
+<!--                                                <span class="item-condition item-conditionB-1">가성비</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                        <div class="item-color">-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="item-price">-->
+<!--                                                <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                <span class="real-price">897,000</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="discount-rate">57%</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="grade-wrap">-->
+<!--                                                <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                <span>남은수량 4</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="wish">25<i class="heart"></i></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-footer">-->
+<!--                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                            &nbsp;-->
+<!--                                            <span><i class="card"></i>무이자</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li class="swiper-slide">-->
+<!--                                    <div class="item-img">-->
+<!--                                        <a href="javascript:;">-->
+<!--                                            <img src="https://dummyimage.com/240x240/eeeeee/777777" alt="">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <div class="item-info">-->
+<!--                                        <div class="item-inner-wrap item-bedge-wrap">-->
+<!--                                            <div class="item-bedge">-->
+<!--                                                <span class="item-condition item-conditionA-2">A급리퍼</span>-->
+<!--                                                <span class="item-condition item-conditionB-1">스크래치</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="buy-count color-blue">판매수 37</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-title">삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</div>-->
+<!--                                        <div class="item-color">-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                            <span><span></span></span>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="item-price">-->
+<!--                                                <p><span class="discount-price">359,000</span>원</p>-->
+<!--                                                <span class="real-price">897,000</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="discount-rate">57%</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-inner-wrap">-->
+<!--                                            <div class="grade-wrap">-->
+<!--                                                <span class="grade"><i class="star"></i>5.0 (31)</span>-->
+<!--                                                <span>남은수량 4</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="wish">25<i class="heart"></i></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="item-footer">-->
+<!--                                            <span class="color-blue"><i class="delivery"></i>당일배송</span>-->
+<!--                                            <span><i class="card"></i>무이자</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                        <div class="md-content-pagination custom-pagination"></div>-->
+<!--                        <div class="md-tab-content-prev prev-custom"></div>-->
+<!--                        <div class="md-tab-content-next next-custom"></div>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li>내용4</li>-->
+<!--                <li>내용5</li>-->
+<!--                <li>내용6</li>-->
+<!--                <li>내용7</li>-->
+<!--                <li>내용8</li>-->
+<!--                <li>내용9</li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--</section>&lt;!&ndash; // MD 추천 카테고리 끝&ndash;&gt;-->
 
 <!-- 리얼리뷰 PICK -->
 <section class="padding-section section-title-padding">

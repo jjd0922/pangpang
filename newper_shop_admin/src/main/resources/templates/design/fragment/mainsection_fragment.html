@@ -1,6 +1,6 @@
 <th:block th:fragment="PRODUCT">
     <legend class="">3. 구성상품
-        <a onclick="alert('준비중')" class="btn btn-sm btn-primary ml-1">추가</a>
+        <a onclick="openShopProductModal()" class="btn btn-sm btn-primary ml-1">추가</a>
         <a class="btn btn-sm btn-danger ml-1" onclick="resetShopProduct()">전체 삭제</a>
     </legend>
     <table class="table">
@@ -8,25 +8,18 @@
         <tr>
             <th>상품 상태</th>
             <th>상품명</th>
-            <th>상품금액</th>
             <th>삭제</th>
         </tr>
         </thead>
         <tbody id="shopProductTbody">
-        <th:block th:if="${mainsection != null and not mainsection?.mainSectionSp.isEmpty }" th:each="shopProduct:${mainsection?.mainSectionSp}">
+        <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
             <tr>
-                <td th:text="${shopProduct.spState}"></td>
-                <td th:text="${shopProduct.spName}"></td>
-                <td class="text-won" th:text="${shopProduct.spName}"></td>
+                <td th:text="${mainSectionSp.SP_STATE}"></td>
+                <td th:text="${mainSectionSp.SP_NAME}"></td>
                 <td>
-                    <input type="hidden" name="spIdx" th:value="${shopProduct.spIdx}">
-                    <a class="btn btn-sm btn-danger" th:onclick="|javascript:deleteShopProduct('${shopProduct.spIdx}')|">삭제</a>
+                    <input type="hidden" name="spIdx" th:value="${mainSectionSp.SP_IDX}">
+                    <a class="btn btn-sm btn-danger" th:onclick="|javascript:deleteShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
                 </td>
-            </tr>
-        </th:block>
-        <th:block th:unless="${mainsection != null}">
-            <tr>
-                <td colspan="4">내역이 없습니다.</td>
             </tr>
         </th:block>
         </tbody>
@@ -41,14 +34,14 @@
         }
 
         //구성상품 삭제
-        function deleteShopProduct(sp_idx){
+        function deleteShopProduct(spIdx){
             if(window.confirm('구성상품을 삭제하시겠습니까? \n 설정 후 아래 *저장 버튼을 눌러야 DB에 반영됩니다.')){
-                $( $('input[name=sp_idx][value='+sp_idx+']').parents('tr')[0] ).remove();
+                $( $('input[name=spIdx][value='+spIdx+']').parents('tr')[0] ).remove();
             }
         }
     </script>
-
-
+    <!--shopProduct modal-->
+    <th:block th:replace="design/modal/shopProductModal.html"></th:block>
 </th:block>
 
 <th:block th:fragment="BANNER">
@@ -57,7 +50,7 @@
         <a onclick="addBanner()" class="btn btn-sm btn-primary ml-1">배너 추가</a>
     </legend>
 
-    <div class="row" th:if="${mainsection != null and not mainsection?.mainSectionBanner.isEmpty }" th:each="banner : ${bannerGroup?.banners}">
+    <div class="row" th:if="${mainSectionBanners != null and not mainSectionBanners.isEmpty }" th:each="banner : ${mainSectionBanners}">
         <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
             <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerDom(this)">삭제</a>
         </div>
@@ -67,10 +60,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">노출순서</span>
                     </span>
-                    <select class="form-control select" name="msbnOrder">
-                        <option th:value="1" th:selected="${mainsection?.mainSectionBanner?.msbnOrder > 0}">노출</option>
-                        <option th:value="-1" th:selected="${mainsection?.mainSectionBanner?.msbnOrder < 0}">미노출</option>
-                    </select>
+                    <input type="number" class="form-control" name="msbnOrder" th:value="${banner.msbnOrder}" min="1">
                 </div>
             </div>
         </div>
@@ -100,7 +90,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">링크(URL)</span>
                     </span>
-                    <input class="form-control" type="text" name="msbnUrl">
+                    <input class="form-control" type="text" name="msbnUrl" th:value="${banner.msbnUrl}">
                 </div>
             </div>
         </div>
@@ -111,7 +101,7 @@
         function addBanner(){
             $('#sectionContent').append($('#bannerDom').clone().html());
 
-            $('#popBannerForm select[name=bnDisplay]').select2({
+            $('#popBannerForm select[name=msbnOrder]').select2({
                 minimumResultsForSearch: Infinity
             });
         }
@@ -126,4 +116,6 @@
 
 <th:block th:fragment="BOTH">
     BOTH
+</th:block>
+<th:block th:fragment="BEST">
 </th:block>

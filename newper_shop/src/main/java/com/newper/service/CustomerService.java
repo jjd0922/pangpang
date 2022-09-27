@@ -3,15 +3,18 @@ package com.newper.service;
 
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
+import com.newper.entity.AesEncrypt;
 import com.newper.entity.Customer;
 import com.newper.entity.SelfAuth;
 import com.newper.exception.MsgException;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.SelfAuthRepo;
+import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -28,6 +31,7 @@ public class CustomerService {
 
     private final CustomerRepo customerRepo;
     private final SelfAuthRepo selfAuthRepo;
+    private final ShopRepo shopRepo;
 
 
     /** 로그인 처리 */
@@ -85,22 +89,30 @@ public class CustomerService {
     /**회원가입*/
     @Transactional
     public void join (ParamMap paramMap) {
-        boolean isExistCustomer = customerRepo.existsByCuId(paramMap.getString("cuId"));
-        if (isExistCustomer) {
+        boolean isIdExist = customerRepo.existsByCuId(paramMap.getString("cuId"));
+        if (isIdExist == true) {
             throw new MsgException("이미 사용중인 아이디입니다.");
         }
-
-        SelfAuth selfAuth = selfAuthRepo.findLockBySaIdx(Long.parseLong(paramMap.getString("saIdx")));
+        if (StringUtils.hasText(paramMap.getString("cuRecommender"))) {
+            boolean isRecommenderExist = customerRepo.existsByCuId(paramMap.getString("cuRecommender"));
+            if (!isRecommenderExist) {
+                System.out.println("asdfasf");
+                throw new MsgException("추천인 아이디를 확인해주세요.");
+            }
+        }
+        AesEncrypt ae = new AesEncrypt();
+        SelfAuth selfAuth = selfAuthRepo.findLockBySaIdx(Long.parseLong(ae.decryptRandom(paramMap.getString("saIdx"))));
+        shopSession.setSaIdx("");
 
         if (selfAuth.isSaUsed()) {
             throw new MsgException("본인인증 오류"); // 문구.. 뭐지
         }
 
         Customer customer = paramMap.mapParam(Customer.class);
-        String cuPhone = paramMap.getString("phone1")+"-"+paramMap.getString("phone2")+"-"+paramMap.getString("phone3");
-//        String cuEmail = paramMap.getString("email1")+"@"+paramMap.getString("email2");
-        customer.join(cuPhone, paramMap.getMap(), selfAuth.getSaRes());
+        customer.join(selfAuth.getSaRes());
+        customer.setShop(shopRepo.getReferenceById(shopSession.getShopIdx()));
         customerRepo.save(customer);
+        selfAuth.setSaUsed(true);
     }
 
 }

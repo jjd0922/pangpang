@@ -16,11 +16,9 @@
 <!-- 좌측 상단 해당 페이지 메뉴 경로 -->
 <div class="container">
   <p class="menu-route">
-    <span>태블릿/휴대폰/웨어러블</span><i class="circle-down"></i>
+    <span th:text="${scate.SCATE_NAME}">전시 대분류</span><i class="circle-down"></i>
     &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
-    <span>갤럭시탭/아이패드/서피스</span><i class="circle-down"></i>
-    &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
-    <span>애플아이패드</span></span><i class="circle-down"></i>
+    <span th:text="${sp.category.cateName}">중분류</span><i class="circle-down"></i>
   </p>
 </div>
 
@@ -168,100 +166,28 @@
         </ul>
         <!-- 옵션상품 -->
         <ul class="prod-option font-sm">
-          <li>
-            <label for="">필수옵션상품</label>
-            <select id="">
-              <option value="0">옵션선택</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
-          </li>
-          <li>
-            <label for="">필수옵션상품</label>
-            <select id="">
-              <option value="0">옵션선택</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
-          </li>
-          <li>
-            <label for="">선택옵션상품</label>
-            <select id="">
-              <option value="0">옵션선택</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
-          </li>
-          <li>
-            <label for="">선택옵션상품</label>
-            <select id="">
-              <option value="0">옵션선택</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
+          <li th:each="spa : ${sp.shopProductAddList}">
+            <label th:text="${spa.spaName}">옵션명</label>
+            <select  th:spa_required="${spa.spaRequired}" onchange="selectSpo(this)">
+              <option value="">옵션 선택</option>
+              <option th:each="spo:${spoMap[__${spa.spaIdx}__]}" th:text="${spo.SPO_NAME}+' / '+${spo.SPO_PRICE_F}" th:value="${spo.SPO_IDX}" th:spo_price="${spo.SPO_PRICE}">옵션선택</option>
             </select>
           </li>
         </ul>
         <!-- 선택된 옵션가격 -->
         <div class="prod-option-price">
-          <ul>
-            <li >
-              <div class="prod-op-price-group">
-                <p>상품상태-단기사용</p>
-                <div class="prod-op-price-group select-amount-wrap">
-                  <div class="select-amount">
-                    <span class="amount-minus">-</span>
-                    <input type="text" name="-" value="1" size="5" readonly="">
-                    <span class="amount-plus">+</span>
-                  </div>
-                  <div>
-                    <span>+ 0</span><span class="won">원</span>
-                  </div>
-                  <i class="option-close"></i>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="prod-op-price-group">
-                <p>[이가격 마지막!!]애플 아이패드 7세대 1.0 Wi-Fi 32GB 레드</p>
-                <div class="prod-op-price-group select-amount-wrap">
-                  <div class="select-amount">
-                    <span class="amount-minus">-</span>
-                    <input type="text" name="-" value="1" size="5" readonly="">
-                    <span class="amount-plus">+</span>
-                  </div>
-                  <div>
-                    <span>+ 19,000</span><span class="won">원</span>
-                  </div>
-                  <i class="option-close"></i>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="prod-op-price-group">
-                <p>AS보증 1년 무상서비스 (유료제공)<br>
-                  <span class="font-xxsm opacity-8">배송완료일로부터 해당기간만큼 AS서비스 제공</span><br>
-                  <span class="font-xxsm color-red">(*고객 과실에 의한, 외관/액정 파손은 유상 AS처리)</span></p>
-                <div class="prod-op-price-group select-amount-wrap">
-                  <div class="select-amount">
-                    <span class="amount-minus">-</span>
-                    <input type="text" name="-" value="1" size="5" readonly="">
-                    <span class="amount-plus">+</span>
-                  </div>
-                  <div>
-                    <span>+ 19,000</span><span class="won">원</span>
-                  </div>
-                  <i class="option-close"></i>
-                </div>
-              </div>
-            </li>
+          <form id="spoForm" action="/orders/" method="post">
+          <ul id="spoUl">
+
           </ul>
-          <p class="option-totalPrice">총 상품금액&nbsp;&nbsp;<span class="font-xxxlg bold">339,000</span><span class="won">원</span></p>
+          </form>
+          <p class="option-totalPrice">총 상품금액&nbsp;&nbsp;<span class="font-xxxlg bold" id="spoTotalPrice">0</span><span class="won">원</span></p>
         </div>
         <!-- 바로구매, 장바구니, 찜하기 버튼 -->
         <div>
           <div class="prod-btn-group">
             <div class="btn-blue">
-              <a href="javascript:;">바로구매</a>
+              <a href="javascript:orderSpo();">바로구매</a>
             </div>
             <div class="btn-white">
               <a href="javascript:;">장바구니</a>
@@ -271,7 +197,7 @@
               <span>25</span>
             </div>
           </div>
-          <span class="nonMember-buy">비회원 구매</span>
+          <span class="nonMember-buy nosessionClass" th:styleappend="${@shopSession.idx != null?'display:none;':''}">비회원 구매</span>
         </div>
       </li>
     </ul>
@@ -292,7 +218,7 @@
   </section>
 
   <!--상품상세 정보 : 공통영역-->
-  <section class="padding-section half-padding-section">
+  <section class="padding-section halfbottom-padding-section">
     <div class="container">
       <!-- 런칭 스토리 -->
       <div class="launchingStory">
@@ -793,7 +719,108 @@
   <th:block th:replace="part/js"></th:block>
 
 <script>
+  //옵션 선택
+  function selectSpo(obj){
+    if($(obj).attr('spa_required') == 'true'){
+      var spoIdxs = '';
+      var spoNames = '';
+      var spoPrices = 0;
+      var spaReqList = $('select[spa_required=true]');
+      for(var i = 0; i<spaReqList.length; i++){
+        var spoIdx = $(spaReqList.get(i)).val();
+        if( spoIdx == ''){
+          return ;
+        }
 
+        var selectedOpt = $($(spaReqList.get(i)).find('option:selected')[0]);
+        spoIdxs += spoIdx;
+        spoNames += selectedOpt.html();
+        spoPrices += Number(selectedOpt.attr('spo_price'));
+
+        if( i+1 != spaReqList.length){
+          spoIdxs += '_';
+          spoNames += '   ';
+        }
+
+      }
+
+      addSpo(spoIdxs, spoNames, spoPrices);
+
+      $('select[spa_required=true]').val('');
+
+    }else{
+      var selectedOpt = $($(obj).find('option:selected')[0]);
+      addSpo( selectedOpt.val(), selectedOpt.html(), selectedOpt.attr('spo_price'));
+      $(obj).val('');
+    }
+  }
+  //선택된 옵션 추가
+  function addSpo(val, name, price){
+
+    if( $('input[name=spo'+val+']').length > 0 ){
+      alert('이미 추가된 옵션입니다');
+      return ;
+    }
+    var spo = '';
+
+    spo += '<li>';
+    spo += '  <div class="prod-op-price-group">';
+    spo += '    <p>'+name+'</p>';
+    spo += '    <div class="prod-op-price-group select-amount-wrap">';
+    spo += '      <div class="select-amount">';
+    spo += '        <span class="amount-minus" onclick="changeSpo(\''+val+'\', -1)">-</span>';
+    spo += '        <input type="text" name="spo'+val+'" value="1" readOnly spo_price="'+price+'">';
+    spo += '          <span class="amount-plus" onclick="changeSpo(\''+val+'\', 1)">+</span>';
+    spo += '      </div>';
+    spo += '      <div>';
+    spo += '        + <span>'+comma(price)+'</span><span class="won">원</span>';
+    spo += '      </div>';
+    spo += '      <i class="option-close" onclick="delSpo(\''+val+'\')"></i>';
+    spo += '    </div>';
+    spo += '  </div>';
+    spo += '</li>';
+
+    $('#spoUl').append(spo);
+    calSpo();
+  }
+  //선택 옵션 삭제
+  function delSpo(val){
+    $('input[name=spo'+val+']').parents('li')[0].remove();
+    calSpo();
+  }
+
+  //옵션 수량 총 금액 계산
+  function calSpo(){
+    var spoList = $('input[name^=spo');
+    if(spoList.length == 0 ){
+      $('#spoTotalPrice').html('0');
+    }else{
+      var spoTotalPrice = 0;
+      for (var i = 0; i < spoList.length; i++) {
+        spoTotalPrice += Number(spoList[i].attributes.spo_price.value) * Number(spoList[i].value);
+      }
+      $('#spoTotalPrice').html( comma(spoTotalPrice) );
+    }
+  }
+  //선택 옵션 수량 변경
+  function changeSpo(val, cnt){
+    var cnt = Number($('input[name=spo'+val+']').val())+cnt;
+    if (cnt < 0) {
+      cnt = 1;
+    }
+    $('input[name=spo'+val+']').val(cnt);
+    calSpo();
+  }
+  //주문하기
+  function orderSpo(){
+    //회원
+    if( $('.nosessionClass').css('display') == 'none' ){
+      $('#spoForm').submit();
+    }else{
+    //비회원
+
+    }
+  }
 </script>
 <script>
 
