@@ -325,9 +325,7 @@ header {
 }
 .header-top {
     width: 100%;
-    height: 130px;
     background-color: #fff;
-    border-bottom: 2px solid #ebebeb;
 }
 .header-top-inner {
     width: 100%;
@@ -1114,21 +1112,24 @@ nav .gnb-ctg-all {
 
 /*** 모든 페이지 공통 tab 디자인 ***/
 
+/*** 대분류 썸네일 카테고리 ***/
 .thumbnail-icon {
     display: flex;
     flex-direction: column;
     align-items: center;
+    /*width: 130px;*/
 }
 .thumbnail-icon img {
 	width: auto;
-	height: 40px;
-	max-width: 40px;
+	height: 64px;
+	max-width: 64px;
 }
 .thumbnail-icon span {
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 400;
-	letter-spacing: -.5px;
-	margin-top: 15px;
+	letter-spacing: -.75px;
+	margin-top: 2px;
+    white-space: nowrap;
 }
 
 .sticky {
@@ -1145,16 +1146,48 @@ nav .gnb-ctg-all {
     flex: 1;
     display: flex;
     justify-content: center;
-    padding: 30px 0;
+    align-items: center;
+    padding: 10px 10px 20px;
     font-size: 18px;
     cursor: pointer;
+    height: 140px;
+    min-width: 130px;
+    border-bottom: 2px solid transparent;
 }
 .ctg-tab>li.on {
-    background-color: #f7f7f7;
+    /*background-color: #f7f7f7;*/
+    border-bottom: 2px solid var(--scPoint);
 }
 .ctg-tab>li.on a{
     color: #314ad7;
     font-weight: 500;
+}
+.ctg-tab>li:hover {
+    /*background-color: #f7f7f7;*/
+    border-bottom: 2px solid var(--scBlack);
+}
+.ctg-tab>li:hover span {
+    color: #314ad7;
+}
+.ctg-tab>li:hover img {
+    transform: scale(1.25);
+}
+.ctg-tab>li img {
+    transition: all .3s ease;
+}
+/*.ctg-tab>li:hover span {
+    transform: scale(0.95);
+    transition: all .1s ease;
+}*/
+@media (max-width:991px) {
+    .ctg-tab>li {
+        flex: none;
+        width: auto;
+        height: auto;
+        font-size: 16px;
+        min-width: auto;
+        /*padding: 15px;*/
+    }
 }
 
 /*.ctg-tab>li>a {

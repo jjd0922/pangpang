@@ -176,7 +176,7 @@ public class ProductService {
         ori.setPDelCompany(product.getPDelCompany());
         ori.setPDelTogether(product.getPDelTogether());
         ori.setPFreeInterest(product.isPFreeInterest());
-        ori.setPDelFree(product.isPDelFree());
+//       ori.setPDelFree(product.isPDelFree());
         ori.setPNaver(product.getPNaver());
         ori.setPInfo(product.getPInfo());
         ori.setPOption(product.getPOption());

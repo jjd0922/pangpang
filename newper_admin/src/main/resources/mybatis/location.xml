@@ -58,10 +58,11 @@
          *
         FROM
              location_move_goods
+             LEFT JOIN goods ON LMG_G_IDX=G_IDX
+             LEFT JOIN location_move ON LMG_LM_IDX = LM_IDX
         WHERE
            LMG_LM_IDX = #{lmIdx}
-           AND
-           LMG_G_IDX = #{gIdx}
+            LMG_G_IDX = #{gIdx}
     </select>
 
     <select id="countLocationDatatable" resultType="long">

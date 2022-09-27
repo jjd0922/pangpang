@@ -101,7 +101,7 @@ public class StockController {
 
     /**창고이동관리 > 창고이동 조회/수정 페이지*/
     @GetMapping("move/pop/{lmIdx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
-    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx,Integer locIdx) {
+    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx ,Integer locIdx) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
         LocationMove locationMove=locationMoveRepo.findLocationMoveByLmIdx(lmIdx);
         Location location=locationRepo.findLocationByLocIdx(locIdx);
@@ -118,9 +118,9 @@ public class StockController {
 
 //       Goods goods = goodsRepo.findById(gIdx).orElseThrow(() -> new MsgException("존재하지 않는 자산입니다."));
 
-        mav.addObject("location",location);
-//        mav.addObject("goods", locationMapper.selectLocationMoveGoods(gIdx));
-//        mav.addObject("goods", locationMapper.selectLocationMoveGoods(lmIdx));
+         mav.addObject("location",location);
+//        mav.addObject("goods", locationMapper.selectLocationMoveGoods();
+//         mav.addObject("goods", locationMapper.selectLocationMoveGoods(lmIdx));
 //        mav.addObject("location", location);
         return mav;
     }
