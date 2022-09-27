@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -26,6 +27,7 @@ public class ShopProduct extends BaseEntity {
     @JoinColumn(name="SP_SHOP_IDX", referencedColumnName = "shopIdx")
     private Shop shop;
 
+    /** 중분류*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="SP_CATE_IDX", referencedColumnName = "cateIdx")
     private Category category;
@@ -52,6 +54,13 @@ public class ShopProduct extends BaseEntity {
     private LocalTime spSellStartTime;
     private LocalDate spSellEndDate;
     private LocalTime spSellEndTime;
+
+    /** <pre>
+     * key : value
+     * scate_idx(전시분류) : scate_idx
+     * scate_name(전시분류) : scate_name
+     * </pre>*/
+    private Map<String,Object> spJson;
 
     /** 현재 판매 중인 상품인지 확인*/
     public boolean isSell(){
