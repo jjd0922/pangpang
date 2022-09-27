@@ -53,7 +53,6 @@ public class CheckService {
         GState gState = GState.valueOf(paramMap.getString("gState"));
         CgsType cgsType = CgsType.valueOf(paramMap.getString("cgsType"));
 
-
         //check goods
         List<Long> gIdx = processMapper.selectGoodsTemp(paramMap.getLong("ggt_idx"));
 
@@ -62,6 +61,8 @@ public class CheckService {
             goods.setGState(gState);
             goodsRepo.save(goods);
 
+            int count = checkMapper.selectCheckGoodsCount(goods.getGIdx(), CgsType.IN.name());
+
             CheckGoods checkGoods = CheckGoods
                     .builder()
                     .goods(goods)
@@ -69,7 +70,7 @@ public class CheckService {
                     .cgsExpectedCost(0)
                     .cgsRealCost(0)
                     .cgsType(cgsType.toString())
-                    .cgsCount(0)
+                    .cgsCount(count + 1)
                     .build();
 
             checkGoodsRepo.save(checkGoods);
@@ -81,8 +82,7 @@ public class CheckService {
 
     /** 입고검수 자산 정보 UPDATE */
     @Transactional
-    public void goodsInCheck(ParamMap paramMap, MultipartFile[] gFile) {
-        // 자산 상태 체크
+    public void saveInCheckReport(ParamMap paramMap, MultipartFile[] gFile) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
 
         //IMEI 저장
@@ -92,7 +92,6 @@ public class CheckService {
         List<Map<String, Object>> option = new ArrayList<>();
         List<String> optionList = paramMap.getList("productOption");
         Common.putOption(option, optionList);
-
         goods.setGOption(option);
 
         //메모 저장
@@ -128,15 +127,13 @@ public class CheckService {
         processService.insertProcessNeed(goods, paramMap, PnType.FIX);
         processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
 
-        List<String> pSepc1 = paramMap.getList("pSepc1");
-        gJson.put("pSpec1", pSepc1);
         goods.setGJson(gJson);
         goodsRepo.save(goods);
     }
 
     /** 영업검수 자산 정보 확정 */
     @Transactional
-    public void goodsInfoComplete(ParamMap paramMap, MultipartFile[] gFile) {
+    public void saveGoodsReport(ParamMap paramMap, MultipartFile[] gFile) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
 
         Map<String, Object> gJson = goods.getGJson();
@@ -157,7 +154,6 @@ public class CheckService {
         goods.setGVendor(paramMap.getString("gVendor"));
         goods.setGRank(GRank.valueOf(paramMap.getString("gRank")));
         goods.setGMemo(paramMap.getString("gMemo"));
-
 
         List<String> gOption = paramMap.getList("goodsOption");
         List<Map<String, Object>> optionList = new ArrayList<>();

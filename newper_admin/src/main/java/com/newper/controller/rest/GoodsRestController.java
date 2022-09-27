@@ -118,7 +118,7 @@ public class GoodsRestController {
     /** 자산 상세 조회 */
     @PostMapping("selectGoods.ajax")
     public Map<String, Object> selectGoods(ParamMap paramMap) {
-        return goodsMapper.selectGoodsByG_IDX(paramMap.getLong("gIdx"));
+        return goodsMapper.selectGoodsByG_IDX(paramMap.getMap());
     }
 
     /** 자산 망실 처리 */

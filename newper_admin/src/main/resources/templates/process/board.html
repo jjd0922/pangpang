@@ -34,9 +34,9 @@
                                                 <div class="form-group">
                                                     <label class="d-block">자산처리<br>담당자</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
-                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).RECEIVED}">
-                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).PROCESS}">
-                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK_NEED}">
+<!--                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).RECEIVED}">-->
+<!--                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).PROCESS}">-->
+<!--                                                    <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).CHECK_REQ}">-->
                                                 </div>
 
                                                 <div class="form-group">
@@ -268,22 +268,22 @@
                         <div class="card">
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('inCheckPop', 'IN_CHECK')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="reqCheck('inCheckReq','IN_CHECK')">
                                         입고검수
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PROCESS')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="reqCheck('processReq', 'PROCESS')">
                                         가공요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'FIX')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="reqCheck('processReq', 'FIX')">
                                         수리요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('needPop', 'PAINT')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="reqCheck('processReq', 'PAINT')">
                                         도색요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="tempGoodsGroup('reCheckPop', 'RE_CHECK')">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" onclick="reqCheck('reCheckReq', 'RE_CHECK')">
                                         재검수요청
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="tempGoodsGroup('resellPop', 'RESELL')">
+                                    <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="reqCheck('resellReq', 'RESELL')">
                                         반품
                                     </a>
                                     <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="lostBtn()">
@@ -363,44 +363,61 @@
             {'class':'select-checkbox m-w-2', 'title':'선택','data':'G_IDX','render':function(data,type,full,meta){
                     return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
-            ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                return meta.settings._iDisplayStart+meta.row+1;
-            }}
-            ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent': ''}
-            ,{'title':'발주코드','data':'G_PO_IDX', 'defaultContent': ''}
-            ,{'title':'자산바코드','data':'G_BARCODE', 'defaultContent': ''}
-            ,{'title':'자산처리<br>담당자','data':'', 'defaultContent': ''}
-            ,{'title':'자산<br>처리일','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'자산<br>코드','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'상품<br>코드','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'상품명','data':'P_NAME', 'defaultContent': ''}
+            ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}
+            ,{'title':'자산처리담당자','data':'','defaultContent':''}
+            ,{'title':'자산처리일','data':'','defaultContent':''}
+            ,{'title':'자산번호','data':'G_IDX','defaultContent':''}
+            ,{'title':'자산바코드','data':'G_BARCODE','defaultContent':''}
+            ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1', 'defaultContent': ''}
             ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2', 'defaultContent': ''}
             ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1', 'defaultContent': ''}
             ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2', 'defaultContent': ''}
             ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1', 'defaultContent': ''}
             ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2', 'defaultContent': ''}
-            ,{'title':'판매스펙<br>확정일','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'IMEI','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'시리얼','data':'G_IDX', 'defaultContent': ''}
-            ,{'title':'', 'data':null, 'render': function (data,type,full,meta) {
+            ,{'title':'판매스펙확정일','data':'','defaultContent':''}
+            ,{'title':'IMEI','data':'','defaultContent':''}
+            ,{'title':'시리얼','data':'','defaultContent':''}
+            ,{'title':'발주코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
             ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
             ,{'title':'가공<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
             ,{'title':'도색<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
             ,{'title':'수리<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
             ,{'title':'재검수<br>코드','data':null, 'render': function (data,type,full,meta) {
                     return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
-            }}
+                }}
+            ,{'title':'공정항목','data':'','defaultContent':''}
+            ,{'title':'공정상태','data':'','defaultContent':''}
+            ,{'title':'판매채널','data':'','defaultContent':''}
+            ,{'title':'등급','data':'','defaultContent':''}
+            ,{'title':'옵션1','data':'','defaultContent':''}
+            ,{'title':'옵션2','data':'','defaultContent':''}
+            ,{'title':'옵션3','data':'','defaultContent':''}
+            ,{'title':'기준판매가(재고)확정여부','data':'','defaultContent':''}
+            ,{'title':'기준판매가(재고)','data':'','defaultContent':''}
+            ,{'title':'매입원가','data':'','defaultContent':''}
+            ,{'title':'소모품비','data':'','defaultContent':''}
+            ,{'title':'입고검수비','data':'','defaultContent':''}
+            ,{'title':'재검수비','data':'','defaultContent':''}
+            ,{'title':'가공비','data':'','defaultContent':''}
+            ,{'title':'수리비','data':'','defaultContent':''}
+            ,{'title':'도색비','data':'','defaultContent':''}
+            ,{'title':'매입원가합계','data':'','defaultContent':''}
+            ,{'title':'창고','data':'','defaultContent':''}
+            ,{'title':'데크','data':'','defaultContent':''}
+            ,{'title':'베이','data':'','defaultContent':''}
+            ,{'title':'창고코드','data':'','defaultContent':''}
         ]
     });
 
@@ -410,11 +427,59 @@
         if(event.keyCode==13){searchBtn();return false;}
     });
 
+    // 요청이 어떤요청인지 체크
+    function reqCheck(url, type) {
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        if(g_idxs.length > 0){
+            var check_url = ''
+            if (type == 'IN_CHECK') {
+                check_url = '/goods/goodsInCheck.ajax';
+            } else if (type == 'PROCESS' || type == 'FIX' || type == 'PAINT') {
+                check_url = '/goods/goodsProcessCheck.ajax';
+            } else if (type == 'RE_CHECK') {
+                check_url = '/goods/goodsReCheck.ajax';
+            } else if (type == 'RESELL') {
+                check_url = '/goods/goodsResellCheck.ajax';
+            }
+
+            $.ajax({
+                url:check_url,
+                type:'POST',
+                data: {"gIdx" : g_idxs},
+                success() {
+                    tempGoodsGroup2(url, type);
+                }
+            })
+        } else {
+            tempGoodsGroup(url, type);
+        }
+
+    }
+
+
     function tempGoodsGroup(url, type) {
         $.ajax({
             url:'/process/in/temp.ajax'
             ,type:'post'
             ,data: {
+                "type" : type
+            }
+            ,async: false
+        }).done(function(res){
+            var focusPopup = window.open('/process/'+ url +'?ggt_idx=' + res + '&type=' + type, url, 'width=1000, height=800, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+            focusPopup.focus();
+        }).fail(function(){
+            return false;
+        });
+    }
+
+    function tempGoodsGroup2(url, type) {
+        var g_idxs=dataTableGetSelectedData('boardTable','G_IDX');
+        $.ajax({
+            url:'/process/in/temp2.ajax'
+            ,type:'post'
+            ,data: {
+                "g_idxs" : g_idxs,
                 "type" : type
             }
             ,async: false

@@ -39,7 +39,7 @@ public class InRestController {
     @PostMapping("in.dataTable")
     public ReturnDatatable in(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("입고등록");
-
+        paramMap.multiSelect("igState");
         List<Map<String, Object>> data = poMapper.selectInDatatable(paramMap.getMap());
         int count = poMapper.countInDatatable(paramMap.getMap());
 
@@ -88,10 +88,10 @@ public class InRestController {
         return rd;
     }
 
-    @PostMapping("incheck.dataTable")
-    public ReturnDatatable incheck(ParamMap paramMap) {
+    @PostMapping("inCheck.dataTable")
+    public ReturnDatatable inCheck(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("입고검수");
-
+        paramMap.multiSelect("cgState");
         List<Map<String, Object>> list = checksMapper.selectCheckGroupDatatable(paramMap.getMap());
         rd.setData(list);
         rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
@@ -176,25 +176,25 @@ public class InRestController {
     public ReturnDatatable checkGoods(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
         rd.setData(checksMapper.selectCheckGoods(paramMap.getMap()));
-        rd.setRecordsTotal(checksMapper.countCheckGroupDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(checksMapper.countCheckGoods(paramMap.getMap()));
 
         return rd;
     }
 
     /** 입고검수 자산 정보 입력 */
-    @PostMapping("goodsInCheck.ajax")
-    public ReturnMap goodsInCheck(ParamMap paramMap, MultipartFile[] gFile) {
+    @PostMapping("saveInCheckReport.ajax")
+    public ReturnMap saveInCheckReport(ParamMap paramMap, MultipartFile[] gFile) {
         ReturnMap rm = new ReturnMap();
-        checkService.goodsInCheck(paramMap, gFile);
+        checkService.saveInCheckReport(paramMap, gFile);
         rm.setMessage("등록완료");
         return rm;
     }
 
     /** 영업검수 자산 정보 확정 */
-    @PostMapping("goodsInfoComplete.ajax")
-    public ReturnMap goodsInfoComplete(ParamMap paramMap, MultipartFile[] gFile) {
+    @PostMapping("saveGoodsReport.ajax")
+    public ReturnMap saveGoodsReport(ParamMap paramMap, MultipartFile[] gFile) {
         ReturnMap rm = new ReturnMap();
-        checkService.goodsInfoComplete(paramMap, gFile);
+        checkService.saveGoodsReport(paramMap, gFile);
         rm.setMessage("등록완료");
         return rm;
     }

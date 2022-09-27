@@ -98,8 +98,7 @@
 
     <select id="selectResellComIdx" resultType="Map">
         SELECT
-            COM_NAME,
-            COM_IDX
+            *
         FROM
             GOODS_TEMP
                 LEFT JOIN GOODS ON GT_G_IDX = G_IDX
@@ -112,7 +111,16 @@
     </select>
 
     <sql id="includeResellDatatable">
-
+        <if test="rsIdx != null and rdIdx != ''">RS_IDX LIKE CONCAT ('%', #{rsIdx}, '%')</if>
+        <if test="rsState != null and rsState != ''">RS_STATE = #{rsState}</if>
+        <if test="comName != null and comName != ''">RS_IDX LIKE CONCAT ('%', #{comName}, '%')</if>
+        <if test="buy_uName != null and buy_uName != ''">RS_IDX LIKE CONCAT ('%', #{buy_uName}, '%')</if>
+        <if test="start_uName != null and start_uName != ''">RS_IDX LIKE CONCAT ('%', #{start_uName}, '%')</if>
+        <if test="rgStartDate != null and rgStartDate != ''">RS_IDX LIKE CONCAT ('%', #{rgStartDate}, '%')</if>
+        <if test="end_uName != null and end_uName != ''">RS_IDX LIKE CONCAT ('%', #{end_uName}, '%')</if>
+        <if test="rgEndDate != null and rgEndDate != ''">RS_IDX LIKE CONCAT ('%', #{rgEndDate}, '%')</if>
+        <if test="createdBy != null and createdBy != ''">RS_IDX LIKE CONCAT ('%', #{createdBy}, '%')</if>
+        <if test="createdDate != null and createdDate != ''">RS_IDX LIKE CONCAT ('%', #{createdDate}, '%')</if>
     </sql>
 
     <select id="selectResellDatatable" resultType="Map">
@@ -183,7 +191,7 @@
 
     <select id="countCheckDatatable" resultType="Long">
         SELECT
-            *
+            COUNT(*)
         FROM
             CHECK_GROUP
         <where>
@@ -335,6 +343,8 @@
             PN_G_IDX = #{gIdx}
         AND
             PN_STATE = 'NEED'
+          AND
+            PN_PROCESS = 'Y'
     </select>
 
     <select id="checkProcessSpec" resultType="Integer">
@@ -345,8 +355,6 @@
                 LEFT JOIN PROCESS_NEED ON PS_PN_IDX = PN_IDX
         WHERE
             PS_PN_IDX = #{pnIdx}
-        AND
-            PN_TYPE = #{pnType}
     </select>
 
     <select id="selectCheckGoods" resultType="Map">
@@ -357,6 +365,8 @@
                 LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
                 LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
         WHERE
             CG_IDX = #{cgIdx}
         <if test="length != -1">
@@ -373,6 +383,9 @@
                 LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
                 LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PROCESS_NEED ON PN_CG_IDX = CG_IDX AND G_IDX = PN_G_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
         WHERE
             CG_IDX = #{cgIdx}
     </select>

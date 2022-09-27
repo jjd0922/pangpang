@@ -47,7 +47,7 @@ public interface ProcessMapper {
     void updateResellGoods(Map<String, Object> map);
 
     /** 검수 그룹 데이터테이블 조회 */
-    List selectCheckDatatable(Map<String, Object> map);
+    List<Map<String, Object>> selectCheckDatatable(Map<String, Object> map);
 
     /** 검수 그룹 개수 조회 */
     long countCheckDatatable(Map<String, Object> map);
@@ -85,7 +85,7 @@ public interface ProcessMapper {
     int checkProcessNeedOther(@Param("gIdx") Long gIdx);
 
     /** 해당 공정, 공정타입 조회 */
-    int checkProcessSpec(@Param("pnIdx") int pnIdx, @Param("pnType") PnType pnType);
+    int checkProcessSpec(@Param("pnIdx") int pnIdx);
 
     /**  */
     List selectCheckGoods(Map<String, Object> map);

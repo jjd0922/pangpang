@@ -85,4 +85,7 @@ public interface PoMapper {
 
     /** po수정시 연결된 모든 po_hiworks 삭제 > 이후 새로 등록*/
     void deletePoHiworksBypoIdx(@Param("poIdx") Integer poIdx);
+
+    /** 입고완료처리시 해당 발주의 품의 상품과 실 입고 상품 개수 일치하는지 확인 */
+    List<Integer> checkPoProductInProduct(Integer poIdx);
 }

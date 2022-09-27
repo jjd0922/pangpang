@@ -773,11 +773,7 @@
         $('input[name="cnt"]').val(cnt);
     }
 
-    /**숫자로 입력되어야하는 input들 처리*/
-    function inputOnlyNumber(el) {
-        var value = comma(el.val().replace(/[^0-9]/g, ""));
-        el.val(value);
-    }
+
 
     /**계산할것들 계산*/
     function calculateAll(el) {
@@ -871,9 +867,6 @@
 <script>
     $("#saveBtn").on("click", saveAction);
     // 숫자만 입력되도록
-    $('.text-won').on("input", function (event) {
-        inputOnlyNumber($(event.target))
-    });
     $('select[name=poDeliveryMain]').on('change', function (event) {
         changePoDeliveryMain($(event.target));
     });

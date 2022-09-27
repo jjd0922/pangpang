@@ -30,7 +30,7 @@ public interface GoodsMapper {
     /** 입고검수 임시 테이블 제거 **/
     void deleteGoodsGroupTempByGIdxAndGgtIdx(Map<String, Object> map);
 
-    Map<String, Object> selectGoodsByG_IDX(Long aLong);
+    Map<String, Object> selectGoodsByG_IDX(Map<String, Object> param);
 
     /** 입고검수 임시 테이블 삭제 **/
     void deleteGoodsGroupTempByGGT_IDX(@Param("ggtIdx") long ggt_idx);
@@ -55,7 +55,7 @@ public interface GoodsMapper {
     List<Map<String, Object>> selectGoodsGroupByPO_COMPANY(Map<String, Object> map);
 
     /** 자산 반품요청값으로 GROUP BY */
-    List<Map<String, Object>> selectGoodsGroupByCANCEL_REQ(Map<String, Object> map);
+    List<Map<String, Object>> selectGoodsGroupByState(Map<String, Object> map);
 
     /** 해당 검수그룹에 해당하는 자산 조회 */
     List<Long> selectGoodsByCheckGroup(@Param("cgIdx") int cgIdx);

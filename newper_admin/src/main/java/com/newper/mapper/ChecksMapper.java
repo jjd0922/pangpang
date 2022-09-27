@@ -21,10 +21,8 @@ public interface ChecksMapper {
     long countChecksDatatable(Map<String, Object> map);
 
     /** 입고검수 자산 조희 */
-    List selectCheckGoods(Map<String, Object> map);
-
-    /** 해당 자산 공정 회차 */
-    int countCheckGroupByGoods(@Param("gIdx") Long gIdx);
+    List<Map<String, Object>> selectCheckGoods(Map<String, Object> map);
+    long countCheckGoods(Map<String, Object> map);
 
     /** 해당 입고 자산들 공정예상비용 총합 */
     int selectCheckGroupExpectedCostTotal(int cgIdx);
@@ -34,4 +32,9 @@ public interface ChecksMapper {
 
     /** 해당 검수그룹 완료 체크 */
     int selectCheckGroupGoods(Map<String, Object> param);
+
+    /** 해당 자산 검수 카운팅*/
+    int selectCheckGoodsCount(@Param("gIdx") Long gIdx, @Param("cgsType") String cgsType);
+
+
 }

@@ -43,9 +43,9 @@ public class ProcessController {
 
 
     /**입고검수 팝업**/
-    @GetMapping(value = "inCheckPop")
-    public ModelAndView inCheckPopup(ParamMap paramMap) {
-        ModelAndView mav = new ModelAndView("process/inCheckPop");
+    @GetMapping(value = "inCheckReq")
+    public ModelAndView inCheckReq(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/inCheckReq");
         mav.addObject("param", paramMap.getMap());
         return mav;
     }
@@ -83,9 +83,9 @@ public class ProcessController {
     }
 
     /**매입처반품 페이지**/
-    @GetMapping(value = "purchasingReturn")
-    public ModelAndView purchasingReturn() {
-        ModelAndView mav = new ModelAndView("process/purchasingReturn");
+    @GetMapping(value = "resell")
+    public ModelAndView resell() {
+        ModelAndView mav = new ModelAndView("process/resell");
 
         return mav;
     }
@@ -195,6 +195,13 @@ public class ProcessController {
     public ModelAndView checkGroupPop(@PathVariable int cgIdx) {
         ModelAndView mav = new ModelAndView("process/checkGroupPop");
         mav.addObject("check", checkGroupRepo.findCheckGroupByCgIdx(cgIdx));
+        return mav;
+    }
+
+    /** 출고전검수 */
+    @GetMapping(value = "outCheck")
+    public ModelAndView outCheck(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/outCheck");
         return mav;
     }
 }

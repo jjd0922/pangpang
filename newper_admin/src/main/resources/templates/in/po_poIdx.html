@@ -91,7 +91,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">입고완료일</span>
                                                     </span>
-                                                        <input type="text" name="igDate" class="form-control" readonly>
+                                                        <input type="text" name="igDate" th:value="${#strings.toString(ig.igDate)}" class="form-control" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -238,6 +238,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="compType" id="compType">
                                         </div>
                                     </fieldset>
                                 </div>
@@ -327,6 +328,8 @@
             alert('입고창고를 선택해 주세요');
             return false;
         }
+
+        $('#compType').val(flag);
 
         $.ajax({
             url: '/in/inGroupSave.ajax',

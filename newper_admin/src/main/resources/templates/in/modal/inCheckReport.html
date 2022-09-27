@@ -1,5 +1,5 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="goodsModal">
+<div class="modal" tabindex="-1" role="dialog" id="inCheckReport">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                <div class="col-lg-12" id="ProductDiv">
-                    <form id="goodsModalForm">
+                    <form id="inCheckReportForm">
                         <div class="card mb-1">
                             <div class="card-body popup-contents mb-1">
 
@@ -21,11 +21,31 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
+                                                        <span class="input-group-text">검수그룹</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="cgIdx" th:value="${check.cgIdx}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">검수자산관계번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="cgsIdx" id="cgsIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
                                                     <input type="text" class="form-control" name="pIdx" id="pIdx" readonly>
-                                                    <input type="hidden" name="poIdx" id="poIdx">
-                                                    <input type="hidden" name="cgIdx" th:value="${check.cgIdx}">
                                                 </div>
                                             </div>
                                         </div>
@@ -48,7 +68,6 @@
                                                         <span class="input-group-text">자산코드</span>
                                                     </span>
                                                     <input type="text" class="form-control" name="gIdx" id="gIdx" readonly>
-                                                    <input type="hidden" name="cgsIdx" id="cgsIdx">
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +97,26 @@
                                                     <th>예상비용</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="inCheckProcessTbody"></tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <input type="hidden" name="paintPnIdx">
+                                                    <td>도색</td>
+                                                    <td><input type="text" name="paintContent" class="form-control"></td>
+                                                    <td><input type="text" name="paintCost" class="form-control text-won"></td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" name="fixPnIdx">
+                                                    <td>수리</td>
+                                                    <td><input type="text" name="fixContent" class="form-control"></td>
+                                                    <td><input type="text" name="fixCost" class="form-control text-won"></td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" name="processPnIdx">
+                                                    <td>가공</td>
+                                                    <td><input type="text" name="processContent" class="form-control"></td>
+                                                    <td><input type="text" name="processCost" class="form-control text-won"></td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </fieldset>
@@ -95,7 +133,7 @@
                                                 <th>가공SPEC예상비용</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="productSpecListTable">
+                                            <tbody id="specListTable">
 
                                             </tbody>
                                         </table>
@@ -185,7 +223,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button th:if="${check.cgState.name() == 'REQ'}" type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="goodsInCheck();">저장</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="saveInCheckReport();">저장</button>
             </div>
             <!-- /footer -->
         </div>
@@ -193,163 +231,82 @@
 </div>
 
 <script>
-    function goodsInCheck () {
-        var flag = true;
-        $.each($('input[name=spec1]'), function (index, value) {
-            if ($(this).val() == '') {
-                flag = false;
-                return false;
-            }
-        });
+    function openInCheckReport (id, rowIdx) {
+        $('#inCheckReport').modal('show');
 
-        if (flag == false) {
-            alert('입고SPEC(확정)을 입력해 주세요');
-            return false;
-        }
-
-
-        $.ajax({
-            type: "POST",
-            url:"/in/goodsInCheck.ajax",
-            processData: false,
-            contentType: false,
-            data: new FormData($('#goodsModalForm')[0]),
-            async: false,
-            success : function(result){
-                location.reload();
-            }
-        });
-    }
-
-    function openInGoodsModal (id, rowIdx) {
-        $('#goodsModal').modal('show');
         var dataMap = getDatatablemap(id, rowIdx);
-        $('input[name=gImei]').val(dataMap.G_IMEI);
-
         if (dataMap.G_STATE != 'CHECK_ING') {
             $('#inCheckBtn').remove();
         }
 
         // 상품 & 자산 정보 세팅
+        $('input[name=gImei]').val(dataMap.G_IMEI);
         $('input[name=gMemo]').val(dataMap.G_MEMO);
         $('#pIdx').val(dataMap.P_IDX);
         $('#pName').val(dataMap.P_NAME);
         $('#gIdx').val(dataMap.G_IDX);
         $('#cgsIdx').val(dataMap.CGS_IDX);
-        $('#poIdx').val(dataMap.PO_IDX);
 
-
-
-        //상품 spec정보 세팅
-        setGoodsSpec(dataMap);
-
-
-        //예상 비용 세팅
-        setProcessNeed();
-
-        var options = JSON.parse(dataMap.P_OPTION);
-        for (var i = 0; i < 3; i++) {
-            var num = parseInt(i) + 1;
-            $('#productOption' + num).empty();
-            $('#productOption' + num).append('<option value="">없음</option>');
-        }
-
-        for (var i = 0; i < options.length; i++) {
-            var text = '';
-            for (var j = 0; j < options[i].values.length; j++) {
-                text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
-            }
-            var num = parseInt(i) + 1;
-            $('#productOption' + num).empty();
-            $('#productOption' + num).append(text);
-        }
-
-        var gJson = JSON.parse(dataMap.G_JSON);
-
+        //이미지
         var text = '';
         // $.each(gJson.gFile, function(index, value) {
         //     text += '<a href="javascript: fileDownload(\''+gJson.gFile[index]+'\',\''+gJson.gFileName[index]+'\')" className="badge badge-sm badge-primary ml-1">'+gJson.gFileName[index]+'</a>'
         // });
         $('#fileSpan').append(text);
+        
+        //예상 비용 세팅
+        setProcessNeed(dataMap);
 
+        // 상품 SPEC정보
+        setSpec(dataMap);
 
+        //옵션정보
+        setOption(dataMap);
     }
 
-    function setProcessCost(data) {
-        var json = JSON.parse(data);
-        $.each(json.psCost, function (index, value) {
-            $('#psCost_'+index).val(value);
-        })
+
+    function setProcessNeed(dataMap) {
+        $('input[name=paintPnIdx]').val(dataMap.PAINT_PN_IDX)
+        $('input[name=paintContent]').val(dataMap.PAINT_CONTENT);
+        $('input[name=paintCost]').val(dataMap.PAINT_COST);
+
+        $('input[name=fixPnIdx]').val(dataMap.FIX_PN_IDX)
+        $('input[name=fixContent]').val(dataMap.FIX_CONTENT);
+        $('input[name=fixCost]').val(dataMap.FIX_COST);
+
+        $('input[name=processPnIdx]').val(dataMap.PROCESS_PN_IDX)
+        $('input[name=processContent]').val(dataMap.PROCESS_CONTENT);
+        $('input[name=processCost]').val(dataMap.PROCESS_COST);
     }
-
-    function setProcessNeed() {
-        $('#inCheckProcessTbody').empty();
-
-        for (var i = 0; i < 3; i++) {
-            var type = '';
-            var type_kor = '';
-            var type_name = '';
-            if (i == 0) {type = "PAINT"; type_kor = "도색"; type_name="paint"}
-            else if (i == 1) {type = "FIX"; type_kor = "수리"; type_name="fix"}
-            else {type = "PROCESS"; type_kor = "가공"; type_name="process"}
-
-
-            $.ajax({
-                type: "POST",
-                url:"/process/selectProcessNeed.ajax",
-                data: {
-                    "gIdx":$('#gIdx').val(),
-                    "cgIdx":$('#cgIdx').val(),
-                    "pnType":type
-                },
-                async:false,
-                success : function(result){
-                    var html = ''
-                    var content = '';
-                    var cost = '';
-                    if (result != '') {
-                        content = result.PN_CONTENT;
-                        cost = result.PN_EXPECTED_COST;
-                    }
-
-                    if (type == 'PROCESS' && result.PN_JSON != null) {
-                        setProcessCost(result.PN_JSON);
-                    }
-
-                    html = '<tr>' +
-                        '<td>'+type_kor+'</td>'+
-                        '<td><input type="text" name="'+type_name+'Memo" class="form-control" value="'+content+'"></td>' +
-                        '<td><input type="text" name="'+type_name+'Cost" class="form-control" value="'+cost+'"></td>' +
-                        '</tr>'
-
-                    $('#inCheckProcessTbody').append(html);
-                }
-            });
-        }
-    }
-
-    function setGoodsSpec(dataMap) {
-        var gJson = JSON.parse(dataMap.G_JSON);
-        //스펙 세팅
+    //스펙 세팅
+    function setSpec(dataMap) {
         if(dataMap.CATE_SPEC_LIST != null){
+            var gJson = JSON.parse(dataMap.G_JSON);
+            var pnJson = JSON.parse(dataMap.PN_JSON);
+            
             var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
-
+            
             var inSpec2 = listNullCheck(gJson.inSpec2, specList.length);
-            var pSpec1 = listNullCheck(gJson.pSpec1, specList.length);
+            
+            var pSpec1 = listNullCheck(pnJson.pSpec1, specList.length);
 
-            $('#productSpecListTable').empty();
+            var psCost = listNullCheck(pnJson.psCost, specList.length);
+            var psIdx = listNullCheck(pnJson.psIdx, specList.length);
+
+
+            $('#specListTable').empty();
             for (var i = 0; i < specList.length; i++) {
-
                 var specTr
                     ='<tr>'
                     +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
                     +'<input type="hidden" name="specName" value="' + specList[i] + '">'
                     +'<td><input type="text" specList="'+i+'" name="inSpec2" class="form-control" value="'+inSpec2[i]+'"></td>'
-                    +'<td><input type="text" specList="'+i+'" name="pSepc1" class="form-control" value="'+pSpec1[i]+'"></td>'
-                    +'<td><input type="text" specList="'+i+'" name="psCost" class="form-control" id="psCost_'+i+'"></td>'
+                    +'<td><input type="text" specList="'+i+'" name="pSpec1" class="form-control" value="'+pSpec1[i]+'"></td>'
+                    +'<td><input type="text" name="psCost" class="form-control text-won" value="'+psCost[i]+'"></td>'
+                    +'<input type="hidden" name="psIdx" value="'+psIdx[i]+'">'
                     +'</tr>';
 
-                $('#productSpecListTable').append(specTr);
+                $('#specListTable').append(specTr);
             }
 
             var specListTd = $('.specListTd');
@@ -368,5 +325,60 @@
             }
         }
     }
+
+    function setOption(dataMap) {
+        var options = JSON.parse(dataMap.P_OPTION);
+        for (var i = 0; i < 3; i++) {
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append('<option value="">없음</option>');
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            var text = '';
+            for (var j = 0; j < options[i].values.length; j++) {
+                text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+            }
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append(text);
+        }
+    }
+
+
+    function saveInCheckReport () {
+        var flag = true;
+        $.each($('input[name=inSpec2]'), function (index, value) {
+            if ($(this).val() == '') {
+                flag = false;
+                return false;
+            }
+        });
+
+        if (flag == false) {
+            alert('입고SPEC(확정)을 입력해 주세요');
+            return false;
+        }
+
+        textWonRemoveComma();
+
+
+        $.ajax({
+            type: "POST",
+            url:"/in/saveInCheckReport.ajax",
+            processData: false,
+            contentType: false,
+            data: new FormData($('#inCheckReportForm')[0]),
+            async: false,
+            success : function(result){
+                location.reload();
+            }
+        });
+    }
+
+    // 숫자만 입력되도록
+    $('.text-won').on("input", function (event) {
+        inputOnlyNumber($(event.target))
+    });
 </script>
 </html>

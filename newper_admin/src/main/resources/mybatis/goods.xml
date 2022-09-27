@@ -23,11 +23,7 @@
     <sql id="includeProcessBoardDatatable">
         <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
         <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
-        <if test="gState != null and gState != ''">
-            <foreach collection="gState" open="AND G_STATE IN (" separator="," close=")" item="item">
-                #{item}
-            </foreach>
-        </if>
+
     </sql>
 
     <select id="selectProcessBoardDatatable" resultType="map" parameterType="map">
@@ -98,9 +94,12 @@
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
                 LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
                 LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
-                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX AND CGS_TYPE = 'IN'
+                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
         WHERE
             G_IDX = #{gIdx}
+        AND
+            CG_IDX = #{cgIdx}
     </select>
 
     <delete id="deleteGoodsGroupTempByGGT_IDX">
@@ -134,18 +133,42 @@
             P_NAME,
             IG_IDX,
             G_STATE,
-            P_IDX
+            P_IDX,
+            G_JSON,
+            G_OPTION,
+            PP_JSON,
+            G_IMEI,
+            G_RANK,
+            G_MEMO,
+            G_VENDOR,
+            CATE_SPEC_LIST,
+            P_OPTION,
+            G_JSON ->> '$.inSpec2' AS INSPEC2,
+            G_JSON ->> '$.sellSpec2' AS SELLSPEC2,
+            (SELECT PN_JSON ->> '$.pSpec1' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PSPEC1,
+            (SELECT PN_JSON ->> '$.paintContent' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_CONTENT,
+            @PAINT_COST:=IFNULL((SELECT PN_JSON ->> '$.paintCost' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX),0) AS PAINT_COST,
+            (SELECT PN_PROCESS FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_PROCESS,
+            (SELECT PN_JSON ->> '$.fixContent' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_CONTENT,
+            @FIX_COST:=IFNULL((SELECT PN_JSON ->> '$.fixCost' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX),0) AS FIX_COST,
+            (SELECT PN_PROCESS FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_PROCESS,
+            (SELECT PN_JSON ->> '$.processContent' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_CONTENT,
+            @PROCESS_COST:=IFNULL((SELECT PN_JSON ->> '$.processCost' FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX),0) AS PROCESS_COST,
+            (SELECT PN_PROCESS FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_PROCESS,
+            IFNULL((SELECT PN_JSON FROM PROCESS_NEED WHERE PN_COUNT = 1 AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX), '{}') AS PN_JSON
         FROM
             GOODS
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
-                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN PO_PRODUCT ON PO_IDX = PP_PO_IDX
                 LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
         <where>
             <include refid="includeGoodsDatatable"></include>
         </where>
         <if test="length != -1">
-            LIMIT
-                #{start},#{length}
+        LIMIT
+            #{start},#{length}
         </if>
     </select>
 
@@ -257,24 +280,28 @@
         FROM
             GOODS
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
-        <where>
-            <include refid="includeGoodsDatatable"></include>
-        </where>
+        WHERE
+        <if test="gIdxList != null and gIdxList != ''">
+            <foreach collection="gIdxList" open="G_IDX IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
         GROUP BY
                 PO_COM_IDX
     </select>
 
-    <select id="selectGoodsGroupByCANCEL_REQ" resultType="Map">
+    <select id="selectGoodsGroupByState" resultType="Map">
         SELECT
-            *
+            G_STATE
         FROM
             GOODS
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
-        <where>
-            <include refid="includeGoodsDatatable"></include>
-        </where>
-        AND
-            G_STATE = #{gState}
+        WHERE
+        <if test="gIdxList != null and gIdxList != ''">
+            <foreach collection="gIdxList" open="G_IDX IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
         GROUP BY
             G_STATE
     </select>

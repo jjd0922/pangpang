@@ -73,5 +73,46 @@
     function searchUserDataTable() {
         $("#userTable").DataTable().page('first').ajax.url('/process/user.dataTable?' + $('#userForm').serialize()).load();
     }
+    $('#userTable').DataTable({
+        dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
+        ordering:false,
+        select: {
+            style: 'multi',
+            selector: 'td:first-child'
+        },
+        serverSide: true,
+        ajax:{
+            url:'/process/user.dataTable?'+$('#userForm').serialize(),
+            type:'post'
+        },
+        columnDefs: [ {
+            orderable: false,
+            targets:   [0]
+        } ],
+        "columns" : [
+            {'class':'m-w-2', 'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+            ,{'class':'m-w-max', 'title':'이름','data':'U_NAME','render':function (data,type,full,meta){
+                    return '<a class="btn btn-secondary" onclick="selectUser(this, '+full.U_IDX+')">'+data+'</a>';
+                }}
+            ,{'class':'m-w-max', 'title':'사원번호','data':'U_ID'}
+            ,{'class':'m-w-max', 'title':'직급','data':'U_POSITION'}
+            ,{'class':'m-w-max', 'title':'이메일(개인)','data':'U_PERSON_MAIL', 'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+            ,{'class':'m-w-max', 'title':'전화번호','data':' U_PHONE' ,'render': function (data,type,full,meta){
+                    if(data==null){
+                        return '';
+                    }else{
+                        return '';
+                    }
+                }}
+        ]
+    });
 </script>
 

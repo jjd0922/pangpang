@@ -87,7 +87,7 @@
             </foreach>
         </if>
         <if test="uName != null and uName != ''">
-            AND U_NAME = #{uName}
+            AND U_NAME LIKE CONCAT ('%', #{uName}, '%')
         </if>
 
         <if test="comName != null and comName != ''">
@@ -152,13 +152,22 @@
         <if test="igState != null and igState != ''">
             AND IG_STATE = #{igState}
         </if>
+
+        <if test="whName != null and whName != ''">
+            AND WH_NAME LIKE CONCAT('%', #{whName}, '%')
+        </if>
+
+        <if test="poIdx != null and poIdx != ''">
+            AND PO_IDX = #{poIdx}
+        </if>
     </sql>
     <select id="selectPoDataTable" resultType="Map">
         SELECT
             PO_IDX,
             PO_STATE,
             U_NAME,
-            BUY.COM_NUM,
+            BUY.COM_NUM AS BUY_COM_NUM,
+            BUY.COM_NAME AS BUY_COM_NAME,
             PO_TOTAL_AMOUNT,
             PO_SELL_PROFIT,
             PO_SELL_TOTAL_AMOUNT,
@@ -168,21 +177,36 @@
             PO_REFUND_DATE,
             PO_AS_DATE,
             PO_BUY_SELL_PERIOD,
+            PO_DELIVERY_COST,
             PO_REPURCHASE,
-            po.CREATED_BY AS 'CREATED_BY',
-            po.CREATED_BY AS 'CREATED_DATE',
+            PO.CREATED_BY AS 'CREATED_BY',
+            PO.CREATED_BY AS 'CREATED_DATE',
             hiworks.HW_APRV_ID AS 'HW_APRV_ID',
             hiworks.HW_APRV_DATE AS 'HW_APRV_DATE',
-            po.MODIFIED_BY AS 'MODIFIED_BY',
-            po.MODIFIED_DATE AS 'MODIFIED_DATE',
-            IG_STATE
+            PO.MODIFIED_BY AS 'MODIFIED_BY',
+            PO.MODIFIED_DATE AS 'MODIFIED_DATE',
+            HW_MEMO,
+            WH_NAME,
+            IG_STATE,
+            (SELECT COUNT(PP_P_IDX) FROM PO_PRODUCT WHERE PP_PO_IDX = PO_IDX) AS TOTAL_PRODUCT_COUNT,
+            (SELECT COUNT(*) FROM GOODS WHERE G_PO_IDX = PO_IDX) AS IN_GOODS_COUNT,
+            (SELECT COUNT(*) FROM GOODS WHERE G_PO_IDX = PO_IDX AND G_STATE NOT IN ('RECEIVED', 'CHECK_REQ', 'CHECK_ING')) AS IN_COM,
+            (SELECT COUNT(*) FROM GOODS WHERE G_PO_IDX = PO_IDX AND G_STATE IN ('RECEIVED', 'CHECK_REQ', 'CHECK_ING')) AS IN_ING,
+            IFNULL((SELECT SUM((PP_COST+PP_FIX_COST+PP_PAINT_COST+PP_PROCESS_COST)*PP_COUNT) FROM PO_PRODUCT WHERE PP_PO_IDX = PO_IDX),0) AS TOTAL_CREATED_COST,
+            IFNULL((SELECT SUM((PP_SELL_PRICE-PP_COST+PP_FIX_COST+PP_PAINT_COST+PP_PROCESS_COST)*PP_COUNT) FROM PO_PRODUCT WHERE PP_PO_IDX = PO_IDX),0) AS TOTAL_PROFIT,
+            @IN_COST:=IFNULL((SELECT SUM(POR_COST*POR_COUNT) FROM PO_RECEIVED WHERE POR_PO_IDX = PO_IDX),0) AS IN_COST,
+            @IN_CREATE_COST:=@IN_COST+IFNULL((SELECT SUM(G_JSON ->> '$.paintCost' + G_JSON ->> '$.fixCost' + G_JSON ->> '$.processCost') FROM goods WHERE G_PO_IDX = PO_IDX),0) AS IN_CREATE_COST,
+            @IN_SELL_COST:=IFNULL((SELECT SUM(POR_SELL_PRICE*POR_COUNT) FROM PO_RECEIVED WHERE POR_PO_IDX = PO_IDX),0) AS IN_SELL_COST,
+            @IN_PROFIT_COST:=@IN_CREATE_COST-@IN_SELL_COST AS IN_PROFIT_COST,
+            @IN_PROFIT_PER:=@IN_PROFIT_COST/@IN_SELL_COST*100 AS IN_PROFIT_PER
         FROM
-            po
-                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
-                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
-                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
-                LEFT JOIN user ON HW_U_IDX = U_IDX
+            PO
+                LEFT JOIN COMPANY AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN COMPANY AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX = HW_IDX
+                LEFT JOIN USER ON HW_U_IDX = U_IDX
                 LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN WAREHOUSE ON PO_WH_IDX = WH_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
@@ -198,11 +222,12 @@
             COUNT(*)
         FROM
             PO
-                LEFT JOIN company AS BUY ON PO_COM_IDX = BUY.COM_IDX
-                LEFT JOIN company AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
-                LEFT JOIN hiworks ON PO_HW_IDX = HW_IDX
-                LEFT JOIN user ON HW_U_IDX = U_IDX
+                LEFT JOIN COMPANY AS BUY ON PO_COM_IDX = BUY.COM_IDX
+                LEFT JOIN COMPANY AS SELL ON PO_SELL_COM_IDX = SELL.COM_IDX
+                LEFT JOIN HIWORKS ON PO_HW_IDX = HW_IDX
+                LEFT JOIN USER ON HW_U_IDX = U_IDX
                 LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN WAREHOUSE ON PO_WH_IDX = WH_IDX
         <where>
             <include refid="includePoDataTable"></include>
         </where>
@@ -210,25 +235,74 @@
 
     <sql id="includeInDatatable">
         (PO_TYPE = 'EMERGENCY' OR PO_STATE = 'COMPLETE')
+        <if test="igState != null and igState != ''">
+            <foreach collection="igState" open="AND IG_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="uName != null and uName != ''">AND IG_U.U_NAME LIKE CONCAT ('%', #{uName}, '%')</if>
+        <if test="comName != null and comName != ''">AND BUY.COM_NAME LIKE CONCAT ('%', #{comName}, '%')</if>
+        <if test="igReceivedDate != null and igReceivedDate != ''">AND IG_RECEIVED_DATE BETWEEN SUBSTR(#{igReceivedDate}, 1, 10) AND SUBSTR(#{igReceivedDate}, 13)</if>
+        <if test="igDate != null and igDate != ''">AND IG_DATE BETWEEN SUBSTR(#{igDate}, 1, 10) AND SUBSTR(#{igDate}, 13)</if>
+        <if test="uName2 != null and uName2 != ''">AND COM_U.U_NAME LIKE CONCAT ('%', #{uName2}, '%')</if>
+        <if test="poDate != null and poDate != ''">AND PO_DATE BETWEEN SUBSTR(#{poDate}, 1, 10) AND SUBSTR(#{poDate}, 13)</if>
+        <if test="poIdx != null and poIdx != ''">AND PO_IDX LIKE CONCAT ('%', #{poIdx}, '%')</if>
+        <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT ('%', #{comName}, '%')</if>
+        <if test="poInDate != null and poInDate != ''">AND PO_IN_DATE BETWEEN SUBSTR(#{poInDate}, 1, 10) AND SUBSTR(#{poInDate}, 13)</if>
+        <if test="poRefundDate != null and poRefundDate != ''">AND PO_REFUND_DATE BETWEEN SUBSTR(#{poRefundDate}, 1, 10) AND SUBSTR(#{poRefundDate}, 13)</if>
+        <if test="poAsDate != null and poAsDate != ''">AND PO_AS_DATE BETWEEN SUBSTR(#{poAsDate}, 1, 10) AND SUBSTR(#{poAsDate}, 13)</if>
+        <if test="poBuySellPeriod != null and poBuySellPeriod != ''">AND PO_BUY_SELL_PERIOD BETWEEN SUBSTR(#{poBuySellPeriod}, 1, 10) AND SUBSTR(#{poBuySellPeriod}, 13)</if>
+        <if test="poRepurchase != null and poRepurchase != ''">AND PO_REPURCHASE LIKE CONCAT ('%', #{poRepurchase}, '%')</if>
+        <if test="whName != null and whName != ''">AND IG_WH.WH_NAME LIKE CONCAT ('%', #{whName}, '%')</if>
     </sql>
     <select id="selectInDatatable" parameterType="map" resultType="map">
         SELECT
-            *
+            PO_TYPE,
+            IG_STATE,
+            COM_U.U_NAME AS U_NAME,
+            IG_RECEIVE_DATE,
+            IG_DATE,
+            IG_WH.WH_NAME AS IG_WH_NAME,
+            PO.CREATED_BY AS CREATED_BY,
+            PO.CREATED_DATE AS CREATED_DATE,
+            PO_IDX,
+            COM_NAME,
+            COM_NUM,
+            PO_TOTAL_COUNT,
+            PO_TOTAL_AMOUNT,
+            PO_DELIVERY_MAIN,
+            PO_DELIVERY_COST,
+            PO_IN_DATE,
+            PO_DUE_DATE,
+            PO_AS_DATE,
+            PO_BUY_SELL_PERIOD,
+            PO_REPURCHASE,
+            (SELECT SUM(IP_COUNT) FROM IN_PRODUCT WHERE IP_IG_IDX = IG_IDX) AS TOTAL_IP_COUNT
         FROM
             PO
-                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
-                LEFT JOIN company ON PO_COM_IDX = COM_IDX
+                LEFT JOIN WAREHOUSE AS PO_WH ON PO_WH_IDX = PO_WH.WH_IDX
+                LEFT JOIN COMPANY ON PO_COM_IDX = COM_IDX
+                LEFT JOIN USER AS COM_U ON COM_U_IDX = COM_U.U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN USER AS IG_U ON IG_U_IDX = IG_U.U_IDX
+                LEFT JOIN WAREHOUSE AS IG_WH ON IG_WH_IDX = IG_WH.WH_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
+        ORDER BY
+            PO_IDX DESC
     </select>
     <select id="countInDatatable" parameterType="map" resultType="Integer">
         SELECT
             COUNT(*)
         FROM
             PO
-                LEFT JOIN warehouse ON PO_WH_IDX = WH_IDX
-                LEFT JOIN company ON PO_COM_IDX = COM_IDX
+                LEFT JOIN WAREHOUSE AS PO_WH ON PO_WH_IDX = PO_WH.WH_IDX
+                LEFT JOIN COMPANY ON PO_COM_IDX = COM_IDX
+                LEFT JOIN USER AS COM_U ON COM_U_IDX = COM_U.U_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN USER AS IG_U ON IG_U_IDX = IG_U.U_IDX
+                LEFT JOIN WAREHOUSE AS IG_WH ON IG_WH_IDX = IG_WH.WH_IDX
         <where>
             <include refid="includeInDatatable"></include>
         </where>
@@ -535,4 +609,18 @@
         WHERE
             POH_PO_IDX = #{poIdx}
     </delete>
+
+    <select id="checkPoProductInProduct" resultType="Integer">
+        SELECT
+            IP_COUNT = PP_COUNT
+        FROM
+            PRODUCT
+                LEFT JOIN PO_PRODUCT ON P_IDX = PP_P_IDX
+                LEFT JOIN IN_PRODUCT ON P_IDX = IP_P_IDX and PP_P_IDX = IP_P_IDX
+                LEFT JOIN IN_GROUP ON IP_IG_IDX = IG_IDX
+        WHERE
+            PP_PO_IDX = #{poIdx}
+          AND
+            IG_PO_IDX = #{poIdx}
+    </select>
 </mapper>

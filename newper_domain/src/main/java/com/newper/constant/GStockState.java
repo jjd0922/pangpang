@@ -16,6 +16,7 @@ public enum GStockState implements EnumOption {
     ,OUT("출고완료")
     ,MOVE("자산이동중")
     ,AS("AS")
+    ,REFUND("반품")
     ;
 
     private String option;

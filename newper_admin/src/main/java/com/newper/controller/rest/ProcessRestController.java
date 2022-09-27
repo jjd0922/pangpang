@@ -119,11 +119,21 @@ public class ProcessRestController {
         GgtType ggtType = GgtType.valueOf(paramMap.getString("type"));
         return goodsService.insertGoodsTemp(idx, ggtType);
     }
+    @PostMapping("in/temp2.ajax")
+    public String inTemp2(ParamMap paramMap){
+        String idx = paramMap.getString("idx");
+        GgtType ggtType = GgtType.valueOf(paramMap.getString("type"));
+        String g_idxs = paramMap.getString("g_idxs");
+
+        return goodsService.insertGoodsTemp2(idx,g_idxs.split(","), ggtType);
+    }
+
+
     /**입고검수 그룹 등록*/
-    @PostMapping("inCheckPop.ajax")
-    public ReturnMap inCheckPop(ParamMap paramMap){
+    @PostMapping("inCheckReq.ajax")
+    public ReturnMap inCheckReq(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("gState", GState.CHECK_NEED);
+        paramMap.put("gState", GState.CHECK_REQ);
         paramMap.put("cgsType", CgsType.IN);
         paramMap.put("cgType", CgsType.IN);
         checkService.insertCheckGroup(paramMap);
@@ -131,11 +141,11 @@ public class ProcessRestController {
         return rm;
     }
 
-    /**입고검수 그룹 등록*/
+    /**재검수 그룹 등록*/
     @PostMapping("reCheckPop.ajax")
     public ReturnMap reCheckPop(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        paramMap.put("gState", GState.CHECK_NEED);
+        paramMap.put("gState", GState.RE_CHECK_REQ);
         paramMap.put("cgsType", CgsType.RE);
         paramMap.put("cgType", CgsType.RE);
         checkService.insertCheckGroup(paramMap);

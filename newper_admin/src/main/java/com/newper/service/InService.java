@@ -66,7 +66,6 @@ public class InService {
     /** 입고완료 처리 */
     @Transactional
     public void updateInGroup(ParamMap paramMap) {
-        System.out.println("sadf: " + paramMap.getMap().entrySet());
         Po po = poRepo.getReferenceById(paramMap.getInt("poIdx"));
         InGroup inGroup = inGroupRepo.findByPo(po);
 
@@ -84,6 +83,16 @@ public class InService {
         inGroup.setIgMemo(paramMap.getString("igMemo"));
         inGroup.setIgDoneMemo(paramMap.getString("igDoneMemo"));
         inGroup.setIgState(IgState.DONE);
+
+        // 입고완료 처리시 매입상품 및 수량이 변경이 없는 경우에만 가능 그 외 강제입고완료
+        if (paramMap.getString("compType").equals("normal")) {
+            List<Integer> check = poMapper.checkPoProductInProduct(po.getPoIdx());
+            for (int i = 0; i < check.size(); i++) {
+                if (check.get(i) != 1) {
+                    throw new MsgException("발주 품의 상품의 개수와 실입고된 상품의 개수가 다릅니다. 강제 입고 완료를 해주세요");
+                }
+            }
+        }
 
         inGroupRepo.save(inGroup);
     }

@@ -325,15 +325,41 @@
         },
         buttons: buttonsSelect(false),
         "columns" : [
-            {'class':'select-checkbox', 'title':'선택','data':'PN_IDX','defaultContent':'','render':  function(data,type,full,meta){
+            {'class':'select-checkbox','title':'선택','data':'PN_IDX','defaultContent':'','render':  function(data,type,full,meta){
                     return '<input type="hidden" name="pnIdx" value="'+data+'">';
                 }}
-            ,{'class':'m-w-max', 'title':'자산코드','data':'G_IDX'}
-            ,{'class':'m-w-max', 'title':'바코드','data':'G_BARCODE'}
-            ,{'class':'m-w-max', 'title':'공정상태','data':'PN_STATE'}
-            ,{'class':'m-w-max', 'title':'공정결과','data':'G_BARCODE','render':  function(data,type,full,meta){
-                    return '<a onclick="openProcessModal('+ full.G_IDX +','+full.PN_IDX+')" class="badge badge-primary">업로드</a>';
-                }}
+            ,{'class':'m-w-max','title':'자산상태','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'자산처리담당자','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'자산처리일','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'상품코드','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'상품명','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'매입원가','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'자산코드','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'IMEI','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'시리얼','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'입고SPEC(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'입고SPEC(확정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'판매SPEC(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'판매SPEC(확정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공SPEC(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공SPEC(확정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'판매스펙확정일','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'도색','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'수리','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'재검수','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공항목(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공비(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'수리항목(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'수리비(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'도색항목(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'도색비(예정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'공정예정비 합계','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'공정결과','data':'G_BARCODE','render':  function(data,type,full,meta){
+                    return '<a onclick="openProcessModal('+ full.G_IDX +','+full.PN_IDX+')" class="badge badge-primary">등록</a>';
+                }}            ,{'class':'m-w-max','title':'공정결과상세','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공항목(확정)','data':'G_IDX'}
+            ,{'class':'m-w-max','title':'가공비(확정)','data':'G_IDX'}
         ]
     });
 </script>
@@ -341,7 +367,7 @@
 <script>
     function processCancel() {
         if (confirm('요청중인 자산이 공정 대기 상태로 돌아가며, \n' +
-            '해당 가공코드는 삭제 됩니다. 취소 하시겠습니까?')) {
+            '해당 공정코드는 삭제 됩니다. 취소 하시겠습니까?')) {
             $.ajax({
                 url: '/process/processCancel.ajax',
                 data: {

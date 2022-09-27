@@ -49,6 +49,8 @@ public class PoProduct {
     private int ppSellPrice;
     private float ppProfitTarget;
 
+    private Map<String, Object> ppJson;
+
     @PrePersist
     @PreUpdate
     public void preSave() {

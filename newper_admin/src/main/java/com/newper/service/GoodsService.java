@@ -95,7 +95,23 @@ public class GoodsService {
             goodsGroupTempRepo.save(goodsGroupTemp);
             idx = goodsGroupTemp.getGgtIdx().toString();
         }
+        return idx;
+    }
 
+    /**입고검수 임시 그룹 생성 및 바코드 추가.*/
+    @Transactional
+    public String insertGoodsTemp2(String idx, String[] gIdxs, GgtType ggtType) {
+        //임시그룹 생성
+        if (idx == null) {
+            GoodsGroupTemp goodsGroupTemp = GoodsGroupTemp.builder()
+                    .ggtType(ggtType)
+                    .build();
+            goodsGroupTempRepo.save(goodsGroupTemp);
+            idx = goodsGroupTemp.getGgtIdx().toString();
+        }
+
+        //임시그룹에 바코드 추가
+        goodsMapper.insertGoodsTemp(idx, gIdxs);
         return idx;
     }
 
@@ -116,7 +132,7 @@ public class GoodsService {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
             // 반품필요 & 입고검수 상태의 자산을 반품요청으로 상태값 변경
             if (gState.equals(GState.CANCEL_REQ)) {
-                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK_NEED)) {
+                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK_REQ)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
                 } else {
@@ -124,7 +140,7 @@ public class GoodsService {
                 }
                 msg = "반품신청 완료";
             // 반품필요 자산을 입고검수 상태로 변경
-            } else if (gState.equals(GState.CHECK_NEED)) {
+            } else if (gState.equals(GState.CHECK_REQ)) {
                 if (goods.getGState().equals(GState.CANCEL_NEED)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
@@ -187,7 +203,7 @@ public class GoodsService {
             if (processNeed.size() != 0) {
                 goods.setGState(GState.PROCESS);
             } else {
-                goods.setGState(GState.CHECK_NEED);
+                goods.setGState(GState.CHECK_REQ);
             }
 
             goodsRepo.save(goods);
@@ -244,7 +260,7 @@ public class GoodsService {
 
         for (int i = 0; i < gIdxs.length; i++) {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-            if (!goods.getGState().equals(GState.CHECK_NEED)) {
+            if (!goods.getGState().equals(GState.CHECK_REQ)) {
                 throw new MsgException(goods.getGBarcode() + "는 재검수에 해당되는 자산이 아닙니다.");
             }
         }
@@ -253,15 +269,14 @@ public class GoodsService {
     /** 자산 반품 가능한지 체크 */
     public void goodsResellCheck(ParamMap paramMap) {
         String[] gIdx = paramMap.getString("gIdx").split(",");
-        paramMap.put("gIdxList", gIdx);
 
+        paramMap.put("gIdxList", gIdx);
         List<Map<String, Object>> goodsListCompany = goodsMapper.selectGoodsGroupByPO_COMPANY(paramMap.getMap());
         if (goodsListCompany.size() != 1) {
             throw new MsgException("같은 매입처 자산을 선택해 주세요");
         }
 
-        paramMap.put("gState", "CANCEL_REQ");
-        List<Map<String, Object>> goodsListState = goodsMapper.selectGoodsGroupByCANCEL_REQ(paramMap.getMap());
+        List<Map<String, Object>> goodsListState = goodsMapper.selectGoodsGroupByState(paramMap.getMap());
         if (goodsListState.size() != 1) {
             throw new MsgException("반품 요청상태의 자산을 선택해 주세요");
         }
@@ -272,9 +287,32 @@ public class GoodsService {
     public void updateGoodsState(ParamMap paramMap) {
         String[] gIdxs = paramMap.getString("gIdx").split(",");
         List<Long> gIdx = new ArrayList<>();
-        for (int i = 0; i < gIdxs.length; i++) {
-            gIdx.add(Long.parseLong(gIdxs[i]));
+
+        // 재검수 완료일때 다른 공정이 있으면 영업검수 없으면 자산화완료
+        if (GState.RE_CHECK_DONE.equals(GState.valueOf(paramMap.getString("gState")))) {
+
+            for (int i = 0; i < gIdx.size(); i++) {
+                int check = processMapper.checkProcessNeedOther(gIdx.get(i));
+                Goods goods = null;
+                if (check == 0) {
+                    goods = goodsRepo.findById(gIdx.get(i)).get();
+                    goods.setGState(GState.STOCK);
+                    goods.setGStockState(GStockState.STOCK_REQ);
+                } else {
+                    goods.setGState(GState.PROCESS);
+                }
+
+                goodsRepo.save(goods);
+            }
+        } else {
+
+            for (int i = 0; i < gIdxs.length; i++) {
+                gIdx.add(Long.parseLong(gIdxs[i]));
+            }
+            goodsMapper.updateGoodsState(gIdx, paramMap.getString("gState"));
+
         }
-        goodsMapper.updateGoodsState(gIdx, paramMap.getString("gState"));
     }
+
+
 }

@@ -624,7 +624,7 @@
                                                         <td class="text-right" th:text="${#numbers.formatInteger(i?.P_COST, 1, 'COMMA')}"></td>
                                                         <td th:text="${i.SPEC_BUY}"></td>
                                                         <td th:text="${i.SPEC_SELL}"></td>
-                                                        <td><a onclick="deleteProduct($(this))" class="btn btn-sm btn-warning">삭제</a></td>
+                                                        <td><a th:if="${po.poState == 'WAITING'}" onclick="deleteProduct($(this))" class="btn btn-sm btn-warning">삭제</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1128,6 +1128,7 @@
     function calculatePo() {
         var len = $('#rateTbody tr').length;
         var totalCost = 0; var totalSell = 0; var totalProfit = 0;
+
         var deliveryCost = getNumberInInput('poDeliveryCost');
 
         var totalProdCost = 0;
@@ -1136,14 +1137,14 @@
                 continue;
             }
             totalProdCost += getNumberById('ppTotalProdCost_'+i)
-            totalCost += getNumberById('ppTotalCost_'+i);
             totalSell += getNumberById('ppTotalSellPrice_'+i);
             totalProfit += getNumberById('ppTotalProfit_'+i);
         }
-        var totalProfitRate = totalProdCost / (totalProfit * 100)
+        var totalProfitRate = totalProfit / totalSell * 100
         $('input[name=poTotalAmount]').val(comma(totalCost));
         $('input[name=poSellTotalAmount]').val(comma(totalSell));
-        $('input[name=poSellProfit]').val(totalProfitRate+'%');
+
+        $('input[name=poSellProfit]').val(Math.round(totalProfitRate)+'%');
     }
 
     /**input value에서 특수문자를 제외하고 숫자형태로 return*/

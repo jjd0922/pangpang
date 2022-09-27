@@ -190,7 +190,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">입고완료</span>
                                                     </span>
-                                                    <input type="text" class="form-control" placeholder="입력" th:value="${ig?.po?.poBuyReceiveAmount}">
+                                                    <input type="text" class="form-control" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -422,18 +422,10 @@
                                 </form>
                                 <!-- #regiForm end -->
                                 <div class="justify-content-end mt-2 mb-2">
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="searchGoods()">
-                                        <i class="icon-search4 mr-1"></i>조회
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CANCEL_REQ')">
-                                        <i class="icon-search4 mr-1"></i>반품요청
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CHECK')">
-                                        <i class="icon-search4 mr-1"></i>반품반려
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="openPoReceivedModal()">
-                                        <i class="icon-search4 mr-1"></i>입고그룹 맵핑
-                                    </button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="searchGoods()">조회</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CANCEL_REQ')">반품요청</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CHECK')">반품반려</button>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="openPoReceivedModal()">입고그룹 맵핑</button>
                                 </div>
                                 <table class="table" id="goodsTable"></table>
                             </div>
@@ -483,7 +475,7 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="in/modal/goodsModal.html"/>
+<th:block th:replace="in/modal/goodsReport.html"/>
 <th:block th:replace="in/modal/poReceivedModal.html"/>
 
 <script>
@@ -518,6 +510,17 @@
         gIdxs = gIdxs.slice(0, -1);
 
 
+        $.ajax({
+            url: '/goods/updateGoodsState.ajax',
+            data: {
+                "gIdx" : gIdxs,
+                "gState" : gState
+            },
+            type: 'post',
+            success(result) {
+                location.reload()
+            }
+        });
     }
 
     function searchGoods() {
@@ -542,7 +545,7 @@
                     return '<input type="hidden" name="gIdx" value="' + full.G_IDX + '">';
                 }}
             ,{'title':'자산정보확정','data':'','defaultContent':'','render':  function(data,type,full,meta){
-                    return '<button type="button" class="btn btn-sm btn-primary" onClick="openGoodsModal('+full.G_IDX+')">자산정보확정</button>';
+                    return '<button type="button" class="btn btn-sm btn-primary" onClick="openGoodsReport(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">자산정보확정</button>';
                 }}
             ,{'title':'입고그룹','data':'IG_IDX','defaultContent':''}
             ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}

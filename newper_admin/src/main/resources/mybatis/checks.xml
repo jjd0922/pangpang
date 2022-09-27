@@ -1,23 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ChecksMapper">
+    <sql id="includeCheckGroupDatatable">
+        <if test="cgIdx != null and cgIdx != ''">AND CG_IDX LIKE CONCAT ('%', #{cgState}, '%')</if>
+        <if test="cgState != null and cgState != ''">
+            <foreach collection="cgState" open="AND CG_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="comName != null and comName != ''">AND COMU.U_NAME LIKE CONCAT ('%', #{comName}, '%')</if>
+        <if test="uName2 != null and uName2 != ''">AND CHECK_GROUP.CREATED_BY LIKE CONCAT ('%', #{uName2}, '%')</if>
+        <if test="uName3 != null and uName3 != ''">AND U1.U_NAME LIKE CONCAT ('%', #{uName3}, '%')</if>
+        <if test="uName4 != null and uName4 != ''">AND U2.U_NAME LIKE CONCAT ('%', #{uName4}, '%')</if>
+        <if test="cgStartDate != null and cgStartDate != ''">
+            AND CG_START_DATE BETWEEN SUBSTR(#{cgStartDate}, 1, 10) AND SUBSTR(#{cgStartDate}, 13)
+        </if>
+        <if test="cgEndDate != null and cgEndDate != ''">
+            AND CG_END_DATE BETWEEN SUBSTR(#{cgEndDate}, 1, 10) AND SUBSTR(#{cgEndDate}, 13)
+        </if>
+    </sql>
     <select id="selectCheckGroupDatatable" parameterType="map" resultType="map">
         SELECT
-            CHECK_GROUP.*
-            ,SUM(CGS_EXPECTED_COST) CGS_EXPECTED_COST
-            ,SUM(CGS_REAL_COST) CGS_REAL_COST
+            CG_IDX,
+            CG_STATE,
+            COMU.U_NAME AS COM_U_NAME,
+            CHECK_GROUP.CREATED_BY AS CG_CREATED_BY,
+            U1.U_NAME AS U_NAME1,
+            U2.U_NAME AS U_NAME2,
+            CG_REQUEST_DATE,
+            CG_START_DATE,
+            CG_END_DATE,
+            SUM(CGS_EXPECTED_COST) AS CGS_EXPECTED_COST,
+            SUM(CGS_REAL_COST) AS CGS_REAL_COST
         FROM
-            CHECK_GROUP, CHECK_GOODS
-        WHERE
-            CG_IDX = CGS_CG_IDX
-        GROUP BY CG_IDX
-        ORDER BY CG_IDX
+            CHECK_GROUP
+                LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
+                LEFT JOIN COMPANY AS COM1 ON CG_COM_IDX = COM1.COM_IDX
+                LEFT JOIN USER AS COMU ON COM1.COM_U_IDX = COMU.U_IDX
+                LEFT JOIN USER AS U1 ON CG_U_IDX = U1.U_IDX
+                LEFT JOIN USER AS U2 ON CG_U_IDX2 = U2.U_IDX
+        <where>
+            <include refid="includeCheckGroupDatatable"></include>
+        </where>
+        GROUP BY
+            CG_IDX
+        ORDER BY
+            CG_IDX DESC
         <if test="length!=-1">
             LIMIT #{start},#{length}
         </if>
     </select>
     <select id="countCheckGroupDatatable" parameterType="map" resultType="Long">
-        SELECT COUNT(*) FROM CHECK_GROUP
+        SELECT
+            COUNT(*)
+        FROM
+            CHECK_GROUP
+                LEFT JOIN COMPANY AS COM1 ON CG_COM_IDX = COM1.COM_IDX
+                LEFT JOIN USER AS COMU ON COM1.COM_U_IDX = COMU.U_IDX
+                LEFT JOIN USER AS U1 ON CG_U_IDX = U1.U_IDX
+                LEFT JOIN USER AS U2 ON CG_U_IDX2 = U2.U_IDX
+        <where>
+            <include refid="includeCheckGroupDatatable"></include>
+        </where>
     </select>
 
     <sql id="includeChecksDatatable">
@@ -62,13 +106,57 @@
     </select>
 
     <sql id="includeCheckGoodsDataTable">
-        <if test="cgIdx != '' and cgIdx != null">AND CG_IDX = #{cgIdx}</if>
-        <if test="poIdx != '' and poIdx != null">AND PO_IDX = #{poIdx}</if>
-        <if test="gState != '' and gState != null">AND G_STATE = #{gState}</if>
+        CG_IDX = #{cgIdx}
+        <if test="poIdx != null and poIdx != ''">AND PO_IDX LIKE CONCAT ('%', #{poIdx}, '%')</if>
+        <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
+        <if test="gIdx != null and gIdx != ''">AND G_IDX LIKE CONCAT ('%', #{gIdx}, '%')</if>
+        <if test="gBarcode != null and gBarcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{gBarcode}, '%')</if>
     </sql>
     <select id="selectCheckGoods" resultType="Map">
         SELECT
-            *
+            G_IDX,
+            G_BARCODE,
+            G_STATE,
+            PO_IDX,
+            P_IDX,
+            P_NAME,
+            P_COST,
+            G_IMEI,
+            G_JSON,
+            P_OPTION,
+            CATE_SPEC_LIST,
+            G_IMEI,
+            G_MEMO,
+            CGS_IDX,
+            G_OPTION,
+            G_JSON ->> '$.inSpec2' AS INSPEC2,
+            (SELECT PN_JSON ->> '$.pSpec1' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PSPEC1,
+            (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_PN_IDX,
+            (SELECT PN_JSON ->> '$.paintContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_CONTENT,
+            @PAINT_COST:=IFNULL((SELECT PN_JSON ->> '$.paintCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX),0) AS PAINT_COST,
+            (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_PN_IDX,
+            (SELECT PN_JSON ->> '$.fixContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_CONTENT,
+            @FIX_COST:=IFNULL((SELECT PN_JSON ->> '$.fixCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX),0) AS FIX_COST,
+            (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_PN_IDX,
+            (SELECT PN_JSON ->> '$.processContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_CONTENT,
+            @PROCESS_COST:=IFNULL((SELECT PN_JSON ->> '$.processCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX),0) AS PROCESS_COST,
+            @PAINT_COST+@FIX_COST+@PROCESS_COST AS TOTAL_COST,
+            IFNULL((SELECT PN_JSON FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX), '{}') AS PN_JSON
+        FROM
+            CHECK_GOODS
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
+                LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+        <where>
+            <include refid="includeCheckGoodsDataTable"></include>
+        </where>
+    </select>
+
+    <select id="countCheckGoods" resultType="Long">
+        SELECT
+            COUNT(*)
         FROM
             CHECK_GOODS
                 LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
@@ -86,10 +174,23 @@
             COUNT(*)
         FROM
             CHECK_GOODS
+                LEFT JOIN CHECK_GROUP ON CGS_CG_IDX = CG_IDX
                 LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+        <where>
+            <include refid="includeCheckGoodsDataTable"></include>
+        </where>
+    </select>
+
+    <select id="selectCheckGoodsCount" resultType="Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+                LEFT JOIN CHECK_GOODS ON G_IDX = CGS_G_IDX
         WHERE
-            CGS_CG_IDX = #{cgIdx}
-        AND
-            G_STATE != #{gState}
+            CGS_TYPE = #{cgsType}
     </select>
 </mapper>

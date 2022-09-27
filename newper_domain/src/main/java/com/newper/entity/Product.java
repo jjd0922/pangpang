@@ -107,7 +107,6 @@ public class Product extends BaseEntity {
     private int pDelTogether;
 
     private boolean pFreeInterest;
-    private boolean pDelFree;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;

@@ -35,54 +35,54 @@
 
                                                 <div class="form-group">
                                                     <label class="d-block">반품코드</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="rsIdx">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">반품상품상태값</label>
-                                                    <select class="form-control form-control-sm select-search"  data-placeholder="선택" data-container-css-class="select-sm" name="">
-                                                        <option></option>
+                                                    <label class="d-block">반품상태</label>
+                                                    <select class="form-control form-control-sm select-search" data-placeholder="선택" data-container-css-class="select-sm" name="rsState">
+                                                        <option th:each="opt: ${T(com.newper.constant.RgState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">매입처</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="comName">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">매입처담당자</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">요청자</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="buy_uName">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">작업지시자</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">완료처리자</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="d-block">요청일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="start_uName">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">작업시작일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px w-datarange daterange-basic" name="rgStartDate">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">완료처리자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="end_uName">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">작업종료일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
+                                                    <input type="text" class="form-control form-control-sm w-120px w-datarange daterange-basic" name="rgEndDate">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">요청자</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" name="createdBy">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">요청일</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px w-datarange daterange-basic" name="createdDate">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -106,11 +106,6 @@
                         <div class="card">
                             <table class="table" id="returnTable"></table>
                         </div>
-                        <div class="form-group end">
-                            <button type="button" class="btn btn-primary" onclick="returnManagePop()">
-                                <span class="ladda-label" onclick="returnManagePop()">반품코드반품관리팝업임시버튼</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -119,12 +114,13 @@
 </div>
 </body>
 <!-- 공통 js -->
-
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
 
 <!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
 <script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
 <script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
 
 <!-- 데이터테이블 -->
 <script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
@@ -135,6 +131,11 @@
 <script th:src="@{/assets/js/app.js}"></script>
 <!-- input -->
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
 

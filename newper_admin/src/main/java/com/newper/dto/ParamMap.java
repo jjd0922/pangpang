@@ -172,7 +172,7 @@ public class ParamMap {
         map.putAll(m);
     }
 
-    public Map<String,Object> getMap(){
+    public Map<String, Object> getMap(){
         return map;
     }
 

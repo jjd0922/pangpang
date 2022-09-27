@@ -16,6 +16,10 @@ public enum PoState implements EnumOption {
     ,APPROVAL("승인완료")
     ,CANCEL("발주취소")
     ,COMPLETE("발주완료")
+
+    ,RE_REQUEST("재승인요청")
+    ,RE_APPROVAL("재승인완료")
+    ,RE_REJECT("재승인반려")
     ;
 
     private String option;

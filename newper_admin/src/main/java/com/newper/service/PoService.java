@@ -105,6 +105,7 @@ public class PoService {
 
             PoProduct poProduct = ppParam.mapParam(PoProduct.class);
 
+
             // option List setting
             List<Map<String, Object>> optionList = new ArrayList<>();
             for (int j = 1; j <= 3; j++) {
@@ -117,18 +118,23 @@ public class PoService {
             }
             poProduct.setPpOption(optionList);
 
+            Map<String, Object> ppJson = new HashMap<>();
+
             // 입고예정spec setting
             SpecFinder sf = new SpecFinder(specMapper, specListRepo, specRepo);
             List<String> buySpecNameList = paramMap.getList("buySpeclName_" + i);
             List<String> buySpecValueList = paramMap.getList("buySpeclValue_" + i);
             Spec buySpec = sf.findSpec(buySpecNameList, buySpecValueList);
             poProduct.setSpec(buySpec);
+            ppJson.put("inSpec1", buySpecValueList);
 
             // 판매예정spec setting
             List<String> sellSpecNameList = paramMap.getList("sellSpeclName_" + i);
             List<String> sellSpecValueList = paramMap.getList("sellSpeclValue_" + i);
             Spec sellSpec = sf.findSpec(sellSpecNameList, sellSpecValueList);
             poProduct.setSpec2(sellSpec);
+            ppJson.put("sellSpec1", sellSpecValueList);
+
             poProduct.setPo(po);
             poProduct.setProduct(productRepo.getReferenceById(paramMap.getInt("pIdx_" + i, "유효한 상품이 아닙니다.")));
 
