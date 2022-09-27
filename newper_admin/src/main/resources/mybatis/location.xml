@@ -53,6 +53,16 @@
             (#{lm_idx}, #{g_idx})
         </foreach>
     </insert>
+        <select id="selectLocationMoveGoods" resultType="map">
+        SELECT
+         *
+        FROM
+             location_move_goods
+        WHERE
+           LMG_LM_IDX = #{lmIdx}
+           AND
+           LMG_G_IDX = #{gIdx}
+    </select>
 
     <select id="countLocationDatatable" resultType="long">
         SELECT

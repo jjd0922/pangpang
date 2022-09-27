@@ -33,4 +33,14 @@
           AND SCATE_IDX = #{scateIdx}
 
     </select>
+    <select id="selectShopCategoryBySp" resultType="map">
+        SELECT
+            SCATE_IDX, SCATE_NAME
+        FROM
+            CATEGORY_SHOP_CATEGORY, SHOP_CATEGORY,SHOP_PRODUCT
+        WHERE
+            SCATE_IDX = CSC_SCATE_IDX
+            AND CSC_CATE_IDX=SP_CATE_IDX
+            and SP_IDX = #{sp_idx}
+    </select>
 </mapper>

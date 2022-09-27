@@ -4,6 +4,10 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
 import com.newper.entity.Location;
 import com.newper.entity.LocationMove;
+import com.newper.entity.Product;
+import com.newper.exception.MsgException;
+import com.newper.mapper.LocationMapper;
+import com.newper.repository.GoodsRepo;
 import com.newper.repository.LocationMoveRepo;
 import com.newper.repository.LocationRepo;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,10 @@ public class StockController {
     private final LocationMoveRepo locationMoveRepo;
 
     private final LocationRepo locationRepo;
+
+    private LocationMapper locationMapper;
+
+    private final GoodsRepo goodsRepo;
 
     /**적재관리 메인페이지*/
     @GetMapping("load")
@@ -93,12 +101,26 @@ public class StockController {
 
     /**창고이동관리 > 창고이동 조회/수정 페이지*/
     @GetMapping("move/pop/{lmIdx}") //pathvariable 부분 임시, 오브젝트도 임시.(추후 수정~)
-    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx) {
+    public ModelAndView stockMovePopDetail(@PathVariable long lmIdx,Integer locIdx) {
         ModelAndView mav = new ModelAndView("/stock/move_pop");
         LocationMove locationMove=locationMoveRepo.findLocationMoveByLmIdx(lmIdx);
-//        Location location=locationRepo.findLocationByLocIdx(locationMove.getLocation2().getLocIdx());
-
+        Location location=locationRepo.findLocationByLocIdx(locIdx);
         mav.addObject("locationMove", locationMove);
+
+        //   location.getGoodsList().get(locationMove.getLocation2().getLocIdx());
+//        locationMapper.insertLocationMoveGoods(locationMove.getLmIdx(),location.getGoodsList().get(locationMove.getLocation2().getLocIdx().intValue()));
+
+
+//        Location location=locationRepo.getReferenceById(locationMove.getLocation2().getLocIdx());
+       /* location.setLocIdx(locationMove.getLocation2().getLocIdx());*/
+/*        location.setWarehouse(locationMove.getLocation2().getWarehouse());
+        location.setGoodsList(locationMove.getLocation2().getGoodsList());*/
+
+//       Goods goods = goodsRepo.findById(gIdx).orElseThrow(() -> new MsgException("존재하지 않는 자산입니다."));
+
+        mav.addObject("location",location);
+//        mav.addObject("goods", locationMapper.selectLocationMoveGoods(gIdx));
+//        mav.addObject("goods", locationMapper.selectLocationMoveGoods(lmIdx));
 //        mav.addObject("location", location);
         return mav;
     }
