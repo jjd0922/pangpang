@@ -50,7 +50,12 @@ public interface LocationMapper {
     List<Map<String,Object>> selectStockMoveDatatable(Map<String, Object> map);
     Integer countStockMoveDatatable(Map<String, Object> map);
 
-    List<Map<String, Object>> selectLocationMoveGoods(long lmIdx);
+
+    List<Map<String,Object>> selectLocationMoveGoodsList(@Param("lmIdx") Long lmIdx);
+
+
+
+    List<Map<String,Object>> sqltest(@Param("lmIdx") Long lmIdx);
 
 
 

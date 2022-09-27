@@ -116,7 +116,7 @@ public class GoodsService {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
             // 반품필요 & 입고검수 상태의 자산을 반품요청으로 상태값 변경
             if (gState.equals(GState.CANCEL_REQ)) {
-                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK_NEED)) {
+                if (goods.getGState().equals(GState.CANCEL_NEED) || goods.getGState().equals(GState.CHECK_REQ)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
                 } else {
@@ -124,7 +124,7 @@ public class GoodsService {
                 }
                 msg = "반품신청 완료";
             // 반품필요 자산을 입고검수 상태로 변경
-            } else if (gState.equals(GState.CHECK_NEED)) {
+            } else if (gState.equals(GState.CHECK_REQ)) {
                 if (goods.getGState().equals(GState.CANCEL_NEED)) {
                     goods.setGState(gState);
                     goodsRepo.save(goods);
@@ -187,7 +187,7 @@ public class GoodsService {
             if (processNeed.size() != 0) {
                 goods.setGState(GState.PROCESS);
             } else {
-                goods.setGState(GState.CHECK_NEED);
+                goods.setGState(GState.CHECK_REQ);
             }
 
             goodsRepo.save(goods);
@@ -244,7 +244,7 @@ public class GoodsService {
 
         for (int i = 0; i < gIdxs.length; i++) {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-            if (!goods.getGState().equals(GState.CHECK_NEED)) {
+            if (!goods.getGState().equals(GState.CHECK_REQ)) {
                 throw new MsgException(goods.getGBarcode() + "는 재검수에 해당되는 자산이 아닙니다.");
             }
         }

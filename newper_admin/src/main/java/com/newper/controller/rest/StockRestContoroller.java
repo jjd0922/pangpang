@@ -296,16 +296,32 @@ public class StockRestContoroller {
 
 
 
-/*    *//** 창고이동관리 작업취소 처리 *//*
-    @PostMapping(value = "changeLocation3.ajax")
-    public ReturnMap changeLocation3(ParamMap paramMap,int[] locIdx, long[] gIdx) {
+    /** 창고이동관리 작업취소 처리*/
+    @PostMapping(value = "cancelLocation.ajax")
+    public ReturnMap changeLocation3(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        System.out.println(locIdx);
+
+
         paramMap.getMap();
         System.out.println("paramMap = " + paramMap);
-        locationService.changeLocation2(paramMap,locIdx,gIdx);
-        rm.setMessage("자산상태는 적재로 변경되며 자산적재 로케이션이 변경 됩니다.");
+        locationService.changeLocation3(paramMap);
+        rm.setMessage("작업이 취소되었습니다.");
 
         return rm;
-    }*/
+    }
+
+    /** 창고이동관리 작업취소 처리*/
+    @PostMapping(value = "finishedLocation.ajax")
+    public ReturnMap finishedLocation(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+
+
+        paramMap.getMap();
+        System.out.println("paramMap = " + paramMap);
+        locationService.finishedLocation(paramMap);
+        rm.setMessage("작업이 완료되었습니다.");
+
+        return rm;
+    }
+
 }
