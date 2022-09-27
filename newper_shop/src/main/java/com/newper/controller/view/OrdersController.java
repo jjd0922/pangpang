@@ -19,6 +19,14 @@ public class OrdersController {
 
     private final PaymentService paymentService;
 
+    /** 주문 결제 페이지*/
+    @GetMapping("")
+    public ModelAndView orders(){
+        ModelAndView mav = new ModelAndView("orders/orders");
+
+
+        return mav;
+    }
     /** 결제 결과*/
     @GetMapping("result/ph{idx}")
     public ModelAndView resultPh(@PathVariable(value = "idx") long ph_idx){

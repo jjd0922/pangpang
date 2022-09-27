@@ -6,8 +6,9 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @DynamicUpdate
@@ -42,13 +43,52 @@ public class ShopProduct extends BaseEntity {
     private Integer spQuotaOnce;
     private Integer spQuotaId;
     private String spTag;
-    private Date spShowStartDate;
-    private Time spShowStartTime;
-    private Date spShowEndDate;
-    private Time spShowEndTime;
-    private Date spSellStartDate;
-    private Time spSellStartTime;
-    private Date spSellEndDate;
-    private Date spSellEndTime;
 
+    private LocalDate spShowStartDate;
+    private LocalTime spShowStartTime;
+    private LocalDate spShowEndDate;
+    private LocalTime spShowEndTime;
+    private LocalDate spSellStartDate;
+    private LocalTime spSellStartTime;
+    private LocalDate spSellEndDate;
+    private LocalTime spSellEndTime;
+
+    /** 현재 판매 중인 상품인지 확인*/
+    public boolean isSell(){
+        if(getSpState() == SpState.Y){
+            LocalDateTime now = LocalDateTime.now();
+
+            LocalDateTime sellStart = LocalDateTime.of(getSpSellStartDate(), getSpSellStartTime());
+            LocalDateTime sellEnd = LocalDateTime.of(getSpSellEndDate(), getSpSellEndTime());
+            if(now.isAfter(sellStart) && now.isBefore(sellEnd)){
+                return true;
+            }
+        }
+        return false;
+    }
+    /** 현재 노출 중인 상품인지 확인*/
+    public boolean isShow(){
+        if(getSpState() == SpState.Y){
+            LocalDateTime now = LocalDateTime.now();
+
+            LocalDateTime showStart;
+            //null인경우 기간 check 없음
+            if(spShowStartDate == null){
+                showStart = now.minusDays(1);
+            }else{
+                showStart = LocalDateTime.of(spShowStartDate, spShowStartTime);
+            }
+            LocalDateTime showEnd;
+            if (spShowEndDate == null) {
+                showEnd = now.plusDays(1);
+            } else {
+                showEnd = LocalDateTime.of(getSpShowEndDate(), getSpShowEndTime());
+            }
+
+            if(now.isAfter(showStart) && now.isBefore(showEnd)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
