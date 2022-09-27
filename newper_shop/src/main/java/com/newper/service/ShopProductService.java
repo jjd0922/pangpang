@@ -1,11 +1,15 @@
 package com.newper.service;
 
 import com.newper.entity.ShopProduct;
+import com.newper.entity.ShopProductAdd;
+import com.newper.entity.ShopProductOption;
 import com.newper.exception.MsgException;
 import com.newper.repository.ShopProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
