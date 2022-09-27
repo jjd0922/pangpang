@@ -1,9 +1,237 @@
 <!-- 회원정보수정-->
 <th:block th:fragment="updateInfo">
-    회원정보수정
-
-    <button onclick="updateInfoBtn('changePwd')">비밀번호변경</button>
-    <button onclick="updateInfoBtn('deleteCustomer')">회원탈퇴</button>
+    <!-- 회원탈퇴 버튼 -->
+    <div class="btn btn6 mem-secession-btn">
+        <a onclick="updateInfoBtn('deleteCustomer')">회원탈퇴</a>
+    </div>
+    <!-- 테이블 -->
+    <ul class="default-table">
+        <!-- 아이디 -->
+        <li>
+            <div class="default-table-title">아이디<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-content">
+                <p class="fixed-id">hong1004</p>
+            </div>
+        </li>
+        <!-- 비밀번호 -->
+        <li>
+            <div class="default-table-title">비밀번호<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-content">
+                <div class="btn btn10 pw-change">
+                    <a onclick="updateInfoBtn('changePwd')">비밀번호변경</a>
+                </div>
+            </div>
+        </li>
+        <!-- 이름 -->
+        <li>
+            <div class="default-table-title">이름<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-content">
+                <input type="text" class="form-control name" maxlength="10" title="이름">
+            </div>
+        </li>
+        <!-- 성별 -->
+        <li>
+            <div class="default-table-title">성별</div>
+            <div class="default-table-content display-flex">
+                <div>
+                    <input type="radio" id="male" name="gender" value="남성">
+                    <label for="male">남성</label>
+                </div>
+                <div>
+                    <input type="radio" id="female" name="gender" value="여성">
+                    <label for="female">여성</label>
+                </div>
+            </div>
+        </li>
+        <!-- 생년월일 -->
+        <li>
+            <div class="default-table-title">생년월일</div>
+            <div class="default-table-content">
+                <div class="birth display-flex space-between">
+                    <select name="year" class="form-control">
+                        <option value="">선택</option>
+                        <option value="1995">1995</option>
+                        <option value="1996">1996</option>
+                        <option value="1997">1997</option>
+                        <option value="1998">1998</option>
+                        <option value="1999">1999</option>
+                        <option value="2000">2000</option>
+                    </select>
+                    <select name="month" class="form-control">
+                        <option value="">선택</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <select name="day" class="form-control">
+                        <option value="">선택</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                    </select>
+                </div>
+            </div>
+        </li>
+        <!-- 이메일 -->
+        <li>
+            <div class="default-table-title">이메일</div>
+            <div class="default-table-content">
+                <div class="display-flex space-between alignItems-center eMail-wrap">
+                    <input type="text" class="form-control eMail" placeholder="이메일">
+                    <span class="at">@</span>
+                    <select class="form-control">
+                        <option value="직접입력">직접입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="hotmail.com">hotmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="yahoo.co.kr">yahoo.co.kr</option>
+                        <option value="paran.com">paran.com</option>
+                        <option value="empas.com">empas.com</option>
+                        <option value="dreamwiz.com">dreamwiz.com</option>
+                        <option value="lycos.co.kr">lycos.co.kr</option>
+                        <option value="korea.com">korea.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="hanmir.com">hanmir.com</option>
+                    </select>
+                </div>
+                <input type="text" class="form-control width-100">
+            </div>
+        </li>
+        <!-- 휴대폰 번호 -->
+        <li class="phone2">
+            <div class="default-table-title">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-content">
+                <div class="display-flex space-between alignItems-center">
+                    <input type="text" id="" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 세자리">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리">
+                </div>
+            </div>
+        </li>
+        <!-- 전화번호 -->
+        <li class="phone2">
+            <div class="default-table-title">전화번호<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-content">
+                <div class="display-flex space-between alignItems-center">
+                    <input type="text" id="" class="form-control phone" maxlength="3" name="" title="전화번호 지역번호">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="" class="form-control phone" maxlength="4" name="" title="전화번호1">
+                    <span>&nbsp;-&nbsp;</span>
+                    <input type="text" id="" class="form-control phone" maxlength="4" name="" title="전화번호2">
+                </div>
+            </div>
+        </li>
+        <!-- 주소 -->
+        <li>
+            <div class="default-table-title">주소</div>
+            <div class="default-table-content">
+                <div class="addr-info">
+                    <div class="addr-input">
+                        <input type="text" class="form-control zip-code" id="k_address1" title="상세주소">
+                        <div class="btn btn10 searchAddr-btn">
+                            <a href="javascript:;">우편번호 검색</a>
+                        </div>
+                        <input type="checkbox" id="default-addr" title="기본배송지 저장" class="custom-checkbox">
+                        <label for="default-addr">기본배송지 저장</label>
+                    </div>
+                    <div class="form-control mb-5">
+                        <p>서울특별시 송파구 법원로 11길 11</p>
+                    </div>
+                    <div class="addr-input">
+                        <input type="text" title="상세 주소 입력" class="form-control addr-text" placeholder="상세주소를 입력하세요.">
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- 동의 -->
+    <div class="consent updateInfo-consent">
+        <div>
+            <input type="checkbox" id="allConsent" class="custom-checkbox" name="" value="">
+            <label for="allConsent"><span class="bold font-sm">전체동의</span><span class="color-grey999 font-xxsm">&nbsp;(선택 정보 포함)</span></label>
+        </div>
+        <div>
+            <p>
+                <input type="checkbox" id="joinConsent1" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <label for="joinConsent1">[필수] 만 14세 이상</label>
+            </p>
+            <p>
+                <input type="checkbox" id="joinConsent2" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <label for="joinConsent2">[필수] 이용 약관 동의</label>
+            </p>
+            <p>
+                <input type="checkbox" id="joinConsent3" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <label for="joinConsent3">[필수] 개인정보 처리방침 동의</label>
+            </p>
+            <p>
+                <input type="checkbox" id="joinConsent4" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <label for="joinConsent4">[필수] 개인정보 제공 동의</label>
+            </p>
+            <p>
+                <input type="checkbox" id="joinConsent5" class="custom-checkbox" attr="agree">
+                <label for="joinConsent5">[선택] 쇼핑혜택 및 광고성 정보 수신동의</label>
+            </p>
+            <div>
+                <p>
+                    <input type="checkbox" id="joinSMS-check" class="custom-checkbox" name="cuMarketingSms" value="" attr="agree" opt="opt">
+                    <label for="joinSMS-check">SMS</label>
+                </p>
+                <p>
+                    <input type="checkbox" id="joinEmail-check" class="custom-checkbox" name="cuMarketingMail" value="" attr="agree" opt="opt">
+                    <label for="joinEmail-check">이메일</label>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- 버튼 -->
+    <div class="join-button-group">
+        <div class="btn btn3 semi-bold">
+            <a href="javascript:;">취소</a>
+        </div>
+        <div class="btn btn2 semi-bold">
+            <a href="javascript:;">회원정보 수정완료</a>
+        </div>
+    </div>
 
     <script>
         function updateInfoBtn(menu){
@@ -209,20 +437,109 @@
 
 <!-- 회월탈퇴 -->
 <th:block th:fragment="deleteCustomer">
-    회원탈퇴
+    <div class="deleteCustomer-wrap">
+        <div class="updateInfo-page-des">
+            <h2>회원탈퇴</h2>
+        </div>
 
-    <button onclick="alert('준비중!')">회원탈퇴</button>
-    <button onclick="openMyInfoMenu('updateInfo');">취소</button>
+        <h5>어떤 점이 불편하셨나요?</h5>
+        <div class="complaint">
+            <div>
+                <input type="radio" id="delete-reason1" name="delete-reason">
+                <label for="delete-reason1">배송불만</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason2" name="delete-reason">
+                <label for="delete-reason2">상품의 다양성/가격/품질 불만</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason3" name="delete-reason">
+                <label for="delete-reason3">교환/환불/반품 서비스 불만</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason4" name="delete-reason">
+                <label for="delete-reason4">실질적인 혜택 부족</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason5" name="delete-reason">
+                <label for="delete-reason5">쇼핑몰 사용이 불편함</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason6" name="delete-reason">
+                <label for="delete-reason6">개인정보 유출 우려</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason7" name="delete-reason">
+                <label for="delete-reason7">자주 사용하지 않음</label>
+            </div>
+            <div>
+                <input type="radio" id="delete-reason8" name="delete-reason">
+                <label for="delete-reason8">기타사유</label>
+            </div>
+        </div>
+
+        <h5>회원탈퇴 사유 상세입력</h5>
+        <textarea class="form-control" placeholder="내용을 입력하세요."></textarea>
+
+        <!-- 안내사항 -->
+        <ul class="info-guide color-grey666">
+            <li>
+                <strong>[안내사항]</strong>
+                <p>- 상품문의는 회원만 문의할 수 있습니다.</p>
+                <p>- 문의글에 관련된 저작권은 AJ전시몰에 귀속됩니다.</p>
+                <p>- 미풍양속을 해치는 글, 상품비방글(비회원구매) 등은 관리자에 의해 임의삭제 될 수 있습니다. (IP정보 자동저장)</p>
+                <p>- 주문/배송/결제/보상에 관련 된 문의는 고객게시판을 통하셔야 신속하게 조치 받으실 수 있습니다.</p>
+            </li>
+        </ul>
+
+        <!-- 버튼 -->
+        <div class="join-button-group">
+            <div class="btn btn3 semi-bold">
+                <a onclick="alert('준비중!')">회원탈퇴</a>
+            </div>
+            <div class="btn btn2 semi-bold">
+                <a onclick="openMyInfoMenu('updateInfo');">취소</a>
+            </div>
+        </div>
+    </div>
+
 
 </th:block>
 <!-- 회월탈퇴 end -->
 
 <!-- 비밀번호변경 -->
 <th:block th:fragment="changePwd">
-비밀번호 변경
-
-    <button onclick="openMyInfoMenu('updateInfo');">취소</button>
-    <button onclick="alert('준비중!')">변경하기</button>
+    <div class="updateInfo-page-des">
+        <h2>비밀번호변경</h2>
+        <p>고객님의 개인정보 변경을 위해 새로운 비밀번호를 등록하세요.</p>
+    </div>
+    <!-- 테이블 -->
+    <ul class="default-table pw-table">
+        <!-- 기존 비밀번호 -->
+        <li>
+            <div class="default-table-title">기존 비밀번호</div>
+            <div class="default-table-content">
+                <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
+            </div>
+        </li>
+        <!-- 새 비밀번호 -->
+        <li>
+            <div class="default-table-title">새 비밀번호</div>
+            <div class="default-table-content joinPW-input-wrap">
+                <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
+                <input type="password" class="form-control" maxlength="12" title="비밀번호 확인" placeholder="비밀번호 확인">
+            </div>
+        </li>
+    </ul>
+    <!-- 버튼 -->
+    <div class="join-button-group">
+        <div class="btn btn3 semi-bold">
+            <a onclick="openMyInfoMenu('updateInfo');">취소</a>
+        </div>
+        <div class="btn btn2 semi-bold">
+            <a onclick="alert('준비중!')">변경하기</a>
+        </div>
+    </div>
 </th:block>
 <!-- 비밀번호변경 end -->
 
