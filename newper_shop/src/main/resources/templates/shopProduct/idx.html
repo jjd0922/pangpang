@@ -769,7 +769,7 @@
     spo += '    <div class="prod-op-price-group select-amount-wrap">';
     spo += '      <div class="select-amount">';
     spo += '        <span class="amount-minus" onclick="changeSpo(\''+val+'\', -1)">-</span>';
-    spo += '        <input type="text" class="form-control" name="spo'+val+'" value="1" readOnly spo_price="'+price+'">';
+    spo += '        <input type="text" name="spo'+val+'" value="1" readOnly spo_price="'+price+'">';
     spo += '          <span class="amount-plus" onclick="changeSpo(\''+val+'\', 1)">+</span>';
     spo += '      </div>';
     spo += '      <div>';
@@ -802,7 +802,15 @@
       $('#spoTotalPrice').html( comma(spoTotalPrice) );
     }
   }
-
+  //선택 옵션 수량 변경
+  function changeSpo(val, cnt){
+    var cnt = Number($('input[name=spo'+val+']').val())+cnt;
+    if (cnt < 0) {
+      cnt = 1;
+    }
+    $('input[name=spo'+val+']').val(cnt);
+    calSpo();
+  }
   //주문하기
   function orderSpo(){
     //회원
