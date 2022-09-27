@@ -101,7 +101,7 @@
                                                         기준매입원가
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_COST" class="form-control" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}" readonly>
+                                                <input type="text" name="P_COST" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                                         기준판매가(상품)
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_SELL_PRICE" class="form-control" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}" readonly>
+                                                <input type="text" name="P_SELL_PRICE" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +173,7 @@
                                                         기준판매가(재고)
                                                     </span>
                                                 </span>
-                                                <input type="text" class="form-control "  name="GS_PRICE" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsPrice,0,'COMMA')}">
+                                                <input type="text" class="form-control text-right"  name="GS_PRICE" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsPrice,0,'COMMA')}">
                                             </div>
                                         </div>
                                     </div>
@@ -199,6 +199,7 @@
                                                 </span>
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="GS_RANK" th:disabled="${goodsStock!=null}">
                                                     <option></option>
+                                                    <option th:each="opt: ${T(com.newper.constant.GRank).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -295,6 +296,45 @@
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="GS_DAILY">
                                                     <option value="false" th:selected="${goodsStock?.gsDaily eq flase}">N</option>
                                                     <option value="true" th:selected="${goodsStock?.gsDaily eq true}">Y</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        배송비(재고)
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control text-right"  name="GS_DEL_PRICE" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsDelPrice,0,'COMMA')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        반품비(재고)
+                                                    </span>
+                                                </span>
+                                                <input type="text" class="form-control text-right"  name="GS_DEL_PRICE_CANCEL" onkeyup="numCommaKeyUp()" th:value="${goodsStock}==null? 0:${#numbers.formatInteger(goodsStock?.gsDelPriceCancel,0,'COMMA')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        색상
+                                                    </span>
+                                                </span>
+                                                <select data-placeholder="선택" class="form-control select" data-fouc name="GS_COLOR" th:disabled="${goodsStock!=null}">
+                                                    <option></option>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -763,6 +803,13 @@
         var str= rowData.OPTION1.split(",");
         var str2= rowData.OPTION2.split(",");
         var str3= rowData.OPTION3.split(",");
+
+        var color = JSON.parse(rowData.P_COLOR);
+        var gsColor = '';
+        for(key in color){
+            gsColor+='<option>'+key+':'+color[key]+'</option>'
+        }
+        $('select[name="GS_COLOR"]').append(gsColor);
 
         var option1 = "";
         var option2 = "";
