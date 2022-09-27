@@ -24,8 +24,10 @@ public class ShopProductAdd {
 
     private String spaName;
 
-    private String spaCheck;
+    /** 필수 여부*/
+    private boolean spaRequired;
 
-    private Integer spaCount;
+    @Builder.Default
+    private int spaCount = 1;
 
 }
