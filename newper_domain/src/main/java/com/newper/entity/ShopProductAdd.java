@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -30,4 +31,7 @@ public class ShopProductAdd {
     @Builder.Default
     private int spaCount = 1;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProductAdd", cascade = CascadeType.ALL)
+    @OrderBy(value = "spoIdx asc")
+    private List<ShopProductOption> shopProductOptionList;
 }
