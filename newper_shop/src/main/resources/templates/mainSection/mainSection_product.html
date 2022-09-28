@@ -203,7 +203,7 @@
                 </div>
                 <div class="todayBest-tab-wrap">
                     <ul class="todayBest-tab">
-                        <li class="all">전체</li>
+                        <li class="all" onclick="todayBestListChange('')">전체</li>
                         <li class="on">노트북/데스크탑</li>
                         <li>모니터/주변기기</li>
                         <li>태블릿/휴대폰/웨어러블</li>
@@ -213,8 +213,9 @@
                         <li>차량용품/블랙박스</li>
                         <li>패션/잡화/뷰티</li>
                         <li>식품/헬스케어</li>
+<!--                        <li th:each="shopCategory : ${@shopComp.shopCategoryList}" th:text="${shopCategory.scateName}" th:onclick="|todayBestListChange(${shopCategory.scateIdx})|"></li>-->
                     </ul>
-                    <ul class="todayBest-content sm-margin-fit">
+                    <ul class="todayBest-content sm-margin-fit" id="todayBestShopProductList">
                         <li>전체</li>
                         <li class="on">
                             <div class="swiper-all">
@@ -406,8 +407,28 @@
             </div>
         </div>
     </section><!-- // TODAY BEST 끝 -->
+
+    <script>
+        function todayBestListChange(scateIdx){
+            console.log(scateIdx);
+            // $.ajax({
+            //     url: '/product/best/'+scateIdx+'.load'
+            //     ,type: 'post'
+            // }).done(function(res){
+            //     $('#').empty();
+            //     $('#').append(res);
+            //
+            //     // action
+            //     $('#').children('li').removeClass("on");
+            //     $('#').find($('#'+menu)).addClass("on");
+            // });
+        }
+        $(function(){
+            todayBestListChange('');
+        })
+    </script>
 </th:block>
-<th:block th:fragment="mdRecommend">
+<th:block th:fragment="CATEGORY">
     <!-- MD 추천 카테고리 -->
     <section class="padding-section section-title-padding">
         <div class="container">
