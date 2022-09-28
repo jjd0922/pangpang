@@ -4598,7 +4598,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .shoppingHistory-tab-content .orderHistory-progress li:nth-child(5) p:nth-of-type(2)::after {
     content: none;
 }
-#orderProductList h3 {
+#orderProductList>h3 {
     margin-top: 50px;
 }
 .inquiryPeriod {
@@ -4715,7 +4715,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .asMessage {
     width: 100%;
-    height: 150px;
+    height: 150px!important;
     padding: 15px;
 }
 .fileAdd {
@@ -5283,6 +5283,10 @@ input[type="number"]::-webkit-inner-spin-button {
     padding-left: 30px!important;
     align-items: start!important;
 }
+.button-vertical-group {
+    display: flex;
+    flex-direction: column;
+}
 .button-vertical-group>div:nth-child(2) {
     margin-top: 7px;
 }
@@ -5655,29 +5659,92 @@ input[type="number"]::-webkit-inner-spin-button {
 .info-guide p {
    margin-top: 5px;
 }
+.order-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.order-status>p {
+    margin-bottom: 5px;
+}
+.btn12 a {
+    background-color: #00184f;
+    color: #fff;
+    border-radius: 50px;
+    font-size: 15px;
+    padding: 7px 20px;
+}
+.orderDetail-wrap h2 {
+    margin: 50px 0 30px;
+}
+.orderDetail-wrap h3 {
+    margin-bottom: 15px;
+}
+.orderDetail-wrap .order-item {
+    color: #000;
+}
+.orderDetail-wrap .order-header {
+    background-color: #f2f5f7;
+}
+.orderDetail-wrap .order-total-wrap, .orderDetail-wrap .order-totalPrice {
+    background-color: #fff;
+}
+.orderDetail-wrap .order-info-wrap {
+    border: 2px solid #d1d1d1;
+}
+
+
 
 
 @media (max-width: 991px) {
+   #myPageMenu-header .container,  #myPageMenu .container  {
+        padding: 0;
+    }
     .myPage-header {
-        flex-direction: column;
+        flex-wrap: wrap;
     }
     .myPage-header>li {
         border-left: none;
+        flex: none!important;
+    }
+    .myPage-header>li:nth-child(1) {
+        width: 100%;
+        border-bottom: 10px solid #f2f2f2;
+    }
+    .myPage-header>li:not(:nth-child(1)) {
+        width: 33.33%;
+        border-right: 1px solid #b7b7b7;
+        padding: 15px;
+        align-items: center;
+    }
+    .myPage-header>li:not(:nth-child(1))>div {
+        text-align: center;
+    }
+    .myPage-header>li:last-child {
+        border-right: none;
+    }
+    .myPage-header>li h5 i {
+        display: none;
     }
     .my-menu-tab {
         flex-wrap: wrap;
-        margin: 45px 0;
+        margin: 10px 0;
     }
     .my-menu-tab li {
-        width: 100px;
-        height: 80px;
+        width: 100%;
+        height: 70px;
         font-size: 15px;
-        margin: 5px 5px 5px 0;
+        margin: 5px;
+        flex-direction: row;
+        border-radius: 5px;
+        justify-content: start;
+        padding: 0 45px;
     }
     .my-menu-tab li i {
         width: 37px;
         height: 37px;
-        margin-bottom: 10px;
+        margin-bottom: 0;
+        margin-right: 45px;
     }
     .myShopping-table-item>ul {
         flex-wrap: wrap;
@@ -5685,7 +5752,160 @@ input[type="number"]::-webkit-inner-spin-button {
     .myShopping-table-title>li, .myShopping-table-item>ul>li {
         border-right: none;
     }
+    .myPage-header>li:first-child>div:nth-of-type(1),
+    .myPage-header>li:first-child>div:nth-of-type(2) {
+        padding: 15px;
+    }
+    .myPage-header>li:first-child>div:nth-of-type(1)>p:nth-child(1) {
+        margin-bottom: 7px;
+    }
+    .myPage-header>li:first-child>div p {
+        font-size: 14px;
+    }
+    .myGrade span {
+        font-size: 19px;
+    }
+    .myPage-header>li:not(:first-child) p:nth-of-type(1) {
+        font-size: 21px;
+    }
+    .saleCoupon-btn {
+        font-size: 12px;
+        padding: 5px 15px;
+    }
+    .my-content-title {
+        padding: 0 15px 13px 15px;
+    }
+    .my-content-title h2 {
+        font-size: 17px;
+    }
+    .my-content-title p {
+        top: 0;
+        font-size: 13px;
+    }
+    .my-content-title h2 i {
+        margin: 0 15px;
+    }
+    .orderHistory-progress {
+        padding: 0;
+        flex-wrap: wrap;
+    }
+    .orderHistory-progress li {
+        width: 33.33%;
+        flex: none;
+        padding: 15px 10px;
+    }
+    .orderHistory-progress li:last-child {
+        border-left: none;
+        width: 100%;
+        background-color: #fbfbfb;
+        align-items: start;
+        padding: 15px 25px;
+    }
+    .orderHistory-progress li:last-child a {
+        flex-direction: row;
+    }
+    .orderHistory-progress li p:nth-of-type(2) {
+        font-size: 27px;
+        font-weight: 600;
+    }
+    .orderHistory-progress li:last-child p:nth-of-type(2) {
+        margin-top: 0;
+        margin-left: 25px;
+    }
+    .orderHistory-progress li i {
+        top: 65%;
+        right: 10px;
+    }
+    .table-content2 {
+        flex-wrap: wrap;
+    }
+    .table-content2>li {
+        width: 100%!important;
+        padding: 10px 15px;
+        border-right: none;
+        border-top: 1px solid #b7b7b7;
+    }
+    .order-date {
+        flex-direction: row;
+        justify-content: start!important;
+        font-size: 14px;
+    }
+    .order-date .table-order-num {
+        display: flex;
+        margin-top: 0;
+    }
+    .order-date p:first-child,
+    .order-date .table-order-num p:first-child {
+        margin-right: 10px;
+    }
+    .itemName {
+        padding: 15px 15px 0!important;
+        border-bottom: 0;
+    }
+    .itemName + li {
+        border-top: none;
+    }
+    .table-content2 .count {
+        width: auto!important;
+        padding-left: 100px;
+        padding: 0 0 15px 130px;
+        border-top: none;
+    }
+    .table-content2 .payment-price {
+        width: 50%!important;
+        justify-content: end;
+        padding: 0 15px 15px 0;
+        border-top: none;
+    }
+    .writeableReview-content>li:nth-child(5) {
+        justify-content: start;
+    }
+    .writeableReview-content>li:nth-child(5) p:nth-child(1) {
+        margin-right: 47px;
+        font-weight: 500;
+    }
+    .writeableReview-content>li:nth-child(5) p:nth-child(2) {
+        font-size: 14px;
+    }
+    .writeableReview-content>li:nth-child(6)>div {
+        display: flex;
+        align-items: center;
+    }
+    .button-vertical-group>div:nth-child(2) {
+        margin-top: 0;
+    }
+    .as-period {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0 15px 10px 130px!important;
+        justify-content: start!important;
+        font-size: 13px;
+    }
+    .as-period-date {
+        width: 100%;
+    }
+    .as-period p:nth-of-type(1) {
+        margin-bottom: 0;
+        margin-right: 7px;
+    }
+    .orderStatus {
+        flex-direction: row;
+        justify-content: start!important;
+    }
+    .orderStatus>p {
+        padding-left: 10px;
+    }
+    .orderStatus>div {
+        margin-top: 0;
+        text-align: start;
+        padding-left: 50px;
+        font-size: 14px;
+    }
+
 }
+
+
+
 
 
 
