@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>마감처리</title>
+
+    <th:block th:replace="common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold">마감처리</h4>
+
+                            <!--  <div class="text-white-50 ml-3">설명글영역</div>
+                          </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="userForm" onsubmit="return false;">
+                <div class="card">
+                    <div class="card-body popup-contents pb-4">
+                        <fieldset class="mb-0">
+                            <legend class="">마감정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                       마감담당자
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="U_NAME" class="form-control" th:value="${user?.uName}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text ">마감상태 <i class="icon-info22 small ml-1 opacity-90" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" ></i></span>
+                                            </span>
+                                        <select data-placeholder="선택" class="form-control select" data-fouc name="U_STATE">
+                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(user?.uState) eq opt.name()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text" >
+                                                       마감처리일
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="U_BIRTH" class="form-control form-control-sm w-datarange daterange-singlenull" th:value="${user != null} ? ${user.getUBirth()}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                      마감메모
+                                                    </span>
+                                                </span>
+                                            <input type="text" name="U_TEL" class="form-control" th:value="${user?.uTel}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+            <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
+            <button onclick="userCreate()" type="button" class="btn btn-sm btn-secondary ml-1" id="userCreate"><i class="icon-floppy-disk mr-1"></i>저장</button>
+        </div>
+        <!-- /footer -->
+    </div>
+</div>
+<th:block th:replace="modal/resetPwdModal.html"/>
+
+<th:block th:replace="modal/companyModal.html"/>
+
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
+
+<!-- 공통 js -->
+
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/fixed_columns.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/demo_pages/datatables_extension_select.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+<!-- 다음 주소 api -->
+<script th:src="@{/assets/js/daum_address.js}"></script>
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+
+<script th:inline="javascript">
+
+    function saveAction(){
+        $("#userForm").submit();
+
+    }
+
+</script>
+<script>
+    $('#modalForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+
+    $("#saveBtn").on("click", saveAction);
+
+    $("input[name=post]").on("click", daum_address);
+
+
+
+</script>
+
+</body>
+
+</html>
