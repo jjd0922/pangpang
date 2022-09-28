@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.OrdersMapper">
+    <select id="selectOrderGsListByCuIdx" resultType="map" parameterType="map">
+        SELECT
+        *
+        FROM
+
+            order_gs
+            left join orders on O_IDX=OG_O_IDX
+            left join shop_product_option on OG_SPO_IDX=SPO_IDX
+            left join goods_stock on SPO_GS_IDX=GS_IDX
+            left join customer on O_CU_IDX=CU_IDX
+        WHERE
+            CU_IDX=#{cuIdx}
+</select>
+    <select id="selectShopCategoryBySp" resultType="map">
+        SELECT
+            SCATE_IDX, SCATE_NAME
+        FROM
+            CATEGORY_SHOP_CATEGORY, SHOP_CATEGORY,SHOP_PRODUCT
+        WHERE
+            SCATE_IDX = CSC_SCATE_IDX
+            AND CSC_CATE_IDX=SP_CATE_IDX
+            and SP_IDX = #{sp_idx}
+    </select>
+</mapper>
