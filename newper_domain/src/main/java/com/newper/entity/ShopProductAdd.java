@@ -32,4 +32,13 @@ public class ShopProductAdd {
     @OrderBy(value = "spoIdx asc")
     private List<ShopProductOption> shopProductOptionList;
 
+    /** spo 종속옵션 max depth 확인*/
+    public int maxSpoDepth(){
+        int maxDepth = 0;
+        for (ShopProductOption shopProductOption : getShopProductOptionList()) {
+            maxDepth = Math.max(maxDepth, shopProductOption.getSpoDepth());
+        }
+        return maxDepth;
+    }
+
 }
