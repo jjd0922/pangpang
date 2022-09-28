@@ -91,9 +91,11 @@ public class ProductService {
         String P_COLOR = paramMap.getString("P_COLOR");
         String[] color = P_COLOR.split("/");
         Map<String, Object> pColor = new LinkedHashMap<>();
-        for(int i=0; i<color.length; i++){
-            String[] col = color[i].split(":");
-            pColor.put(col[0], col[1]);
+        if(color.length>1){
+            for(int i=0; i<color.length; i++){
+                String[] col = color[i].split(":");
+                pColor.put(col[0], col[1]);
+            }
         }
         product.setPColor(pColor);
 
@@ -186,7 +188,6 @@ public class ProductService {
         ori.setPDelCompany(product.getPDelCompany());
         ori.setPDelTogether(product.getPDelTogether());
         ori.setPFreeInterest(product.isPFreeInterest());
-        ori.setPNaver(product.getPNaver());
         ori.setPInfo(product.getPInfo());
         ori.setPOption(product.getPOption());
 
@@ -195,9 +196,11 @@ public class ProductService {
         String[] color = P_COLOR.split("/");
         Map<String, Object> pColor = new LinkedHashMap<>();
         System.out.println(color.length);
-        for(int i=0; i<color.length; i++){
-            String[] col = color[i].split(":");
-            pColor.put(col[0], col[1]);
+        if(color.length>1){
+            for(int i=0; i<color.length; i++){
+                String[] col = color[i].split(":");
+                pColor.put(col[0], col[1]);
+            }
         }
         ori.setPColor(pColor);
 
@@ -400,6 +403,7 @@ public class ProductService {
         ori.setGsPrice(goodsStock.getGsPrice());
         ori.setGsDelPrice(goodsStock.getGsDelPrice());
         ori.setGsDelPriceCancel(goodsStock.getGsDelPriceCancel());
+        ori.setGsNaver(goodsStock.getGsNaver());
 
 
         goodsStockRepo.save(ori);
@@ -838,11 +842,21 @@ public class ProductService {
     public String naver(ParamMap paramMap){
         String clientId = "ckW6gv_5uIKK7mfPoWnI"; //애플리케이션 클라이언트 아이디
         String clientSecret = "w3FFz6H5L1"; //애플리케이션 클라이언트 시크릿
+        int pIdx=paramMap.getInt("P_IDX");
+        Product product = productRepo.getReferenceById(pIdx);
+        String name = product.getPName();
+        String model = product.getPModel();
 
-        String name = paramMap.getString("P_NAME");
-        String model = paramMap.getString("P_MODEL");
 
-        String text = model;
+
+        String text = "";
+
+        if(model.equals("")){
+            text=name;
+        }else{
+            text=model;
+        }
+
         try {
             text = URLEncoder.encode(text, "UTF-8");
         } catch (UnsupportedEncodingException e) {
