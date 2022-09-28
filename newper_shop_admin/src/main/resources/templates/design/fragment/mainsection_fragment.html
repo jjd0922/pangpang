@@ -1,11 +1,12 @@
 <th:block th:fragment="PRODUCT">
-    <legend class="">3. 구성상품
+    <legend class="">2. 섹션 상세 정보
         <a onclick="openShopProductModal()" class="btn btn-sm btn-primary ml-1">추가</a>
         <a class="btn btn-sm btn-danger ml-1" onclick="resetShopProduct()">전체 삭제</a>
     </legend>
     <table class="table">
         <thead>
         <tr>
+            <th>노출 순서</th>
             <th>상품 상태</th>
             <th>상품명</th>
             <th>삭제</th>
@@ -14,11 +15,12 @@
         <tbody id="shopProductTbody">
         <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
             <tr>
+                <td><input type="number" name="msspOrder" th:value="${mainSectionSp.MSSP_ORDER}"></td>
                 <td th:text="${mainSectionSp.SP_STATE}"></td>
                 <td th:text="${mainSectionSp.SP_NAME}"></td>
                 <td>
                     <input type="hidden" name="spIdx" th:value="${mainSectionSp.SP_IDX}">
-                    <a class="btn btn-sm btn-danger" th:onclick="|javascript:deleteShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
+                    <a class="btn btn-sm btn-danger" th:onclick="|deleteShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
                 </td>
             </tr>
         </th:block>
@@ -100,10 +102,6 @@
         //배너 추가
         function addBanner(){
             $('#sectionContent').append($('#bannerDom').clone().html());
-
-            $('#popBannerForm select[name=msbnOrder]').select2({
-                minimumResultsForSearch: Infinity
-            });
         }
         //배너 삭제
         function removeBannerDom(obj){
@@ -112,10 +110,153 @@
             }
         }
     </script>
+
+
+    <div style="display:none;" id="bannerDom">
+        <!-- 배너 dom-->
+        <div class="row">
+            <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
+                <a class="btn btn-sm btn-danger ml-1" onclick="removeBannerDom(this)">삭제</a>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">노출순서</span>
+                    </span>
+                        <input type="number" class="form-control" name="msbnOrder" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(WEB)</span>
+                    </span>
+                        <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnWebFile" accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(MOBILE)</span>
+                    </span>
+                        <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" name="msbnMobileFile" accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12">
+                <div class="form-group">
+                    <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">링크(URL)</span>
+                    </span>
+                        <input class="form-control" type="text" name="msbnUrl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
-<th:block th:fragment="BOTH">
-    BOTH
+<th:block th:fragment="BOTH" th:with="column=6">
+    <legend class="">2. 섹션 상세 정보
+<!--        <a onclick="addBannerShopProduct()" class="btn btn-sm btn-primary ml-1">행 추가</a>-->
+    </legend>
+    <div class="row"  th:each="i : ${#numbers.sequence(1,column)}">
+        <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
+            <a th:onclick="|openBannerShopProductModal(${i})|" class="btn btn-sm btn-primary ml-1">상품 추가</a>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">노출순서 <br> <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="행의 노출 순서를 100단위로 지정해야합니다."></i></span>
+                    </span>
+                    <input type="number" class="form-control" name="msbnOrder" min="100" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnOrder} : ''">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(WEB)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" th:name="msbnWebFile+${i}" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnWebFile} : ''" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(MOBILE)</span>
+                    </span>
+                    <input class="form-control form-control-plaintext" placeholder="파일첨부" type="file" th:name="msbnMobileFile+${i}" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnMobileFile} : ''" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12" style="display: none;">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">링크(URL)</span>
+                    </span>
+                    <input class="form-control" type="text" name="msbnUrl" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnUrl} : ''">
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>상품 상태</th>
+                <th>상품명</th>
+                <th>삭제</th>
+            </tr>
+            </thead>
+            <tbody th:id="bannerShopProductTbody+${i}">
+                <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
+                    <tr th:if="${#strings.substring(mainSectionSp.MSSP_ORDER,0,1) eq #strings.toString(i)}">
+                        <td th:text="${mainSectionSpStat.count}"></td>
+                        <td th:text="${mainSectionSp.SP_STATE}"></td>
+                        <td th:text="${mainSectionSp.SP_NAME}"></td>
+                        <td>
+                            <input type="hidden" class="spIdx" th:name="spIdx+${i}" th:value="${mainSectionSp.SP_IDX}">
+                            <a class="btn btn-sm btn-danger" th:onclick="|deleteBannerShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        //구성상품 삭제
+        function deleteBannerShopProduct(spIdx){
+            if(window.confirm('구성상품을 삭제하시겠습니까? \n 설정 후 아래 *저장 버튼을 눌러야 DB에 반영됩니다.')){
+                $( $('input[class=spIdx][value='+spIdx+']').parents('tr')[0] ).remove();
+            }
+        }
+    </script>
+
+    <!--shopProduct modal-->
+    <th:block th:replace="design/modal/bannerShopProductModal.html"></th:block>
 </th:block>
 <th:block th:fragment="BEST">
+</th:block>
+
+<th:block th:fragment="CATEGORY">
+    추천 카테고리!
 </th:block>

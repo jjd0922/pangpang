@@ -21,6 +21,8 @@ public interface MainSectionMapper {
     void deleteMainSectionSp(Map<String,Object> msIdx);
     /** mainsection 상품 업데이트*/
     void updateMainSectionSp(Map<String, Object> map);
+    /** mainsection msType Both 일 경우 mainsectionSp msspOrder 기준 조회*/
+    List<Map<String,Object>> selectMainSectionBannerShopProductByMsIdx(Map<String,Object> map);
 
     /** mainsection msJson*/
     Map<String, Object> selectMainSectionMsJson(@Param("msIdx") Long msIdx);
