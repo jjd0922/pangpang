@@ -169,7 +169,7 @@
     <legend class="">2. 섹션 상세 정보
 <!--        <a onclick="addBannerShopProduct()" class="btn btn-sm btn-primary ml-1">행 추가</a>-->
     </legend>
-    <div class="row"  th:each="i : ${#numbers.sequence(1,column)}">
+    <div class="row" th:each="i : ${#numbers.sequence(1,column)}">
         <div class="col-sm-12 text-right" style="margin-top:20px;margin-bottom:5px;">
             <a th:onclick="|openBannerShopProductModal(${i})|" class="btn btn-sm btn-primary ml-1">상품 추가</a>
         </div>
@@ -212,7 +212,7 @@
                     <span class="input-group-prepend">
                         <span class="input-group-text">링크(URL)</span>
                     </span>
-                    <input class="form-control" type="text" name="msbnUrl" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnUrl} : ''">
+                    <input class="form-control" type="text" name="msbnUrl" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnUrl} : '#'">
                 </div>
             </div>
         </div>
