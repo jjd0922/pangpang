@@ -302,6 +302,8 @@ public class ProductService {
             goodsStock.setProduct(product);
         }
 
+        //사방넷 코드
+        goodsStock.setGsSabang("");
 
         //할인전 기준 가격
         goodsStock.setGsOriginalPrice(0);
@@ -314,6 +316,9 @@ public class ProductService {
         goodsStock.setGsSafeStock(0L);
         //적정재고
         goodsStock.setGsProperStock(0L);
+
+        //json
+        goodsStock.setGsJson(null);
 
 
         String thumbFilePath1="";

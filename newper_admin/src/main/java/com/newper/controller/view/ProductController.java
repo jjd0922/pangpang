@@ -298,8 +298,17 @@ public class ProductController {
 
         GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsIdx(gsidx);
         Product product = goodsStock.getProduct();
+        String rgb=goodsStock.getGsOption().get("color_name")+":"+goodsStock.getGsOption().get("color_rgb");
+        mav.addObject("rgb", rgb);
 
         List<Map<String, Object>> po = product.getPOption();
+        Map<String, Object> color = product.getPColor();
+        String p_color = "";
+        for (String key : color.keySet()) {
+            p_color+=key+":"+color.get(key)+"/";
+        }
+        String[] pColor = p_color.split("/");
+        mav.addObject("pColor",pColor);
 
         for(int i=0; i<po.size();i++){
             List<String> val = (List)po.get(i).get("values");

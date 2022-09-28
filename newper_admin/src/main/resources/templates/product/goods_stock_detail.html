@@ -49,7 +49,7 @@
                                                       상품코드 <a class="btn btn-sm badge-indigo" onclick="showProductModal()">검색</a>
                                                     </span>
                                                 </span>
-                                                <input type="text" name="P_IDX" class="form-control" th:value="${product?.pIdx}" disabled>
+                                                <input type="text" name="P_IDX" class="form-control" th:value="${product?.pIdx}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -214,7 +214,7 @@
                                                 </span>
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION1" th:disabled="${goodsStock!=null}">
                                                     <option></option>
-                                                    <option th:each="option:${option1}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION1 eq option}"></option>
+                                                    <option th:each="option:${option1}" th:text="${option}" th:selected="${goodsStock?.gsOption.option[0] eq option}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -229,7 +229,7 @@
                                                 </span>
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION2" th:disabled="${goodsStock!=null}">
                                                     <option></option>
-                                                    <option th:each="option:${option2}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION2 eq option}"></option>
+                                                    <option th:each="option:${option2}" th:text="${option}" th:selected="${goodsStock?.gsOption.option[1] eq option}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -244,7 +244,7 @@
                                                 </span>
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="OPTION3" th:disabled="${goodsStock!=null}">
                                                     <option></option>
-                                                    <option th:each="option:${option3}" th:text="${option}" th:selected="${goodsStock?.gsOption.OPTION3 eq option}"></option>
+                                                    <option th:each="option:${option3}" th:text="${option}" th:selected="${goodsStock?.gsOption.option[2] eq option}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -334,7 +334,7 @@
                                                 </span>
                                                 <select data-placeholder="선택" class="form-control select" data-fouc name="GS_COLOR" th:disabled="${goodsStock!=null}">
                                                     <option></option>
-
+                                                    <option th:each="pColor:${pColor}" th:text="${pColor}" th:selected="${rgb eq pColor}"></option>
                                                 </select>
                                             </div>
                                         </div>
