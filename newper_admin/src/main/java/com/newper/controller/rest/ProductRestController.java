@@ -326,22 +326,34 @@ public class ProductRestController {
             return rm;
         }
         System.out.println(paramMap.getMap());
+        String gsColor = paramMap.getString("GS_COLOR");
+        String[] color = gsColor.split(":");
         Map<String, Object> option = new HashMap<>();
-        option.put("OPTION1",paramMap.get("OPTION1"));
-        option.put("OPTION2",paramMap.get("OPTION2"));
-        option.put("OPTION3",paramMap.get("OPTION3"));
+        List<String> optList = new ArrayList<>();
+        optList.add(paramMap.get("OPTION1")+"");
+        optList.add(paramMap.get("OPTION2")+"");
+        optList.add(paramMap.get("OPTION3")+"");
+        option.put("option",optList);
+        if(color.length>1){
+            option.put("color_name",color[0]);
+            option.put("color_rgb",color[1]);
+        }else{
+            option.put("color_name","");
+            option.put("color_rgb","");
+        }
+
 
         paramMap.put("GS_OPTION", option);
         paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE", paramMap.get("GS_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE_CANCEL", paramMap.get("GS_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
         System.out.println(paramMap.getMap());
-//        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
-//        if(res>0){
-//            rm.setMessage("저장되었습니다.");
-//        }else{
-//            rm.setMessage("잠시후 시도 해주세요.");
-//        }
+        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }else{
+            rm.setMessage("잠시후 시도 해주세요.");
+        }
         return rm;
     }
 
