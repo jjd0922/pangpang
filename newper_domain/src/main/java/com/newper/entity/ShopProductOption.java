@@ -27,6 +27,8 @@ public class ShopProductOption {
     @JoinColumn(name="SPO_GS_IDX", referencedColumnName = "gsIdx")
     private GoodsStock goodsStock;
 
+    @Builder.Default
+    private int spoDepth = 1;
     private String spoName;
 
     private Integer spoPrice;
