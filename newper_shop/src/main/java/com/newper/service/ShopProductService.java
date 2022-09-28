@@ -79,16 +79,50 @@ public class ShopProductService {
             }
         }
 
-        System.out.println("확인!!!!!");
         //dtoMap에 필수 옵션들이 포함 되어 있는지 확인
+        //sp 단위로 확인
         for (ShopProduct shopProduct : dtoMap.keySet()) {
-            shopProduct.getShopProductAddList();
+            List<ShopProductAdd> shopProductAddList = shopProduct.getShopProductAddList();
+
+            //옵션 자리별 있어야하는 . key spaIdx_depth, value spo Idx list
+            Map<String,Set<Long>> spaReqMap = new HashMap<>();
+            //reqSpoList 세팅
+            for (ShopProductAdd shopProductAdd : shopProductAddList) {
+                if(shopProductAdd.isSpaRequired()){
+                    //key spoDepth, value spo idx
+                    //spo depth별 필요한 spo idx 목록 세팅
+                    for (ShopProductOption spo : shopProductAdd.getShopProductOptionList()) {
+                        String spaReqMap_key = shopProductAdd.getSpaIdx() + "_" + spo.getSpoDepth();
+                        Set<Long> spoIdxs = spaReqMap.get(spaReqMap_key);
+                        if (spoIdxs == null) {
+                            spoIdxs = new HashSet<>();
+                            spaReqMap.put(spaReqMap_key, spoIdxs);
+                        }
+                        spoIdxs.add(spo.getSpoIdx());
+                    }
+                }
+            }
+
+            //필수 옵션 있는지 체크
+                System.out.println("spa_depth");
+            boolean spCheck = false;
+            //결제하는 옵션 반복
+            spoCheck : for (OrdersSpoDTO ordersSpoDTO : dtoMap.get(shopProduct)) {
+                //옵션 중 하나라도 필수값 옵션 조건 만족하는지 체크
+                for (Set<Long> spoIdxs : spaReqMap.values()) {
+                    if(!ordersSpoDTO.hasSpo(spoIdxs)){
+                        continue spoCheck;
+                    }
+                }
+                //continue로 가지 않고 모든 필수 옵션 가지고 있는 경우
+                spCheck = true;
+            }
+
+            if(!spCheck){
+                throw new MsgException( shopProduct.getSpName() +" / 필수 상품이 누락되었습니다");
+            }
         }
-//                throw new MsgException( spa.getShopProduct().getSpName() +" / 필수 상품이 누락되었습니다");
 
-        //상품 재고 체크
-
-
-        return null;
+        return dtoMap;
     }
 }
