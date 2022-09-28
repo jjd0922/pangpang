@@ -73,6 +73,8 @@ public class GoodsStock extends BaseEntity {
     private int gsDelPrice;
     private int gsDelPriceCancel;
     @Builder.Default
+    private Map<String,Object> gsNaver = new HashMap<>();
+    @Builder.Default
     private Map<String,Object> gsJson = new HashMap<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)

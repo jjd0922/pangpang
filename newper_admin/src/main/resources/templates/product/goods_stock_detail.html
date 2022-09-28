@@ -679,8 +679,105 @@
                                 </div>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset class="mb-0">
-                            <legend class="">5.재고 상품 SPEC<span class="small ml-2"></span></legend>
+                            <legend class="">5.네이버연동정보<span class="small ml-2"></span> <a class="btn btn-sm badge-indigo legitRipple" onclick="naverPrice()">연동</a></legend>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 지식쇼핑 최저가</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER1" class="form-control text-right" th:value="${goodsStock?.gsNaver?.GS_NAVER1}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 가격비교API 호출여부</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER2" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER2}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">N:미체크, Y:추천, S:동일스펙, M:동일모델</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER3" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER3}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 가격비교 API 호출시간</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER4" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER4}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 가격비교 API 이미지경로</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER5" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER5}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 가격비교 API 타이틀</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER6" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER6}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">입점시스템 네이버URL 입력여부</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER7" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER7}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버 가격비교 검색어</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER8" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER8}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">네이버쇼핑 연동 여부 (스마트스토어 등록 여부)</span>
+                                            </span>
+                                            <input type="text" name="GS_NAVER9" class="form-control" th:value="${goodsStock?.gsNaver?.GS_NAVER9}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <br>
+                        <fieldset class="mb-0">
+                            <legend class="">6.재고 상품 SPEC<span class="small ml-2"></span></legend>
                             <div class="row">
                                 <!-- 입력필드 -->
                                 <table class="table table-bordered table-sm">
@@ -871,6 +968,31 @@
             })
         }
     }
+    function naverPrice(){
+        var pIdx = $('input[name="P_IDX"]').val();
+        if(pIdx==''){
+            alert("상품을 선택해주세요.");
+            return false;
+        }
+
+        $.ajax({
+            url:'/product/naver.ajax',
+            type: 'POST',
+            data:'P_IDX='+pIdx,
+            success:function(res){
+                $('input[name="GS_NAVER1"]').val(res.data.GS_NAVER1);
+                $('input[name="GS_NAVER2"]').val(res.data.GS_NAVER2);
+                $('input[name="GS_NAVER3"]').val(res.data.GS_NAVER3);
+                $('input[name="GS_NAVER4"]').val(res.data.GS_NAVER4);
+                $('input[name="GS_NAVER5"]').val(res.data.GS_NAVER5);
+                $('input[name="GS_NAVER6"]').val(res.data.GS_NAVER6);
+                $('input[name="GS_NAVER7"]').val(res.data.GS_NAVER7);
+                $('input[name="GS_NAVER8"]').val(res.data.GS_NAVER8);
+                $('input[name="GS_NAVER9"]').val(res.data.GS_NAVER9);
+            }
+        })
+    }
+
 </script>
 <script th:inline="javascript">
     window.onload=function(){

@@ -123,7 +123,7 @@ public class Product extends BaseEntity {
      * {title : title, values :["opt1", "opt2"]}
      * </pre> */
     private List<Map<String,Object>> pOption = new ArrayList<>();
-    private Map<String,Object> pNaver = new HashMap<>();
+
 
 
     @PrePersist
