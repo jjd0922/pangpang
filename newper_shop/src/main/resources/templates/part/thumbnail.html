@@ -1,8 +1,8 @@
 <!--썸네일 세로형 -->
-<th:block th:fragment="thumbnail-default">
+<th:block th:fragment="thumbnail-default(shopProduct)">
     <div class="thumbnail">
         <div class="item-img">
-            <a href="javascript:;">
+            <a th:href="@{|/shopProduct/${shopProduct?.spIdx}|}">
                 <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
             </a>
         </div>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="buy-count color-blue">판매수 37</div>
             </div>
-            <div class="item-title"><a href="javascript:;">썸네일 기본형태 : 삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
+            <div class="item-title"><a th:href="@{|/shopProduct/${shopProduct?.spIdx}|}" th:text="${shopProduct?.spName}">썸네일 기본형태 : 삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
             <div class="item-color">
                 <span><span></span></span>
                 <span><span></span></span>
@@ -23,7 +23,7 @@
             </div>
             <div class="item-inner-wrap">
                 <div class="item-price">
-                    <p><span class="discount-price">359,000</span>원<span class="real-price">897,000</span></p>
+                    <p><span class="discount-price" th:text="${#numbers.formatInteger(shopProduct?.spMinPrice,0,'COMMA')}">359,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(shopProduct?.spMaxPrice,0,'COMMA')}">897,000</span></p>
                 </div>
                 <div class="discount-rate">57%</div>
             </div>
@@ -49,7 +49,7 @@
         <p>남은수량</p>
         <span>1개</span>
     </div>
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!--썸네일 세로형 + 베스트 아이콘 -->
@@ -58,7 +58,7 @@
     <!-- 11위부터 <i>태그 클래스명 best-down
     <i class="best-down"><span>01</span></i>
     -->
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!--썸네일 가로형 -->
@@ -200,7 +200,7 @@
 
 <!-- 품절임박 썸네일2 -->
 <th:block th:fragment="thumbnail-lastSecond2">
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!-- 신상입고 - 이벤트 썸네일 -->

@@ -13,7 +13,7 @@ public interface MainSectionMapper {
     Map<String,Object> countMainSectionDatatable(Map<String, Object> map);
 
     /** mainsection 상품일 경우 상세조회*/
-    List<Map<String,Object>> selectMainSectionShopProductByMsIdx(Long msIdx);
+    List<Map<String,Object>> selectMainSectionShopProductByMsIdx(@Param("msIdx") Long msIdx);
 
     /** mainsection 상품 등록*/
     void insertMainSectionSp(Map<String, Object> map);
