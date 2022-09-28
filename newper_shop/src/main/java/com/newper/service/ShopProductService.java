@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,47 +44,47 @@ public class ShopProductService {
 
         return shopProduct;
     }
-    /** 주문 결제 페이지에서 보여질 상품 정보 조회. key (spo{idx}_{idx}) : value (수량) */
+    /** 주문 결제 페이지에서 보여질 상품 정보 조회. key shopProduct : : value (spo dto List (옵션 별)) */
     @Transactional(readOnly = true)
-    public List<OrdersSpoDTO> selectOrdersInfo(ParamMap paramMap){
+    public Map<ShopProduct, List<OrdersSpoDTO>> selectOrdersInfo(ParamMap paramMap){
+        Map<ShopProduct, List<OrdersSpoDTO>> dtoMap = new LinkedHashMap<>();
 
-        List<ShopProductOption> spoList = new ArrayList<>();
-
-        Set<Long> spaIncluded = new HashSet<>();
-        Set<ShopProductAdd> spaRequired = new HashSet<>();
+        //dtoMap 세팅
         for (String key : paramMap.keySet()) {
+            //spo{idx} or 결합상품은 spo{idx}_{idx}
             if (key.indexOf("spo") == 0) {
-
                 String[] spos = key.substring(3).split("_");
+
+                ShopProduct shopProduct = null;
+                OrdersSpoDTO dto = OrdersSpoDTO.builder()
+                        .val(key)
+                        .cnt(paramMap.getInt(key))
+                        .build();
+
                 for (String spo_str : spos) {
-
                     ShopProductOption spo = shopProductOptionRepo.findSpaBySpoIdx(Long.parseLong(spo_str));
-                    spoList.add(spo);
+                    dto.addShopProductOption(spo);
 
-                    //현재 spaIdx 기록
-                    ShopProductAdd spa = spo.getShopProductAdd();
-                    spaIncluded.add(spa.getSpaIdx());
-
-                    List<ShopProductAdd> shopProductAddList = spa.getShopProduct().getShopProductAddList();
-                    //필수 상품 체크해야하는 spa_idx 추가. 아래에서 반복문으로 필수 상품 들어왔는지 확인
-                    for (ShopProductAdd shopProductAdd : shopProductAddList) {
-                        if(shopProductAdd.isSpaRequired()){
-                            spaRequired.add(shopProductAdd);
-
-
-                        }
+                    if (shopProduct == null) {
+                        shopProduct = spo.getShopProductAdd().getShopProduct();
                     }
-
                 }
+
+                List<OrdersSpoDTO> dtoList = dtoMap.get(shopProduct);
+                if (dtoList == null) {
+                    dtoList = new ArrayList<>();
+                    dtoMap.put(shopProduct, dtoList);
+                }
+                dtoList.add(dto);
             }
         }
 
-        //필수 spa_idx 포함 되어 있는지 확인
-        for (ShopProductAdd spa : spaRequired) {
-            if(!spaIncluded.contains(spa.getSpaIdx())){
-                throw new MsgException( spa.getShopProduct().getSpName() +" / 필수 상품이 누락되었습니다");
-            }
+        System.out.println("확인!!!!!");
+        //dtoMap에 필수 옵션들이 포함 되어 있는지 확인
+        for (ShopProduct shopProduct : dtoMap.keySet()) {
+            shopProduct.getShopProductAddList();
         }
+//                throw new MsgException( spa.getShopProduct().getSpName() +" / 필수 상품이 누락되었습니다");
 
         //상품 재고 체크
 

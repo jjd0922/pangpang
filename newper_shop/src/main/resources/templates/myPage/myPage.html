@@ -18,28 +18,27 @@
 <th:block th:replace="part/modal :: common-modal"></th:block>
 
 <!--페이지 타이틀-->
-<section th:insert="part/title :: pageTitle('마이쇼핑정보','')" class="padding-section page-title-padding"></section>
+<section th:insert="part/title :: pageTitle_main('마이쇼핑정보')" class="padding-section page-title-padding"></section>
 
 <!-- 마이 쇼핑 상단 공통 헤더 -->
-<section class="halfbottom-padding-section">
-    <div id="myPageMenu-header">
-        <div class="container">
-            <div class="myPage-header-wrap">
-                <ul class="myPage-header">
-                    <li class="myGrade-wrap semi-bold">
-                        <div>
-                            <p class="font-xsm">
-                                <span class="bold myName">홍길동님</span><span>&nbsp;의 회원등급은&nbsp;</span>
-                                <!-- 일반회원 -->
-                                <span class="myGrade grade-normal font-lg"><i></i><span>일반</span></span>
-                                <!-- 스페셜회원
-                                <span class="myGrade grade-special font-lg"><i></i><span>스페셜</span></span> -->
-                                <!-- 플래티넘회원
-                                <span class="myGrade grade-platinum font-lg"><i></i><span>플래티넘</span></span>-->
-                                <!-- VIP회원
-                                <span class="myGrade grade-vip font-lg"><i></i><span>VIP</span></span> -->
-                                <!-- VVIP회원
-                                <span class="myGrade grade-vvip font-lg"><i></i><span>VVIP</span></span> -->
+<section id="myPageMenu-header" class="padding-section">
+    <div class="container">
+        <div class="myPage-header-wrap">
+            <ul class="myPage-header">
+                <li class="myGrade-wrap semi-bold">
+                    <div>
+                        <p class="font-xsm">
+                            <span class="bold myName">홍길동님</span><span>&nbsp;의 회원등급은&nbsp;</span>
+                            <!-- 일반회원 -->
+                            <span class="myGrade grade-normal font-lg"><i></i><span>일반</span></span>
+                            <!-- 스페셜회원
+                            <span class="myGrade grade-special font-lg"><i></i><span>스페셜</span></span> -->
+                            <!-- 플래티넘회원
+                            <span class="myGrade grade-platinum font-lg"><i></i><span>플래티넘</span></span>-->
+                            <!-- VIP회원
+                            <span class="myGrade grade-vip font-lg"><i></i><span>VIP</span></span> -->
+                            <!-- VVIP회원
+                            <span class="myGrade grade-vvip font-lg"><i></i><span>VVIP</span></span> -->
 
                             <span>입니다.</span>
                         </p>
@@ -75,17 +74,23 @@
                     </div>
                 </li>
             </ul>
-            <!-- 탭 메뉴 -->
-            <ul class="my-menu-tab" id="myShoppingTabMenu">
-                <li onclick="openMenu('myOrder')" id="myOrder"><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
-                <li onclick="openMenu('myGift')" id="myGift"><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
-                <li onclick="openMenu('myAlarm')" id="myAlarm"><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
-                <li onclick="openMenu('myList')" id="myList"><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
-                <li onclick="openMenu('myInfo')" id="myInfo"><i class="my-tab-icon5"></i>회원정보관리</li>
-            </ul>
         </div>
     </div>
 </section>
+
+<section class="padding-section padding-menu">
+    <div class="container">
+        <!-- 탭 메뉴 -->
+        <ul class="my-menu-tab" id="myShoppingTabMenu">
+            <li onclick="openMenu('myOrder')" id="myOrder"><i class="my-tab-icon1"></i>나의 쇼핑내역</li>
+            <li onclick="openMenu('myGift')" id="myGift"><i class="my-tab-icon2"></i>쿠폰·적립금·상품권</li>
+            <li onclick="openMenu('myAlarm')" id="myAlarm"><i class="my-tab-icon3"></i>관심상품·재입고알림</li>
+            <li onclick="openMenu('myList')" id="myList"><i class="my-tab-icon4"></i>리뷰·문의내역·이벤트응모</li>
+            <li onclick="openMenu('myInfo')" id="myInfo"><i class="my-tab-icon5"></i>회원정보관리</li>
+        </ul>
+    </div>
+</section>
+
 
 <!-- 페이지 상단 5개 탭 클릭 시 보여지는 내용 -->
 <section id="myPageMenu">
@@ -173,7 +178,7 @@
                         <!-- 주문일자 -->
                         <li class="flex-column order-date">
                             <p class="bold">2022-08-10</p>
-                            <div class="color-halfbottom-padding-section999 table-order-num">
+                            <div class="table-order-num">
                                 <p>주문번호</p>
                                 <p>16616564654535</p>
                             </div>
@@ -183,7 +188,7 @@
                             <div class="order-item-thumb">
                                 <a href="javascript:;">
                                     <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                    <p class="font-xsm color-halfbottom-padding-section999">001762984</p>
+                                    <p class="font-xsm">001762984</p>
                                 </a>
                             </div>
                             <div class="order-item-info-wrap">
@@ -223,7 +228,7 @@
                             <p>배송완료</p>
                             <div>
                                 <p>CJ 대한통운</p>
-                                <p class="color-halfbottom-padding-section999">5612121212135</p>
+                                <p class="">5612121212135</p>
                             </div> -->
                         </li>
                         <!-- 상세조회 -->

@@ -14,7 +14,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -73,6 +75,12 @@ public class Orders {
     private LocalTime oTime;
 
     private String oMemo;
+
+    /**<pre>
+     * spo : { spoIdx_spoIdx:cnt ...}
+     * </pre>*/
+    @Builder.Default
+    private Map<String,Object> oJson = new HashMap<>();
 
     @OneToMany(mappedBy = "ogIdx", cascade = CascadeType.ALL)
     private List<OrderGs> orderGs;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,9 +45,23 @@ public class ShopProductController {
         mav.addObject("scate", categoryMapper.selectShopCategoryBySp(spIdx));
 
         List<Map<String, Object>> spoList = shopProductMapper.selectShopProductOptionList(shopProduct.getSpIdx());
-        //key spa_idx
+
+
+        // key :spa_idx, value:  spo list
         Map<Object, List<Map<String, Object>>> spa_spo = spoList.stream().collect(Collectors.groupingBy(map -> map.get("SPO_SPA_IDX")));
         mav.addObject("spoMap", spa_spo);
+        // key :spa_idx, value:  max spoDepth
+        Map<Object, Integer> spa_spo_max = new HashMap<>();
+        for (Map<String, Object> spoMap : spoList) {
+            Object spo_spa_idx = spoMap.get("SPO_SPA_IDX");
+            Integer depth = spa_spo_max.get(spo_spa_idx);
+            if (depth == null) {
+                depth = 1;
+            }
+            depth = Math.max(depth, Integer.parseInt(spoMap.get("SPO_DEPTH") + ""));
+            spa_spo_max.put(spo_spa_idx, depth);
+        }
+        mav.addObject("spoMax", spa_spo_max);
 
         return mav;
     }
