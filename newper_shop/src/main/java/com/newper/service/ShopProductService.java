@@ -66,7 +66,9 @@ public class ShopProductService {
                     dto.addShopProductOption(spo);
 
                     if (shopProduct == null) {
-                        shopProduct = spo.getShopProductAdd().getShopProduct();
+                        ShopProductAdd spa = spo.getShopProductAdd();
+                        dto.setReq(spa.isSpaRequired());
+                        shopProduct = spa.getShopProduct();
                     }
                 }
 
@@ -106,7 +108,8 @@ public class ShopProductService {
             //필수 옵션 있는지 체크
             boolean spCheck = false;
             //결제하는 옵션 반복
-            spoCheck : for (OrdersSpoDTO ordersSpoDTO : dtoMap.get(shopProduct)) {
+            List<OrdersSpoDTO> dtoList = dtoMap.get(shopProduct);
+            spoCheck : for (OrdersSpoDTO ordersSpoDTO : dtoList) {
                 //옵션 중 하나라도 필수값 옵션 조건 만족하는지 체크
                 for (Set<Long> spoIdxs : spaReqMap.values()) {
                     if(!ordersSpoDTO.hasSpo(spoIdxs)){
@@ -115,11 +118,27 @@ public class ShopProductService {
                 }
                 //continue로 가지 않고 모든 필수 옵션 가지고 있는 경우
                 spCheck = true;
+                break spoCheck;
             }
-
             if(!spCheck){
                 throw new MsgException( shopProduct.getSpName() +" / 필수 상품이 누락되었습니다");
             }
+
+            for (OrdersSpoDTO ordersSpoDTO : dtoList) {
+                System.out.println(ordersSpoDTO.getName());
+            }
+
+            //필수옵션 위로 오도록 정렬
+            dtoList.sort((o1, o2) -> {
+                if(!o1.isReq() && o2.isReq()){
+                    return 1;
+                }else if(o1.isReq() && !o2.isReq()) {
+                    return -1;
+                }else{
+                    return 0;
+                }
+            });
+
         }
 
         return dtoMap;

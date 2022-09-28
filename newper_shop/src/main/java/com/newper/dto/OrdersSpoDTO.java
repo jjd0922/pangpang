@@ -21,7 +21,10 @@ public class OrdersSpoDTO {
     /** spo{idx}_{idx}*/
     private String val;
     private int cnt;
-    private int price;
+    /** 순서 정렬용으로 사용 예정*/
+    private boolean req;
+    @Builder.Default
+    private int price = 0;
 
     @Builder.Default
     private List<ShopProductOption> spoList = new ArrayList<>();
@@ -29,6 +32,7 @@ public class OrdersSpoDTO {
     /** add spo*/
     public void addShopProductOption(ShopProductOption spo){
         spoList.add(spo);
+        price += spo.getSpoPrice();
     }
 
     /** 해당 spo idx를 옵션으로 가지고 있는지 체크 (결합상품, 종속옵션)*/
