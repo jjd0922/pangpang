@@ -2838,6 +2838,7 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
 }
 .fixed-buy-title h2 {
     font-size: 24px;
@@ -2854,13 +2855,100 @@ section {
 }
 .fixed-buy-option {
     border-top: 1px solid #999;
-    display: flex;
     padding: 15px 0;
+    display: none;
+}
+.fixed-buy-option.on {
+    display: flex;
 }
 .fixed-buy-option>* {
     flex: 1;
 }
-
+.fixed-buy-option>ul>li {
+    padding: 5px 0;
+}
+.fixed-buy-option label {
+    color: #666c7f;
+    font-size: 18px;
+    width: 115px;
+    display: inline-block;
+}
+.fixed-buy-option select {
+    width: 430px;
+}
+.fixed-buy-option>div>div {
+    border-top: 1px solid #333;
+    padding: 10px 0;
+}
+.fixed-buy-option>div>div>p {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.fixed-buy-option>div>div>p>span {
+    margin-left: 25px;
+}
+.selected-option {
+    padding: 10px 0;
+}
+.selected-option>li {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.selected-option .option-close {
+    position: static;
+}
+.selected-option-title {
+    width: 360px;
+    color: #666;
+}
+.selected-option-price {
+    width: 110px;
+    text-align: end;
+}
+.fixed-buy-bot {
+    display: flex;
+    justify-content: end;
+}
+.fixed-buy-bot>div {
+    width: calc((100% - 135px) / 2);
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: absolute;
+    bottom: 25px;
+    right: 0;
+}
+.fixed-buy-bot>div.on {
+    justify-content: space-between;
+    position: static;
+    padding-bottom: 25px;
+}
+.fixed-buy-bot .heart {
+    width: 33px;
+    height: 33px;;
+    margin-left: 0;
+}
+.fixed-buy .close {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+.fixed-buy .close.on {
+    display: block;
+}
+.fixed-cart-btn {
+    display: none
+}
+.fixed-cart-btn.on {
+    display: block;
+}
 
 
 @media (max-width:991px) {
