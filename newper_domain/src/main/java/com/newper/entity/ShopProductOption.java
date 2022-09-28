@@ -33,9 +33,6 @@ public class ShopProductOption {
 
     private Integer spoPrice;
 
-    @Builder.Default
-    private int spoCount = 1;
-
     @PrePersist
     @PreUpdate
     public void spoSave(){
