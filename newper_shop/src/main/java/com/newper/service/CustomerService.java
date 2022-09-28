@@ -89,17 +89,12 @@ public class CustomerService {
     /**회원가입*/
     @Transactional
     public void join (ParamMap paramMap) {
+        // 아이디 중복 확인
         boolean isIdExist = customerRepo.existsByCuId(paramMap.getString("cuId"));
         if (isIdExist == true) {
             throw new MsgException("이미 사용중인 아이디입니다.");
         }
-        if (StringUtils.hasText(paramMap.getString("cuRecommender"))) {
-            boolean isRecommenderExist = customerRepo.existsByCuId(paramMap.getString("cuRecommender"));
-            if (!isRecommenderExist) {
-                System.out.println("asdfasf");
-                throw new MsgException("추천인 아이디를 확인해주세요.");
-            }
-        }
+        // 본인인증 응답값 가져오고 그 응답이 이미 사용되었는지 확인
         AesEncrypt ae = new AesEncrypt();
         SelfAuth selfAuth = selfAuthRepo.findLockBySaIdx(Long.parseLong(ae.decryptRandom(paramMap.getString("saIdx"))));
         shopSession.setSaIdx("");
@@ -107,10 +102,19 @@ public class CustomerService {
         if (selfAuth.isSaUsed()) {
             throw new MsgException("본인인증 오류"); // 문구.. 뭐지
         }
-
+        // customer entity set
         Customer customer = paramMap.mapParam(Customer.class);
         customer.join(selfAuth.getSaRes());
         customer.setShop(shopRepo.getReferenceById(shopSession.getShopIdx()));
+        if (StringUtils.hasText(paramMap.getString("cuRecommender"))) {
+            boolean isRecommenderExist = customerRepo.existsByCuId(paramMap.getString("cuRecommender"));
+            if (!isRecommenderExist) {
+                System.out.println("asdfasf");
+                throw new MsgException("추천인 아이디를 확인해주세요.");
+            } else {
+                customer.setCuRecommender(paramMap.getString("cuRecommender"));
+            }
+        }
         customerRepo.save(customer);
         selfAuth.setSaUsed(true);
     }
