@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.MsType;
+import com.newper.constant.etc.MsJson;
 import com.newper.dto.ParamMap;
 import com.newper.entity.MainSection;
 import com.newper.entity.MainSectionBanner;
@@ -73,7 +74,7 @@ public class MainsectionService {
                 for(int i=0;i<paramKeys.length;i++){
                     key = paramKeys[i];
                     for(int k=0;k<MsType.values().length;k++){
-                        mainSectionDesignKey = String.valueOf(MsType.values()[k]);
+                        mainSectionDesignKey = String.valueOf(MsJson.values()[k]);
                         if(key.equals(mainSectionDesignKey)){
                             msJsonMap.put(key,paramMap.get(key));
                         }
@@ -336,7 +337,7 @@ public class MainsectionService {
                 for(int i=0;i<paramKeys.length;i++){
                     key = paramKeys[i];
                     for(int k=0;k<MsType.values().length;k++){
-                        mainSectionDesignKey = String.valueOf(MsType.values()[k]);
+                        mainSectionDesignKey = String.valueOf(MsJson.values()[k]);
                         if(key.equals(mainSectionDesignKey)){
                             msJsonMap.put(key,paramMap.get(key));
                         }
