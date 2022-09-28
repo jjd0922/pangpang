@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="part/head :: head('회원가입 안내')">
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('회원가입 안내')"></head>
+
 <body th:classappend="${@shopComp.getShopDesign()}">
+    <div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header-join"></th:block>
@@ -51,5 +52,7 @@
         window.open('/customer/auth/naver/request', 'naverLogin', 'width=400, height=600, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
     }
 </script>
+
+    </div>
 </body>
 </html>
