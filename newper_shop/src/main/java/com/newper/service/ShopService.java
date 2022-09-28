@@ -78,6 +78,8 @@ public class ShopService {
                 }
                 for(int k=0;k<mainSectionList.get(i).getMainSectionSps().size();k++){
                     mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
+//                    System.out.println("in~~~");
+//                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct());
 //                    System.out.println(mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName());
                 }
                 if(mainSectionList.get(i).getMsJson() !=null && !mainSectionList.get(i).getMsJson().equals("")){
