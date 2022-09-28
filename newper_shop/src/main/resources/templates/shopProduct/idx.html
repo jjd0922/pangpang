@@ -168,10 +168,12 @@
         <ul class="prod-option font-sm">
           <li th:each="spa : ${sp.shopProductAddList}">
             <label th:text="${spa.spaName}">옵션명</label>
-            <select  th:spa_required="${spa.spaRequired}" onchange="selectSpo(this)">
-              <option value="">옵션 선택</option>
-              <option th:each="spo:${spoMap[__${spa.spaIdx}__]}" th:text="${spo.SPO_NAME}+' / '+${spo.SPO_PRICE_F}" th:value="${spo.SPO_IDX}" th:spo_price="${spo.SPO_PRICE}">옵션선택</option>
-            </select>
+            <th:block th:each="i : ${spa.maxSpoDepth()}">
+              <select  th:spa_required="${spa.spaRequired}" onchange="selectSpo(this)">
+                <option value="">옵션 선택</option>
+                <option th:each="spo:${spoMap[__${spa.spaIdx}__]}" th:text="${spo.SPO_NAME}+' / '+${spo.SPO_PRICE_F}" th:value="${spo.SPO_IDX}" th:spo_price="${spo.SPO_PRICE}">옵션선택</option>
+              </select>
+            </th:block>
           </li>
         </ul>
         <!-- 선택된 옵션가격 -->
