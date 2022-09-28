@@ -6,7 +6,7 @@
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
                 </div>
             </div>
         </li>
@@ -91,6 +91,23 @@
     <div class="btn btn2 semi-bold shopping-btn">
         <a href="javascript:;">AS 신청</a>
     </div>
+
+    <script>
+        function openAsProductModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 
 <!-- 다른 온라인몰 구매제품 AS 접수 -->
@@ -101,7 +118,7 @@
             <div class="table-title">구매처</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">구매처 선택</a>
+                    <a onclick="openAsCompanyModal('otherAsCompanyModal')">구매처 선택</a>
                 </div>
             </div>
         </li>
@@ -162,7 +179,7 @@
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
                 </div>
             </div>
         </li>
@@ -201,6 +218,37 @@
     <div class="btn btn2 semi-bold shopping-btn">
         <a href="javascript:;">AS 신청</a>
     </div>
+
+    <script>
+        function openAsCompanyModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+        function openAsProductModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 
 <!-- AS접수 현황조회 -->
@@ -332,4 +380,16 @@
             $('.receiptDetail-wrap').hide();
         })
     </script>
+</th:block>
+
+<th:block th:fragment="asProductModal">
+ 상품 선택 모달창!
+    <br>
+    <button onclick="alert('준비중!')">선택완료</button>
+</th:block>
+
+<th:block th:fragment="otherAsCompanyModal">
+    구매처 선택 모달창!
+    <br>
+    <button onclick="alert('준비중!')">선택완료</button>
 </th:block>
