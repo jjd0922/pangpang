@@ -115,6 +115,11 @@ public class DesignController {
             }else if(msType.equals(MsType.PRODUCT.name())){
                 List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(msIdx);
                 mav.addObject("mainSectionSps", mainSectionSps);
+            }else if(msType.equals(MsType.BOTH.name())){
+                List<MainSectionBanner> mainSectionBanners = mainSectionBannerRepo.findByMainSection_msIdxOrderByMsbnOrder(msIdx);
+                mav.addObject("mainSectionBanners", mainSectionBanners);
+                List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(msIdx);
+                mav.addObject("mainSectionSps", mainSectionSps);
             }
         }
 

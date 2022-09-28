@@ -13,6 +13,7 @@
                 </table>
                 <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                     <div class="btn-group">
+                        <input type="hidden" name="index">
                         <a class="btn btn-sm btn-primary" onclick="selectAllProduct()">일괄추가</a>
                     </div>
                 </div>
@@ -22,9 +23,10 @@
 </div>
 
 <script th:inline="javascript">
-    function openBannerShopProductModal(obj){
+    function openBannerShopProductModal(index){
         var shopIdx = $('input[name="shopIdx"]').val();
 
+        $('input[name="index"]').val(index);
         $('#bannerShopProductModal').modal('show');
 
         initShopProductModalTable(shopIdx);
@@ -35,19 +37,24 @@
         var spState = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_STATE');
         var spName = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_NAME');
 
+        var index = $('input[name="index"]').val();
         if(spIdx.length == 0){
             alert('선택된 상품이 없습니다.');
             return false;
         }else{
             for(var i=0; i< spIdx.length; i++){
-                if($('input[name="spIdx"][value='+spIdx[i]+']').length > 0){
+                // if($('input[name="spIdx"][value='+spIdx[i]+']').length > 0){
+                if($('input[class="spIdx"][value='+spIdx[i]+']').length > 0){
                 }else{
+                    var no = Number($('#bannerShopProductTbody'+index).find($('input[name="spIdx"]')).length) + 1;
+
                     var tr='<tr>';
+                    tr+='<td>'+no+'</td>';
                     tr+='<td>'+spState[i]+'</td>';
-                    tr+='<td><input type="hidden" name="spIdx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
-                    tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+spIdx[i]+')">삭제</a></td>';
+                    tr+='<td><input type="hidden" class="spIdx" name="spIdx'+index+'" value="'+spIdx[i]+'">'+spName[i]+'</td>';
+                    tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteBannerShopProduct('+spIdx[i]+')">삭제</a></td>';
                     tr+='</tr>'
-                    $('.bannerShopProductTbody').append(tr);
+                    $('#bannerShopProductTbody'+index).append(tr);
                 }
             }
         }
@@ -55,23 +62,25 @@
         $('#bannerShopProductModal').modal('hide');
     }
 
-
-
     // 추가버튼
     function chooseShopProduct(id, rowIdx){
         var dataMap=getDatatablemap(id, rowIdx);
+        var index = $('input[name="index"]').val();
 
-        if($('input[name=spIdx][value='+dataMap.SP_IDX+']').length>0){
+        // if($('input[name=spIdx][value='+dataMap.SP_IDX+']').length>0){
+        if($('input[class=spIdx][value='+dataMap.SP_IDX+']').length>0){
             alert('이미 추가된 상품 입니다');
             return;
         }
+        var no = Number($('#bannerShopProductTbody'+index).find($('input[name="spIdx"]')).length) + 1;
 
         var tr='<tr>';
+        tr+='<td>'+no+'</td>';
         tr+='<td>'+dataMap.SP_STATE+'</td>';
-        tr+='<td><input type="hidden" name="spIdx" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
-        tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';
+        tr+='<td><input type="hidden" class="spIdx" name="spIdx'+index+'" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
+        tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteBannerShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';
         tr+='</tr>'
-        $('.bannerShopProductTbody').append(tr);
+        $('#bannerShopProductTbody'+index).append(tr);
         $('#bannerShopProductModal').modal('hide');
     }
 </script>
@@ -110,8 +119,8 @@
                 ,{'title':'상품 상태','data':'SP_STATE', 'defaultContent':''}
                 ,{'title':'상품명','data':'SP_NAME', 'defaultContent':''}
                 ,{'title':'','render':function(data,type,full,meta){
-                        return '<a class="btn btn-primary btn-sm" onclick="chooseShopProduct(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
-                    }}
+                    return '<a class="btn btn-primary btn-sm" onclick="chooseShopProduct(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
+                }}
             ]
         });
     }

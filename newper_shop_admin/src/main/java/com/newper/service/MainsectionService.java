@@ -28,6 +28,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MainsectionService {
     private final MainSectionRepo mainSectionRepo;
     private final MainSectionBannerRepo mainSectionBannerRepo;
@@ -47,6 +48,13 @@ public class MainsectionService {
     @Transactional
     public void mainsectionDelete(ParamMap paramMap) {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
+        for(int i=0; i<mainSection.getMainSectionBanners().size();i++){
+            mainSection.getMainSectionBanners().get(i).getMsbnIdx();
+            mainSectionBannerRepo.deleteById(mainSection.getMainSectionBanners().get(i).getMsbnIdx());
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("msspMsIdx", String.valueOf(mainSection.getMsIdx()));
+        mainsectionMapper.deleteMainSectionSp(map);
         mainSectionRepo.delete(mainSection);
     }
 
@@ -89,13 +97,13 @@ public class MainsectionService {
 
 
         // 배너 제거
+        List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
         mainSection.setMainSectionBanners(new ArrayList<>());
         // 상품 제거
         Map<String,Object> msspMap = new HashMap<>();
         msspMap.put("msspMsIdx", mainSection.getMsIdx());
         mainsectionMapper.deleteMainSectionSp(msspMap);
         if(mainSection.getMsType().equals(MsType.BANNER)){
-            List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
             List<String> msbnOrders = paramMap.getList("msbnOrder");
             List<MultipartFile> msbnWebFiles = mfRequest.getFiles("msbnWebFile");
             List<MultipartFile> msbnMobileFiles = mfRequest.getFiles("msbnMobileFile");
@@ -197,6 +205,94 @@ public class MainsectionService {
                     mainsectionMapper.deleteMainSectionSp(msspMap);
                 }
             }
+        }else if(mainSection.getMsType().equals(MsType.BOTH)){
+            List<String> msbnOrders = paramMap.getList("msbnOrder");
+            List<String> msbnUrls = paramMap.getList("msbnUrl");
+            int bannerSize = Math.max(mainSectionBanners.size(), msbnOrders.size()); // 현재 고정 6
+            // 배너 행
+            for(int i=0;i<bannerSize;i++){
+                String webFile="";
+                String webFileName="";
+                String mobileFile ="";
+                String mobileFileName ="";
+                String bannerWebFile = "msbnWebFile"+(i+1);
+                String bannerMobileFile = "msbnMobileFile"+(i+1);
+
+                // 노출순서
+                int order = i+1;
+                if(!msbnOrders.get(i).equals("") && msbnOrders.get(i) != null){
+                    order = Integer.parseInt(msbnOrders.get(i));
+                }
+                // update
+                MainSectionBanner msbn = mainSectionBanners.get(i);
+                msbn.setMsbnOrder(order);
+                msbn.setMsbnUrl(msbnUrls.get(i));
+
+                if(mfRequest.getFile(bannerWebFile).isEmpty()){
+                    msbn.setMsbnWebFile(msbn.getMsbnWebFile());
+                    msbn.setMsbnWebFile(msbn.getMsbnWebFileName());
+                }else{
+                    webFile = Common.uploadFilePath(mfRequest.getFile(bannerWebFile), "mainsection/banner/web/", AdminBucket.OPEN);
+                    webFileName = mfRequest.getFile(bannerWebFile).getOriginalFilename();
+
+                    msbn.setMsbnWebFile(webFile);
+                    msbn.setMsbnWebFileName(webFileName);
+                }
+                if(mfRequest.getFile(bannerMobileFile).isEmpty()){
+                    msbn.setMsbnWebFile(msbn.getMsbnMobileFile());
+                    msbn.setMsbnWebFile(msbn.getMsbnMobileFileName());
+                }else{
+                    mobileFile = Common.uploadFilePath(mfRequest.getFile(bannerMobileFile), "mainsection/banner/mobile/", AdminBucket.OPEN);
+                    mobileFileName = mfRequest.getFile(bannerMobileFile).getOriginalFilename();
+
+                    msbn.setMsbnMobileFile(mobileFile);
+                    msbn.setMsbnMobileFileName(mobileFileName);
+                }
+
+                // 상품
+                Map<String,Object> shopBannerSearchMap = new HashMap<>();
+                shopBannerSearchMap.put("msIdx", mainSection.getMsIdx());
+                shopBannerSearchMap.put("msspOrder", (i+1)+"");
+                List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionBannerShopProductByMsIdx(shopBannerSearchMap);
+                List<String> msspSpIdxs = paramMap.getList("spIdx"+(i+1));
+                List<String> msspOrders = paramMap.getList("msspOrder");
+
+                paramMap.printEntrySet();
+
+                int productSize = Math.max(mainSectionSps.size(), msspSpIdxs.size());
+                for(int k=0;k<productSize;k++){
+                    System.out.println("in~~~~~");
+                    if(mainSectionSps.size() > k){
+                        if(msspSpIdxs.size() > k){
+                            Map<String,Object> map = new HashMap<>();
+                            // update
+                            System.out.println("update in~~~~~~~");
+                            Map<String,Object> mssp = mainSectionSps.get(k);
+                            map.put("msspOrder", ((i+1)*100)+1);
+                            map.put("msspMsIdx", mssp.get("MSSP_MS_IDX"));
+                            map.put("msspSpIdx", mssp.get("MSSP_SP_IDX"));
+                            mainsectionMapper.updateMainSectionSp(map);
+                        }else{
+                            System.out.println("insert in~~~~~~~");
+                            //insert
+                            List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
+                            ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("msspOrder", ((i+1)*100)+1);
+                            map.put("msspMsIdx", mainSection.getMsIdx());
+                            map.put("msspSpIdx", shopProduct.getSpIdx());
+                            mainsectionMapper.insertMainSectionSp(map);
+                        }
+                    }else{
+                        //delete
+                        System.out.println("delete in~~~~~~~");
+                        System.out.println(msspSpIdxs.get(k));
+                        List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
+                        msspMap.put("msspSpIdx", msspSpIdxs.get(k));
+                        mainsectionMapper.deleteMainSectionSp(msspMap);
+                    }
+                }
+            }
         }
     }
 
@@ -274,6 +370,48 @@ public class MainsectionService {
                 map.put("msspOrder", msspOrders.get(i));
                 mainsectionMapper.insertMainSectionSp(map);
             }
+        }else if(mainSection.getMsType().equals(MsType.BOTH)){
+            for(int i=0;i<paramMap.getList("msbnOrder").size();i++){
+                String webFile="";
+                String webFileName="";
+                String mobileFile ="";
+                String mobileFileName ="";
+                MainSectionBanner msbn = MainSectionBanner.builder()
+                        .msbnOrder((i+1)*100)
+                        .mainSection(mainSection)
+                        .msbnUrl(paramMap.getList("msbnUrl").get(i)+"")
+                        .build();
+                String bannerWebFile = "msbnWebFile"+(i+1);
+                String bannerMobileFile = "msbnMobileFile"+(i+1);
+                if(!mfRequest.getFile(bannerWebFile).getOriginalFilename().equals("")){
+                    webFile = Common.uploadFilePath(mfRequest.getFile(bannerWebFile), "mainsection/banner/web/", AdminBucket.OPEN);
+                    webFileName = mfRequest.getFile(bannerWebFile).getOriginalFilename();
+                }
+                if(!mfRequest.getFile(bannerMobileFile).getOriginalFilename().equals("")){
+                    mobileFile = Common.uploadFilePath(mfRequest.getFile(bannerMobileFile), "mainsection/banner/mobile/", AdminBucket.OPEN);
+                    mobileFileName = mfRequest.getFile(bannerMobileFile).getOriginalFilename();
+                }
+                msbn.setMsbnWebFile(webFile);
+                msbn.setMsbnWebFileName(webFileName);
+                msbn.setMsbnMobileFile(mobileFile);
+                msbn.setMsbnMobileFileName(mobileFileName);
+                mainSectionBannerRepo.save(msbn);
+
+                List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
+                for(int j=0;j<spIdxs.size(); j++){
+                    ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(j)));
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("msspMsIdx", mainSection.getMsIdx());
+                    map.put("msspSpIdx", shopProduct.getSpIdx());
+                    map.put("msspOrder", ((i+1)*100)+1);
+                    mainsectionMapper.insertMainSectionSp(map);
+                }
+            }
+            System.out.println("in~~~~~~");
+            System.out.println(mainSection.getMsIdx());
+            System.out.println(mainSection.getMainSectionBanners().size());
+            System.out.println(mainSection.getMainSectionSps().size());
+
         }
 
         return mainSection.getMsIdx();
