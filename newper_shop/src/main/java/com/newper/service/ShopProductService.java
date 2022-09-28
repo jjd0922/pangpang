@@ -1,10 +1,12 @@
 package com.newper.service;
 
+import com.newper.dto.OrdersSpoDTO;
 import com.newper.dto.ParamMap;
 import com.newper.entity.ShopProduct;
 import com.newper.entity.ShopProductAdd;
 import com.newper.entity.ShopProductOption;
 import com.newper.exception.MsgException;
+import com.newper.repository.ShopProductAddRepo;
 import com.newper.repository.ShopProductOptionRepo;
 import com.newper.repository.ShopProductRepo;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.Set;
 public class ShopProductService {
 
     private final ShopProductRepo shopProductRepo;
+    private final ShopProductAddRepo shopProductAddRepo;
     private final ShopProductOptionRepo shopProductOptionRepo;
 
     /** 주문상세에서 보여질 분양몰 상품 정보 조회. sessionShopIdx != null인 경우 분양몰 일치하는지도 체크 */
@@ -46,51 +49,49 @@ public class ShopProductService {
     }
     /** 주문 결제 페이지에서 보여질 상품 정보 조회. key (spo{idx}_{idx}) : value (수량) */
     @Transactional(readOnly = true)
-    public void selectOrdersInfo(ParamMap paramMap){
+    public List<OrdersSpoDTO> selectOrdersInfo(ParamMap paramMap){
 
         List<ShopProductOption> spoList = new ArrayList<>();
 
         Set<Long> spaIncluded = new HashSet<>();
-        Set<Long> spaRequired = new HashSet<>();
+        Set<ShopProductAdd> spaRequired = new HashSet<>();
         for (String key : paramMap.keySet()) {
             if (key.indexOf("spo") == 0) {
 
-                System.out.println(key);
-                System.out.println(key.substring(3));
-
                 String[] spos = key.substring(3).split("_");
                 for (String spo_str : spos) {
-                    System.out.print("spo==  ");
-                    System.out.println(spo_str);
 
                     ShopProductOption spo = shopProductOptionRepo.findSpaBySpoIdx(Long.parseLong(spo_str));
                     spoList.add(spo);
 
-                    System.out.println("test!!!");
                     //현재 spaIdx 기록
                     ShopProductAdd spa = spo.getShopProductAdd();
                     spaIncluded.add(spa.getSpaIdx());
-                    //필수 상품 체크해야하는 spa_idx 추가. 아래에서 반복문으로 필수 상품 들어왔는지 확인
+
                     List<ShopProductAdd> shopProductAddList = spa.getShopProduct().getShopProductAddList();
+                    //필수 상품 체크해야하는 spa_idx 추가. 아래에서 반복문으로 필수 상품 들어왔는지 확인
                     for (ShopProductAdd shopProductAdd : shopProductAddList) {
                         if(shopProductAdd.isSpaRequired()){
-                            spaRequired.add(shopProductAdd.getSpaIdx());
+                            spaRequired.add(shopProductAdd);
+
+
                         }
                     }
 
                 }
-
-                System.out.println(paramMap.get(key));
             }
         }
 
         //필수 spa_idx 포함 되어 있는지 확인
-        System.out.println("required!!");
-        for (Long spaIdx : spaRequired) {
-            System.out.println(spaIdx);
-
+        for (ShopProductAdd spa : spaRequired) {
+            if(!spaIncluded.contains(spa.getSpaIdx())){
+                throw new MsgException( spa.getShopProduct().getSpName() +" / 필수 상품이 누락되었습니다");
+            }
         }
 
-        //상품 재고, 필수상품 포함되어있는지 체크 필요
+        //상품 재고 체크
+
+
+        return null;
     }
 }
