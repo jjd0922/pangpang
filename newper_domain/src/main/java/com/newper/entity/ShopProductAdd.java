@@ -28,10 +28,8 @@ public class ShopProductAdd {
     /** 필수 여부*/
     private boolean spaRequired;
 
-    @Builder.Default
-    private int spaCount = 1;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProductAdd", cascade = CascadeType.ALL)
     @OrderBy(value = "spoIdx asc")
     private List<ShopProductOption> shopProductOptionList;
+
 }
