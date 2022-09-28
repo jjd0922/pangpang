@@ -96,6 +96,9 @@
             <if test="msspSpIdx != null and msspSpIdx !=''">
                 AND MSSP_SP_IDX = #{msspSpIdx}
             </if>
+            <if test="msspOrder != null and msspOrder !=''">
+                AND LEFT(MSSP_ORDER,1) = #{msspOrder}
+            </if>
     </delete>
 
     <select id="selectMainSectionMsJson" resultType="map">

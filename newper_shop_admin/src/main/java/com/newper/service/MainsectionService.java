@@ -64,7 +64,7 @@ public class MainsectionService {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
         MainSection mainSectionParam = paramMap.mapParam(MainSection.class);
 
-        if(mainSection.getMsType().equals(MsType.PRODUCT)){
+//        if(mainSection.getMsType().equals(MsType.PRODUCT)){
             try {
                 String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
                 String key;
@@ -88,26 +88,24 @@ public class MainsectionService {
                 System.out.println(e);
                 throw new MsgException("잠시 후 다시 시도해주세요.");
             }
-        }
+//        }
 
         mainSection.setMsName(mainSectionParam.getMsName());
         mainSection.setMsSubName(mainSectionParam.getMsSubName());
         mainSection.setMsType(mainSectionParam.getMsType());
         mainSection.setMsOrder(mainSection.getMsOrder()*mainSectionParam.getMsOrder());
 
+        // 배너 제거 전 호출
+        List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
 
         // 배너 제거
-        List<MainSectionBanner> mainSectionBanners = mainSection.getMainSectionBanners();
         mainSection.setMainSectionBanners(new ArrayList<>());
-        // 상품 제거
-        Map<String,Object> msspMap = new HashMap<>();
-        msspMap.put("msspMsIdx", mainSection.getMsIdx());
-        mainsectionMapper.deleteMainSectionSp(msspMap);
         if(mainSection.getMsType().equals(MsType.BANNER)){
             List<String> msbnOrders = paramMap.getList("msbnOrder");
             List<MultipartFile> msbnWebFiles = mfRequest.getFiles("msbnWebFile");
             List<MultipartFile> msbnMobileFiles = mfRequest.getFiles("msbnMobileFile");
             List<String> msbnUrls = paramMap.getList("msbnUrl");
+            msbnOrders.remove(msbnOrders.size()-1);
             int size = Math.max(mainSectionBanners.size(), msbnOrders.size());
 
             for(int i=0;i<size;i++){
@@ -177,7 +175,15 @@ public class MainsectionService {
                 }
             }
         }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
+            // 상품 제거 전 조회
             List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(mainSection.getMsIdx());
+
+            // 상품 제거
+            Map<String,Object> msspMap = new HashMap<>();
+            msspMap.put("msspMsIdx", mainSection.getMsIdx());
+            mainsectionMapper.deleteMainSectionSp(msspMap);
+
+            //이후 다시 insert
             List<String> msspSpIdxs = paramMap.getList("spIdx");
             List<String> msspOrders = paramMap.getList("msspOrder");
             int size = Math.max(mainSectionSps.size(), msspSpIdxs.size());
@@ -250,48 +256,68 @@ public class MainsectionService {
                 }
 
                 // 상품
+                // 상품 제거 전 호출
                 Map<String,Object> shopBannerSearchMap = new HashMap<>();
                 shopBannerSearchMap.put("msIdx", mainSection.getMsIdx());
-                shopBannerSearchMap.put("msspOrder", (i+1)+"");
+                shopBannerSearchMap.put("msspOrder", i+1);
                 List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionBannerShopProductByMsIdx(shopBannerSearchMap);
+
+                // 상품 제거
+                Map<String,Object> msspMap = new HashMap<>();
+                msspMap.put("msspMsIdx", mainSection.getMsIdx());
+                msspMap.put("msspOrder", i+1);
+                mainsectionMapper.deleteMainSectionSp(msspMap);
+
                 List<String> msspSpIdxs = paramMap.getList("spIdx"+(i+1));
-                List<String> msspOrders = paramMap.getList("msspOrder");
 
-                paramMap.printEntrySet();
 
-                int productSize = Math.max(mainSectionSps.size(), msspSpIdxs.size());
-                for(int k=0;k<productSize;k++){
-                    System.out.println("in~~~~~");
-                    if(mainSectionSps.size() > k){
-                        if(msspSpIdxs.size() > k){
-                            Map<String,Object> map = new HashMap<>();
-                            // update
-                            System.out.println("update in~~~~~~~");
-                            Map<String,Object> mssp = mainSectionSps.get(k);
-                            map.put("msspOrder", ((i+1)*100)+1);
-                            map.put("msspMsIdx", mssp.get("MSSP_MS_IDX"));
-                            map.put("msspSpIdx", mssp.get("MSSP_SP_IDX"));
-                            mainsectionMapper.updateMainSectionSp(map);
-                        }else{
-                            System.out.println("insert in~~~~~~~");
-                            //insert
-                            List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
-                            ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("msspOrder", ((i+1)*100)+1);
-                            map.put("msspMsIdx", mainSection.getMsIdx());
-                            map.put("msspSpIdx", shopProduct.getSpIdx());
-                            mainsectionMapper.insertMainSectionSp(map);
-                        }
-                    }else{
-                        //delete
-                        System.out.println("delete in~~~~~~~");
-                        System.out.println(msspSpIdxs.get(k));
-                        List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
-                        msspMap.put("msspSpIdx", msspSpIdxs.get(k));
-                        mainsectionMapper.deleteMainSectionSp(msspMap);
+                // 다 지우고 다시 insert
+                if(msspSpIdxs.size() > 0){
+                    for(int k=0;k<msspSpIdxs.size();k++){
+                        //insert
+                        ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(msspSpIdxs.get(k)));
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("msspOrder", ((i+1)*100)+1);
+                        map.put("msspMsIdx", mainSection.getMsIdx());
+                        map.put("msspSpIdx", shopProduct.getSpIdx());
+                        mainsectionMapper.insertMainSectionSp(map);
                     }
                 }
+
+//                int productSize = Math.max(mainSectionSps.size(), msspSpIdxs.size());
+//                for(int k=0;k<productSize;k++){
+
+//                    if(msspSpIdxs.size() > k){
+//                        if(mainSectionSps.size() > k){
+//                            Map<String,Object> map = new HashMap<>();
+//                            // update
+//                            System.out.println("update in~~~~~~~");
+//                            Map<String,Object> mssp = mainSectionSps.get(k);
+//                            map.put("msspOrder", ((i+1)*100)+1);
+//                            map.put("msspMsIdx", mssp.get("MSSP_MS_IDX"));
+//                            map.put("msspSpIdx", mssp.get("MSSP_SP_IDX"));
+//                            mainsectionMapper.updateMainSectionSp(map);
+//                        }else{
+//                            System.out.println("insert in~~~~~~~");
+//                            //insert
+//                            ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(msspSpIdxs.get(k)));
+//                            Map<String,Object> map = new HashMap<>();
+//                            map.put("msspOrder", ((i+1)*100)+1);
+//                            map.put("msspMsIdx", mainSection.getMsIdx());
+//                            map.put("msspSpIdx", shopProduct.getSpIdx());
+//                            mainsectionMapper.insertMainSectionSp(map);
+//                        }
+//                    }
+//                    else{
+//                        System.out.println("delete in~~~~~~~");
+//                        //delete
+//                        Map<String,Object> msspMap = new HashMap<>();
+//                        msspMap.put("msspMsIdx", mainSection.getMsIdx());
+//                        msspMap.put("msspOrder", i+1);
+//                        msspMap.put("msspSpIdx", mainSectionSps.get(k).get("MSSP_SP_IDX"));
+//                        mainsectionMapper.deleteMainSectionSp(msspMap);
+//                    }
+//                }
             }
         }
     }
@@ -300,7 +326,7 @@ public class MainsectionService {
     @Transactional
     public Long mainsectionSave(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
-        if(mainSection.getMsType().equals(MsType.PRODUCT)){
+//        if(mainSection.getMsType().equals(MsType.PRODUCT)){
             try {
                 String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
                 String key;
@@ -325,7 +351,7 @@ public class MainsectionService {
                 System.out.println(e);
                 throw new MsgException("잠시 후 다시 시도해주세요.");
             }
-        }
+//        }
 
         int size = mainSectionRepo.findByShop_shopIdx(mainSection.getShop().getShopIdx()).size();
         mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
@@ -333,13 +359,13 @@ public class MainsectionService {
         mainSectionRepo.save(mainSection);
 
         if(mainSection.getMsType().equals(MsType.BANNER)){
-            for(int i=0;i<paramMap.getList("msbnOrder").size();i++){
+            for(int i=1;i<paramMap.getList("msbnOrder").size();i++){
                 String webFile="";
                 String webFileName="";
                 String mobileFile ="";
                 String mobileFileName ="";
                 MainSectionBanner msbn = MainSectionBanner.builder()
-                        .msbnOrder(i+1)
+                        .msbnOrder(i)
                         .mainSection(mainSection)
                         .msbnUrl(paramMap.getList("msbnUrl").get(i)+"")
                         .build();
@@ -407,11 +433,6 @@ public class MainsectionService {
                     mainsectionMapper.insertMainSectionSp(map);
                 }
             }
-            System.out.println("in~~~~~~");
-            System.out.println(mainSection.getMsIdx());
-            System.out.println(mainSection.getMainSectionBanners().size());
-            System.out.println(mainSection.getMainSectionSps().size());
-
         }
 
         return mainSection.getMsIdx();

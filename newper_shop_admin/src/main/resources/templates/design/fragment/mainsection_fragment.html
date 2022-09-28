@@ -229,7 +229,7 @@
             <tbody th:id="bannerShopProductTbody+${i}">
                 <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
                     <tr th:if="${#strings.substring(mainSectionSp.MSSP_ORDER,0,1) eq #strings.toString(i)}">
-                        <td><input type="number" name="msspOrder" th:value="${mainSectionSp.MSSP_ORDER}"></td>
+                        <td th:text="${mainSectionSpStat.count}"></td>
                         <td th:text="${mainSectionSp.SP_STATE}"></td>
                         <td th:text="${mainSectionSp.SP_NAME}"></td>
                         <td>
@@ -255,4 +255,8 @@
     <th:block th:replace="design/modal/bannerShopProductModal.html"></th:block>
 </th:block>
 <th:block th:fragment="BEST">
+</th:block>
+
+<th:block th:fragment="CATEGORY">
+    추천 카테고리!
 </th:block>
