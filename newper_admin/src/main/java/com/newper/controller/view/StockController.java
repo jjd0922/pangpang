@@ -113,22 +113,6 @@ public class StockController {
          mav.addObject("location",location);
          mav.addObject("location2",location2);
          mav.addObject("goods",locationMapper.selectLocationMoveGoodsList(lmIdx));
-//        List<Map<String,Object>> list = locationMapper.sqltest(lmIdx);
-//        for(Map<String,Object> map : list){
-//            System.out.println(map.entrySet());
-//        }
-/*
-        try{
-            System.out.println("lmIdx = " + lmIdx);
-            List<Map<String,Object>> list = locationMapper.selectLocationMoveGoodsList(lmIdx);
-            System.out.println("lmIdx = " + lmIdx);
-
-            mav.addObject("goods", list);
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("here~~~~~~~~~~~~~");
-        }
-*/
 
         return mav;
     }
