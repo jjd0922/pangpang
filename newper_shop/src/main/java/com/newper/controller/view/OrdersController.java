@@ -29,8 +29,7 @@ public class OrdersController {
     @PostMapping("")
     public ModelAndView orders(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("orders/orders");
-
-        shopProductService.selectOrdersInfo(paramMap);
+        mav.addObject("spMap", shopProductService.selectOrdersInfo(paramMap));
 
         return mav;
     }
