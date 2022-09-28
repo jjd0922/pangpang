@@ -47,7 +47,7 @@ public class ShopProductService {
     /** 주문 결제 페이지에서 보여질 상품 정보 조회. key shopProduct : : value (spo dto List (옵션 별)) */
     @Transactional(readOnly = true)
     public Map<ShopProduct, List<OrdersSpoDTO>> selectOrdersInfo(ParamMap paramMap){
-        Map<ShopProduct, List<OrdersSpoDTO>> dtoMap = new LinkedHashMap<>();
+        Map<ShopProduct, List<OrdersSpoDTO>> dtoMap = new HashMap<>();
 
         //dtoMap 세팅
         for (String key : paramMap.keySet()) {
@@ -104,7 +104,6 @@ public class ShopProductService {
             }
 
             //필수 옵션 있는지 체크
-                System.out.println("spa_depth");
             boolean spCheck = false;
             //결제하는 옵션 반복
             spoCheck : for (OrdersSpoDTO ordersSpoDTO : dtoMap.get(shopProduct)) {

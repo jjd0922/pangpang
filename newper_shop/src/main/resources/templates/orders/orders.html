@@ -35,15 +35,14 @@
       </ul>
       <!-- 주문정보 상품 리스트 -->
       <ul class="order-item-list">
-        <!-- 상품 1 -->
-        <li class="order-item">
-          <ul>
+        <li class="order-item" th:each="sp : ${spMap}">
+          <ul th:each="osDto : ${sp.value}">
             <!-- 상품코드(썸네일) -->
             <li>
               <div class="order-item-thumb">
                 <a href="javascript:;">
                   <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                  <p class="font-xsm">001762984</p>
+                  <p class="font-xsm" th:text="${sp.key.spIdx}">상품코드</p>
                 </a>
               </div>
             </li>
@@ -52,7 +51,7 @@
               <div class="order-item-info-wrap">
                 <div>
                   <a href="javascript:;">
-                    <h3 class="font-xsm bold">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                    <h3 class="font-xsm bold" th:text="${osDto.getName()}">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
                   </a>
                 </div>
                 <div class="font-xxsm order-item-info">
@@ -92,6 +91,7 @@
             </li>
           </ul>
         </li>
+
         <!-- 상품 2 -->
         <li class="order-item">
           <ul>

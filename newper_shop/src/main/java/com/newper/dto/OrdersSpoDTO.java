@@ -40,4 +40,13 @@ public class OrdersSpoDTO {
         }
         return false;
     }
+
+    /** 결합된 옵션들 전체 이름*/
+    public String getName(){
+        String name = "";
+        for (ShopProductOption spo : spoList) {
+            name += spo.getSpoName()+"\t";
+        }
+        return name;
+    }
 }
