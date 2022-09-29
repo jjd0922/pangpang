@@ -385,12 +385,14 @@
 
     //탭 스크롤시 하단 외곽 추가
     $(window).scroll(function(){
-        var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
+        if($('.relatedProducts').length > 0){
+            var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
 
-        if ($(window).scrollTop() >= sectionHeight) {
-            $(".boxTab3-wrap").addClass("on");
-        } else {
-            $(".boxTab3-wrap").removeClass("on");
+            if ($(window).scrollTop() >= sectionHeight) {
+                $(".boxTab3-wrap").addClass("on");
+            } else {
+                $(".boxTab3-wrap").removeClass("on");
+            }
         }
     })
 

@@ -23,6 +23,7 @@ public class OrdersSpoDTO {
     private int cnt;
     /** 순서 정렬용으로 사용 예정*/
     private boolean req;
+    /** 개당 단가*/
     @Builder.Default
     private int price = 0;
 
@@ -48,9 +49,18 @@ public class OrdersSpoDTO {
     /** 결합된 옵션들 전체 이름*/
     public String getName(){
         String name = "";
+        int depth = 1;
         for (ShopProductOption spo : spoList) {
-            name += spo.getSpoName()+"\t";
+            name += spo.getSpoName() + "\t";
+            if (depth != spo.getSpoDepth()) {
+                depth = spo.getSpoDepth();
+                name += "\n";
+            }
         }
         return name;
+    }
+    /** 총 금액. cnt * price*/
+    public int getTotalPrice(){
+        return cnt * price;
     }
 }

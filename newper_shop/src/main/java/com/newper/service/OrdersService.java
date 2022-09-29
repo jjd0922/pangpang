@@ -45,16 +45,20 @@ public class OrdersService {
     public Orders insertOrder(ParamMap paramMap){
         LocalDateTime now = LocalDateTime.now();
 
-        Orders orders = Orders.builder()
-                .customer(customerRepo.getReferenceById(shopSession.getIdx()))
-                .oDate(now.toLocalDate())
-                .oTime(now.toLocalTime())
-                .oLocation(OLocation.SHOP)
-                .shop(shopRepo.getReferenceById(shopSession.getShopIdx()))
-                .oMemo("")
-                .oName("주문자명")
-                .oPhone("01085434628")
-                .build();
+        //비회원 주문 가능
+        Customer customer = null;
+        if(shopSession.getIdx() != null){
+            customer = customerRepo.getReferenceById(shopSession.getIdx());
+        }
+
+        Orders orders = paramMap.mapParam(Orders.class);
+        orders.setCustomer(customer);
+        orders.setODate(now.toLocalDate());
+        orders.setOTime(now.toLocalTime());
+        orders.setOLocation(OLocation.SHOP);
+        orders.setShop(shopRepo.getReferenceById(shopSession.getShopIdx()));
+
+
 
         Payment payment = Payment.builder()
                 .payMethod(PayMethod.CARD)

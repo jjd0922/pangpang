@@ -124,10 +124,6 @@ public class ShopProductService {
                 throw new MsgException( shopProduct.getSpName() +" / 필수 상품이 누락되었습니다");
             }
 
-            for (OrdersSpoDTO ordersSpoDTO : dtoList) {
-                System.out.println(ordersSpoDTO.getName());
-            }
-
             //필수옵션 위로 오도록 정렬
             dtoList.sort((o1, o2) -> {
                 if(!o1.isReq() && o2.isReq()){
