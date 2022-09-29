@@ -2,6 +2,7 @@ package com.newper.service;
 
 
 import com.newper.component.ShopSession;
+import com.newper.constant.SaCode;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
 import com.newper.entity.Customer;
@@ -88,7 +89,7 @@ public class CustomerService {
 
     /**회원가입*/
     @Transactional
-    public void join (ParamMap paramMap) {
+    public Customer join (ParamMap paramMap) {
         // 아이디 중복 확인
         boolean isIdExist = customerRepo.existsByCuId(paramMap.getString("cuId"));
         if (isIdExist == true) {
@@ -97,11 +98,15 @@ public class CustomerService {
         // 본인인증 응답값 가져오고 그 응답이 이미 사용되었는지 확인
         AesEncrypt ae = new AesEncrypt();
         SelfAuth selfAuth = selfAuthRepo.findLockBySaIdx(Long.parseLong(ae.decryptRandom(paramMap.getString("saIdx"))));
-        shopSession.setSaIdx("");
 
         if (selfAuth.isSaUsed()) {
-            throw new MsgException("본인인증 오류"); // 문구.. 뭐지
+            throw new MsgException("잘못된 접근입니다.");
         }
+        //본인 인증 성공적으로 된건지
+        if( selfAuth.getSaCode() != SaCode.SUCCESS){
+            throw new MsgException("잘못된 접근입니다.");
+        }
+
         // customer entity set
         Customer customer = paramMap.mapParam(Customer.class);
         customer.join(selfAuth.getSaRes());
@@ -109,14 +114,13 @@ public class CustomerService {
         if (StringUtils.hasText(paramMap.getString("cuRecommender"))) {
             boolean isRecommenderExist = customerRepo.existsByCuId(paramMap.getString("cuRecommender"));
             if (!isRecommenderExist) {
-                System.out.println("asdfasf");
                 throw new MsgException("추천인 아이디를 확인해주세요.");
             } else {
                 customer.setCuRecommender(paramMap.getString("cuRecommender"));
             }
         }
-        customerRepo.save(customer);
+        Customer savedCu = customerRepo.save(customer);
         selfAuth.setSaUsed(true);
+        return savedCu;
     }
-
 }

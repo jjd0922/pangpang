@@ -1,9 +1,10 @@
 package com.newper.service;
 
 import com.newper.component.ShopSession;
+import com.newper.constant.SaCode;
 import com.newper.constant.SaType;
-import com.newper.entity.AesEncrypt;
 import com.newper.entity.SelfAuth;
+import com.newper.exception.MsgException;
 import com.newper.repository.SelfAuthRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,10 @@ public class SelfAuthService {
 
     /**본인인증 요청 insert*/
     @Transactional
-    public Long saveSelfAuth(Map<String, Object> map) {
+    public Long insertSa(SaType saType) {
         SelfAuth sa = SelfAuth.builder()
                 .shop(shopRepo.getReferenceById(shopSession.getShopIdx()))
-                .saType(SaType.JOIN)
-                .saReq(map)
+                .saType(saType)
                 .saReqDate(LocalDate.now())
                 .saReqTime(LocalTime.now())
                 .build();
@@ -41,12 +41,20 @@ public class SelfAuthService {
         return sa.getSaIdx();
     }
 
-    /**본인인증 nice 응답data update*/
+    /**nice 본인인증 요청 data update*/
     @Transactional
-    public void updateSelfAuth(Map<String,Object> map) {
-        String saIdx = shopSession.getSaIdx();
-        AesEncrypt ae = new AesEncrypt();
-        SelfAuth sa = selfAuthRepo.findLockBySaIdx(Long.parseLong(ae.decryptRandom(saIdx)));
-        sa.setSaRes(map);
+    public void updateSaReq(long saIdx, Map<String,Object> niceReq) {
+        SelfAuth selfAuth = selfAuthRepo.findById(saIdx).orElseThrow(() -> new MsgException("잘못된 접근입니다."));
+        selfAuth.setSaReq(niceReq);
+    }
+
+    /**nice 본인인증 응답 data update*/
+    @Transactional
+    public Long updateSaRes(Map<String,Object> niceRes) {
+        long saIdx = Long.parseLong(niceRes.get("REQ_SEQ").toString());
+        SelfAuth sa = selfAuthRepo.findById(saIdx).orElseThrow(() -> new MsgException("잘못된 접근입니다"));
+        sa.setSaRes(niceRes);
+        sa.setSaCode(SaCode.SUCCESS);
+        return sa.getSaIdx();
     }
 }
