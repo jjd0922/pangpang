@@ -1,13 +1,11 @@
 package com.newper.entity;
 
 import com.newper.constant.OState;
-import com.newper.constant.PayMethod;
 import com.newper.constant.PayState;
 import com.newper.constant.PhType;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,9 +36,9 @@ public class Payment {
     /** 상품 금액*/
     private int payProductPrice;
     private int payDelivery;
+    /** FK IAMPORT_METHOD.IPM_IDX */
+    private Integer payIpmIdx;
 
-    @Enumerated(EnumType.STRING)
-    private PayMethod payMethod;
 
     private int payMileage;
     @Builder.Default
@@ -61,9 +59,9 @@ public class Payment {
         if (getPayState() == null) {
             throw new MsgException("결제상태를 선택해주세요.");
         }
-        if (getPayMethod() == null) {
-            throw new MsgException("결제방식을 선택해주세요.");
-        }
+//        if (getPayMethod() == null) {
+//            throw new MsgException("결제방식을 선택해주세요.");
+//        }
 
     }
 
