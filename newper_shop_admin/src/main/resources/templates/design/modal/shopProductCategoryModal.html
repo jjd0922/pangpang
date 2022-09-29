@@ -9,16 +9,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="btn-group">
-                    <a class="btn btn-sm btn-primary" onclick="initShopProductCategoryModalTable('')">전체</a>
-                    <th:block th:each="shopCategory : ${shopCategories}">
-                        <a class="btn btn-sm btn-primary" th:onclick="|initShopProductCategoryModalTable(${shopCategory.scateIdx})|" th:text="${shopCategory.scateName}"></a>
-<!--                        <th:block th:if="${7 gt shopCategory.index gt 5 || 12 gt shopCategory.index gt 10}">-->
-                            <br>
-<!--                        </th:block>-->
-                        &nbsp;
+                <a class="btn btn-sm btn-primary" onclick="initShopProductCategoryModalTable('')">전체</a>
+                <th:block th:each="shopCategory : ${shopCategories}">
+                    <a class="btn btn-sm btn-primary" th:onclick="|initShopProductCategoryModalTable(${shopCategory.scateIdx})|" th:text="${shopCategory.scateName}"></a>
+                    <th:block th:if="${(shopCategoryStat.index > 3 && shopCategoryStat.index < 5) || (shopCategoryStat.index > 7 && shopCategoryStat.index < 9) }">
+                        <br>
+                        <br>
                     </th:block>
-                </div>
+                </th:block>
 
                 <table class="table" id="shopProductModalCategoryTable">
                 </table>
@@ -41,9 +39,11 @@
     }
     // 일괄추가(체크박스)
     function selectAllProduct(){
-        var spIdx = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_IDX');
-        var spState = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_STATE');
-        var spName = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_NAME');
+        var spIdx = dataTableGetSelectedDataArray('shopProductModalCategoryTable', 'SP_IDX');
+        var spState = dataTableGetSelectedDataArray('shopProductModalCategoryTable', 'SP_STATE');
+        var spName = dataTableGetSelectedDataArray('shopProductModalCategoryTable', 'SP_NAME');
+        var scateIdx = dataTableGetSelectedDataArray('shopProductModalCategoryTable', 'SCATE_IDX');
+        var scateName = dataTableGetSelectedDataArray('shopProductModalCategoryTable', 'SCATE_NAME');
 
         if(spIdx.length == 0){
             alert('선택된 상품이 없습니다.');
@@ -52,15 +52,19 @@
             for(var i=0; i< spIdx.length; i++){
                 if($('input[name="spIdx"][value='+spIdx[i]+']').length > 0){
                 }else{
-                    var tr='<tr>';
-                    tr+='<td><input type="number" name="msspOrder"></td>';
-                    tr+='<td>'+spState[i]+'</td>';
-                    tr+='<td><input type="hidden" name="spIdx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
-                    tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+spIdx[i]+')">삭제</a></td>';
-                    tr+='</tr>'
-                    $('#shopProductCateTbody').append(tr);
+                    if($('input[name="scateIdx"][value='+scateIdx[i]+']').length > 7){
+                    }else{
+                        var tr='<tr>';
+                        tr+='<td><input type="hidden" name="scateIdx" value="'+scateIdx[i]+'">'+scateName[i]+'</td>';
+                        tr+='<td>'+spState[i]+'</td>';
+                        tr+='<td><input type="hidden" name="spIdx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
+                        tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+spIdx[i]+')">삭제</a></td>';
+                        tr+='</tr>'
+                        $('#shopProductCateTbody').append(tr);
+                    }
                 }
             }
+
         }
 
         $('#shopProductCategoryModal').modal('hide');
@@ -74,11 +78,15 @@
 
         if($('input[name=spIdx][value='+dataMap.SP_IDX+']').length>0){
             alert('이미 추가된 상품 입니다');
-            return;
+            return false;
+        }
+        if($('input[name="scateIdx"][value='+dataMap.SCATE_IDX+']').length > 7){
+            alert('해당 카테고리의 최대 등록가능 상품 수량을 초과하였습니다. \n (카테고리 당 최대 8개까지 가능)')
+            return false;
         }
 
         var tr='<tr>';
-        tr+='<td><input type="number" name="msspOrder"></td>';
+        tr+='<td><input type="hidden" name="scateIdx" value="'+dataMap.SCATE_IDX+'">'+dataMap.SCATE_NAME+'</td>';
         tr+='<td>'+dataMap.SP_STATE+'</td>';
         tr+='<td><input type="hidden" name="spIdx" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
         tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';
@@ -115,16 +123,19 @@
                 }],
             "columns" : [
                 {'title':'선택','data':'SP_IDX','defaultContent':'', 'render':function(data,type,full,meta){
-                        return '';
-                    }}
+                    return '';
+                }}
                 ,{'title':'No','data':'No','render':function(data,type,full,meta){
-                        return meta.settings._iDisplayStart+meta.row+1;
-                    }}
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+                ,{'title':'전시 대분류명','data':'SCATE_IDX', 'defaultContent':'','render':function(data,type,full,meta){
+                    return full.SCATE_NAME;
+                }}
                 ,{'title':'상품 상태','data':'SP_STATE', 'defaultContent':''}
                 ,{'title':'상품명','data':'SP_NAME', 'defaultContent':''}
                 ,{'title':'','render':function(data,type,full,meta){
-                        return '<a class="btn btn-primary btn-sm" onclick="chooseShopProduct(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
-                    }}
+                    return '<a class="btn btn-primary btn-sm" onclick="chooseShopProduct(\''+meta.settings.sTableId+'\','+meta.row+')">선택</a>';
+                }}
             ]
         });
     }

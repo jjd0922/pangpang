@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.constant.MsType;
+import com.newper.dto.ParamMap;
 import com.newper.entity.MainSection;
 import com.newper.entity.MainSectionBanner;
 import com.newper.entity.Shop;
@@ -107,9 +108,9 @@ public class DesignController {
         return mav;
     }
 
-    /** 메인섹션 상세 메인섹션타입 배너 load */
+    /** 메인섹션 상세 메인섹션타입에 따른 fragment load */
     @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}/{msType}.load","mainsection/new/{shopIdx}/{msType}.load"})
-    public ModelAndView mainSectionBanner(@PathVariable String msType, @PathVariable(required = false) Long msIdx){
+    public ModelAndView mainSectionBanner(@PathVariable String msType, @PathVariable(required = false) Long msIdx, ParamMap paramMap){
         ModelAndView mav = new ModelAndView("design/fragment/mainsection_fragment :: " + msType);
         if(msIdx != null){
             if(msType.equals(MsType.BANNER.name())){
@@ -123,13 +124,17 @@ public class DesignController {
                 mav.addObject("mainSectionBanners", mainSectionBanners);
                 List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(msIdx);
                 mav.addObject("mainSectionSps", mainSectionSps);
-            }else if(msType.equals(MsType.CATEGORY.name())){
-                List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductCategoryByMsIdx(msIdx);
-                List<ShopCategory> shopCategories = shopCategoryRepo.findAll();
+            }else if(msType.equals(MsType.CATEGORY.name()) || msType.equals("categoryProduct")){
+                String scateIdx = null;
+                if(paramMap.containsKey("scateIdx")){
+                    scateIdx = paramMap.getString("scateIdx");
+                }
+                List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductCategoryByMsIdx(msIdx,scateIdx);
                 mav.addObject("mainSectionSps", mainSectionSps);
-                mav.addObject("shopCategories", shopCategories);
             }
         }
+        List<ShopCategory> shopCategories = shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0);
+        mav.addObject("shopCategories", shopCategories);
 
         return mav;
     }

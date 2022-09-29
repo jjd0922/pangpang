@@ -262,6 +262,17 @@
         <a onclick="openShopProductCategoryModal()" class="btn btn-sm btn-primary ml-1">추가</a>
         <a class="btn btn-sm btn-danger ml-1" onclick="resetShopProduct()">전체 삭제</a>
     </legend>
+    <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }">
+        <a class="btn btn-sm btn-primary allCate" id="allCate" th:onclick="sortCategory('')">전체</a>
+        <th:block th:each="shopCategory : ${shopCategories}">
+            <a class="btn btn-sm btn-primary" th:text="${shopCategory.scateName}" th:onclick="|sortCategory(${shopCategory.scateIdx})|"></a>
+            <th:block th:if="${(shopCategoryStat.index > 3 && shopCategoryStat.index < 5) || (shopCategoryStat.index > 7 && shopCategoryStat.index < 9) }">
+                <br>
+                <br>
+            </th:block>
+        </th:block>
+    </th:block>
+
     <table class="table">
         <thead>
         <tr>
@@ -272,17 +283,7 @@
         </tr>
         </thead>
         <tbody id="shopProductCateTbody">
-        <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
-            <tr>
-                <td th:text="${mainSectionSp.SCATE_NAME}"><input type="number" name="msspOrder" th:value="${mainSectionSp.}"></td>
-                <td th:text="${mainSectionSp.SP_STATE}"></td>
-                <td th:text="${mainSectionSp.SP_NAME}"></td>
-                <td>
-                    <input type="hidden" name="spIdx" th:value="${mainSectionSp.SP_IDX}">
-                    <a class="btn btn-sm btn-danger" th:onclick="|deleteShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
-                </td>
-            </tr>
-        </th:block>
+
         </tbody>
     </table>
 
@@ -290,7 +291,7 @@
         //구성상품 지우기
         function resetShopProduct(){
             if(window.confirm('구성상품을 전부 삭제하시겠습니까? \n 설정 후 아래 *저장 버튼을 눌러야 DB에 반영됩니다.')){
-                $('#shopProductTbody').html('')
+                $('#shopProductCateTbody').html('')
             }
         }
 
@@ -300,7 +301,41 @@
                 $( $('input[name=spIdx][value='+spIdx+']').parents('tr')[0] ).remove();
             }
         }
+
+        function sortCategory(scateIdx){
+            $.ajax({
+                url:location.pathname+'/categoryProduct.load?scateIdx='+scateIdx
+                ,type: 'post'
+                ,success:function(res){
+                    $('#shopProductCateTbody').empty();
+                    $('#shopProductCateTbody').append(res);
+                    if(scateIdx == ''){
+                        $('#allCate').addClass("allCate");
+                    }else{
+                        $('#allCate').removeClass("allCate");
+                    }
+                }
+                ,error(){}
+            })
+        }
+        $(function(){
+            sortCategory('');
+        });
     </script>
-    <!--shopProduct modal-->
+    <!--shopProductCategory modal-->
     <th:block th:replace="design/modal/shopProductCategoryModal.html"></th:block>
+</th:block>
+
+<th:block th:fragment="categoryProduct">
+    <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }" th:each="mainSectionSp:${mainSectionSps}">
+        <tr>
+            <td th:text="${mainSectionSp.SCATE_NAME}"></td>
+            <td th:text="${mainSectionSp.SP_STATE}"></td>
+            <td th:text="${mainSectionSp.SP_NAME}"></td>
+            <td>
+                <input type="hidden" name="spIdx" th:value="${mainSectionSp.SP_IDX}">
+                <a class="btn btn-sm btn-danger" th:onclick="|deleteShopProduct('${mainSectionSp.SP_IDX}')|">삭제</a>
+            </td>
+        </tr>
+    </th:block>
 </th:block>
