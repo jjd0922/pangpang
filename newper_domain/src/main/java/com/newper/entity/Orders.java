@@ -66,7 +66,7 @@ public class Orders {
     private OCancelState oCancelState = OCancelState.NONE;
 
     private String oName;
-
+    private String oTel;
     private String oPhone;
 
     @Column(updatable = false)
