@@ -49,9 +49,15 @@ public class CustomerController {
     }
     /** 아이디/비밀번호 찾기 각 스텝 load*/
     @PostMapping(value = "findCustomer/step/{type}.load")
-    public ModelAndView findCustomerStep(@PathVariable("type") String type){
+    public ModelAndView findCustomerStep(@PathVariable("type") String type, ParamMap paramMap){
         ModelAndView mav = new ModelAndView("customer/findCustomer_step :: " + type);
-
+        if(type.equals("findComplete")){
+            if(paramMap.containsKey("cuPw")){
+                mav.addObject("pwReset",true);
+            }else{
+                mav.addObject("pwReset",false);
+            }
+        }
         return mav;
     }
 

@@ -31,31 +31,6 @@
         <li onclick="findCustomer('findId')" id="findId">아이디 찾기</li>
         <li onclick="findCustomer('findPw')" id="findPw">비밀번호 찾기</li>
     </ul>
-    <section id="findCustomer">
-
-    </section>
-
-    <script>
-        function findCustomer(step){
-            $.ajax({
-                url: '/customer/findCustomer/step/'+step+'.load'
-                ,type: 'post'
-            }).done(function(res){
-                $('#findCustomer').empty();
-                $('#findCustomer').append(res);
-
-                if(step == 'findId' || step == 'findPw'){
-                    // action
-                    $('#findCustomerTab').children('li').removeClass("on");
-                    $('#findCustomerTab').find($('#'+step)).addClass("on");
-                }
-
-            });
-        }
-        $(function(){
-            findCustomer('findId');
-        });
-    </script>
 </th:block>
 
 <!--행 전체 메뉴 - 2. 상하 라인 -->

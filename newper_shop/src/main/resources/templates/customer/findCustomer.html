@@ -19,8 +19,8 @@
 
     <section class="padding-section">
         <!--메뉴 : 행 전체 메뉴 - 박스형 하단 라인 : 이벤트 분류-->
-        <div class="findCustomer">
-            <section th:insert="part/menu :: menu-full3" class="padding-section"></section>
+        <div class="findCustomer" id="findCustomer">
+
         </div>
     </section>
 
@@ -35,4 +35,24 @@
 
 </div>
 </body>
+<script>
+    function findCustomer(step){
+        $.ajax({
+            url: '/customer/findCustomer/step/'+step+'.load'
+            ,type: 'post'
+        }).done(function(res){
+            $('#findCustomer').empty();
+            $('#findCustomer').append(res);
+
+            if(step == 'findId' || step == 'findPw'){
+                // action
+                $('#findCustomerTab').children('li').removeClass("on");
+                $('#findCustomerTab').find($('#'+step)).addClass("on");
+            }
+        });
+    }
+    $(function(){
+        findCustomer('findId');
+    })
+</script>
 </html>
