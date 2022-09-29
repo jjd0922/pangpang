@@ -1,8 +1,10 @@
 package com.newper.controller.view;
 
+import com.newper.component.KakaoLogin;
 import com.newper.component.NaverLogin;
 import com.newper.component.NiceApi;
 import com.newper.component.ShopSession;
+import com.newper.constant.SaType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
 import com.newper.repository.SelfAuthRepo;
@@ -26,6 +28,8 @@ public class CustomerController {
     ShopSession shopSession;
 
     private final NiceApi niceApi;
+    private final NaverLogin naverLogin;
+    private final KakaoLogin kakaoLogin;
     private final SelfAuthService selfAuthService;
     private final SelfAuthRepo selfAuthRepo;
 
@@ -40,7 +44,6 @@ public class CustomerController {
     @GetMapping(value = "join")
     public ModelAndView join(){
         ModelAndView mav = new ModelAndView("customer/join");
-
         return mav;
     }
     /** 나이스 본인 인증 팝업 띄우기*/
@@ -49,12 +52,11 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/auth_request");
         // nice요청생성
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
-        Map<String, Object> niceReq = niceApi.getNiceSendData(callback);
+        Long saIdx = selfAuthService.insertSa(SaType.JOIN);
+        Map<String, Object> niceReq = niceApi.getNiceSendData(callback, saIdx.toString());
         mav.addObject("data", niceReq);
-        // 요청정보 db insert
-        Long saIdx = selfAuthService.saveSelfAuth(niceReq);
-        AesEncrypt ae = new AesEncrypt();
-        shopSession.setSaIdx(ae.encryptRandom(saIdx.toString()));
+        // 요청정보 db update
+        selfAuthService.updateSaReq(saIdx, niceReq);
         return mav;
     }
     
@@ -66,7 +68,9 @@ public class CustomerController {
         Map<String, Object> niceReturn = niceApi.getNiceReturn(paramMap);
         mav.addObject("nice", niceReturn);
         // 요청정보 db update
-        selfAuthService.updateSelfAuth(niceReturn);
+        Long saIdx = selfAuthService.updateSaRes(niceReturn);
+        AesEncrypt aes = new AesEncrypt();
+        mav.addObject("saIdx", aes.encryptRandom(saIdx.toString()));
         return mav;
     }
     
@@ -79,42 +83,48 @@ public class CustomerController {
 
     /** 네이버 로그인 팝업*/
     @GetMapping(value = "auth/naver/request")
-    public ModelAndView naverRequest(HttpServletRequest request, NaverLogin naverLogin) {
+    public ModelAndView naverRequest(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_naver_request");
         // naver 요청 정보
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> req = naverLogin.request(callback);
         mav.addObject("naverReq", req);
-        // self_auth insert
-        Long saIdx = selfAuthService.saveSelfAuth(req);
-        AesEncrypt ae = new AesEncrypt();
-        shopSession.setSaIdx(ae.encryptRandom(saIdx.toString()));
         return mav;
     }
 
     /** 네이버 로그인 > 네이버 회원 profile 받아오기*/
-    @GetMapping(value = "auth/naver/access")
-    public ModelAndView naverAccess(ParamMap paramMap, HttpServletRequest request, NaverLogin naverLogin) {
-        ModelAndView mav = new ModelAndView("customer/auth_naver_access");
+    @GetMapping(value = "auth/naver/response")
+    public ModelAndView naverAccess(ParamMap paramMap, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("customer/auth_naver_response");
         // naver 응답 데이터
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> profile = naverLogin.getProfile(paramMap, callback);
         mav.addObject("naverAcc", profile);
 
-        // 요청정보 db update
-        selfAuthService.updateSelfAuth(profile);
+        // 기존 회원과 ci값 대조 후 로그인/회원가입 처리
+
         return mav;
     }
 
+    /** 카카오 로그인 팝업*/
     @GetMapping(value = "auth/kakao/request")
-    public ModelAndView kakaoRequest() {
+    public ModelAndView kakaoRequest(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_kakao_request");
+        // kakao 요청 정보
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> req = kakaoLogin.request(callback);
+        mav.addObject("req",req);
         return mav;
     }
 
+    /** 카카오 로그인 응답 */
     @GetMapping(value = "auth/kakao/response")
-    public ModelAndView kakaoResponse() {
+    public ModelAndView kakaoResponse(ParamMap paramMap, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_kakao_response");
+
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> res = kakaoLogin.getProfile(paramMap, callback);
+
         return mav;
     }
     

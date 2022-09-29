@@ -619,4 +619,44 @@
 
         return str;
     }
+
+</script>
+<script>
+    //ajax 로딩 화면 및 alert
+    $(document).ajaxStart(function(event, xhr, settings){
+        //로딩창
+        $(document.body).css('cursor','wait');
+    }).ajaxSend(function(event, jqXHR, ajaxOptions ){
+
+    }).ajaxError(function(event, xhr, settings,data){
+        try{
+            if(xhr.responseJSON != null && xhr.responseJSON.message!=null){
+                alert(xhr.responseJSON.message);
+            }else{
+                if(xhr.statusText != 'abort'){
+                    alert('에러 발생');
+                }
+            }
+        }catch(e){
+            console.log(e);
+        }
+    }).ajaxSuccess(function(event, xhr, settings, thrownError){
+        if(xhr.responseJSON != null){
+            if(xhr.responseJSON.message!=null){
+                alert(xhr.responseJSON.message);
+            }
+
+            if(xhr.responseJSON.location!=null){
+                if(xhr.responseJSON.popup){
+                    window.open(xhr.responseJSON.location, '', 'width=500, height=500');
+                }else{
+                    location.href = xhr.responseJSON.location;
+                }
+            }
+        }
+    }).ajaxStop(function(event, xhr, settings, thrownError){
+        //로딩 끝
+        $(document.body).css('cursor','');
+    });
+
 </script>

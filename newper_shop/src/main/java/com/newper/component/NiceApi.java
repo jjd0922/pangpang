@@ -20,10 +20,8 @@ public class NiceApi {
     private String auth_pw;
 
     /** 본인 인증 요청 팝업 띄우기 전. key = sRequestNumber, sEncData */
-    public Map<String,Object> getNiceSendData(String domain) {
+    public Map<String,Object> getNiceSendData(String domain, String sRequestNumber) {
         NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
-
-        String sRequestNumber = niceCheck.getRequestNO(auth_sitecode);        	// 요청 번호, 이는 성공/실패후에 같은 값으로 되돌려주게 되므로
 
         String sAuthType = "";      	// 없으면 기본 선택화면, M(휴대폰), X(인증서공통), U(공동인증서), F(금융인증서), S(PASS인증서), C(신용카드)
         String customize 	= "";		//없으면 기본 웹페이지 / Mobile : 모바일페이지

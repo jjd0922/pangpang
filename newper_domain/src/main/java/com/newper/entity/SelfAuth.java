@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.SaCode;
 import com.newper.constant.SaType;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -35,6 +36,10 @@ public class SelfAuth {
     private Map<String,Object> saReq = new HashMap<>();
     @Builder.Default
     private Map<String,Object> saRes = new HashMap<>();
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private SaCode saCode = SaCode.BEFORE;
+
     private LocalDate saReqDate;
     private LocalTime saReqTime;
 
