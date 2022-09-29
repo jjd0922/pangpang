@@ -3,12 +3,16 @@
 <mapper namespace="com.newper.mapper.IamportMapper">
     <select id="selectIamportPgList" resultType="map">
         SELECT
-            IPP_IDX, IPP_NAME
-        FROM IAMPORT_PG
-        WHERE IPP_ORDER > 0
+            IPM_IDX, IPM_NAME, IPM_VALUE
+            ,IPP_JSON->>'$.img' IMG
+        FROM IAMPORT_PG, IAMPORT_METHOD
+        WHERE
+            IPM_IPP_IDX=IPP_IDX
+            AND IPP_ORDER > 0
+            AND IPP_TYPE = 'EASY'
         ORDER BY IPP_ORDER
     </select>
-    <select id="selectIamportMethodMap" resultType="map">
+    <select id="selectIamportMethodList" resultType="map">
         SELECT
             *
         FROM

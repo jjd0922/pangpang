@@ -12,7 +12,7 @@ public enum PayMethod implements EnumOption {
      CARD("신용카드")
     ,BANK("계좌이체")
     ,ACCOUNT("가상계좌")
-    ,PAY("페이")
+    ,EASY("간편결제")
 
     ;
 

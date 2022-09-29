@@ -385,12 +385,14 @@
 
     //탭 스크롤시 하단 외곽 추가
     $(window).scroll(function(){
-        var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
+        if($('.relatedProducts').length > 0){
+            var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
 
-        if ($(window).scrollTop() >= sectionHeight) {
-            $(".boxTab3-wrap").addClass("on");
-        } else {
-            $(".boxTab3-wrap").removeClass("on");
+            if ($(window).scrollTop() >= sectionHeight) {
+                $(".boxTab3-wrap").addClass("on");
+            } else {
+                $(".boxTab3-wrap").removeClass("on");
+            }
         }
     })
 
@@ -510,27 +512,38 @@
     /* 스크롤 위치에 따른 메뉴 현위치 표시 */
     $(window).scroll(function(){
 
-        var offset1 = $('#product-detail').offset().top - tabHeight - headerHeight,
-            offset2 = $('#product-review').offset().top - tabHeight - headerHeight;
-            offset3 = $('#product-inquiry').offset().top - tabHeight - headerHeight;
-            offset4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight;
-            offset5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight;
+        if ($('#product-detail').length > 0) {
+            var offset1 = $('#product-detail').offset().top - tabHeight - headerHeight;
+            if($(document).scrollTop() >= offset1){
+                $('.product-tab li:nth-child(1)').addClass('on').siblings().removeClass('on')
+            }
+        }
+        if($('#product-review').length > 0){
+            var offset2 = $('#product-review').offset().top - tabHeight - headerHeight;
+            if($(document).scrollTop() >= offset2){
+                $('.product-tab li:nth-child(2)').addClass('on').siblings().removeClass('on')
+            }
+        }
+        if($('#product-inquiry').length > 0){
+            var offset3 = $('#product-inquiry').offset().top - tabHeight - headerHeight;
+            if($(document).scrollTop() >= offset3){
+                $('.product-tab li:nth-child(3)').addClass('on').siblings().removeClass('on')
+            }
+        }
+        if($('#product-deliveryInfo').length > 0){
+            var offset4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight;
+            if($(document).scrollTop() >= offset4){
+                $('.product-tab li:nth-child(4)').addClass('on').siblings().removeClass('on')
+            }
+        }
+        if($('#product-refundInfo').length > 0){
+            var offset5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight;
+            if($(document).scrollTop() >= offset5){
+                $('.product-tab li:nth-child(5)').addClass('on').siblings().removeClass('on')
+            }
+        }
 
-        if($(document).scrollTop() >= offset1){
-            $('.product-tab li:nth-child(1)').addClass('on').siblings().removeClass('on')
-        }
-        if($(document).scrollTop() >= offset2){
-            $('.product-tab li:nth-child(2)').addClass('on').siblings().removeClass('on')
-        }
-        if($(document).scrollTop() >= offset3){
-            $('.product-tab li:nth-child(3)').addClass('on').siblings().removeClass('on')
-        }
-        if($(document).scrollTop() >= offset4){
-            $('.product-tab li:nth-child(4)').addClass('on').siblings().removeClass('on')
-        }
-        if($(document).scrollTop() >= offset5){
-            $('.product-tab li:nth-child(5)').addClass('on').siblings().removeClass('on')
-        }
+
     });
 
 

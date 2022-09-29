@@ -9,6 +9,7 @@ import com.newper.entity.Payment;
 import com.newper.entity.ShopProduct;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
+import com.newper.mapper.IamportMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopProductOptionRepo;
 import com.newper.service.PaymentService;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping(value = "/orders/")
 @Controller
@@ -34,7 +36,7 @@ public class OrdersController {
     private ShopSession shopSession;
 
     private final PaymentService paymentService;
-    private final ShopProductOptionRepo shopProductOptionRepo;
+    private final IamportMapper iamportMapper;
     private final ShopProductService shopProductService;
     private final CustomerRepo customerRepo;
 
@@ -61,6 +63,11 @@ public class OrdersController {
             Customer customer = customerRepo.findById(shopSession.getIdx()).get();
             mav.addObject("customer", customer);
         }
+
+
+        //pg 정보
+        mav.addObject("payNormalList", iamportMapper.selectIamportMethodList());
+        mav.addObject("payEasyList", iamportMapper.selectIamportPgList());
 
 
         return mav;

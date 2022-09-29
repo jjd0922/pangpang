@@ -30,13 +30,10 @@ public class OrdersRestController {
     private ShopSession shopSession;
 
 
-    /** iamport 결제 요청 */
+    /** 주문 insert 및, iamport 결제 요청 */
     @PostMapping("iamport/pay.ajax")
     public ReturnMap iamportPay(ParamMap paramMap, int ipm_idx) {
         ReturnMap rm = new ReturnMap();
-
-        shopSession.setIdx(1l);
-        shopSession.setId("test");
 
         rm.put("id", "imp07732252");
 
