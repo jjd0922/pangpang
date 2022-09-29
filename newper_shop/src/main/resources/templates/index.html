@@ -506,58 +506,103 @@
                 <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
             </div>
             <div class="fixed-buy-info">
+                <!-- 상품명 -->
                 <div class="fixed-buy-title">
                     <h2>[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</h2>
                     <p>최종혜택가 <span class="color-red">339,000원</span></p>
+                    <!-- 닫기 -->
+                    <i class="close"></i>
                 </div>
-
                 <!-- 옵션상품 -->
                 <div class="fixed-buy-option">
                     <ul>
                         <li>
                             <label>필수옵션상품</label>
-                            <select>
+                            <select class="form-control">
                                 <option>옵션 선택</option>
                                 <option>옵션선택</option>
                             </select>
                         </li>
                         <li>
                             <label>필수옵션상품</label>
-                            <select>
+                            <select class="form-control">
                                 <option>옵션 선택</option>
                                 <option>옵션선택</option>
                             </select>
                         </li>
                         <li>
                             <label>선택옵션상품</label>
-                            <select>
+                            <select class="form-control">
                                 <option>옵션 선택</option>
                                 <option>옵션선택</option>
                             </select>
                         </li>
                         <li>
                             <label>선택옵션상품</label>
-                            <select>
+                            <select class="form-control">
                                 <option>옵션 선택</option>
                                 <option>옵션선택</option>
                             </select>
                         </li>
                     </ul>
-                    <div class="selected-option">
-                        <p>[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB
-                        </p>
+                    <div>
+                        <ul class="selected-option">
+                            <li>
+                                <p class="selected-option-title">[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</p>
+                                <div class="select-amount">
+                                    <span class="amount-minus">-</span>
+                                    <input type="text" name="-" value="1" size="5" readonly="">
+                                    <span class="amount-plus">+</span>
+                                </div>
+                                <p class="selected-option-price">+ 0원</p>
+                                <i class="option-close"></i>
+                            </li>
+                            <li>
+                                <p class="selected-option-title">[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</p>
+                                <div class="select-amount">
+                                    <span class="amount-minus">-</span>
+                                    <input type="text" name="-" value="1" size="5" readonly="">
+                                    <span class="amount-plus">+</span>
+                                </div>
+                                <p class="selected-option-price">+ 199,000원</p>
+                                <i class="option-close"></i>
+                            </li>
+                        </ul>
+                        <div>
+                            <p>총 상품 금액<span class="bold font-xxlg">339,000</span>원</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 버튼 -->
         <div class="fixed-buy-bot container">
-            <a href="javascript:;" class="btn bnt2">장바구니</a>
-            <a href="javascript:;" class="btn bnt3">구매하기</a>
-            <div class="prod-heart">
-                <i class="heart"></i>
+            <div>
+                <a href="javascript:;" class="btn bnt2 fixed-cart-btn">장바구니</a>
+                <a href="javascript:;" class="btn bnt3 fixed-buy-btn">구매하기</a>
+                <div class="prod-heart">
+                    <i class="heart"></i>
+                </div>
             </div>
         </div>
+
+        <script>
+            $('.fixed-buy-btn').click(function() {
+                $('.fixed-buy .close').addClass('on');
+                $('.fixed-buy-option').addClass('on');
+                $('.fixed-cart-btn').addClass('on');
+                $('.fixed-buy-bot>div').addClass('on');
+
+            });
+            $('.fixed-buy .close').click(function() {
+                $(this).removeClass('on');
+                $('.fixed-buy .close').removeClass('on');
+                $('.fixed-buy-option').removeClass('on');
+                $('.fixed-cart-btn').removeClass('on');
+                $('.fixed-buy-bot>div').removeClass('on');
+            });
+        </script>
 
     </div>
 </section>
