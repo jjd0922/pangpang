@@ -37,9 +37,13 @@ public class OrdersRestController {
 
         rm.put("id", "imp07732252");
 
-        Orders orders = ordersService.insertOrder(paramMap);
-        JSONObject req = ordersService.insertIamportReq(orders, ipm_idx);
-        rm.put("req", req);
+        try{
+            Orders orders = ordersService.insertOrder(paramMap);
+            JSONObject req = ordersService.insertIamportReq(orders);
+            rm.put("req", req);
+        }catch (MsgException mse){
+            throw mse;
+        }
         return rm;
     }
     /** iamport 결제 결과 UID만 저장. JS에서 받는 결과여서 서버에서 따로 검증 단계 필요*/

@@ -314,6 +314,38 @@
 </th:block>
 
 <!-- 공통 모달-->
+<th:block th:fragment="iamport-modal">
+    <div class="modal-wrap" id="iamportModal">
+        <div class="modal">
+            <div class="iamportModal-close">
+                <i></i>
+            </div>
+            <div class="modalContent">
+                <iframe id="iamportFrame" src="/orders/iamport"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var iamportModal = $("#iamportModal");
+
+        $(document).mouseup(function (e){
+            if(iamportModal.has(e.target).length === 0){
+                iamportModal.hide();
+                $('body').removeClass('no-scroll');
+            } else {
+                $('body').addClass('no-scroll');
+            }
+        });
+
+        $(".iamportModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            iamportModal.hide();
+        });
+    </script>
+</th:block>
+
+<!-- 공통 모달-->
 <th:block th:fragment="common-modal">
     <div class="modal-wrap" id="commonModal">
         <div class="modal">
@@ -344,3 +376,4 @@
         });
     </script>
 </th:block>
+

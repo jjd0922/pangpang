@@ -16,14 +16,21 @@
         SELECT
             *
         FROM
-            IAMPORT_METHOD
-        WHERE IPM_ORDER > 0
+            IAMPORT_PG, IAMPORT_METHOD
+        WHERE
+            IPM_IPP_IDX=IPP_IDX
+            AND IPM_ORDER > 0
+            AND IPP_ORDER > 0
+            AND IPP_TYPE = 'NORMAL'
         ORDER BY IPM_ORDER
     </select>
     <select id="selectIamportMethodDetail" resultType="map">
         SELECT
             IPP_VALUE
-            ,IPP_JSON->>'$.mid' as 'mid'
+            ,CASE
+                WHEN IPP_VALUE = 'kcp' THEN CONCAT('kcp.',IPP_JSON->>'$.mid' )
+                ELSE IPP_VALUE
+            END AS PG
             ,IPM_VALUE
         FROM IAMPORT_METHOD, IAMPORT_PG
         WHERE

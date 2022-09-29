@@ -61,12 +61,11 @@ public class RestAdvise {
     }
 
     @ExceptionHandler(NoSessionException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ReturnMap noSessionException(){
-        ReturnMap rm = new ReturnMap();
-
-        rm.setLocation("/index");
-        rm.setPopup(true);
-
-        return rm;
+        return ReturnMap.builder()
+                .message("세션이 만료되었습니다. 로그인 부탁드립니다")
+                .needLogin(true)
+                .build();
     }
 }

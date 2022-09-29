@@ -78,6 +78,10 @@ public class Payment {
 
     /** 결제 요청 가능한지 체크 후 return paymentHistory*/
     public PaymentHistory createPayReq(){
+        if(getPayState() != PayState.BEFORE){
+            throw new MsgException("다시 시도 부탁드립니다");
+        }
+
         List<PaymentHistory> paymentHistoryList = getPaymentHistoryList();
         if (paymentHistoryList == null) {
             paymentHistoryList = new ArrayList<>();
@@ -88,10 +92,6 @@ public class Payment {
             if (paymentHistory.isPhFlag()) {
                 //마지막 결제 요청 check
                 paymentHistory.setPhFlag(false);
-
-//                    paymentHistory.getPhCode();
-
-                break findFlag;
             }
         }
 
@@ -103,6 +103,8 @@ public class Payment {
                 .phFlag(true)
                 .build();
         paymentHistoryList.add(paymentHistory);
+
+        setPayState(PayState.REQ);
 
         return  paymentHistory;
     }
