@@ -35,7 +35,7 @@
       </ul>
       <!-- 주문정보 상품 리스트 -->
       <ul class="order-item-list">
-        <li class="order-item" th:each="sp : ${spMap}">
+        <li class="order-item" th:each="sp : ${spMap}" th:if="${sp.key.isSell()}">
           <ul th:each="osDto : ${sp.value}">
             <!-- 상품코드(썸네일) -->
             <li>
@@ -51,20 +51,18 @@
               <div class="order-item-info-wrap">
                 <div>
                   <a href="javascript:;">
-                    <h3 class="font-xsm bold" th:text="${osDto.getName()}">삼성 노트북 15인치 코어 i5 랩 8G SSD 대용량 듀얼하드 윈도10 (스페이스그레이)</h3>
+                    <h3 class="font-xsm bold" th:text="${sp.key.spName}">분양몰 상품명</h3>
                   </a>
                 </div>
                 <div class="font-xxsm order-item-info">
-                  <p>상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
-                  <p>사이즈 : 15인치</p>
-                  <p>컬러 : 스페이스그레이</p>
+                  <p th:each="spo : ${osDto.spoList}" th:text="${spo.spoName}">상품명 : 삼성 노트북 코어 i5 듀얼하드 윈10</p>
                 </div>
-                <p class="font-xxsm semi-bold">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>
+<!--                <p class="font-xxsm semi-bold">AS보증 (기본제공) <span class="color-blue">1년 무상서비스</span></p>-->
               </div>
             </li>
             <!-- 수량 -->
             <li>
-              <p class="font-sm semi-bold">1개</p>
+              <p class="font-sm semi-bold"><th:block th:text="${osDto.cnt}"></th:block>개</p>
             </li>
             <!-- 판매가 -->
             <li>
