@@ -6,11 +6,14 @@
         <if test="shopIdx != null and shopIdx !=''">
             AND SHOP_IDX = #{shopIdx}
         </if>
+        <if test="scateIdx != null and scateIdx != ''">
+            AND SCATE_IDX = #{scateIdx}
+        </if>
     </sql>
 
     <select id="selectShopProductDatatable" resultType="map">
         SELECT
-        shop_product.*,dt.*,SCATE_NAME,shop.*,
+        shop_product.*,dt.*,SCATE_NAME,SCATE_IDX,shop.*,
         (case
         when dt.CATE_DEPTH = 1 then dt.CATE_NAME1
         when dt.CATE_DEPTH = 2 then dt.CATE_NAME2

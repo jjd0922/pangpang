@@ -67,7 +67,7 @@ public class ShopService {
 //            }
 
             // 카테고리 정보
-            shopComp.setShopCategoryList(shopCategoryRepo.findAll());
+            shopComp.setShopCategoryList(shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0));
 
             // 메인섹션리스트
             List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxAndMsOrderGreaterThanOrderByMsOrderAsc(shop.getShopIdx(), 0);

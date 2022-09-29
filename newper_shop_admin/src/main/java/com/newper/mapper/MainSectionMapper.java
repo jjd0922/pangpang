@@ -26,4 +26,6 @@ public interface MainSectionMapper {
 
     /** mainsection msJson*/
     Map<String, Object> selectMainSectionMsJson(@Param("msIdx") Long msIdx);
+    /** mainsection msType category 일 경우 상품 카테고리 조회*/
+    List<Map<String, Object>> selectMainSectionShopProductCategoryByMsIdx(@Param("msIdx") Long msIdx, @Param("scateIdx") String scateIdx);
 }
