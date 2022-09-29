@@ -74,7 +74,7 @@
                         <div class="card">
                             <div class="collapse show" >
                                 <div class="card-body pt-0">
-                                    <form>
+                                    <!--<form>
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
@@ -88,11 +88,49 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form>-->
                                 </div>
                             </div>
                             <table class="table" id="deliveryTable">
                             </table>
+                        </div>
+                        <div class="card">
+                            <div class="card-body popup-contents mb-4">
+                                <fieldset class="mb-0">
+                                    <legend class="">템플릿 등록/수정관리<span class="small"></span></legend>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          배송비 종류설정
+                                                        </span>
+                                                    </span>
+                                                    <input type="radio" name="CD_TYPE" value="무료" selected><label>무료</label>
+                                                    <input type="radio" name="CD_TYPE" value="유료"><label>유료</label>
+                                                    <input type="radio" name="CD_TYPE" value="조건부 무료"><label>조건부 무료</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          배송비 금액
+                                                        </span>
+                                                    </span>
+                                                        <input type="text" name="" class="form-control"><label>&nbsp원</label>
+                                                        <label class="cdTypeFreeMax">&nbsp|&nbsp</label><input type="text" name="" class="form-control cdTypeFreeMax"><label class="cdTypeFreeMax">&nbsp원 이상 구매시 무료</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
                         </div>
                         <div class="card">
                             <div class="card-body popup-contents mb-4">
@@ -237,14 +275,14 @@
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/stock/parent.dataTable',
+            url:'/company/companyCtType.dataTable?CT_TYPE=STORE',
             type:'post'
         },
 
         "columns" : [
 
-            {'title':'상호법인명','data':'check_cnt','defaultContent':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-indigo" onclick="releaseReq('+full.GS_IDX+')">'+data+'</a>'
+            {'title':'상호법인명','data':'COM_NAME','defaultContent':'','render':function(data,type,full,meta){
+                return '<a class="btn btn-sm badge-indigo" onclick="selectCompany('+full.COM_IDX+')">'+data+'</a>'
             }}
 
         ]
@@ -276,10 +314,13 @@
             type:'post'
         },
         "columns" : [
-            {'title':'기본설정','data':'P_NAME','defaultContent':''}
-            ,{'title':'출하지명','data':'P_IDX','defaultContent':''}
-            ,{'title':'주소/연락처','data':'GS_CODE','defaultContent':''}
-            ,{'title':'도서산간 추가배송비', 'data':'G_BARCODE','defaultContent':''}
+            {'title':'배송비 종류설정','data':'P_NAME','defaultContent':''}
+            ,{'title':'배송비 금액','data':'P_IDX','defaultContent':''}
+            ,{'title':'배송비 무료조건 금액','data':'GS_CODE','defaultContent':''},
+            ,{'title':'제주도 및 그 부속도서 배송비', 'data':'G_BARCODE','defaultContent':''},
+            ,{'title':'도서산간 배송비', 'data':'G_BARCODE','defaultContent':''},
+            ,{'title':'반품비', 'data':'G_BARCODE','defaultContent':''}
+            ,{'title':'배송비 템플릿 기본설정', 'data':'G_BARCODE','defaultContent':''}
         ]
 
     });

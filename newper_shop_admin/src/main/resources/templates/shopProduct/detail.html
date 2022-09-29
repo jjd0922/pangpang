@@ -244,7 +244,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">기준판매가(상품) 합</span>
                                     </span>
-                                            <input type="text" name="P_COST" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                            <input type="text" name="P_COST" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +254,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">기준판매가(재고) 합</span>
                                     </span>
-                                            <input type="text" name="P_RETAIL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                            <input type="text" name="P_RETAIL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">SHOP 판매가(뉴퍼마켓가) 합</span>
                                     </span>
-                                            <input type="text" name="P_SELL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                            <input type="text" name="P_SELL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">할인가 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_PRICE" class="form-control" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="text" name="P_DEL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">네이버최저가의 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_TOGETHER" class="form-control" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="P_DEL_TOGETHER" class="form-control text-right" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
                                         </div>
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">유통가의 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_TOGETHER" class="form-control" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="P_DEL_TOGETHER" class="form-control text-right" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
                                         </div>
                                     </div>
                                 </div>
@@ -789,52 +789,7 @@
         $('input[name="SP_SHOP_IDX"]').val(rowData.SHOP_IDX);
     }
 
-    function category1(){
-        var category = $('select[name=CATE_IDX1]').val();
-        $.ajax({
-            url:'/product/category/parent.ajax',
-            data:'CATE_IDX='+category,
-            type:'post',
-            async: false,
-            success:function (res){
-                $('select[name=CATE_IDX2] option').remove();
-                $('select[name=CATE_IDX3] option').remove();
-                var str = '<option value="">선택</option>';
-                $.each(res.data.list,function (i){
-                    var result = res.data.list[i]
-                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
-                })
-                $('select[name=CATE_IDX2]').append(str);
-                // $('input[name=P_CATE_IDX]').val(category);
-            }
-        })
-    }
 
-    function category2(){
-        var category = $('select[name=CATE_IDX2]').val();
-        $.ajax({
-            url:'/product/category/parent.ajax',
-            data:'CATE_IDX='+category,
-            type:'post',
-            async: false,
-            success:function (res){
-                $('select[name=CATE_IDX3] option').remove();
-                var str = '<option value="">선택</option>';
-                $.each(res.data.list,function (i){
-                    var result = res.data.list[i]
-                    str+='<option value="'+result.CATE_IDX+'">'+result.CATE_NAME+'</option>'
-                })
-                $('select[name=CATE_IDX3]').append(str);
-                $('input[name=P_CATE_IDX]').val(category);
-            }
-        })
-    }
-
-
-    function category3(){
-        var category = $('select[name=CATE_IDX3]').val();
-        $('input[name=P_CATE_IDX]').val(category);
-    }
 
     function essentialAdd(){
         var essentialCnt = $('#essentialCnt').val();
