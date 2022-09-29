@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,6 +45,13 @@ public class CustomerController {
     @GetMapping(value = "findCustomer")
     public ModelAndView findCustomer(){
         ModelAndView mav = new ModelAndView("customer/findCustomer");
+        return mav;
+    }
+    /** 아이디/비밀번호 찾기 각 스텝 load*/
+    @PostMapping(value = "findCustomer/step/{type}.load")
+    public ModelAndView findCustomerStep(@PathVariable("type") String type){
+        ModelAndView mav = new ModelAndView("customer/findCustomer_step :: " + type);
+
         return mav;
     }
 

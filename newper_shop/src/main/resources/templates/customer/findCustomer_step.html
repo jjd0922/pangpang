@@ -1,0 +1,64 @@
+<!-- 아이디 찾기 -->
+<th:block th:fragment="findId">
+    아이디찾기
+    <br>
+    <a href="/">취소</a>
+    <a onclick="findCustomer('findComplete')">확인</a>
+</th:block>
+<!-- 비밀번호 찾기 -->
+<th:block th:fragment="findPw">
+    비밀번호 찾기
+    <br>
+
+    <div id="otpInputDiv" style="display: none;">
+        <input type="text" maxlength="6">
+    </div>
+    <a onclick="sendOTP()" id="otpBtn">휴대폰 인증번호 받기</a>
+    <a onclick="findCustomer('findPw')">취소</a>
+    <a onclick="findCustomer('findPwReset')">확인</a>
+
+    <script>
+        function sendOTP(){
+            if(window.confirm('인증번호를 받으시겠습니까?')){
+                $('#otpInputDiv').show();
+                $('#otpBtn').text('인증번호 재요청');
+            }
+        }
+    </script>
+</th:block>
+
+<!-- 비밀번호 재설정-->
+<th:block th:fragment="findPwReset">
+    비밀번호 재설정
+    <br>
+    <a href="/">취소</a>
+    <a onclick="pwReset('findComplete')">비밀번호변경</a>
+    <script>
+        function pwReset(step){
+            $.ajax({
+                url: '/customer/findCustomer/step/'+step+'.load'
+                ,type: 'post'
+            }).done(function(res){
+                $('#findCustomer').empty();
+                $('#findCustomer').append(res);
+
+            });
+        }
+    </script>
+</th:block>
+
+<!-- 찾기 결과 -->
+<th:block th:fragment="findComplete">
+    아이디/비밀번호 찾기 결과
+    <br>
+    <a onclick="findCustomer('findCompleteSleep')">휴면계정일 경우의 페이지(임시)</a>
+    <br>
+    <a href="javascript:;" class="login nosessionClass">로그인</a>
+</th:block>
+
+<!-- 찾기 결과 - 휴면계정안내-->
+<th:block th:fragment="findCompleteSleep">
+    휴면계정 안내
+    <br>
+    <a onclick="alert('준비중')">휴대폰 본인인증 하기</a>
+</th:block>
