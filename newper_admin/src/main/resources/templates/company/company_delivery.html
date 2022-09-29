@@ -74,6 +74,7 @@
                         <div class="card">
                             <div class="collapse show" >
                                 <div class="card-body pt-0">
+                                    <span id="store_name"></span>
                                     <!--<form>
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
@@ -97,19 +98,30 @@
                         <div class="card">
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
-                                    <legend class="">템플릿 등록/수정관리<span class="small"></span></legend>
+                                    <legend class="">템플릿 등록/수정관리<span class="small"></span>
+                                        <div class="btn-group">
+                                            <a type="button" class="btn btn-sm btn-danger"  onclick="">
+                                                저장
+                                            </a>
+                                        </div>
+                                    </legend>
+
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">
-                                                          배송비 종류설정
+                                                          배송비/설치비 종류설정
                                                         </span>
                                                     </span>
-                                                    <input type="radio" name="CD_TYPE" value="무료" selected><label>무료</label>
-                                                    <input type="radio" name="CD_TYPE" value="유료"><label>유료</label>
-                                                    <input type="radio" name="CD_TYPE" value="조건부 무료"><label>조건부 무료</label>
+                                                    <div class="border p-1 form-control">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="radio" name="CD_TYPE" value="무료" id="del_free" checked><label for="del_free">무료</label>
+                                                            <input type="radio" name="CD_TYPE" value="유료" id="del_not_free"><label for="del_not_free">유료</label>
+                                                            <input type="radio" name="CD_TYPE" value="조건부 무료" id="del_banban"><label for="del_banban">조건부 무료</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,11 +132,75 @@
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">
-                                                          배송비 금액
+                                                          배송비/설치비 금액
                                                         </span>
                                                     </span>
-                                                        <input type="text" name="" class="form-control"><label>&nbsp원</label>
-                                                        <label class="cdTypeFreeMax">&nbsp|&nbsp</label><input type="text" name="" class="form-control cdTypeFreeMax"><label class="cdTypeFreeMax">&nbsp원 이상 구매시 무료</label>
+                                                    <input type="text" name="" class="form-control">
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
+                                                    <input type="text" name="" class="form-control cdTypeFreeMax">
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text w-100 bg-white cdTypeFreeMax">원 이상 구매시 무료 </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">제주도 및 그 부속도서</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" placeholder="0">
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">도서지방 및 기타 산간지방</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" placeholder="0">
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          반품비
+                                                        </span>
+                                                    </span>
+                                                    <input type="text" name="" class="form-control">
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          배송비 템플릿 기본설정
+                                                        </span>
+                                                    </span>
+                                                    <div class="border p-1 form-control">
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="checkbox" class="form-check-input" id="dc_li_c2">
+                                                            <label class="" for="dc_li_c2">기본설정</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +208,7 @@
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
                                     <legend class="">신규등록/수정관리<span class="small"></span></legend>
@@ -240,26 +316,26 @@
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">제주도 및 그 부속도서</span>
-                                                            </span>
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">제주도 및 그 부속도서</span>
+                                                    </span>
                                                     <input type="text" class="form-control text-right" placeholder="0">
                                                     <span class="input-group-append">
-                                                                <span class="input-group-text bg-white ">원</span>
-                                                            </span>
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                            <span class="input-group-prepend">
-                                                                <span class="input-group-text">도서지방 및 기타 산간지방</span>
-                                                            </span>
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">도서지방 및 기타 산간지방</span>
+                                                    </span>
                                                     <input type="text" class="form-control text-right" placeholder="0">
                                                     <span class="input-group-append">
-                                                                <span class="input-group-text bg-white ">원</span>
-                                                            </span>
+                                                        <span class="input-group-text bg-white ">원</span>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
