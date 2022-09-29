@@ -1,5 +1,6 @@
 <!-- 뉴퍼마켓 구매제품 AS 접수 -->
 <th:block th:fragment="newperAS">
+    <form id="asForm">
     <ul class="table font-xsm">
         <!-- 접수하실 상품 -->
         <li>
@@ -15,10 +16,10 @@
             <div class="table-title">이메일 주소</div>
             <div class="table-content">
                 <div class="input-email">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                    <input type="text" id="email" name="AS_MAIL1" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
-                    <input type="text" id="emailDomain" name="emailDomain" class="form-control">
-                    <select class="form-control">
+                    <input type="text" id="emailDomain" class="form-control">
+                    <select class="form-control" name="AS_MAIL2" >
                         <option value="직접입력">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
@@ -35,13 +36,12 @@
                     </select>
                 </div>
             </div>
-
         </li>
         <!-- 휴대전화 -->
         <li class="table-phone">
             <div class="table-title">휴대전화</div>
             <div class="table-content">
-                <select class="form-control">
+                <select class="form-control" name="AS_PHONE1">
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -50,17 +50,16 @@
                     <option value="019">019</option>
                 </select>
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="AS_PHONE2" value="" title="휴대폰번호 중간 네자리">
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
-
+                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="AS_PHONE3" value="" title="휴대폰번호 마지막 네자리">
             </div>
         </li>
         <!-- 내용작성 -->
         <li>
             <div class="table-title">내용작성</div>
             <div class="table-content">
-                <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                <textarea name="AS_MEMO" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
             </div>
         </li>
         <!-- 사진첨부 -->
@@ -69,7 +68,7 @@
             <div class="table-content fileAdd">
                 <label class="file-btn" for="file">사진 첨부하기
                 </label>
-                <input type="file" id="file" class="file-input">
+                <input type="file" id="file" class="file-input" name="AS_FILE">
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
                 <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
             </div>
@@ -89,10 +88,28 @@
     </div>
     <!-- 신청버튼 -->
     <div class="btn btn2 semi-bold shopping-btn">
-        <a href="javascript:;">AS 신청</a>
+        <a href="javascript:createAS();">AS 신청</a>
     </div>
+    </form>
 
     <script>
+
+        function createAS(){
+            $.ajax({
+                url: 'myPage/createAS.ajax'
+                ,type:'post'
+                ,data:$('#asForm').serialize()
+                ,success:function(res){
+
+                }
+                ,error:function(){}
+            })
+        }
+
+
+
+
+
         function openAsProductModal(modal){
             $.ajax({
                 url: '/myPage/myOrder/as/'+modal+'.load'
@@ -112,6 +129,7 @@
 
 <!-- 다른 온라인몰 구매제품 AS 접수 -->
 <th:block th:fragment="otherAS">
+    <form id="asForm2">
     <ul class="table font-xsm">
         <!-- 구매처 선택 -->
         <li>
@@ -126,7 +144,7 @@
         <li>
             <div class="table-title">이름</div>
             <div class="table-content">
-                <input type="text" id="receiverName" name="receiverName" class="form-control" maxlength="20" title="이름" placeholder="이름" value=""
+                <input type="text" id="receiverName" name="AS_NAME" class="form-control" maxlength="20" title="이름" placeholder="이름" >
             </div>
         </li>
         <!-- 이메일 주소 -->
@@ -134,10 +152,10 @@
             <div class="table-title">이메일 주소</div>
             <div class="table-content">
                 <div class="input-email">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                    <input type="text" id="email" name="AS_MAIL1" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
-                    <input type="text" id="emailDomain" name="emailDomain" class="form-control">
-                    <select class="form-control">
+                    <input type="text" id="emailDomain"   class="form-control">
+                    <select class="form-control" name="AS_MAIL2">
                         <option value="직접입력">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
@@ -159,7 +177,7 @@
         <li class="table-phone">
             <div class="table-title">휴대전화</div>
             <div class="table-content">
-                <select class="form-control">
+                <select class="form-control" name="AS_PHONE1">
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -168,9 +186,9 @@
                     <option value="019">019</option>
                 </select>
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="AS_PHONE2" value="" title="휴대폰번호 중간 네자리">
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
+                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="AS_PHONE3" value="" title="휴대폰번호 마지막 네자리">
 
             </div>
         </li>
@@ -187,7 +205,7 @@
         <li>
             <div class="table-title">내용작성</div>
             <div class="table-content">
-                <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                <textarea  name="AS_MEMO" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
             </div>
         </li>
         <!-- 사진첨부 -->
@@ -196,7 +214,7 @@
             <div class="table-content fileAdd">
                 <label class="file-btn" for="file">사진 첨부하기
                 </label>
-                <input type="file" id="file" class="file-input">
+                <input type="file" id="file" class="file-input" name="AS_FILE">
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
                 <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
             </div>
@@ -216,9 +234,9 @@
     </div>
     <!-- 신청버튼 -->
     <div class="btn btn2 semi-bold shopping-btn">
-        <a href="javascript:;">AS 신청</a>
+        <a href="javascript:createAS2();">AS 신청</a>
     </div>
-
+    </form>
     <script>
         function openAsCompanyModal(modal){
             $.ajax({
@@ -234,21 +252,38 @@
                 ,error:function(){}
             })
         }
-        function openAsProductModal(modal){
+
+
+        function createAS2(){
             $.ajax({
-                url: '/myPage/myOrder/as/'+modal+'.load'
+                url: 'myPage/createAS2.ajax'
                 ,type:'post'
+                ,data:$('#asForm2').serialize()
                 ,success:function(res){
 
-                    $('.modalContent').empty();
-                    $('.modalContent').append(res);
-
-                    $('#commonModal').show();
                 }
                 ,error:function(){}
             })
         }
+
+
+        function openAsProductModal(modal){
+    $.ajax({
+    url: '/myPage/myOrder/as/'+modal+'.load'
+    ,type:'post'
+    ,success:function(res){
+
+    $('.modalContent').empty();
+    $('.modalContent').append(res);
+
+    $('#commonModal').show();
+    }
+    ,error:function(){}
+    })
+    }
     </script>
+
+
 </th:block>
 
 <!-- AS접수 현황조회 -->
