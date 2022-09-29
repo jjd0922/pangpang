@@ -27,7 +27,6 @@ public class NaverLogin extends CommonRestApi {
         String redirect_uri = domain+"/customer/auth/naver/response";
         SecureRandom random = new SecureRandom();
         String state = new BigInteger(130, random).toString();
-        System.out.println("client_id = " + client_id);
         Map<String,Object> map = new HashMap<>();
         map.put("client_id", client_id);
         map.put("redirect_uri", redirect_uri);
@@ -59,7 +58,6 @@ public class NaverLogin extends CommonRestApi {
                 "&code=" + paramMap.getString("code") +
                 "&state=" + paramMap.getString("state");
         HttpURLConnection con = connect(apiURL);
-        String result = "";
         try {
             con.setRequestMethod("GET");
             return getResponseMap(con);
