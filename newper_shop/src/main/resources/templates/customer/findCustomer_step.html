@@ -1,5 +1,11 @@
 <!-- 아이디 찾기 -->
 <th:block th:fragment="findId">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center findCustomer-title">
+        <p class="font-xlg bold">아이디/비밀번호 찾기</p>
+        <div class="dummy-line"></div>
+    </div>
+
     <section th:insert="part/menu :: menu-full3" class="padding-section"></section>
 
     <div class="flex-center">
@@ -12,9 +18,15 @@
 </th:block>
 <!-- 비밀번호 찾기 -->
 <th:block th:fragment="findPw">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center findCustomer-title">
+        <p class="font-xlg bold">아이디/비밀번호 찾기</p>
+        <div class="dummy-line"></div>
+    </div>
+
     <section th:insert="part/menu :: menu-full3" class="padding-section"></section>
 
-    <div id="findPw">
+    <div class="findPw">
         <ul class="findCustomer-table font-md">
             <li>
                 <p class="table-title">아이디</p>
@@ -22,26 +34,31 @@
                     <input id="otpInputDiv" type="text" maxlength="6" class="form-control">
                 </div>
             </li>
-            <li class="display-flex">
-                <p class="table-title">이름</p>
-                <div class="table-content">
-                    <input type="text" class="form-control">
-                </div>
-            </li>
-            <li class="display-flex findCustomer-table-phone">
-                <p class="table-title">휴대폰 번호</p>
-                <div class="table-content flex-column">
-                    <div class="display-flex alignItems-center space-between mb-10">
-                        <input type="text" id="phone1" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 네자리">
-                        <span>&nbsp;-&nbsp;</span>
-                        <input type="text" id="phone2" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리">
-                        <span>&nbsp;-&nbsp;</span>
-                        <input type="text" id="phone3" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리">
-                    </div>
-                    <a onclick="sendOTP()" id="otpBtn" class="btn btn-dark-gray radius-small text-center">휴대폰 인증번호 받기</a>
-                </div>
-            </li>
-        </ul>
+            <!--
+           <li class="display-flex">
+               <p class="table-title">이름</p>
+               <div class="table-content">
+                   <input type="text" class="form-control">
+               </div>
+           </li>
+           <li class="display-flex findCustomer-table-phone">
+               <p class="table-title">휴대폰 번호</p>
+               <div class="table-content flex-column">
+                   <div class="display-flex alignItems-center space-between mb-10">
+                       <input type="text" id="phone1" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 네자리">
+                       <span>&nbsp;-&nbsp;</span>
+                       <input type="text" id="phone2" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리">
+                       <span>&nbsp;-&nbsp;</span>
+                       <input type="text" id="phone3" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리">
+                   </div>
+                   <a onclick="sendOTP()" id="otpBtn" class="btn btn-dark-gray radius-small text-center">휴대폰 인증번호 받기</a>
+               </div>
+           </li>-->
+       </ul>
+
+        <div class="flex-center">
+            <a href="javascript:;" class="btn btn-dark-gray radius-small">휴대폰 인증하기</a>
+        </div>
 
         <div class="flex-center">
             <a onclick="findCustomer('findPw')" class="btn">취소</a>
@@ -57,9 +74,14 @@
         }
     </script>
 </th:block>
-
 <!-- 비밀번호 재설정-->
 <th:block th:fragment="findPwReset">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center findCustomer-title">
+        <p class="font-xlg bold">비밀번호 재설정</p>
+        <div class="dummy-line"></div>
+    </div>
+
     <div id="findPwReset">
         <div class="text-center font-sm">
             <p>홍길동 님의 회원정보가 확인되었습니다.</p>
@@ -67,7 +89,7 @@
         </div>
 
         <div class="display-flex flex-column alignItems-center">
-            <input type="password" name="cuPw"class="form-control" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
+            <input type="password" name="cuPw" class="form-control mb-10" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
             <input type="password" class="form-control" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인">
         </div>
 
@@ -96,12 +118,19 @@
 
 <!-- 찾기 결과 -->
 <th:block th:fragment="findComplete">
-    <div class="text-center" th:if="${pwReset == true}">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center findCustomer-title">
+        <p class="font-xlg bold">비밀번호 재설정</p>
+        <div class="dummy-line"></div>
+    </div>
+
+
+    <div class="text-center font-md" th:if="${pwReset == true}">
         <p>비밀번호 변경이 완료되었습니다.</p>
     </div>
-    <div class="text-center" th:if="${pwReset == false}">
+    <div class="text-center font-md" th:if="${pwReset == false}">
         <p>홍길동 님의 회원정보는 다음과 같습니다.</p>
-        <p>아이디 : <span>***</span> <span>(일반회원)</span></p>
+        <p>아이디 : <span class="color-blue">***</span> <span>(일반회원)</span></p>
     </div>
 
     <a onclick="findCustomer('findCompleteSleep')">휴면계정일 경우의 페이지(임시)</a>
@@ -114,7 +143,13 @@
 
 <!-- 찾기 결과 - 휴면계정안내-->
 <th:block th:fragment="findCompleteSleep">
-    <div class="text-center font-md">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center findCustomer-title">
+        <p class="font-xlg bold">휴면계정안내</p>
+        <div class="dummy-line"></div>
+    </div>
+
+    <div class="text-center font-md mt-45">
         <p>회원님께서는 <span class="color-red">1년 이상</span> 서비스를 이용하시지 않아</p>
         <p>휴면 회원으로 전환되었습니다.</p>
         <br>
