@@ -237,7 +237,7 @@
 
     $(window).scroll(function(event) {
         if ($(window).scrollTop() > headerHeight) {
-            $('.sticky').css({top:headerHeight, padding:'0'});
+            $('.sticky').css({top:headerHeight - 2 +'px', padding:'0'});
         };
     });
 
@@ -478,32 +478,32 @@
         productTab3 = $('.product-tab li:nth-child(3)'),
         productTab4 = $('.product-tab li:nth-child(4)'),
         productTab5 = $('.product-tab li:nth-child(5)'),
-        tabHeight = $('.product-tab').height();
+        tabHeight = $('.product-tab').outerHeight();
 
 
     productTab1.click(function(x){
         x.preventDefault();
-        contentDistence1 = $('#product-detail').offset().top - tabHeight - headerHeight;
+        contentDistence1 = $('#product-detail').offset().top - tabHeight - headerHeight + 1 + 'px';
         $('html, body').stop().animate({scrollTop : contentDistence1});
     });
     productTab2.click(function(x){
         x.preventDefault();
-        contentDistence2 = $('#product-review').offset().top - tabHeight - headerHeight;
+        contentDistence2 = $('#product-review').offset().top - tabHeight - headerHeight + 1 + 'px';
         $('html, body').stop().animate({scrollTop : contentDistence2});
     });
     productTab3.click(function(x){
         x.preventDefault();
-        contentDistence3 = $('#product-inquiry').offset().top - tabHeight - headerHeight;
+        contentDistence3 = $('#product-inquiry').offset().top - tabHeight - headerHeight + 1 + 'px';
         $('html, body').stop().animate({scrollTop : contentDistence3});
     });
     productTab4.click(function(x){
         x.preventDefault();
-        contentDistence4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight;
+        contentDistence4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight + 1 + 'px';
         $('html, body').stop().animate({scrollTop : contentDistence4});
     });
     productTab5.click(function(x){
         x.preventDefault();
-        contentDistence5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight;
+        contentDistence5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight + 1 + 'px';
         $('html, body').stop().animate({scrollTop : contentDistence5});
     });
 
@@ -515,9 +515,11 @@
             offset3 = $('#product-inquiry').offset().top - tabHeight - headerHeight;
             offset4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight;
             offset5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight;
+            tab = $('.boxTab3-wrap').offset().top - headerHeight;
 
         if($(document).scrollTop() >= offset1){
-            $('.product-tab li:nth-child(1)').addClass('on').siblings().removeClass('on')
+            $('.product-tab li:nth-child(1)').addClass('on').siblings().removeClass('on');
+            $('.fixed-buy').addClass('on');
         }
         if($(document).scrollTop() >= offset2){
             $('.product-tab li:nth-child(2)').addClass('on').siblings().removeClass('on')
@@ -530,6 +532,13 @@
         }
         if($(document).scrollTop() >= offset5){
             $('.product-tab li:nth-child(5)').addClass('on').siblings().removeClass('on')
+        }
+
+        if($(document).scrollTop() >= tab){
+            $('.fixed-buy').addClass('on');
+        }
+        if($(document).scrollTop() < tab){
+            $('.fixed-buy').removeClass('on');
         }
     });
 
