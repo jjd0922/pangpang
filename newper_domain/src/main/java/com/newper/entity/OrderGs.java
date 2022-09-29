@@ -30,6 +30,8 @@ public class OrderGs {
     @JoinColumn(name = "OG_SPO_IDX", referencedColumnName = "spoIdx")
     private ShopProductOption shopProductOption;
 
+    /** 결합 상품 그룹 {spoIdx}_{spoIdx}|{cnt}*/
+    private String ogSpo;
     private int ogPrice;
     private int ogPoint;
     private int ogMileage;

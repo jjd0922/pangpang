@@ -89,7 +89,9 @@ public class OrdersController {
         Payment payment = paymentService.savePaymentResult(ph_idx, response_str);
 
         if (payment.getPayState() == PayState.SUCCESS) {
-            mav.setViewName("redirect:/orders/result"+payment.getOrders().getOIdx());
+            mav.setViewName("redirect:/orders/result" + payment.getOrders().getOIdx());
+        }else if (payment.getPayState() == PayState.FAIL) {
+
         }else{
             throw new MsgException("결제 결과 확인 중입니다.");
         }
@@ -106,6 +108,12 @@ public class OrdersController {
         System.out.println(oCode);
 
 
+        return mav;
+    }
+    /** iamport 결제 js 페이지*/
+    @GetMapping("iamport")
+    public ModelAndView iamport(){
+        ModelAndView mav = new ModelAndView("orders/iamport");
         return mav;
     }
 }

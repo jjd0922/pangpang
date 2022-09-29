@@ -75,7 +75,7 @@ public class PaymentService {
 
                     } else if (status.equals("failed")) {
                         paymentHistory.setPhResult(PhResult.FAIL);
-
+                        payment.setPayState(PayState.FAIL);
                     }else if(status.equals("ready")){
 
 
