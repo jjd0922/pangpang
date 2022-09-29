@@ -28,10 +28,17 @@ public class ShopProductAdd {
     /** 필수 여부*/
     private boolean spaRequired;
 
-    @Builder.Default
-    private int spaCount = 1;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProductAdd", cascade = CascadeType.ALL)
     @OrderBy(value = "spoIdx asc")
     private List<ShopProductOption> shopProductOptionList;
+
+    /** spo 종속옵션 max depth 확인*/
+    public int maxSpoDepth(){
+        int maxDepth = 0;
+        for (ShopProductOption shopProductOption : getShopProductOptionList()) {
+            maxDepth = Math.max(maxDepth, shopProductOption.getSpoDepth());
+        }
+        return maxDepth;
+    }
+
 }

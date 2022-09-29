@@ -1,16 +1,21 @@
 package com.newper.controller.view;
 
+import com.newper.component.KakaoLogin;
 import com.newper.component.NaverLogin;
 import com.newper.component.NiceApi;
 import com.newper.component.ShopSession;
+import com.newper.constant.SaType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
-import com.newper.repository.SelfAuthRepo;
+import com.newper.entity.Customer;
+import com.newper.repository.CustomerRepo;
 import com.newper.service.SelfAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,8 +31,10 @@ public class CustomerController {
     ShopSession shopSession;
 
     private final NiceApi niceApi;
+    private final NaverLogin naverLogin;
+    private final KakaoLogin kakaoLogin;
     private final SelfAuthService selfAuthService;
-    private final SelfAuthRepo selfAuthRepo;
+    private final CustomerRepo customerRepo;
 
     /** auth - 회원가입 안내 */
     @GetMapping(value = "joinWelcome")
@@ -35,26 +42,44 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/joinWelcome");
         return mav;
     }
+    /** 아이디/비밀번호 찾기 */
+    @GetMapping(value = "findCustomer")
+    public ModelAndView findCustomer(){
+        ModelAndView mav = new ModelAndView("customer/findCustomer");
+        return mav;
+    }
+    /** 아이디/비밀번호 찾기 각 스텝 load*/
+    @PostMapping(value = "findCustomer/step/{type}.load")
+    public ModelAndView findCustomerStep(@PathVariable("type") String type, ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("customer/findCustomer_step :: " + type);
+        if(type.equals("findComplete")){
+            if(paramMap.containsKey("cuPw")){
+                mav.addObject("pwReset",true);
+            }else{
+                mav.addObject("pwReset",false);
+            }
+        }
+        return mav;
+    }
 
     /** auth - 회원가입 정보입력 */
     @GetMapping(value = "join")
     public ModelAndView join(){
         ModelAndView mav = new ModelAndView("customer/join");
-
         return mav;
     }
-    /** 나이스 본인 인증 팝업 띄우기*/
+    /** 나이스 본인 인증 팝업 띄우기(회원가입)*/
     @GetMapping(value = "auth/request")
     public ModelAndView authRequest(HttpServletRequest request){
         ModelAndView mav = new ModelAndView("customer/auth_request");
         // nice요청생성
-        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
-        Map<String, Object> niceReq = niceApi.getNiceSendData(callback);
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort()
+                        + "/customer/auth/response";
+        Long saIdx = selfAuthService.insertSa(SaType.JOIN);
+        Map<String, Object> niceReq = niceApi.getNiceSendData(callback, saIdx.toString());
         mav.addObject("data", niceReq);
-        // 요청정보 db insert
-        Long saIdx = selfAuthService.saveSelfAuth(niceReq);
-        AesEncrypt ae = new AesEncrypt();
-        shopSession.setSaIdx(ae.encryptRandom(saIdx.toString()));
+        // 요청정보 db update
+        selfAuthService.updateSaReq(saIdx, niceReq);
         return mav;
     }
     
@@ -66,7 +91,9 @@ public class CustomerController {
         Map<String, Object> niceReturn = niceApi.getNiceReturn(paramMap);
         mav.addObject("nice", niceReturn);
         // 요청정보 db update
-        selfAuthService.updateSelfAuth(niceReturn);
+        Long saIdx = selfAuthService.updateSaRes(niceReturn);
+        AesEncrypt aes = new AesEncrypt();
+        mav.addObject("saIdx", aes.encryptRandom(saIdx.toString()));
         return mav;
     }
     
@@ -79,43 +106,83 @@ public class CustomerController {
 
     /** 네이버 로그인 팝업*/
     @GetMapping(value = "auth/naver/request")
-    public ModelAndView naverRequest(HttpServletRequest request, NaverLogin naverLogin) {
+    public ModelAndView naverRequest(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_naver_request");
         // naver 요청 정보
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> req = naverLogin.request(callback);
         mav.addObject("naverReq", req);
-        // self_auth insert
-        Long saIdx = selfAuthService.saveSelfAuth(req);
-        AesEncrypt ae = new AesEncrypt();
-        shopSession.setSaIdx(ae.encryptRandom(saIdx.toString()));
         return mav;
     }
 
     /** 네이버 로그인 > 네이버 회원 profile 받아오기*/
-    @GetMapping(value = "auth/naver/access")
-    public ModelAndView naverAccess(ParamMap paramMap, HttpServletRequest request, NaverLogin naverLogin) {
-        ModelAndView mav = new ModelAndView("customer/auth_naver_access");
+    @GetMapping(value = "auth/naver/response")
+    public ModelAndView naverAccess(ParamMap paramMap, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("customer/auth_naver_response");
         // naver 응답 데이터
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> profile = naverLogin.getProfile(paramMap, callback);
-        mav.addObject("naverAcc", profile);
+        System.out.println("profile = " + profile);
+        // 기존 회원과 ci값 대조 후 로그인/회원가입 처리
 
-        // 요청정보 db update
-        selfAuthService.updateSelfAuth(profile);
         return mav;
     }
 
+    /** 카카오 로그인 팝업*/
     @GetMapping(value = "auth/kakao/request")
-    public ModelAndView kakaoRequest() {
+    public ModelAndView kakaoRequest(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_kakao_request");
+        // kakao 요청 정보
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> req = kakaoLogin.request(callback);
+        mav.addObject("req",req);
         return mav;
     }
 
+    /** 카카오 로그인 응답 */
     @GetMapping(value = "auth/kakao/response")
-    public ModelAndView kakaoResponse() {
+    public ModelAndView kakaoResponse(ParamMap paramMap, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("customer/auth_kakao_response");
+
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        Map<String, Object> res = kakaoLogin.getProfile(paramMap, callback);
+        System.out.println("res = " + res);
         return mav;
     }
-    
+
+    /** 나이스 본인 인증 팝업 띄우기(아이디/비밀번호찾기)*/
+    @GetMapping(value = {"auth/request/findId", "auth/request/findPw"})
+    public ModelAndView findIdReq(HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("customer/auth_request");
+        // nice요청생성
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
+        String uri = request.getRequestURI();
+        if (uri.contains("findId")) {
+            callback += "/customer/auth/response/findId";
+        } else if (uri.contains("findPw")) {
+            callback += "/customer/auth/response/findPw";
+        }
+        Long saIdx = selfAuthService.insertSa(SaType.FIND);
+        Map<String, Object> niceReq = niceApi.getNiceSendData(callback, saIdx.toString());
+        mav.addObject("data", niceReq);
+        // 요청정보 db update
+        selfAuthService.updateSaReq(saIdx, niceReq);
+        return mav;
+    }
+
+    /** 나이스 본인인증 응답(아이디찾기)*/
+    @GetMapping(value = "auth/response/findId")
+    public ModelAndView responseFindId(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("customer/auth_response_findId");
+        // nice 응답 데이터
+        Map<String, Object> res = niceApi.getNiceReturn(paramMap);
+        // 요청정보 db update
+        Long saIdx = selfAuthService.updateSaRes(res);
+
+        // ci값으로 회원 정보 찾기 (지금은 임시로 di로)
+        String di = res.get("DI").toString();
+        Customer customer = customerRepo.findByCuDi(di);
+        mav.addObject("customer", customer);
+        return mav;
+    }
 }

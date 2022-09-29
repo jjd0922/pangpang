@@ -1,21 +1,21 @@
 <!--썸네일 세로형 -->
-<th:block th:fragment="thumbnail-default">
+<th:block th:fragment="thumbnail-default(shopProduct)">
     <div class="thumbnail">
         <div class="item-img">
-            <a href="javascript:;">
+            <a th:href="@{|/shopProduct/${shopProduct?.spIdx}|}">
                 <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
             </a>
         </div>
 
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
                 <div class="buy-count color-blue">판매수 37</div>
             </div>
-            <div class="item-title"><a href="javascript:;">썸네일 기본형태 : 삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
+            <div class="item-title"><a th:href="@{|/shopProduct/${shopProduct?.spIdx}|}" th:text="${shopProduct?.spName}">썸네일 기본형태 : 삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
             <div class="item-color">
                 <span><span></span></span>
                 <span><span></span></span>
@@ -23,7 +23,7 @@
             </div>
             <div class="item-inner-wrap">
                 <div class="item-price">
-                    <p><span class="discount-price">359,000</span>원<span class="real-price">897,000</span></p>
+                    <p><span class="discount-price" th:text="${#numbers.formatInteger(shopProduct?.spMinPrice,0,'COMMA')}">359,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(shopProduct?.spMaxPrice,0,'COMMA')}">897,000</span></p>
                 </div>
                 <div class="discount-rate">57%</div>
             </div>
@@ -49,7 +49,7 @@
         <p>남은수량</p>
         <span>1개</span>
     </div>
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!--썸네일 세로형 + 베스트 아이콘 -->
@@ -58,7 +58,7 @@
     <!-- 11위부터 <i>태그 클래스명 best-down
     <i class="best-down"><span>01</span></i>
     -->
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!--썸네일 가로형 -->
@@ -68,8 +68,8 @@
             <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -116,8 +116,8 @@
                 <span class="time-remaining"><i></i>남은시간</span>
                 <span class="time-num">10 : 07 : 15</span>
             </div>
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -152,13 +152,11 @@
 <th:block th:fragment="thumbnail-lastSecond">
     <div class="thumbnail-lastSecond thumbnail-2">
         <div class="item-img">
-            <a href="javascript:;">
-                <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
-            </a>
+            <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -200,7 +198,7 @@
 
 <!-- 품절임박 썸네일2 -->
 <th:block th:fragment="thumbnail-lastSecond2">
-    <div th:replace="part/thumbnail :: thumbnail-default"></div>
+    <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
 </th:block>
 
 <!-- 신상입고 - 이벤트 썸네일 -->
@@ -212,8 +210,8 @@
             </a>
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -284,8 +282,8 @@
             <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -307,8 +305,8 @@
                 </div>
                 <div class="discount-rate">57%</div>
             </div>
-            <div class="btn btn5 itemGo-btn">
-                <a href="javascript:;">제품보러가기</a>
+            <div class="flex-center"><!--itemGo-btn-->
+                <a href="javascript:;" class="btn btn-point-outline btn-md radius-circle border-gray">제품보러가기　＞</a>
             </div>
         </div>
     </div>
@@ -323,8 +321,8 @@
             </a>
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>
@@ -399,8 +397,8 @@
             </a>
         </div>
         <div class="item-info">
-            <div class="item-inner-wrap item-bedge-wrap">
-                <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
                     <span class="item-condition item-conditionA-2">A급리퍼</span>
                     <span class="item-condition item-conditionB-1">스크래치</span>
                 </div>

@@ -72,6 +72,9 @@ public class ShopProduct extends BaseEntity {
         if(getSpState() == SpState.Y){
             LocalDateTime now = LocalDateTime.now();
 
+            if(spSellStartDate == null || spSellEndDate == null){
+                return true;
+            }
             LocalDateTime sellStart = LocalDateTime.of(getSpSellStartDate(), getSpSellStartTime());
             LocalDateTime sellEnd = LocalDateTime.of(getSpSellEndDate(), getSpSellEndTime());
             if(now.isAfter(sellStart) && now.isBefore(sellEnd)){

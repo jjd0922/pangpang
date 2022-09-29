@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.GRank;
+import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,7 +20,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GoodsStock{
+public class GoodsStock extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +72,10 @@ public class GoodsStock{
     private String gsSabang;
     private int gsDelPrice;
     private int gsDelPriceCancel;
+    @Builder.Default
+    private Map<String,Object> gsNaver = new HashMap<>();
+    @Builder.Default
+    private Map<String,Object> gsJson = new HashMap<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "goodsStock", cascade = CascadeType.DETACH)
     private List<ShopProductOption> shopProductOptionList;

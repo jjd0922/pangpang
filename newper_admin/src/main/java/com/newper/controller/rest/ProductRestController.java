@@ -193,13 +193,10 @@ public class ProductRestController {
     public ReturnMap productSave(ParamMap paramMap, MultipartFile P_THUMB_FILE1, MultipartFile P_THUMB_FILE2, MultipartFile P_THUMB_FILE3, MultipartFile P_THUMB_FILE4, MultipartFile P_THUMB_FILE5, MultipartFile P_THUMB_FILE6){
         ReturnMap rm = new ReturnMap();
 
-        Map<String, Object> map1 = new HashMap<>();
+
         Map<String, Object> map2 = new HashMap<>();
 
-        for(int i=1; i<10; i++){
-            map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
-        }
-        paramMap.put("P_NAVER", map1);
+
 
         List<Map<String,Object>> p_option = new ArrayList<>();
         for(int y=1; y<4; y++){
@@ -250,12 +247,8 @@ public class ProductRestController {
         ReturnMap rm = new ReturnMap();
         paramMap.put("P_IDX",P_IDX);
         System.out.println(paramMap.getMap());
-        Map<String, Object> map1 = new HashMap<>();
         Map<String, Object> map2 = new HashMap<>();
-        for(int i=1; i<10; i++){
-            map1.put("P_NAVER"+i, paramMap.get("P_NAVER"+i));
-        }
-        paramMap.put("P_NAVER", map1);
+
 
 
         List<Map<String,Object>> p_option = new ArrayList<>();
@@ -325,23 +318,40 @@ public class ProductRestController {
             rm.setMessage("판매채널(품목운영구분)을 선택해주세요.");
             return rm;
         }
-        System.out.println(paramMap.getMap());
+        String gsColor = paramMap.getString("GS_COLOR");
+        String[] color = gsColor.split(":");
         Map<String, Object> option = new HashMap<>();
-        option.put("OPTION1",paramMap.get("OPTION1"));
-        option.put("OPTION2",paramMap.get("OPTION2"));
-        option.put("OPTION3",paramMap.get("OPTION3"));
+        List<String> optList = new ArrayList<>();
+        optList.add(paramMap.get("OPTION1")+"");
+        optList.add(paramMap.get("OPTION2")+"");
+        optList.add(paramMap.get("OPTION3")+"");
+        option.put("option",optList);
+        if(color.length>1){
+            option.put("color_name",color[0]);
+            option.put("color_rgb",color[1]);
+        }else{
+            option.put("color_name","");
+            option.put("color_rgb","");
+        }
+
 
         paramMap.put("GS_OPTION", option);
         paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE", paramMap.get("GS_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE_CANCEL", paramMap.get("GS_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
-        System.out.println(paramMap.getMap());
-//        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
-//        if(res>0){
-//            rm.setMessage("저장되었습니다.");
-//        }else{
-//            rm.setMessage("잠시후 시도 해주세요.");
-//        }
+
+        Map<String, Object> map1 = new HashMap<>();
+        for(int i=1; i<10; i++){
+            map1.put("GS_NAVER"+i, paramMap.get("GS_NAVER"+i));
+        }
+        paramMap.put("GS_NAVER", map1);
+
+        int res = productService.goodsStockSave(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }else{
+            rm.setMessage("잠시후 시도 해주세요.");
+        }
         return rm;
     }
 
@@ -356,6 +366,14 @@ public class ProductRestController {
         paramMap.put("GS_PRICE", paramMap.get("GS_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE", paramMap.get("GS_DEL_PRICE").toString().replaceAll("[^0-9.]", ""));
         paramMap.put("GS_DEL_PRICE_CANCEL", paramMap.get("GS_DEL_PRICE_CANCEL").toString().replaceAll("[^0-9.]", ""));
+
+
+        Map<String, Object> map1 = new HashMap<>();
+        for(int i=1; i<10; i++){
+            map1.put("GS_NAVER"+i, paramMap.get("GS_NAVER"+i));
+        }
+        paramMap.put("GS_NAVER", map1);
+
         int res = productService.goodsStockUpdate(paramMap,GS_THUMB_FILE1,GS_THUMB_FILE2,GS_THUMB_FILE3);
         if(res>0){
             rm.setMessage("수정되었습니다.");
@@ -446,15 +464,15 @@ public class ProductRestController {
             String title = item.get("title")+"";
             title=title.replace("</b>","");
             title=title.replace("<b>","");
-            rm.put("P_NAVER1", item.get("lprice"));
-            rm.put("P_NAVER2", "Y");
-            rm.put("P_NAVER3", "UNKNOWN");
-            rm.put("P_NAVER4", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            rm.put("P_NAVER5", item.get("image"));
-            rm.put("P_NAVER6", title);
-            rm.put("P_NAVER7", "UNKNOWN");
-            rm.put("P_NAVER8", paramMap.get("P_MODEL"));
-            rm.put("P_NAVER9", "UNKNOWN");
+            rm.put("GS_NAVER1", item.get("lprice"));
+            rm.put("GS_NAVER2", "Y");
+            rm.put("GS_NAVER3", "UNKNOWN");
+            rm.put("GS_NAVER4", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            rm.put("GS_NAVER5", item.get("image"));
+            rm.put("GS_NAVER6", title);
+            rm.put("GS_NAVER7", "UNKNOWN");
+            rm.put("GS_NAVER8", paramMap.get("P_MODEL"));
+            rm.put("GS_NAVER9", "UNKNOWN");
         }catch (Exception e){}
 
 

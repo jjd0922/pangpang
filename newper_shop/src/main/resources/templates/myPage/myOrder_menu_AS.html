@@ -1,12 +1,13 @@
 <!-- 뉴퍼마켓 구매제품 AS 접수 -->
 <th:block th:fragment="newperAS">
+    <form id="asForm">
     <ul class="table font-xsm">
         <!-- 접수하실 상품 -->
         <li>
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
                 </div>
             </div>
         </li>
@@ -15,10 +16,10 @@
             <div class="table-title">이메일 주소</div>
             <div class="table-content">
                 <div class="input-email">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                    <input type="text" id="email" name="AS_MAIL1" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
-                    <input type="text" id="emailDomain" name="emailDomain" class="form-control">
-                    <select class="form-control">
+                    <input type="text" id="emailDomain" class="form-control">
+                    <select class="form-control" name="AS_MAIL2" >
                         <option value="직접입력">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
@@ -35,13 +36,12 @@
                     </select>
                 </div>
             </div>
-
         </li>
         <!-- 휴대전화 -->
         <li class="table-phone">
             <div class="table-title">휴대전화</div>
             <div class="table-content">
-                <select class="form-control">
+                <select class="form-control" name="AS_PHONE1">
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -50,17 +50,16 @@
                     <option value="019">019</option>
                 </select>
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="AS_PHONE2" value="" title="휴대폰번호 중간 네자리">
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
-
+                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="AS_PHONE3" value="" title="휴대폰번호 마지막 네자리">
             </div>
         </li>
         <!-- 내용작성 -->
         <li>
             <div class="table-title">내용작성</div>
             <div class="table-content">
-                <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                <textarea name="AS_MEMO" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
             </div>
         </li>
         <!-- 사진첨부 -->
@@ -69,7 +68,7 @@
             <div class="table-content fileAdd">
                 <label class="file-btn" for="file">사진 첨부하기
                 </label>
-                <input type="file" id="file" class="file-input">
+                <input type="file" id="file" class="file-input" name="AS_FILE">
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
                 <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
             </div>
@@ -89,19 +88,55 @@
     </div>
     <!-- 신청버튼 -->
     <div class="btn btn2 semi-bold shopping-btn">
-        <a href="javascript:;">AS 신청</a>
+        <a href="javascript:createAS();">AS 신청</a>
     </div>
+    </form>
+
+    <script>
+
+        function createAS(){
+            $.ajax({
+                url: 'myPage/createAS.ajax'
+                ,type:'post'
+                ,data:$('#asForm').serialize()
+                ,success:function(res){
+
+                }
+                ,error:function(){}
+            })
+        }
+
+
+
+
+
+        function openAsProductModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 
 <!-- 다른 온라인몰 구매제품 AS 접수 -->
 <th:block th:fragment="otherAS">
+    <form id="asForm2">
     <ul class="table font-xsm">
         <!-- 구매처 선택 -->
         <li>
             <div class="table-title">구매처</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">구매처 선택</a>
+                    <a onclick="openAsCompanyModal('otherAsCompanyModal')">구매처 선택</a>
                 </div>
             </div>
         </li>
@@ -109,7 +144,7 @@
         <li>
             <div class="table-title">이름</div>
             <div class="table-content">
-                <input type="text" id="receiverName" name="receiverName" class="form-control" maxlength="20" title="이름" placeholder="이름" value=""
+                <input type="text" id="receiverName" name="AS_NAME" class="form-control" maxlength="20" title="이름" placeholder="이름" >
             </div>
         </li>
         <!-- 이메일 주소 -->
@@ -117,10 +152,10 @@
             <div class="table-title">이메일 주소</div>
             <div class="table-content">
                 <div class="input-email">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="이메일">
+                    <input type="text" id="email" name="AS_MAIL1" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
-                    <input type="text" id="emailDomain" name="emailDomain" class="form-control">
-                    <select class="form-control">
+                    <input type="text" id="emailDomain"   class="form-control">
+                    <select class="form-control" name="AS_MAIL2">
                         <option value="직접입력">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
@@ -142,7 +177,7 @@
         <li class="table-phone">
             <div class="table-title">휴대전화</div>
             <div class="table-content">
-                <select class="form-control">
+                <select class="form-control" name="AS_PHONE1">
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -151,9 +186,9 @@
                     <option value="019">019</option>
                 </select>
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="HpNo2" value="" title="휴대폰번호 중간 네자리">
+                <input type="text" id="HpNo2" class="form-control" maxlength="4" name="AS_PHONE2" value="" title="휴대폰번호 중간 네자리">
                 <span>&nbsp;-&nbsp;</span>
-                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="HpNo3" value="" title="휴대폰번호 마지막 네자리">
+                <input type="text" id="HpNo3" class="form-control" maxlength="4" name="AS_PHONE3" value="" title="휴대폰번호 마지막 네자리">
 
             </div>
         </li>
@@ -162,7 +197,7 @@
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a href="javascript:;">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
                 </div>
             </div>
         </li>
@@ -170,7 +205,7 @@
         <li>
             <div class="table-title">내용작성</div>
             <div class="table-content">
-                <textarea name="asMessage" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
+                <textarea  name="AS_MEMO" class="asMessage form-control" placeholder="어떠한 부분이 이상이 있는지 구체적으로 작성해주시기 바랍니다."></textarea>
             </div>
         </li>
         <!-- 사진첨부 -->
@@ -179,7 +214,7 @@
             <div class="table-content fileAdd">
                 <label class="file-btn" for="file">사진 첨부하기
                 </label>
-                <input type="file" id="file" class="file-input">
+                <input type="file" id="file" class="file-input" name="AS_FILE">
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
                 <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
             </div>
@@ -199,8 +234,56 @@
     </div>
     <!-- 신청버튼 -->
     <div class="btn btn2 semi-bold shopping-btn">
-        <a href="javascript:;">AS 신청</a>
+        <a href="javascript:createAS2();">AS 신청</a>
     </div>
+    </form>
+    <script>
+        function openAsCompanyModal(modal){
+            $.ajax({
+                url: '/myPage/myOrder/as/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('.modalContent').empty();
+                    $('.modalContent').append(res);
+
+                    $('#commonModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+
+
+        function createAS2(){
+            $.ajax({
+                url: 'myPage/createAS2.ajax'
+                ,type:'post'
+                ,data:$('#asForm2').serialize()
+                ,success:function(res){
+
+                }
+                ,error:function(){}
+            })
+        }
+
+
+        function openAsProductModal(modal){
+    $.ajax({
+    url: '/myPage/myOrder/as/'+modal+'.load'
+    ,type:'post'
+    ,success:function(res){
+
+    $('.modalContent').empty();
+    $('.modalContent').append(res);
+
+    $('#commonModal').show();
+    }
+    ,error:function(){}
+    })
+    }
+    </script>
+
+
 </th:block>
 
 <!-- AS접수 현황조회 -->
@@ -332,4 +415,189 @@
             $('.receiptDetail-wrap').hide();
         })
     </script>
+</th:block>
+
+
+<!-- AS접수 상품선택 모달창 -->
+<th:block th:fragment="asProductModal">
+    <div class="asProductModal">
+        <h2>주문내역</h2>
+        <div class="table-wrap">
+            <!-- 테이블 -->
+            <ul class="table table3">
+                <!-- 주문번호 -->
+                <li>
+                    <div class="table-title semi-bold">주문번호</div>
+                    <div class="table-content display-flex space-between">
+                        <p class="font-xlg semi-bold">2022-08-07-36900</p>
+                        <p class="color-grey333">2022-08-10</p>
+                    </div>
+                </li>
+                <!-- 주문상품 -->
+                <li>
+                    <div class="table-title semi-bold">주문상품</div>
+                    <div class="table-content">
+                        <ul class="width-100">
+                            <!-- 상품 1 -->
+                            <li class="display-flex alignItems-center width-100">
+                                <input type="checkbox" class="custom-checkbox">
+                                <div class="display-flex alignItems-center width-100">
+                                    <div class="order-item-thumb as-item-thumb">
+                                        <a href="javascript:;">
+                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                            <p class="font-xsm color-grey999">001762984</p>
+                                        </a>
+                                    </div>
+                                    <div class="display-flex space-between width-100 alignItems-center">
+                                        <div class="order-item-info-wrap">
+                                            <div>
+                                                <a href="javascript:;">
+                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                        듀얼하드 윈10</h3>
+                                                </a>
+                                            </div>
+                                            <div class="font-xxsm order-item-info">
+                                                <p>옵션 : 없음</p>
+                                            </div>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>1개</p>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>600,000원</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <!-- 상품 2 -->
+                            <li class="display-flex alignItems-center width-100">
+                                <input type="checkbox" class="custom-checkbox">
+                                <div class="display-flex alignItems-center width-100">
+                                    <div class="order-item-thumb as-item-thumb">
+                                        <a href="javascript:;">
+                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                            <p class="font-xsm color-grey999">001762984</p>
+                                        </a>
+                                    </div>
+                                    <div class="display-flex space-between width-100 alignItems-center">
+                                        <div class="order-item-info-wrap">
+                                            <div>
+                                                <a href="javascript:;">
+                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                        듀얼하드 윈10</h3>
+                                                </a>
+                                            </div>
+                                            <div class="font-xxsm order-item-info">
+                                                <p>옵션 : 없음</p>
+                                            </div>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>1개</p>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>600,000원</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <!-- 기간 만료 테이블 class="expiration" 추가 -->
+            <ul class="table table3 expiration">
+                <!-- 주문번호 -->
+                <li>
+                    <div class="table-title semi-bold">주문번호</div>
+                    <div class="table-content display-flex space-between">
+                        <p class="font-xlg semi-bold">2022-08-07-36900</p>
+                        <p class="color-red">AS 기간만료</p>
+                    </div>
+                </li>
+                <!-- 주문상품 -->
+                <li>
+                    <div class="table-title semi-bold">주문상품</div>
+                    <div class="table-content">
+                        <ul class="width-100">
+                            <!-- 상품 1 -->
+                            <li class="display-flex alignItems-center width-100">
+                                <input type="checkbox" class="custom-checkbox">
+                                <div class="display-flex alignItems-center width-100">
+                                    <div class="order-item-thumb as-item-thumb">
+                                        <a href="javascript:;">
+                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                            <p class="font-xsm color-grey999">001762984</p>
+                                        </a>
+                                    </div>
+                                    <div class="display-flex space-between width-100 alignItems-center">
+                                        <div class="order-item-info-wrap">
+                                            <div>
+                                                <a href="javascript:;">
+                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                        듀얼하드 윈10</h3>
+                                                </a>
+                                            </div>
+                                            <div class="font-xxsm order-item-info">
+                                                <p>옵션 : 없음</p>
+                                            </div>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>1개</p>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>600,000원</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <!-- 상품 2 -->
+                            <li class="display-flex alignItems-center width-100">
+                                <input type="checkbox" class="custom-checkbox">
+                                <div class="display-flex alignItems-center width-100">
+                                    <div class="order-item-thumb as-item-thumb">
+                                        <a href="javascript:;">
+                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                            <p class="font-xsm color-grey999">001762984</p>
+                                        </a>
+                                    </div>
+                                    <div class="display-flex space-between width-100 alignItems-center">
+                                        <div class="order-item-info-wrap">
+                                            <div>
+                                                <a href="javascript:;">
+                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                        듀얼하드 윈10</h3>
+                                                </a>
+                                            </div>
+                                            <div class="font-xxsm order-item-info">
+                                                <p>옵션 : 없음</p>
+                                            </div>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>1개</p>
+                                        </div>
+                                        <div class="font-md semi-bold">
+                                            <p>600,000원</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <a onclick="alert('준비중!')">선택완료</a>
+    </div>
+
+
+</th:block>
+
+<th:block th:fragment="otherAsCompanyModal">
+    구매처 선택 모달창!
+    <br>
+    <button onclick="alert('준비중!')">선택완료</button>
 </th:block>

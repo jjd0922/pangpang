@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="part/head :: head('타임세일')">
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('타임세일')"></head>
+
 <body th:classappend="${@shopComp.getShopDesign()}">
+    <div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header"></th:block>
@@ -14,7 +15,7 @@
 <th:block th:replace="part/modal :: login-modal"></th:block>
 
 <!--페이지 타이틀 : -->
-<section th:insert="part/title :: pageImageTitle_2" class="padding-section page-title-padding"></section>
+<section th:insert="part/title :: pageImageTitle_2" class="padding-section padding-half"></section>
 
 <!--썸네일 목록 - 1열-->
 <section th:insert="part/thumbnailList :: thumbnailLayout_1" class="padding-section"></section>
@@ -28,5 +29,6 @@
 <!--js-->
 <th:block th:replace="part/js"></th:block>
 
+    </div>
 </body>
 </html>

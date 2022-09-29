@@ -6,17 +6,20 @@ import com.newper.constant.OLocation;
 import com.newper.constant.OState;
 import com.newper.exception.MsgException;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
@@ -64,7 +67,7 @@ public class Orders {
     private OCancelState oCancelState = OCancelState.NONE;
 
     private String oName;
-
+    private String oTel;
     private String oPhone;
 
     @Column(updatable = false)
@@ -74,13 +77,14 @@ public class Orders {
 
     private String oMemo;
 
+    /**<pre>
+     * spo : { spoIdx_spoIdx:cnt ...}
+     * </pre>*/
+    @Builder.Default
+    private Map<String,Object> oJson = new HashMap<>();
+
     @OneToMany(mappedBy = "ogIdx", cascade = CascadeType.ALL)
     private List<OrderGs> orderGs;
-
-    public void setPayment(Payment payment){
-        this.payment = payment;
-        payment.setOrders(this);
-    }
 
     @PrePersist
     @PreUpdate
@@ -100,6 +104,10 @@ public class Orders {
         if (getOLocation() == null){
             throw new MsgException("주문경로를 입력해주세요.");
         }
+
+        setOPhone((getOPhone()+"").replaceAll("[^0-9]", ""));
+        setOTel((getOTel()+"").replaceAll("[^0-9]", ""));
+
     }
     @PostPersist
     public void ordersCode(){
@@ -111,5 +119,10 @@ public class Orders {
     public String getOrderPaymentTitle(){
         List<OrderGs> orderGsList = getOrderGs();
         return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (orderGsList.size()-1)+"건";
+    }
+
+    public void setPayment(Payment payment){
+        this.payment = payment;
+        payment.setOrders(this);
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    @Value("${newper.domain}")
+    @Value("${newper.shop.domain}")
     private String adminDomain;
     @Autowired
     private SessionInfo sessionInfo;

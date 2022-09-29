@@ -11,6 +11,7 @@ import com.newper.repository.CompanyContractRepo;
 import com.newper.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -120,6 +121,13 @@ public class CompanyController {
     public ModelAndView insuranceDetail(@PathVariable Integer ciIdx) {
         ModelAndView mav = new ModelAndView("company/insurancePop");
         mav.addObject("insurance", companyInsuranceRepo.findInsuranceByCiIdx(ciIdx));
+        return mav;
+    }
+
+    /**거래처(입점사) 배송비 템플릿*/
+    @GetMapping("delivery")
+    public ModelAndView delivery(){
+        ModelAndView mav = new ModelAndView("company/company_delivery");
         return mav;
     }
 

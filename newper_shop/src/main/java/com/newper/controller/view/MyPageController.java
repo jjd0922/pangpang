@@ -1,8 +1,11 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
+import com.newper.entity.Customer;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.mapper.OrdersMapper;
+import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +28,9 @@ public class MyPageController {
     @Autowired
     private ShopSession shopSession;
 
+    private final CustomerRepo customerRepo;
+
+    private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
 
     /** 마이쇼핑 메뉴(최상위) load*/
@@ -38,6 +46,12 @@ public class MyPageController {
     public ModelAndView myOrderMenu(@PathVariable String menu){
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu :: " + menu);
 
+
+        mav.addObject("CU_IDX",shopSession.getIdx());
+        long cuIdx = shopSession.getIdx();
+        List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
+        mav.addObject("orders",list);
+        System.out.println("list = " + list);
         return mav;
     }
     /** 주문/배송조회 하위 메뉴 load */
@@ -164,6 +178,10 @@ public class MyPageController {
     @PostMapping("order/detail.load")
     public ModelAndView orderDetail(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_detail :: " + "orderDetail");
+
+//        System.out.println("shopSession = " + shopSession);
+//
+//        Customer customer = customerRepo.findByCuId(shopSession.getId());
 
         return mav;
     }

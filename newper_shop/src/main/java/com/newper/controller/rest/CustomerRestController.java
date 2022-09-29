@@ -1,14 +1,11 @@
 package com.newper.controller.rest;
 
-import com.newper.component.NiceApi;
-import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Customer;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,18 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/customer/")
 public class CustomerRestController {
 
-    @Autowired
-    private ShopSession shopSession;
-
     private final CustomerRepo customerRepo;
     private final CustomerService customerService;
-    private final NiceApi niceApi;
 
     @PostMapping("join.ajax")
     public ReturnMap join(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        customerService.join(paramMap);
-
+        Customer customer = customerService.join(paramMap);
+        customerService.login(customer.getCuId(), customer.getCuPw());
         rm.setLocation("/customer/joinComplete");
         return rm;
     }

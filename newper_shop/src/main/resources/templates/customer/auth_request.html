@@ -1,16 +1,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
-    <form name="nice_form" method="post">
+    <form name="nice_form" method="post" action="https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb">
         <input type="hidden" name="m" value="checkplusService">
         <input type="hidden" name="EncodeData" th:value="${data.sEncData}">
     </form>
 </body>
-<script th:inline="javascript">
-    window.name = "Parent_window";
-
-    window.onload = function () {
-        document.nice_form.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
-        document.nice_form.submit();
-    };
+<script>
+    document.nice_form.submit();
 </script>
 </html>

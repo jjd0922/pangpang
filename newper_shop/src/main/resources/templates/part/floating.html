@@ -1,5 +1,78 @@
 <!--플로팅-->
 <th:block th:fragment="main-floating">
+    <div class="floating-left">
+        <img src="https://dummyimage.com/105x320/eeeeee/777777" alt="좌측 플로팅 배너">
+    </div>
 
+    <div class="floating-right">
+        <div class="floating-top">
+            <p class="text-white">포토리뷰 쓰고 1만 포인트 받자!</p>
+        </div>
+        <div class="floating-thumb">
+            <p>최근 본 상품</p>
+            <div class="swiper swiper-floating">
+                <ul class="swiper-wrapper">
+                    <li class="swiper-slide">
+                        <a href="javascript:;">
+                            <img src="https://dummyimage.com/55x55/eeeeee/777777" alt="최근 본 상품">
+                        </a>
+                    </li>
+                    <li class="swiper-slide">
+                        <a href="javascript:;">
+                            <img src="https://dummyimage.com/55x55/333333/ffffff" alt="최근 본 상품">
+                        </a>
+                    </li>
+                </ul>
+                <div class="floating-prev">
+                    <img th:attr="src=@{/image/floating/prev.png},title='이전',alt='이전'">
+                </div>
+                <div class="floating-next">
+                    <img th:attr="src=@{/image/floating/next.png},title='다음',alt='다음'">
+                </div>
+            </div>
+        </div>
+        <div class="floating-mid">
+            <a href="javascript:;">회원혜택</a>
+            <a href="javascript:;">AS접수</a>
+            <a href="javascript:;">정품등록</a>
+            <a href="javascript:;">지점안내</a>
+        </div>
+        <div class="floating-sns">
+            <a href="https://pf.kakao.com/_hxhxijV" target="_blank">
+                <img th:attr="src=@{/image/floating/kakao.png},title='카카오톡',alt='카카오톡'">
+            </a>
+            <a href="https://blog.naver.com/dgreward" target="_blank">
+                <img th:attr="src=@{/image/floating/naverBlog.png},title='네이버블로그',alt='네이버블로그'">
+            </a>
+            <a href="https://www.instagram.com/newpermarket/" target="_blank">
+                <img th:attr="src=@{/image/floating/instagram.png},title='인스타그램',alt='인스타그램'">
+            </a>
+        </div>
+        <div class="floating-bottom">
+            <div class="upButton"><i class="float-up"></i></div>
+            <div class="downButton"><i class="float-down"></i></div>
+        </div>
+    </div>
+
+
+    <script>
+        $('.upButton').click(function(){
+            $('body, html').animate({scrollTop:0})
+        });
+        $('.downButton').click(function(){
+            $('body, html').animate({scrollTop:$(document).height()})
+        });
+
+
+        new Swiper('.swiper-floating', {
+            slidesPerView: 1,
+            speed:300,
+            navigation: {
+                prevEl: '.floating-prev',
+                nextEl: '.floating-next',
+            },
+        });
+
+    </script>
 </th:block>
 <!--플로팅 끝-->

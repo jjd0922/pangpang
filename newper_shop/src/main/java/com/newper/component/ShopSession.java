@@ -22,7 +22,6 @@ public class ShopSession implements Serializable {
     private Integer shopIdx;
 
     private boolean pwdCheck = false;
-    private String saIdx;
 
     public void login(Customer customer) {
         idx = customer.getCuIdx();

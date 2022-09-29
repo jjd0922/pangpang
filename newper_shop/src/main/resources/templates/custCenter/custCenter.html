@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="part/head :: head('고객센터')">
-</head>
+<head th:replace="part/head :: head('고객센터')"></head>
+
 <body th:classappend="${@shopComp.getShopDesign()}">
+    <div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header"></th:block>
@@ -17,7 +18,7 @@
 <th:block th:replace="part/modal :: common-modal"></th:block>
 
 <!--페이지 타이틀-->
-<section th:insert="part/title :: pageTitle('고객센터','')" class="padding-section page-title-padding"></section>
+<section th:insert="part/title :: pageTitle_main('고객센터')" class="padding-section page-title-padding"></section>
 
 <section class="padding-section">
     <div class="container">
@@ -96,7 +97,7 @@
     </div>
 </section>
 <!-- 고객센터 탭 메뉴 -->
-<section class="padding-section padding-none">
+<section class="padding-section padding-menu">
     <div class="container">
         <ul class="cc-menu-tab" id="custCenterTabMenu">
             <li onclick="openMenu('faq')" id="faq"><i class="cc-tab-icon1"></i>자주 묻는 질문</li>
@@ -127,6 +128,7 @@
 <!--js-->
 <th:block th:replace="part/js"></th:block>
 
+    </div>
 </body>
 
 <script>

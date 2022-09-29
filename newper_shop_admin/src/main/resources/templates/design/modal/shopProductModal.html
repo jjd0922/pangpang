@@ -13,7 +13,7 @@
                 </table>
                 <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                     <div class="btn-group">
-                        <a class="btn btn-sm btn-primary" onclick="selectAllEventProduct()">일괄추가</a>
+                        <a class="btn btn-sm btn-primary" onclick="selectAllProduct()">일괄추가</a>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
         initShopProductModalTable(shopIdx);
     }
     // 일괄추가(체크박스)
-    function selectAllEventProduct(){
+    function selectAllProduct(){
         var spIdx = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_IDX');
         var spState = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_STATE');
         var spName = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_NAME');
@@ -43,6 +43,7 @@
                 if($('input[name="spIdx"][value='+spIdx[i]+']').length > 0){
                 }else{
                     var tr='<tr>';
+                    tr+='<td><input type="number" name="msspOrder"></td>';
                     tr+='<td>'+spState[i]+'</td>';
                     tr+='<td><input type="hidden" name="spIdx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
                     tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+spIdx[i]+')">삭제</a></td>';
@@ -67,6 +68,7 @@
         }
 
         var tr='<tr>';
+        tr+='<td><input type="number" name="msspOrder"></td>';
         tr+='<td>'+dataMap.SP_STATE+'</td>';
         tr+='<td><input type="hidden" name="spIdx" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
         tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';

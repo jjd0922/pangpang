@@ -51,6 +51,26 @@
         ORDER BY MSSP_ORDER
     </select>
 
+    <select id="selectMainSectionBannerShopProductByMsIdx" resultType="map">
+        SELECT
+        MAIN_SECTION_SP.*
+        ,SP_IDX
+        ,SP_NAME
+        ,SP_STATE
+        FROM
+        MAIN_SECTION
+        ,MAIN_SECTION_SP
+        ,SHOP_PRODUCT
+        WHERE
+        MSSP_MS_IDX = MS_IDX
+        AND MSSP_SP_IDX = SP_IDX
+        AND MS_IDX = #{msIdx}
+        <if test="msspOrder != null and msspOrder != ''">
+            AND LEFT(MSSP_ORDER,1) = #{msspOrder}
+        </if>
+        ORDER BY MSSP_ORDER
+    </select>
+
     <insert id="insertMainSectionSp" parameterType="map">
         INSERT INTO MAIN_SECTION_SP
         (
@@ -76,11 +96,14 @@
             <if test="msspSpIdx != null and msspSpIdx !=''">
                 AND MSSP_SP_IDX = #{msspSpIdx}
             </if>
+            <if test="msspOrder != null and msspOrder !=''">
+                AND LEFT(MSSP_ORDER,1) = #{msspOrder}
+            </if>
     </delete>
 
     <select id="selectMainSectionMsJson" resultType="map">
         SELECT
-            if(MS_JSON!='',replace(JSON_EXTRACT(MS_JSON,'$.PRODUCT'),'"',''),'') PRODUCT
+            if(MS_JSON!='',replace(JSON_EXTRACT(MS_JSON,'$.DISPLAY_TYPE'),'"',''),'') DISPLAY_TYPE
         FROM
             MAIN_SECTION
         WHERE MS_IDX = #{msIdx}

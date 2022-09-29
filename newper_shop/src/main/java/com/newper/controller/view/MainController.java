@@ -109,16 +109,4 @@ public class MainController {
         ModelAndView mav = new ModelAndView("orderProcess/order");
         return mav;
     }
-    @GetMapping(value = "iamportTest")
-    public ModelAndView iamportTest(){
-        ModelAndView mav = new ModelAndView("iamport/payment");
-
-        mav.addObject("pgList", iamportMapper.selectIamportPgList());
-
-        List<Map<String, Object>> mm = iamportMapper.selectIamportMethodMap();
-        Map<Object, List<Map<String, Object>>> ippMap = mm.stream().collect(Collectors.groupingBy(map -> map.get("IPM_IPP_IDX")));
-        mav.addObject("pgMethod", ippMap);
-
-        return mav;
-    }
 }

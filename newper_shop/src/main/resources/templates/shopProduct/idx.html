@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="part/head :: head('상품상세')">
-</head>
+<head th:replace="part/head :: head('상품상세')"></head>
+
 <body th:classappend="${@shopComp.getShopDesign()}">
+  <div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header"></th:block>
@@ -102,8 +103,8 @@
         <!-- 상품 상태 & 남은 수량 & 업체상품 모두보기 -->
         <div class="prod-thumb-top">
           <div class="prod-thumb-top-left">
-            <div class="item-inner-wrap item-bedge-wrap">
-              <div class="item-bedge">
+            <div class="item-inner-wrap item-badge-wrap">
+              <div class="item-badge">
                 <span class="item-condition item-conditionA-2">A급리퍼</span>
                 <span class="item-condition item-conditionB-1">스크래치</span>
               </div>
@@ -168,10 +169,12 @@
         <ul class="prod-option font-sm">
           <li th:each="spa : ${sp.shopProductAddList}">
             <label th:text="${spa.spaName}">옵션명</label>
-            <select  th:spa_required="${spa.spaRequired}" onchange="selectSpo(this)">
-              <option value="">옵션 선택</option>
-              <option th:each="spo:${spoMap[__${spa.spaIdx}__]}" th:text="${spo.SPO_NAME}+' / '+${spo.SPO_PRICE_F}" th:value="${spo.SPO_IDX}" th:spo_price="${spo.SPO_PRICE}">옵션선택</option>
-            </select>
+            <th:block th:each="i : ${#numbers.sequence(1, spoMax[__${spa.spaIdx}__])}">
+              <select  th:spa_required="${spa.spaRequired}" onchange="selectSpo(this)">
+                <option value="">옵션 선택</option>
+                <option th:each="spo:${spoMap[__${spa.spaIdx}__]}" th:text="${spo.SPO_NAME}+' / '+${spo.SPO_PRICE_F}" th:value="${spo.SPO_IDX}" th:spo_price="${spo.SPO_PRICE}" th:if="${spo.SPO_DEPTH == i}">옵션선택</option>
+              </select>
+            </th:block>
           </li>
         </ul>
         <!-- 선택된 옵션가격 -->
@@ -186,12 +189,8 @@
         <!-- 바로구매, 장바구니, 찜하기 버튼 -->
         <div>
           <div class="prod-btn-group">
-            <div class="btn-blue">
-              <a href="javascript:orderSpo();">바로구매</a>
-            </div>
-            <div class="btn-white">
-              <a href="javascript:;">장바구니</a>
-            </div>
+            <a href="javascript:orderSpo();" class="btn btn-blue">바로구매</a>
+            <a href="javascript:;" class="btn btn-white">장바구니</a>
             <div class="prod-heart">
               <i class="heart"></i>
               <span>25</span>
@@ -707,6 +706,121 @@
   </section>
 
 
+  <!-- 상품상세 구매하기 하단 고정 -->
+  <section>
+      <div class="fixed-buy">
+        <div class="fixed-buy-top">
+          <div class="container">
+            <p><span class="bold">TODAY!</span> 2022년 8월 5일 금요일</p>
+            <p>현재 <span class="color-red">38개</span> 판매되고 <span class="color-red">25개</span> 남았어요!  지금 <span class="color-red">13분</span>이 관심을 보이고 있어요!</p>
+          </div>
+        </div>
+
+        <div class="fixed-buy-mid container">
+          <div class="fixed-buy-thumb">
+            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+          </div>
+          <div class="fixed-buy-info">
+            <!-- 상품명 -->
+            <div class="fixed-buy-title">
+              <h2>[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</h2>
+              <p>최종혜택가 <span class="color-red">339,000원</span></p>
+              <!-- 닫기 -->
+              <i class="close"></i>
+            </div>
+            <!-- 옵션상품 -->
+            <div class="fixed-buy-option">
+              <ul>
+                <li>
+                  <label>필수옵션상품</label>
+                  <select>
+                    <option>옵션 선택</option>
+                    <option>옵션선택</option>
+                  </select>
+                </li>
+                <li>
+                  <label>필수옵션상품</label>
+                  <select>
+                    <option>옵션 선택</option>
+                    <option>옵션선택</option>
+                  </select>
+                </li>
+                <li>
+                  <label>선택옵션상품</label>
+                  <select>
+                    <option>옵션 선택</option>
+                    <option>옵션선택</option>
+                  </select>
+                </li>
+                <li>
+                  <label>선택옵션상품</label>
+                  <select>
+                    <option>옵션 선택</option>
+                    <option>옵션선택</option>
+                  </select>
+                </li>
+              </ul>
+              <div>
+                <ul class="selected-option">
+                  <li>
+                    <p class="selected-option-title">[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</p>
+                    <div class="select-amount">
+                      <span class="amount-minus">-</span>
+                      <input type="text" name="-" value="1" size="5" readonly="">
+                      <span class="amount-plus">+</span>
+                    </div>
+                    <p class="selected-option-price">+ 0원</p>
+                    <i class="option-close"></i>
+                  </li>
+                  <li>
+                    <p class="selected-option-title">[이가격 마지막!!] 애플 아이패드 7세대 10.1 Wi-Fi 32GB 스페이스 그레이</p>
+                    <div class="select-amount">
+                      <span class="amount-minus">-</span>
+                      <input type="text" name="-" value="1" size="5" readonly="">
+                      <span class="amount-plus">+</span>
+                    </div>
+                    <p class="selected-option-price">+ 199,000원</p>
+                    <i class="option-close"></i>
+                  </li>
+                </ul>
+                <div>
+                  <p>총 상품 금액<span class="bold font-xxlg">339,000</span>원</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 버튼 -->
+        <div class="fixed-buy-bot container">
+          <div>
+            <a href="javascript:;" class="btn bnt2 fixed-cart-btn">장바구니</a>
+            <a href="javascript:;" class="btn bnt3 fixed-buy-btn">구매하기</a>
+            <div class="prod-heart">
+              <i class="heart"></i>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          $('.fixed-buy-btn').click(function() {
+            $('.fixed-buy .close').addClass('on');
+            $('.fixed-buy-option').addClass('on');
+            $('.fixed-cart-btn').addClass('on');
+            $('.fixed-buy-bot>div').addClass('on');
+
+          });
+          $('.fixed-buy .close').click(function() {
+            $(this).removeClass('on');
+            $('.fixed-buy .close').removeClass('on');
+            $('.fixed-buy-option').removeClass('on');
+            $('.fixed-cart-btn').removeClass('on');
+            $('.fixed-buy-bot>div').removeClass('on');
+          });
+        </script>
+
+      </div>
+    </section>
 
 
   <!-- 푸터 -->
@@ -719,6 +833,181 @@
   <th:block th:replace="part/js"></th:block>
 
 <script>
+  // 썸네일 확대 슬라이드
+  var prodThumbs = new Swiper('.prod-thumbList-swiper', {
+    spaceBetween: 10,
+    slidesPerView: 6,
+  });
+  new Swiper(".prod-thumb", {
+    thumbs: {
+      swiper: prodThumbs,
+    },
+    effect: "fade",
+    slides: false,
+  });
+
+  // 좋아요 클릭시 active
+  $('.good-wrap').click(function() {
+    $(this).toggleClass('on');
+  });
+
+  //탭 스크롤시 하단 외곽 추가
+  $(window).scroll(function(){
+    if($('.relatedProducts').length > 0){
+      var sectionHeight = $('.relatedProducts').outerHeight() + $('.relatedProducts').offset().top - $('header').outerHeight();
+
+      if ($(window).scrollTop() >= sectionHeight) {
+        $(".boxTab3-wrap").addClass("on");
+      } else {
+        $(".boxTab3-wrap").removeClass("on");
+      }
+    }
+  })
+
+  // 연관상품
+  new Swiper('.swiper-group1', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    breakpoints: {
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 0,
+        navigation: {
+          nextEl: '.swiper-group1-next',
+          prevEl: '.swiper-group1-prev',
+          disabledClass: 'btn-disabled',
+        },
+      },
+    },
+  });
+
+  // 상품상세 - 이 상품을 본 고객이 많이 본 다른 상품
+  new Swiper('.swiper-group2', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    breakpoints: {
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 25,
+        navigation: {
+          nextEl: '.swiper-group2-next',
+          prevEl: '.swiper-group2-prev',
+          disabledClass: 'btn-disabled',
+        },
+      },
+    },
+  });
+
+  // 상품상세 - 함께 구매하면 좋은 상품
+  new Swiper('.swiper-group3', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    breakpoints: {
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 35,
+        navigation: {
+          nextEl: '.swiper-group3-next',
+          prevEl: '.swiper-group3-prev',
+          disabledClass: 'btn-disabled',
+        },
+      },
+    },
+  });
+
+  // 상품상세 - 베스트 포토리뷰 슬라이드
+  new Swiper('.swiper-group4', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    breakpoints: {
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 25,
+        navigation: {
+          nextEl: '.swiper-group4-next',
+          prevEl: '.swiper-group4-prev',
+          disabledClass: 'btn-disabled',
+        },
+      },
+    },
+  });
+
+  // 상품 문의 제목 클릭 시 문의내용과 답변 보이기
+  $('.inquiry-title').click(function() {
+    $(this).toggleClass('on');
+    $(this).parent().children('.inquiry-content').toggle();
+  });
+
+  // 상품상세 탭 클릭 시 해당 영역으로 스크롤 이동
+  var productTab1 = $('.product-tab li:nth-child(1)'),
+          productTab2 = $('.product-tab li:nth-child(2)'),
+          productTab3 = $('.product-tab li:nth-child(3)'),
+          productTab4 = $('.product-tab li:nth-child(4)'),
+          productTab5 = $('.product-tab li:nth-child(5)'),
+          tabHeight = $('.product-tab').outerHeight();
+
+
+  productTab1.click(function(x){
+    x.preventDefault();
+    contentDistence1 = $('#product-detail').offset().top - tabHeight - headerHeight + 1 + 'px';
+    $('html, body').stop().animate({scrollTop : contentDistence1});
+  });
+  productTab2.click(function(x){
+    x.preventDefault();
+    contentDistence2 = $('#product-review').offset().top - tabHeight - headerHeight + 1 + 'px';
+    $('html, body').stop().animate({scrollTop : contentDistence2});
+  });
+  productTab3.click(function(x){
+    x.preventDefault();
+    contentDistence3 = $('#product-inquiry').offset().top - tabHeight - headerHeight + 1 + 'px';
+    $('html, body').stop().animate({scrollTop : contentDistence3});
+  });
+  productTab4.click(function(x){
+    x.preventDefault();
+    contentDistence4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight + 1 + 'px';
+    $('html, body').stop().animate({scrollTop : contentDistence4});
+  });
+  productTab5.click(function(x){
+    x.preventDefault();
+    contentDistence5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight + 1 + 'px';
+    $('html, body').stop().animate({scrollTop : contentDistence5});
+  });
+
+  /* 스크롤 위치에 따른 메뉴 현위치 표시 */
+  $(window).scroll(function(){
+
+    var offset1 = $('#product-detail').offset().top - tabHeight - headerHeight,
+            offset2 = $('#product-review').offset().top - tabHeight - headerHeight,
+            offset3 = $('#product-inquiry').offset().top - tabHeight - headerHeight,
+            offset4 = $('#product-deliveryInfo').offset().top - tabHeight - headerHeight,
+            offset5 = $('#product-refundInfo').offset().top - tabHeight - headerHeight,
+            tab = $('.boxTab3-wrap').offset().top - headerHeight;
+
+    if($(document).scrollTop() >= offset1){
+      $('.product-tab li:nth-child(1)').addClass('on').siblings().removeClass('on');
+      $('.fixed-buy').addClass('on');
+    }
+    if($(document).scrollTop() >= offset2){
+      $('.product-tab li:nth-child(2)').addClass('on').siblings().removeClass('on')
+    }
+    if($(document).scrollTop() >= offset3){
+      $('.product-tab li:nth-child(3)').addClass('on').siblings().removeClass('on')
+    }
+    if($(document).scrollTop() >= offset4){
+      $('.product-tab li:nth-child(4)').addClass('on').siblings().removeClass('on')
+    }
+    if($(document).scrollTop() >= offset5){
+      $('.product-tab li:nth-child(5)').addClass('on').siblings().removeClass('on')
+    }
+
+    if($(document).scrollTop() >= tab){
+      $('.fixed-buy').addClass('on');
+    }
+    if($(document).scrollTop() < tab){
+      $('.fixed-buy').removeClass('on');
+    }
+  });
+
   //옵션 선택
   function selectSpo(obj){
     if($(obj).attr('spa_required') == 'true'){
@@ -791,7 +1080,7 @@
 
   //옵션 수량 총 금액 계산
   function calSpo(){
-    var spoList = $('input[name^=spo');
+    var spoList = $('input[name^=spo]');
     if(spoList.length == 0 ){
       $('#spoTotalPrice').html('0');
     }else{
@@ -805,7 +1094,7 @@
   //선택 옵션 수량 변경
   function changeSpo(val, cnt){
     var cnt = Number($('input[name=spo'+val+']').val())+cnt;
-    if (cnt < 0) {
+    if (cnt < 1) {
       cnt = 1;
     }
     $('input[name=spo'+val+']').val(cnt);
@@ -822,8 +1111,7 @@
     }
   }
 </script>
-<script>
 
-</script>
+  </div>
 </body>
 </html>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="part/head :: head('회원가입 정보입력')">
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="part/head :: head('회원가입 정보입력')"></head>
+
 <body th:classappend="${@shopComp.getShopDesign()}">
+    <div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header-join"></th:block>
@@ -20,135 +21,132 @@
     </div>
 
     <form id="joinForm">
-    <ul class="join-table">
-        <!-- 아이디 -->
-        <li>
-            <div class="table-title font-md semi-bold">아이디<span class="color-red">&nbsp;*</span></div>
-            <div class="table-content">
-                <input type="text" id="joinID" name="cuId" class="form-control" maxlength="20" title="아이디" placeholder="이메일 형식" is-checked="false" checked-id="">
-                <div class="btn btn2">
-                    <a onclick="checkId()">중복확인</a>
+        <ul class="join-table">
+            <!-- 아이디 -->
+            <li>
+                <div class="table-title font-md semi-bold">아이디<span class="color-red">&nbsp;*</span></div>
+                <div class="table-content">
+                    <input type="text" id="joinID" name="cuId" class="form-control" maxlength="20" title="아이디" placeholder="이메일 형식" is-checked="false" checked-id="">
+                    <a onclick="checkId()" class="btn btn-point radius-small width-100">중복확인</a>
                 </div>
-            </div>
-        </li>
-        <!-- 비밀번호 -->
-        <li>
-            <div class="table-title font-md semi-bold">비밀번호<span class="color-red">&nbsp;*</span></div>
-            <div class="table-content joinPW-input-wrap">
-                <input type="password" class="form-control" id="joinPW" name="cuPw" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자" value="">
-                <input type="password" class="form-control" id="joinPWConfirm" name="cuPwConfirm" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인" value="">
-            </div>
-        </li>
-        <!-- 이름 -->
-        <li>
-            <div class="table-title font-md semi-bold">이름<span class="color-red">&nbsp;*</span></div>
-            <div class="table-content">
-                <input type="text" id="joinName" name="cuName" class="form-control" maxlength="20" title="이름" placeholder="휴대폰 본인인증하기를 클릭해 주세요." readonly>
-            </div>
-        </li>
-        <!-- 이메일 -->
-        <!--<li>
-            <div class="table-title font-md semi-bold">이메일<span class="color-red">&nbsp;*</span></div>
-            <div class="table-content joinEmail-input-wrap">
-                <div>
-                    <input type="text" id="joinEmail" name="email1" class="form-control" placeholder="이메일">
-                    <span class="at">@</span>
-                    <select class="form-control" id="domainSelector">
-                        <option value="">직접입력</option>
-                        <option value="naver.com">naver.com</option>
-                        <option value="daum.net">daum.net</option>
-                        <option value="hotmail.com">hotmail.com</option>
-                        <option value="nate.com">nate.com</option>
-                        <option value="yahoo.co.kr">yahoo.co.kr</option>
-                        <option value="paran.com">paran.com</option>
-                        <option value="empas.com">empas.com</option>
-                        <option value="dreamwiz.com">dreamwiz.com</option>
-                        <option value="lycos.co.kr">lycos.co.kr</option>
-                        <option value="korea.com">korea.com</option>
-                        <option value="gmail.com">gmail.com</option>
-                        <option value="hanmir.com">hanmir.com</option>
-                    </select>
+            </li>
+            <!-- 비밀번호 -->
+            <li>
+                <div class="table-title font-md semi-bold">비밀번호<span class="color-red">&nbsp;*</span></div>
+                <div class="table-content joinPW-input-wrap">
+                    <input type="password" class="form-control" id="joinPW" name="cuPw" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자" value="">
+                    <input type="password" class="form-control" id="joinPWConfirm" name="cuPwConfirm" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인" value="">
                 </div>
-                <input type="text" id="emailDomain" name="email2" class="form-control">
-            </div>
-        </li>-->
-        <!-- 휴대폰 번호 -->
-        <li class="phone">
-            <div class="table-title font-md semi-bold">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
-            <div class="table-content joinPhone-input-wrap">
-                <div>
-                    <input type="text" id="phone1" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 네자리" readonly>
-                    <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="phone2" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리" readonly>
-                    <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="phone3" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리" readonly>
+            </li>
+            <!-- 이름 -->
+            <li>
+                <div class="table-title font-md semi-bold">이름<span class="color-red">&nbsp;*</span></div>
+                <div class="table-content">
+                    <input type="text" id="joinName" name="cuName" class="form-control" maxlength="20" title="이름" placeholder="휴대폰 본인인증하기를 클릭해 주세요." readonly>
                 </div>
-                <div class="btn btn6">
-                    <a href="javascript:fnPopup();">휴대폰 인증번호 받기</a>
+            </li>
+            <!-- 이메일 -->
+            <!--<li>
+                <div class="table-title font-md semi-bold">이메일<span class="color-red">&nbsp;*</span></div>
+                <div class="table-content joinEmail-input-wrap">
+                    <div>
+                        <input type="text" id="joinEmail" name="email1" class="form-control" placeholder="이메일">
+                        <span class="at">@</span>
+                        <select class="form-control" id="domainSelector">
+                            <option value="">직접입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hotmail.com">hotmail.com</option>
+                            <option value="nate.com">nate.com</option>
+                            <option value="yahoo.co.kr">yahoo.co.kr</option>
+                            <option value="paran.com">paran.com</option>
+                            <option value="empas.com">empas.com</option>
+                            <option value="dreamwiz.com">dreamwiz.com</option>
+                            <option value="lycos.co.kr">lycos.co.kr</option>
+                            <option value="korea.com">korea.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="hanmir.com">hanmir.com</option>
+                        </select>
+                    </div>
+                    <input type="text" id="emailDomain" name="email2" class="form-control">
+                </div>
+            </li>-->
+            <!-- 휴대폰 번호 -->
+            <li class="phone">
+                <div class="table-title font-md semi-bold">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
+                <div class="table-content joinPhone-input-wrap">
+                    <div>
+                        <input type="text" id="phone1" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 네자리" readonly>
+                        <span>&nbsp;-&nbsp;</span>
+                        <input type="text" id="phone2" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리" readonly>
+                        <span>&nbsp;-&nbsp;</span>
+                        <input type="text" id="phone3" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리" readonly>
+                    </div>
+                    <a href="javascript:fnPopup();" class="btn btn-dark-gray radius-small width-100">휴대폰 인증번호 받기</a>
                     <input type="hidden" name="saIdx" id="saIdx">
                 </div>
+            </li>
+            <!-- 추천인 -->
+            <li>
+                <div class="table-title font-md semi-bold">추천인</div>
+                <div class="table-content recommender">
+                    <input type="text" id="recommender" name="cuRecommender" class="form-control" maxlength="20" title="추천인" placeholder="(선택) 추천인 아이디 입력">
+                </div>
+            </li>
+        </ul>
+        <div class="consent">
+            <div>
+                <input type="checkbox" id="allConsent" class="custom-checkbox" name="" value="">
+                <label for="allConsent"><span class="bold font-sm">전체동의</span><span class="color-grey999 font-xxsm">&nbsp;(선택 정보 포함)</span></label>
             </div>
-        </li>
-        <!-- 추천인 -->
-        <li>
-            <div class="table-title font-md semi-bold">추천인</div>
-            <div class="table-content recommender">
-                <input type="text" id="recommender" name="cuRecommender" class="form-control" maxlength="20" title="추천인" placeholder="(선택) 추천인 아이디 입력">
-            </div>
-        </li>
-    </ul>
-    <div class="join-consent">
-        <div>
-            <input type="checkbox" id="allConsent" class="custom-checkbox" name="" value="">
-            <label for="allConsent"><span class="bold font-sm">전체동의</span><span class="color-grey999 font-xxsm">&nbsp;(선택 정보 포함)</span></label>
-        </div>
-        <div>
-            <p>
-                <input type="checkbox" id="joinConsent1" class="custom-checkbox" name="" attr="agree" opt="essential">
-                <label for="joinConsent1">[필수] 만 14세 이상</label>
-            </p>
-            <p>
-                <input type="checkbox" id="joinConsent2" class="custom-checkbox" name="" attr="agree" opt="essential">
-                <label for="joinConsent2">[필수] 이용 약관 동의</label>
-            </p>
-            <p>
-                <input type="checkbox" id="joinConsent3" class="custom-checkbox" name="" attr="agree" opt="essential">
-                <label for="joinConsent3">[필수] 개인정보 처리방침 동의</label>
-            </p>
-            <p>
-                <input type="checkbox" id="joinConsent4" class="custom-checkbox" name="" attr="agree" opt="essential">
-                <label for="joinConsent4">[필수] 개인정보 제공 동의</label>
-            </p>
-            <p>
-                <input type="checkbox" id="joinConsent5" class="custom-checkbox" attr="agree">
-                <label for="joinConsent5">[선택] 쇼핑혜택 및 광고성 정보 수신동의</label>
-            </p>
             <div>
                 <p>
-                    <input type="checkbox" id="joinSMS-check" class="custom-checkbox" name="cuMarketingSms" value="" attr="agree" opt="opt">
-                    <label for="joinSMS-check">SMS</label>
+                    <input type="checkbox" id="joinConsent1" class="custom-checkbox" name="" attr="agree" opt="essential">
+                    <label for="joinConsent1">[필수] 만 14세 이상</label>
                 </p>
                 <p>
-                    <input type="checkbox" id="joinEmail-check" class="custom-checkbox" name="cuMarketingMail" value="" attr="agree" opt="opt">
-                    <label for="joinEmail-check">이메일</label>
+                    <input type="checkbox" id="joinConsent2" class="custom-checkbox" name="" attr="agree" opt="essential">
+                    <label for="joinConsent2">[필수] 이용 약관 동의</label>
                 </p>
+                <p>
+                    <input type="checkbox" id="joinConsent3" class="custom-checkbox" name="" attr="agree" opt="essential">
+                    <label for="joinConsent3">[필수] 개인정보 처리방침 동의</label>
+                </p>
+                <p>
+                    <input type="checkbox" id="joinConsent4" class="custom-checkbox" name="" attr="agree" opt="essential">
+                    <label for="joinConsent4">[필수] 개인정보 제공 동의</label>
+                </p>
+                <p>
+                    <input type="checkbox" id="joinConsent5" class="custom-checkbox" attr="agree">
+                    <label for="joinConsent5">[선택] 쇼핑혜택 및 광고성 정보 수신동의</label>
+                </p>
+                <div>
+                    <p>
+                        <input type="checkbox" id="joinSMS-check" class="custom-checkbox" name="cuMarketingSms" value="" attr="agree" opt="opt">
+                        <label for="joinSMS-check">SMS</label>
+                    </p>
+                    <p>
+                        <input type="checkbox" id="joinEmail-check" class="custom-checkbox" name="cuMarketingMail" value="" attr="agree" opt="opt">
+                        <label for="joinEmail-check">이메일</label>
+                    </p>
+                </div>
+            </div>
+            <div class="join-button-group">
+                <div class="btn btn3 semi-bold">
+                    <a href="/">취소</a>
+                </div>
+                <div class="btn btn2 semi-bold">
+                    <a onclick="joinComplete()">가입완료</a>
+                </div>
             </div>
         </div>
-        <div class="join-button-group">
-            <div class="btn btn3 semi-bold">
-                <a href="/">취소</a>
-            </div>
-            <div class="btn btn2 semi-bold">
-                <a onclick="joinComplete()">가입완료</a>
-            </div>
-        </div>
-    </div>
     </form>
 </div>
 
 <!--js-->
 <th:block th:replace="part/js"></th:block>
 
+    </div>
 </body>
 <script language='javascript'>
     window.name ="Parent_window";
@@ -245,12 +243,10 @@
                 if (res.data.result) {
                     id.attr('is-checked',true);
                     id.attr('checked-id', id.val());
-                    alert(res.message);
                     $('#joinPW').focus();
                 } else {
                     id.attr('is-checked',false);
                     id.attr('checked-id', '');
-                    alert(res.message);
                     id.focus();
                 }
             }

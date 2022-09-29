@@ -1,30 +1,41 @@
-<!--페이지 타이틀 1-->
+<!--페이지 타이틀 : 기본-->
 <th:block th:fragment="pageTitle(pageMainTitle,pageSubTitle)">
     <div class="container">
-        <div>
-            <h2 class="section-title" th:text="${pageMainTitle}">페이지 타이틀</h2>
-            <p class="section-sub-title" th:text="${pageSubTitle}">페이지 서브 타이틀</p>
+        <div class="page-title color-title text-center">
+            <h1 class="font-weight-600" th:text="${pageMainTitle}">페이지 타이틀</h1>
+            <p class="page-sub-title" th:text="${pageSubTitle}">페이지 서브 타이틀</p>
         </div>
     </div>
 </th:block>
 
-<!--페이지 타이틀 2-->
+<!--페이지 타이틀 : 메인 타이틀만-->
+<th:block th:fragment="pageTitle_main(pageMainTitle)">
+    <div class="container">
+        <div class="page-title color-title text-center">
+            <h1 class="font-weight-600" th:text="${pageMainTitle}">페이지 타이틀</h1>
+        </div>
+    </div>
+</th:block>
+
+<!--페이지 타이틀 : 주문 프로세스-->
 <th:block th:fragment="pageTitle_2(pageMainTitle)">
     <div class="container">
-        <h2 class="section-title2" th:text="${pageMainTitle}">페이지 타이틀</h2>
-        <th:block th:replace="part/menu :: cart-breadcrumb"></th:block>
+        <div class="page-title color-title flex-between">
+            <h1 class="font-weight-500" th:text="${pageMainTitle}">페이지 타이틀</h1>
+            <th:block th:replace="part/menu :: cart-breadcrumb"></th:block>
+        </div>
     </div>
 </th:block>
 
 <!--페이지 이미지 타이틀 1-->
 <th:block th:fragment="pageImageTitle_1">
     <div class="container">
-        <div class="page-title">
-            <h2 class="section-title">
+        <div class="page-title color-title text-center">
+            <h1 class="">
                 <div class="title-img">
                     <img img th:attr="src=@{/image/lastSecond-title.gif},title='품절임박',alt='품절임박'">
                 </div>
-            </h2>
+            </h1>
         </div>
     </div>
 </th:block>
@@ -32,12 +43,12 @@
 <!--페이지 이미지 타이틀 2-->
 <th:block th:fragment="pageImageTitle_2">
     <div class="container">
-        <div class="page-title">
-            <h2 class="section-title">
+        <div class="page-title color-title text-center">
+            <h1 class="">
                 <div class="title-img">
                     <img th:attr="src=@{/image/timeSale-title.gif},title='품절임박',alt='품절임박'">
                 </div>
-            </h2>
+            </h1>
         </div>
     </div>
 </th:block>

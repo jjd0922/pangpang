@@ -41,37 +41,57 @@ body.no-scroll {
 /* font */
 @font-face {
     font-family: 'Pretendard';
+    src: local('Pretendard Bold'), 
+        url('../font/woff2-subset/Pretendard-Bold.woff2') format('woff2'), 
+        url('../font/woff-subset/Pretendard-Bold.woff') format('woff');
     font-weight: 700;
+    font-style: normal;
     font-display: swap;
-    src: local('Pretendard Bold'), url('../font/woff2/Pretendard-Bold.woff2') format('woff2'), url('../font/woff/Pretendard-Bold.woff') format('woff');
 }
-
 @font-face {
     font-family: 'Pretendard';
+    src: local('Pretendard SemiBold'), 
+        url('../font/woff2-subset/Pretendard-SemiBold.woff2') format('woff2'), 
+        url('../font/woff-subset/Pretendard-SemiBold.woff') format('woff');
     font-weight: 600;
+    font-style: normal;
     font-display: swap;
-    src: local('Pretendard SemiBold'), url('../font/woff2/Pretendard-SemiBold.woff2') format('woff2'), url('../font/woff/Pretendard-SemiBold.woff') format('woff');
 }
-
 @font-face {
     font-family: 'Pretendard';
+    src: local('Pretendard Medium'), 
+        url('../font/woff2-subset/Pretendard-Medium.woff2') format('woff2'), 
+        url('../font/woff-subset/Pretendard-Medium.woff') format('woff');
     font-weight: 500;
+    font-style: normal;
     font-display: swap;
-    src: local('Pretendard Medium'), url('../font/woff2/Pretendard-Medium.woff2') format('woff2'), url('../font/woff/Pretendard-Medium.woff') format('woff');
 }
-
 @font-face {
     font-family: 'Pretendard';
+    src: local('Pretendard Regular'), 
+        url('../font/woff2-subset/Pretendard-Regular.woff2') format('woff2'), 
+        url('../font/woff-subset/Pretendard-Regular.woff') format('woff');
     font-weight: 400;
+    font-style: normal;
     font-display: swap;
-    src: local('Pretendard Regular'), url('../font/woff2/Pretendard-Regular.woff2') format('woff2'), url('../font/woff/Pretendard-Regular.woff') format('woff');
 }
-
 @font-face {
     font-family: 'Pretendard';
+    src: local('Pretendard Light'), 
+        url('../font/woff2-subset/Pretendard-Light.woff2') format('woff2'), 
+        url('../font/woff-subset/Pretendard-Light.woff') format('woff');
     font-weight: 300;
+    font-style: normal;
     font-display: swap;
-    src: local('Pretendard Light'), url('../font/woff2/Pretendard-Light.woff2') format('woff2'), url('../font/woff/Pretendard-Light.woff') format('woff');
+}
+@font-face {
+    font-family: 'Pretendard';
+    src: local('Pretendard Thin'),
+        url('../font/woff2-subset/Pretendard-Thin.woff2') format('woff2'),
+        url('../font/woff-subset/Pretendard-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
 }
 
 .font-xxxlg {
@@ -130,43 +150,67 @@ body.no-scroll {
         font-size: 11px;
     }
 }
-.bold {
-    font-weight: 600;
+/* =================================
+    font weight
+================================= */
+.thin,
+.font-weight-100 {
+   font-weight: 100 !important;
 }
-.semi-bold {
-    font-weight: 500;
+.light,
+.font-weight-300 {
+   font-weight: 300 !important;
 }
-.medium {
-    font-weight: 400;
+.normal,
+.font-weight-400 {
+   font-weight: 400 !important;
 }
-.light {
-    font-weight: 300;
+.semi-bold,
+.font-weight-500 {
+   font-weight: 500 !important;
 }
-
-.color-blue {
-    color: #314ad7!important;
+.bold,
+.font-weight-600 {
+   font-weight: 600 !important;
 }
-.color-indigo {
-    color: #3c64a0!important;
+.extra-bold,
+.font-weight-700 {
+   font-weight: 700 !important;
 }
-.color-red {
-     color: #ff0000!important;
- }
-.color-grey999 {
-    color: #999!important;
+@media (max-width:991px) {
+    .sm-thin,
+    .sm-font-weight-100 {
+       font-weight: 100 !important;
+    }
+    .sm-light,
+    .sm-font-weight-300 {
+       font-weight: 300 !important;
+    }
+    .sm-normal,
+    .sm-font-weight-400 {
+       font-weight: 400 !important;
+    }
+    .sm-semi-bold,
+    .sm-font-weight-500 {
+       font-weight: 500 !important;
+    }
+    .sm-bold,
+    .sm-font-weight-600 {
+       font-weight: 600 !important;
+    }
+    .sm-extra-bold,
+    .sm-font-weight-700 {
+       font-weight: 700 !important;
+    }
 }
-.color-grey666 {
-    color: #666!important;
+.text-left {
+    text-align: left;
 }
-.color-grey333 {
-    color: #333!important;
+.text-center {
+    text-align: center;
 }
-.color-purple {
-    color: #3a4570;
-}
-
-.bg-light-grey {
-    background-color: #f7f7f7;
+.text-right {
+    text-align: right;
 }
 
 .opacity-8 {
@@ -200,7 +244,7 @@ body.no-scroll {
     }
 }
 
-.section-title .title-img {
+.title-img {
     width: 365px;
     height: auto;
     margin: 0 auto;
@@ -261,15 +305,15 @@ body.no-scroll {
 }
 /* 새상품 */
 .item-conditionA-1 {
-    color: #314ad7;
+    color: var(--scPoint);
     background-color: #fff;
-    border: 1px solid #314ad7;
+    border: 1px solid var(--scPoint);
 }
 /* A급리퍼 */
 .item-conditionA-2 {
     color: #fff;
-    background-color: #314ad7;
-    border: 1px solid #314ad7;
+    background-color: var(--scPoint);
+    border: 1px solid var(--scPoint);
 }
 /* 박스개봉 */
 .item-conditionA-3 {
@@ -399,7 +443,7 @@ header {
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid #314ad7;
+    border: 1px solid var(--scPoint);
     border-radius: 30px;
     z-index: 9999;
     background-color: #fff;
@@ -494,13 +538,13 @@ header {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 1px solid #314ad7;
-    color: #314ad7;
+    border: 1px solid var(--scPoint);
+    color: var(--scPoint);
     font-weight: 500;
     margin-right: 20px;
 }
 .top-ranking {
-    background-color: #314ad7;
+    background-color: var(--scPoint);
     color: #fff;
 }
 .suggestion-searchWord>ul {
@@ -532,10 +576,10 @@ header {
     align-items: center;
 }
 .userMenu ul li>a.color-blue {
-    color: #314ad7;
+    color: var(--scPoint);
 }
 .userMenu ul li:hover >a {
-    color: #314ad7;
+    color: var(--scPoint);
 }
 .userMenu ul li:last-child>a {
     padding: 0 0 0 20px;
@@ -612,11 +656,12 @@ nav {
     align-items: center;
     padding-left: 35px;
     cursor: pointer;
-    background-color: #314ad7;
+    background-color: var(--scPoint);
     color: #fff;
 }
 .menu-btn-wrap>p {
     text-indent: 20px;
+    color: #ffffff !important;
 }
 .swiper-gnb {
     width: calc(100% - 410px);
@@ -700,105 +745,6 @@ nav .gnb-ctg-all {
     top: 100%;
     left: var(--ctg-all-width);
     display: none;
-}
-
-
-
-/* button */
-.button {
-    width: 100%;
-    border-radius: 5px;
-    box-sizing: border-box;
-    text-align: center;
-    font-size: 16px;
-    margin: 10px 0;
-}
-.button a {
-    display: inline-block;
-    padding: 13px 0 13px;
-    width: 100%;
-    height: 100%;
-}
-.button-bgBlue {
-    background-color: #314ad7;
-}
-.button-bgBlue a {
-    color: #fff;
-}
-.button-blue {
-    background-color: #fff;
-    border: 1px solid #314ad7;
-}
-.button-blue a {
-    color: #314ad7;
-}
-.button-grey {
-    background-color: #fff;
-    border: 1px solid #666;
-}
-.button-grey a {
-    color: #666;
-}
-/*.btn {
-    display: flex;
-    justify-content: center;
-}*/
-.btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: normal;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-      touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-}
-.btn2 a, .btn3 a, .btn4 a, .btn8 a {
-    border-radius: 50px;
-    padding: 5px 0;
-    width: 132px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.btn2 a, .btn-point {
-    background-color: #314ad7;
-    color: #fff;
-}
-.btn3 a, .btn-point-outline {
-    color: #314ad7;
-    border: 1px solid #314ad7;
-}
-.btn4 a, .btn-gray {
-    background-color: #eaeef4;
-    color: #3a4570;
-}
-.btn5 a, .btn-gray-outline {
-    background-color: #f2f5f7;
-    padding: 7px 20px;
-    border: 1px solid #d1d1d1;
-    display: flex;
-    align-items: center;
-    border-radius: 30px;
-}
-.btn6 a, .btn7 a {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    border-radius: 6px;
-}
-.btn6 a {
-    background-color: #8c8c8c;
-    height: 48px;
 }
 
 /* new - 아이콘 */
@@ -1175,7 +1121,7 @@ nav .gnb-ctg-all {
     border-bottom: 2px solid var(--scBlack);
 }
 .ctg-tab>li:hover span {
-    color: #314ad7;
+    color: var(--scPoint);
 }
 .ctg-tab>li:hover img {
     transform: scale(1.25);
@@ -1212,7 +1158,7 @@ nav .gnb-ctg-all {
     height: 45px;
 }*/
 
-.ctg-tab-menu {
+/*.ctg-tab-menu {
     background: url("../image/menu-btn-blue.png") no-repeat center/25px 15px;
 }
 .ctg-tab-icon1 {
@@ -1241,14 +1187,14 @@ nav .gnb-ctg-all {
 }
 .ctg-tab-icon9 {
     background: url("../image/category-icon9.png") no-repeat center/contain;
-}
+}*/
 
-.ctg-tab-content>li {
+/*.ctg-tab-content>li {
     display: none;
 }
 .ctg-tab-content>li.on {
     display: block;
-}
+}*/
 
 .ctg-tab-content .item-img a {
     display: inline-flex;
@@ -1405,7 +1351,7 @@ footer {
     display: flex;
 }
 .center-tell p {
-    color:#314ad7;
+    color:var(--scPoint);
     font-size: 33px;
     font-weight: 700;
 }
@@ -1418,7 +1364,7 @@ footer {
     color: #666;
 }
 .simpleCheck {
-    color: #314ad7;
+    color: var(--scPoint);
     font-weight: 400;
 }
 .triangle {
@@ -1492,29 +1438,32 @@ footer {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    padding: 50px;
-}
-
-.flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.flex-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.flex-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 20px;
 }
 
 .display-flex {
     display: flex;
+}
+.display-inline-flex {
+    display: inline-flex;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.flex-right {
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
 }
 .flex-column {
     flex-direction: column;
@@ -1537,3 +1486,12 @@ footer {
 .mt-30 {
     margin-top: 30px;
 }
+.mt-45 {
+    margin-top: 45px;
+}
+.mb-5 {
+    margin-bottom: 5px;
+}
+.mb-10 {
+     margin-bottom: 10px;
+ }

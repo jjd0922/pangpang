@@ -1,13 +1,21 @@
 package com.newper.controller.view;
 
+import com.newper.component.ShopSession;
 import com.newper.constant.PayState;
+import com.newper.dto.OrdersSpoDTO;
 import com.newper.dto.ParamMap;
+import com.newper.entity.Customer;
 import com.newper.entity.Payment;
+import com.newper.entity.ShopProduct;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
+import com.newper.mapper.IamportMapper;
+import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopProductOptionRepo;
 import com.newper.service.PaymentService;
+import com.newper.service.ShopProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,34 +23,51 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @RequestMapping(value = "/orders/")
 @Controller
 @RequiredArgsConstructor
 public class OrdersController {
 
+    @Autowired
+    private ShopSession shopSession;
+
     private final PaymentService paymentService;
-    private final ShopProductOptionRepo shopProductOptionRepo;
+    private final IamportMapper iamportMapper;
+    private final ShopProductService shopProductService;
+    private final CustomerRepo customerRepo;
 
     /** 주문 결제 페이지*/
     @PostMapping("")
     public ModelAndView orders(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("orders/orders");
 
-        for (String key : paramMap.keySet()) {
-            if (key.indexOf("spo") == 0) {
+        Map<ShopProduct, List<OrdersSpoDTO>> shopProductListMap = shopProductService.selectOrdersInfo(paramMap);
+        mav.addObject("spMap", shopProductListMap);
 
-                System.out.println(key);
-                System.out.println(key.substring(3));
-
-                String[] spos = key.substring(3).split("_");
-                for (String spo : spos) {
-                    System.out.print("spo==  ");
-                    System.out.println(spo);
-                }
-
-                System.out.println(paramMap.get(key));
+        int totalCnt = 0;
+        int totalPrice = 0;
+        for (List<OrdersSpoDTO> dtoList : shopProductListMap.values()) {
+            for (OrdersSpoDTO dto : dtoList) {
+                totalCnt += dto.getCnt();
+                totalPrice += dto.getPrice() * dto.getCnt();
             }
         }
+        mav.addObject("totalCnt", totalCnt);
+        mav.addObject("totalPrice", totalPrice);
+
+        if (shopSession.getIdx() != null) {
+            Customer customer = customerRepo.findById(shopSession.getIdx()).get();
+            mav.addObject("customer", customer);
+        }
+
+
+        //pg 정보
+        mav.addObject("payNormalList", iamportMapper.selectIamportMethodList());
+        mav.addObject("payEasyList", iamportMapper.selectIamportPgList());
 
 
         return mav;
