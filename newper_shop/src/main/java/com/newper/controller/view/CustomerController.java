@@ -39,6 +39,12 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/joinWelcome");
         return mav;
     }
+    /** 아이디/비밀번호 찾기 */
+    @GetMapping(value = "findCustomer")
+    public ModelAndView findCustomer(){
+        ModelAndView mav = new ModelAndView("customer/findCustomer");
+        return mav;
+    }
 
     /** auth - 회원가입 정보입력 */
     @GetMapping(value = "join")
