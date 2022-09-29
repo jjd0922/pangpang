@@ -41,6 +41,8 @@ public class Payment {
 
 
     private int payMileage;
+    /** 적립 완료 여부*/
+    private boolean payMileageFlag;
     @Builder.Default
     private Map<String,Object> payJson = new HashMap<>();
 

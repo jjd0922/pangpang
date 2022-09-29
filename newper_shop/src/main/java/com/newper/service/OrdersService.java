@@ -60,7 +60,10 @@ public class OrdersService {
 
 
         Payment payment = Payment.builder()
-
+//                .payPrice()
+//                .payProductPrice()
+//                .payDelivery()
+//                .payIpmIdx()
                 .build();
 
         List<OrderGs> orderGsList = new ArrayList<>();
