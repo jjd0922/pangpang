@@ -135,6 +135,7 @@ public class PoService {
             poProduct.setSpec2(sellSpec);
             ppJson.put("sellSpec1", sellSpecValueList);
 
+            poProduct.setPpJson(ppJson);
             poProduct.setPo(po);
             poProduct.setProduct(productRepo.getReferenceById(paramMap.getInt("pIdx_" + i, "유효한 상품이 아닙니다.")));
 

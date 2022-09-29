@@ -21,5 +21,5 @@ public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Integer> {
 
     List<ProcessNeed> findByGoodsAndPnProcessAndPnState(Goods goods, PnProcess pnProcess, PnState pnState);
 
-    ProcessNeed findByGoodsAndPnTypeAndPnProcess(Goods goods, PnType pnType, PnProcess pnProcess);
+    ProcessNeed findByGoodsAndPnTypeAndPnProcessAndPnState(Goods goods, PnType pnType, PnProcess pnProcess, PnState pnState);
 }

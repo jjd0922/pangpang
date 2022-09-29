@@ -38,15 +38,15 @@
             </div>
             <div class="card">
                 <div class="card-body popup-contents">
-                    <form id="checkForm">
+                    <form id="reCheckForm">
                         <fieldset class="mb-0">
                             <div class="row">
                                 <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_NEED')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'RE_CHECK_NEED')|">
                                         <i class="icon-popout mr-1"></i>작업요청취소
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_ING')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'RE_CHECK_ING')|">
                                         <i class="icon-popout mr-1"></i>작업중(출고)
                                     </a>
                                 </div>
@@ -122,7 +122,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">재검수비(확정)합계</span>
                                             </span>
-                                            <input type="text" class="form-control" name="cgCost" th:value="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}">
+                                            <input type="text" class="form-control" th:value="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -259,15 +259,21 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="process/modal/reCheckProcessModal.html"/>
-
+<th:block th:replace="process/modal/reCheckReport.html"/>
+<th:block th:replace="modal/inOperationModal.html"/>
 
 <script th:inline="javascript">
+
+    function selectUser(obj, u_idx) {
+        $('input[name=uName2]').val(obj.innerText);
+        $('input[name=uIdx2]').val(u_idx);
+        $('#operationModal').modal('hide');
+    }
     function stateUpdate(cgIdx, state) {
         var confirm_str = "";
-        if (state == 'CHECK_NEED') {
+        if (state == 'RE_CHECK_NEED') {
             confirm_str = "요청중인 자산이 입고검수 대기 상태로 돌아가며,  \n해당 입고코드는 삭제 됩니다. \n취소 하시겠습니까?";
-        } else if (state == 'CHECK_ING') {
+        } else if (state == 'RE_CHECK_ING') {
             var cgReqMemo = $('#cgReqMemo').val();
             if (cgReqMemo == '') {
                 confirm_str = "요청메모 정보가 없습니다. 진행하시겠습니까?"
@@ -285,7 +291,7 @@
                 },
                 type: 'post',
                 success(result) {
-                    if (state == 'CHECK_NEED') {
+                    if (state == 'RE_CHECK_NEED') {
                         window.close();
                     } else {
                         location.reload();
@@ -310,32 +316,18 @@
             gIdxs = gIdxs.slice(0, -1);
 
             $.ajax({
-                url: '/goods/updateGoodsState.ajax',
+                url: '/process/reCheckDone.ajax',
                 data: {
-                    "gIdx" : gIdxs,
-                    "gState" : "OUT_CHECK_DONE"
+                    "gIdx":gIdxs,
+                    "cgIdx":[[${check.cgIdx}]],
+                    "cgType":"RE"
                 },
                 type: 'post',
                 success(result) {
-                    checksDone();
+                    location.reload();
                 }
             });
         }
-    }
-
-    // 검수 완료 체크
-    function checksDone(){
-        $.ajax({
-            url: '/process/checkDone.ajax',
-            data: {
-                "cgIdx" : [[${check.cgIdx}]],
-                "gState" : "CHECK_DONE"
-            },
-            type: 'post',
-            success(result) {
-                location.reload();
-            }
-        });
     }
 
     function inOperationModal() {
@@ -351,7 +343,7 @@
     }
 
     function searchBtn() {
-        checkTable.page('first').ajax.url('/process/reCheckGoods.dataTable?' + $('#checkForm').serialize()).load(null, false);
+        checkTable.page('first').ajax.url('/process/reCheckGoods.dataTable?' + $('#reCheckForm').serialize()).load(null, false);
     }
 </script>
 
@@ -366,7 +358,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/process/reCheckGoods.dataTable?' + $('#checkForm').serialize(),
+            url: '/process/reCheckGoods.dataTable?' + $('#reCheckForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -384,12 +376,12 @@
                     return '<input type="hidden" name="gIdx" value="'+full.G_IDX+'">';
                 }
             }
-            , {'title': '발주코드', 'data': 'PO_IDX'}
-            , {'title': '자산번호', 'data': 'G_IDX'}
-            , {'title': '자산바토드', 'data': 'G_BARCODE'}
-            , {'title': '자산상태', 'data': 'G_STATE_STR'}
+            , {'title': '발주코드', 'data': 'PO_IDX', 'defaultContent': ''}
+            , {'title': '자산번호', 'data': 'G_IDX', 'defaultContent': ''}
+            , {'title': '자산바토드', 'data': 'G_BARCODE', 'defaultContent': ''}
+            , {'title': '자산상태', 'data': 'G_STATE_STR', 'defaultContent': ''}
             , {'title': '재SPEC(확정)', 'data': 'G_IDX', 'defaultContent': '', 'render': function (data, type, full, meta) {
-                    return '<a href="javascript: openProcessModal('+full.G_IDX+','+full.CG_IDX+')" class="badge badge-primary">등록</a>';
+                    return '<a href="javascript: openProcessModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">등록</a>';
                 }}
             , {'title': '자산처리담당자', 'data': '', 'defaultContent': ''}
             , {'title': '자산처리일', 'data': '', 'defaultContent': ''}
@@ -399,7 +391,6 @@
             , {'title': '자산코드', 'data': '', 'defaultContent': ''}
             , {'title': 'IMEI', 'data': '', 'defaultContent': ''}
             , {'title': '재SPEC(예정)', 'data': '', 'defaultContent': ''}
-
             , {'title': '판매SPEC(예정)', 'data': '', 'defaultContent': ''}
             , {'title': '판매SPEC(확정)', 'data': '', 'defaultContent': ''}
             , {'title': '가공', 'data': '', 'defaultContent': ''}
@@ -422,7 +413,7 @@
     });
 
 
-    $('#checkForm').on('keyup', function (event) {
+    $('#reCheckForm').on('keyup', function (event) {
         if (event.keyCode == 13) {
             searchBtn();
             return false;

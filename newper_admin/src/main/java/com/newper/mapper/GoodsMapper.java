@@ -38,6 +38,9 @@ public interface GoodsMapper {
     /** 자산조회 */
     List<Map<String,Object>> selectGoodsDataTable(Map<String, Object> map);
 
+    /** 자산조회 */
+    List<Map<String,Object>> selectGoodsDataTable1(Map<String, Object> map);
+
     /** 자산 개수 조회 */
     long countGoodsDataTable(Map<String, Object> map);
 
@@ -58,7 +61,7 @@ public interface GoodsMapper {
     List<Map<String, Object>> selectGoodsGroupByState(Map<String, Object> map);
 
     /** 해당 검수그룹에 해당하는 자산 조회 */
-    List<Long> selectGoodsByCheckGroup(@Param("cgIdx") int cgIdx);
+    List<Map<String, Object>> selectGoodsByCheckGroup(@Param("cgIdx") int cgIdx);
 
     /** 자산들 상태값 변경 */
     void updateGoodsState(@Param("gIdx") List<Long> gIdx, @Param("gState") String gState);

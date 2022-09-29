@@ -51,18 +51,18 @@ public class ProcessController {
     }
 
     /**가공요청 팝업**/
-    @GetMapping(value = "needPop")
-    public ModelAndView needPopup(ParamMap paramMap) {
-        ModelAndView mav = new ModelAndView("process/needPop");
+    @GetMapping(value = "processReq")
+    public ModelAndView processReq(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/processReq");
         mav.addObject("type", PnType.valueOf(paramMap.getString("type")));
         mav.addObject("param", paramMap.getMap());
         return mav;
     }
 
     /**재검수요청 팝업**/
-    @GetMapping(value = "reCheckPop")
-    public ModelAndView reCheckPopup(ParamMap paramMap) {
-        ModelAndView mav = new ModelAndView("process/reCheckPop");
+    @GetMapping(value = "reCheckReq")
+    public ModelAndView reCheckReq(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/reCheckReq");
         mav.addObject("param", paramMap.getMap());
 
         return mav;
@@ -158,26 +158,18 @@ public class ProcessController {
     }
 
     /**재검수관리 페이지**/
-    @GetMapping(value = "recheck")
-    public ModelAndView recheck() {
-        ModelAndView mav = new ModelAndView("process/recheck");
+    @GetMapping(value = "reCheck")
+    public ModelAndView reCheck() {
+        ModelAndView mav = new ModelAndView("process/reCheck");
 
         return mav;
     }
 
     /** 공정 - 수리, 도색 그룹 상세 */
     @GetMapping("processGroupPop/{pgIdx}")
-    public ModelAndView processGroupPop(@PathVariable int pgIdx) {
+    public ModelAndView processGroupPop(@PathVariable int pgIdx, String type) {
         ModelAndView mav = new ModelAndView("process/processGroupPop");
-        mav.addObject("group", processGroupRepo.findByPgIdx(pgIdx));
-        return mav;
-    }
-
-
-    /** 공정 - 가공관리 그룹 상세 */
-    @GetMapping("processGroupPop_process/{pgIdx}")
-    public ModelAndView processGroupPop_process(@PathVariable int pgIdx) {
-        ModelAndView mav = new ModelAndView("process/processGroupPop_process");
+        mav.addObject("type", PnType.valueOf(type).getOption());
         mav.addObject("group", processGroupRepo.findByPgIdx(pgIdx));
         return mav;
     }

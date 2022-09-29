@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class InService {
     private final UserRepo userRepo;
     private final WarehouseRepo warehouseRepo;
     private final GoodsMapper goodsMapper;
+    private final CheckGoodsRepo checkGoodsRepo;
 
     /** 발주서에 입고그룹 없는 경우 생성. */
     @Transactional
@@ -107,7 +109,6 @@ public class InService {
         // 작업요청 취소
         if (state.equals("CHECK_NEED")) {
             if (checkGroup.getCgState().equals(CgState.BEFORE)) {
-                checkMapper.deleteCheckGoodsByCG_IDX(cgIdx);
                 checkGroupRepo.deleteById(cgIdx);
             } else {
                 throw new MsgException("해당건은 작업중이거나 작업이 완료되어 요청 취소가 불가합니다.");
@@ -117,8 +118,8 @@ public class InService {
                 checkGroup.setCgState(CgState.REQ);
                 checkGroupRepo.save(checkGroup);
 
-                List<Long> gIdx = goodsMapper.selectGoodsByCheckGroup(cgIdx);
-                goodsMapper.updateGoodsState(gIdx, GState.CHECK_ING.name());
+//                List<Map<String, Object>> goods = goodsMapper.selectGoodsByCheckGroup(cgIdx);
+//                goodsMapper.updateGoodsState(goods.get(), GState.CHECK_ING.name());
             } else {
                 throw new MsgException("해당건은 작업중이거나 작업이 완료되어 처리가 불가능합니다.");
             }

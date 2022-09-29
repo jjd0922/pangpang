@@ -1,7 +1,6 @@
 package com.newper.repository;
 
 import com.newper.entity.CheckGroup;
-import com.newper.entity.Company;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

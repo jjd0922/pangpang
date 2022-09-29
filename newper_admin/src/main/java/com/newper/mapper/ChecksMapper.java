@@ -24,12 +24,6 @@ public interface ChecksMapper {
     List<Map<String, Object>> selectCheckGoods(Map<String, Object> map);
     long countCheckGoods(Map<String, Object> map);
 
-    /** 해당 입고 자산들 공정예상비용 총합 */
-    int selectCheckGroupExpectedCostTotal(int cgIdx);
-
-    /** 해당 입고검수 자산 관계테이블 제거 */
-    void deleteCheckGoodsByCG_IDX(int cgIdx);
-
     /** 해당 검수그룹 완료 체크 */
     int selectCheckGroupGoods(Map<String, Object> param);
 

@@ -42,7 +42,7 @@
                             <div class="row">
                                 <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_NEED')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|inCheckCancel(${check?.cgIdx})|">
                                         <i class="icon-popout mr-1"></i>작업요청취소
                                     </a>
                                     <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_ING')|">
@@ -119,7 +119,7 @@
                                                 <span class="input-group-prepend">
                                                 <span class="input-group-text">입고검수비(확정)합계</span>
                                             </span>
-                                                <input type="text" class="form-control" name="cgCost" th:value="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}">
+                                                <input type="text" class="form-control" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -280,10 +280,24 @@
         $('#operationModal').modal('hide');
     }
 
+    function inCheckCancel(cgIdx) {
+        if (confirm("요청중인 자산이 입고검수 대기 상태로 돌아가며,  \n해당 입고코드는 삭제 됩니다. \n취소 하시겠습니까?")) {
+            $.ajax({
+                url: '/process/inCheckCancel.ajax',
+                data: {"cgIdx" : cgIdx},
+                type: 'post',
+                success(result) {
+                    opener.location.reload();
+                    window.close();
+                }
+            });
+        }
+    }
+
     function stateUpdate(cgIdx, state) {
         var confirm_str = "";
         if (state == 'CHECK_NEED') {
-            confirm_str = "요청중인 자산이 입고검수 대기 상태로 돌아가며,  \n해당 입고코드는 삭제 됩니다. \n취소 하시겠습니까?";
+            confirm_str = "";
         } else if (state == 'CHECK_ING') {
             var cgReqMemo = $('#cgReqMemo').val();
             if (cgReqMemo == '') {
@@ -296,21 +310,19 @@
         if(confirm(confirm_str)) {
             $.ajax({
                 url: '/in/checkGroupStateUpdate.ajax',
-                data: {
-                    "cgIdx" : cgIdx,
-                    "state" : state
-                },
+                data: {"cgIdx" : cgIdx,},
                 type: 'post',
                 success(result) {
-                    if (state == 'CHECK_NEED') {
-                        window.close();
-                    } else {
-                        location.reload();
-                    }
+                    opener.location.reload();
+                    window.close();
                 }
             });
         }
     }
+
+
+
+
 
     function checkDone() {
         if(confirm("선택한 자산들을 검수완료 처리 하시겠습니까?")) {
@@ -334,19 +346,20 @@
                 },
                 type: 'post',
                 success(result) {
-                    checksDone();
+                    checksDone(gIdxs);
                 }
             });
         }
     }
 
     // 검수 완료 체크
-    function checksDone(){
+    function checksDone(gIdxs){
         $.ajax({
             url: '/process/checkDone.ajax',
             data: {
-                "cgIdx" : [[${check.cgIdx}]],
-                "gState" : "CHECK_DONE"
+                "gIdx":gIdxs,
+                "cgIdx":[[${check.cgIdx}]],
+                "cgType":"IN"
             },
             type: 'post',
             success(result) {
@@ -360,7 +373,7 @@
     }
 
     function searchBtn() {
-        checkTable.page('first').ajax.url('/in/checkGoods.dataTable?' + $('#searchForm').serialize()).load(null, false);
+        checkTable.page('first').ajax.url('/process/checkGoods.dataTable?' + $('#searchForm').serialize()).load(null, false);
     }
 </script>
 <script>
@@ -373,7 +386,7 @@
         },
         serverSide: true,
         ajax: {
-            url: '/in/checkGoods.dataTable?' + $('#searchForm').serialize(),
+            url: '/process/checkGoods.dataTable?' + $('#searchForm').serialize(),
             type: 'post'
         },
         columnDefs: [{
@@ -391,7 +404,7 @@
                     return '<input type="hidden" name="gIdx" value="'+full.G_IDX+'">';
                 }
             }
-            ,{'title': '자산바코드', 'data': 'G_BARCODE', 'defaultContent': '', 'render': function (data, type, full, meta) {
+            ,{'title': '리포트등록', 'data': 'G_BARCODE', 'defaultContent': '', 'render': function (data, type, full, meta) {
                     return '<a href="javascript: openInCheckReport(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
                 }}
             ,{'title': '자산번호', 'data': 'G_IDX','defaultContent':''}
@@ -399,7 +412,7 @@
             ,{'title': '발주코드', 'data': 'PO_IDX','defaultContent':''}
             ,{'title': '상품코드', 'data': 'P_IDX','defaultContent':''}
             ,{'title': '상품명', 'data': 'P_NAME','defaultContent':''}
-            ,{'title': '매입원가', 'data': 'P_COST','defaultContent':''}
+            ,{'title': '기준매입원가', 'data': 'P_COST','defaultContent':''}
             ,{'title': 'IMEI', 'data': 'G_IMEI','defaultContent':''}
             ,{'title': '입고SPEC(확정)', 'data': 'INSPEC2','defaultContent':''}
             ,{'title': '가공SPEC(예정)', 'data': 'PSPEC1','defaultContent':''}
@@ -409,10 +422,9 @@
             ,{'title': '수리비(예정)', 'data': 'FIX_COST','defaultContent':''}
             ,{'title': '가공항목(예정)', 'data': 'PROCESS_CONTENT','defaultContent':''}
             ,{'title': '가공비(예정)', 'data': 'PROCESS_COST','defaultContent':''}
-            ,{'title': '공정예정비합계', 'data': 'TOTAL_COST','defaultContent':''}
+            ,{'class':'totalCost','title': '공정예정비합계', 'data': 'TOTAL_COST','defaultContent':''}
         ]
     });
-
 
     $('#checkForm').on('keyup', function (event) {
         if (event.keyCode == 13) {

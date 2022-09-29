@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.CgState;
+import com.newper.constant.CgsState;
 import com.newper.constant.CgsType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
@@ -36,7 +37,6 @@ public class CheckGoods {
     @JoinColumn(name="CGS_G_IDX", referencedColumnName = "gIdx")
     private Goods goods;
 
-
     private String cgsType;
 
     private int cgsCount;
@@ -44,4 +44,11 @@ public class CheckGoods {
     private int cgsExpectedCost;
 
     private int cgsRealCost;
+    private int cgsCost;
+
+    private Map<String, Object> cgsJson;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    CgsState cgsState = CgsState.REQ;
 }

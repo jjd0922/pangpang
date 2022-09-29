@@ -85,6 +85,7 @@ public class Goods {
     @Builder.Default
     private Map<String, Object> gJson = new HashMap<>();
     private String gImei;
+    private String gSerial;
 
 
     /**바코드 삭제 전 조건 확인*/

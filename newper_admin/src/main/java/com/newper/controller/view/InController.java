@@ -60,7 +60,6 @@ public class InController {
     public ModelAndView inCheckPop(@PathVariable int cgIdx){
         ModelAndView mav = new ModelAndView("in/inCheckPop");
         mav.addObject("check", checkGroupRepo.findCheckGroupByCgIdx(cgIdx));
-        mav.addObject("totalPrice", checksMapper.selectCheckGroupExpectedCostTotal(cgIdx));
         return mav;
     }
     /** 영업검수 발주 페이지*/

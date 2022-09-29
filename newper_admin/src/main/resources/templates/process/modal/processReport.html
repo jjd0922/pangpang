@@ -1,5 +1,5 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="processModal">
+<div class="modal" tabindex="-1" role="dialog" id="processReport">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -83,7 +83,7 @@
                                                 <th>삭제</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="processCompSpec">
+                                            <tbody id="processSpecTable">
 
                                             </tbody>
                                         </table>
@@ -105,7 +105,7 @@
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">공정 상세</span>
                                                 </span>
-                                                    <input type="text" class="form-control" name="pnContent">
+                                                    <input type="text" class="form-control" id="process_pnContent" name="pnContent">
                                                 </div>
                                             </div>
                                         </div>
@@ -139,14 +139,14 @@
                 </div>
             </form>
 
-            <form id="stockProcessModal">
+            <form id="stockProcessReport">
                 <div class="col-lg-12" id="openStockProcessDiv" style="display: none">
                     <div class="card mb-1">
                         <div class="card-body popup-contents mb-1">
-                            <form id="stockProcessModalForm">
+                            <form id="stockProcessReportForm">
                                 <fieldset class="mb-0">
                                     <legend class="">재고상품 검색</legend>
-                                    <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="stockProcessModal();">검색</button>
+                                    <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="stockProcessReport();">검색</button>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
@@ -185,7 +185,7 @@
                                     </div>
                                 </fieldset>
 
-                                <table class="table" id="stockProcessModalTable"></table>
+                                <table class="table" id="stockProcessReportTable"></table>
                             </form>
                         </div>
                     </div>
@@ -203,81 +203,44 @@
     </div>
 </div>
 <script>
-    function openProcessModal(gIdx, pnIdx) {
-        $('#processModal').modal('show');
-
-
-        setProductInfo(gIdx);
-        setProcessSpecInfo(pnIdx);
-        setProcessNeedInfo(pnIdx);
-    }
-    // 자산정보 세팅
-    function setProductInfo(gIdx) {
-        var dataMap;
-        $.ajax({
-            url: '/goods/selectGoods.ajax',
-            data: {
-                "gIdx" : gIdx
-            },
-            type: 'POST',
-            async: false,
-            success(data) {
-                dataMap = data;
-            }
-        })
-
-
+    function openProcessModal(id, rowIdx) {
+        $('#processReport').modal('show');
+        var dataMap = getDatatablemap(id, rowIdx);
+        
+        // 자산정보 세팅
         $('#process_pIdx').val(dataMap.P_IDX);
         $('#process_pName').val(dataMap.P_NAME);
         $('#process_barcode').val(dataMap.G_BARCODE);
         $('#process_gImei').val(dataMap.G_IMEI);
+        $('#process_pnContent').val(dataMap.PN_CONTENT);
+        
+        setProcessSpecInfo(dataMap);
     }
+    
 
     // 공정항목 세팅
-    function setProcessSpecInfo(pnIdx) {
-        $('input[name=pnIdx]').val(pnIdx);
+    function setProcessSpecInfo(dataMap) {
+        $('input[name=pnIdx]').val(dataMap.PN_IDX);
         $.ajax({
             url: '/process/selectProcessSpec.ajax',
-            data: {"pnIdx":pnIdx},
+            data: {"pnIdx":dataMap.PN_IDX},
             type: 'POST',
             async: false,
             success(result) {
-                $('#processCompSpec').empty();
+                $('#processSpecTable').empty();
                 $.each(result, function (index, value) {
                     var html = '<tr>' +
                         '<td>'+value.P_NAME+'</td>' +
                         '<td>'+value.P_IDX+'</td>' +
                         '<td>'+value.P_COST+'</td>' +
-                        '<td><input type="text" name="psCost" value="'+value.PS_COST+'"></td>' +
+                        '<td><input type="text" name="psCost" class="form-control" value="'+value.PS_COST+'"></td>' +
                         '<input type="hidden" name="psIdx" value="'+value.PS_IDX+'">' +
                         '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+value.PS_IDX+','+value.PN_IDX+');">삭제</button></td>' +
                         '</tr>';
-                    $('#processCompSpec').append(html);
+                    $('#processSpecTable').append(html);
                 });
             }
         })
-    }
-
-    function setProcessNeedInfo(pnIdx) {
-        var dataMap;
-        $.ajax({
-            url: '/process/selectProcessNeed.ajax',
-            data: {
-                "pnIdx" : pnIdx
-            },
-            type: 'POST',
-            async: false,
-            success(data) {
-                console.log(data)
-                dataMap = data;
-            }
-        })
-
-        $('select[name=pnState] option[value='+dataMap.PN_STATE+']').prop('selected', true);
-        $('input[name=pnContent]').val(dataMap.PN_CONTENT);
-        if (dataMap.PN_STATE == 'COMPLETE') {
-            $('#pnUpload').remove();
-        }
     }
 
     function deleteProcessSpec(psIdx, pnIdx) {
@@ -289,10 +252,7 @@
                     "pnIdx" : pnIdx
                 },
                 type: 'POST',
-                async: false,
-                success(data) {
-                    dataMap = data;
-                }
+                async: false
             })
         }
     }
@@ -308,7 +268,7 @@
         })
     }
 
-    function setProcessModalGoodsStock(gsIdx) {
+    function setProcessReportGoodsStock(gsIdx) {
         var dataMap;
         $.ajax({
             url: '/stock/stockGoods.dataTable',
@@ -326,33 +286,35 @@
             '<td>'+dataMap.P_NAME+'</td>' +
             '<td>'+dataMap.P_IDX+'</td>' +
             '<td>'+dataMap.P_COST+'</td>' +
-            '<td><input type="text" name="gsCost" value="0"></td>' +
+            '<td><input type="text" name="gsCost" class="form-control" value="0"></td>' +
             '<input type="hidden" name="gsIdx" value="'+dataMap.GS_IDX+'">' +
             '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+dataMap.PS_IDX+','+dataMap.PN_IDX+');">삭제</button></td>' +
             '</tr>';
-        $('#processCompSpec').append(html);
+        $('#processSpecTable').append(html);
+
+        $('#openStockProcessDiv').attr('style', 'display:none');
     }
 
     function openStockProcessDiv() {
         $('#openStockProcessDiv').attr('style', 'display:block');
     }
 
-    function stockProcessModal() {
-        stockTable.page('first').ajax.url('/stock/stockGoodsParts.dataTable?'+$('#stockProcessModalForm').serialize()).load();
+    function stockProcessReport() {
+        stockTable.page('first').ajax.url('/stock/stockGoodsParts.dataTable?'+$('#stockProcessReportForm').serialize()).load();
     }
 
-    var stockTable = $('#stockProcessModalTable').DataTable({
+    var stockTable = $('#stockProcessReportTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/stock/stockGoodsParts.dataTable?'+$('#stockProcessModalForm').serialize(),
+            url:'/stock/stockGoodsParts.dataTable?'+$('#stockProcessReportForm').serialize(),
             type:'post'
         },
         buttons: buttonsSelect(false),
         "columns" : [
             {'class':'m-w-max', 'title':'선택','data':'','render':  function(data,type,full,meta){
-                    return '<a onclick="setProcessModalGoodsStock('+full.GS_IDX+')" class="badge badge-primary">선택</a>';
+                    return '<a onclick="setProcessReportGoodsStock('+full.GS_IDX+')" class="badge badge-primary">선택</a>';
                 }}
             ,{'class':'m-w-max', 'title':'스펙','data':'SPECL_VALUE', 'defaultContent':''}
             ,{'class':'m-w-max', 'title':'재고코드','data':'GS_CODE', 'defaultContent':''}

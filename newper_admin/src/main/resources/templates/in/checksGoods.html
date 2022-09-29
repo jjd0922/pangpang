@@ -39,18 +39,88 @@
                                     <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).RE_CHECK_DONE}">
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).OUT_CHECK_DONE}">
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산번호</label>
+                                                    <input type="text" name="gIdx" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">자산바코드</label>
+                                                    <input type="text" name="gBarcode" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품코드</label>
+                                                    <input type="text" name="pIdx" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">상품명</label>
+                                                    <input type="text" name="pName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">IMEI</label>
+                                                    <input type="text" name="gImei" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
                                                 <div class="form-group">
                                                     <label class="d-block">발주코드</label>
                                                     <input type="text" name="poIdx" class="form-control form-control-sm w-120px" placeholder="검색">
                                                 </div>
 
-
-                                                <div class="form-group end">
-                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
-                                                        <span class="ladda-label"><i class="icon-search4 mr-1"></i>조회하기</span>
-                                                    </button>
+                                                <div class="form-group">
+                                                    <label class="d-block">가공</label>
+                                                    <select name="process" class="form-control">
+                                                        <option>선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
                                                 </div>
 
+                                                <div class="form-group">
+                                                    <label class="d-block">도색</label>
+                                                    <select name="paint" class="form-control">
+                                                        <option>선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">수리</label>
+                                                    <select name="fix" class="form-control">
+                                                        <option>선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품코드</label>
+                                                    <input type="text" name="gsIdx" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">재고상품명</label>
+                                                    <input type="text" name="gsName" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">판매채널</label>
+                                                    <input type="text" name="gVendor" class="form-control form-control-sm w-120px" placeholder="검색">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">등급</label>
+                                                    <select name="gRank" data-placeholder="multiselect" class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.GRank).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -69,7 +139,7 @@
                                     <a type="button" class="btn btn-sm btn-primary">재고코드 변경</a>
                                 </div>
                                 <div class="btn-group ml-1">
-                                    <a type="button" onclick="poHiworksApply()" class="btn btn-sm btn-primary">승인요청</a>
+                                    <a type="button" onclick="updateGoodsState('STOCK')" class="btn btn-sm btn-primary">재고인계요청</a>
                                 </div>
                             </div>
                             <table class="table" id="goodsTable"></table>
@@ -94,12 +164,15 @@
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
 
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
 <!-- input -->
 <script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
 
 <script th:src="@{/assets/js/common.js}"></script>
+
+<th:block th:replace="process/modal/checkReport.html"/>
 
 <script>
     function searchBtn() {
@@ -110,6 +183,32 @@
         var focusPopup = window.open('/in/checksGoodsPop/' + idx,  'width=max, height=800, left=' + screenX + ', top=' + screenY + ',scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
+
+    function updateGoodsState(gState) {
+        var gIdxs = '';
+        if ($('.selected').length == 0) {
+            alert('자산을 선택해 주세요');
+            return false;
+        }
+        $.each($('.selected'), function (index, value) {
+            gIdxs += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        gIdxs = gIdxs.slice(0, -1);
+
+
+        $.ajax({
+            url: '/goods/updateGoodsState.ajax',
+            data: {
+                "gIdx" : gIdxs,
+                "gState" : gState
+            },
+            type: 'post',
+            success(result) {
+                alert('재고인게요청 완료');
+                location.reload()
+            }
+        });
+    }
 </script>
 
 <script>
@@ -118,7 +217,7 @@
         buttons: buttonsSelect(false),
         serverSide: true,
         ajax:{
-            url:'/goods/goods.dataTable?'+$('#searchForm').serialize(),
+            url:'/goods/goods.dataTable2?'+$('#searchForm').serialize(),
             type:'post'
         },
         select: {
@@ -127,10 +226,35 @@
         },
         "columns" : [
             {'class':'select-checkbox', 'title':'선택','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
-                    return '<input type="hidden" name="G_IDX" value="' + data + '">';
+                    return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
-
-
+            ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent':''}
+            ,{'title':'자산번호','data':'G_IDX', 'defaultContent':''}
+            ,{'title':'자산바코드','data':'G_BARCODE', 'defaultContent':''}
+            ,{'title':'선택','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<a href="javascript: openCheckReport(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
+                }}
+            ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+            ,{'title':'재고상품코드','data':'CG_REQUEST_DATE', 'defaultContent':''}
+            ,{'title':'재고상품명','data':'GS_NAME', 'defaultContent':''}
+            ,{'title':'판매채널','data':'GS_SALE', 'defaultContent':''}
+            ,{'title':'등급','data':'G_RANK_STR', 'defaultContent':''}
+            ,{'title':'옵션1','data':'OPTION1', 'defaultContent':''}
+            ,{'title':'옵션2','data':'OPTION2', 'defaultContent':''}
+            ,{'title':'옵션3','data':'OPTION3', 'defaultContent':''}
+            ,{'title':'기준판매가','data':'P_COST', 'defaultContent':''}
+            ,{'title':'입고SPEC(예정)','data':'INSPEC1', 'defaultContent':''}
+            ,{'title':'판매SPEC(예정)','data':'SELLSPEC1', 'defaultContent':''}
+            ,{'title':'입고SPEC(확정)','data':'INSPEC2', 'defaultContent':''}
+            ,{'title':'판매SPEC(확정)','data':'SELLSPEC2', 'defaultContent':''}
+            ,{'title':'가공SPEC(예정)','data':'PSPEC1', 'defaultContent':''}
+            ,{'title':'가공SPEC(확정)','data':'PSPEC2', 'defaultContent':''}
+            ,{'title':'도색항목','data':'PAINT_CONTENT', 'defaultContent':''}
+            ,{'title':'도색비','data':'PAINT_COST', 'defaultContent':''}
+            ,{'title':'수리항목','data':'FIX_CONTENT', 'defaultContent':''}
+            ,{'title':'수리비','data':'FIX_COST', 'defaultContent':''}
+            ,{'title':'가공항목예정','data':'PROCESS_CONTENT', 'defaultContent':''}
+            ,{'title':'가공비','data':'PROCESS_COST', 'defaultContent':''}
         ]
     });
 

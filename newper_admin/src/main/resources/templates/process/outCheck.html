@@ -29,16 +29,11 @@
                             </div>
                             <div class="collapse show" id="collapse-button-collapsed">
                                 <div class="card-body pt-0">
-                                    <form id="returnForm">
+                                    <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-                                                <div class="form-group">
-                                                    <label class="d-block">자산상태</label>
-                                                    <select name="gState" data-placeholder="다중선택가능" class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.GState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
-                                                </div>
-
+                                                <input type="hidden" name="gState" th:value="${T(com.newper.constant.GState).OUT_CHECK_REQ}">
+                                                <input type="hidden" name="gStockState" th:value="${T(com.newper.constant.GStockState).OUT_REQ}">
                                                 <div class="form-group">
                                                     <label class="d-block">자산처리담당자</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
@@ -58,7 +53,7 @@
                                                     <label class="d-block">자산바코드</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
-                                                
+
                                                 <div class="form-group">
                                                     <label class="d-block">상품코드</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
@@ -68,7 +63,6 @@
                                                     <label class="d-block">상품명</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
-
                                                 <div class="form-group">
                                                     <label class="d-block">IMEI</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
@@ -127,8 +121,8 @@
                                                     <label class="d-block">옵션3</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="" name="">
                                                 </div>
-                                                
-                                                
+
+
 
                                                 <div class="form-group end">
                                                     <button type="button" class="btn btn-secondary" onclick="searchBtn()">
@@ -149,7 +143,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <table class="table" id="returnTable"></table>
+                            <table class="table" id="goodsTable"></table>
                         </div>
                     </div>
                 </div>
@@ -170,6 +164,7 @@
 <script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
 <script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+<script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 
 <!-- 맞춤 js -->
 <script th:src="@{/assets/js/app.js}"></script>
@@ -178,19 +173,17 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<script>
-    function checkGroupPop(cgIdx) {
-        var focusPopup = window.open('/process/checkGroupPop/'+cgIdx, 'checkGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-        focusPopup.focus();
-    }
 
+<th:block th:replace="process/modal/outReport.html"/>
+
+<script>
     function searchBtn() {
-        returnTable.page('first').ajax.url('/process/recheck.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        goodsTable.page('first').ajax.url('/goods/goods.dataTable?' + $('#searchForm').serialize()).load(null, false);
     }
 </script>
 
 <script>
-    var returnTable = $('#returnTable').DataTable({
+    var goodsTable = $('#goodsTable').DataTable({
         dom: '<"datatable-header"Bip><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         select: {
@@ -199,7 +192,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/recheck.dataTable?'+$('#returnForm').serialize(),
+            url:'/goods/goods.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -210,47 +203,40 @@
 
 
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'SP_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '';
+            {'class':'select-checkbox', 'title':'선택','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
-            ,{'title':'주문번호','data':'','defaultContent':''}
-            ,{'title':'택배사','data':'','defaultContent':''}
-            ,{'title':'송장번호','data':'','defaultContent':''}
-            ,{'title':'주문자명','data':'','defaultContent':''}
-            ,{'title':'주문자연락처','data':'','defaultContent':''}
-            ,{'title':'자산상태','data':'','defaultContent':''}
-            ,{'title':'자산처리담당자','data':'','defaultContent':''}
-            ,{'title':'자산처리일','data':'','defaultContent':''}
-            ,{'title':'자산코드','data':'','defaultContent':''}
-            ,{'title':'상품코드','data':'','defaultContent':''}
-            ,{'title':'상품명','data':'','defaultContent':''}
-            ,{'title':'출고전검수담당자','data':'','defaultContent':''}
-            ,{'title':'출고전검수처리일','data':'','defaultContent':''}
-            ,{'title':'재고상품코드','data':'','defaultContent':''}
-            ,{'title':'재고상품명','data':'','defaultContent':''}
-            ,{'title':'판매채널','data':'','defaultContent':''}
-            ,{'title':'등급','data':'','defaultContent':''}
-            ,{'title':'옵션1','data':'','defaultContent':''}
-            ,{'title':'옵션2','data':'','defaultContent':''}
-            ,{'title':'옵션3','data':'','defaultContent':''}
-            ,{'title':'판매SPEC(확정)','data':'','defaultContent':''}
-            ,{'title':'가공SPEC(확정)','data':'','defaultContent':''}
-            ,{'title':'판매스펙확정일','data':'','defaultContent':''}
-            ,{'title':'가공','data':'','defaultContent':''}
-            ,{'title':'도색','data':'','defaultContent':''}
-            ,{'title':'수리','data':'','defaultContent':''}
-            ,{'title':'재검수','data':'','defaultContent':''}
-            ,{'title':'가공항목(예정)','data':'','defaultContent':''}
-            ,{'title':'가공비(예정)','data':'','defaultContent':''}
-            ,{'title':'수리항목(예정)','data':'','defaultContent':''}
-            ,{'title':'수리비(예정)','data':'','defaultContent':''}
-            ,{'title':'도색항목(예정)','data':'','defaultContent':''}
-            ,{'title':'도색비(예정)','data':'','defaultContent':''}
-            ,{'title':'출고전검수메모','data':'','defaultContent':''}
+            ,{'title':'자산상태','data':'G_STATE_STR', 'defaultContent':''}
+            ,{'title':'자산번호','data':'G_IDX', 'defaultContent':''}
+            ,{'title':'리포트등록','data':'G_IDX','defaultContent':'','render':  function(data,type,full,meta){
+                    return '<a href="javascript: openProcessModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')" class="badge badge-primary">' + data +'</a>';
+                }}
+            ,{'title':'자산바코드','data':'G_BARCODE', 'defaultContent':''}
+            ,{'title':'상품명','data':'P_NAME', 'defaultContent':''}
+            ,{'title':'재고상품코드','data':'CG_REQUEST_DATE', 'defaultContent':''}
+            ,{'title':'재고상품명','data':'GS_NAME', 'defaultContent':''}
+            ,{'title':'판매채널','data':'GS_SALE', 'defaultContent':''}
+            ,{'title':'등급','data':'G_RANK_STR', 'defaultContent':''}
+            ,{'title':'옵션1','data':'OPTION1', 'defaultContent':''}
+            ,{'title':'옵션2','data':'OPTION2', 'defaultContent':''}
+            ,{'title':'옵션3','data':'OPTION3', 'defaultContent':''}
+            ,{'title':'기준판매가','data':'P_COST', 'defaultContent':''}
+            ,{'title':'입고SPEC(예정)','data':'INSPEC1', 'defaultContent':''}
+            ,{'title':'판매SPEC(예정)','data':'SELLSPEC1', 'defaultContent':''}
+            ,{'title':'입고SPEC(확정)','data':'INSPEC2', 'defaultContent':''}
+            ,{'title':'판매SPEC(확정)','data':'SELLSPEC2', 'defaultContent':''}
+            ,{'title':'가공SPEC(예정)','data':'PSPEC1', 'defaultContent':''}
+            ,{'title':'가공SPEC(확정)','data':'PSPEC2', 'defaultContent':''}
+            ,{'title':'도색항목','data':'PAINT_CONTENT', 'defaultContent':''}
+            ,{'title':'도색비','data':'PAINT_COST', 'defaultContent':''}
+            ,{'title':'수리항목','data':'FIX_CONTENT', 'defaultContent':''}
+            ,{'title':'수리비','data':'FIX_COST', 'defaultContent':''}
+            ,{'title':'가공항목예정','data':'PROCESS_CONTENT', 'defaultContent':''}
+            ,{'title':'가공비','data':'PROCESS_COST', 'defaultContent':''}
         ]
     });
 
-    $('#returnForm').on('keyup',function(event){
+    $('#searchForm').on('keyup',function(event){
         if(event.keyCode==13){searchBtn();return false;}
     });
 

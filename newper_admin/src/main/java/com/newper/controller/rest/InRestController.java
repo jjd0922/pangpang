@@ -33,9 +33,7 @@ public class InRestController {
     private final CheckService checkService;
 
 
-    /**
-     * 입고등록 조회
-     */
+    /** 입고등록 조회 */
     @PostMapping("in.dataTable")
     public ReturnDatatable in(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable("입고등록");
@@ -49,9 +47,7 @@ public class InRestController {
         return rd;
     }
 
-    /**
-     * 입고등록 팝업에서 발주서 group by 상품 조회
-     */
+    /** 입고등록 팝업에서 발주서 group by 상품 조회 */
     @PostMapping("poProduct.dataTable")
     public ReturnDatatable poProduct(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
@@ -190,11 +186,20 @@ public class InRestController {
         return rm;
     }
 
-    /** 영업검수 자산 정보 확정 */
+    /** 영업검수 (발주) 자산 정보 확정 */
     @PostMapping("saveGoodsReport.ajax")
     public ReturnMap saveGoodsReport(ParamMap paramMap, MultipartFile[] gFile) {
         ReturnMap rm = new ReturnMap();
         checkService.saveGoodsReport(paramMap, gFile);
+        rm.setMessage("등록완료");
+        return rm;
+    }
+
+    /** 영업검수 (자산) 자산 정보 확정 */
+    @PostMapping("saveCheckReport.ajax")
+    public ReturnMap saveCheckReport(ParamMap paramMap, MultipartFile[] gFile) {
+        ReturnMap rm = new ReturnMap();
+        checkService.saveCheckReport(paramMap, gFile);
         rm.setMessage("등록완료");
         return rm;
     }
@@ -215,6 +220,7 @@ public class InRestController {
         inService.insertInProduct(paramMap);
         return rm;
     }
+
 }
 
 

@@ -333,8 +333,7 @@
 
 <script>
     function searchBtn() {
-        var table = $('#boardTable').DataTable();
-        table.page('first').ajax.url('/user/user.dataTable?' + $('#boardForm').serialize()).load(null, false);
+        boardTable.page('first').ajax.url('/goods/goods.dataTable?' + $('#boardForm').serialize()).load(null, false);
     }
 
     function lostBtn(){
@@ -356,7 +355,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/process/board.dataTable?'+$('#boardForm').serialize(),
+            url:'/goods/goods.dataTable?'+$('#boardForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -371,8 +370,8 @@
                     return '<input type="hidden" name="gIdx" value="' + data + '">';
                 }}
             ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}
-            ,{'title':'자산처리담당자','data':'','defaultContent':''}
-            ,{'title':'자산처리일','data':'','defaultContent':''}
+            ,{'title':'자산처리담당자','data':'G_ID','defaultContent':''}
+            ,{'title':'자산처리일','data':'G_DATE','defaultContent':''}
             ,{'title':'자산번호','data':'G_IDX','defaultContent':''}
             ,{'title':'자산바코드','data':'G_BARCODE','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
@@ -383,48 +382,71 @@
             ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2', 'defaultContent': ''}
             ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1', 'defaultContent': ''}
             ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2', 'defaultContent': ''}
-            ,{'title':'판매스펙확정일','data':'','defaultContent':''}
-            ,{'title':'IMEI','data':'','defaultContent':''}
-            ,{'title':'시리얼','data':'','defaultContent':''}
-            ,{'title':'발주코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'판매스펙확정일','data':'','defaultContent':'SELL_SPEC2_DATE'}
+            ,{'title':'IMEI','data':'G_IMEI','defaultContent':''}
+            ,{'title':'시리얼','data':'G_SERIAL','defaultContent':''}
+            ,{'title':'발주코드','data':'PO_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: poPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'입고검수<br>코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'입고검수<br>코드','data':'IN_CG_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'가공<br>코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'도색<br>코드','data':'PAINT_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'도색<br>코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'수리<br>코드','data':'FIX_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'수리<br>코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop('+ data['U_IDX'] +')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'가공<br>코드','data':'PROCESS_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+ data +')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'재검수<br>코드','data':null, 'render': function (data,type,full,meta) {
-                    return '<a href="javascript: userDetailPop(' + data['U_IDX'] + ')" class="badge badge-primary">' + data['U_NAME'] + '</a>';
+            ,{'title':'재검수<br>코드','data':'RE_CG_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop(' + data + ')" class="badge badge-primary">' + data + '</a>';
                 }}
-            ,{'title':'공정항목','data':'','defaultContent':''}
-            ,{'title':'공정상태','data':'','defaultContent':''}
-            ,{'title':'판매채널','data':'','defaultContent':''}
-            ,{'title':'등급','data':'','defaultContent':''}
-            ,{'title':'옵션1','data':'','defaultContent':''}
-            ,{'title':'옵션2','data':'','defaultContent':''}
-            ,{'title':'옵션3','data':'','defaultContent':''}
-            ,{'title':'기준판매가(재고)확정여부','data':'','defaultContent':''}
-            ,{'title':'기준판매가(재고)','data':'','defaultContent':''}
-            ,{'title':'매입원가','data':'','defaultContent':''}
-            ,{'title':'소모품비','data':'','defaultContent':''}
-            ,{'title':'입고검수비','data':'','defaultContent':''}
-            ,{'title':'재검수비','data':'','defaultContent':''}
-            ,{'title':'가공비','data':'','defaultContent':''}
-            ,{'title':'수리비','data':'','defaultContent':''}
-            ,{'title':'도색비','data':'','defaultContent':''}
-            ,{'title':'매입원가합계','data':'','defaultContent':''}
-            ,{'title':'창고','data':'','defaultContent':''}
-            ,{'title':'데크','data':'','defaultContent':''}
-            ,{'title':'베이','data':'','defaultContent':''}
-            ,{'title':'창고코드','data':'','defaultContent':''}
+            ,{'title':'공정항목','data':'PN_CONTENT','defaultContent':''}
+            ,{'title':'공정상태','data':'PN_STATE','defaultContent':''}
+            ,{'title':'공정처리담당자','data':'PN_ID','defaultContent':''}
+            ,{'title':'공정처리일','data':'PN_DATE','defaultContent':''}
+            ,{'title':'자산공정이력','data':'G_IDX', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop(' + data + ')" class="badge badge-primary">조회</a>';
+                }}
+            ,{'title':'도색','data':'PAINT_PROCESS','defaultContent':''}
+            ,{'title':'수리','data':'FIX_PROCESS','defaultContent':''}
+            ,{'title':'가공','data':'PROCESS_PROCESS','defaultContent':''}
+            ,{'title':'재검수','data':'RE_PROCESS','defaultContent':''}
+            ,{'title':'도색비(예정)','data':'PAINT_COST','defaultContent':''}
+            ,{'title':'도색(예정)','data':'PAINT_CONTENT','defaultContent':''}
+            ,{'title':'수리비(예정)','data':'FIX_COST','defaultContent':''}
+            ,{'title':'수리항목(예정)','data':'FIX_CONTENT','defaultContent':''}
+            ,{'title':'가공비(예정)','data':'PROCESS_COST','defaultContent':''}
+            ,{'title':'가공항목(예정)','data':'PROCESS_CONTENT','defaultContent':''}
+            ,{'title':'공정예정비합계','data':'PROCESS_TOTAL_COST','defaultContent':''}
+            ,{'title':'생산원가(품의)','data':'TOTAL_COST','defaultContent':''}
+            ,{'title':'영업검수담당자','data':'CHECKS_ID','defaultContent':''}
+            ,{'title':'영업검수처리일','data':'CHECKS_DATE','defaultContent':''}
+            ,{'title':'재고상품코드','data':'GS_CODE', 'render': function (data,type,full,meta) {
+                    return '<a href="javascript: userDetailPop('+full.GS_IDX+')" class="badge badge-primary">'+data+'</a>';
+                }}
+            ,{'title':'재고상품명','data':'GS_NAME','defaultContent':''}
+            ,{'title':'판매채널','data':'GS_SALE','defaultContent':''}
+            ,{'title':'등급','data':'GS_RANK','defaultContent':''}
+            ,{'title':'옵션1','data':'G_OPTION1','defaultContent':''}
+            ,{'title':'옵션2','data':'G_OPTION2','defaultContent':''}
+            ,{'title':'옵션3','data':'G_OPTION3','defaultContent':''}
+            ,{'title':'기준판매가(재고)','data':'GS_PRICE','defaultContent':''}
+            ,{'title':'매입원가','data':'POR_COST','defaultContent':''}
+            ,{'title':'소모품비','data':'PS_COST_SUM','defaultContent':''}
+            ,{'title':'입고검수비','data':'RE_CG_IDX','defaultContent':''}
+            ,{'title':'재검수비','data':'RE_CG_IDX','defaultContent':''}
+            ,{'title':'도색비','data':'PAINT_SUM','defaultContent':''}
+            ,{'title':'수리비','data':'FIX_SUM','defaultContent':''}
+            ,{'title':'가공비','data':'PROCESS_SUM','defaultContent':''}
+            ,{'title':'매입원가합계','data':'GOODS_SUM','defaultContent':''}
+            ,{'title':'창고','data':'WH_NAME','defaultContent':''}
+            ,{'title':'존','data':'LOC_ZONE','defaultContent':''}
+            ,{'title':'행','data':'LOC_ROW','defaultContent':''}
+            ,{'title':'열','data':'LOC_COLUMN','defaultContent':''}
+            ,{'title':'창고코드','data':'LOC_BARCODE','defaultContent':''}
         ]
     });
 
@@ -452,7 +474,10 @@
             $.ajax({
                 url:check_url,
                 type:'POST',
-                data: {"gIdx" : g_idxs},
+                data: {
+                    "gIdx":g_idxs,
+                    "type":type
+                },
                 success() {
                     tempGoodsGroup2(url, type);
                 }

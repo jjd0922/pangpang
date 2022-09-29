@@ -59,6 +59,4 @@ public class CheckGroup extends CreatedEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private CgType cgType = CgType.IN;
-
-    private int cgCost;
 }

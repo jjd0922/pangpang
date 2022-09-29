@@ -14,8 +14,6 @@ public interface ProcessMapper {
     /** 공정필요 조회 */
     Map<String, Object> selectProcessNeed(Map<String, Object> map);
 
-    ProcessNeed selectProcessNeedEntity(Map<String, Object> param);
-
     /** 공정그룹 조회 */
     List selectProcessGroupDatatable(Map<String, Object> map);
 
@@ -43,8 +41,6 @@ public interface ProcessMapper {
     /** 자산 - 반품 개수 조회 */
     long countGoodsResell(Map<String, Object> map);
 
-    /** 자산 반품 */
-    void updateResellGoods(Map<String, Object> map);
 
     /** 검수 그룹 데이터테이블 조회 */
     List<Map<String, Object>> selectCheckDatatable(Map<String, Object> map);
@@ -58,10 +54,6 @@ public interface ProcessMapper {
     /** 해당자산 해당 공정 요청 가능한지 체크 */
     Map<String, Object> goodsProcessCheck(String gIdx, String type);
 
-    void updateProcessNeed(ProcessNeed processNeed);
-
-    /** 해당자산 공정완료시 남은 공정 개수 조회 */
-    int selectProcessNeedByGoods(@Param("gIdx") Long gIdx);
 
     /** 해당자산 공정필요 공정타입 횟수 조히 */
     int selectProcessNeedCount(@Param("gIdx") Long gIdx, @Param("pnType") String pnType);
@@ -82,13 +74,33 @@ public interface ProcessMapper {
     long countProcessNeedByGroup(Map<String, Object> map);
 
     /** 해당자산 다른 공정 필요가 있는지 체크 */
-    int checkProcessNeedOther(@Param("gIdx") Long gIdx);
+    int checkProcessNeedOtherByGoods(@Param("gIdx") Long gIdx);
 
-    /** 해당 공정, 공정타입 조회 */
-    int checkProcessSpec(@Param("pnIdx") int pnIdx);
 
     /**  */
     List selectCheckGoods(Map<String, Object> map);
 
     long countCheckGoods(Map<String, Object> map);
+
+    /** 해당공정그룹에 포함되어있는 완료되지 않은 자산 체크 */
+    int checkProcessNeedOtherByChecks(@Param("cgIdx") int cgIdx);
+
+    /** 재검수 그룹 자산 조회 */
+    List<Map<String, Object>> selectReCheckGoods(Map<String, Object> map);
+
+    /** 재검수 그룹 개수 조회 */
+    long countReCheckGoods(Map<String, Object> map);
+
+
+    /** 공정보드 조회 */
+    List<Map<String, Object>> selectProcessDataTable(Map<String, Object> map);
+
+    /** 공정보드 개수 조회 */
+    long countProcessDataTable(Map<String, Object> map);
+
+    /** 검수그룹안 데이터 조회 */
+    List<Map<String, Object>> selectCheckGoodsDataTable(Map<String, Object> map);
+
+    /** 검수그룹안 데이터 개수 조회 */
+    long countCheckGoodsDataTable(Map<String, Object> map);
 }

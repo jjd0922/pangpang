@@ -1,5 +1,5 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<div class="modal" tabindex="-1" role="dialog" id="processSpecModal">
+<div class="modal" tabindex="-1" role="dialog" id="specReport">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="processSpecForm">
+                <form id="specForm">
                     <div class="col-lg-12">
                         <div class="card mb-1">
                             <div class="card-body popup-contents mb-1">
@@ -22,7 +22,7 @@
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
                                                     <input type="text" class="form-control" id="pIdx" readonly>
-                                                    <input type="hidden" id="pnIdx_spec" name="pnIdx">
+                                                    <input type="hidden" id="pnIdx" name="pnIdx">
                                                 </div>
                                             </div>
                                         </div>
@@ -42,9 +42,9 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">자산코드</span>
+                                                        <span class="input-group-text">자산번호</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="gIdx" readonly>
+                                                    <input type="text" class="form-control" id="gIdx" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">자산바코드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" id="barcode" readonly>
+                                                    <input type="text" class="form-control" id="gBarcode" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -96,7 +96,7 @@
                                                     <th>탈거부품</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="processSpec">
+                                            <tbody id="specListTable">
 
                                             </tbody>
                                         </table>
@@ -109,7 +109,7 @@
                 <div class="col-lg-12" id="stockDiv" style="display: none">
                     <div class="card mb-1">
                         <div class="card-body popup-contents mb-1">
-                            <form id="specForm">
+                            <form id="stockForm">
                                 <fieldset class="mb-0">
                                     <legend class="">재고상품 검색</legend>
                                     <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="selectStockGoods();">검색</button>
@@ -172,106 +172,67 @@
     </div>
 </div>
 <script>
-    function saveProcessSpec() {
-        $.ajax({
-            url: '/process/saveProcessSpec.ajax',
-            data: $('#processSpecForm').serialize(),
-            type: 'POST',
-            async: false
-        })
+    function openSpecReport(id, rowIdx) {
+        $('#specReport').modal('show');
+        var dataMap = getDatatablemap(id, rowIdx);
 
-    }
 
-    function openStockDiv(specName, row) {
-        $('#stockDiv').attr('style', 'display:block')
-        $('input[name=speclName]').val(specName);
-        $('#rowIndex').val(row);
-        selectStockGoods();
-    }
-
-    function openProcessSpecModal(gIdx, pnIdx) {
-        $('#processSpecModal').modal('show');
-        $('input[name=pnIdx]').val(pnIdx);
-        selectGoodsInfo(gIdx, pnIdx)
-    }
-
-    function selectGoodsInfo(gIdx, pnIdx) {
-        var dataMap;
-        $.ajax({
-            url: '/process/selectProcessNeed.ajax',
-            data: {
-                "gIdx" : gIdx,
-                "pnIdx":pnIdx
-            },
-            type: 'POST',
-            async: false,
-            success(data) {
-                dataMap = data;
-            }
-        })
-
-        $('input[name=gIdx]').val(dataMap.G_IDX);
+        $('#gImei').val(dataMap.G_IMEI);
         $('#pIdx').val(dataMap.P_IDX);
         $('#pName').val(dataMap.P_NAME);
-        $('#barcode').val(dataMap.G_BARCODE);
-        $('#gImei').val(dataMap.G_IMEI);
-        $('#pnIdx_spec').val(dataMap.PN_IDX);
-        if (dataMap.PN_STATE == 'COMPLETE') {
-            $('#psUploadBtn').remove();
-        }
+        $('#gBarcode').val(dataMap.G_BARCODE)
+        $('#gIdx').val(dataMap.G_IDX);
+        $('#pnIdx').val(dataMap.PN_IDX);
 
-
-        // 상품 스펙 정보
-        setGoodsSpec(dataMap)
-
-
+        // 상품 SPEC정보
+        setSpec(dataMap);
     }
 
-    function setGoodsSpec(dataMap) {
-        var gJson = JSON.parse(dataMap.G_JSON);
-        var pnJson = JSON.parse(dataMap.PN_JSON);
+    //스펙 세팅
+    function setSpec(dataMap) {
         if(dataMap.CATE_SPEC_LIST != null){
-            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            var gJson = JSON.parse(dataMap.G_JSON);
+            var pnJson = JSON.parse(dataMap.PN_JSON);
+            var ppJson = JSON.parse(dataMap.PP_JSON);
 
-            var inSpec1 = listNullCheck(gJson.inSpec2, specList.length);
+            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            var inSpec1 = listNullCheck(ppJson.inSpec1, specList.length);
             var inSpec2 = listNullCheck(gJson.inSpec2, specList.length);
+            var sellSpec1 = listNullCheck(ppJson.sellSpec1, specList.length);
+            var sellSpec2 = listNullCheck(gJson.sellSpec2, specList.length);
             var pSpec1 = listNullCheck(pnJson.pSpec1, specList.length);
             var pSpec2 = listNullCheck(pnJson.pSpec2, specList.length);
-            var sellSpec1 = listNullCheck(gJson.sellSpec1, specList.length);
-            var sellSpec2 = listNullCheck(gJson.sellSpec2, specList.length);
 
             var psCost = listNullCheck(pnJson.psCost, specList.length);
             var psIdx = listNullCheck(pnJson.psIdx, specList.length);
-            var changeSpecIdx = listNullCheck(pnJson.changeSpecIdx, specList.length);
-            var changeSpecName = listNullCheck(pnJson.changeSpecName, specList.length);
-            var removeSpecName = listNullCheck(pnJson.removeSpecName, specList.length);
-            var removeSpecIdx = listNullCheck(pnJson.removeSpecIdx, specList.length);
             var gsIdx = listNullCheck(pnJson.gsIdx, specList.length);
 
-            $('#processSpec').empty();
+            var outSpecName = listNullCheck(pnJson.outSpecName, specList.length);
+
+
+            $('#specListTable').empty();
             for (var i = 0; i < specList.length; i++) {
                 if (pSpec2[i] == '') {pSpec2[i] = '등록'}
-
                 var specTr
                     ='<tr>'
-                    +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
-                    +'<input type="hidden" name="specName" value="' + specList[i] + '">'
-                    +'<td><input type="text" id="inSpec1_'+i+'" class="form-control" value="'+inSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" id="inSpec2_'+i+'" class="form-control" value="'+inSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" id="sellSpec1_'+i+'" class="form-control" value="'+sellSpec1[i]+'" readonly></td>'
-                    +'<td><input type="text" id="sellSpec2_'+i+'" class="form-control" value="'+sellSpec2[i]+'" readonly></td>'
-                    +'<td><input type="text" id="pSpec1_'+i+'" class="form-control" value="'+pSpec1[i]+'" readonly></td>'
-                    +'<td><button type="button" specName="'+specList[i]+'" class="badge badge-primary" id="specBtn'+i+'" onclick="openStockDiv(\''+specList[i]+'\','+i+')">'+pSpec2[i]+'</button></td>'
-                    +'<input type="hidden" id="change_spec_idx_'+i+'" name="changeSpecIdx" value="'+changeSpecIdx[i]+'">'
-                    +'<input type="hidden" id="change_spec_name_'+i+'" name="changeSpecName" value="'+changeSpecName[i]+'">'
-                    +'<td><input type="text" name="psCost" class="form-control" value="'+psCost[i]+'"></td>'
-                    +'<input type="hidden" name="psIdx" value="'+psIdx[i]+'">'
-                    +'<td><input type="text" id="remove_spec_name_'+i+'" class="form-control" name="removeSpecName" value="'+removeSpecName[i]+'" readonly></td>'
-                    +'<input type="hidden" id="remove_spec_idx'+i+'" name="removeSpecIdx" value="'+removeSpecIdx[i]+'">'
-                    +'<input type="hidden" id="gsIdx_'+i+'" name="gsIdx" value="'+gsIdx[i]+'">'
+                        +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
+                        +'<input type="hidden" name="specName" value="' + specList[i] + '">'
+                        +'<td><input type="text" specList="'+i+'" class="form-control" id="inSpec1_'+[i]+'" value="'+inSpec1[i]+'" readonly></td>'
+                        +'<td><input type="text" specList="'+i+'" class="form-control" id="inSpec2_'+[i]+'" value="'+inSpec2[i]+'" readonly></td>'
+                        +'<td><input type="text" specList="'+i+'" class="form-control" id="sellSpec1_'+[i]+'" value="'+sellSpec1[i]+'" readonly></td>'
+                        +'<td><input type="text" specList="'+i+'" class="form-control" id="sellSpec2_'+[i]+'" value="'+sellSpec2[i]+'" readonly></td>'
+                        +'<td><input type="text" specList="'+i+'" class="form-control" id="pSpec1_'+[i]+'" value="'+pSpec1[i]+'" readonly></td>'
+                        +'<td><button type="button" specName="'+specList[i]+'" class="badge badge-primary" id="specBtn'+i+'" onclick="openStockDiv(\''+specList[i]+'\','+i+')">'+pSpec2[i]+'</button></td>'
+                        +'<td><input type="text" class="form-control" value="'+psCost[i]+'" readonly></td>'
+                        +'<input type="hidden" name="psIdx" value="'+psIdx[i]+'">'
+                        +'<input type="hidden" id="inSpecIdx'+i+'" name="inSpecIdx">'
+                        +'<input type="hidden" id="pSpec2_'+i+'" name="pSpec2">'
+                        +'<td><input type="text" id="outSpecName'+i+'" class="form-control" name="outSpecName" value="'+outSpecName[i]+'" readonly></td>'
+                        +'<input type="hidden" id="outSpecIdx'+i+'" name="outSpecIdx">'
+                        +'<input type="hidden" id="gsIdx'+i+'" name="gsIdx" value="'+gsIdx[i]+'">'
                     +'</tr>';
 
-                $('#processSpec').append(specTr);
+                $('#specListTable').append(specTr);
             }
 
             var specListTd = $('.specListTd');
@@ -290,21 +251,40 @@
             }
         }
     }
-</script>
-<script>
+
+    function openStockDiv(specName, row) {
+        $('#stockDiv').attr('style', 'display:block')
+        $('input[name=speclName]').val(specName);
+        $('#rowIndex').val(row);
+        selectStockGoods();
+    }
+
     function setProcessSpec(idx, value, gsIdx) {
         var row = $('#rowIndex').val();
         $('#specBtn'+row).text(value);
-        $('#change_spec_idx_'+row).val(idx);
-        $('#change_spec_name_'+row).val(value);
+        $('#inSpecIdx'+row).val(idx);
+        $('#pSpec2_'+row).val(value);
 
-        $('#remove_spec_idx_'+row).val(idx);
-        $('#remove_spec_name_'+row).val($('#spec2_'+row).val());
-        $('#gsIdx_'+row).val(gsIdx);
+        $('#outSpecName'+row).val($('#inSpec2_'+row).val());
+        $('#gsIdx'+row).val(gsIdx);
+
+        $('#stockDiv').attr('style', 'display:none')
     }
 
+
+    function saveProcessSpec() {
+        $.ajax({
+            url: '/process/saveProcessSpec.ajax',
+            data: $('#specForm').serialize(),
+            type: 'POST',
+            async: false
+        })
+    }
+</script>
+
+<script>
     function selectStockGoods() {
-        specTable.page('first').ajax.url('/stock/selectSpecParts.dataTable?'+$('#specForm').serialize()).load();
+        specTable.page('first').ajax.url('/stock/selectSpecParts.dataTable?'+$('#stockForm').serialize()).load();
     }
 
     var specTable = $('#specTable').DataTable({
@@ -312,7 +292,7 @@
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/stock/selectSpecParts.dataTable?'+$('#specForm').serialize(),
+            url:'/stock/selectSpecParts.dataTable?'+$('#stockForm').serialize(),
             type:'post'
         },
         buttons: buttonsSelect(false),

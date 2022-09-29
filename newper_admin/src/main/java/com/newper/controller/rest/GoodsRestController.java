@@ -72,11 +72,23 @@ public class GoodsRestController {
     }
 
     /** 자산 조회 */
+    @PostMapping("goods.dataTable2")
+    public ReturnDatatable dataTable2(ParamMap paramMap) {
+        ReturnDatatable rd = new ReturnDatatable();
+        paramMap.multiSelect("gState");
+        paramMap.multiSelect("gStockState");
+        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
+        return rd;
+    }
+
+    /** 자산 조회 */
     @PostMapping("goods.dataTable")
     public ReturnDatatable goodsDataTable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
         paramMap.multiSelect("gState");
-        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
+        paramMap.multiSelect("gStockState");
+        rd.setData(goodsMapper.selectGoodsDataTable1(paramMap.getMap()));
         rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
         return rd;
     }
@@ -168,4 +180,5 @@ public class GoodsRestController {
         goodsService.updateGoodsState(paramMap);
         return rm;
     }
+
 }

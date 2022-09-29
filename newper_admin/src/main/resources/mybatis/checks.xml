@@ -94,17 +94,6 @@
             <include refid="includeChecksDatatable"></include>
     </select>
 
-    <select id="selectCheckGroupExpectedCostTotal" resultType="Integer">
-        SELECT
-            SUM(CGS_COUNT * CGS_EXPECTED_COST)
-        FROM
-            CHECK_GOODS
-        WHERE
-            CGS_CG_IDX = #{cgIdx}
-        GROUP BY
-            CGS_CG_IDX
-    </select>
-
     <sql id="includeCheckGoodsDataTable">
         CG_IDX = #{cgIdx}
         <if test="poIdx != null and poIdx != ''">AND PO_IDX LIKE CONCAT ('%', #{poIdx}, '%')</if>
@@ -128,18 +117,23 @@
             G_IMEI,
             G_MEMO,
             CGS_IDX,
+            PP_JSON,
             G_OPTION,
             G_JSON ->> '$.inSpec2' AS INSPEC2,
             (SELECT PN_JSON ->> '$.pSpec1' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PSPEC1,
+
             (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_PN_IDX,
             (SELECT PN_JSON ->> '$.paintContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX) AS PAINT_CONTENT,
             @PAINT_COST:=IFNULL((SELECT PN_JSON ->> '$.paintCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PAINT' AND G_IDX = PN_G_IDX),0) AS PAINT_COST,
+
             (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_PN_IDX,
             (SELECT PN_JSON ->> '$.fixContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX) AS FIX_CONTENT,
             @FIX_COST:=IFNULL((SELECT PN_JSON ->> '$.fixCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'FIX' AND G_IDX = PN_G_IDX),0) AS FIX_COST,
+
             (SELECT PN_IDX FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_PN_IDX,
             (SELECT PN_JSON ->> '$.processContent' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX) AS PROCESS_CONTENT,
             @PROCESS_COST:=IFNULL((SELECT PN_JSON ->> '$.processCost' FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX),0) AS PROCESS_COST,
+
             @PAINT_COST+@FIX_COST+@PROCESS_COST AS TOTAL_COST,
             IFNULL((SELECT PN_JSON FROM PROCESS_NEED WHERE CG_IDX = PN_CG_IDX AND PN_TYPE = 'PROCESS' AND G_IDX = PN_G_IDX), '{}') AS PN_JSON
         FROM
@@ -149,6 +143,8 @@
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN PO_RECEIVED ON G_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
         <where>
             <include refid="includeCheckGoodsDataTable"></include>
         </where>

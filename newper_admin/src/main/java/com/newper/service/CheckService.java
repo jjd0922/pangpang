@@ -201,26 +201,122 @@ public class CheckService {
         processGroup.setPgEndDate(null);
         processGroupRepo.save(processGroup);
 
-        Map<String, Object> param = new HashMap<>();
-        param.put("pnType", paramMap.getString("type"));
-        param.put("pnState", "NEED");
+        PnType pnType = PnType.valueOf(paramMap.getString("type"));
         //check goods
         List<Long> gIdx = processMapper.selectGoodsTemp(paramMap.getLong("ggt_idx"));
         for (int i = 0; i < gIdx.size(); i++) {
-            param.put("gIdx", gIdx.get(i));
+            ProcessNeed processNeed = processNeedRepo.findByGoodsAndPnTypeAndPnProcessAndPnState(goodsRepo.getReferenceById(gIdx.get(i)), pnType, PnProcess.Y, PnState.NEED);
 
-            ProcessNeed processNeed = processMapper.selectProcessNeedEntity(param);
             if (processNeed == null) {
                 throw new MsgException("잘못된 접근입니다.");
             }
+
             processNeed.setProcessGroup(processGroup);
             processNeed.setPnState(PnState.REQUEST);
 
-            processMapper.updateProcessNeed(processNeed);
-//            processNeedRepo.save(processNeed);
+            processNeedRepo.save(processNeed);
         }
 
         long ggt_idx = paramMap.getLong("ggt_idx");
         goodsMapper.deleteGoodsGroupTempByGGT_IDX(ggt_idx);
+    }
+
+    /** 영업검수 확정 **/
+    @Transactional
+    public void saveCheckReport(ParamMap paramMap, MultipartFile[] gFile) {
+        Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+
+        String paint = paramMap.getString("paintProcess");
+        String fix = paramMap.getString("fixProcess");
+        String process = paramMap.getString("processProcess");
+
+        // 모든 공정이 민진행일경우 상품화 완료
+        if (paint.equals("N") && fix.equals("N") && process.equals("N")) {
+            goods.setGState(GState.STOCK);
+            goods.setGStockState(GStockState.STOCK_REQ);
+        } else {
+            Map<String, Object> gJson = goods.getGJson();
+            // 자산 이미지 업로드
+            if (!gFile[0].getOriginalFilename().equals("")) {
+                List<String> file = (List<String>) gJson.get("gFile");
+                List<String> fileName = (List<String>) gJson.get("gFileName");
+
+                for (int i = 0; i < gFile.length; i++) {
+                    file.add(Common.uploadFilePath(gFile[i], "goods/photo/" + goods.getGIdx() + "/", AdminBucket.SECRET));
+                    fileName.add(gFile[i].getOriginalFilename());
+                }
+
+                gJson.put("gFile", file);
+                gJson.put("gFileName", fileName);
+            }
+
+            goods.setGVendor(paramMap.getString("gVendor"));
+            goods.setGRank(GRank.valueOf(paramMap.getString("gRank")));
+            goods.setGMemo(paramMap.getString("gMemo"));
+
+            List<String> gOption = paramMap.getList("goodsOption");
+            List<Map<String, Object>> optionList = new ArrayList<>();
+            for (int i = 0; i < gOption.size(); i++) {
+                if (!gOption.get(i).equals("")) {
+                    Map<String, Object> optionMap = new HashMap<>();
+                    optionMap.put("title", gOption.get(i).split(":")[0]);
+                    optionMap.put("value", gOption.get(i).split(":")[1]);
+                    optionList.add(optionMap);
+                }
+            }
+            goods.setGOption(optionList);
+
+            //판매 확정 SPEC
+            SpecFinder specFinder = new SpecFinder(specMapper, specListRepo, specRepo);
+            List<String> specName = paramMap.getList("specName");
+            List<String> sellSpec2Value = paramMap.getList("sellSpec2");
+            Spec sellSpec2 = specFinder.findSpec(specName, sellSpec2Value);
+            goods.setSellSpec(sellSpec2);
+            gJson.put("sellSpec2", sellSpec2Value);
+
+            processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
+            processService.insertProcessNeed(goods, paramMap, PnType.FIX);
+            processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+
+            goods.setGState(GState.PROCESS);
+            goods.setGJson(gJson);
+        }
+        goodsRepo.save(goods);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** 자산 검수 완료처리 */
+    @Transactional
+    public void checkDoneGoods(ParamMap paramMap) {
+        String[] gIdx = paramMap.getString("gIdx").split(",");
+        int cgIdx = paramMap.getInt("cgIdx");
+
+        for (int i = 0; i < gIdx.length; i++) {
+            Goods goods =  goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+
+
+        }
+    }
+
+    /** 그룹 검수 완료처리 */
+    @Transactional
+    public void checkDoneGroup(ParamMap paramMap) {
+        int cgIdx = paramMap.getInt("cgIdx");
+
     }
 }

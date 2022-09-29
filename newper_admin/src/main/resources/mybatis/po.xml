@@ -145,10 +145,6 @@
             AND HW_APRV_DATE BETWEEN SUBSTR(#{hwAprvDate}, 1, 10) AND SUBSTR(#{hwAprvDate}, 13)
         </if>
 
-        <if test="poState != null and poState != ''">
-            AND PO_STATE = #{poState}
-        </if>
-
         <if test="igState != null and igState != ''">
             AND IG_STATE = #{igState}
         </if>
@@ -291,6 +287,10 @@
         </where>
         ORDER BY
             PO_IDX DESC
+        <if test="length != -1">
+        LIMIT
+            #{start}, #{length}
+        </if>
     </select>
     <select id="countInDatatable" parameterType="map" resultType="Integer">
         SELECT

@@ -142,8 +142,8 @@ public class ProcessRestController {
     }
 
     /**재검수 그룹 등록*/
-    @PostMapping("reCheckPop.ajax")
-    public ReturnMap reCheckPop(ParamMap paramMap){
+    @PostMapping("reCheckReq.ajax")
+    public ReturnMap reCheckReq(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         paramMap.put("gState", GState.RE_CHECK_REQ);
         paramMap.put("cgsType", CgsType.RE);
@@ -153,8 +153,8 @@ public class ProcessRestController {
         return rm;
     }
 
-    @PostMapping("needPop.ajax")
-    public ReturnMap process(ParamMap paramMap){
+    @PostMapping("processReq.ajax")
+    public ReturnMap processReq(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
         checkService.insertProcessGroup(paramMap);
         rm.setMessage("공정 요청 완료");
@@ -260,14 +260,6 @@ public class ProcessRestController {
         return rm;
     }
 
-    /** 해당 검수그룹 완료 체크 */
-    @PostMapping(value = "checkDone.ajax")
-    public ReturnMap checkDone(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        processService.checkDone(paramMap);
-        return rm;
-    }
-
     /** 해당 공정 그룹 상태값 변경 */
     @PostMapping("updateProcessState.ajax")
     public ReturnMap updateProcessState(ParamMap paramMap) {
@@ -281,8 +273,75 @@ public class ProcessRestController {
     @PostMapping("reCheckGoods.dataTable")
     public ReturnDatatable reCheckGoods(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable();
-        rd.setData(processMapper.selectCheckGoods(paramMap.getMap()));
-        rd.setRecordsTotal(processMapper.countCheckGoods(paramMap.getMap()));
+        rd.setData(processMapper.selectReCheckGoods(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countReCheckGoods(paramMap.getMap()));
         return rd;
+    }
+
+    /** 검수 완료 처리시 */
+    @PostMapping("checkDone.ajax")
+    public ReturnMap checkDone(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.checkDone(paramMap);
+        rm.setMessage("검수완료");
+        return rm;
+    }
+
+    /** 출고전 검수  */
+    @PostMapping("uploadOutReport.ajax")
+    public ReturnMap outCheck(ParamMap paramMap, MultipartFile[] gFile) {
+        ReturnMap rm = new ReturnMap();
+        processService.uploadOutReport(paramMap, gFile);
+        rm.setMessage("검수완료");
+        return rm;
+    }
+
+    @PostMapping("reCheckDone.ajax")
+    public ReturnMap reCheckDone(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.reCheckDone(paramMap);
+        rm.setMessage("검수완료");
+        return rm;
+    }
+
+
+    /** 공정보드 데이터 테이블 */
+    @PostMapping("selectProcess.dataTable")
+    public ReturnDatatable selectProcess(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(processMapper.selectProcessDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countProcessDataTable(paramMap.getMap()));
+        return rd;
+    }
+
+    /** 검수 그룹 안 자산 조회  */
+    @PostMapping("checkGoods.dataTable")
+    public ReturnDatatable checkGoodsDataTable(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(processMapper.selectCheckGoodsDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countCheckGoodsDataTable(paramMap.getMap()));
+        return rd;
+    }
+
+
+    /** 검수(입고,재,출고전....) 리포트 등록 */
+    @PostMapping("updateCheckReport.ajax")
+    public ReturnMap updateCheckReport(ParamMap paramMap, MultipartFile[] gFile) {
+        ReturnMap rm = new ReturnMap();
+        processService.updateCheckReport(paramMap, gFile);
+        rm.setMessage("리포트 등록");
+        return rm;
+    }
+
+
+
+
+    /** 입고검수그룹 취소 */
+    @PostMapping("inCheckCancel.ajax")
+    public ReturnMap inCheckCancel(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        processService.inCheckCancel(paramMap);
+        rm.setMessage("검수 취소 완료");
+        return rm;
     }
 }

@@ -144,8 +144,7 @@
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/process/processing.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        returnTable.page('first').ajax.url('/process/processing.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 
     function pgDetail(idx, type) {
@@ -153,10 +152,10 @@
             var focusPopup = window.open('/process/processGroupPop_process/' + idx, 'processGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
             focusPopup.focus();
         } else {
-            var focusPopup = window.open('/process/processGroupPop/' + idx, 'processGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
-            focusPopup.focus();
-        }
 
+        }
+        var focusPopup = window.open('/process/processGroupPop/'+idx+'?type='+type, 'processGroupPop', 'width=1030, height=830, left='+screenX+', top='+screenY+',scrollbars=yes, resizable=yes');
+        focusPopup.focus();
     }
 </script>
 

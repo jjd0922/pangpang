@@ -33,8 +33,10 @@ public class ProcessNeed {
     private ProcessGroup processGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="PN_CG_IDX", referencedColumnName = "cgIdx")
-    private CheckGroup checkGroup;
+    @JoinColumn(name="PN_CGS_IDX", referencedColumnName = "cgsIdx")
+    private CheckGoods checkGoods;
+
+
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
@@ -59,6 +61,14 @@ public class ProcessNeed {
     private PnState pnState = PnState.NEED;
 
     private Map<String, Object> pnJson;
+
+
+
+
+/// 삭제할 항목들
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PN_CG_IDX", referencedColumnName = "cgIdx")
+    private CheckGroup checkGroup;
 
 
 }

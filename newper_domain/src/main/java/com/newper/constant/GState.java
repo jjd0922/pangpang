@@ -11,6 +11,7 @@ public enum GState implements EnumOption {
 
     RECEIVED("입고")
 
+    ,CHECK_NEED("입고검수필요")
     ,CHECK_REQ("입고검수요청")
     ,CHECK_ING("입고검수중")
     ,CHECK_DONE("입고검수완료")
@@ -36,5 +37,4 @@ public enum GState implements EnumOption {
     ,LOST("망실");
 
     private String option;
-
 }

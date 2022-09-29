@@ -247,7 +247,7 @@ public class GoodsService {
         String[] gIdx = paramMap.getString("gIdx").split(",");
         for (int i = 0; i < gIdx.length; i++) {
             Map<String, Object> processNeed = processMapper.goodsProcessCheck(gIdx[i], paramMap.getString("type"));
-
+            System.out.println("pa: " + paramMap.entrySet());
             if (processNeed == null) {
                 throw new MsgException(PnType.valueOf(paramMap.getString("type")).getOption() + "요청 할 수 없는 자산입니다.");
             }
@@ -260,7 +260,7 @@ public class GoodsService {
 
         for (int i = 0; i < gIdxs.length; i++) {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-            if (!goods.getGState().equals(GState.CHECK_REQ)) {
+            if (!goods.getGState().equals(GState.RE_CHECK_NEED)) {
                 throw new MsgException(goods.getGBarcode() + "는 재검수에 해당되는 자산이 아닙니다.");
             }
         }
@@ -287,19 +287,21 @@ public class GoodsService {
     public void updateGoodsState(ParamMap paramMap) {
         String[] gIdxs = paramMap.getString("gIdx").split(",");
         List<Long> gIdx = new ArrayList<>();
-
+        System.out.println(paramMap.getMap().entrySet());
         // 재검수 완료일때 다른 공정이 있으면 영업검수 없으면 자산화완료
         if (GState.RE_CHECK_DONE.equals(GState.valueOf(paramMap.getString("gState")))) {
 
             for (int i = 0; i < gIdx.size(); i++) {
-                int check = processMapper.checkProcessNeedOther(gIdx.get(i));
+                int check = processMapper.checkProcessNeedOtherByGoods(gIdx.get(i));
                 Goods goods = null;
                 if (check == 0) {
+                    System.out.println("n ull");
                     goods = goodsRepo.findById(gIdx.get(i)).get();
                     goods.setGState(GState.STOCK);
                     goods.setGStockState(GStockState.STOCK_REQ);
                 } else {
                     goods.setGState(GState.PROCESS);
+                    System.out.println("siongal3#");
                 }
 
                 goodsRepo.save(goods);
@@ -313,6 +315,4 @@ public class GoodsService {
 
         }
     }
-
-
 }
