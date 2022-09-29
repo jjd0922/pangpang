@@ -4,11 +4,13 @@ import com.newper.constant.MsType;
 import com.newper.entity.MainSection;
 import com.newper.entity.MainSectionBanner;
 import com.newper.entity.Shop;
+import com.newper.entity.ShopCategory;
 import com.newper.exception.MsgException;
 import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.MainSectionBannerRepo;
 import com.newper.repository.MainSectionRepo;
+import com.newper.repository.ShopCategoryRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class DesignController {
     private final MainSectionBannerRepo mainSectionBannerRepo;
     private final MainSectionMapper mainsectionMapper;
     private final ShopMapper shopMapper;
+    private final ShopCategoryRepo shopCategoryRepo;
 
     /** 공통 디자인 영역*/
     @GetMapping("")
@@ -120,6 +123,11 @@ public class DesignController {
                 mav.addObject("mainSectionBanners", mainSectionBanners);
                 List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(msIdx);
                 mav.addObject("mainSectionSps", mainSectionSps);
+            }else if(msType.equals(MsType.CATEGORY.name())){
+                List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductCategoryByMsIdx(msIdx);
+                List<ShopCategory> shopCategories = shopCategoryRepo.findAll();
+                mav.addObject("mainSectionSps", mainSectionSps);
+                mav.addObject("shopCategories", shopCategories);
             }
         }
 

@@ -71,6 +71,30 @@
         ORDER BY MSSP_ORDER
     </select>
 
+    <select id="selectMainSectionShopProductCategoryByMsIdx" resultType="map">
+        SELECT
+            MAIN_SECTION_SP.*
+            ,SP_IDX
+            ,SP_NAME
+            ,SP_STATE
+            ,SCATE_IDX
+            ,SCATE_NAME
+        FROM
+            MAIN_SECTION
+           ,MAIN_SECTION_SP
+           ,SHOP_CATEGORY
+           ,CATEGORY
+           ,CATEGORY_SHOP_CATEGORY
+           ,SHOP_PRODUCT
+        WHERE
+            SCATE_IDX = CSC_SCATE_IDX
+          AND CATE_IDX = CSC_CATE_IDX
+          AND CATE_IDX = SP_CATE_IDX
+          AND MSSP_MS_IDX = MS_IDX
+          AND MSSP_SP_IDX = SP_IDX
+          AND MS_IDX = #{msIdx}
+    </select>
+
     <insert id="insertMainSectionSp" parameterType="map">
         INSERT INTO MAIN_SECTION_SP
         (
