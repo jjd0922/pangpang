@@ -39,4 +39,12 @@ public interface CompanyMapper {
     /**CT_TYPE별 거래처 데이터테이블*/
     List<Map<String ,Object>> selectCompanyDatatableByCtType(Map<String ,Object> map);
     Integer countCompanyDatatableByCtType(Map<String ,Object> map);
+
+    /**입점사별 배송비 템플릿*/
+    List<Map<String,Object>> selectCompanyDeliveryDatatable(Map<String , Object> map);
+    Integer countCompanyDeliveryDatatable(Map<String , Object> map);
+
+    /**입점사별 배송비 템플릿 기본설정 체크시 기존의 기본설정 해제*/
+    void updateCompanyDeliveryByComIdx(int COM_IDX);
+
 }

@@ -374,4 +374,36 @@
             <include refid="includeCompanyDatatableByCtType"></include>
     </select>
 
+    <select id="selectCompanyDeliveryDatatable" resultType="map">
+        select
+            CD_IDX, CD_COM_IDX, CD_TYPE, CD_FEE, CD_FREE,
+            CD_JEJU, CD_ETC, CD_RETURN_FEE, CD_BASIC, CD_COMPANY
+        from
+            company_delivery
+        where
+            CD_COM_IDX=#{COM_IDX}
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+
+    <select id="countCompanyDeliveryDatatable" resultType="Integer">
+        select
+            count(*)
+        from
+            company_delivery
+        where
+            CD_COM_IDX=#{COM_IDX}
+    </select>
+
+    <update id="updateCompanyDeliveryByComIdx">
+        update
+            company_delivery
+        set
+            CD_BASIC=0
+        where
+            CD_COM_IDX=#{COM_IDX}
+            and CD_BASIC=1
+    </update>
+
 </mapper>

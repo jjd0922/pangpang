@@ -3,6 +3,7 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.CcState;
+import com.newper.constant.CdType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
@@ -31,6 +32,7 @@ public class CompanyService {
     private final CompanyInsuranceRepo companyInsuranceRepo;
     private final CompanyFeeRepo companyFeeRepo;
     private final CompanyEmployeeRepo companyEmployeeRepo;
+    private final CompanyDeliveryRepo companyDeliveryRepo;
 
     /** 거래처 등록 기능 */
     @Transactional
@@ -288,6 +290,60 @@ public class CompanyService {
         CompanyInsurance insuranceParam = paramMap.mapParam(CompanyInsurance.class);
         insuranceParam.setCiEndDate(LocalDate.parse(paramMap.getString("ciEndDate")));
         insurance.updateInsurance(insuranceParam);
+    }
+
+    /**입점사 배송비 템플릿 저장*/
+    @Transactional
+    public int companyDeliverySave(ParamMap paramMap){
+        if(paramMap.getInt("CD_BASIC")==1){
+            companyMapper.updateCompanyDeliveryByComIdx(paramMap.getInt("COM_IDX"));
+        }
+        CompanyDelivery companyDelivery = paramMap.mapParam(CompanyDelivery.class);
+        companyDelivery.setCompany(companyRepo.getReferenceById(paramMap.getInt("COM_IDX")));
+        if(paramMap.get("CD_TYPE")!=null){
+            if(!companyDelivery.getCdType().equals(CdType.CONDITION)){
+                companyDelivery.setCdFree(0);
+            }
+            if(companyDelivery.getCdType().equals(CdType.FREE)){
+                companyDelivery.setCdFee(0);
+            }
+        }
+
+        companyDeliveryRepo.save(companyDelivery);
+
+        return companyDelivery.getCdIdx();
+    }
+
+    /**입점사 배송비 템플릿 수정*/
+    @Transactional
+    public int companyDeliveryUpdate(ParamMap paramMap){
+        CompanyDelivery ori = companyDeliveryRepo.getReferenceById(paramMap.getInt("CD_IDX"));
+        if(paramMap.getInt("CD_BASIC")==1&&ori.getCdBasic()!=1){
+            companyMapper.updateCompanyDeliveryByComIdx(ori.getCompany().getComIdx());
+        }
+        CompanyDelivery companyDelivery = paramMap.mapParam(CompanyDelivery.class);
+
+        ori.setCdCompany(companyDelivery.getCdCompany());
+        ori.setCdBasic(companyDelivery.getCdBasic());
+        ori.setCdType(companyDelivery.getCdType());
+        ori.setCdFree(companyDelivery.getCdFree());
+        ori.setCdFee(companyDelivery.getCdFee());
+        ori.setCdJeju(companyDelivery.getCdJeju());
+        ori.setCdEtc(companyDelivery.getCdEtc());
+        System.out.println(paramMap.get("CD_TYPE"));
+
+        if(paramMap.get("CD_TYPE")!=null){
+            if(!companyDelivery.getCdType().equals(CdType.CONDITION)){
+                ori.setCdFree(0);
+            }
+            if(companyDelivery.getCdType().equals(CdType.FREE)){
+                ori.setCdFee(0);
+            }
+        }
+        System.out.println(ori.getCdFree());
+        companyDeliveryRepo.save(ori);
+
+        return ori.getCdIdx();
     }
 
 }
