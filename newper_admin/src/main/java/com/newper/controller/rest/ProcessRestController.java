@@ -260,15 +260,6 @@ public class ProcessRestController {
         return rm;
     }
 
-    /** 해당 공정 그룹 상태값 변경 */
-    @PostMapping("updateProcessState.ajax")
-    public ReturnMap updateProcessState(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        processService.updateProcessState(paramMap);
-        rm.setMessage("처리완료");
-        return rm;
-    }
-
     /**재검수 그룹 자산 조회*/
     @PostMapping("reCheckGoods.dataTable")
     public ReturnDatatable reCheckGoods(ParamMap paramMap){
@@ -342,6 +333,26 @@ public class ProcessRestController {
         ReturnMap rm = new ReturnMap();
         processService.inCheckCancel(paramMap);
         rm.setMessage("검수 취소 완료");
+        return rm;
+    }
+
+
+
+    /** 해당 자산 - 공정 상태값 변경 */
+    @PostMapping("updateProcessState.ajax")
+    public ReturnMap updateProcessState(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.updateProcessState(paramMap);
+        rm.setMessage("처리완료");
+        return rm;
+    }
+
+    /** 해당 공정 그룹 완료 체크후 처리 */
+    @PostMapping("checkProcessGroup.ajax")
+    public ReturnMap checkProcessGroup(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        ;
+        rm.setMessage(processService.checkProcessGroup(paramMap));
         return rm;
     }
 }

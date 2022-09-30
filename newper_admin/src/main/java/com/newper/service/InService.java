@@ -99,33 +99,6 @@ public class InService {
         inGroupRepo.save(inGroup);
     }
 
-    /** 입고검수 작업요청 작업요청취소, 작업중(출고) */
-    @Transactional
-    public void checkGroupStateUpdate(ParamMap paramMap) {
-        int cgIdx = paramMap.getInt("cgIdx");
-        CheckGroup checkGroup = checkGroupRepo.findById(cgIdx).get();
-        String state = paramMap.getString("state");
-
-        // 작업요청 취소
-        if (state.equals("CHECK_NEED")) {
-            if (checkGroup.getCgState().equals(CgState.BEFORE)) {
-                checkGroupRepo.deleteById(cgIdx);
-            } else {
-                throw new MsgException("해당건은 작업중이거나 작업이 완료되어 요청 취소가 불가합니다.");
-            }
-        }else if (state.equals("CHECK_ING")) {
-            if (checkGroup.getCgState().equals(CgState.BEFORE)) {
-                checkGroup.setCgState(CgState.REQ);
-                checkGroupRepo.save(checkGroup);
-
-//                List<Map<String, Object>> goods = goodsMapper.selectGoodsByCheckGroup(cgIdx);
-//                goodsMapper.updateGoodsState(goods.get(), GState.CHECK_ING.name());
-            } else {
-                throw new MsgException("해당건은 작업중이거나 작업이 완료되어 처리가 불가능합니다.");
-            }
-        }
-    }
-
     /** 입고등록시 새상품 등록 */
     @Transactional
     public void insertInProduct(ParamMap paramMap) {

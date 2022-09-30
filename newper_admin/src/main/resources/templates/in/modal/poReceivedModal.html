@@ -126,10 +126,10 @@
 
         $.ajax({
             type: "POST",
-            url:"/po/insertPoReceived.ajax?" + $('#poReceivedModalForm').serialize() + $('#goodsForm').serialize(),
+            url:"/po/insertPoReceived.ajax?" + $('#poReceivedModalForm').serialize() + $('#searchForm').serialize(),
             async: false,
             success : function(result){
-                searchGoods();
+                searchBtn();
             }
         });
     }
@@ -152,7 +152,7 @@
     function setPoReceived() {
         if ($('#poCheckType').val() == 'ori') {
             $.ajax({
-                url: '/po/selectPoProduct.dataTable?' + $('#goodsForm').serialize(),
+                url: '/po/selectPoProduct.dataTable?' + $('#searchForm').serialize(),
                 type: 'post',
                 async: false,
                 success(result) {

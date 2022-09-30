@@ -245,7 +245,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="updateCheckReport();">저장</button>
+                <button th:if="${check.cgState != 'REQ'}" type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="updateCheckReport();">저장</button>
             </div>
             <!-- /footer -->
         </div>
@@ -257,9 +257,6 @@
         $('#inCheckReport').modal('show');
 
         var dataMap = getDatatablemap(id, rowIdx);
-        if (dataMap.G_STATE != 'CHECK_ING') {
-            $('#inCheckBtn').remove();
-        }
 
         // 상품 & 자산 정보 세팅
         $('#cgsIdx').val(dataMap.CGS_IDX);
@@ -305,9 +302,9 @@
             var gJson = JSON.parse(dataMap.G_JSON);
             var cgsJson = JSON.parse(dataMap.CGS_JSON);
 
-            var inSpec2 = listNullCheck(gJson.inSpec2)
-            var pSpec1 = listNullCheck(cgsJson.pSpec1);
-            var psCost = listNullCheck(cgsJson.psCost);
+            var inSpec2 = listNullCheck(gJson.inSpec2, specList.length);
+            var pSpec1 = listNullCheck(cgsJson.pSpec1, specList.length);
+            var psCost = listNullCheck(cgsJson.psCost, specList.length);
 
             $('#specListTable').empty();
             for (var i = 0; i < specList.length; i++) {

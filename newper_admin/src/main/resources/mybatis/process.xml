@@ -503,9 +503,13 @@
 
 
     <sql id="includeProcessDataTable">
-        
+        <if test="gState != null and gState != ''">AND G_STATE = #{gState}</if>
+        <if test="paintYn != null and paintYn != ''">AND IF(PN_PAINT.PN_STATE IS NULL, '', IF(PN_PAINT.PN_STATE = 'COMPLETE' OR PN_PAINT.PN_PROCESS = 'N', 'N', 'Y')) = #{paintYn}</if>
+        <if test="fixYn != null and fixYn != ''">AND IF(PN_FIX.PN_STATE IS NULL, '', IF(PN_FIX.PN_STATE = 'COMPLETE' OR PN_FIX.PN_PROCESS = 'N', 'N', 'Y')) = #{fixYn} </if>
+        <if test="processYn != null and processYn != ''">AND IF(PN_PROCESS.PN_STATE IS NULL, '', IF(PN_PROCESS.PN_STATE = 'COMPLETE' OR PN_PROCESS.PN_PROCESS = 'N', 'N', 'Y')) = #{processYn} </if>
+        <if test="reYn != null and reYn != ''">AND G_JSON ->> '$.reProcess' = #{reYn} </if>
     </sql>
-    <select id="selectProcessDataTable" resultType="Long">
+    <select id="selectProcessDataTable" resultType="Map">
         SELECT
             G_IDX,
             G_STATE,
@@ -526,26 +530,26 @@
             G_IMEI,
             G_SERIAL,
             PO_IDX,
-            G_JSON ->> '$.inCgIdx', AS IN_CG_IDX,
-            G_JSON ->> '$.paintIdx' AS PAINT_IDX,
-            G_JSON ->> '$.fixIdx' AS FIX_IDX,
-            G_JSON ->> '$.processIdx' AS PROCESS_IDX,
+            IN_CHECK.CG_IDX AS IN_CG_IDX,
+            PN_PAINT.PN_PG_IDX AS PAINT_IDX,
+            PN_FIX.PN_PG_IDX AS FIX_IDX,
+            PN_PROCESS.PN_PG_IDX AS PROCESS_IDX,
             G_JSON ->> '$.reCgIdx' AS RE_CG_IDX,
             G_JSON ->> '$.pnContent' AS PN_CONTENT,
             G_JSON ->> '$.pnState' AS PN_STATE,
             G_JSON ->> '$.pnId' AS PN_ID,
             G_JSON ->> '$.pnDate' AS PN_DATE,
-            @PAINT:=IFNULL(G_JSON ->> '$.paintProcess','N') AS PAINT_PROCESS,
-            @FIX:=IFNULL(G_JSON ->> '$.fixProcess','N') AS FIX_PROCESS,
-            @PROCESS:=IFNULL(G_JSON ->> '$.processProcess','N') AS PROCESS_PROCESS,
+            IF(PN_PAINT.PN_STATE IS NULL, '', IF(PN_PAINT.PN_STATE = 'COMPLETE' OR PN_PAINT.PN_PROCESS = 'N', 'N', 'Y')) AS PAINT_PROCESS,
+            IF(PN_FIX.PN_STATE IS NULL, '', IF(PN_FIX.PN_STATE = 'COMPLETE' OR PN_FIX.PN_PROCESS = 'N', 'N', 'Y')) AS FIX_PROCESS,
+            IF(PN_PROCESS.PN_STATE IS NULL, '', IF(PN_PROCESS.PN_STATE = 'COMPLETE' OR PN_PROCESS.PN_PROCESS = 'N', 'N', 'Y')) AS PROCESS_PROCESS,
             G_JSON ->> '$.reProcess' AS RE_PROCESS,
-            @PAINTCOST:=IFNULL(G_JSON ->> '$.paintCost' AS PAINT_COST, 0) AS PAINT_COST,
+            @PAINTCOST:=IFNULL(G_JSON ->> '$.paintCost', 0) AS PAINT_COST,
             G_JSON ->> '$.paintContent' AS PAINT_CONTENT,
             @FIXCOST:=G_JSON ->> '$.fixCost' AS FIX_COST,
-            G_JSON ->> '$.fixContent' AS FIX_CONTENT,
-            @PAINTCOST:=IFNULL(G_JSON ->> '$.processCost', 0) AS PROCESS_COST,
+            G_JSON >> '$.fixContent' AS FIX_CONTENT,
+            @PROCESSCOST:=IFNULL(G_JSON ->> '$.processCost', 0) AS PROCESS_COST,
             G_JSON ->> '$.processContent' AS PROCESS_CONTENT,
-            @PROCESSTOTALCOST:=@PAINTCOST+@FIXCOST+PROCESSCOST AS PROCESS_TOTAL_COST,
+            @PROCESSTOTALCOST:=@PAINTCOST+@FIXCOST+@PROCESSCOST AS PROCESS_TOTAL_COST,
             @PROCESSTOTALCOST + POR_COST AS TOTAL_COST,
             G_JSON ->> '$.checksId' AS CHECKS_ID,
             G_JSON ->> '$.checksDate' AS CHECKS_DATE,
@@ -582,15 +586,58 @@
                 LEFT JOIN PO ON G_PO_IDX = PO_IDX
                 LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
                 LEFT JOIN GOODS_STOCK ON G_GS_IDX = G_IDX
+
+                LEFT JOIN PROCESS_NEED AS PN_PAINT ON G_IDX = PN_PAINT.PN_G_IDX AND PN_PAINT.PN_TYPE = 'PAINT'
+                    AND PN_PAINT.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'PAINT' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN PROCESS_NEED AS PN_FIX ON G_IDX = PN_FIX.PN_G_IDX AND PN_FIX.PN_TYPE = 'FIX'
+                    AND PN_FIX.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'FIX' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN PROCESS_NEED AS PN_PROCESS ON G_IDX = PN_PROCESS.PN_G_IDX
+                    AND PN_PROCESS.PN_TYPE = 'PROCESS' AND PN_PROCESS.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'PROCESS' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN CHECK_GOODS AS IN_CGS ON G_IDX = IN_CGS.CGS_G_IDX AND IN_CGS.CGS_TYPE = 'IN'
+                LEFT JOIN CHECK_GROUP AS IN_CHECK ON IN_CGS.CGS_CG_IDX = IN_CHECK.CG_IDX
         <where>
             <include refid="includeProcessDataTable"></include>
         </where>
         ORDER BY
             G_IDX DESC
-        <if test="length != = -1">
+        <if test="length != -1">
         LIMIT
             #{start}, #{length}
         </if>
+    </select>
+
+    <select id="countProcessDataTable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN LOCATION ON G_LOC_IDX = LOC_IDX
+                LEFT JOIN WAREHOUSE ON LOC_WH_IDX = WH_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN GOODS_STOCK ON G_GS_IDX = G_IDX
+
+                LEFT JOIN PROCESS_NEED AS PN_PAINT ON G_IDX = PN_PAINT.PN_G_IDX AND PN_PAINT.PN_TYPE = 'PAINT'
+                AND PN_PAINT.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'PAINT' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN PROCESS_NEED AS PN_FIX ON G_IDX = PN_FIX.PN_G_IDX AND PN_FIX.PN_TYPE = 'FIX'
+                AND PN_FIX.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'FIX' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN PROCESS_NEED AS PN_PROCESS ON G_IDX = PN_PROCESS.PN_G_IDX
+                AND PN_PROCESS.PN_TYPE = 'PROCESS' AND PN_PROCESS.PN_COUNT = (SELECT PN_COUNT FROM PROCESS_NEED WHERE G_IDX = PN_G_IDX AND PN_TYPE = 'PROCESS' ORDER BY PN_IDX DESC LIMIT 1)
+
+                LEFT JOIN CHECK_GOODS AS IN_CGS ON G_IDX = IN_CGS.CGS_G_IDX AND IN_CGS.CGS_TYPE = 'IN'
+                LEFT JOIN CHECK_GROUP AS IN_CHECK ON IN_CGS.CGS_CG_IDX = IN_CHECK.CG_IDX
+        <where>
+            <include refid="includeProcessDataTable"></include>
+        </where>
     </select>
 
     <sql id="includeCheckGoodsDataTable">

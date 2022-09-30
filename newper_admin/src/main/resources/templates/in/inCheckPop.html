@@ -42,10 +42,10 @@
                             <div class="row">
                                 <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|inCheckCancel(${check?.cgIdx})|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|checkCancel(${check?.cgIdx})|">
                                         <i class="icon-popout mr-1"></i>작업요청취소
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|stateUpdate(${check?.cgIdx}, 'CHECK_ING')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|checkStateUpdate(${check?.cgIdx}, 'REQ')|">
                                         <i class="icon-popout mr-1"></i>작업중(출고)
                                     </a>
                                 </div>
@@ -174,7 +174,7 @@
                                                 <i class="icon-popout mr-1"></i>반품필요
                                             </a>
 
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" onclick="checkDone()">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" onclick="updateGoodsState('CHECK_DONE')">
                                                 <i class="icon-popout mr-1"></i>작업완료(입고)
                                             </a>
                                         </div>
@@ -280,51 +280,8 @@
         $('#operationModal').modal('hide');
     }
 
-    function inCheckCancel(cgIdx) {
-        if (confirm("요청중인 자산이 입고검수 대기 상태로 돌아가며,  \n해당 입고코드는 삭제 됩니다. \n취소 하시겠습니까?")) {
-            $.ajax({
-                url: '/process/inCheckCancel.ajax',
-                data: {"cgIdx" : cgIdx},
-                type: 'post',
-                success(result) {
-                    opener.location.reload();
-                    window.close();
-                }
-            });
-        }
-    }
-
-    function stateUpdate(cgIdx, state) {
-        var confirm_str = "";
-        if (state == 'CHECK_NEED') {
-            confirm_str = "";
-        } else if (state == 'CHECK_ING') {
-            var cgReqMemo = $('#cgReqMemo').val();
-            if (cgReqMemo == '') {
-                confirm_str = "요청메모 정보가 없습니다. 진행하시겠습니까?"
-            } else {
-                confirm_str = "입고검수 작업중(출고) 처리 하시겠습니까?"
-            }
-        }
-
-        if(confirm(confirm_str)) {
-            $.ajax({
-                url: '/in/checkGroupStateUpdate.ajax',
-                data: {"cgIdx" : cgIdx,},
-                type: 'post',
-                success(result) {
-                    opener.location.reload();
-                    window.close();
-                }
-            });
-        }
-    }
-
-
-
-
-
-    function checkDone() {
+    // 자산 완료
+    function updateGoodsState(state) {
         if(confirm("선택한 자산들을 검수완료 처리 하시겠습니까?")) {
             if ($('.selected').length == 0) {
                 alert('자산을 선택해 주세요');
@@ -342,18 +299,18 @@
                 url: '/goods/updateGoodsState.ajax',
                 data: {
                     "gIdx" : gIdxs,
-                    "gState" : "CHECK_DONE"
+                    "gState" : state
                 },
                 type: 'post',
                 success(result) {
-                    checksDone(gIdxs);
+                    updateCheckState(gIdxs);
                 }
             });
         }
     }
 
     // 검수 완료 체크
-    function checksDone(gIdxs){
+    function updateCheckState(gIdxs){
         $.ajax({
             url: '/process/checkDone.ajax',
             data: {
@@ -367,6 +324,8 @@
             }
         });
     }
+
+
 
     function inOperationModal() {
         $('#operationModal').modal('show');

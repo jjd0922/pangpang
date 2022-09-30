@@ -47,6 +47,14 @@
                                                 </div>
 
                                                 <div class="form-group">
+                                                    <label class="d-block">자산상태</label>
+                                                    <select name="gState" class="form-control">
+                                                        <option value="">선택</option>
+                                                        <option th:each="opt: ${T(com.newper.constant.GState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label class="d-block">자산처리일</label>
                                                     <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
                                                 </div>
@@ -136,30 +144,38 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label class="d-block">가공</label>
-                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group">
                                                     <label class="d-block">도색</label>
-                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control form-control-sm" name="paintYn" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="">선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">수리</label>
-                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control form-control-sm" name="fixYn" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="">선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="d-block">가공</label>
+                                                    <select class="form-control form-control-sm" name="processYn" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="">선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">재검수</label>
-                                                    <select class="form-control form-control-sm select-search" name="" data-placeholder="선택" data-container-css-class="select-sm">
-                                                        <option></option>
+                                                    <select class="form-control form-control-sm" name="reYn" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="">선택</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
                                                     </select>
                                                 </div>
 
@@ -333,7 +349,7 @@
 
 <script>
     function searchBtn() {
-        boardTable.page('first').ajax.url('/goods/goods.dataTable?' + $('#boardForm').serialize()).load(null, false);
+        boardTable.page('first').ajax.url('/process/selectProcess.dataTable?' + $('#boardForm').serialize()).load(null, false);
     }
 
     function lostBtn(){
@@ -355,7 +371,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/goods/goods.dataTable?'+$('#boardForm').serialize(),
+            url:'/process/selectProcess.dataTable?'+$('#boardForm').serialize(),
             type:'post'
         },
         columnDefs: [ {
@@ -376,13 +392,13 @@
             ,{'title':'자산바코드','data':'G_BARCODE','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
-            ,{'title':'입고SPEC<br>(예정)','data':'IN_SPEC1', 'defaultContent': ''}
-            ,{'title':'입고SPEC<br>(확정)','data':'IN_SPEC2', 'defaultContent': ''}
-            ,{'title':'판매SPEC<br>(예정)','data':'SELL_SPEC1', 'defaultContent': ''}
-            ,{'title':'판매SPEC<br>(확정)','data':'SELL_SPEC2', 'defaultContent': ''}
-            ,{'title':'가공SPEC<br>(예정)','data':'PRO_SPEC1', 'defaultContent': ''}
-            ,{'title':'가공SPEC<br>(확정)','data':'PRO_SPEC2', 'defaultContent': ''}
-            ,{'title':'판매스펙확정일','data':'','defaultContent':'SELL_SPEC2_DATE'}
+            ,{'title':'입고SPEC<br>(예정)','data':'INSPEC1', 'defaultContent': ''}
+            ,{'title':'입고SPEC<br>(확정)','data':'INSPEC2', 'defaultContent':''}
+            ,{'title':'판매SPEC<br>(예정)','data':'SELLSPEC1', 'defaultContent':''}
+            ,{'title':'판매SPEC<br>(확정)','data':'SELLSPEC2', 'defaultContent':''}
+            ,{'title':'가공SPEC<br>(예정)','data':'PSPEC1', 'defaultContent':''}
+            ,{'title':'가공SPEC<br>(확정)','data':'PSPEC2', 'defaultContent':''}
+            ,{'title':'판매스펙확정일','data':'SELL_SPEC2_DATE','defaultContent':''}
             ,{'title':'IMEI','data':'G_IMEI','defaultContent':''}
             ,{'title':'시리얼','data':'G_SERIAL','defaultContent':''}
             ,{'title':'발주코드','data':'PO_IDX', 'render': function (data,type,full,meta) {

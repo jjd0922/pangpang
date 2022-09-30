@@ -4,6 +4,7 @@ import com.newper.component.SessionInfo;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Goods;
 import com.newper.exception.MsgException;
 import com.newper.mapper.PoMapper;
 import com.newper.service.PoService;
@@ -147,6 +148,7 @@ public class PoRestController {
         ReturnMap rm = new ReturnMap();
         poService.poCompleteCheck(paramMap);
         poService.poComplete(paramMap);
+
         rm.setMessage("발주완료");
         return rm;
     }

@@ -44,6 +44,7 @@ public class PoService {
     private final ProductRepo productRepo;
     private final InGroupRepo inGroupRepo;
     private final InProductRepo inProductRepo;
+    private final GoodsService goodsService;
 
 
     private final GoodsRepo goodsRepo;
@@ -589,19 +590,27 @@ public class PoService {
     public void poComplete(ParamMap paramMap) {
         int poIdx = paramMap.getInt("poIdx");
         Po po = poRepo.findById(poIdx).get();
-        po.setPoState(PoState.COMPLETE);
+        po.setPoState(PoState.RE_APPROVAL);
 
-
+//        paintProcess
         // 자산값 처리
         List<Goods> goodsList = goodsRepo.findByPo(po);
         for (int i = 0; i < goodsList.size(); i++) {
             Goods goods = goodsList.get(i);
+
+            Map<String, Object> gJson = goods.getGJson();
+            goodsService.updateGoodsBy(gJson);
+
+            gJson.put("sellSpec2Date", LocalDate.now().toString());
 
             //공정 체크
             List<ProcessNeed> processNeedList = processNeedRepo.findByGoodsAndPnProcessAndPnState(goods, PnProcess.Y, PnState.NEED);
             if (processNeedList.size() == 0) {
                 goods.setGState(GState.STOCK);
             } else {
+                for (int j = 0; j < processNeedList.size(); j++) {
+                    String type = processNeedList.get(i).getPnType().name().toLowerCase();
+                }
                 goods.setGState(GState.PROCESS);
             }
 

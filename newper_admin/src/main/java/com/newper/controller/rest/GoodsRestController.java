@@ -84,11 +84,11 @@ public class GoodsRestController {
 
     /** 자산 조회 */
     @PostMapping("goods.dataTable")
-    public ReturnDatatable goodsDataTable(ParamMap paramMap) {
+    public ReturnDatatable selectGoodsDataTable(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
         paramMap.multiSelect("gState");
         paramMap.multiSelect("gStockState");
-        rd.setData(goodsMapper.selectGoodsDataTable1(paramMap.getMap()));
+        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
         rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
         return rd;
     }

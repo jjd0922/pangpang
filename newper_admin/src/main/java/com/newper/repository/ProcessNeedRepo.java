@@ -3,10 +3,7 @@ package com.newper.repository;
 import com.newper.constant.PnProcess;
 import com.newper.constant.PnState;
 import com.newper.constant.PnType;
-import com.newper.entity.CheckGroup;
-import com.newper.entity.Goods;
-import com.newper.entity.PoReceived;
-import com.newper.entity.ProcessNeed;
+import com.newper.entity.*;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -22,4 +19,6 @@ public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Integer> {
     List<ProcessNeed> findByGoodsAndPnProcessAndPnState(Goods goods, PnProcess pnProcess, PnState pnState);
 
     ProcessNeed findByGoodsAndPnTypeAndPnProcessAndPnState(Goods goods, PnType pnType, PnProcess pnProcess, PnState pnState);
+
+    List<ProcessNeed> findByProcessGroup(ProcessGroup processGroup);
 }

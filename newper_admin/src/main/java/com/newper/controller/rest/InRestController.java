@@ -5,6 +5,7 @@ import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 
 import com.newper.mapper.ChecksMapper;
+import com.newper.mapper.GoodsMapper;
 import com.newper.mapper.PoMapper;
 import com.newper.service.CheckService;
 import com.newper.service.GoodsService;
@@ -31,6 +32,7 @@ public class InRestController {
     private final PoService poService;
     private final ChecksMapper checksMapper;
     private final CheckService checkService;
+    private final GoodsMapper goodsMapper;
 
 
     /** 입고등록 조회 */
@@ -95,11 +97,11 @@ public class InRestController {
         return rd;
     }
 
-    @PostMapping("goods.dataTable")
+    @PostMapping("inGoods.dataTable")
     public ReturnDatatable goods(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
-        
-        
+        rd.setData(goodsMapper.selectInGoodsDataTable(paramMap.getMap()));
+        rd.setRecordsTotal(goodsMapper.countInGoodsDataTable(paramMap.getMap()));
         return rd;
     }
 
@@ -157,14 +159,6 @@ public class InRestController {
         rd.setRecordsTotal(checksMapper.countChecksDatatable(paramMap.getMap()));
 
         return rd;
-    }
-
-    /** 입고검수 취소, 작업중, 완료 처리 */
-    @PostMapping("checkGroupStateUpdate.ajax")
-    public ReturnMap checkGroupStateUpdate(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        inService.checkGroupStateUpdate(paramMap);
-        return rm;
     }
 
     /** 입고검수 자산 검색 */

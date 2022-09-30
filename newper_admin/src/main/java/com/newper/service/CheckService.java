@@ -2,6 +2,7 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.component.SessionInfo;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
@@ -21,6 +22,8 @@ import java.util.*;
 @Service
 public class CheckService {
 
+    private final SessionInfo sessionInfo;
+
     private final CheckGroupRepo checkGroupRepo;
     private final ChecksMapper checkMapper;
     private final GoodsMapper goodsMapper;
@@ -34,6 +37,8 @@ public class CheckService {
     private final ProcessSpecRepo processSpecRepo;
     private final ProcessMapper processMapper;
     private final ProcessService processService;
+
+    private final GoodsService goodsService;
 
     /** 검수 그룹 등록*/
     @Transactional
@@ -51,6 +56,7 @@ public class CheckService {
         checkGroupRepo.save(checkGroup);
 
         GState gState = GState.valueOf(paramMap.getString("gState"));
+        CgType cgType = CgType.valueOf(paramMap.getString("cgType"));
         CgsType cgsType = CgsType.valueOf(paramMap.getString("cgsType"));
 
         //check goods
@@ -59,6 +65,18 @@ public class CheckService {
         for (int i = 0; i < gIdx.size(); i++) {
             Goods goods = goodsRepo.findById(gIdx.get(i)).get();
             goods.setGState(gState);
+
+            Map<String,Object> gJson = goods.getGJson();
+            goodsService.updateGoodsBy(gJson);
+
+            if (cgType.equals(CgType.RE)) {
+                gJson.put("reCgIdx", checkGroup.getCgIdx());
+            } else if (cgType.equals(CgType.IN)) {
+                gJson.put("inCgIdx", checkGroup.getCgIdx());
+            } else {
+
+            }
+
             goodsRepo.save(goods);
 
             int count = checkMapper.selectCheckGoodsCount(goods.getGIdx(), CgsType.IN.name());
@@ -71,6 +89,7 @@ public class CheckService {
                     .cgsRealCost(0)
                     .cgsType(cgsType.toString())
                     .cgsCount(count + 1)
+                    .cgsJson(new HashMap<>())
                     .build();
 
             checkGoodsRepo.save(checkGoods);
@@ -122,10 +141,10 @@ public class CheckService {
         checkGoods.setCgsExpectedCost(expectedCost);
         checkGoodsRepo.save(checkGoods);
 
-        // PROCESS_NEED 생성
-        processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
-        processService.insertProcessNeed(goods, paramMap, PnType.FIX);
-        processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+//        // PROCESS_NEED 생성
+//        processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
+//        processService.insertProcessNeed(goods, paramMap, PnType.FIX);
+//        processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
 
         goods.setGJson(gJson);
         goodsRepo.save(goods);
@@ -175,9 +194,42 @@ public class CheckService {
         goods.setSellSpec(sellSpec2);
         gJson.put("sellSpec2", sellSpec2Value);
 
-        processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
-        processService.insertProcessNeed(goods, paramMap, PnType.FIX);
-        processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+        // 도색
+        int paintIdx = paramMap.getInt("paintIdx");
+        String paintContent = paramMap.getString("paintContent");
+        int paintCost = paramMap.getIntZero("paintCost");
+
+        if (paintIdx == 0 && !paintContent.replaceAll(" ","").equals("") && paintCost != 0) {
+            int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.PAINT);
+            paramMap.put("paintIdx", pnIdx);
+        } else if (paintIdx != 0){
+            processService.updateProcessNeed(paramMap, paintIdx);
+        }
+
+
+        // 수리
+        int fixIdx = paramMap.getInt("fixIdx");
+        String fixContent = paramMap.getString("fixContent");
+        int fixCost = paramMap.getIntZero("fixCost");
+
+        if (fixIdx == 0 && !fixContent.replaceAll(" ","").equals("") && fixCost != 0) {
+            int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.FIX);
+            paramMap.put("fixIdx", pnIdx);
+        } else if (fixIdx != 0) {
+            processService.updateProcessNeed(paramMap, fixIdx);
+        }
+
+        // 가공
+        int processIdx = paramMap.getInt("processIdx");
+        String processContent = paramMap.getString("processContent");
+        int processCost = paramMap.getIntZero("processCost");
+
+        if (processIdx == 0 && !processContent.replaceAll(" ","").equals("") && processCost != 0) {
+            int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.PROCESS);
+            paramMap.put("processIdx", pnIdx);
+        } else if (processIdx != 0) {
+            processService.updateProcessNeed(paramMap, processIdx);
+        }
 
         goods.setGJson(gJson);
         goodsRepo.save(goods);
@@ -201,6 +253,7 @@ public class CheckService {
         processGroup.setPgEndDate(null);
         processGroupRepo.save(processGroup);
 
+        String type = paramMap.getString("type").toLowerCase();
         PnType pnType = PnType.valueOf(paramMap.getString("type"));
         //check goods
         List<Long> gIdx = processMapper.selectGoodsTemp(paramMap.getLong("ggt_idx"));
@@ -213,6 +266,15 @@ public class CheckService {
 
             processNeed.setProcessGroup(processGroup);
             processNeed.setPnState(PnState.REQUEST);
+
+            Goods goods = goodsRepo.findById(gIdx.get(i)).get();
+            Map<String, Object> gJson = goods.getGJson();
+            goodsService.updateGoodsBy(gJson);
+            gJson.put("pnContent", processNeed.getPnContent());
+            gJson.put("pnState", processNeed.getPnState());
+            gJson.put("pnId", sessionInfo.getId());
+            gJson.put("pnDate", LocalDate.now().toString());
+
 
             processNeedRepo.save(processNeed);
         }
@@ -274,9 +336,9 @@ public class CheckService {
             goods.setSellSpec(sellSpec2);
             gJson.put("sellSpec2", sellSpec2Value);
 
-            processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
-            processService.insertProcessNeed(goods, paramMap, PnType.FIX);
-            processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+//            processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
+//            processService.insertProcessNeed(goods, paramMap, PnType.FIX);
+//            processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
 
             goods.setGState(GState.PROCESS);
             goods.setGJson(gJson);

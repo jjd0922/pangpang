@@ -110,9 +110,14 @@
     </delete>
 
     <sql id="includeGoodsDatatable">
-        <if test="barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="option1 != null and option1 != ''">AND CONCAT (G_OPTION ->> '$[0].title', ':', G_OPTION ->> '$[0].values') LIKE CONCAT ('%', #{option1}, '%')</if>
+        <if test="option2 != null and option2 != ''">AND CONCAT (G_OPTION ->> '$[1].title', ':', G_OPTION ->> '$[1].values') LIKE CONCAT ('%', #{option2}, '%')</if>
+        <if test="option3 != null and option3 != ''">AND CONCAT (G_OPTION ->> '$[2].title', ':', G_OPTION ->> '$[2].values') LIKE CONCAT ('%', #{option3}, '%')</if>
+        <if test="inSpec2 != null and inSpec2 != ''">AND G_JSON ->> '$.inSpec2' LIKE CONCAT ('%', #{inSpec2}, '%')</if>
+        <if test="Barcode != null and barcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{barcode}, '%')</if>
+        <if test="gBarcode != null and gBarcode != ''">AND G_BARCODE LIKE CONCAT ('%', #{gBarcode}, '%')</if>
         <if test="pName != null and pName != ''">AND P_NAME LIKE CONCAT ('%', #{pName}, '%')</if>
-        <if test="pIdx != null and pIdx != ''">AND P_IDX = #{pIdx}</if>
+        <if test="pIdx != null and pIdx != ''">AND P_IDX LIKE CONCAT ('%', #{pIdx}, '%')</if>
         <if test="poIdx != null and poIdx != ''">AND PO_IDX = #{poIdx}</if>
         <if test="gState != null and gState != ''">
             <foreach collection="gState" open="AND G_STATE IN (" separator="," close=")" item="item">
@@ -182,9 +187,9 @@
             <include refid="includeGoodsDatatable"></include>
         </where>
         ORDER BY
-        G_IDX DESC
+            G_IDX DESC
         <if test="length != -1">
-            LIMIT
+        LIMIT
             #{start},#{length}
         </if>
     </select>
@@ -410,5 +415,79 @@
             PO_IDX = #{po_idx}
         AND
             G_POR_IDX IS NULL
+    </select>
+
+
+    <select id="selectInGoodsDataTable" resultType="Map">
+        SELECT
+            G_IDX,
+            IG_IDX,
+            POR_IDX,
+            PP_IDX,
+            G_STATE,
+            P_NAME,
+            G_BARCODE,
+            G_IMEI,
+            G_SERIAL,
+            P_IDX,
+            G_VENDOR,
+            G_RANK,
+            CATE_SPEC_LIST,
+            IFNULL(CONCAT (G_OPTION ->> '$[0].title', ':', G_OPTION ->> '$[0].values'), '') AS G_OPTION1,
+            IFNULL(CONCAT (G_OPTION ->> '$[1].title', ':', G_OPTION ->> '$[1].values'), '') AS G_OPTION2,
+            IFNULL(CONCAT (G_OPTION ->> '$[2].title', ':', G_OPTION ->> '$[2].values'), '') AS G_OPTION3,
+            G_JSON ->> '$.inSpec2' AS INSPEC2,
+            PN_PROCESS.PN_JSON ->> '$.pSpec1' AS PSPEC1,
+            G_JSON ->> '$.sellSpec2' AS SELLSPEC2,
+            P_OPTION,
+            G_JSON,
+            G_OPTION,
+            PN_PAINT.PN_IDX AS PAINT_PN_IDX,
+            PN_PAINT.PN_CONTENT AS PAINT_CONTENT,
+            PN_PAINT.PN_EXPECTED_COST AS PAINT_COST,
+            PN_PAINT.PN_PROCESS AS PAINT_PROCESS,
+            PN_FIX.PN_IDX AS FIX_PN_IDX,
+            PN_FIX.PN_CONTENT AS FIX_CONTENT,
+            PN_FIX.PN_EXPECTED_COST AS FIX_COST,
+            PN_FIX.PN_PROCESS AS FIX_PROCESS,
+            PN_PROCESS.PN_IDX AS PROCESS_PN_IDX,
+            PN_PROCESS.PN_CONTENT AS PROCESS_CONTENT,
+            PN_PROCESS.PN_EXPECTED_COST AS PROCESS_COST,
+            PN_PROCESS.PN_PROCESS AS PROCESS_PROCESS,
+            PN_PROCESS.PN_JSON AS PN_JSON
+        FROM
+            GOODS
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PROCESS_NEED AS PN_PAINT ON G_IDX = PN_PAINT.PN_G_IDX AND PN_PAINT.PN_TYPE = 'PAINT' AND PN_PAINT.PN_COUNT = 1
+                LEFT JOIN PROCESS_NEED AS PN_FIX ON G_IDX = PN_FIX.PN_G_IDX AND PN_FIX.PN_TYPE = 'FIX' AND PN_FIX.PN_COUNT = 1
+                LEFT JOIN PROCESS_NEED AS PN_PROCESS ON G_IDX = PN_PROCESS.PN_G_IDX AND PN_PROCESS.PN_TYPE = 'PROCESS' AND PN_PROCESS.PN_COUNT = 1
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
+        ORDER BY
+            G_IDX DESC
+        LIMIT
+            #{start}, #{length}
+    </select>
+
+    <select id="countInGoodsDataTable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            GOODS
+            LEFT JOIN PO ON G_PO_IDX = PO_IDX
+            LEFT JOIN IN_GROUP ON PO_IDX = IG_PO_IDX
+            LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+            LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+            LEFT JOIN PROCESS_NEED ON G_IDX = PN_G_IDX AND PN_TYPE = 'PROCESS' AND PN_COUNT = 1
+            LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+        <where>
+            <include refid="includeGoodsDatatable"></include>
+        </where>
     </select>
 </mapper>

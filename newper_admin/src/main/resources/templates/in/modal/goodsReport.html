@@ -70,6 +70,17 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">시리얼번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gSerial" id="gSerial" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </fieldset>
 
@@ -87,7 +98,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <input type="hidden" name="paintPnIdx">
+
                                                     <td>도색</td>
                                                     <td><input type="text" name="paintContent" class="form-control"></td>
                                                     <td><input type="text" name="paintCost" class="form-control text-won"></td>
@@ -96,9 +107,9 @@
                                                             <option th:each="opt: ${T(com.newper.constant.PnProcess).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </td>
+                                                    <input type="hidden" name="paintIdx">
                                                 </tr>
                                                 <tr>
-                                                    <input type="hidden" name="fixPnIdx">
                                                     <td>수리</td>
                                                     <td><input type="text" name="fixContent" class="form-control"></td>
                                                     <td><input type="text" name="fixCost" class="form-control text-won"></td>
@@ -107,9 +118,9 @@
                                                             <option th:each="opt: ${T(com.newper.constant.PnProcess).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </td>
+                                                    <input type="hidden" name="fixIdx">
                                                 </tr>
                                                 <tr>
-                                                    <input type="hidden" name="processPnIdx">
                                                     <td>가공</td>
                                                     <td><input type="text" name="processContent" class="form-control"></td>
                                                     <td><input type="text" name="processCost" class="form-control text-won"></td>
@@ -118,6 +129,7 @@
                                                             <option th:each="opt: ${T(com.newper.constant.PnProcess).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                         </select>
                                                     </td>
+                                                    <input type="hidden" name="processIdx">
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -283,6 +295,7 @@
         $('#gBarcode').val(dataMap.G_BARCODE)
         $('#gIdx').val(dataMap.G_IDX);
         $('#gVendor').val(dataMap.G_VENDOR);
+        $('#gSerial').val(dataMap.G_SERIAL)
         $('#gRank option[value='+dataMap.G_RANK+']').prop('selected', true);
 
         //예상 비용 세팅
@@ -296,23 +309,20 @@
     }
 
     function setProcessNeed(dataMap) {
-        $('input[name=paintPnIdx]').val(dataMap.PAINT_PN_IDX)
+        $('input[name=paintIdx]').val(dataMap.PAINT_PN_IDX)
         $('input[name=paintContent]').val(dataMap.PAINT_CONTENT);
         $('input[name=paintCost]').val(dataMap.PAINT_COST);
         $('select[name=paintProcess] option[value='+dataMap.PAINT_PROCESS+']').prop('selected', true)
 
-        $('input[name=fixPnIdx]').val(dataMap.FIX_PN_IDX)
+        $('input[name=fixIdx]').val(dataMap.FIX_PN_IDX)
         $('input[name=fixContent]').val(dataMap.FIX_CONTENT);
         $('input[name=fixCost]').val(dataMap.FIX_COST);
         $('select[name=fixProcess] option[value='+dataMap.FIX_PROCESS+']').prop('selected', true)
 
+        $('input[name=processIdx]').val(dataMap.PROCESS_PN_IDX)
         $('input[name=processContent]').val(dataMap.PROCESS_CONTENT);
         $('input[name=processCost]').val(dataMap.PROCESS_COST);
         $('select[name=processProcess] option[value='+dataMap.PROCESS_PROCESS+']').prop('selected', true)
-
-        $('input[name=processPnIdx]').val(dataMap.PROCESS_PN_IDX)
-        $('input[name=paintContent]').val(dataMap.PAINT_CONTENT);
-        $('input[name=paintCost]').val(dataMap.PAINT_COST);
     }
 
     //스펙 세팅
@@ -422,7 +432,7 @@
         }
 
         if ($('#gRank').val() == '등급선택') {
-            alert('판매처를 입력해주세요');
+            alert('등급을 선택해주세요');
             return false;
         }
 
@@ -449,7 +459,7 @@
             async: false,
             success : function(result){
                 $('#goodsReport').modal('hide');
-                searchGoods();
+                searchBtn();
             }
         });
     }

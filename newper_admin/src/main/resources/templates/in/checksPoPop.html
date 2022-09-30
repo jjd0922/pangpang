@@ -341,7 +341,7 @@
                             </div>
                             <div class="card-body popup-contents">
                                 <!-- 타이틀 -->
-                                <form id="goodsForm">
+                                <form id="searchForm">
                                     <fieldset class="mb-0">
                                         <legend class="">5. 자산정보</legend>
                                         <div class="row">
@@ -413,7 +413,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">입고SPEC(확정)</span>
                                                     </span>
-                                                        <input type="text" class="form-control" name="inSpec">
+                                                        <input type="text" class="form-control" name="inSpec2">
                                                     </div>
                                                 </div>
                                             </div>
@@ -422,9 +422,9 @@
                                 </form>
                                 <!-- #regiForm end -->
                                 <div class="justify-content-end mt-2 mb-2">
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="searchGoods()">조회</button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CANCEL_REQ')">반품요청</button>
-                                    <button type="button" class="btn btn-sm btn-secondary" onclick="goodsStateUpdate('CHECK')">반품반려</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="searchBtn()">조회</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="updateGoodsState('CANCEL_REQ')">반품요청</button>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="updateGoodsState('RE_CHECK_NEED')">반품반려</button>
                                     <button type="button" class="btn btn-sm btn-primary" onclick="openPoReceivedModal()">입고그룹 맵핑</button>
                                 </div>
                                 <table class="table" id="goodsTable"></table>
@@ -494,11 +494,14 @@
             type: 'post',
             data: {
                 "poIdx" : $('#poIdx').val()
+            },
+            success(result) {
+                location.reload();
             }
         });
     }
 
-    function goodsStateUpdate(gState) {
+    function updateGoodsState(gState) {
         var gIdxs = '';
         if ($('.selected').length == 0) {
             alert('자산을 선택해 주세요');
@@ -509,22 +512,27 @@
         });
         gIdxs = gIdxs.slice(0, -1);
 
+        var confirm_str = '';
+        if (gState == 'CANCEL_REQ') {
+            confirm_str = '선택하신 자산을 반품요청 하시겠습니까?';
+        } else {
+            confirm_str = '선택하신 자산의 반품을 반려하고 다시 재검수로 변경하시겠습니까?';
+        }
 
-        $.ajax({
-            url: '/goods/updateGoodsState.ajax',
-            data: {
-                "gIdx" : gIdxs,
-                "gState" : gState
-            },
-            type: 'post',
-            success(result) {
-                location.reload()
-            }
-        });
-    }
+        if (confirm(confirm_str)) {
+            $.ajax({
+                url: '/goods/updateGoodsState.ajax',
+                data: {
+                    "gIdx" : gIdxs,
+                    "gState" : gState
+                },
+                type: 'post',
+                success(result) {
+                    location.reload()
+                }
+            });
+        }
 
-    function searchGoods() {
-        goodsTable.page('first').ajax.url('/goods/goods.dataTable?'+$('#goodsForm').serialize()).load();
     }
 </script>
 <script th:inline="javascript">
@@ -537,7 +545,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/goods/goods.dataTable?' + $('#goodsForm').serialize(),
+            url:'/in/inGoods.dataTable?' + $('#searchForm').serialize(),
             type:'post'
         },
         columns : [
@@ -553,14 +561,26 @@
             ,{'title':'자산상태','data':'G_STATE_STR','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
+            ,{'title':'자산번호','data':'G_IDX','defaultContent':''}
             ,{'title':'자산코드','data':'G_BARCODE','defaultContent':''}
             ,{'title':'IMEI','data':'G_IMEI','defaultContent':''}
-            ,{'title':'옵션','data':'G_OPTION','defaultContent':''}
+            ,{'title':'시리얼','data':'G_SERIAL','defaultContent':''}
+            ,{'title':'옵션1','data':'G_OPTION1','defaultContent':''}
+            ,{'title':'옵션2','data':'G_OPTION2','defaultContent':''}
+            ,{'title':'옵션3','data':'G_OPTION3','defaultContent':''}
             ,{'title':'입고SPEC(확정)','data':'INSPEC2','defaultContent':''}
             ,{'title':'가공SPEC(예정)','data':'PSPEC1','defaultContent':''}
             ,{'title':'판매SPEC(확정)','data':'SELLSPEC2','defaultContent':''}
         ]
     });
+
+    $('#searchForm').on('keyup',function(event){
+        if(event.keyCode==13){searchBtn();return false;}
+    });
+    
+    function searchBtn() {
+        goodsTable.page('first').ajax.url('/in/inGoods.dataTable?'+$('#searchForm').serialize()).load();
+    }
 </script>
 
 </body>

@@ -243,10 +243,23 @@
                     "pnState":state
                 },
                 success: function () {
-                    location.reload();
+                    checkProcessGroup([[${group.pgIdx}]]);
                 }
             });
         }
+    }
+
+    function checkProcessGroup(pgIdx) {
+        $.ajax({
+            url: '/process/checkProcessGroup.ajax',
+            type: 'post',
+            data: {
+                "pgIdx":pgIdx,
+            },
+            success: function () {
+                location.reload()
+            }
+        });
     }
 
     var userFlag = '';

@@ -66,9 +66,13 @@ public interface GoodsMapper {
     /** 자산들 상태값 변경 */
     void updateGoodsState(@Param("gIdx") List<Long> gIdx, @Param("gState") String gState);
 
-
-    List<Map<String, Object>> selectGoodsByPo(int poIdx);
-
     /** 해당 발주건에 해당하는 자산들이 실입고 그룹으로 매핑되어있는지 체크 */
     int checkGoodsPoReceived(int poIdx);
+
+
+    /** 재검수전 자산 데이터 테이블 조회 */
+    List<Map<String, Object>> selectInGoodsDataTable(Map<String, Object> map);
+
+    /** 재검수전 자산 데이터 테이블 개수 조회 */
+    long countInGoodsDataTable(Map<String, Object> map);
 }

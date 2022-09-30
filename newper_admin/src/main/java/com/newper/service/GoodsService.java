@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import com.newper.component.SessionInfo;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
@@ -11,9 +12,12 @@ import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STHeightRule;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +27,7 @@ import java.util.Map;
 @Service
 public class GoodsService {
 
+    private final SessionInfo sessionInfo;
     private final ProductRepo productRepo;
 
     private final GoodsRepo goodsRepo;
@@ -54,10 +59,14 @@ public class GoodsService {
             throw new MsgException("해당 발주건은 입고 완료되었습니다.");
         }
 
+        Map<String, Object> gJson = new HashMap<>();
+        updateGoodsBy(gJson);
+
         Goods goods= Goods.builder()
                 .gBarcode(barcode)
                 .po(po)
                 .product(product)
+                .gJson(gJson)
                 .build();
 
         if (product.getPType1().equals(PType1.NORMAL)) {
@@ -285,34 +294,59 @@ public class GoodsService {
     /** 자산상태값 변경 */
     @Transactional
     public void updateGoodsState(ParamMap paramMap) {
-        String[] gIdxs = paramMap.getString("gIdx").split(",");
-        List<Long> gIdx = new ArrayList<>();
-        System.out.println(paramMap.getMap().entrySet());
-        // 재검수 완료일때 다른 공정이 있으면 영업검수 없으면 자산화완료
-        if (GState.RE_CHECK_DONE.equals(GState.valueOf(paramMap.getString("gState")))) {
-
-            for (int i = 0; i < gIdx.size(); i++) {
-                int check = processMapper.checkProcessNeedOtherByGoods(gIdx.get(i));
-                Goods goods = null;
+        GState gState = GState.valueOf(paramMap.getString("gState"));
+        String[] gIdx = paramMap.getString("gIdx").split(",");
+        // 재검수 완료 신청시 다른 공정이 있으면 상태값 공정 없으면 자산화 완료
+        if (GState.RE_CHECK_DONE.equals(gState)) {
+            for (int i = 0; i < gIdx.length; i++) {
+                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+                int check = processMapper.checkProcessNeedOtherByGoods(goods.getGIdx());
                 if (check == 0) {
-                    System.out.println("n ull");
-                    goods = goodsRepo.findById(gIdx.get(i)).get();
                     goods.setGState(GState.STOCK);
                     goods.setGStockState(GStockState.STOCK_REQ);
                 } else {
                     goods.setGState(GState.PROCESS);
-                    System.out.println("siongal3#");
                 }
+                Map<String, Object> gJson = goods.getGJson();
+                this.updateGoodsBy(gJson);
+                goods.setGJson(gJson);
+
+                goodsRepo.save(goods);
+            }
+            // 입고 검수 완료시
+        } else if (GState.CHECK_DONE.equals(gState)){
+            for (int i = 0; i < gIdx.length; i++) {
+                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+
+                // 해당 자산의 상태값이 입고검수중이 아니면
+//                if (!goods.getGState().equals(GState.CHECK_ING)) {
+//                    throw new MsgException("잘못된 접근입니다.");
+//                }
+
+                goods.setGState(gState);
+                Map<String, Object> gJson = goods.getGJson();
+                this.updateGoodsBy(gJson);
+                goods.setGJson(gJson);
 
                 goodsRepo.save(goods);
             }
         } else {
-
-            for (int i = 0; i < gIdxs.length; i++) {
-                gIdx.add(Long.parseLong(gIdxs[i]));
+            // 그외
+            for (int i = 0; i < gIdx.length; i++) {
+                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+                goods.setGState(gState);
+                Map<String, Object> gJson = goods.getGJson();
+                this.updateGoodsBy(gJson);
+                goods.setGJson(gJson);
+                goodsRepo.save(goods);
             }
-            goodsMapper.updateGoodsState(gIdx, paramMap.getString("gState"));
-
         }
+    }
+
+    /** 자산의 상태값이 변할때 변한 사람과 그 시간을 저장 */
+    @Transactional
+    public void updateGoodsBy(Map<String, Object> gJson) {
+        gJson.put("gStateId", sessionInfo.getId());
+        gJson.put("gStateDate", LocalDate.now().toString());
     }
 }
