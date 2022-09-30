@@ -58,6 +58,7 @@ public class CustomerController {
                 mav.addObject("pwReset", false);
             }
             if (paramMap.containsKey("CU_ID")) {
+                System.out.println("paramMap cuid = " + paramMap);
                 mav.addObject("data", paramMap.getMap());
             }
         }

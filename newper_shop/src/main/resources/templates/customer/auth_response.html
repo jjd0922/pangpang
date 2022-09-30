@@ -10,6 +10,7 @@
         opener.$('#phone1').val(phone.substring(0,3));
         opener.$('#phone2').val(phone.substring(3,7));
         opener.$('#phone3').val(phone.substring(7));
+        window.close();
     }
     if ([[${#strings.equals(type,'findId')}]]) {
         $.ajax({
@@ -17,14 +18,13 @@
             type: 'post',
             data: [[${nice}]],
             success: function (res) {
-                console.log(res);
                 if (res != null) {
                     opener.findCustomer('findComplete', res);
+                    window.close();
                 }
             }
         });
     }
-    window.close();
 </script>
 </body>
 </html>
