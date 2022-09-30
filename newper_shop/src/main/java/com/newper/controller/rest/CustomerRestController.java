@@ -3,10 +3,12 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Customer;
+import com.newper.exception.MsgException;
 import com.newper.mapper.CustomerMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,10 +48,15 @@ public class CustomerRestController {
         return rm;
     }
 
-    /** 아이디 찾기 */
-    @PostMapping("findId.ajax")
-    public Map<String,Object> findId(ParamMap paramMap) {
+    /** 아이디/비밀번호 찾기 */
+    @PostMapping("find/{type}.ajax")
+    public Map<String,Object> findId(@PathVariable("type") String type, ParamMap paramMap) {
         Map<String, Object> map = customerMapper.selectCustomerByCuCi(paramMap.getMap());
+        if (type.equals("pw")) {
+            if (!paramMap.getString("cuId").equals(map.get("CU_ID").toString())) {
+                throw new MsgException("아이디가 일치하지 않습니다.");
+            }
+        }
         return map;
     }
 

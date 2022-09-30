@@ -3,6 +3,7 @@
 <script th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
 <script th:inline="javascript">
     var opener = window.opener;
+    // 회원가입의 경우
     if ([[${#strings.equals(type,'join')}]]) {
         opener.$('#joinName').val([[${nice.NAME}]]);
         opener.$('#saIdx').val([[${saIdx}]]);
@@ -12,9 +13,10 @@
         opener.$('#phone3').val(phone.substring(7));
         window.close();
     }
+    // 아이디찾기
     if ([[${#strings.equals(type,'findId')}]]) {
         $.ajax({
-            url: '/customer/findId.ajax',
+            url: '/customer/find/id.ajax',
             type: 'post',
             data: [[${nice}]],
             success: function (res) {
@@ -24,6 +26,24 @@
                 }
             }
         });
+    }
+    // 비밀번호 찾기
+    if ([[${#strings.equals(type, 'findPw')}]]) {
+        var data = [[${nice}]]
+        data.cuId = opener.$('#otpInputDiv').val();
+        $.ajax({
+            url: '/customer/find/pw.ajax',
+            type: 'post',
+            data: data,
+            success: function(res){
+                opener.findCustomer('findPwReset', res);
+                window.close();
+            },
+            error: function (err) {
+                alert(err.responseJSON.message);
+                window.close();
+            }
+        })
     }
 </script>
 </body>
