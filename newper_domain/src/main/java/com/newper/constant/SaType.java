@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum SaType implements EnumOption {
 
     JOIN("회원가입")
-    ,FIND("정보찾기")
+    ,FINDID("아이디찾기")
+    ,FINDPW("비밀번호찾기")
     ;
 
     private String option;

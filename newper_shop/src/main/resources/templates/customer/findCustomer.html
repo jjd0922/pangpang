@@ -33,10 +33,15 @@
 </div>
 </body>
 <script>
+    window.name='finder';
     function findCustomer(step){
+        findCustomer(step, null);
+    }
+    function findCustomer(step, param){
         $.ajax({
             url: '/customer/findCustomer/step/'+step+'.load'
             ,type: 'post'
+            ,data: param
         }).done(function(res){
             $('#findCustomer').empty();
             $('#findCustomer').append(res);
