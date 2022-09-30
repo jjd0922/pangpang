@@ -29,4 +29,10 @@
             AND CSC_CATE_IDX=SP_CATE_IDX
             and SP_IDX = #{sp_idx}
     </select>
+    <select id="selectOcodeByPhIdx" resultType="String">
+        SELECT O_CODE FROM PAYMENT_HISTORY,PAYMENT,ORDERS
+        WHERE PH_PAY_IDX=PAY_IDX
+          AND O_PAY_IDX=PAY_IDX
+          AND PH_IDX = #{ph_idx}
+    </select>
 </mapper>

@@ -541,10 +541,7 @@
         ,type:'post'
         ,data: $('#ordersForm').serialize()
       }).done(function(res){
-        var iamFrame = document.getElementById("iamportFrame");
-        var frameDoc = iamFrame .contentWindow || iamFrame .contentDocument;
-        frameDoc.req(res.data.id, res.data.req);
-
+        iamportModalShow(res.data.id, res.data.req);
       }).always(function(){
         payRequestAvailable = true;
       });

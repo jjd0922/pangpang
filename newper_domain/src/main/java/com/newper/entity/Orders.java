@@ -14,9 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @DynamicInsert
@@ -118,7 +116,12 @@ public class Orders {
     /** 결제시 사용할 주문 제목 가져오기*/
     public String getOrderPaymentTitle(){
         List<OrderGs> orderGsList = getOrderGs();
-        return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (orderGsList.size()-1)+"건";
+        Set<String> ogSpo = new HashSet<>();
+        for (OrderGs gs : orderGsList) {
+            ogSpo.add(gs.getOgSpo());
+        }
+
+        return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (ogSpo.size()-1)+"건";
     }
 
     public void setPayment(Payment payment){

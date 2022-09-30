@@ -9,6 +9,9 @@ import java.util.Map;
 public interface OrdersMapper {
     /** mypage 주문상품 조회*/
     List<Map<String, Object>> selectOrderGsListByCuIdx (long cuIdx);
+
+    /** ph_idx 로 o_code 조회 */
+    String selectOcodeByPhIdx(String ph_idx);
 //
 //    /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
 //    Map<String, Object> selectShopCategoryBySp(long sp_idx);

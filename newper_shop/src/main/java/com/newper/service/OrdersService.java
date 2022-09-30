@@ -5,12 +5,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopSession;
 import com.newper.constant.OLocation;
+import com.newper.constant.PhType;
 import com.newper.dto.IamportReq;
 import com.newper.dto.OrdersSpoDTO;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.exception.NoSessionException;
+import com.newper.iamport.IamportApi;
 import com.newper.mapper.IamportMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,7 @@ public class OrdersService {
     private final IamportMapper iamportMapper;
     private final ShopProductOptionRepo shopProductOptionRepo;
     private final ShopProductService shopProductService;
+    private final PaymentService paymentService;
 
     @Autowired
     private ShopSession shopSession;
@@ -165,5 +168,21 @@ public class OrdersService {
         }catch (JsonProcessingException jpe){
             throw new MsgException("parsing error");
         }
+    }
+    /** 주문 상세 페이지 데이터 조회. 결제 결과 확인*/
+    @Transactional
+    public void selectOrdersDetail(String oCode){
+        Orders orders = ordersRepo.findInfoByoCode(oCode);
+        Payment payment = orders.getPayment();
+        PaymentHistory ph = payment.getLastPaymentHistory(PhType.PAY);
+
+        //결제 결과 없는 경우 insert
+        if (ph.getPhRes() == null) {
+            paymentService.savePaymentResult(ph.getPhIdx());
+        }
+
+        Map<String, Object> phResMap = ph.getPhResMap();
+
+
     }
 }

@@ -9,6 +9,7 @@ import com.newper.entity.PaymentHistory;
 import com.newper.exception.MsgException;
 import com.newper.exception.NoRollbackException;
 import com.newper.iamport.IamportApi;
+import com.newper.mapper.IamportMapper;
 import com.newper.repository.PaymentHistoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -17,15 +18,25 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentHistoryRepo paymentHistoryRepo;
+    private final IamportMapper iamportMapper;
 
     /**결제결과 저장*/
     @Transactional(noRollbackFor = {NoRollbackException.class})
-    public Payment savePaymentResult(long ph_idx, String response_str){
+    public Payment savePaymentResult(long ph_idx){
+        String response_str;
+        try{
+            response_str = new IamportApi().checkPay("ph"+ph_idx);
+        }catch (Exception e){
+            throw new MsgException("결제 조회 중 에러 발생", e);
+        }
+
         JSONParser jsonParser = new JSONParser();
         JSONObject jo = null;
 
@@ -57,6 +68,7 @@ public class PaymentService {
                     //결제 성공
                     if(status.equals("paid")){
                         paymentHistory.setPhResult(PhResult.DONE);
+                        orders.setOTemp(true);
 
                         //amount (number): 주문(결제)금액
                         int amount = Integer.parseInt(jo_response.get("amount") + "");
@@ -77,12 +89,15 @@ public class PaymentService {
                         paymentHistory.setPhResult(PhResult.FAIL);
                         payment.setPayState(PayState.FAIL);
                     }else if(status.equals("ready")){
-
-
+                        Map<String, Object> ipmMap = iamportMapper.selectIamportMethodDetail(payment.getPayIpmIdx());
+                        //가상계좌
+                        if( "vbank".equals((String)ipmMap.get("IPM_VALUE"))){
+                            payment.setPayState(PayState.REQ);
+                            orders.setOTemp(true);
+                        }
                     }
                 }
             }
-
 
         }
 
