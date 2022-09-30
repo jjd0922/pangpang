@@ -89,7 +89,7 @@ public class Payment {
         }
 
         findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
-            if (paymentHistory.isPhFlag()) {
+            if (paymentHistory.isPhFlag() && paymentHistory.getPhType() == PhType.PAY) {
                 //마지막 결제 요청 check
                 paymentHistory.setPhFlag(false);
             }
@@ -141,7 +141,7 @@ public class Payment {
         }
 
         findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
-            if (paymentHistory.isPhFlag()) {
+            if (paymentHistory.isPhFlag() && paymentHistory.getPhType() == PhType.CANCEL) {
                 //마지막 결제 요청 check
                 paymentHistory.setPhFlag(false);
 
@@ -153,7 +153,7 @@ public class Payment {
 
         PaymentHistory paymentHistory = PaymentHistory.builder()
                 .payment(this)
-                .phType(PhType.PAY)
+                .phType(PhType.CANCEL)
                 .phReq("")
                 .phRes("")
                 .phFlag(true)
@@ -161,5 +161,14 @@ public class Payment {
         paymentHistoryList.add(paymentHistory);
 
         return  paymentHistory;
+    }
+    /** 마지막 결제요청 ph 가져오기*/
+    public PaymentHistory getLastPaymentHistory(PhType phType){
+        for (PaymentHistory ph : getPaymentHistoryList()) {
+            if (ph.isPhFlag() && ph.getPhType() == phType) {
+                return ph;
+            }
+        }
+        return null;
     }
 }

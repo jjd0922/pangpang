@@ -12,6 +12,7 @@ import com.newper.iamport.IamportApi;
 import com.newper.mapper.IamportMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopProductOptionRepo;
+import com.newper.service.OrdersService;
 import com.newper.service.PaymentService;
 import com.newper.service.ShopProductService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class OrdersController {
     private final IamportMapper iamportMapper;
     private final ShopProductService shopProductService;
     private final CustomerRepo customerRepo;
+    private final OrdersService ordersService;
 
     /** 주문 결제 페이지*/
     @PostMapping("")
@@ -77,14 +79,7 @@ public class OrdersController {
     public ModelAndView resultPh(@PathVariable(value = "idx") long ph_idx){
         ModelAndView mav = new ModelAndView("orders/result_ph_idx");
 
-        String response_str;
-        try{
-            response_str = new IamportApi().checkPay("ph"+ph_idx);
-        }catch (Exception e){
-            throw new MsgException("결제 조회 중 에러 발생", e);
-        }
-
-        Payment payment = paymentService.savePaymentResult(ph_idx, response_str);
+        Payment payment = paymentService.savePaymentResult(ph_idx);
 
         if (payment.getPayState() == PayState.SUCCESS) {
             mav.addObject("result","success");
@@ -105,7 +100,7 @@ public class OrdersController {
 
         System.out.println("o_code");
         System.out.println(oCode);
-
+        ordersService.selectOrdersDetail(oCode);
 
         return mav;
     }
