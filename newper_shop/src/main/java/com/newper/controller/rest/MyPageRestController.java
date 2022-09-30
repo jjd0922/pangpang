@@ -48,10 +48,12 @@ public class MyPageRestController {
 
     /** AS 등록 처리(뉴퍼마켓 구매제품) */
     @PostMapping(value = "createAS.ajax")
-    public ReturnMap createAS(ParamMap paramMap) {
+    public ReturnMap createAS(ParamMap paramMap,MultipartFile asFile) {
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        long idx = mypageService.createAS(paramMap);
+        long idx = mypageService.createAS(paramMap,asFile);
+        System.out.println(paramMap.getMap());
+        System.out.println("asFile = " + asFile);
 
         rm.setMessage("등록이 완료되었습니다.");
 
@@ -61,10 +63,10 @@ public class MyPageRestController {
 
     /** AS 등록 처리(다른 온라인몰 구매제품) */
     @PostMapping(value = "createAS2.ajax")
-    public ReturnMap createAS2(ParamMap paramMap) {
+    public ReturnMap createAS2(ParamMap paramMap,MultipartFile asFile) {
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        long idx = mypageService.createAS(paramMap);
+        long idx = mypageService.createAS(paramMap,asFile);
 
         rm.setMessage("등록이 완료되었습니다.");
 

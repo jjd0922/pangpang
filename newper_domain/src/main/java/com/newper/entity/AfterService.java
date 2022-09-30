@@ -26,14 +26,22 @@ public class AfterService {
     private OrderGs orderGs;
 
     private String asState;
-
     private String asName;
     private String asMail;
     private String asPhone;
     private String asMemo;
     private String asFile;
+    private String asFileName;
     private LocalDate asDate;
     private LocalTime asTime;
+
+
+
+    @Transient
+    private String asFileOri;
+    @Transient
+    private String asFileNameOri;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AS_DN_IDX", referencedColumnName = "dnIdx")

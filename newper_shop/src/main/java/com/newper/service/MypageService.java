@@ -1,6 +1,7 @@
 package com.newper.service;
 
 
+import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.component.ShopSession;
@@ -10,6 +11,7 @@ import com.newper.exception.MsgException;
 import com.newper.repository.ASRepo;
 import com.newper.repository.OrderGsRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +35,7 @@ public class MypageService {
      * AS 등록 --> 뉴퍼마켓 구매제품
      **/
     @Transactional
-    public long createAS(ParamMap paramMap) {
+    public long createAS(ParamMap paramMap, MultipartFile asFile) {
         AfterService as = paramMap.mapParam(AfterService.class);
 
         try {
@@ -64,16 +66,30 @@ public class MypageService {
         as.setDeliveryNum(null);
 
         String as_name = paramMap.getString("AS_NAME");
-        if(as_name==null){
+        if (as_name == null) {
             as.setAsName("");
-        }else if(as_name!=null){
+        } else if (as_name != null) {
             as.setAsName(as_name);
         }
 
-        as.setAsFile("");
+//
+//         파일확장자 확인
+        String asFileExtension = FilenameUtils.getExtension(asFile.getOriginalFilename());
+
+        if (!asFileExtension.equals("jpg") && !asFileExtension.equals("gif") && !asFileExtension.equals("png")) {
+            throw new MsgException("사진은 png,gif,png 형식으로만 업로드 해주세요.");
+
+        }else {
+            String asFilePath = Common.uploadFilePath(asFile, "mypage/as_image/", AdminBucket.SECRET);
+
+        }
+/*        as.setAsFile(asFilePath);
+        as.getAsFileName(asFile.getOriginalFilename().substring(0,asFilePath.length()));*/
+//        as.setAsFile("");
         as.setAsState("");
         as.setAsDate(LocalDate.now());
         as.setAsTime(LocalTime.now());
+
 
         asRepo.save(as);
 
@@ -83,3 +99,5 @@ public class MypageService {
 
 
 }
+
+
