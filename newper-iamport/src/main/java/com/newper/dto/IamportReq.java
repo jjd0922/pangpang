@@ -31,12 +31,7 @@ public class IamportReq {
     private String notice_url;
     private Map<String, Object> display;
 
-
-    /** yyyyMMdd. naver pay 이용 완료일 . 결제 당일 or 미래의 일자*/
-    private String naverUseCfm;
     private Boolean naverPopupMode;
-    /** 구매자명*/
-    private String naverPurchaserName;
 
 //    분양몰 도메인마다 다르게 들어가야하므로 js에서 처리하고 있음
 //    private String m_redirect_url;
@@ -67,11 +62,9 @@ public class IamportReq {
     }
     /** 네이버 페이 필요 정보들*/
     public void setNaverpay(
-//            String name,
             String buyer_name) {
-        this.naverUseCfm = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        this.naverPopupMode = false;
-        this.naverPurchaserName = buyer_name;
+        this.naverPopupMode = true;
+        this.buyer_name = buyer_name;
 
         //네이버페이 내부적으로 외 2개 의 표현이 자동생성되므로 "xxxx 외 2개" 대신naverProducts[0].name(첫번째 상품명)으로 설정하길 권장합니다.
 //        this.name = name;
