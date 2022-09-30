@@ -125,6 +125,7 @@ public class CustomerService {
         return savedCu;
     }
 
+    /** 비밀번호 재설정 */
     @Transactional
     public void resetPw(ParamMap paramMap) {
         Customer customer = customerRepo.findById(paramMap.getLong("cuIdx")).orElseThrow(() -> new MsgException("회원정보를 찾을 수 없습니다."));
