@@ -184,7 +184,7 @@ public class ProductService {
         ori.setPCost(product.getPCost());
         ori.setPRetailPrice(product.getPRetailPrice());
         ori.setPSellPrice(product.getPSellPrice());
-        ori.setPDelPrice(product.getPDelPrice());
+        ori.setCompanyDelivery(product.getCompanyDelivery());
         ori.setPDelCompany(product.getPDelCompany());
         ori.setPDelTogether(product.getPDelTogether());
         ori.setPFreeInterest(product.isPFreeInterest());

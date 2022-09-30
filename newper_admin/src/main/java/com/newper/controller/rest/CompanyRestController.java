@@ -5,9 +5,11 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Company;
+import com.newper.entity.CompanyDelivery;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.UserMapper;
+import com.newper.repository.CompanyDeliveryRepo;
 import com.newper.repository.CompanyEmployeeRepo;
 import com.newper.repository.CompanyRepo;
 import com.newper.service.CompanyService;
@@ -20,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/company/")
 @RestController
@@ -30,6 +34,7 @@ public class CompanyRestController {
     private final UserMapper userMapper;
 
     private final CompanyRepo companyRepo;
+    private final CompanyDeliveryRepo companyDeliveryRepo;
 
     /**거래처 관리 데이터테이블*/
     @PostMapping("company.dataTable")
@@ -210,15 +215,53 @@ public class CompanyRestController {
         return rd;
     }
 
-//    /**comIdx로 거래처 조회*/
-//    @PostMapping("companyByComIdx.ajax")
-//    public ReturnMap companyByComIdx(int comIdx){
-//        ReturnMap rm = new ReturnMap();
-//        Company company = companyRepo.findCompanyByComIdx(comIdx);
-//        rm.put("COM_NAME",company.getComName());
-//        rm.put("COM_IDX",company.getComIdx());
-//        return rm;
-//    }
+    /**배송비 템플릿 저장*/
+    @PostMapping("companyDeliverySave.ajax")
+    public ReturnMap companyDeliverySave(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        paramMap.put("CD_FEE", paramMap.get("CD_FEE").toString().replaceAll("[^0-9.]", ""));
+        if(paramMap.get("CD_FREE")!=null){
+            paramMap.put("CD_FREE", paramMap.get("CD_FREE").toString().replaceAll("[^0-9.]", ""));
+        }
+        paramMap.put("CD_JEJU", paramMap.get("CD_JEJU").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("CD_ETC", paramMap.get("CD_ETC").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("CD_RETURN_FEE", paramMap.get("CD_RETURN_FEE").toString().replaceAll("[^0-9.]", ""));
+        System.out.println(paramMap.getMap());
+        int res = companyService.companyDeliverySave(paramMap);
+        if(res>0){
+            rm.setMessage("저장되었습니다.");
+        }
+        return rm;
+    }
+
+    /**입점사별 배송비 템플릿 데이터테이블*/
+    @PostMapping("companyDelivery.dataTable")
+    public ReturnDatatable companyDeliveryDataTable(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("배송비 템플릿");
+        rd.setData(companyMapper.selectCompanyDeliveryDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(companyMapper.countCompanyDeliveryDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+    /**배송비 템플릿 수정*/
+    @PostMapping("companyDeliveryUpdate.ajax")
+    public ReturnMap companyDeliveryUpdate(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        paramMap.put("CD_FEE", paramMap.get("CD_FEE").toString().replaceAll("[^0-9.]", ""));
+        if(paramMap.get("CD_FREE")!=null){
+            paramMap.put("CD_FREE", paramMap.get("CD_FREE").toString().replaceAll("[^0-9.]", ""));
+        }
+        paramMap.put("CD_JEJU", paramMap.get("CD_JEJU").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("CD_ETC", paramMap.get("CD_ETC").toString().replaceAll("[^0-9.]", ""));
+        paramMap.put("CD_RETURN_FEE", paramMap.get("CD_RETURN_FEE").toString().replaceAll("[^0-9.]", ""));
+        System.out.println(paramMap.getMap());
+        int res = companyService.companyDeliveryUpdate(paramMap);
+        if(res>0){
+            rm.setMessage("수정되었습니다.");
+        }
+        return rm;
+    }
+
 
 
 }

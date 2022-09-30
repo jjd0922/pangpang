@@ -99,7 +99,6 @@ public class Product extends BaseEntity {
     private int pCost;
     private int pRetailPrice;
     private int pSellPrice;
-    private int pDelPrice;
 
     @Enumerated(EnumType.STRING)
     private PDelCompany pDelCompany;
@@ -107,7 +106,6 @@ public class Product extends BaseEntity {
     private int pDelTogether;
 
     private boolean pFreeInterest;
-    private int pDelPriceCancel;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.DETACH)
     private List<Goods> goodsList;
@@ -123,6 +121,11 @@ public class Product extends BaseEntity {
      * {title : title, values :["opt1", "opt2"]}
      * </pre> */
     private List<Map<String,Object>> pOption = new ArrayList<>();
+
+    /** A/S업체 idx */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "P_CD_IDX", referencedColumnName = "cdIdx")
+    private CompanyDelivery companyDelivery;
 
 
 

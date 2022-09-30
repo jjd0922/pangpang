@@ -222,7 +222,7 @@ public class OrderService {
                 orderGs.setOgCoupon(Integer.parseInt(paramMap.onlyNumber("OG_COUPON_"+spo_idx)));
 
                 price = price + shopProductOption.getSpoPrice();
-                delivery = delivery + shopProductOption.getGoodsStock().getProduct().getPDelPrice();
+                delivery = delivery + shopProductOption.getGoodsStock().getProduct().getCompanyDelivery().getCdFee();
                 ordersGsRepo.save(orderGs);
 
                 mileage = mileage + (int)((shopProductOption.getSpoPrice()*shopProductOption.getShopProductAdd().getShopProduct().getSpPercent())/100);
