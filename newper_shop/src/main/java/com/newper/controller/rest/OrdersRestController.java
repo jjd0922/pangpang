@@ -6,6 +6,7 @@ import com.newper.dto.ReturnMap;
 import com.newper.entity.Orders;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
+import com.newper.mapper.OrdersMapper;
 import com.newper.mapper.PaymentMapper;
 import com.newper.service.OrdersService;
 import com.newper.service.PaymentService;
@@ -25,6 +26,7 @@ public class OrdersRestController {
     private final OrdersService ordersService;
     private final PaymentMapper paymentMapper;
     private final PaymentService paymentService;
+    private final OrdersMapper ordersMapper;
 
     @Autowired
     private ShopSession shopSession;
@@ -37,9 +39,13 @@ public class OrdersRestController {
 
         rm.put("id", "imp07732252");
 
-        Orders orders = ordersService.insertOrder(paramMap);
-        JSONObject req = ordersService.insertIamportReq(orders, ipm_idx);
-        rm.put("req", req);
+        try{
+            Orders orders = ordersService.insertOrder(paramMap);
+            JSONObject req = ordersService.insertIamportReq(orders);
+            rm.put("req", req);
+        }catch (MsgException mse){
+            throw mse;
+        }
         return rm;
     }
     /** iamport 결제 결과 UID만 저장. JS에서 받는 결과여서 서버에서 따로 검증 단계 필요*/
@@ -53,6 +59,7 @@ public class OrdersRestController {
         String ph_uid = (String)map.get("imp_uid");
         paymentMapper.updatePaymentHistoryUid(ph_idx, ph_uid);
 
+        rm.put("o_code", ordersMapper.selectOcodeByPhIdx(ph_idx));
         return rm;
     }
     /** iamport 결제 취소*/

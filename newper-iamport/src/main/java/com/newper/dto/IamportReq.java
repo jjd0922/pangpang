@@ -3,20 +3,23 @@ package com.newper.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /** 결제 준비 DTO*/
 @Getter
+@Setter
 public class IamportReq {
 
     private String pg;
     private String pay_method;
-    private boolean escrow;
+    private Boolean escrow;
     private String merchant_uid;
     private String name;
     private int amount;
     private Map<String,Object> custom_data;
-    private int tax_free;
+    private Integer tax_free;
     private String currency = "KRW";
     private String language = "ko";
     private String buyer_name;
@@ -28,34 +31,55 @@ public class IamportReq {
     private String notice_url;
     private Map<String, Object> display;
 
+    private Boolean naverPopupMode;
+
+//    분양몰 도메인마다 다르게 들어가야하므로 js에서 처리하고 있음
 //    private String m_redirect_url;
 
     /** merchant_uid. ph_idx 사용*/
-    public IamportReq(long ph_idx){
+    public IamportReq(long ph_idx, String pg, int amount, String name){
         this.merchant_uid = "ph"+ph_idx;
+        this.pg = pg;
+        this.amount = amount;
+        this.name = name;
     }
 
     /** NHN KCP 필요 정보들*/
-    public void setKcpInfo(String mid,
+    public void setKcp(
                            String pay_method,
-                           String name,
-                           int amount,
                            String buyer_email,
                            String buyer_name,
                            String buyer_tel,
                            String buyer_addr,
                            String buyer_postcode) {
-        //사이트코드 테스트인경우 kcp.T000
-        this.pg = "kcp."+mid;
         this.pay_method = pay_method;
-        this.name = name;
-        this.amount = amount;
         this.buyer_email = buyer_email;
         this.buyer_name = buyer_name;
         this.buyer_tel = buyer_tel;
         this.buyer_addr = buyer_addr;
         this.buyer_postcode = buyer_postcode;
 //        this.language = language;
-//        this.m_redirect_url = m_redirect_url;
+    }
+    /** 네이버 페이 필요 정보들*/
+    public void setNaverpay(
+            String buyer_name) {
+        this.naverPopupMode = true;
+        this.buyer_name = buyer_name;
+
+        //네이버페이 내부적으로 외 2개 의 표현이 자동생성되므로 "xxxx 외 2개" 대신naverProducts[0].name(첫번째 상품명)으로 설정하길 권장합니다.
+//        this.name = name;
+    }
+    /** 페이코 필요 정보들*/
+    public void setKakaopay(){
+    }
+    /** 페이코 필요 정보들*/
+    public void setPayco(String buyer_tel){
+
+        this.buyer_tel = buyer_tel;
+    }
+    /** 차이 간편 결제*/
+    public void setChai(String buyer_name){
+        this.buyer_name = buyer_name;
+        this.pay_method = "trans";
     }
 }

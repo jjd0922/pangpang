@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+결제 진행 중입니다
+<script type="text/javascript" th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/iamport.payment-1.1.8.js}"></script>
+
+</body>
+<script>
+    function req(id, req){
+        req.m_redirect_url=location.origin+'/orders/result/'+req.merchant_uid;
+
+        var IMP = window.IMP;
+        IMP.init(id);
+        IMP.request_pay(req, function (rsp) {
+            $.ajax({
+                url:'/orders/iamport/result.ajax'
+                ,type:'post'
+                ,contentType: 'application/json'
+                ,data: JSON.stringify(rsp)
+                ,async:false
+            }).always(function(res){
+
+                if(rsp.success){
+                    //결제 성공 페이지로 이동
+                    window.parent.location.href = '/orders/'+res.data.o_code;
+                }else{
+                    //alert(rsp.error_msg);
+                }
+                try{
+                    window.parent.iamportModalHide();
+                }catch (e){}
+            });
+
+
+        });
+    }
+</script>
+<script>
+</script>
+</html>

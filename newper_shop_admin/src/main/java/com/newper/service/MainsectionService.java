@@ -185,7 +185,7 @@ public class MainsectionService {
                     mainSectionBannerRepo.delete(msbn);
                 }
             }
-        }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
+        }else if(mainSection.getMsType().equals(MsType.PRODUCT) || mainSection.getMsType().equals(MsType.CATEGORY)){
             // 상품 제거 전 조회
 //            List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductByMsIdx(mainSection.getMsIdx());
 
@@ -201,7 +201,11 @@ public class MainsectionService {
                 List<String> spIdxs = paramMap.getList("spIdx");
                 ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
                 Map<String,Object> map = new HashMap<>();
-                map.put("msspOrder", msspOrders.get(i));
+                if(mainSection.getMsType().equals(MsType.CATEGORY)){
+                    map.put("msspOrder", i+1);
+                }else{
+                    map.put("msspOrder", msspOrders.get(i));
+                }
                 map.put("msspMsIdx", mainSection.getMsIdx());
                 map.put("msspSpIdx", shopProduct.getSpIdx());
                 mainsectionMapper.insertMainSectionSp(map);
@@ -405,16 +409,21 @@ public class MainsectionService {
                 msbn.setMsbnMobileFileName(mobileFileName);
                 mainSectionBannerRepo.save(msbn);
             }
-        }else if(mainSection.getMsType().equals(MsType.PRODUCT)){
+        }else if(mainSection.getMsType().equals(MsType.PRODUCT) || mainSection.getMsType().equals(MsType.CATEGORY)){
             List<String> spIdxs = paramMap.getList("spIdx");
             List<String> msspOrders = paramMap.getList("msspOrder");
+
+
             for(int i=0;i<spIdxs.size(); i++){
                 ShopProduct shopProduct = shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(i)));
                 Map<String,Object> map = new HashMap<>();
                 map.put("msspMsIdx", mainSection.getMsIdx());
                 map.put("msspSpIdx", shopProduct.getSpIdx());
-//                map.put("msspOrder", i+1);
-                map.put("msspOrder", msspOrders.get(i));
+                if(mainSection.getMsType().equals(MsType.CATEGORY)){
+                    map.put("msspOrder", i+1);
+                }else{
+                    map.put("msspOrder", msspOrders.get(i));
+                }
                 mainsectionMapper.insertMainSectionSp(map);
             }
         }else if(mainSection.getMsType().equals(MsType.BOTH)){

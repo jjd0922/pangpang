@@ -1,13 +1,11 @@
 package com.newper.entity;
 
 import com.newper.constant.OState;
-import com.newper.constant.PayMethod;
 import com.newper.constant.PayState;
 import com.newper.constant.PhType;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,11 +36,13 @@ public class Payment {
     /** 상품 금액*/
     private int payProductPrice;
     private int payDelivery;
+    /** FK IAMPORT_METHOD.IPM_IDX */
+    private Integer payIpmIdx;
 
-    @Enumerated(EnumType.STRING)
-    private PayMethod payMethod;
 
     private int payMileage;
+    /** 적립 완료 여부*/
+    private boolean payMileageFlag;
     @Builder.Default
     private Map<String,Object> payJson = new HashMap<>();
 
@@ -61,9 +61,9 @@ public class Payment {
         if (getPayState() == null) {
             throw new MsgException("결제상태를 선택해주세요.");
         }
-        if (getPayMethod() == null) {
-            throw new MsgException("결제방식을 선택해주세요.");
-        }
+//        if (getPayMethod() == null) {
+//            throw new MsgException("결제방식을 선택해주세요.");
+//        }
 
     }
 
@@ -78,6 +78,10 @@ public class Payment {
 
     /** 결제 요청 가능한지 체크 후 return paymentHistory*/
     public PaymentHistory createPayReq(){
+        if(getPayState() != PayState.BEFORE){
+            throw new MsgException("다시 시도 부탁드립니다");
+        }
+
         List<PaymentHistory> paymentHistoryList = getPaymentHistoryList();
         if (paymentHistoryList == null) {
             paymentHistoryList = new ArrayList<>();
@@ -85,13 +89,9 @@ public class Payment {
         }
 
         findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
-            if (paymentHistory.isPhFlag()) {
+            if (paymentHistory.isPhFlag() && paymentHistory.getPhType() == PhType.PAY) {
                 //마지막 결제 요청 check
                 paymentHistory.setPhFlag(false);
-
-//                    paymentHistory.getPhCode();
-
-                break findFlag;
             }
         }
 
@@ -103,6 +103,8 @@ public class Payment {
                 .phFlag(true)
                 .build();
         paymentHistoryList.add(paymentHistory);
+
+        setPayState(PayState.REQ);
 
         return  paymentHistory;
     }
@@ -139,7 +141,7 @@ public class Payment {
         }
 
         findFlag : for (PaymentHistory paymentHistory : paymentHistoryList) {
-            if (paymentHistory.isPhFlag()) {
+            if (paymentHistory.isPhFlag() && paymentHistory.getPhType() == PhType.CANCEL) {
                 //마지막 결제 요청 check
                 paymentHistory.setPhFlag(false);
 
@@ -151,7 +153,7 @@ public class Payment {
 
         PaymentHistory paymentHistory = PaymentHistory.builder()
                 .payment(this)
-                .phType(PhType.PAY)
+                .phType(PhType.CANCEL)
                 .phReq("")
                 .phRes("")
                 .phFlag(true)
@@ -159,5 +161,14 @@ public class Payment {
         paymentHistoryList.add(paymentHistory);
 
         return  paymentHistory;
+    }
+    /** 마지막 결제요청 ph 가져오기*/
+    public PaymentHistory getLastPaymentHistory(PhType phType){
+        for (PaymentHistory ph : getPaymentHistoryList()) {
+            if (ph.isPhFlag() && ph.getPhType() == phType) {
+                return ph;
+            }
+        }
+        return null;
     }
 }

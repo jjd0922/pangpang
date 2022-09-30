@@ -5,11 +5,15 @@ import com.newper.constant.PhType;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Map;
 
 @Entity
 @DynamicInsert
@@ -32,8 +36,10 @@ public class PaymentHistory {
     @Enumerated(EnumType.STRING)
     private PhType phType;
 
+    /** 마지막 결제 요청 기록만 true*/
     private boolean phFlag;
     private String phReq;
+    /** map으로 파싱해서 사용*/
     private String phRes;
     private LocalDate phReqDate;
     private LocalTime phReqTime;
@@ -48,5 +54,13 @@ public class PaymentHistory {
         setPhReqDate(now.toLocalDate());
         setPhReqTime(now.toLocalTime());
         this.phReq = phReq;
+    }
+    /** phRes map으로 받기*/
+    public Map<String,Object> getPhResMap(){
+        try{
+            return (Map<String,Object>)new JSONParser().parse(getPhRes());
+        }catch (ParseException pe){
+            return null;
+        }
     }
 }

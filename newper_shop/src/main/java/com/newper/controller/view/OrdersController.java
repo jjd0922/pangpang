@@ -12,6 +12,7 @@ import com.newper.iamport.IamportApi;
 import com.newper.mapper.IamportMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopProductOptionRepo;
+import com.newper.service.OrdersService;
 import com.newper.service.PaymentService;
 import com.newper.service.ShopProductService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class OrdersController {
     private final IamportMapper iamportMapper;
     private final ShopProductService shopProductService;
     private final CustomerRepo customerRepo;
+    private final OrdersService ordersService;
 
     /** 주문 결제 페이지*/
     @PostMapping("")
@@ -72,24 +74,18 @@ public class OrdersController {
 
         return mav;
     }
-    /** 결제 결과*/
+    /** iframe에서 결제 결과 확인 후 redirect*/
     @GetMapping("result/ph{idx}")
     public ModelAndView resultPh(@PathVariable(value = "idx") long ph_idx){
-        ModelAndView mav = new ModelAndView();
-        //[success=true, imp_uid=imp_803037736674, pay_method=card, merchant_uid=ph27, name=test 외 1건, paid_amount=100, currency=KRW, pg_provider=kcp, pg_type=payment, pg_tid=22895235578509, apply_num=30046339, buyer_name=주문자명, buyer_email=, buyer_tel=, buyer_addr=, buyer_postcode=, custom_data=null, status=paid, paid_at=1663830096, receipt_url=https://admin8.kcp.co.kr/assist/bill.BillActionNew.do?cmd=card_bill&tno=22895235578509&order_no=imp_803037736674&trade_mony=100, card_name=KB국민카드, bank_name=null, card_quota=0, card_number=5570420000007221]
+        ModelAndView mav = new ModelAndView("orders/result_ph_idx");
 
-
-        String response_str;
-        try{
-            response_str = new IamportApi().checkPay("ph"+ph_idx);
-        }catch (Exception e){
-            throw new MsgException("결제 조회 중 에러 발생", e);
-        }
-
-        Payment payment = paymentService.savePaymentResult(ph_idx, response_str);
+        Payment payment = paymentService.savePaymentResult(ph_idx);
 
         if (payment.getPayState() == PayState.SUCCESS) {
-            mav.setViewName("redirect:/orders/result"+payment.getOrders().getOIdx());
+            mav.addObject("result","success");
+            mav.addObject("href","/orders/" + payment.getOrders().getOCode());
+        }else if (payment.getPayState() == PayState.FAIL) {
+            mav.addObject("result","fail");
         }else{
             throw new MsgException("결제 결과 확인 중입니다.");
         }
@@ -97,15 +93,21 @@ public class OrdersController {
         return mav;
     }
 
-    /** 주문 상세 페이지*/
+    /** 결제 완료 후 보는 주문 상세 페이지*/
     @GetMapping("{oCode}")
     public ModelAndView oCode(@PathVariable String oCode){
         ModelAndView mav = new ModelAndView("orders/oCode");
 
         System.out.println("o_code");
         System.out.println(oCode);
+        ordersService.selectOrdersDetail(oCode);
 
-
+        return mav;
+    }
+    /** iamport 결제 js 페이지*/
+    @GetMapping("iamport")
+    public ModelAndView iamport(){
+        ModelAndView mav = new ModelAndView("orders/iamport");
         return mav;
     }
 }

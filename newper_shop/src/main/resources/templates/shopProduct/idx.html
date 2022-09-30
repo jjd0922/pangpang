@@ -180,6 +180,7 @@
         <!-- 선택된 옵션가격 -->
         <div class="prod-option-price">
           <form id="spoForm" action="/orders/" method="post">
+            <input type="hidden" name="login">
           <ul id="spoUl">
 
           </ul>
@@ -1104,10 +1105,12 @@
   function orderSpo(){
     //회원
     if( $('.nosessionClass').css('display') == 'none' ){
+      $('#spoForm input[name=login]').val('true');
       $('#spoForm').submit();
     }else{
+      $('#spoForm input[name=login]').val('false');
     //비회원
-
+      alert('비회원 주문 modal');
     }
   }
 </script>

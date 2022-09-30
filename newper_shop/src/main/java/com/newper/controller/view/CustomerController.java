@@ -7,7 +7,6 @@ import com.newper.component.ShopSession;
 import com.newper.constant.SaType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
-import com.newper.entity.Customer;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.SelfAuthService;
 import lombok.RequiredArgsConstructor;
@@ -52,13 +51,18 @@ public class CustomerController {
     @PostMapping(value = "findCustomer/step/{type}.load")
     public ModelAndView findCustomerStep(@PathVariable("type") String type, ParamMap paramMap){
         ModelAndView mav = new ModelAndView("customer/findCustomer_step :: " + type);
-        if(type.equals("findComplete")){
-            if(paramMap.containsKey("cuPw")){
-                mav.addObject("pwReset",true);
-            }else{
-                mav.addObject("pwReset",false);
+        if (type.equals("findComplete")) {
+            if (paramMap.containsKey("cuPw")) {
+                mav.addObject("pwReset", true);
+            } else {
+                mav.addObject("pwReset", false);
+            }
+            if (paramMap.containsKey("CU_ID")) {
+                System.out.println("paramMap cuid = " + paramMap);
+                mav.addObject("data", paramMap.getMap());
             }
         }
+
         return mav;
     }
 
@@ -69,13 +73,12 @@ public class CustomerController {
         return mav;
     }
     /** 나이스 본인 인증 팝업 띄우기(회원가입)*/
-    @GetMapping(value = "auth/request")
-    public ModelAndView authRequest(HttpServletRequest request){
+    @GetMapping(value = "auth/request/{type}")
+    public ModelAndView authRequest(@PathVariable("type") String type, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("customer/auth_request");
         // nice요청생성
-        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort()
-                        + "/customer/auth/response";
-        Long saIdx = selfAuthService.insertSa(SaType.JOIN);
+        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort()+"/customer/auth/response/"+type;
+        Long saIdx = selfAuthService.insertSa(SaType.valueOf(type.toUpperCase()));
         Map<String, Object> niceReq = niceApi.getNiceSendData(callback, saIdx.toString());
         mav.addObject("data", niceReq);
         // 요청정보 db update
@@ -84,8 +87,8 @@ public class CustomerController {
     }
     
     /** nice 본인인증 응답 데이터 받는 곳*/
-    @GetMapping(value = "auth/response")
-    public ModelAndView authResponse(ParamMap paramMap) {
+    @GetMapping(value = "auth/response/{type}")
+    public ModelAndView authResponse(@PathVariable("type") String type, ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("customer/auth_response");
         // nice 응답 데이터
         Map<String, Object> niceReturn = niceApi.getNiceReturn(paramMap);
@@ -94,6 +97,7 @@ public class CustomerController {
         Long saIdx = selfAuthService.updateSaRes(niceReturn);
         AesEncrypt aes = new AesEncrypt();
         mav.addObject("saIdx", aes.encryptRandom(saIdx.toString()));
+        mav.addObject("type", type);
         return mav;
     }
     
@@ -147,42 +151,6 @@ public class CustomerController {
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> res = kakaoLogin.getProfile(paramMap, callback);
         System.out.println("res = " + res);
-        return mav;
-    }
-
-    /** 나이스 본인 인증 팝업 띄우기(아이디/비밀번호찾기)*/
-    @GetMapping(value = {"auth/request/findId", "auth/request/findPw"})
-    public ModelAndView findIdReq(HttpServletRequest request){
-        ModelAndView mav = new ModelAndView("customer/auth_request");
-        // nice요청생성
-        String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
-        String uri = request.getRequestURI();
-        if (uri.contains("findId")) {
-            callback += "/customer/auth/response/findId";
-        } else if (uri.contains("findPw")) {
-            callback += "/customer/auth/response/findPw";
-        }
-        Long saIdx = selfAuthService.insertSa(SaType.FIND);
-        Map<String, Object> niceReq = niceApi.getNiceSendData(callback, saIdx.toString());
-        mav.addObject("data", niceReq);
-        // 요청정보 db update
-        selfAuthService.updateSaReq(saIdx, niceReq);
-        return mav;
-    }
-
-    /** 나이스 본인인증 응답(아이디찾기)*/
-    @GetMapping(value = "auth/response/findId")
-    public ModelAndView responseFindId(ParamMap paramMap) {
-        ModelAndView mav = new ModelAndView("customer/auth_response_findId");
-        // nice 응답 데이터
-        Map<String, Object> res = niceApi.getNiceReturn(paramMap);
-        // 요청정보 db update
-        Long saIdx = selfAuthService.updateSaRes(res);
-
-        // ci값으로 회원 정보 찾기 (지금은 임시로 di로)
-        String di = res.get("DI").toString();
-        Customer customer = customerRepo.findByCuDi(di);
-        mav.addObject("customer", customer);
         return mav;
     }
 }

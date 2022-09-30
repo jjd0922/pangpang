@@ -3,12 +3,15 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Customer;
+import com.newper.mapper.CustomerMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class CustomerRestController {
 
     private final CustomerRepo customerRepo;
     private final CustomerService customerService;
+    private final CustomerMapper customerMapper;
 
     @PostMapping("join.ajax")
     public ReturnMap join(ParamMap paramMap){
@@ -40,6 +44,13 @@ public class CustomerRestController {
             rm.put("result", false);
         }
         return rm;
+    }
+
+    /** 아이디 찾기 */
+    @PostMapping("findId.ajax")
+    public Map<String,Object> findId(ParamMap paramMap) {
+        Map<String, Object> map = customerMapper.selectCustomerByCuCi(paramMap.getMap());
+        return map;
     }
 
 }

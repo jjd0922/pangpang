@@ -25,6 +25,8 @@ public class ReturnMap {
     /** location있는 경우 popup으로 열지*/
     private boolean isPopup;
     private String location;
+    /** 세션 만료 등으로 로그인 필요한 경우*/
+    private boolean needLogin;
     @Builder.Default
     Map<String, Object> data = new HashMap<>();
 
