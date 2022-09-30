@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,12 +51,21 @@ public class MyPageRestController {
 
     /** AS 등록 처리(뉴퍼마켓 구매제품) */
     @PostMapping(value = "createAS.ajax")
-    public ReturnMap createAS(ParamMap paramMap,MultipartFile AS_FILE) {
+    public ReturnMap createAS(ParamMap paramMap, MultipartHttpServletRequest AS_FILE){
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
-        long idx = mypageService.createAS(paramMap,AS_FILE);
+
+        System.out.println(AS_FILE.getFiles("AS_FILE").get(0).getOriginalFilename());
+        StringBuffer sb= new StringBuffer();
+
+        for(int i=0;i<AS_FILE.getFiles("AS_FILE").size();i++){
+            sb.append(AS_FILE.getFiles("AS_FILE").get(i).getOriginalFilename().toString());
+        }
+
         System.out.println(paramMap.getMap());
-        System.out.println("asFile = " + AS_FILE);
+
+        long idx = mypageService.createAS(paramMap,AS_FILE);
+
 
         rm.setMessage("등록이 완료되었습니다.");
 
@@ -61,12 +73,24 @@ public class MyPageRestController {
     }
 
 
+
     /** AS 등록 처리(다른 온라인몰 구매제품) */
     @PostMapping(value = "createAS2.ajax")
-    public ReturnMap createAS2(ParamMap paramMap,MultipartFile AS_FILE) {
+    public ReturnMap createAS2(ParamMap paramMap,MultipartHttpServletRequest AS_FILE) {
         ReturnMap rm = new ReturnMap();
         System.out.println(paramMap.getMap());
+
+        System.out.println(AS_FILE.getFiles("AS_FILE").get(0).getOriginalFilename());
+        StringBuffer sb= new StringBuffer();
+
+        for(int i=0;i<AS_FILE.getFiles("AS_FILE").size();i++){
+            sb.append(AS_FILE.getFiles("AS_FILE").get(i).getOriginalFilename().toString());
+        }
+
+        System.out.println(paramMap.getMap());
+
         long idx = mypageService.createAS(paramMap,AS_FILE);
+
 
         rm.setMessage("등록이 완료되었습니다.");
 
