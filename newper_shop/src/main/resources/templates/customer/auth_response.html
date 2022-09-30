@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<body>
 <script th:src="@{/js/core/jquery-3.6.0.min.js}"></script>
 <script th:inline="javascript">
     var opener = window.opener;
-    opener.$('#joinName').val([[${nice.NAME}]]);
-    opener.$('#saIdx').val([[${saIdx}]]);
-    var phone = [[${nice.MOBILE_NO}]];
-    opener.$('#phone1').val(phone.substring(0,3));
-    opener.$('#phone2').val(phone.substring(3,7));
-    opener.$('#phone3').val(phone.substring(7));
+    if ([[${#strings.equals(type,'join')}]]) {
+        opener.$('#joinName').val([[${nice.NAME}]]);
+        opener.$('#saIdx').val([[${saIdx}]]);
+        var phone = [[${nice.MOBILE_NO}]];
+        opener.$('#phone1').val(phone.substring(0,3));
+        opener.$('#phone2').val(phone.substring(3,7));
+        opener.$('#phone3').val(phone.substring(7));
+    }
+    if ([[${#strings.equals(type,'findId')}]]) {
+        $.ajax({
+            url: '/customer/findId.ajax',
+            type: 'post',
+            data: [[${nice}]],
+            success: function (res) {
+                console.log(res);
+                if (res != null) {
+                    opener.findCustomer('findComplete', res);
+                }
+            }
+        });
+    }
     window.close();
 </script>
 </body>

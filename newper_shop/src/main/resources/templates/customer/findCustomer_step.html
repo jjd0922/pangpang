@@ -3,7 +3,7 @@
     <section th:insert="part/menu :: menu-full3" class="padding-section"></section>
 
     <div class="flex-center">
-        <a href="javascript:;" class="btn btn-dark-gray radius-small">휴대폰 인증하기</a>
+        <a href="javascript:fnPopNiceRequest('findId');" class="btn btn-dark-gray radius-small">휴대폰 인증하기</a>
     </div>
     <div class="flex-center">
         <a href="/" class="btn">취소</a>
@@ -100,8 +100,8 @@
         <p>비밀번호 변경이 완료되었습니다.</p>
     </div>
     <div class="text-center" th:if="${pwReset == false}">
-        <p>홍길동 님의 회원정보는 다음과 같습니다.</p>
-        <p>아이디 : <span>***</span> <span>(일반회원)</span></p>
+        <p><span th:text="${data.CU_NAME}">홍길동</span> 님의 회원정보는 다음과 같습니다.</p>
+        <p>아이디 : <span th:text="${data.CU_ID}">***</span> <span th:text="|(${T(com.newper.constant.CuRate).valueOf(data.CU_RATE).getOption()})|">(일반회원)</span></p>
     </div>
 
     <a onclick="findCustomer('findCompleteSleep')">휴면계정일 경우의 페이지(임시)</a>
