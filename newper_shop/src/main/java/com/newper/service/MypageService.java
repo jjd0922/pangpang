@@ -35,7 +35,7 @@ public class MypageService {
      * AS 등록 --> 뉴퍼마켓 구매제품
      **/
     @Transactional
-    public long createAS(ParamMap paramMap, MultipartFile asFile) {
+    public long createAS(ParamMap paramMap, MultipartFile AS_FILE) {
         AfterService as = paramMap.mapParam(AfterService.class);
 
         try {
@@ -74,18 +74,21 @@ public class MypageService {
 
 //
 //         파일확장자 확인
-        String asFileExtension = FilenameUtils.getExtension(asFile.getOriginalFilename());
+        String asFileExtension = FilenameUtils.getExtension(AS_FILE.getOriginalFilename());
 
         if (!asFileExtension.equals("jpg") && !asFileExtension.equals("gif") && !asFileExtension.equals("png")) {
             throw new MsgException("사진은 png,gif,png 형식으로만 업로드 해주세요.");
 
-        }else {
-            String asFilePath = Common.uploadFilePath(asFile, "mypage/as_image/", AdminBucket.SECRET);
-
         }
-/*        as.setAsFile(asFilePath);
-        as.getAsFileName(asFile.getOriginalFilename().substring(0,asFilePath.length()));*/
-//        as.setAsFile("");
+
+            String asFilePath = Common.uploadFilePath(AS_FILE, "mypage/as_image/", AdminBucket.SECRET);
+
+
+            as.setAsFile(asFilePath);
+            as.setAsFileName(AS_FILE.getOriginalFilename());
+//            as.setAsFile("");
+
+
         as.setAsState("");
         as.setAsDate(LocalDate.now());
         as.setAsTime(LocalTime.now());

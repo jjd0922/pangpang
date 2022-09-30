@@ -36,11 +36,11 @@ public class AfterService {
     private LocalTime asTime;
 
 
-
-    @Transient
-    private String asFileOri;
-    @Transient
-    private String asFileNameOri;
+//
+//    @Transient
+//    private String asFileOri;
+//    @Transient
+//    private String asFileNameOri;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
