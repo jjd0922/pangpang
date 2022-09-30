@@ -2042,6 +2042,7 @@ section {
     justify-content: space-between;
     align-items: center;
     width: calc(100% - 190px);
+    position: relative;
 }
 .info-icon {
     display: inline-flex;
@@ -2224,7 +2225,234 @@ section {
     color: var(--scPoint);
 }
 
-/* 연관상품 슬라이드 */
+/* 제품 상태 가이드 툴팁 */
+.pop {
+    background-color: #fff;
+    border: 10px solid #d1d1d1;
+    border-radius: 15px;
+    position: absolute;
+    z-index: 2;
+    display: none;
+}
+.pop::after {
+    content: "";
+    position: absolute;
+    width: 33px;
+    height: 33px;
+    top: -32px;
+    background: url("../image/tail_popup.png") no-repeat center/contain;
+}
+.pop h4 {
+    font-size: 17px;
+    padding: 15px;
+    border-bottom: 1px solid #b1b1b1;
+}
+.prod-status-pop {
+    width: 525px;
+    top: calc(100% + 25px);
+    left: 0;
+}
+.prod-status-pop::after {
+    left: 145px;
+}
+.pop-content {
+    padding: 5px 0;
+}
+.pop-content>li {
+    display: flex;
+    padding: 10px 15px;
+}
+.prod-status-pop .pop-content>li:nth-child(2n), .pop-content>li:nth-child(3) {
+    background-color: #f8f8f8;
+}
+.pop-content>li.focus {
+    color: #f00000;
+}
+.pop-content>li.focus .prodStatus {
+    border: 1px solid #f00000;
+}
+.pop-des>li>span {
+    height: 21px;
+    padding: 10px 0;
+}
+.pop-title {
+    width: 65px;
+}
+.pop-des {
+    width: calc(100% - 65px);
+    font-size: 15px;
+}
+.prodStatus {
+    display: inline-block;
+    border: 1px solid #d1d1d1;
+    padding: 5px 7px;
+    margin-bottom: 5px;
+}
+/* 공유하기 툴팁 */
+.share-pop {
+    width: 250px;
+    top: 100%;
+    right: 0;
+    padding: 15px 30px;
+    border: 2px solid #d1d1d1;
+    border-radius: 10px;
+}
+.share-pop::after {
+    content: none;
+}
+.share-pop h4 {
+    font-size: 16px;
+    padding: 0;
+    border-bottom: none;
+}
+.share-pop .pop-content {
+    font-size: 13px;
+}
+.share-pop .pop-content>ul {
+    padding: 0 15px;
+}
+.share-pop .pop-content>ul>li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.share-pop .pop-content>ul>li img {
+    width: 37px;
+    height: 37px;
+    margin-bottom: 7px;
+}
+.urlCopy>* {
+    border: 1px solid #d1d1d1;
+    padding: 5px 0;
+}
+.urlCopy>*:first-child {
+    border-right: none;
+    width: calc(100% - 50px);
+}
+.urlCopy>*:last-child {
+    width: 50px;
+    text-align: center;
+}
+.urlCopy input {
+    outline: none;
+}
+.review-guide-pop {
+    top: calc(100% + 7px);
+    right: -23px;
+    padding: 15px 20px 30px 20px;
+    font-size: 14px;
+}
+.review-guide-pop:after {
+    right: 10px;
+}
+.review-guide-pop p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+/* 무이자 할부 카드 보기 툴팁 */
+.card-view {
+    cursor: pointer;
+    position: relative;
+}
+.card-view-pop {
+    top: calc(100% + 21px);
+    right: 0;
+}
+.card-view-pop::after {
+    right: 135px;
+}
+.card-view-pop .pop-content {
+    padding: 25px;
+}
+.card-view-pop .pop-content>div {
+    overflow-y: scroll;
+    height: 400px
+}
+.card-view-pop .pop-content>div::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+}
+.card-view-pop .pop-content>div::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 30px;
+}
+.card-view-pop img {
+    width: 345px;
+    object-fit: contain;
+}
+/* 최종혜택가 툴팁 */
+.benefit-price-pop {
+    top: calc(100% + 23px);
+    right: -30px;
+    display: block;
+}
+.benefit-price-pop::after {
+    right: 15px;
+}
+.benefit-price-pop .pop-content {
+    padding: 15px 30px;
+}
+.benefit-price-pop .pop-content>p {
+   margin-bottom: 25px;
+ }
+.benefit-price-pop .pop-content>div {
+    border-bottom: 2px solid #000;
+    margin-bottom: 7px;
+}
+.benefit-price-pop .pop-content>ul::after {
+    content: "VS";
+    position: absolute;
+    left: 48%;
+    top: 50%;
+    font-size: 24px;
+    font-family: 'Lato', 'Noto Sans Kr', 'Arial', 'sans-serif';
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+}
+.graph{
+    height: 150px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    flex: 1;
+}
+.graph>p {
+    margin-bottom: 5px;
+}
+
+@keyframes stack1{
+    0%{ height: 0; opacity:0;}
+    100%{ height: 100%; opacity:1;}
+}
+@keyframes stack2{
+    0%{ height: 0; opacity:0;}
+    100%{ height: 31%; opacity:1;}
+}
+.graph>span{
+    display:flex;
+    width: 50px;
+}
+.graph.stack1>span{
+    background-color: #dddddd;
+    height:100%;
+    animation:stack1 2s;
+}
+.graph.stack2>span{
+    background-color: var(--scPoint);
+    height:31%;
+    animation:stack2 2s;
+}
+
+
+
+
+
+
+
+
+
+
+    /* 연관상품 슬라이드 */
 .relatedProducts {
     display: flex;
     padding: 15px;
