@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -122,5 +123,12 @@ public class CustomerService {
         Customer savedCu = customerRepo.save(customer);
         selfAuth.setSaUsed(true);
         return savedCu;
+    }
+
+    @Transactional
+    public void resetPw(ParamMap paramMap) {
+        Customer customer = customerRepo.findById(paramMap.getLong("cuIdx")).orElseThrow(() -> new MsgException("회원정보를 찾을 수 없습니다."));
+        customer.setCuPw(paramMap.getString("cuPw"));
+        customer.setCuPwChange(LocalDate.now());
     }
 }
