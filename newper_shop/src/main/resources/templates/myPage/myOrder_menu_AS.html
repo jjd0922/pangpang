@@ -66,11 +66,11 @@
         <li>
             <div class="table-title">사진첨부</div>
             <div class="input-group">
-<!--               <label class="file-btn" for="file">사진 첨부하기-->
+<!--               <label class="file-btn" for="AS_FILE">사진 첨부하기-->
 
 <!--                </label>-->
 <!--                <a th:if="${afterService != null}" th:title="${afterService?.asFileName}">다운로드</a>-->
-                <input type="file" name="AS_FILE" class="form-control form-control-plaintext" accept=".jpg,.png,.gif">
+                <input type="file" id="AS_FILE" name="AS_FILE" class="form-control form-control-plaintext file-btn" multiple="true" accept=".jpg,.png,.gif">
 <!--                <input type="hidden" th:if="${afterService != null}" th:value="${afterService?.asFile}" name="asFileOri">-->
 <!--                <input type="hidden" th:if="${afterService != null}" th:value="${afterService?.asFile}" name="asFileNameOri">-->
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
@@ -100,6 +100,7 @@
 
         function createAS(){
             var param = new FormData($('#asForm')[0]);
+
             $.ajax({
                 url: 'myPage/createAS.ajax'
                 ,type:'post'
@@ -221,7 +222,7 @@
             <div class="table-content fileAdd">
 <!--                <label class="file-btn" for="file" >사진 첨부하기-->
 <!--                </label>-->
-                <input type="file" name="AS_FILE" class="form-control form-control-plaintext" accept=".jpg,.png,.gif">
+                <input type="file" name="AS_FILE" class="form-control form-control-plaintext file-btn" multiple="multiple" accept=".jpg,.png,.gif">
                 <p class="color-grey999">* JPG, GIF, PNG의 형식으로 최대 10개의 이미지까지 등록 가능합니다.</p>
                 <p class="color-grey999">* 증상이 있는 이미지를 첨부하시면 빠른 서비스를 받으실 수 있습니다.</p>
             </div>
@@ -260,7 +261,7 @@
             })
         }
 
-        //
+
         // function createAS2(){
         //     $.ajax({
         //         url: 'myPage/createAS2.ajax'
