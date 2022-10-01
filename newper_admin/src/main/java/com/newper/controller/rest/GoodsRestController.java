@@ -77,7 +77,7 @@ public class GoodsRestController {
         ReturnDatatable rd = new ReturnDatatable();
         paramMap.multiSelect("gState");
         paramMap.multiSelect("gStockState");
-        rd.setData(goodsMapper.selectGoodsDataTable(paramMap.getMap()));
+        rd.setData(goodsMapper.selectGoodsDataTable1(paramMap.getMap()));
         rd.setRecordsTotal(goodsMapper.countGoodsDataTable(paramMap.getMap()));
         return rd;
     }

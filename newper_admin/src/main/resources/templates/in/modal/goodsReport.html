@@ -436,19 +436,6 @@
             return false;
         }
 
-        var flag = true;
-        $.each($('input[name=sellSpec2]'), function (index, value) {
-            if ($(this).val() == '') {
-                flag = false;
-                return false;
-            }
-        });
-
-        if (flag == false) {
-            alert('판매SPEC(확정)을 입력해 주세요');
-            return false;
-        }
-
         textWonRemoveComma();
         $.ajax({
             type: "POST",

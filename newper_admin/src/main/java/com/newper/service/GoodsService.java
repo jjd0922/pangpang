@@ -11,6 +11,7 @@ import com.newper.mapper.ProcessMapper;
 import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.util.SpecFinder;
+import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STHeightRule;
 import org.springframework.stereotype.Service;
@@ -301,11 +302,14 @@ public class GoodsService {
             for (int i = 0; i < gIdx.length; i++) {
                 Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
                 int check = processMapper.checkProcessNeedOtherByGoods(goods.getGIdx());
+                System.out.println("sadlkfjhaslkd#  " + check);
                 if (check == 0) {
+                    System.out.println("상품화 완료");
                     goods.setGState(GState.STOCK);
                     goods.setGStockState(GStockState.STOCK_REQ);
                 } else {
-                    goods.setGState(GState.PROCESS);
+                    System.out.println("공정공정");
+                    goods.setGState(GState.RE_CHECK_DONE);
                 }
                 Map<String, Object> gJson = goods.getGJson();
                 this.updateGoodsBy(gJson);

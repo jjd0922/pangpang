@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum CgState implements EnumOption {
 
      BEFORE("요청전")
+    ,CANCEL("취소")
     ,REQ("요청")
     ,FINISH("완료")
     ;

@@ -206,10 +206,42 @@ public class ProcessService {
             gJson.put("gFileName", fileName);
         }
 
-//        // CHECK_GOODS 예상비용 업데이트
-//        this.insertProcessNeed(goods, paramMap, PnType.PAINT);
-//        this.insertProcessNeed(goods, paramMap, PnType.FIX);
-//        this.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+// 도색
+        int paintIdx = paramMap.getIntZero("paintIdx");
+        String paintContent = paramMap.getString("paintContent");
+        int paintCost = paramMap.getIntZero("paintCost");
+
+        if (paintIdx == 0 && !paintContent.replaceAll(" ","").equals("") && paintCost != 0) {
+            int pnIdx = this.insertProcessNeed(paramMap, goods, PnType.PAINT);
+            paramMap.put("paintIdx", pnIdx);
+        } else if (paintIdx != 0){
+            updateProcessNeed(paramMap, paintIdx);
+        }
+
+
+        // 수리
+        int fixIdx = paramMap.getIntZero("fixIdx");
+        String fixContent = paramMap.getString("fixContent");
+        int fixCost = paramMap.getIntZero("fixCost");
+
+        if (fixIdx == 0 && !fixContent.replaceAll(" ","").equals("") && fixCost != 0) {
+            int pnIdx = this.insertProcessNeed(paramMap, goods, PnType.FIX);
+            paramMap.put("fixIdx", pnIdx);
+        } else if (fixIdx != 0) {
+            updateProcessNeed(paramMap, fixIdx);
+        }
+
+        // 가공
+        int processIdx = paramMap.getIntZero("processIdx");
+        String processContent = paramMap.getString("processContent");
+        int processCost = paramMap.getIntZero("processCost");
+
+        if (processIdx == 0 && !processContent.replaceAll(" ","").equals("") && processCost != 0) {
+            int pnIdx = this.insertProcessNeed(paramMap, goods, PnType.PROCESS);
+            paramMap.put("processIdx", pnIdx);
+        } else if (processIdx != 0) {
+            updateProcessNeed(paramMap, processIdx);
+        }
 
         goodsRepo.save(goods);
     }
@@ -259,14 +291,20 @@ public class ProcessService {
             // 해당 자산에 다른 공정이 있는지 확인
             int check = processMapper.checkProcessNeedOtherByGoods(Long.parseLong(gIdx[i]));
             Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+            Map<String ,Object> gJson = goods.getGJson();
+            goodsService.updateGoodsBy(gJson);
+
             if (cgType.equals(CgType.IN)) { // 입고검수
                 goods.setGState(GState.CHECK_DONE);
             } else if (cgType.equals(CgType.RE)) { // 재검수
                 goods.setGState(GState.STOCK);
                 goods.setGStockState(GStockState.STOCK_REQ);
+                gJson.put("reProcess", "N");
             } else { // 출고전 검수
                 goods.setGState(GState.OUT_CHECK_DONE);
             }
+
+
 
             CheckGoods checkGoods = checkGoodsRepo.findByGoodsAndCheckGroup(goods, checkGroup);
             checkGoods.setCgsState(CgsState.FINISH);
@@ -456,35 +494,45 @@ public class ProcessService {
                 .pnContent(paramMap.getString(type+"Content"))
                 .pnExpectedCost(paramMap.getInt(type+"Cost"))
                 .pnRealCost(0)
+                .pnProcess(PnProcess.BEFORE)
                 .pnState(PnState.NEED)
                 .pnLast(pnCount)
                 .build();
 
         if (paramMap.getString(type+"Process") != null) {
             processNeed.setPnProcess(PnProcess.valueOf(paramMap.getString(type+"Process")));
+            if (paramMap.get("pSpec1") != null) {
+                List<String> pSpec1 = paramMap.getList("pSpec1");
+                pnJson.put("pSpec1", pSpec1);
+            }
+
+
+            if (paramMap.get("pSpec2") != null) {
+                List<String> pSpec2 = paramMap.getList("pSpec2");
+                pnJson.put("pSpec2", pSpec2);
+            }
         }
 
+        processNeedRepo.save(processNeed);
+        paramMap.put(type+"Idx", processNeed.getPnIdx());
         if (paramMap.get("cgsIdx") != null) {
             CheckGoods checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
             checkGoods.setCgsCost(paramMap.getIntZero("cgsCost"));
             Map<String, Object> cgsJson = checkGoods.getCgsJson();
 
             processNeed.setCheckGoods(checkGoods);
-
-            this.processJsonSetting(paramMap, cgsJson, PnType.PAINT);
-            this.processJsonSetting(paramMap, cgsJson, PnType.FIX);
-            this.processJsonSetting(paramMap, cgsJson, PnType.PROCESS);
+            this.processJsonSetting(paramMap, cgsJson, pnType);
 
             checkGoods.setCgsJson(cgsJson);
             checkGoodsRepo.save(checkGoods);
         }
 
         if (pnType.equals(PnType.PROCESS)) {
-            pnJson.put("psIdx", this.insertProcessSpec(paramMap, processNeed));
+            pnJson.put("psIdx", this.insertProcessSpec(paramMap, processNeed, pnJson));
         }
 
-        processNeedRepo.save(processNeed);
 
+        processNeedRepo.save(processNeed);
         return processNeed.getPnIdx();
     }
 
@@ -541,8 +589,9 @@ public class ProcessService {
     }
 
     /** 공정 (스펙, 용역) 등록 */
-    private List<Integer> insertProcessSpec(ParamMap paramMap, ProcessNeed processNeed) {
+    private List<Integer> insertProcessSpec(ParamMap paramMap, ProcessNeed processNeed, Map<String, Object> pnJson) {
         List<String> pSpec1 = paramMap.getList("pSpec1");
+        List<String> pSpec2 = paramMap.getList("pSpec2");
         List<Long> psCost = paramMap.getListLong("psCost");
         List<String> specName = paramMap.getList("specName");
         List<Integer> psIdx = new ArrayList<>();
@@ -562,6 +611,10 @@ public class ProcessService {
                 psIdx.add(processSpec.getPsIdx());
             }
         }
+
+        pnJson.put("psCost", psCost);
+        pnJson.put("pSpec1", pSpec1);
+        pnJson.put("pSpec2", pSpec2);
 
         return psIdx;
     }
@@ -589,12 +642,11 @@ public class ProcessService {
     /** 공정관련 정보 json setting */
     public void processJsonSetting(ParamMap paramMap, Map<String, Object> json, PnType pnType) {
         String type = pnType.name().toLowerCase();
-
-            json.put(type+"Content", paramMap.getString(type+"Content"));
-            json.put(type+"Cost", paramMap.getString(type+"Cost"));
-            json.put(type+"Idx", paramMap.getInt(type+"Idx"));
-            List<Long> psCost = paramMap.getListLong("psCost");
-            json.put("psCost", psCost);
+        json.put(type+"Content", paramMap.getString(type+"Content"));
+        json.put(type+"Cost", paramMap.getString(type+"Cost"));
+        json.put(type+"Idx", paramMap.getInt(type+"Idx"));
+        List<Long> psCost = paramMap.getListLong("psCost");
+        json.put("psCost", psCost);
 
         if (paramMap.get(type+"Process") != null) {
             json.put(type+"Process", PnProcess.valueOf(paramMap.getString(type + "Process")).name());

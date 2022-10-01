@@ -125,4 +125,24 @@ public class InService {
 
         inProductRepo.save(inProduct);
     }
+
+    /** 입고 검수 상태값 수정 */
+    public void inCheckStateUpdate(ParamMap paramMap) {
+        CheckGroup checkGroup = checkGroupRepo.findById(paramMap.getInt("cgIdx")).get();
+        CgState cgState = CgState.valueOf(paramMap.getString("cgState"));
+
+        // 진행중 요청시
+        if (cgState.equals(CgState.REQ)) {
+            if(!checkGroup.getCgState().equals(CgState.BEFORE)) {
+                throw new MsgException("해당 검수 그룹은 진행할 수 없는 상태입니다.");
+            }
+        }
+
+        // 완료처리시
+        if (cgState.equals(CgState.FINISH)) {
+            if(!checkGroup.getCgState().equals(CgState.REQ)) {
+                throw new MsgException("해당 검수 그룹은 완료할 수 없는 상태입니다.");
+            }
+        }
+    }
 }

@@ -180,7 +180,7 @@ public class CheckService {
             if (!gOption.get(i).equals("")) {
                 Map<String, Object> optionMap = new HashMap<>();
                 optionMap.put("title", gOption.get(i).split(":")[0]);
-                optionMap.put("value", gOption.get(i).split(":")[1]);
+                optionMap.put("values", gOption.get(i).split(":")[1]);
                 optionList.add(optionMap);
             }
         }
@@ -195,7 +195,7 @@ public class CheckService {
         gJson.put("sellSpec2", sellSpec2Value);
 
         // 도색
-        int paintIdx = paramMap.getInt("paintIdx");
+        int paintIdx = paramMap.getIntZero("paintIdx");
         String paintContent = paramMap.getString("paintContent");
         int paintCost = paramMap.getIntZero("paintCost");
 
@@ -208,7 +208,7 @@ public class CheckService {
 
 
         // 수리
-        int fixIdx = paramMap.getInt("fixIdx");
+        int fixIdx = paramMap.getIntZero("fixIdx");
         String fixContent = paramMap.getString("fixContent");
         int fixCost = paramMap.getIntZero("fixCost");
 
@@ -220,7 +220,7 @@ public class CheckService {
         }
 
         // 가공
-        int processIdx = paramMap.getInt("processIdx");
+        int processIdx = paramMap.getIntZero("processIdx");
         String processContent = paramMap.getString("processContent");
         int processCost = paramMap.getIntZero("processCost");
 
@@ -271,7 +271,7 @@ public class CheckService {
             Map<String, Object> gJson = goods.getGJson();
             goodsService.updateGoodsBy(gJson);
             gJson.put("pnContent", processNeed.getPnContent());
-            gJson.put("pnState", processNeed.getPnState());
+            gJson.put("pnState", processNeed.getPnState().toString());
             gJson.put("pnId", sessionInfo.getId());
             gJson.put("pnDate", LocalDate.now().toString());
 
@@ -322,7 +322,7 @@ public class CheckService {
                 if (!gOption.get(i).equals("")) {
                     Map<String, Object> optionMap = new HashMap<>();
                     optionMap.put("title", gOption.get(i).split(":")[0]);
-                    optionMap.put("value", gOption.get(i).split(":")[1]);
+                    optionMap.put("values", gOption.get(i).split(":")[1]);
                     optionList.add(optionMap);
                 }
             }
@@ -336,11 +336,63 @@ public class CheckService {
             goods.setSellSpec(sellSpec2);
             gJson.put("sellSpec2", sellSpec2Value);
 
-//            processService.insertProcessNeed(goods, paramMap, PnType.PAINT);
-//            processService.insertProcessNeed(goods, paramMap, PnType.FIX);
-//            processService.insertProcessNeed(goods, paramMap, PnType.PROCESS);
+            // 도색
+            int paintIdx = paramMap.getIntZero("paintIdx");
+            String paintContent = paramMap.getString("paintContent");
+            int paintCost = paramMap.getIntZero("paintCost");
 
-            goods.setGState(GState.PROCESS);
+            if (paintIdx == 0 && !paintContent.replaceAll(" ","").equals("") && paintCost != 0) {
+                int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.PAINT);
+                paramMap.put("paintIdx", pnIdx);
+            } else if (paintIdx != 0){
+                processService.updateProcessNeed(paramMap, paintIdx);
+            }
+
+
+            // 수리
+            int fixIdx = paramMap.getIntZero("fixIdx");
+            String fixContent = paramMap.getString("fixContent");
+            int fixCost = paramMap.getIntZero("fixCost");
+
+            if (fixIdx == 0 && !fixContent.replaceAll(" ","").equals("") && fixCost != 0) {
+                int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.FIX);
+                paramMap.put("fixIdx", pnIdx);
+            } else if (fixIdx != 0) {
+                processService.updateProcessNeed(paramMap, fixIdx);
+            }
+
+            // 가공
+            int processIdx = paramMap.getIntZero("processIdx");
+            String processContent = paramMap.getString("processContent");
+            int processCost = paramMap.getIntZero("processCost");
+
+            if (processIdx == 0 && !processContent.replaceAll(" ","").equals("") && processCost != 0) {
+                int pnIdx = processService.insertProcessNeed(paramMap, goods, PnType.PROCESS);
+                paramMap.put("processIdx", pnIdx);
+            } else if (processIdx != 0) {
+                processService.updateProcessNeed(paramMap, processIdx);
+            }
+
+
+            String paintProcess = paramMap.getString("paintProcess");
+            String fixProcess = paramMap.getString("fixProcess");
+            String processProcess = paramMap.getString("processProcess");
+
+            if (paintProcess.equals("N") && fixProcess.equals("N") && processProcess.equals("N")) {
+                goods.setGState(GState.STOCK);
+                goods.setGStockState(GStockState.STOCK_REQ);
+
+                gJson.put("paintProcess", "N");
+                gJson.put("fixProcess", "N");
+                gJson.put("processProcess", "N");
+            } else {
+                goods.setGState(GState.PROCESS);
+
+                gJson.put("paintProcess", paintProcess);
+                gJson.put("fixProcess", fixProcess);
+                gJson.put("processProcess", processProcess);
+            }
+
             goods.setGJson(gJson);
         }
         goodsRepo.save(goods);

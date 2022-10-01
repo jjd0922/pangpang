@@ -587,6 +587,7 @@ public class PoService {
     }
 
     /** 해당 발주 완료 & 자산값 처리 */
+    @Transactional
     public void poComplete(ParamMap paramMap) {
         int poIdx = paramMap.getInt("poIdx");
         Po po = poRepo.findById(poIdx).get();
@@ -607,10 +608,8 @@ public class PoService {
             List<ProcessNeed> processNeedList = processNeedRepo.findByGoodsAndPnProcessAndPnState(goods, PnProcess.Y, PnState.NEED);
             if (processNeedList.size() == 0) {
                 goods.setGState(GState.STOCK);
+                goods.setGStockState(GStockState.STOCK_REQ);
             } else {
-                for (int j = 0; j < processNeedList.size(); j++) {
-                    String type = processNeedList.get(i).getPnType().name().toLowerCase();
-                }
                 goods.setGState(GState.PROCESS);
             }
 

@@ -42,10 +42,10 @@
                             <div class="row">
                                 <legend class="">1.등록정보 <span class="small ml-2"><i class="icon-info22 text-secondary mr-1 opacity-80"></i></span></legend>
                                 <div class="btn-group">
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|checkCancel(${check?.cgIdx})|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="cancelBtn" th:onclick="|inCheckStateUpdate(${check?.cgIdx}), 'CANCEL'|">
                                         <i class="icon-popout mr-1"></i>작업요청취소
                                     </a>
-                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|checkStateUpdate(${check?.cgIdx}, 'REQ')|">
+                                    <a type="button" class="btn btn-sm btn-primary ml-1" id="ingBtn" th:onclick="|inCheckStateUpdate(${check?.cgIdx}, 'REQ')|">
                                         <i class="icon-popout mr-1"></i>작업중(출고)
                                     </a>
                                 </div>
@@ -317,6 +317,20 @@
                 "gIdx":gIdxs,
                 "cgIdx":[[${check.cgIdx}]],
                 "cgType":"IN"
+            },
+            type: 'post',
+            success(result) {
+                location.reload();
+            }
+        });
+    }
+
+    function inCheckStateUpdate(cgIdx, state) {
+        $.ajax({
+            url: '/in/inCheckStateUpdate.ajax',
+            data: {
+                "cgIdx":[[${check.cgIdx}]],
+                "cgState":state
             },
             type: 'post',
             success(result) {

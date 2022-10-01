@@ -215,6 +215,13 @@ public class InRestController {
         return rm;
     }
 
+    /** 입고 검수 상태값 수정 */
+    @PostMapping("inCheckStateUpdate.ajax")
+    public ReturnMap inCheckStateUpdate(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        inService.inCheckStateUpdate(paramMap);
+        return rm;
+    }
 }
 
 
