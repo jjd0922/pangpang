@@ -7,10 +7,14 @@ import java.util.Map;
 
 @Mapper
 public interface CalculateMapper {
+    List<Map<String, Object>> selectProductPurchaseDatatable(Map<String, Object> map);
+
+    long countProductPurchaseDatatable(Map<String, Object> map);
 
     List<Map<String, Object>> selectCalculateDatatable(Map<String, Object> param);
 
-    Integer countCalculateDatatable(Map<String, Object> param);
+    Long countCalculateDatatable(Map<String, Object> param);
+
 
 
 }

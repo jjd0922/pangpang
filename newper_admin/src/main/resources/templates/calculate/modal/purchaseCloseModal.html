@@ -1,0 +1,87 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="closeModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="goodsDiv">
+                    <form id="closeModalForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>마감정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">마감담당자</span>
+                                                    </span>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">마감상태</span>
+                                                    </span>
+                                                    <select class="form-control">
+                                                        <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">마감처리일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control w-datarange daterange-single" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">마감메모</span>
+                                                    </span>
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1">닫기</button>
+                <button type="button" class="btn btn-sm btn-primary ml-1">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function openCloseModal () {
+        $('#closeModal').modal('show');
+    }
+</script>
+</html>
