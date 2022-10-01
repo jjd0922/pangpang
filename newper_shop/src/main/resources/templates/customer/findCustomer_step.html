@@ -31,7 +31,7 @@
             <li>
                 <p class="table-title">아이디</p>
                 <div class="table-content">
-                    <input id="otpInputDiv" type="text" maxlength="6" class="form-control">
+                    <input id="otpInputDiv" type="text" class="form-control" name="cuId">
                 </div>
             </li>
             <!--
@@ -57,7 +57,7 @@
        </ul>
 
         <div class="flex-center">
-            <a href="javascript:;" class="btn btn-dark-gray radius-small">휴대폰 인증하기</a>
+            <a href="javascript:fnPopNiceRequest('findPw');" class="btn btn-dark-gray radius-small">휴대폰 인증하기</a>
         </div>
 
         <div class="flex-center">
@@ -84,13 +84,13 @@
 
     <div id="findPwReset">
         <div class="text-center font-sm">
-            <p>홍길동 님의 회원정보가 확인되었습니다.</p>
+            <p><span th:text="${data.CU_NAME}">홍길동</span> 님의 회원정보가 확인되었습니다.</p>
             <p><span class="color-blue">비밀번호를 재설정</span> 해주시기 바랍니다.</p>
         </div>
 
         <div class="display-flex flex-column alignItems-center">
-            <input type="password" name="cuPw" class="form-control mb-10" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
-            <input type="password" class="form-control" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인">
+            <input type="password" name="cuPw" id="newPw" class="form-control mb-10" maxlength="20" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
+            <input type="password" class="form-control" id="newPwConfirm" maxlength="20" title="비밀번호 확인" placeholder="비밀번호 확인">
         </div>
 
         <div class="flex-center">
@@ -101,11 +101,29 @@
 
     <script>
         function pwReset(step){
+            var pw = $('#newPw');
+            var pwConfirm = $('#newPwConfirm');
+            var pwRegex = /[0-9a-zA-Z]{8,12}/g;
+            if (pw.val() == null || pw.val() == '') {
+                alert('비밀번호를 입력해주세요.')
+                pw.focus();
+                return false;
+            } else if (!pwRegex.test(pw.val())) {
+                alert('비밀번호는 영문과 숫자를 혼합하여 8~12자로 구성해야합니다.');
+                pw.focus();
+                return false;
+            } else if (pw.val() != pwConfirm.val()) {
+                alert('비밀번호가 일치하지 않습니다.');
+                pwConfirm.focus();
+                return false;
+            }
+
             $.ajax({
                 url: '/customer/findCustomer/step/'+step+'.load'
                 ,type: 'post'
                 ,data:{
-                    "cuPw":$('input[name="cuPw"]').val()
+                    "cuPw":pw.val()
+                    ,"cuIdx":[[${data.CU_IDX}]]
                 }
             }).done(function(res){
                 $('#findCustomer').empty();

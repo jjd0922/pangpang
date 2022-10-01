@@ -7,7 +7,7 @@ import com.newper.component.ShopSession;
 import com.newper.constant.SaType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
-import com.newper.repository.CustomerRepo;
+import com.newper.service.CustomerService;
 import com.newper.service.SelfAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class CustomerController {
     private final NaverLogin naverLogin;
     private final KakaoLogin kakaoLogin;
     private final SelfAuthService selfAuthService;
-    private final CustomerRepo customerRepo;
+    private final CustomerService customerService;
 
     /** auth - 회원가입 안내 */
     @GetMapping(value = "joinWelcome")
@@ -53,16 +53,15 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("customer/findCustomer_step :: " + type);
         if (type.equals("findComplete")) {
             if (paramMap.containsKey("cuPw")) {
+                customerService.resetPw(paramMap);
                 mav.addObject("pwReset", true);
             } else {
                 mav.addObject("pwReset", false);
             }
-            if (paramMap.containsKey("CU_ID")) {
-                System.out.println("paramMap cuid = " + paramMap);
-                mav.addObject("data", paramMap.getMap());
-            }
         }
-
+        if (paramMap.containsKey("CU_ID")) {
+            mav.addObject("data", paramMap.getMap());
+        }
         return mav;
     }
 

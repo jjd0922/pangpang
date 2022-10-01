@@ -6,6 +6,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -30,10 +32,13 @@ public class AfterService {
     private String asMail;
     private String asPhone;
     private String asMemo;
-    private String asFile;
-    private String asFileName;
+//    private String asFile;
     private LocalDate asDate;
     private LocalTime asTime;
+
+
+    @Builder.Default
+    private Map<String,Object> asFile = new HashMap<String, Object>();
 
 
 //

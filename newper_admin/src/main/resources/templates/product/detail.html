@@ -247,7 +247,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">
+                                                <span class="input-group-text requested">
                                                   입점사 <a class="btn btn-sm badge-indigo legitRipple" onclick="showCompanyModal('STORE')">검색</a>
                                                 </span>
                                             </span>
@@ -517,22 +517,17 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-prepend">
-                                                <span class="input-group-text">배송비</span>
+                                                <span class="input-group-text requested">
+                                                    배송비 템플릿
+                                                    <a class="btn btn-sm badge-indigo legitRipple" id="companyDeliverySearch" onclick="notStore()">검색</a>
+                                                </span>
                                             </span>
-                                            <input type="text" name="P_DEL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="text" class="form-control" id="companyDelvery" readonly>
+                                            <input type="hidden" name="P_CD_IDX" >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text">반품비</span>
-                                            </span>
-                                            <input type="text" name="P_DEL_PRICE_CANCEL" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPriceCancel,0,'COMMA')}">
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -659,6 +654,7 @@
 </div>
 
 <th:block th:replace="product/modal/companyModal.html"/>
+<th:block th:replace="product/modal/companyDeliveryModal.html"/>
 <!-- 공통 js -->
 
 <script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
@@ -753,11 +749,16 @@
 /*        }else if(CT_TYPE==''){
             $('input[name=P_COM_NAME2]').val(rowData.COM_NAME);
             $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);*/
+           $('#companyDeliverySearch').attr('onclick','selectCompanyDelivery('+rowData.COM_IDX+')');
         }else if(CT_TYPE=='REPAIRING'){
             $('input[name=P_COM_NAME3]').val(rowData.COM_NAME);
             $('input[name=P_COM_IDX2]').val(rowData.COM_IDX);
         }
         $('#searchCompanyModal').modal('hide');
+    }
+
+    function deliverySelect(row){
+        var rowData = getDatatablemap('companyDeliveryModalTable', row);
     }
 
     function optionAdd(){
@@ -853,6 +854,10 @@
                 }
             })
         }
+    }
+
+    function notStore(){
+        alert("입점사를 선택해주세요.");
     }
 
 

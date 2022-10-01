@@ -95,19 +95,20 @@
                             <table class="table" id="deliveryTable">
                             </table>
                         </div>
-                        <div class="card">
+
+                        <form id="templateForm">
+                        <div class="card template" style="display: none">
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
                                     <legend class="">템플릿 등록/수정관리<span class="small"></span>
                                         <div class="btn-group">
-                                            <a type="button" class="btn btn-sm btn-danger"  onclick="">
+                                            <a type="button" class="btn btn-sm btn-danger" id="saveTemplateButton">
                                                 저장
                                             </a>
                                         </div>
                                     </legend>
-
                                     <div class="row">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
@@ -117,16 +118,24 @@
                                                     </span>
                                                     <div class="border p-1 form-control">
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="CD_TYPE" value="무료" id="del_free" checked><label for="del_free">무료</label>
-                                                            <input type="radio" name="CD_TYPE" value="유료" id="del_not_free"><label for="del_not_free">유료</label>
-                                                            <input type="radio" name="CD_TYPE" value="조건부 무료" id="del_banban"><label for="del_banban">조건부 무료</label>
+                                                            <input type="radio" name="CD_TYPE" value="FREE" id="del_free" onclick="hideBanban(); delFree();"><label for="del_free">무료</label>
+                                                            <input type="radio" name="CD_TYPE" value="PAID" id="del_not_free" onclick="hideBanban()"><label for="del_not_free">유료</label>
+                                                            <input type="radio" name="CD_TYPE" value="CONDITION" id="del_banban" onclick="showBanban()"><label for="del_banban">조건부 무료</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">택배사</span>
+                                                    </span>
+                                                    <input type="text" name="CD_COMPANY" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -135,12 +144,12 @@
                                                           배송비/설치비 금액
                                                         </span>
                                                     </span>
-                                                    <input type="text" name="" class="form-control">
+                                                    <input type="text" name="CD_FEE" class="form-control text-right" value="0" onkeyup="numCommaKeyUp()">
                                                     <span class="input-group-append">
                                                         <span class="input-group-text bg-white ">원</span>
                                                     </span>
-                                                    <input type="text" name="" class="form-control cdTypeFreeMax">
-                                                    <span class="input-group-append">
+                                                    <input type="text" name="CD_FREE" class="form-control cdTypeFreeMax text-right" value="0" onkeyup="numCommaKeyUp()" style="display: none" disabled>
+                                                    <span class="input-group-append cdTypeFreeMax" style="display: none">
                                                         <span class="input-group-text w-100 bg-white cdTypeFreeMax">원 이상 구매시 무료 </span>
                                                     </span>
                                                 </div>
@@ -152,7 +161,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">제주도 및 그 부속도서</span>
                                                     </span>
-                                                    <input type="text" class="form-control text-right" placeholder="0">
+                                                    <input type="text" name="CD_JEJU" class="form-control text-right" value="0" onkeyup="numCommaKeyUp()">
                                                     <span class="input-group-append">
                                                         <span class="input-group-text bg-white ">원</span>
                                                     </span>
@@ -165,7 +174,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">도서지방 및 기타 산간지방</span>
                                                     </span>
-                                                    <input type="text" class="form-control text-right" placeholder="0">
+                                                    <input type="text" name="CD_ETC" class="form-control text-right" value="0" onkeyup="numCommaKeyUp()">
                                                     <span class="input-group-append">
                                                         <span class="input-group-text bg-white ">원</span>
                                                     </span>
@@ -180,7 +189,7 @@
                                                           반품비
                                                         </span>
                                                     </span>
-                                                    <input type="text" name="" class="form-control">
+                                                    <input type="text" name="CD_RETURN_FEE" class="form-control text-right" value="0" onkeyup="numCommaKeyUp()">
                                                     <span class="input-group-append">
                                                         <span class="input-group-text bg-white ">원</span>
                                                     </span>
@@ -197,7 +206,7 @@
                                                     </span>
                                                     <div class="border p-1 form-control">
                                                         <div class="form-check form-check-inline">
-                                                            <input type="checkbox" class="form-check-input" id="dc_li_c2">
+                                                            <input type="checkbox" class="form-check-input" id="dc_li_c2" name="" value="check">
                                                             <label class="" for="dc_li_c2">기본설정</label>
                                                         </div>
                                                     </div>
@@ -208,6 +217,7 @@
                                 </fieldset>
                             </div>
                         </div>
+                        </form>
                         <div class="card" style="display: none">
                             <div class="card-body popup-contents mb-4">
                                 <fieldset class="mb-0">
@@ -410,7 +420,7 @@
         "columns" : [
 
             {'title':'상호법인명','data':'COM_NAME','defaultContent':'','render':function(data,type,full,meta){
-                return '<a class="btn btn-sm badge-indigo" onclick="selectCompany('+full.COM_IDX+')">'+data+'</a>'
+                return '<a class="btn btn-sm badge-indigo" onclick="selectCompany('+meta.row+')">'+data+'</a>'
             }}
 
         ]
@@ -430,25 +440,41 @@
                 }
             ]
         },
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
         dom: '<"datatable-header"Bi><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/stock/picking2.dataTable',
+            url:'/company/companyDelivery.dataTable',
             type:'post'
         },
         "columns" : [
-            {'title':'배송비 종류설정','data':'P_NAME','defaultContent':''}
-            ,{'title':'배송비 금액','data':'P_IDX','defaultContent':''}
-            ,{'title':'배송비 무료조건 금액','data':'GS_CODE','defaultContent':''},
-            ,{'title':'제주도 및 그 부속도서 배송비', 'data':'G_BARCODE','defaultContent':''},
-            ,{'title':'도서산간 배송비', 'data':'G_BARCODE','defaultContent':''},
-            ,{'title':'반품비', 'data':'G_BARCODE','defaultContent':''}
-            ,{'title':'배송비 템플릿 기본설정', 'data':'G_BARCODE','defaultContent':''}
+            {'title':'배송비 종류설정','data':'CD_TYPE','defaultContent':''}
+            ,{'title':'배송비 금액','data':'CD_FEE','defaultContent':'','render':function (data,type,full,meta){
+                return comma(data);
+                }}
+            ,{'title':'택배사','data':'CD_COMPANY','defaultContent':''}
+            ,{'title':'배송비 무료조건 금액','data':'CD_FREE','defaultContent':'','render':function (data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'제주도 및 그 부속도서 배송비', 'data':'CD_JEJU','defaultContent':'','render':function (data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'도서산간 배송비', 'data':'CD_ETC','defaultContent':'','render':function (data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'반품비', 'data':'CD_RETURN_FEE','defaultContent':'','render':function (data,type,full,meta){
+                    return comma(data);
+                }}
+            ,{'title':'배송비 템플릿 기본설정', 'data':'CD_BASIC','defaultContent':'','render':function (data,type,full,meta){
+                    if(data==0){
+                        return 'N';
+                    }else{
+                        return 'Y';
+                    }
+                }}
+            ,{'title':'선택', 'data':'CD_IDX','defaultContent':'','render':function (data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="deliveryDetail('+meta.row+')">선택</a>';
+                }}
         ]
 
     });
@@ -456,48 +482,136 @@
 </script>
 
 <script>
-    function goodsStock(GS_IDX){
-        var table = $('#secondTable').DataTable();
-        table.ajax.url('/stock/picking2.dataTable?GS_IDX='+GS_IDX).load(null,false);
+    function selectCompany(rowIdx){
+        var dataMap=getDatatablemap('companyTable', rowIdx);
+        $('#store_name').html(dataMap.COM_NAME);
+        $('#templateForm')[0].reset();
+        hideBanban();
+        $('#saveTemplateButton').html('저장');
+        $('#saveTemplateButton').attr('onclick', 'saveTemplate('+dataMap.COM_IDX+')');
+        $('.template').show();
+        selectComapnyList(dataMap.COM_IDX);
+        $('#del_free').attr('checked',false);
+        $('#del_not_free').attr('checked',false);
+        $('#del_banban').attr('checked',false);
+
     }
 
-    function releaseReq(GS_IDX){
-        var table = $('#secondTable').DataTable();
-        table.ajax.url('/stock/picking2.dataTable?GS_IDX='+GS_IDX+'&release=release').load(null,false);
+    function hideBanban(){
+        $('.cdTypeFreeMax').hide();
+        $('.cdTypeFreeMax').attr('disabled',true);
+        $('input[name="CD_FEE"]').removeAttr('readonly');
+    }
+    function  showBanban(){
+        $('input[name="CD_FEE"]').removeAttr('readonly');
+        $('.cdTypeFreeMax').removeAttr('disabled');
+        $('.cdTypeFreeMax').show();
+    }
+    function delFree(){
+        $('input[name="CD_FEE"]').val(0);
+        $('input[name="CD_FEE"]').attr('readonly', true);
     }
 
-
-
-    function barcode(){
-        $('#inModal').modal('show');
+    function selectComapnyList(comIdx){
+        var table = $('#deliveryTable').DataTable();
+        table.ajax.url('/company/companyDelivery.dataTable?COM_IDX='+comIdx).load(null,false);
     }
 
-    function testBefore(){
-        var param = '';
-        var leng = $("#secondTable .selected").find("input").length;
-        if(leng == 0) {
-            alert("선택한 데이터가 없습니다.");
-            return ;
-        } else {
-            $.each($("#secondTable .selected").find("input"), function(key, val){
-                var idx = $(this).val();
-                if(leng == (key+1)){
-                    param = param + idx;
-                }else{
-                    param = param + idx + ",";
-                }
-            });
-            if(confirm("체크된 자산을 출고전검수요청 하시겠습니까?")){
-                $.ajax({
-                    url:"/stock/beforeRelease.ajax",
-                    data: "GOODS_IDXS="+param,
-                    type:"POST",
-                    success:function() {
-                        $('#firstTable').DataTable().ajax.reload();
-                        $('#secondTable').DataTable().ajax.reload();
+    function deliveryDetail(rowIdx){
+        var dataMap=getDatatablemap('deliveryTable', rowIdx);
+        $('#saveTemplateButton').html('수정');
+        $('#saveTemplateButton').attr('onclick', 'updateTemplate('+dataMap.CD_IDX+')');
+        if(dataMap.CD_TYPE=='FREE'){
+            $('#del_not_free').attr('checked',false);
+            $('#del_banban').attr('checked',false);
+            $('#del_free').attr('checked',true);
+            hideBanban();
+            delFree();
+        }else if (dataMap.CD_TYPE=='PAID'){
+            $('#del_free').attr('checked',false);
+            $('#del_banban').attr('checked',false);
+            $('#del_not_free').attr('checked',true);
+            hideBanban();
+        }else if(dataMap.CD_TYPE=='CONDITION'){
+            $('#del_free').attr('checked',false);
+            $('#del_not_free').attr('checked',false);
+            $('#del_banban').attr('checked',true);
+            showBanban();
+        }
+        $('input[name="CD_FEE"]').val(comma(dataMap.CD_FEE));
+        $('input[name="CD_FREE"]').val(comma(dataMap.CD_FREE));
+        $('input[name="CD_JEJU"]').val(comma(dataMap.CD_JEJU));
+        $('input[name="CD_ETC"]').val(comma(dataMap.CD_ETC));
+        $('input[name="CD_RETURN_FEE"]').val(comma(dataMap.CD_RETURN_FEE));
+        $('input[name="CD_COMPANY"]').val(dataMap.CD_COMPANY);
+        if(dataMap.CD_BASIC==1){
+            $('#dc_li_c2').attr('checked', true);
+        }else{
+            $('#dc_li_c2').attr('checked', false);
+        }
+    }
+
+    function saveTemplate(comIdx){
+        var check = $('#dc_li_c2').is(':checked');
+        var data = '&COM_IDX='+comIdx;
+        if(check){
+            data+='&CD_BASIC=1';
+        }else{
+            data+='&CD_BASIC=0';
+        }
+        var param = $('#templateForm').serialize();
+        if(confirm('저장하시겠습니까?')){
+            $.ajax({
+                url:'/company/companyDeliverySave.ajax',
+                type: 'POST',
+                data: param+data,
+                success:function(res){
+                    if(res.message!=null){
+                        if(res.message.valueOf('저장되었습니다.')!=-1){
+                            $('#templateForm')[0].reset();
+                            $('#deliveryTable').DataTable().ajax.reload();
+                            $('#dc_li_c2').attr('checked', false);
+                            $('#del_free').attr('checked',false);
+                            $('#del_not_free').attr('checked',false);
+                            $('#del_banban').attr('checked',false);
+                        }
                     }
-                });
-            }
+                }
+            })
+        }
+    }
+
+    function updateTemplate(cdIdx){
+        var dataMap=getDatatablemap('deliveryTable', 0);
+        var check = $('#dc_li_c2').is(':checked');
+        var data = '&CD_IDX='+cdIdx;
+        if(check){
+            data+='&CD_BASIC=1';
+        }else{
+            data+='&CD_BASIC=0';
+        }
+        var param = $('#templateForm').serialize();
+        if(confirm('수정하시겠습니까?')){
+            $.ajax({
+                url:'/company/companyDeliveryUpdate.ajax',
+                type: 'POST',
+                data: param+data,
+                success:function(res){
+                    if(res.message!=null){
+                        if(res.message.valueOf('수정되었습니다.')!=-1){
+                            $('#templateForm')[0].reset();
+                            $('#deliveryTable').DataTable().ajax.reload();
+                            $('#saveTemplateButton').html('저장');
+                            $('#saveTemplateButton').attr('onclick', 'saveTemplate('+dataMap.CD_COM_IDX+')');
+                            $('#del_free').attr('checked',false);
+                            $('#del_not_free').attr('checked',false);
+                            $('#del_banban').attr('checked',false);
+                            hideBanban();
+                            $('#dc_li_c2').attr('checked', false);
+                        }
+                    }
+                }
+            })
         }
     }
 
