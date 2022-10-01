@@ -136,4 +136,25 @@
         WHERE MS_IDX = #{msIdx}
 
     </select>
+
+    <select id="selectMainSectionSpCategoryCount" resultType="map" parameterType="map">
+        SELECT
+            IFNULL(COUNT(*),0) CNT
+        FROM
+            SHOP_CATEGORY
+            ,SHOP_PRODUCT
+            ,CATEGORY
+            ,CATEGORY_SHOP_CATEGORY
+            ,MAIN_SECTION
+            ,MAIN_SECTION_SP
+
+        WHERE
+            CSC_CATE_IDX = CATE_IDX
+            AND CSC_SCATE_IDX = SCATE_IDX
+            AND SP_CATE_IDX = CATE_IDX
+            AND MS_IDX = MSSP_MS_IDX
+            AND MSSP_SP_IDX = SP_IDX
+            AND MS_IDX = #{msIdx}
+            AND SCATE_IDX = #{scateIdx}
+    </select>
 </mapper>
