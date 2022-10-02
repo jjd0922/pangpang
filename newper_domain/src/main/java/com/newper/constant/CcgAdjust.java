@@ -4,17 +4,13 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 거래처 계약 구분. COMPANY_CONTRACT.CC_TYPE*/
+/** CALCULATE.CGS_ADJUST 일반, 조정 여부 */
 @Getter
 @AllArgsConstructor
-public enum CcType implements EnumOption {
-
-    PURCHASE("매입")
-    ,SALES("매출")
+public enum CcgAdjust implements EnumOption {
+     NORMAL("일반")
+    ,ADJUST("조정")
     ;
 
     private String option;
-
-
-
 }

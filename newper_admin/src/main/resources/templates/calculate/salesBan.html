@@ -140,7 +140,7 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openCalculateModal()">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openConfirmModal()">
                                             정산처리
                                         </a>
                                     </div>
@@ -193,13 +193,13 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="calculate/modal/salesCalculateModal.html"/>
+<th:block th:replace="calculate/modal/salesConfirmModal.html"/>
 <th:block th:replace="calculate/modal/salesCloseModal.html"/>
 <th:block th:replace="calculate/modal/salesUploadModal.html"/>
 
 <script>
     function searchBtn(){
-        calculateTable.page('first').ajax.url('/calculate/productPurchase.dataTable?'+$('#searchForm').serialize()).load();
+        calculateTable.page('first').ajax.url('/calculate/calculateGroup.dataTable?'+$('#searchForm').serialize()).load();
     }
 </script>
 <script th:inline="javascript">
@@ -212,7 +212,7 @@
         },
         serverSide: true,
         ajax:{
-            url:'/calculate/productPurchase.dataTable',
+            url:'/calculate/calculateGroup.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         "columns": [

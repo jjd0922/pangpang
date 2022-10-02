@@ -526,7 +526,7 @@ function listNullCheck(param, count) {
 
 /**숫자로 입력되어야하는 input들 처리*/
 function inputOnlyNumber(el) {
-    var value = comma(el.val().replace(/[^0-9]/gi, ""));
+    var value = comma(el.val().replace(/[^0-9-]/gi, ""));
     value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
     el.val(value);

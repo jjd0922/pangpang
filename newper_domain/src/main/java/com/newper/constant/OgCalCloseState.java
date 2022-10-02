@@ -4,17 +4,13 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 거래처 계약 구분. COMPANY_CONTRACT.CC_TYPE*/
+/** CALCULATE_GROUP.CCG_CLOSE_STATE 마감상태*/
 @Getter
 @AllArgsConstructor
-public enum CcType implements EnumOption {
-
-    PURCHASE("매입")
-    ,SALES("매출")
+public enum OgCalCloseState implements EnumOption {
+    WAIT("마감대기")
+    ,COMPLETE("마감완료")
+    ,CANCEL("마감취소")
     ;
-
     private String option;
-
-
-
 }

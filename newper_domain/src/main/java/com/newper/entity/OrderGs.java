@@ -1,6 +1,6 @@
 package com.newper.entity;
 
-import com.newper.constant.PDelType;
+import com.newper.constant.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -48,4 +48,26 @@ public class OrderGs {
     private DeliveryNum deliveryNum;
 
 
+
+
+    /** 정산 관련 데이터 **/
+    @Enumerated(EnumType.STRING)
+    private CcgAdjust ogCalAdjust;
+    private int ogCalAdjustCost;
+    private int ogCalTotalCost;
+    private int ogCalFinalCost;
+
+    /** 정산상태 */
+    @Enumerated(EnumType.STRING)
+    private OgCalConfirmState ogCalConfirmState;
+    private LocalDate ogCalConfirmDate;
+    private String ogCalConfirmBy;
+    private String ogCalConfirmMemo;
+
+    /** 마감상태 **/
+    @Enumerated(EnumType.STRING)
+    private OgCalCloseState ogCalCloseState;
+    private LocalDate ogCalCloseDate;
+    private String ogCalCloseBy;
+    private String ogCalCloseMemo;
 }

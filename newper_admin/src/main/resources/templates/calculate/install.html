@@ -42,67 +42,72 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
 
                                                 <div class="form-group">
+                                                    <label class="d-block">정산대상</label>
+                                                    <input type="text" class="form-control form-control-sm w-120px" value="설치비" readonly>
+                                                    <input type="hidden" name="ccgType" th:value="${T(com.newper.constant.CcgType).INSTALL.name()}">
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label class="d-block">정산코드</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="ccgIdx" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산구분</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="ccgAdjust" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CcgAdjust).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산상태</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="ccgState" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CcgConfirmState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산처리일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="ccgConfirmDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산담당자</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="ccgConfirmBy" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">마감상태</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="ccgCloseState" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CcgCloseState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">마감처리일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="ccgCloseDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">마감담당자</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="ccgCloseBy" class="form-control form-control-sm w-120px">
                                                 </div>
-
 
                                                 <div class="form-group">
                                                     <label class="d-block">거래처</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-120px">
+                                                    <input type="text" name="comName" class="form-control form-control-sm w-120px">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">정산방식</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select name="ccgCalType" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                        <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label class="d-block">지급예정일</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    <input type="text" name="ccgDueDate" class="form-control form-control-sm w-datarange daterange-basic">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -126,7 +131,7 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openCalculateModal()">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openConfirmModal()">
                                             정산처리
                                         </a>
                                     </div>
@@ -174,12 +179,12 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="calculate/modal/purchaseCalculateModal.html"/>
+<th:block th:replace="calculate/modal/purchaseConfirmModal.html"/>
 <th:block th:replace="calculate/modal/purchaseCloseModal.html"/>
 
 <script>
     function searchBtn(){
-        calculateTable.page('first').ajax.url('/calculate/productPurchase.dataTable?'+$('#searchForm').serialize()).load();
+        calculateTable.page('first').ajax.url('/calculate/calculateGroup.dataTable?'+$('#searchForm').serialize()).load();
     }
 
     function processPop(idx) {
@@ -197,43 +202,46 @@
         },
         serverSide: true,
         ajax:{
-            url:'/calculate/productPurchase.dataTable',
+            url:'/calculate/calculateGroup.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         "columns": [
             {
                 'class': 'select-checkbox',
                 'title':'선택',
-                'data':'',
+                'data':'CCG_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
                     return '';
                 }
             }
             ,{
-                'title':'정산코드','data': '', 'render': function (data, type, full, meta) {
-                    return '<a href="javascript: processPop(10)" class="badge badge-primary">TEST-001</a>';
+                'title':'정산코드','data': 'CCG_IDX', 'render': function (data, type, full, meta) {
+                    return '<a href="javascript: processPop('+data+')" class="badge badge-primary">'+data+'</a>';
                 }
             }
-            ,{'title':'정산구분','data':'','defaultContent':''}
-            ,{'title':'정산상태','data':'','defaultContent':''}
-            ,{'title':'정산처리일','data':'','defaultContent':''}
-            ,{'title':'정산담당자','data':'','defaultContent':''}
-            ,{'title':'마감상태','data':'','defaultContent':''}
-            ,{'title':'마감처리일','data':'','defaultContent':''}
-            ,{'title':'마감담당자','data':'','defaultContent':''}
-            ,{'title':'거래처(설치업체)','data':'','defaultContent':''}
-            ,{'title':'거래처MID(설치업체)','data':'','defaultContent':''}
-            ,{'title':'정산기간','data':'','defaultContent':''}
-            ,{'title':'정산주기','data':'','defaultContent':''}
+            ,{'title':'정산구분','data':'CCG_ADJUST_STR','defaultContent':''}
+            ,{'title':'정산상태','data':'CCG_CONFIRM_STATE_STR','defaultContent':''}
+            ,{'title':'정산처리일','data':'CCG_CONFIRM_DATE','defaultContent':''}
+            ,{'title':'정산담당자','data':'CCG_CONFIRM_BY','defaultContent':''}
+            ,{'title':'마감상태','data':'CCG_CLOSE_STATE_STR','defaultContent':''}
+            ,{'title':'마감처리일','data':'CCG_CLOSE_DATE','defaultContent':''}
+            ,{'title':'마감담당자','data':'CCG_CLOSE_BY','defaultContent':''}
+            ,{'title':'거래처','data':'COM_NAME','defaultContent':''}
+            ,{'title':'거래처MID','data':'COM_MID','defaultContent':''}
+            ,{'title':'정산기간','data':'CCG_PERIOD','defaultContent':''}
+            ,{'title':'정산주기','data':'CCG_CYCLE','defaultContent':''}
+            ,{'title':'정산방식','data':'CCG_CAL_TYPE_STR','defaultContent':''}
+
             ,{'title':'설치건수','data':'','defaultContent':''}
             ,{'title':'설치비합계','data':'','defaultContent':''}
-            ,{'title':'조정금액','data':'','defaultContent':''}
-            ,{'title':'정산확정금액','data':'','defaultContent':''}
-            ,{'title':'지급예정일','data':'','defaultContent':''}
-            ,{'title':'은행명','data':'','defaultContent':''}
-            ,{'title':'계좌번호','data':'','defaultContent':''}
-            ,{'title':'예금주','data':'','defaultContent':''}
+
+            ,{'title':'조정금액','data':'CCG_ADJUST_COST','defaultContent':''}
+            ,{'title':'정산확정금액','data':'CCG_FINAL_COST','defaultContent':''}
+            ,{'title':'지급예정일','data':'CCG_DUE_DATE','defaultContent':''}
+            ,{'title':'은행명','data':'CCG_BANK','defaultContent':''}
+            ,{'title':'계좌번호','data':'CCG_ACCOUNT','defaultContent':''}
+            ,{'title':'예금주','data':'CCG_NAME','defaultContent':''}
         ]
     });
 

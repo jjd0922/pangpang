@@ -22,7 +22,8 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">총마감건수</span>
                                                     </span>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" class="form-control" id="closeCount" readonly>
+                                                    <input type="hidden" name="ogIdx" id="ogIdx_close">
                                                 </div>
                                             </div>
                                         </div>
@@ -33,7 +34,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">총마감대상금액</span>
                                                     </span>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" class="form-control" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -42,7 +43,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">마감대상자</span>
+                                                        <span class="input-group-text">마감담당자</span>
                                                     </span>
                                                     <input type="text" class="form-control" th:value="${@sessionInfo.getId()}">
                                                 </div>
@@ -55,8 +56,8 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">마감상태</span>
                                                     </span>
-                                                    <select class="form-control">
-                                                        <option th:each="opt: ${T(com.newper.constant.CcCalType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                    <select class="form-control" name="ogCalCloseState">
+                                                        <option th:if="${opt.name() != 'WAIT'}" th:each="opt: ${T(com.newper.constant.OgCalCloseState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -68,8 +69,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">마감처리일</span>
                                                     </span>
-                                                    <input type="text" class="form-control w-datarange daterange-single" readonly>
-                                                </div>
+                                                    <input type="text" class="form-control" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly>                                                </div>
                                             </div>
                                         </div>
 
@@ -79,7 +79,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">마감메모</span>
                                                     </span>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" class="form-control" name="ogCalCloseMemo">
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,47 @@
 
 <script>
     function openCloseModal () {
+        if ($('.selected').length == 0) {
+            alert('주문건을 선택해 주세요');
+            return false;
+        }
+
+        $('#confirmCount').val($('.selected').length);
+
         $('#closeModal').modal('show');
+    }
+
+    function updateCloseState() {
+        if ($('input[name=ogCalCloseMemo]').val() == '') {
+            alert('마감메모를 입력해 주세요');
+            return false;
+        }
+
+        var confirm_str = '';
+        if ($('select[name=ogCalCloseState]').val() == 'COMPLETE') {
+            confirm_str = "마감완료 처리 하시겠습니까?";
+        } else {
+            confirm_str = "마감취소 처리 하시겠습니까?";
+        }
+
+        var ogIdx = '';
+        $.each($('.selected'), function (index, value) {
+            ogIdx += $(this).children('.select-checkbox').children('input').val() + ',';
+        });
+        ogIdx = ogIdx.slice(0, -1);
+
+        $('#ogIdx_close').val(ogIdx);
+
+        if (confirm(confirm_str)) {
+            $.ajax({
+                url: '/calculate/updateCloseStateSales.ajax',
+                data: $('#closeModalForm').serialize(),
+                type:'post',
+                success() {
+                    location.reload();
+                }
+            });
+        }
     }
 </script>
 </html>

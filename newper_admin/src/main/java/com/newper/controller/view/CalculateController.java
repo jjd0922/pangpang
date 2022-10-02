@@ -1,5 +1,8 @@
 package com.newper.controller.view;
 
+import com.newper.entity.CalculateGroup;
+import com.newper.repository.CalculateAdjustRepo;
+import com.newper.repository.CalculateGroupRepo;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequiredArgsConstructor
 public class CalculateController {
+
+    private final CalculateGroupRepo calculateGroupRepo;
+    private final CalculateAdjustRepo calculateAdjustRepo;
 
     /** 팬매매출관리(자사몰) */
     @GetMapping(value = "salesOwnMall")
@@ -36,9 +42,12 @@ public class CalculateController {
     }
 
     /** 상품매입정산 상세 */
-    @GetMapping(value = "productPurchasePop/{idx}")
-    public ModelAndView productPurchasePop (@PathVariable int idx){
+    @GetMapping(value = "productPurchasePop/{ccgIdx}")
+    public ModelAndView productPurchasePop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/productPurchasePop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 
@@ -50,9 +59,12 @@ public class CalculateController {
     }
 
     /** 입점사매입정산 상세 */
-    @GetMapping(value = "storePurchasePop/{idx}")
-    public ModelAndView storePurchasePop (@PathVariable int idx){
+    @GetMapping(value = "storePurchasePop/{ccgIdx}")
+    public ModelAndView storePurchasePop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/storePurchasePop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 
@@ -64,9 +76,12 @@ public class CalculateController {
     }
 
     /** PG정산관리 상세 */
-    @GetMapping(value = "pgPop/{idx}")
-    public ModelAndView pgPop (@PathVariable int idx){
+    @GetMapping(value = "pgPop/{ccgIdx}")
+    public ModelAndView pgPop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/pgPop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 
@@ -78,9 +93,12 @@ public class CalculateController {
     }
 
     /** 외주공정비 상세 */
-    @GetMapping(value = "processPop/{idx}")
-    public ModelAndView processPop (@PathVariable int idx){
+    @GetMapping(value = "processPop/{ccgIdx}")
+    public ModelAndView processPop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/processPop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 
@@ -92,9 +110,12 @@ public class CalculateController {
     }
 
     /** 배송비정산 상세 */
-    @GetMapping(value = "deliveryPop/{idx}")
-    public ModelAndView deliveryPop (@PathVariable int idx){
+    @GetMapping(value = "deliveryPop/{ccgIdx}")
+    public ModelAndView deliveryPop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/deliveryPop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 
@@ -106,9 +127,12 @@ public class CalculateController {
     }
 
     /** 외주공정비 상세 */
-    @GetMapping(value = "installPop/{idx}")
-    public ModelAndView installPop (@PathVariable int idx){
+    @GetMapping(value = "installPop/{ccgIdx}")
+    public ModelAndView installPop (@PathVariable int ccgIdx){
         ModelAndView mav = new ModelAndView("calculate/installPop");
+        CalculateGroup calculateGroup = calculateGroupRepo.findByCcgIdx(ccgIdx);
+        mav.addObject("ccg", calculateGroup);
+        mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
 }

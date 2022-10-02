@@ -137,7 +137,7 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openCalculateModal()">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="openConfirmModal()">
                                             정산처리
                                         </a>
                                     </div>
@@ -187,12 +187,12 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-<th:block th:replace="calculate/modal/salesCalculateModal.html"/>
+<th:block th:replace="calculate/modal/salesConfirmModal.html"/>
 <th:block th:replace="calculate/modal/salesCloseModal.html"/>
-
+<th:block th:replace="calculate/modal/salesAdjustModal.html"/>
 <script>
     function searchBtn(){
-        calculateTable.page('first').ajax.url('/calculate/productPurchase.dataTable?'+$('#searchForm').serialize()).load();
+        calculateTable.page('first').ajax.url('/calculate/calculateGroup.dataTable?'+$('#searchForm').serialize()).load();
     }
 </script>
 <script th:inline="javascript">
@@ -205,25 +205,26 @@
         },
         serverSide: true,
         ajax:{
-            url:'/calculate/productPurchase.dataTable',
+            url:'/calculate/orderGs.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         "columns": [
             {
                 'class':'select-checkbox',
                 'title':'선택',
-                'data':'SP_IDX',
+                'data':'OG_IDX',
                 'defaultContent':'',
                 'render': function (data, type, full, meta) {
-                    return '';
+                    return '<input type="hidden" name="ogIdx" value="'+data+'">';
                 }
             }
-            , {'title':'정산상태','data':'','defaultContent':''}
-            , {'title':'정산처리일','data':'','defaultContent':''}
-            , {'title':'정산담당자','data':'','defaultContent':''}
-            , {'title':'마감상태','data':'','defaultContent':''}
-            , {'title':'마감처리일','data':'','defaultContent':''}
-            , {'title':'주문코드','data':'','defaultContent':''}
+            , {'title':'정산상태','data':'OG_CAL_CONFIRM_STATE','defaultContent':''}
+            , {'title':'정산처리일','data':'OG_CAL_CONFIRM_DATE','defaultContent':''}
+            , {'title':'정산담당자','data':'OG_CAL_CONFIRM_BY','defaultContent':''}
+            , {'title':'마감상태','data':'OG_CAL_CLOSE_STATE','defaultContent':''}
+            , {'title':'마감처리일','data':'OG_CAL_CLOSE_DATE','defaultContent':''}
+            , {'title':'마감담당자','data':'OG_CAL_CLOSE_BY','defaultContent':''}
+            , {'title':'주문코드','data':'OG_IDX','defaultContent':''}
             , {'title':'주문상품코드','data':'','defaultContent':''}
             , {'title':'정산구분<br>(품목구분1)','data':'','defaultContent':''}
             , {'title':'입점사','data':'','defaultContent':''}
@@ -245,8 +246,9 @@
             , {'title':'최종결제금액','data':'','defaultContent':''}
             , {'title':'환불금','data':'','defaultContent':''}
             , {'title':'정산대상액','data':'','defaultContent':''}
-            , {'title':'정산조정액합','data':'','defaultContent':''}
-            , {'title':'정산조정사유','data':'','defaultContent':''}
+            ,{'title':'정산조정금액','data':'OG_CAL_ADJUST_COST', 'render': function (data,type,full,meta) {
+                    return '<a onclick="openAdjustModal('+full.OG_IDX+')" class="badge badge-primary">' + data + '</a>';
+                }}
             , {'title':'매출확정액','data':'','defaultContent':''}
             , {'title':'배송출고일','data':'','defaultContent':''}
             , {'title':'설치완료일','data':'','defaultContent':''}
