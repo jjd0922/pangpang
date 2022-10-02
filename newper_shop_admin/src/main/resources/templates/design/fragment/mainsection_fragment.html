@@ -262,7 +262,7 @@
         <a onclick="openShopProductCategoryModal()" class="btn btn-sm btn-primary ml-1">추가</a>
         <a class="btn btn-sm btn-danger ml-1" onclick="resetShopProduct()">전체 삭제</a>
     </legend>
-    <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }">
+    <th:block th:if="${shopCategories != null and not shopCategories.isEmpty }">
         <a class="btn btn-sm btn-primary allCate" id="allCate" th:onclick="sortCategory('')">전체</a>
         <th:block th:each="shopCategory : ${shopCategories}">
             <a class="btn btn-sm btn-primary" th:text="${shopCategory.scateName}" th:onclick="|sortCategory(${shopCategory.scateIdx})|"></a>

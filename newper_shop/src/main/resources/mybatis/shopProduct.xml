@@ -12,4 +12,23 @@
         ORDER BY SPO_IDX ASC
     </select>
 
+    <select id="selectscateMainSectionProductList" parameterType="map" resultType="map">
+        SELECT
+            *
+        FROM
+            SHOP_PRODUCT
+            ,SHOP_CATEGORY
+            ,CATEGORY_SHOP_CATEGORY
+            ,CATEGORY
+            ,MAIN_SECTION
+            ,MAIN_SECTION_SP
+        WHERE
+            CSC_SCATE_IDX = SCATE_IDX
+            AND CSC_CATE_IDX = CATE_IDX
+            AND SP_CATE_IDX = CATE_IDX
+            AND MSSP_MS_IDX = MS_IDX
+            AND MSSP_SP_IDX = SP_IDX
+            AND MS_IDX = #{msIdx}
+            AND SCATE_IDX = #{scateIdx}
+    </select>
 </mapper>
