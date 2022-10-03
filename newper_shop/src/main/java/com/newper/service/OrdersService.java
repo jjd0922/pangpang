@@ -77,7 +77,7 @@ public class OrdersService {
             for (OrdersSpoDTO dto : spoList.get(shopProduct)) {
                 for (int i = 0 ;i < dto.getCnt(); i++) {
                     OrderGsGroup ogg = OrderGsGroup.builder()
-                            .oggSpo(dto.getVal())
+                            .oggSpo(dto.getVal().replace("spo",""))
                             .oggCnt(i+1)
                             .build();
                     for (ShopProductOption spo : dto.getSpoList()) {
