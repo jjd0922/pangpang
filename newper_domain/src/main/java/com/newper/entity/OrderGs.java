@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @DynamicInsert
@@ -64,8 +63,11 @@ public class OrderGs {
     @JoinColumn(name = "OG_DN_IDX", referencedColumnName = "dnIdx")
     private DeliveryNum deliveryNum;
 
-
     /** 정산 관련 데이터 **/
+
+
+
+
     @Enumerated(EnumType.STRING)
     private CcgAdjust ogCalAdjust;
     private int ogCalAdjustCost;
