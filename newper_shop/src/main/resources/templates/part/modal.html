@@ -109,25 +109,25 @@
 
 <!--비회원 로그인 모달창-->
 <th:block th:fragment="nonMemberLogin-modal">
-    <div class="modal-wrap loginModal-wrap">
+    <div class="modal-wrap nonMemberLoginModal-wrap">
         <div class="modal nonMemberLoginModal">
-            <div class="loginModal-close">
+            <div class="nonMemberLoginModal-close">
                 <img th:attr="src=@{/image/close.png},title='모달창닫기',alt='창닫기'">
             </div>
             <h2 class="font-lg semi-bold center">로그인</h2>
-            <form id="loginForm" onkeyup="if(event.keyCode==13){login();return false;}">
+            <form id="nonMemberLoginModalForm" onkeyup="if(event.keyCode==13){nonMemberLoginModalLogin();return false;}">
                 <ul class="login-input-group">
                     <li class="input-wrap">
-                        <input type="text" class="form-control" name="id" maxlength="10" placeholder="아이디">
+                        <input type="text" class="form-control" name="id" placeholder="아이디">
                     </li>
                     <li class="input-wrap">
-                        <input type="password" class="form-control" name="pw" maxlength="15" placeholder="비밀번호">
+                        <input type="password" class="form-control" name="pw" maxlength="20" placeholder="비밀번호">
                     </li>
                 </ul>
             </form>
             <div class="login-check-wrap">
                 <label class="login-check">
-                    <input type="checkbox" class="custom-checkbox" id="" name="">
+                    <input type="checkbox" class="custom-checkbox">
                     자동로그인
                 </label>
                 <ul class="login-find-group">
@@ -144,7 +144,7 @@
             </div>
 
             <div class="flex-center">
-                <a onclick="login()" class="btn btn-point btn-xlg">로그인</a>
+                <a onclick="nonMemberLoginModalLogin()" class="btn btn-point btn-xlg">로그인</a>
             </div>
             <h2 class="font-sm semi-bold center">간편 로그인</h2>
             <ul class="sns-login-group">
@@ -157,23 +157,23 @@
             </ul>
             <div class="dummy-line"></div>
             <div class="btn btn6">
-                <a href="javascript:;">비회원 구매</a>
+                <a href="javascript:orderSpoNonMember();">비회원 구매</a>
             </div>
         </div>
     </div>
 
 
     <script>
-        function login(){
+        function nonMemberLoginModalLogin(){
             $.ajax({
                 url:'/login.ajax'
                 ,type:'post'
-                ,data:$('#loginForm').serialize()
+                ,data:$('#nonMemberLoginModalForm').serialize()
             }).done(function(res){
                 try{
                     if(res.data.result == '200'){
                         //로그인 성공
-                        modal.hide();
+                        nonMemberLoginModal.hide();
                         $('.nosessionClass').hide();
                         $('.sessionClass').show();
                     }else{
@@ -188,7 +188,7 @@
     </script>
     <script>
         /*** 로그인 모달 창 ***/
-        var modal = $(".loginModal-wrap");
+        var nonMemberLoginModal = $(".nonMemberLoginModal-wrap");
 
         $(".login").click(function(){
             $('body').addClass('no-scroll');
@@ -196,7 +196,7 @@
             return false;
         });
         // 모달 창 닫기
-        $(".loginModal-close").click(function(){
+        $(".nonMemberLoginModal-close").click(function(){
             $('body').removeClass('no-scroll');
             modal.hide();
         });
