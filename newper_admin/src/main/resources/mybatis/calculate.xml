@@ -59,35 +59,35 @@
         </where>
     </select>
 
-    <sql id="includeCalculateDatatable">
-        <if test="COM_IDX != null and COM_IDX != ''">AND COM_IDX LIKE CONCAT('%',#{COM_IDX},'%')</if>
+    <sql id="includeVendorSettingDatatable">
+        <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
         <if test='CS_TYPE != null'>
-        <foreach collection="CS_TYPE" open="AND CS_TYPE IN (" separator="," close=")" item="item">
-            #{item}
-        </foreach>
+            <foreach collection="CS_TYPE" open="AND CS_TYPE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
         </if>
-        <if test="createdDate != null and createdDate != ''">AND calculateSetting.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
+        <if test="createdDate != null and createdDate != ''">AND VENDOR_SETTING.CREATED_DATE BETWEEN SUBSTR(#{createdDate}, 1, 10) AND SUBSTR(#{createdDate}, 13)</if>
     </sql>
-    <select id="selectCalculateDatatable" resultType="Map" parameterType="Map">
+
+    <select id="selectVendorSettingDatatable" resultType="Map" parameterType="Map">
         SELECT
-        *
+            *
         FROM
-            calculate_setting,
-            calculate
-            left join company on COM_IDX=CA_COM_IDX
+            VENDOR_SETTING
+                LEFT JOIN COMPANY ON VS_COM_IDX = COM_IDX
        <where>
-        <include refid="includeCalculateDatatable"></include>
+           <include refid="includeVendorSettingDatatable"></include>
        </where>
     </select>
-    <select id="countCalculateDatatable" resultType="Integer">
+
+    <select id="countVendorSettingDatatable" resultType="Long">
         SELECT
-        COUNT(*)
+            COUNT(*)
         FROM
-            calculate_setting,
-            calculate
-            left join company on COM_IDX=CA_COM_IDX
+            VENDOR_SETTING
+                LEFT JOIN COMPANY ON VS_COM_IDX = COM_IDX
         <where>
-        <include refid="includeCalculateDatatable"></include>
+            <include refid="includeVendorSettingDatatable"></include>
         </where>
     </select>
 
@@ -96,6 +96,10 @@
             *
         FROM
             ORDER_GS
+        ORDER BY
+            OG_IDX DESC
+        LIMIT
+            #{start}, #{length}
     </select>
 
     <select id="countOrderGsDatatable" resultType="Long">
@@ -112,5 +116,20 @@
             CALCULATE_ADJUST
         WHERE
             CCA_OG_IDX = #{ogIdx}
+    </select>
+
+    <select id="selectCompanyByVendor" resultType="Map">
+        SELECT
+            *
+        FROM
+            COMPANY
+
+    </select>
+
+    <select id="selectExcelColumn" resultType="Map">
+        SELECT
+            *
+        FROM
+            EXCEL_COLUMN
     </select>
 </mapper>

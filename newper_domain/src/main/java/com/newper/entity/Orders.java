@@ -1,9 +1,6 @@
 package com.newper.entity;
 
-import com.newper.constant.OCancelState;
-import com.newper.constant.ODeliveryState;
-import com.newper.constant.OLocation;
-import com.newper.constant.OState;
+import com.newper.constant.*;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;

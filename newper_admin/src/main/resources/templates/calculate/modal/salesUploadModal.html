@@ -22,11 +22,9 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">정산서TYPE</span>
+                                                        <span class="input-group-text">거래처</span>
                                                     </span>
-                                                    <select class="form-control">
-                                                        <option>TEST</option>
-                                                    </select>
+                                                    <select class="form-control" id="company" name="comIdx"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -37,7 +35,7 @@
                                                     <span class="input-group-prepend">
                                                         <span class="input-group-text">정산서 첨부</span>
                                                     </span>
-                                                    <input type="file" class="form-control">
+                                                    <input type="file" class="form-control" name="excelFile">
                                                 </div>
                                             </div>
                                         </div>
@@ -51,8 +49,8 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1">닫기</button>
-                <button type="button" class="btn btn-sm btn-primary ml-1">저장</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="$('#uploadModal').modal('hide');">닫기</button>
+                <button type="button" class="btn btn-sm btn-primary ml-1" onclick="upload();">업로드</button>
             </div>
             <!-- /footer -->
         </div>
@@ -60,8 +58,39 @@
 </div>
 
 <script>
+    function upload() {
+        $.ajax({
+            url:'/calculate/uploadVendor.ajax',
+            processData: false,
+            contentType: false,
+            data: new FormData($('#uploadModalForm')[0]),
+            type:'post',
+            success() {
+                location.reload();
+            }
+        })
+
+    }
+
     function openUploadModal() {
         $('#uploadModal').modal('show');
+
+        $('#company').empty();
+        var option = '';
+        $.ajax({
+            url:'/company/company.dataTable',
+            data:{
+                "ctType":'SELL',
+                "length":'-1'
+            },
+            type:'post',
+            success(result) {
+                $.each(result.data, function (index, value) {
+                    option += '<option value="'+value.COM_IDX+'">'+value.COM_NAME+'</option>'
+                })
+                $('#company').append(option);
+            }
+        })
     }
 </script>
 </html>

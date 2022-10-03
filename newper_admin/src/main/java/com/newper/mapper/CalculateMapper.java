@@ -8,9 +8,9 @@ import java.util.Map;
 @Mapper
 public interface CalculateMapper {
 
-    List<Map<String, Object>> selectCalculateDatatable(Map<String, Object> param);
+    List<Map<String, Object>> selectVendorSettingDatatable(Map<String, Object> param);
 
-    Long countCalculateDatatable(Map<String, Object> param);
+    Long countVendorSettingDatatable(Map<String, Object> param);
 
 
     /** 정산그룹 조회 */
@@ -27,4 +27,7 @@ public interface CalculateMapper {
 
     /** 매출 조정액 조회 */
     List<Map<String, Object>> selectAdjust(Map<String, Object> map);
+
+    /** excel 행 넘버 알파벳 번호 **/
+    List<Map<String, Object>> selectExcelColumn();
 }

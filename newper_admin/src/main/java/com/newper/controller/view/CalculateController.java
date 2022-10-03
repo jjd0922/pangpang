@@ -1,10 +1,11 @@
 package com.newper.controller.view;
 
 import com.newper.entity.CalculateGroup;
+import com.newper.entity.VendorSetting;
 import com.newper.repository.CalculateAdjustRepo;
 import com.newper.repository.CalculateGroupRepo;
+import com.newper.repository.VendorSettingRepo;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,8 @@ public class CalculateController {
 
     private final CalculateGroupRepo calculateGroupRepo;
     private final CalculateAdjustRepo calculateAdjustRepo;
+    private final VendorSettingRepo vendorSettingRepo;
+
 
     /** 팬매매출관리(자사몰) */
     @GetMapping(value = "salesOwnMall")
@@ -135,4 +138,32 @@ public class CalculateController {
         mav.addObject("adjust", calculateAdjustRepo.findByCalculateGroup(calculateGroup));
         return mav;
     }
+
+    /**벤더 정산 설정 페이지*/
+    @GetMapping(value = "vendorSetting")
+    public ModelAndView vendorSetting(){
+        ModelAndView mav = new ModelAndView("calculate/vendorSetting");
+
+        return mav;
+    }
+
+    /**벤더 정산 팝업*/
+    @GetMapping(value = "vendorPop")
+    public ModelAndView vendorPop(){
+        ModelAndView mav = new ModelAndView("calculate/vendorPop");
+
+        return mav;
+    }
+
+    /**
+     * 벤더정산 팝업 상세조회 페이지
+     */
+    @GetMapping("vendorPop/{csIdx}")
+    public ModelAndView vendorPop(@PathVariable Integer csIdx) {
+        ModelAndView mav = new ModelAndView("calculate/vendorPop");
+        VendorSetting vendorSetting =  vendorSettingRepo.findByVsIdx(csIdx);
+        mav.addObject("vendor", vendorSetting);
+        return mav;
+    }
+
 }

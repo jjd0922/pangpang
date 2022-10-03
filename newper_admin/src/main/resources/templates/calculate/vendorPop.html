@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title th:text="${calculateSetting != null} ? '벤더사 정산 상세/수정'">벤더사 정산 설정 등록</title>
+    <title th:text="${vendor != null} ? '벤더사 정산 상세/수정'">벤더사 정산 설정 등록</title>
 
     <th:block th:replace="common/css.html"></th:block>
 
@@ -37,7 +37,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">등록일</span>
                                             </span>
-                                            <input type="text"  class="form-control "  name="createdDate">
+                                            <input type="text" class="form-control" th:value="${vendor != null} ? ${vendor.createdDate} : ${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -51,8 +51,8 @@
                                                 <a th:if="${calculate == null}" id="searchCompanyBtn" class="badge badge-sm badge-primary ml-1" onclick="showComModal();">검색</a>
                                                 </span>
                                             </span>
-                                            <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${calculateSetting != null} ? ${calculateSetting.company.comName}">
-                                            <input type="hidden" name="COM_IDX" th:value="${calculateSetting != null} ? ${calculateSetting.company.comIdx}">
+                                            <input type="text" class="form-control "  name="COM_NAME" readonly  th:value="${vendor != null} ? ${vendor.company.comName}">
+                                            <input type="hidden" name="COM_IDX" th:value="${vendor != null} ? ${vendor.company.comIdx}">
                                         </div>
                                     </div>
                                 </div>
@@ -65,8 +65,8 @@
                                                    타입
                                                </span>
                                             </span>
-                                            <select name="csType" class="form-control select">
-                                                <option th:each="opt: ${T(com.newper.constant.CsType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csType) eq opt.name()}"></option>
+                                            <select name="vsType" class="form-control select">
+                                                <option th:each="opt: ${T(com.newper.constant.VsType).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(vendor?.csType) eq opt.name()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                                    판매금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csPrice" class="form-control"  th:value="${calculateSetting?.csPrice}">
+                                            <input type="text" name="vsPrice" class="form-control"  th:value="${vendor?.vsPrice}">
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +93,8 @@
                                                    배송비별도정산
                                                </span>
                                             </span>
-                                            <select name="csDeliveryCal" class="form-control select">
-                                                <option th:each="opt: ${T(com.newper.constant.CsDeliveryCal).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(calculateSetting?.csDeliveryCal) eq opt.name()}"></option>
+                                            <select name="vsDeliveryCal" class="form-control select">
+                                                <option th:each="opt: ${T(com.newper.constant.VsDeliveryCal).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}" th:selected="${#strings.toString(vendor?.csDeliveryCal) eq opt.name()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
                                                    배송비 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csDeliveryCost" class="form-control" th:value="${calculateSetting?.csDeliveryCost}">
+                                            <input type="text" name="vsDeliveryCost" class="form-control" th:value="${vendor?.vsDeliveryCost}">
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@
                                                    주문번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csOrder" class="form-control" th:value="${calculateSetting?.csOrder}" >
+                                            <input type="text" name="vsOrder" class="form-control" th:value="${vendor?.vsOrder}" >
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@
                                                    수수료 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csFee" class="form-control" th:value="${calculateSetting?.csFee}">
+                                            <input type="text" name="vsFee" class="form-control" th:value="${vendor?.vsFee}">
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                                    상품번호 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csProduct" class="form-control" th:value="${calculateSetting?.csProduct}">
+                                            <input type="text" name="vsProduct" class="form-control" th:value="${vendor?.vsProduct}">
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                                                    정산금액 기준열
                                                </span>
                                             </span>
-                                            <input type="text" name="csRealPrice" class="form-control" th:value="${calculateSetting?.csRealPrice}">
+                                            <input type="text" name="vsRealPrice" class="form-control" th:value="${vendor?.vsRealPrice}">
                                         </div>
                                     </div>
                                 </div>
@@ -174,8 +174,8 @@
                                                    메모
                                                </span>
                                             </span>
-                                            <input type="text" name="csMemo" class="form-control" th:value="${calculateSetting?.csMemo}">
-                                            <input type="hidden" name="CS_IDX" th:value="${calculateSetting?.csIdx}">
+                                            <input type="text" name="vsMemo" class="form-control" th:value="${vendor?.vsMemo}">
+                                            <input type="hidden" name="vs_IDX" th:value="${vendor?.vsIdx}">
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +191,6 @@
         </div>
     </div>
 </div>
-<th:block th:replace="modal/companyModal.html"/>
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/all.css}">
@@ -230,31 +229,24 @@
 <!-- 멀티 선택 (숫자) -->
 <script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
 <script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+<th:block th:replace="modal/companyModal.html"/>
 
 <script th:inline="javascript">
-
-
     function saveAction(){
         $("#vendorForm").submit();
     }
 
-
-
     function vendorCreate(){
        $.ajax({
-            url:[[@{/purchaseCal/vendorCreate.ajax}]],
-            data: $('#vendorForm').serialize(),
-            type:'POST',
-            success:function(data){
-            console.log(data);
-            window.close();
-            opener.location.reload();
-            }
-        ,error: function(){
-            }
+           url:'/calculate/vendorCreate.ajax',
+           data:$('#vendorForm').serialize(),
+           type:'post',
+           success() {
+               window.close();
+               opener.location.reload();
+           }
         });
     }
-
 </script>
 <script>
     //거래처 검색 모달에서 거래처 선택
