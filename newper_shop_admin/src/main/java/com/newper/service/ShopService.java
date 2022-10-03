@@ -1,10 +1,13 @@
 package com.newper.service;
 
 
+import com.newper.constant.etc.HoType;
 import com.newper.dto.ParamMap;
+import com.newper.entity.HeaderOrder;
 import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.repository.HeaderOrderRepository;
 import com.newper.repository.MainSectionRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +24,7 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepo shopRepo;
-    private final MainSectionRepo mainSectionRepo;
+    private final HeaderOrderRepository headerOrderRepository;
 
     /**분양몰 추가*/
     @Transactional
@@ -30,10 +33,21 @@ public class ShopService {
         shop.setShopMileage(0F);
         shop.setShopBasket("Y");
 
-//        shopDesign
-//        shop.setShopDesign();
+        // shop 먼저 생성
+        shopRepo.saveAndFlush(shop);
 
-        shopRepo.save(shop);
+        //headerOrder insert
+        for(int i = 1; i <= 3; i++){
+            for(int j = 1; j <=3; j++){
+                HeaderOrder headerOrder = HeaderOrder.builder()
+                        .shop(shop)
+                        .hoType(HoType.없음)
+                        .hoRow(i)
+                        .hoCol(j)
+                        .build();
+                headerOrderRepository.saveAndFlush(headerOrder);
+            }
+        }
     }
     /** 분양몰 수정*/
     @Transactional

@@ -10,10 +10,7 @@ import com.newper.service.DesignService;
 import com.newper.service.HeaderMenuService;
 import com.newper.service.MainsectionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,6 +54,17 @@ public class DesignRestController {
         rm.setMessage("수정 완료");
         rm.setLocation("/design/pop/design/"+shopIdx);
 
+        return rm;
+    }
+    /** 헤더 update*/
+    @PostMapping(value = "pop/header/{shopIdx}.ajax")
+    public ReturnMap shopHeader(@PathVariable Integer shopIdx, ParamMap paramMap){
+        ReturnMap rm = new ReturnMap("design/pop_header");
+        paramMap.put("shopIdx", shopIdx);
+        designService.shopHeaderUpdate(paramMap);
+
+        rm.setMessage("수정 완료");
+        rm.setLocation("/design/pop/header/"+shopIdx);
         return rm;
     }
 
