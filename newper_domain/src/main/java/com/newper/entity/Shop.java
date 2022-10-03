@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -61,6 +60,10 @@ public class Shop extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
     @OrderBy(value = "hmOrder asc")
     private List<HeaderMenu> headerMenulist = new ArrayList<>();
+    /** 분양몰 헤더 */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
+    @OrderBy(value = "hoCol, hoRow")
+    private List<HeaderOrder> headerOrderList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
     private List<CouponGroup> couponGroups;

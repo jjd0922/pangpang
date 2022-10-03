@@ -3,15 +3,16 @@ package com.newper.constant.etc;
 import lombok.Getter;
 
 public enum HoType {
-    없음("없음")
-    ,로고("로고")
+
+    로고("로고")
     ,검색창("검색창")
-    , 로그인그룹("로그인 그룹")
-    , 검색창_로그인그룹("검색창 + 로그인 그룹")
+    ,로그인그룹("로그인 그룹")
+    ,검색창_로그인그룹("검색창 + 로그인 그룹")
     ,메뉴_좌측("메뉴(좌측 정렬)")
     ,메뉴_중앙("메뉴(중앙 정렬)")
     ,헤더형배너("헤더형 배너")
-
+    ,주간_PICK("주간 PICK")
+    ,없음("없음")
     ;
 
     @Getter
@@ -23,7 +24,6 @@ public enum HoType {
 
     /**단 열에 따라서 class 가져오기*/
     public String getHoClass(int row, int col) {
-
         if (this.equals(HoType.로고)) {
             switch (row*10+col){
                 case 11: return null;
@@ -113,6 +113,19 @@ public enum HoType {
                 case 31: return null;
                 case 32: return null;
                 case 33: return null;
+            }
+        }
+        if (this.equals(HoType.주간_PICK)) {
+            switch (row*10+col){
+                case 11: return null;
+                case 12: return null;
+                case 13: return null;
+                case 21: return null;
+                case 22: return null;
+                case 23: return null;
+                case 31: return null;
+                case 32: return null;
+                case 33: return "week-pick";
             }
         }
         if (this.equals(HoType.없음)) {

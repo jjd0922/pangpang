@@ -3,14 +3,18 @@ package com.newper.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newper.constant.etc.HoType;
 import com.newper.constant.etc.ShopDesign;
 import com.newper.dto.ParamMap;
+import com.newper.entity.HeaderOrder;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.repository.HeaderOrderRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class DesignService {
 
     private final ShopRepo shopRepo;
+    private final HeaderOrderRepo headerOrderRepo;
 
     /** 디자인 update*/
     @Transactional
@@ -48,6 +53,35 @@ public class DesignService {
         } catch (JsonProcessingException e) {
             System.out.println(e);
             throw new MsgException("잠시 후 다시 시도해주세요.");
+        }
+    }
+
+    /** 헤더 update*/
+    @Transactional
+    public void shopHeaderUpdate(ParamMap paramMap) {
+        Shop shop = shopRepo.getReferenceById(paramMap.getInt("shopIdx"));
+
+        for(int i=1;i<=3;i++){
+            for(int k=1;k<=3;k++){
+                HeaderOrder updateHo = headerOrderRepo.findByShopAndHoRowAndHoCol(shop, i,k).orElseGet(()-> {
+                    return HeaderOrder.builder()
+                            .shop(shop)
+                            .build();
+                });
+
+                updateHo.setHoRow(i);
+                updateHo.setHoCol(k);
+
+                String hoType_value=paramMap.getString("headerOrder" + i + "_" + k);
+                HoType hoType=HoType.없음;
+
+                if(StringUtils.hasText(hoType_value)){
+                    hoType = HoType.valueOf(hoType_value);
+                }
+                updateHo.setHoType(hoType);
+
+                headerOrderRepo.saveAndFlush(updateHo);
+            }
         }
     }
 }
