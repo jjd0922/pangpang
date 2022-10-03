@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${hmIdx == null}? 'GNB 메뉴 신규등록' : 'GNB 메뉴 수정'"></title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>GNB 메뉴</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="headerMenuForm" method="post">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend></legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">분양몰</span>
+                                                        </span>
+                                                        <input class="form-control" type="text" readonly th:value="${shop.shopName}">
+                                                        <input type="hidden" name="shopIdx" th:value="${shop.shopIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메뉴 명 </span>
+                                                        </span>
+                                                        <input class="form-control" type="text" name="hmName" th:value="${headerMenu?.hmName}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">URL 경로 </span>
+                                                        </span>
+                                                        <input class="form-control" type="text" name="hmUrl" th:value="${headerMenu?.hmUrl}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">디자인 Class </span>
+                                                        </span>
+                                                        <input class="form-control" type="text" name="hmClass" th:value="${headerMenu?.hmClass}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출여부 </span>
+                                                        </span>
+                                                        <select class="form-control select" name="hmOrder">
+                                                            <option value="1" th:selected="${headerMenu?.hmOrder gt 0}">노출</option>
+                                                            <option value="-1" th:selected="${headerMenu?.hmOrder lt 0}">미노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <!-- /footer -->
+    </div>
+    <!-- /main content -->
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class="w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();">
+            <i class="icon-cross2 mr-1"></i>닫기
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/demo_pages/picker_color.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+</body>
+
+<script th:inline="javascript">
+    function saveBtn(){
+        if(window.confirm('저장 하시겠습니까?')){
+            $.ajax({
+                url: location.pathname + '.ajax',
+                processData: false,
+                contentType: false,
+                type: 'post',
+                data: new FormData($('#headerMenuForm')[0])
+            }).done(function(res){
+                opener.refreshTable('#gnbMenuTable');
+                location.href=res.location;
+            });
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+
+    }
+</script>
+</html>

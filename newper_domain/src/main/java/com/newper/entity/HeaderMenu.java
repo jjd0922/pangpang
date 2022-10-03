@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.HmType;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
@@ -47,4 +48,21 @@ public class HeaderMenu {
         return hmClass;
     }
 
+    public void updateHmOrder(int hmOrder) {
+        if(getHmOrder() < 0){
+            setHmOrder((byte) (hmOrder * -1));
+        }else{
+            setHmOrder((byte) hmOrder);
+        }
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if(!StringUtils.hasText(getHmName())){
+            throw new MsgException("메뉴명을 입력해주세요.");
+        }else if(!StringUtils.hasText(getUrl())){
+            throw new MsgException("URL을 입력해주세요.");
+        }
+    }
 }
