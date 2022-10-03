@@ -1,9 +1,6 @@
 package com.newper.component;
 
-import com.newper.entity.HeaderMenu;
-import com.newper.entity.MainSection;
-import com.newper.entity.Shop;
-import com.newper.entity.ShopCategory;
+import com.newper.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -36,6 +33,8 @@ public class ShopComp {
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
     private List<Map<String,Object>> msJsonList;
+    /** 도메인으로 headerOrder 가져오기*/
+    public List<HeaderOrder> getHeaderOrder(String domain){return shopMap.get(domain).getHeaderOrderList(); }
 
     /** 분양몰 디자인 class*/
     public String setShopDesignClass(Map<String, Object> shopDesignMap){

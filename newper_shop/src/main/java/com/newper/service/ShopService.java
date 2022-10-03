@@ -47,6 +47,7 @@ public class ShopService {
             //select sql
             //N+1 (shop갯수만큼 조회됨) vs shop 중복 조회 효율
             shop.getHeaderMenulist().size();
+            shop.getHeaderOrderList().size();
 
             // 분양몰 디자인 정보
             Map<String,Object> shopDesignMap = shopMapper.selectShopDesignJson(shop.getShopIdx());
@@ -92,16 +93,6 @@ public class ShopService {
                     }
                 }
             }
-//
-//            for(int i=0;i<mainSectionList.size();i++){
-//                for(int k=0;k<jsonList.size();k++){
-//                    System.out.println("in \n");
-//                    System.out.println(jsonList.get(k).get("msIdx").equals(String.valueOf(mainSectionList.get(i).getMsIdx())));
-//                    System.out.println(jsonList.get(k).get("msIdx"));
-//                    System.out.println(mainSectionList.get(i).getMsIdx());
-//                    System.out.println("\n");
-//                }
-//            }
 
 
             shopComp.setMainSectionList(mainSectionList);

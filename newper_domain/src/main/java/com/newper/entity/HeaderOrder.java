@@ -1,12 +1,11 @@
 package com.newper.entity;
 
-import com.newper.entity.common.BaseEntity;
+import com.newper.constant.etc.HoType;
 import com.newper.entity.common.ModifiedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @DynamicUpdate
@@ -21,8 +20,11 @@ public class HeaderOrder extends ModifiedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hoIdx;
 
+    @Enumerated(EnumType.STRING)
+    private HoType hoType;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FO_SHOP_IDX", referencedColumnName = "shopIdx")
+    @JoinColumn(name = "HO_SHOP_IDX", referencedColumnName = "shopIdx")
     private Shop shop;
 
     private int hoRow;

@@ -12,6 +12,9 @@ public interface OrdersMapper {
 
     /** ph_idx 로 o_code 조회 */
     String selectOcodeByPhIdx(String ph_idx);
+
+    /** o_code로 ogg_spo, cnt 가져오기 . 고객단 보여주기용 */
+    List<Map<String, Object>> selectOrderGsGroupList(String o_code);
 //
 //    /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
 //    Map<String, Object> selectShopCategoryBySp(long sp_idx);

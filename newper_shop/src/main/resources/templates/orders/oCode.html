@@ -352,17 +352,21 @@
                 <!-- 상품금액 -->
                 <li>
                     <div class="table-title">상품금액</div>
-                    <div class="table-content"><span>299,000</span>&nbsp;원</div>
+                    <div class="table-content"><span th:text="${#numbers.formatInteger(orders.payment.payPrice,1,'COMMA')}"></span>&nbsp;원</div>
                 </li>
                 <!-- 할인금액 -->
                 <li>
                     <div class="table-title">할인금액</div>
-                    <div class="table-content"><span>- 0</span>&nbsp;원</div>
+                    <div class="table-content"> <span th:text="${#numbers.formatInteger(orders.payment.discountPrice()*-1,1,'COMMA')}"></span>&nbsp;원</div>
+                </li>
+                <li>
+                    <div class="table-title">배송비</div>
+                    <div class="table-content"> <span th:text="${#numbers.formatInteger(orders.payment.totalDelivery(),1,'COMMA')}"></span>&nbsp;원</div>
                 </li>
                 <!-- 총 결제 금액 -->
                 <li>
                     <div class="table-title bold">총 결제 금액</div>
-                    <div class="table-content font-xxlg color-blue bold"><span th:text="${#numbers.formatInteger(orders.payment.payPrice,1,'COMMA')}"></span><span class="won">원</span></div>
+                    <div class="table-content font-xxlg color-blue bold"><span th:text="${#numbers.formatInteger(orders.payment.payTotal,1,'COMMA')}"></span><span class="won">원</span></div>
                 </li>
             </ul>
 

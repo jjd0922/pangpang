@@ -223,9 +223,13 @@ public class Payment {
             return "결제 "+getPayState().getOption();
         }
     }
-    /** 할인 금액 가져오기. 0 = 할인전 상품금액 , 1 = 배송비 , 2 = 할인 */
-    public int discountAmount(){
-        return getPayPoint() + payMileage + payCouponPrice + payCouponDelivery;
+    /** 상품 할인 금액 가져오기. 0 = 할인전 상품금액 , 1 = 배송비 , 2 = 할인 */
+    public int discountPrice(){
+        return getPayPoint() + payMileage + payCouponPrice;
+    }
+    /** 최종 배송비*/
+    public int totalDelivery(){
+        return getPayDelivery() - payCouponDelivery;
     }
 
 }

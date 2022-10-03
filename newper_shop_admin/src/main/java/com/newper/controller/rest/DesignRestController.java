@@ -59,6 +59,17 @@ public class DesignRestController {
 
         return rm;
     }
+    /** 헤더 update*/
+    @PostMapping(value = "pop/header/{shopIdx}.load")
+    public ModelAndView shopHeader(@PathVariable Integer shopIdx, ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        paramMap.put("shopIdx", shopIdx);
+        designService.shopHeaderUpdate(paramMap);
+
+        mav.addObject("msg", "수정 완료");
+        mav.addObject("loc", "/design/pop/header/"+shopIdx);
+        return mav;
+    }
 
     /** mainsection DataTable*/
     @PostMapping("mainsection.dataTable")
