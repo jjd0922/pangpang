@@ -80,7 +80,10 @@ public class ShopProductService {
                 dtoList.add(dto);
             }
         }
-
+        
+        if(dtoMap.isEmpty()){
+            throw new MsgException("주문 상품이 없습니다");
+        }
         //dtoMap에 필수 옵션들이 포함 되어 있는지 확인
         //sp 단위로 확인
         for (ShopProduct shopProduct : dtoMap.keySet()) {
