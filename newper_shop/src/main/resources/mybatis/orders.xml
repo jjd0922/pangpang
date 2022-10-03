@@ -35,4 +35,13 @@
           AND O_PAY_IDX=PAY_IDX
           AND PH_IDX = #{ph_idx}
     </select>
+    <select id="selectOrderGsGroupList" resultType="map">
+        SELECT
+            OGG_SPO, MAX(OGG_CNT) CNT
+        FROM ORDER_GS_GROUP, ORDER_GS,ORDERS
+        WHERE OG_OGG_IDX=OGG_IDX
+          AND OG_O_IDX=O_IDX
+          AND O_CODE = #{o_code}
+        GROUP BY OGG_IDX
+    </select>
 </mapper>
