@@ -207,10 +207,14 @@ $(document).ready(function(){
             ,{'class':'m-w-7 w-20', 'title':'URL','data':'HM_URL','defaultContent':''}
             ,{'class':'m-w-7 w-20', 'title':'Class','data':'HM_CLASS','defaultContent':''}
             ,{'class':'m-w-4 w-10', 'title':'삭제','data':'HM_IDX','render':function(data,type,full,meta){
-                if(full.HM_DEFAULT == '1'){
+                if(data == null){
                     return '';
-                }else{
-                    return '<a class="btn btn-sm badge-danger" onclick="deleteHeaderMenu('+data+')">삭제</a>';
+                }else {
+                    if(full.HM_DEFAULT == '1'){
+                        return '';
+                    }else{
+                        return '<a class="btn btn-sm badge-danger" onclick="deleteHeaderMenu('+data+')">삭제</a>';
+                    }
                 }
             }}
         ]
