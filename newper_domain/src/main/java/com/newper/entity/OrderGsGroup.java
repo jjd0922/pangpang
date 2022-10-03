@@ -22,6 +22,7 @@ public class OrderGsGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long oggIdx;
 
+    /** spo prefix 없이 {spoIdx}_{spoIdx} 로 구성*/
     private String oggSpo;
     /** 1부터 시작*/
     private int oggCnt;
