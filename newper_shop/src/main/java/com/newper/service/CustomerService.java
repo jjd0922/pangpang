@@ -2,6 +2,7 @@ package com.newper.service;
 
 
 import com.newper.component.ShopSession;
+import com.newper.constant.CuGender;
 import com.newper.constant.SaCode;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
@@ -66,7 +67,10 @@ public class CustomerService {
     }
 
     /** 비밇번호 확인 */
-    public String pwdCheck(String pw) {
+    public boolean pwdCheck(String pw) {
+        if (!StringUtils.hasText(shopSession.getId())) {
+            throw new MsgException("로그인이 필요한 페이지입니다.");
+        }
         Customer customer = customerRepo.findByCuId(shopSession.getId());
 
         try {
@@ -76,7 +80,7 @@ public class CustomerService {
             String pw_sha2 = String.format("%0128x", new BigInteger(1, digest.digest()));
 
             if(!customer.getCuPw().equals(pw_sha2)){
-                return "잘못된 비밀번호 입니다";
+                throw new MsgException("잘못된 비밀번호 입니다");
             }
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -85,7 +89,7 @@ public class CustomerService {
         }
 
         shopSession.setPwdCheck(true);
-        return "Y";
+        return true;
     }
 
     /**회원가입*/
@@ -125,10 +129,54 @@ public class CustomerService {
         return savedCu;
     }
 
-    /** 비밀번호 재설정 */
+    /** 네이버 간편로그인 > 회원가입 */
+    @Transactional
+    public void naverJoin(ParamMap paramMap) {
+        Customer customer = Customer.builder()
+                .cuId(paramMap.getString("id"))
+                .cuName(paramMap.getString("name"))
+                .cuGender(CuGender.valueOf(paramMap.getString("gender")))
+                .cuBirth(LocalDate.parse(paramMap.getString("birthyear") + "-" + paramMap.getString("birthday")))
+                .cuPhone(paramMap.getString("mobile"))
+                .build();
+        customerRepo.save(customer);
+    }
+
+    /** 비밀번호 찾기 > 비밀번호 재설정 */
     @Transactional
     public void resetPw(ParamMap paramMap) {
         Customer customer = customerRepo.findById(paramMap.getLong("cuIdx")).orElseThrow(() -> new MsgException("회원정보를 찾을 수 없습니다."));
+        customer.setCuPw(paramMap.getString("cuPw"));
+        customer.setCuPwChange(LocalDate.now());
+    }
+
+    /** 마이페이지 > 회원정보수정 > 비밀번호 변경*/
+    @Transactional
+    public void changePw(ParamMap paramMap) {
+        if (!StringUtils.hasText(shopSession.getId())) {
+            throw new MsgException("로그인이 필요한 페이지입니다.");
+        }
+        Customer customer = customerRepo.findByCuId(shopSession.getId());
+
+        if (!StringUtils.hasText(paramMap.getString("cuPwOld"))) {
+            throw new MsgException("기존 비밀번호를 입력해 주세요.");
+        }
+        
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            digest.reset();
+            digest.update(paramMap.getString("cuPwOld").getBytes("UTF-8"));
+            String pw_sha2 = String.format("%0128x", new BigInteger(1, digest.digest()));
+
+            if(!customer.getCuPw().equals(pw_sha2)){
+                throw new MsgException("기존 비밀번호가 일치하지 않습니다.");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
         customer.setCuPw(paramMap.getString("cuPw"));
         customer.setCuPwChange(LocalDate.now());
     }

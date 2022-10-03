@@ -14,21 +14,23 @@
     </div>
     <script>
         function passwordCheck(){
-            // $.ajax({-
-            //     url: 'pwdCheck.ajax'
-            //     ,type: 'post'
-            //     ,data: {
-            //         'pw': $('#pw').val()
-            //     }
-            // }).done(function(res){
-            //     if(res.message != 'Y'){
-            //         alert(res.message);
-            //     }else{
-            //         openMenu('myInfo');
-            //         openMyInfoMenu('updateInfo')
-            //     }
-            // });
-            openMenu('myInfoPwCheck');
+            $.ajax({
+                url: '/customer/pwdCheck.ajax'
+                ,type: 'post'
+                ,data: {
+                    'pw': $('#pw').val()
+                }
+            }).done(function(res){
+                if (res.data.result) {
+                    openMenu('myInfoPwCheck');
+                }
+            });
         }
+
+        $('#pw').keyup(function (event) {
+            if (event.keyCode == 13) {
+                passwordCheck();return false;
+            }
+        });
     </script>
 </th:block>

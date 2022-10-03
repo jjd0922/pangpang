@@ -1,6 +1,5 @@
 package com.newper.controller.rest;
 
-import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.exception.MsgException;
 import com.newper.service.CustomerService;
@@ -46,17 +45,5 @@ public class MainRestController {
     @GetMapping("logout.ajax")
     public void logout(HttpServletRequest request){
         request.getSession().invalidate();
-    }
-
-    /** 비밇번호 확인 */
-    @PostMapping("pwdCheck.ajax")
-    public ReturnMap pwdCheck(ParamMap paramMap){
-        ReturnMap rm = new ReturnMap();
-
-        String pw = paramMap.getString("pw");
-        String result = customerService.pwdCheck(pw);
-
-        rm.setMessage(result);
-        return rm;
     }
 }
