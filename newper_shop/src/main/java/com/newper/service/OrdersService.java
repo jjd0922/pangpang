@@ -38,7 +38,7 @@ public class OrdersService {
     private final PaymentRepo paymentRepo;
     private final PaymentHistoryRepo paymentHistoryRepo;
     private final IamportMapper iamportMapper;
-    private final ShopProductOptionRepo shopProductOptionRepo;
+    private final OrderGsGroupRepo orderGsGroupRepo;
     private final ShopProductService shopProductService;
 
     @Autowired
@@ -76,17 +76,22 @@ public class OrdersService {
         for (ShopProduct shopProduct : spoList.keySet()) {
             for (OrdersSpoDTO dto : spoList.get(shopProduct)) {
                 for (int i = 0 ;i < dto.getCnt(); i++) {
+                    OrderGsGroup ogg = OrderGsGroup.builder()
+                            .oggSpo(dto.getVal())
+                            .oggCnt(i+1)
+                            .build();
                     for (ShopProductOption spo : dto.getSpoList()) {
                         OrderGs orderGs = OrderGs.builder()
                                 .orders(orders)
                                 .shopProductOption(spo)
                                 .ogPrice(spo.getSpoPrice())
-                                .ogSpo(dto.getVal()+"|"+i)
                                 .build();
-                        orderGsList.add(orderGs);
+                        ogg.addOrderGs(orderGs);
 
+                        orderGsList.add(orderGs);
                         product_price += spo.getSpoPrice();
                     }
+                    orderGsGroupRepo.save(ogg);
                 }
             }
         }
@@ -94,10 +99,12 @@ public class OrdersService {
 
         int ipm_idx = paramMap.getInt("ipm_idx");
         Payment payment = Payment.builder()
-                .payPrice(product_price - usedPoint - usedMileage + delivery)
-                .payProductPrice(product_price - usedPoint - usedMileage)
+                .payPrice(product_price)
+                .payPoint(usedPoint)
+                .payMileage(usedMileage)
                 .payDelivery(delivery)
-//                .payMileage()
+//                .payCouponPrice()
+//                .payCouponDelivery()
                 .payIpmIdx(ipm_idx)
                 .build();
 
