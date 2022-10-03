@@ -8,5 +8,16 @@
         WHERE PH_IDX = #{ph_idx}
             and PH_PAY_IDX = PAY_IDX
     </update>
+    <select id="selectPaymentHistoryRes" resultType="map">
+        SELECT
+            PH_IDX, PH_RES
+        FROM ORDERS ,PAYMENT, PAYMENT_HISTORY
+        WHERE
+            O_PAY_IDX= PAY_IDX
+            AND PH_PAY_IDX = PAY_IDX
+            AND PH_FLAG = 1
+            AND PH_TYPE = #{ph_type}
+            AND O_CODE = #{o_code}
+    </select>
 
 </mapper>

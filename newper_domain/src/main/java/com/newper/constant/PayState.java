@@ -10,7 +10,9 @@ import lombok.Getter;
 public enum PayState implements EnumOption {
 
      BEFORE("요청전")
-    ,REQ("입금 확인중")
+    ,REQ("요청")
+    /** 가상계좌 CASE*/
+    ,WAIT("입금대기")
     ,SUCCESS("완료")
     ,FAIL("실패")
 

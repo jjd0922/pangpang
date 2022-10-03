@@ -31,7 +31,7 @@
                 WHEN IPP_VALUE = 'kcp' THEN CONCAT('kcp.',IPP_JSON->>'$.mid' )
                 ELSE IPP_VALUE
             END AS PG
-            ,IPM_VALUE
+            ,IPM_VALUE ,IPM_NAME
         FROM IAMPORT_METHOD, IAMPORT_PG
         WHERE
             IPP_IDX = IPM_IPP_IDX

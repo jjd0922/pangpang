@@ -2,11 +2,10 @@ package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
 import com.newper.constant.PayState;
+import com.newper.constant.PhType;
 import com.newper.dto.OrdersSpoDTO;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Customer;
-import com.newper.entity.Payment;
-import com.newper.entity.ShopProduct;
+import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.iamport.IamportApi;
 import com.newper.mapper.IamportMapper;
@@ -98,9 +97,13 @@ public class OrdersController {
     public ModelAndView oCode(@PathVariable String oCode){
         ModelAndView mav = new ModelAndView("orders/oCode");
 
-        System.out.println("o_code");
-        System.out.println(oCode);
-        ordersService.selectOrdersDetail(oCode);
+
+        //결제 결과 없는 경우 insert
+        paymentService.savePaymentResult(oCode, PhType.PAY);
+
+        Orders orders = ordersService.selectOrdersDetail(oCode);
+        mav.addObject("orders", orders);
+
 
         return mav;
     }

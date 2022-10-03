@@ -61,11 +61,11 @@
 </th:block>
 
 <!--주문 프로세스 브레드 크럼-->
-<th:block th:fragment="cart-breadcrumb">
+<th:block th:fragment="cart-breadcrumb(classOn)">
     <ul class="menu-part cart-breadcrumb">
-        <li class="on">01. 장바구니</li>
-        <li>02. 주문&#183;결제정보입력</li>
-        <li>03. 주문완료</li>
+        <li th:class="${classOn == 1 ?'on':''}">01. 장바구니</li>
+        <li th:class="${classOn == 2 ?'on':''}">02. 주문&#183;결제정보입력</li>
+        <li th:class="${classOn == 3 ?'on':''}">03. 주문완료</li>
         <!--<p class="font-sm semi-bold">
             <span class="color-blue">01 장바구니</span><i class="route-icon on"></i><i class="route-icon"></i>
         </p>-->
