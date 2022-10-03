@@ -17,7 +17,9 @@ import java.io.Serializable;
 /** 세션 정보 저장하는 class*/
 public class ShopSession implements Serializable {
 
+    /** customer.cu_idx*/
     private Long idx;
+    /** customer.cu_id*/
     private String id;
     private Integer shopIdx;
 

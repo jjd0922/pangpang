@@ -25,6 +25,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payIdx;
 
+    /** 결제 상태 표기 시에는 getPayStateString() method 사용*/
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payState = PayState.BEFORE;
@@ -43,6 +44,13 @@ public class Payment {
     private int payMileage;
     /** 적립 완료 여부*/
     private boolean payMileageFlag;
+    /**<pre>
+     * pay_method : 결제수단. iamport_method.ipm_name
+     * vbank_code : 가상계좌 은행코드
+     * vbank_name : 가상계좌 은행명
+     * vbank_num : 가상계좌 계좌번호
+     * vbank_holder : 가상계좌 예금주
+     * </pre>*/
     @Builder.Default
     private Map<String,Object> payJson = new HashMap<>();
 
@@ -170,5 +178,35 @@ public class Payment {
             }
         }
         return null;
+    }
+
+    /** PAY_JSON에 세팅 */
+    public void putPayJson(String key, Object value) {
+        getPayJson().put(key, value);
+    }
+    /** PAY_JSON에 값 가져오기 */
+    public Object getPayJsonValue(String key) {
+        return getPayJson().get(key);
+    }
+    /** PAY_JSON containsKey*/
+    public boolean payJsonContains(String key){
+        return getPayJson().containsKey(key);
+    }
+    /** 가상계좌 정보 문자열*/
+    public String vbankInfo(){
+        if (getPayJson().containsKey("vbank_name")) {
+            return getPayJson().get("vbank_name")+" "+payJson.get("vbank_num")+" 예금주: "+payJson.get("vbank_holder");
+        }else{
+            return "";
+        }
+    }
+    /** 결제 상태 문자열*/
+    public String getPayStateString(){
+        PayState payState = getPayState();
+        if (payState == PayState.WAIT) {
+            return getPayState().getOption();
+        }else{
+            return "결제 "+getPayState().getOption();
+        }
     }
 }
