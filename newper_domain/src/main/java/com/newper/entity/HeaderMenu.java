@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.HmType;
+import com.newper.entity.common.CreatedEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class HeaderMenu {
+public class HeaderMenu extends CreatedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

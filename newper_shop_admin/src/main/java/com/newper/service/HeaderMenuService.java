@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import com.newper.constant.HmType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.HeaderMenu;
 import com.newper.exception.MsgException;
@@ -37,7 +38,7 @@ public class HeaderMenuService {
     @Transactional
     public String headerMenuDelete(ParamMap paramMap) {
         HeaderMenu headerMenu = headerMenuRepo.findById(paramMap.getInt("hmIdx")).orElseThrow(()-> new MsgException("존재하지 않는 GNB 메뉴 입니다."));
-        if(headerMenu.isHmDefault()){
+        if(headerMenu.getHmType().isBasic()){
             return "삭제할 수 없는 GNB 메뉴입니다.";
         }else{
             headerMenuRepo.delete(headerMenu);
@@ -54,10 +55,12 @@ public class HeaderMenuService {
         System.out.println("ddd ");
         System.out.println(headerMenuParam.getHmUrl());
 
-        headerMenu.setHmOrder((byte) (headerMenu.getHmOrder() * headerMenuParam.getHmOrder()));
+        headerMenu.setHmOrder((byte) (Math.abs(headerMenu.getHmOrder()) * headerMenuParam.getHmOrder()));
         headerMenu.setHmClass(headerMenuParam.getHmClass());
         headerMenu.setHmName(headerMenuParam.getHmName());
-        headerMenu.setHmUrl(headerMenuParam.getHmUrl());
+        if(headerMenu.getHmType().equals(HmType.ETC)){
+            headerMenu.setHmUrl(headerMenuParam.getHmUrl());
+        }
 
     }
     /** GNB 메뉴 insert*/
@@ -66,7 +69,6 @@ public class HeaderMenuService {
         Integer hmCount = headerMenuMapper.countMainMenu(paramMap.getInt("shopIdx"));
         HeaderMenu headerMenu = paramMap.mapParam(HeaderMenu.class);
 
-        headerMenu.setHmDefault(false);
         headerMenu.setHmOrder((byte) (headerMenu.getHmOrder() * (hmCount+1)));
 
         headerMenuRepo.save(headerMenu);

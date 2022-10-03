@@ -50,6 +50,19 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
+                                                            <span class="input-group-text">메뉴 타입</span>
+                                                        </span>
+                                                        <input th:if="${headerMenu != null}" type="text" class="form-control" th:value="${headerMenu.hmType.getOption()}" readonly>
+                                                        <select th:unless="${headerMenu != null}" name="hmType" class="form-control select">
+                                                            <option value="ETC">추가 GNB 메뉴</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
                                                             <span class="input-group-text">메뉴 명 </span>
                                                         </span>
                                                         <input class="form-control" type="text" name="hmName" th:value="${headerMenu?.hmName}">
@@ -62,7 +75,7 @@
                                                         <span class="input-group-prepend">
                                                             <span class="input-group-text">URL 경로 </span>
                                                         </span>
-                                                        <input class="form-control" type="text" name="hmUrl" th:value="${headerMenu?.hmUrl}">
+                                                        <input class="form-control" type="text" name="hmUrl" th:readonly="${headerMenu != null && headerMenu?.hmType.name() ne 'ETC'}" th:value="${headerMenu?.hmUrl}">
                                                     </div>
                                                 </div>
                                             </div>

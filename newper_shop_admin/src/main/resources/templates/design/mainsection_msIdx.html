@@ -71,10 +71,11 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-prepend">
-                                                            <span class="input-group-text">메인 섹션 타입</span>
+                                                            <span class="input-group-text">메인 섹션 타입 <i class="icon-info22 small ml-1 opacity-90" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="저장된 이후에는 변경할 수 없습니다."></i></span>
                                                         </span>
                                                         <select class="form-control select" name="msType" onchange="onChangeMsType()">
-                                                            <option th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}"></option>
+                                                            <option th:if="${mainsection != null}" th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}" th:disabled="${mainsection?.msType ne type}"></option>
+                                                            <option th:unless="${mainsection != null}" th:each="type:${T(com.newper.constant.MsType).values()}" th:value="${type}" th:text="${type.option}" th:selected="${mainsection?.msType eq type}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
