@@ -1,7 +1,6 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
-import com.newper.entity.Customer;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +167,9 @@ public class MyPageController {
     @PostMapping("myInfo/{menu}.load")
     public ModelAndView myInfoMenu(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myInfo_menu :: " + menu);
-
+        if (menu.equals("updateInfo")) {
+            mav.addObject("customer",customerRepo.findByCuId(shopSession.getId()));
+        }
         return mav;
     }
 

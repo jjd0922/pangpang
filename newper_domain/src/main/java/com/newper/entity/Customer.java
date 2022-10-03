@@ -75,7 +75,7 @@ public class Customer {
     public void join(Map<String,Object> nice) {
         setCuName(nice.get("NAME").toString());
         setCuPhone(nice.get("MOBILE_NO").toString());
-        setCuTelecom(nice.get("MOBILE_CO").toString());
+        setCuTelecom(nice.get("MOBILE_CO").toString().replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3"));
         setCuCi(getCuId()); // 임시값
         setCuDi(nice.get("DI").toString());
         setCuBirth(LocalDate.parse(nice.get("BIRTHDATE").toString(), DateTimeFormatter.ofPattern("yyyyMMdd")));
