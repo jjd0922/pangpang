@@ -4,16 +4,10 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.GRank;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Category;
-import com.newper.entity.Company;
-import com.newper.entity.GoodsStock;
-import com.newper.entity.Product;
+import com.newper.entity.*;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ProductMapper;
-import com.newper.repository.CategoryRepo;
-import com.newper.repository.CompanyRepo;
-import com.newper.repository.GoodsStockRepo;
-import com.newper.repository.ProductRepo;
+import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
 import okhttp3.FormBody;
@@ -60,6 +54,7 @@ public class ProductService {
     private final CategoryRepo categoryRepo;
     private final CompanyRepo companyRepo;
     private final GoodsStockRepo goodsStockRepo;
+    private final CompanyDeliveryRepo companyDeliveryRepo;
 
     private final ProductMapper productMapper;
     private final CategoryMapper categoryMapper;
@@ -86,6 +81,10 @@ public class ProductService {
         if(!paramMap.get("P_COM_IDX2").equals("")){
             Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             product.setAfterServiceName(afterService);
+        }
+        if(!paramMap.get("P_CD_IDX").equals("")){
+            CompanyDelivery companyDelivery = companyDeliveryRepo.getReferenceById(paramMap.getInt("P_CD_IDX"));
+            product.setCompanyDelivery(companyDelivery);
         }
 
         String P_COLOR = paramMap.getString("P_COLOR");
@@ -192,10 +191,8 @@ public class ProductService {
         ori.setPOption(product.getPOption());
 
         String P_COLOR = paramMap.getString("P_COLOR");
-        System.out.println(P_COLOR);
         String[] color = P_COLOR.split("/");
         Map<String, Object> pColor = new LinkedHashMap<>();
-        System.out.println(color.length);
         if(color.length>1){
             for(int i=0; i<color.length; i++){
                 String[] col = color[i].split(":");
@@ -224,6 +221,10 @@ public class ProductService {
         if(!paramMap.get("P_COM_IDX2").equals("")){
             Company afterService = companyRepo.getReferenceById(paramMap.getInt("P_COM_IDX2"));
             ori.setAfterServiceName(afterService);
+        }
+        if(!paramMap.get("P_CD_IDX").equals("")){
+            CompanyDelivery companyDelivery = companyDeliveryRepo.getReferenceById(paramMap.getInt("P_CD_IDX"));
+            ori.setCompanyDelivery(companyDelivery);
         }
 
         String thumbFilePath1=ori.getPThumbFile1();

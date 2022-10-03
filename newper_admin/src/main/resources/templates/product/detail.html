@@ -513,20 +513,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <span class="input-group-text requested">
-                                                    배송비 템플릿
-                                                    <a class="btn btn-sm badge-indigo legitRipple" id="companyDeliverySearch" onclick="notStore()">검색</a>
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control" id="companyDelvery" readonly>
-                                            <input type="hidden" name="P_CD_IDX" >
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
@@ -562,6 +549,21 @@
                                                 <option value="true" th:selected="${product?.pFreeInterest eq true}">Y</option>
                                                 <option value="false" th:selected="${product?.pFreeInterest eq false}">N</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-8">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text requested">
+                                                    배송비 템플릿
+                                                    <a class="btn btn-sm badge-indigo legitRipple" id="companyDeliverySearch" onclick="notStore()">검색</a>
+                                                </span>
+                                            </span>
+                                            <input th:if="${product!=null}" type="text" class="form-control" id="companyDelvery" disabled th:value="${template?.cdType+'/'+#numbers.formatInteger(template?.cdFee,0,'COMMA')+'/'+#numbers.formatInteger(template?.cdFree,0,'COMMA')}">
+                                            <input th:unless="${product!=null}" type="text" class="form-control" id="companyDelvery" disabled>
+                                            <input type="hidden" name="P_CD_IDX" th:value="${template?.cdIdx}">
                                         </div>
                                     </div>
                                 </div>
@@ -759,6 +761,9 @@
 
     function deliverySelect(row){
         var rowData = getDatatablemap('companyDeliveryModalTable', row);
+        $('#companyDelvery').val(rowData.CD_TYPE+"/"+comma(rowData.CD_FEE)+"/"+comma(rowData.CD_FREE));
+        $('input[name="P_CD_IDX"]').val(rowData.CD_IDX);
+        $('#searchCompanyDeliveryModal').modal('hide');
     }
 
     function optionAdd(){

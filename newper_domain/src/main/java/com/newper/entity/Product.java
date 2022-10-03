@@ -153,6 +153,12 @@ public class Product extends BaseEntity {
         if(getPDelCompany() == null){
             throw new MsgException("배송주체를 선택해주세요.");
         }
+        if(getStoreName() == null){
+            throw new MsgException("입점사를 선택해주세요.");
+        }
+        if(getCompanyDelivery() == null){
+            throw new MsgException("배송비 템플릿을 선택해주세요.");
+        }
     }
 
     /** 해당 옵션 문자로 return*/

@@ -147,11 +147,20 @@ public class OrderService {
                 String str = response.body().string().toString();
                 JSONObject json = XML.toJSONObject(str);
 
+                JSONObject obj1 = (JSONObject)json.get("SABANG_ORDER_LIST");
+                JSONArray array = (JSONArray)obj1.get("DATA");
+                int[] ak = {19,100,200,300,400};
 
-                System.out.println(json);
+
+                System.out.println(array.length());
+                for(int i=0; i<ak.length; i++){
+                    JSONObject obj = (JSONObject)array.get(ak[i]);
+                    System.out.println(obj);
+                }
+
 
             } catch (Exception e) {
-
+                e.printStackTrace();
             }finally {
                 try {
                     if (response != null)
