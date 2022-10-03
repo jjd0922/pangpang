@@ -2,17 +2,11 @@ package com.newper.controller.view;
 
 import com.newper.constant.MsType;
 import com.newper.dto.ParamMap;
-import com.newper.entity.MainSection;
-import com.newper.entity.MainSectionBanner;
-import com.newper.entity.Shop;
-import com.newper.entity.ShopCategory;
+import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.MainSectionMapper;
 import com.newper.mapper.ShopMapper;
-import com.newper.repository.MainSectionBannerRepo;
-import com.newper.repository.MainSectionRepo;
-import com.newper.repository.ShopCategoryRepo;
-import com.newper.repository.ShopRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +26,7 @@ public class DesignController {
 
     private final ShopRepo shopRepo;
     private final MainSectionRepo mainSectionRepo;
+    private final HeaderMenuRepo headerMenuRepo;
     private final MainSectionBannerRepo mainSectionBannerRepo;
     private final MainSectionMapper mainsectionMapper;
     private final ShopMapper shopMapper;
@@ -46,10 +41,10 @@ public class DesignController {
 
         return mav;
     }
-    /** 메인메뉴 관리*/
-    @GetMapping("menu")
+    /** GNB 메뉴 관리*/
+    @GetMapping("headerMenu")
     public ModelAndView mainMenu(){
-        ModelAndView mav = new ModelAndView("design/mainMenu");
+        ModelAndView mav = new ModelAndView("design/headerMenu");
 
         mav.addObject("shopList", shopRepo.findAll());
 
@@ -88,6 +83,20 @@ public class DesignController {
     public ModelAndView shopHeader(@PathVariable Integer shopIdx){
         ModelAndView mav = new ModelAndView("design/pop_header");
 
+        return mav;
+    }
+    /** GNB 메뉴 신규, 상세*/
+    @GetMapping(value = {"headerMenu/{hmIdx}/{shopIdx}","headerMenu/new/{shopIdx}"})
+    public ModelAndView headerMenu(@PathVariable(required = false) Integer hmIdx, @PathVariable("shopIdx") Integer shopIdx){
+        ModelAndView mav = new ModelAndView("design/headerMenu_hmIdx");
+
+        if(hmIdx != null){
+            HeaderMenu headerMenu = headerMenuRepo.findById(hmIdx).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션입니다."));
+            mav.addObject("headerMenu", headerMenu);
+            mav.addObject("hmIdx", hmIdx);
+        }
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
+        mav.addObject("shop", shop);
         return mav;
     }
 

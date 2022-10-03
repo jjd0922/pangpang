@@ -8,9 +8,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HmType implements EnumOption {
 
-     BEST("", "/")
-    ,TIMESALE("", "/")
-    ,ETC("추가 헤더메뉴", null)
+    ETC("추가 GNB 메뉴", null)
+    ,NEW("신상입고", "/newLaunch")
+    ,BEST("베스트100", "/best")
+    ,TIMESALE("타임세일", "/timeSale")
+    ,LAST("품절임박", "/lastSecond")
+    ,EVENT("이벤트/기획전", "/event")
+    ,REVIEW("상품리뷰", "/review")
 
     ;
 

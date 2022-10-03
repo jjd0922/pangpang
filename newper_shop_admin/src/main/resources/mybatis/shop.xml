@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.ShopMapper">
     <sql id="includeShopDatatable">
-
+        <if test="shopIdx != null and shopIdx !=''">
+            AND SHOP_IDX = #{shopIdx}
+        </if>
     </sql>
     <select id="selectShopDatatable" resultType="map">
         SELECT
