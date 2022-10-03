@@ -480,4 +480,29 @@
             <div class="md-tab-content-next next-custom"></div>
         </div>
     </li>
+
+    <script>
+        $(function(){
+            // fragment 호출 시 해당 스와이퍼 재선언.
+            new Swiper('.swiper-md-content', {
+                slidesPerView: 2,
+                spaceBetween: 15,
+                pagination: {
+                    el: '.md-content-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    992: {
+                        slidesPerView: 4,
+                        spaceBetween: 35,
+                        navigation: {
+                            nextEl: '.md-tab-content-next',
+                            prevEl: '.md-tab-content-prev',
+                            disabledClass: 'btn-disabled',
+                        },
+                    },
+                },
+            });
+        })
+    </script>
 </th:block>
