@@ -60,8 +60,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="d-block">섹션명</label>
-                                                    <input class="form-control form-control-sm w-120px" name="msName" data-placeholder="검색">
+                                                    <label class="d-block">메뉴명</label>
+                                                    <input class="form-control form-control-sm w-120px" name="hmName" data-placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -84,10 +84,10 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1" onclick="mainSectionPop('new')">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="headerMenuPop('new')">신규등록</a>
                             </div>
 
-                            <table class="table" id="mainsectionTable"></table>
+                            <table class="table" id="gnbMenuTable"></table>
 
                         </div>
                     </div>
@@ -164,24 +164,24 @@ $(document).ready(function(){
         ]
     });
 
-    $('#mainsectionTable').DataTable({
+    $('#gnbMenuTable').DataTable({
         dom: '<"datatable-header"Bp><"datatable-scroll"t><"datatable-footer">',
         ordering:false,
         serverSide: true,
         ajax:{
-            url:'/design/mainsection.dataTable?'+$('#searchForm').serialize(),
+            url:'/design/headerMenu.dataTable?'+$('#searchForm').serialize(),
             type:'post'
         },
         "columns" : [
             {'title':'분양몰','data':'SHOP_NAME'},
-            {'class':'m-w-4 dragula-handle', 'title':'순서변경','data':'MS_ORDER', 'render':function(data,type,full,meta){
+            {'class':'dragula-handle', 'title':'순서변경','data':'HM_ORDER', 'render':function(data,type,full,meta){
                 if(data == null){
                     return '';
                 }else{
-                    return '<i class="icon-menu-open">'+Math.abs(full.MS_ORDER)+'</i><input type="hidden" name="MS_IDX" shop="'+full.MS_SHOP_IDX+'" value="'+full.MS_IDX+'">';
+                    return '<i class="icon-menu-open">'+Math.abs(full.HM_ORDER)+'</i><input type="hidden" name="HM_IDX" shop="'+full.HM_SHOP_IDX+'" value="'+full.HM_IDX+'">';
                 }
             }}
-            ,{'class':'m-w-5 w-10', 'title':'노출상태','data':'MS_ORDER','defaultContent':'','render':function(data,type,full,meta){
+            ,{'class':'m-w-5 w-10', 'title':'노출상태','data':'HM_ORDER','defaultContent':'','render':function(data,type,full,meta){
                 if(data == null){
                     return '';
                 }else{
@@ -194,25 +194,25 @@ $(document).ready(function(){
                         state = '노출';
                         btnClass='btn-primary';
                     }
-                    return '<a class="btn btn-sm '+btnClass+'" onclick="toggleMainSectionDisplay('+full.MS_IDX+')">'+state+'</a>';
+                    return '<a class="btn btn-sm '+btnClass+'" onclick="toggleHeaderMenuDisplay('+full.HM_IDX+')">'+state+'</a>';
                 }
             }}
-            ,{'class':'m-w-7 w-20', 'title':'메인섹션타입','data':'MS_TYPE_STR','defaultContent':''}
-            ,{'class':'m-w-max w-20','title':'섹션명','data':'MS_NAME','defaultContent':'', 'render':function(data,type,full,meta){
+            ,{'class':'m-w-max w-20','title':'GNB 메뉴명','data':'HM_NAME','defaultContent':'', 'render':function(data,type,full,meta){
                 if(data == null){
                     return '데이터 없음';
                 }else{
-                    return '<a class="btn btn-sm badge-primary" onclick="mainSectionPop('+full.MS_IDX+')">'+data+'</a>';
+                    return '<a class="btn btn-sm badge-primary" onclick="headerMenuPop('+full.HM_IDX+')">'+data+'</a>';
                 }
             }}
-            ,{'class':'m-w-4 w-10', 'title':'삭제','data':'MS_IDX','render':function(data,type,full,meta){
-                if(data == null){
+            ,{'class':'m-w-7 w-20', 'title':'URL','data':'HM_URL','defaultContent':''}
+            ,{'class':'m-w-7 w-20', 'title':'Class','data':'HM_CLASS','defaultContent':''}
+            ,{'class':'m-w-4 w-10', 'title':'삭제','data':'HM_IDX','render':function(data,type,full,meta){
+                if(full.HM_DEFAULT == '1'){
                     return '';
                 }else{
-                    return '<a class="btn btn-sm badge-danger" onclick="deleteMainsection('+data+')">삭제</a>';
+                    return '<a class="btn btn-sm badge-danger" onclick="deleteHeaderMenu('+data+')">삭제</a>';
                 }
             }}
-            ,{'class':'m-w-6 w-20','title':'등록일','data':'CREATED_DATE','defaultContent':''}
         ]
         ,initComplete: function( settings, json ){
             var table_id=settings.sTableId;
@@ -222,14 +222,14 @@ $(document).ready(function(){
                     return handle.classList.contains('dragula-handle');
                 }
             }).on('drop', function(el, target, source, sibling){
-                var groupList=$('input[name=MS_IDX][shop='+$(el).find('input[name=MS_IDX]').attr('shop')+']');
+                var groupList=$('input[name=HM_IDX][shop='+$(el).find('input[name=HM_IDX]').attr('shop')+']');
                 var param='param=param';
                 for(var i=0;i<groupList.length;i++){
                     param+='&idxs='+$(groupList[i]).val();
                 }
 
                 $.ajax({
-                    url:'/design/mainsection/order.ajax'
+                    url:'/design/headerMenu/order.ajax'
                     ,type:'post'
                     ,data:param
                 }).always(function(res){
@@ -244,13 +244,13 @@ $(document).ready(function(){
             var row_cnt=0;
             var last_shop_idx=-1;
             api.ajax.json().data.forEach(function(full){
-                if(last_shop_idx!=full.MS_SHOP_IDX){
+                if(last_shop_idx!=full.HM_SHOP_IDX){
                     $(rows).eq(row_cnt).before(
                         '<tr class="group"><th colspan="'+(colLength)+'">'+full.SHOP_NAME+'</th>'
                         +'</tr>'
                     );
                 }
-                last_shop_idx=full.MS_SHOP_IDX;
+                last_shop_idx=full.HM_SHOP_IDX;
                 row_cnt++;
             });
         }
@@ -263,37 +263,36 @@ $(document).ready(function(){
             alert('분양몰을 선택해주세요.');
             return false;
         }
-        $('#mainsectionTable').DataTable().page('first').ajax.url('/design/mainsection.dataTable?' + $('#searchForm').serialize()).load(null, false);
+        $('#gnbMenuTable').DataTable().page('first').ajax.url('/design/headerMenu.dataTable?' + $('#searchForm').serialize()).load(null, false);
     }
-    function mainSectionPop(msIdx){
+    function headerMenuPop(hmIdx){
         var shopIdx = $('select[name="shopIdx"]').val();
-        var focusPopup = window.open('/design/mainsection/'+msIdx+'/'+shopIdx, 'mainsectionNew', 'width=1000, height=900, scrollbars=yes, resizable=yes');
+        var focusPopup = window.open('/design/headerMenu/'+hmIdx+'/'+shopIdx, 'headerMenuNew', 'width=1000, height=300, scrollbars=yes, resizable=yes');
         focusPopup.focus();
     }
-    function toggleMainSectionDisplay(msIdx){
+    function toggleHeaderMenuDisplay(hmIdx){
         $.ajax({
-            url:'/design/mainsection/toggle.ajax',
+            url:'/design/headerMenu/toggle.ajax',
             type:'post',
             data:{
-                msIdx: msIdx
+                hmIdx: hmIdx
             },
             success:function(res){
-                $('#mainsectionTable').DataTable().ajax.reload();
+                $('#gnbMenuTable').DataTable().ajax.reload();
             }
             ,error:function(){}
         })
     }
-
-    function deleteMainsection(msIdx){
-        if(confirm("메인섹션을 삭제하시겠습니까?")){
+    function deleteHeaderMenu(hmIdx){
+        if(confirm("GNB 메뉴를 삭제하시겠습니까?")){
             $.ajax({
-                url:'/design/mainsection/delete.ajax',
+                url:'/design/headerMenu/delete.ajax',
                 type:'post',
                 data:{
-                    msIdx: msIdx
+                    hmIdx: hmIdx
                 },
                 success:function(res){
-                    $('#mainsectionTable').DataTable().ajax.reload();
+                    $('#gnbMenuTable').DataTable().ajax.reload();
                 }
                 ,error:function(){}
             })

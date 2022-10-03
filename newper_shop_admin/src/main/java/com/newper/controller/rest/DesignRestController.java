@@ -3,8 +3,11 @@ package com.newper.controller.rest;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
+import com.newper.exception.MsgException;
+import com.newper.mapper.HeaderMenuMapper;
 import com.newper.mapper.MainSectionMapper;
 import com.newper.service.DesignService;
+import com.newper.service.HeaderMenuService;
 import com.newper.service.MainsectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +29,9 @@ public class DesignRestController {
 
     private final DesignService designService;
     private final MainsectionService mainsectionService;
+    private final HeaderMenuService headerMenuService;
     private final MainSectionMapper mainsectionMapper;
+    private final HeaderMenuMapper headerMenuMapper;
 
     @PostMapping(value = "test.dataTable")
     public ReturnDatatable testDt(){
@@ -50,7 +55,7 @@ public class DesignRestController {
         designService.shopDesignUpdate(paramMap);
 
         rm.setMessage("수정 완료");
-        rm.put("loc", "/design/pop/design/"+shopIdx);
+        rm.setLocation("/design/pop/design/"+shopIdx);
 
         return rm;
     }
@@ -59,6 +64,10 @@ public class DesignRestController {
     @PostMapping("mainsection.dataTable")
     public ReturnDatatable mainsection(ParamMap paramMap){
         ReturnDatatable rd = new ReturnDatatable("메인섹션 관리");
+
+        if(!paramMap.containsKey("shopIdx") || paramMap.get("shopIdx").equals("")){
+            throw new MsgException("분양몰을 선택해주세요.");
+        }
 
         List<Map<String, Object>> list = mainsectionMapper.selectMainSectionDatatable(paramMap.getMap());
         Map<String,Object> countMap = mainsectionMapper.countMainSectionDatatable(paramMap.getMap());
@@ -69,7 +78,7 @@ public class DesignRestController {
     }
     /** mainsection insert/update */
     @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}.load", "mainsection/new/{shopIdx}.load"})
-    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx,@PathVariable("shopIdx") Long shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
+    public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx,@PathVariable("shopIdx") Integer shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
         ModelAndView mav = new ModelAndView("main/alertMove");
 
         if(msIdx != null){
@@ -110,5 +119,63 @@ public class DesignRestController {
         return rm;
     }
 
+    /** GNB 메뉴 dataTables*/
+    @PostMapping("headerMenu.dataTable")
+    public ReturnDatatable mainMenuDataTables(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("GNB메뉴 관리");
 
+        if(!paramMap.containsKey("shopIdx") || paramMap.get("shopIdx").equals("")){
+            throw new MsgException("분양몰을 선택해주세요.");
+        }
+
+        List<Map<String, Object>> list = headerMenuMapper.selectMainMenuDatatable(paramMap.getMap());
+        Map<String,Object> countMap = headerMenuMapper.countMainMenuDatatable(paramMap.getMap());
+
+        rd.setData(list);
+        rd.setRecordsTotal(Long.parseLong(String.valueOf(countMap.get("CNT"))));
+        return rd;
+    }
+    /** GNB 메뉴 insert/update */
+    @PostMapping(value = {"headerMenu/{hmIdx}/{shopIdx}.ajax","headerMenu/new/{shopIdx}.ajax"})
+    public ReturnMap headerMenuInsertUpdate(@PathVariable(required = false) Integer hmIdx, @PathVariable("shopIdx") Integer shopIdx, ParamMap paramMap){
+        ReturnMap rm = new ReturnMap("");
+
+        if(hmIdx != null){
+            paramMap.put("hmIdx",hmIdx);
+            headerMenuService.headerMenuUpdate(paramMap);
+            rm.setMessage("수정 완료");
+        }else{
+            hmIdx = headerMenuService.headerMenuSave(paramMap);
+            rm.setMessage("생성 완료");
+        }
+        rm.setLocation("/design/headerMenu/"+hmIdx+"/"+shopIdx);
+        return rm;
+    }
+
+
+    /** GNB 메뉴(헤더메뉴) 순서 변경*/
+    @PostMapping("headerMenu/order.ajax")
+    public ReturnMap mainMenuOrder(Integer[] idxs){
+        ReturnMap rm = new ReturnMap();
+        headerMenuService.headerMenuOrder(idxs);
+        return rm;
+    }
+
+    /** GNB 메뉴(헤더메뉴) 노출상태 토글 */
+    @PostMapping("headerMenu/toggle.ajax")
+    public ReturnMap headerMenuDisplayToggle(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        headerMenuService.headerMenuDisplayToggle(paramMap);
+        return rm;
+    }
+
+    /** GNB 메뉴 delete*/
+    @PostMapping("headerMenu/delete.ajax")
+    public ReturnMap headerMenuDelete(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        String msg = headerMenuService.headerMenuDelete(paramMap);
+
+        rm.setMessage(msg);
+        return rm;
+    }
 }
