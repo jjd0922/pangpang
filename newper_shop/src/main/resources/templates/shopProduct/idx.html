@@ -13,6 +13,7 @@
 
     <!-- 로그인 모달창 -->
     <th:block th:replace="part/modal :: login-modal"></th:block>
+    <th:block th:replace="part/modal :: nonMemberLogin-modal"></th:block>
 
     <!-- 좌측 상단 해당 페이지 메뉴 경로 -->
     <div class="container">
@@ -1315,10 +1316,14 @@
             $('#spoForm input[name=login]').val('true');
             $('#spoForm').submit();
           }else{
-            $('#spoForm input[name=login]').val('false');
-            //비회원
-            alert('비회원 주문 modal');
+              //비회원 주문 모달
+              nonMemberLoginModal.show();
           }
+        }
+        //비회원 구매
+        function orderSpoNonMember(){
+            $('#spoForm input[name=login]').val('false');
+            $('#spoForm').submit();
         }
     </script>
 

@@ -177,7 +177,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-prepend">
-                        <span class="input-group-text">노출순서 <br> <i class="icon-info22 small ml-1 opacity-80" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="행의 노출 순서를 100단위로 지정해야합니다."></i></span>
+                        <span class="input-group-text">노출순서 <br> <i class="icon-info22 small ml-1 opacity-90" data-popup="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="행의 노출 순서를 100단위로 지정해야합니다."></i></span>
                     </span>
                     <input type="number" class="form-control" name="msbnOrder" min="100" th:value="${mainSectionBanners != null}? ${mainSectionBanners?.get(i-1).msbnOrder} : ''">
                 </div>
@@ -262,7 +262,7 @@
         <a onclick="openShopProductCategoryModal()" class="btn btn-sm btn-primary ml-1">추가</a>
         <a class="btn btn-sm btn-danger ml-1" onclick="resetShopProduct()">전체 삭제</a>
     </legend>
-    <th:block th:if="${mainSectionSps != null and not mainSectionSps.isEmpty }">
+    <th:block th:if="${shopCategories != null and not shopCategories.isEmpty }">
         <a class="btn btn-sm btn-primary allCate" id="allCate" th:onclick="sortCategory('')">전체</a>
         <th:block th:each="shopCategory : ${shopCategories}">
             <a class="btn btn-sm btn-primary" th:text="${shopCategory.scateName}" th:onclick="|sortCategory(${shopCategory.scateIdx})|"></a>

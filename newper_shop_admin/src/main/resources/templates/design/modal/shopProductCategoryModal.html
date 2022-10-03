@@ -33,6 +33,11 @@
 <script th:inline="javascript">
     function openShopProductCategoryModal(){
 
+        if(!$('#allCate').hasClass("allCate")){
+            alert('전체 카테고리 조회 후 추가해주세요.');
+            return false;
+        }
+
         $('#shopProductCategoryModal').modal('show');
 
         initShopProductCategoryModalTable('');

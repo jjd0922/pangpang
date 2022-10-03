@@ -3,6 +3,7 @@ package com.newper.service;
 import com.newper.constant.OState;
 import com.newper.constant.PayState;
 import com.newper.constant.PhResult;
+import com.newper.constant.PhType;
 import com.newper.entity.Orders;
 import com.newper.entity.Payment;
 import com.newper.entity.PaymentHistory;
@@ -10,6 +11,7 @@ import com.newper.exception.MsgException;
 import com.newper.exception.NoRollbackException;
 import com.newper.iamport.IamportApi;
 import com.newper.mapper.IamportMapper;
+import com.newper.mapper.PaymentMapper;
 import com.newper.repository.PaymentHistoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -26,6 +28,16 @@ public class PaymentService {
 
     private final PaymentHistoryRepo paymentHistoryRepo;
     private final IamportMapper iamportMapper;
+    private final PaymentMapper paymentMapper;
+
+    /**결제결과 저장*/
+    @Transactional
+    public void savePaymentResult(String oCode, PhType phType){
+        Map<String, Object> phMap = paymentMapper.selectPaymentHistoryRes(oCode, phType.name());
+        if (phMap.get("PH_RES") == null) {
+            this.savePaymentResult(Long.parseLong(phMap.get("PH_IDX") + ""));
+        }
+    }
 
     /**결제결과 저장*/
     @Transactional(noRollbackFor = {NoRollbackException.class})
@@ -64,6 +76,17 @@ public class PaymentService {
                 if (code.equals("0")) {
                     JSONObject jo_response = (JSONObject)jo.get("response");
 
+                    //가상계좌 (결제 결과 상관없이 update. 결제 결과는 아래서 update)
+                    if ("vbank".equals((String) jo_response.get("pay_method"))) {
+                        payment.setPayState(PayState.WAIT);
+                        orders.setOTemp(true);
+
+                        payment.putPayJson("vbank_code", jo_response.get("vbank_code"));
+                        payment.putPayJson("vbank_name", jo_response.get("vbank_name"));
+                        payment.putPayJson("vbank_num", jo_response.get("vbank_num"));
+                        payment.putPayJson("vbank_holder", jo_response.get("vbank_holder"));
+                    }
+
                     String status = jo_response.get("status")+"";
                     //결제 성공
                     if(status.equals("paid")){
@@ -89,12 +112,7 @@ public class PaymentService {
                         paymentHistory.setPhResult(PhResult.FAIL);
                         payment.setPayState(PayState.FAIL);
                     }else if(status.equals("ready")){
-                        Map<String, Object> ipmMap = iamportMapper.selectIamportMethodDetail(payment.getPayIpmIdx());
-                        //가상계좌
-                        if( "vbank".equals((String)ipmMap.get("IPM_VALUE"))){
-                            payment.setPayState(PayState.REQ);
-                            orders.setOTemp(true);
-                        }
+
                     }
                 }
             }

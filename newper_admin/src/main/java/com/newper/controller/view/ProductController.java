@@ -9,10 +9,7 @@ import com.newper.entity.GoodsStock;
 import com.newper.entity.Product;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
-import com.newper.repository.CategoryRepo;
-import com.newper.repository.CompanyRepo;
-import com.newper.repository.GoodsStockRepo;
-import com.newper.repository.ProductRepo;
+import com.newper.repository.*;
 import com.newper.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -39,6 +36,7 @@ public class ProductController {
     private final ProductRepo productRepo;
     private final CompanyRepo companyRepo;
     private final GoodsStockRepo goodsStockRepo;
+    private final CompanyDeliveryRepo companyDeliveryRepo;
 
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
@@ -273,7 +271,7 @@ public class ProductController {
 
         mav.addObject("com",com);
         mav.addObject("product", product);
-
+        mav.addObject("template", companyDeliveryRepo.findById(product.getCompanyDelivery().getCdIdx()).get());
         return mav;
     }
 

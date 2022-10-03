@@ -24,6 +24,7 @@ public class CustomerRestController {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
 
+    /**회원가입처리*/
     @PostMapping("join.ajax")
     public ReturnMap join(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
@@ -48,6 +49,17 @@ public class CustomerRestController {
         return rm;
     }
 
+    /** 비밀번호 확인 */
+    @PostMapping("pwdCheck.ajax")
+    public ReturnMap pwdCheck(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+
+        String pw = paramMap.getString("pw");
+        boolean result = customerService.pwdCheck(pw);
+        rm.put("result", result);
+        return rm;
+    }
+
     /** 아이디/비밀번호 찾기 */
     @PostMapping("find/{type}.ajax")
     public Map<String,Object> findId(@PathVariable("type") String type, ParamMap paramMap) {
@@ -58,6 +70,15 @@ public class CustomerRestController {
             }
         }
         return map;
+    }
+
+    /** 마이페이지 > 회원정보수정 > 비밀번호 변경*/
+    @PostMapping("changePw.ajax")
+    public ReturnMap changePw(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        customerService.changePw(paramMap);
+        rm.setMessage("비밀번호 변경이 완료되었습니다.");
+        return rm;
     }
 
 }

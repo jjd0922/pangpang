@@ -113,9 +113,9 @@ public class Orders {
     /** 결제시 사용할 주문 제목 가져오기*/
     public String getOrderPaymentTitle(){
         List<OrderGs> orderGsList = getOrderGs();
-        Set<String> ogSpo = new HashSet<>();
+        Set<Long> ogSpo = new HashSet<>();
         for (OrderGs gs : orderGsList) {
-            ogSpo.add(gs.getOgSpo());
+            ogSpo.add(gs.getOrderGsGroup().getOggIdx());
         }
 
         return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (ogSpo.size()-1)+"건";

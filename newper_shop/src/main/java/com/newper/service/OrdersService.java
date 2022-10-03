@@ -38,9 +38,8 @@ public class OrdersService {
     private final PaymentRepo paymentRepo;
     private final PaymentHistoryRepo paymentHistoryRepo;
     private final IamportMapper iamportMapper;
-    private final ShopProductOptionRepo shopProductOptionRepo;
+    private final OrderGsGroupRepo orderGsGroupRepo;
     private final ShopProductService shopProductService;
-    private final PaymentService paymentService;
 
     @Autowired
     private ShopSession shopSession;
@@ -69,7 +68,7 @@ public class OrdersService {
 
         List<OrderGs> orderGsList = new ArrayList<>();
         Map<ShopProduct, List<OrdersSpoDTO>> spoList = shopProductService.selectOrdersInfo(paramMap);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+
         int usedPoint = 0;
         int usedMileage = 0;
         int delivery = 0;
@@ -77,17 +76,22 @@ public class OrdersService {
         for (ShopProduct shopProduct : spoList.keySet()) {
             for (OrdersSpoDTO dto : spoList.get(shopProduct)) {
                 for (int i = 0 ;i < dto.getCnt(); i++) {
+                    OrderGsGroup ogg = OrderGsGroup.builder()
+                            .oggSpo(dto.getVal().replace("spo",""))
+                            .oggCnt(i+1)
+                            .build();
                     for (ShopProductOption spo : dto.getSpoList()) {
                         OrderGs orderGs = OrderGs.builder()
                                 .orders(orders)
                                 .shopProductOption(spo)
                                 .ogPrice(spo.getSpoPrice())
-                                .ogSpo(dto.getVal()+"|"+i)
                                 .build();
-                        orderGsList.add(orderGs);
+                        ogg.addOrderGs(orderGs);
 
+                        orderGsList.add(orderGs);
                         product_price += spo.getSpoPrice();
                     }
+                    orderGsGroupRepo.save(ogg);
                 }
             }
         }
@@ -95,10 +99,12 @@ public class OrdersService {
 
         int ipm_idx = paramMap.getInt("ipm_idx");
         Payment payment = Payment.builder()
-                .payPrice(product_price - usedPoint - usedMileage + delivery)
-                .payProductPrice(product_price - usedPoint - usedMileage)
+                .payPrice(product_price)
+                .payPoint(usedPoint)
+                .payMileage(usedMileage)
                 .payDelivery(delivery)
-//                .payMileage()
+//                .payCouponPrice()
+//                .payCouponDelivery()
                 .payIpmIdx(ipm_idx)
                 .build();
 
@@ -120,6 +126,7 @@ public class OrdersService {
         if(ipmMap == null){
             throw new MsgException("지원하지 않는 결제수단입니다");
         }
+        payment.putPayJson("pay_method", ipmMap.get("IPM_NAME"));
 
         IamportReq iamportReq = new IamportReq(paymentHistory.getPhIdx(),
                 (String)ipmMap.get("PG"),
@@ -171,18 +178,17 @@ public class OrdersService {
     }
     /** 주문 상세 페이지 데이터 조회. 결제 결과 확인*/
     @Transactional
-    public void selectOrdersDetail(String oCode){
+    public Orders selectOrdersDetail(String oCode){
         Orders orders = ordersRepo.findInfoByoCode(oCode);
-        Payment payment = orders.getPayment();
-        PaymentHistory ph = payment.getLastPaymentHistory(PhType.PAY);
-
-        //결제 결과 없는 경우 insert
-        if (ph.getPhRes() == null) {
-            paymentService.savePaymentResult(ph.getPhIdx());
+        if(!orders.isOTemp()){
+            throw new MsgException("주문 내역이 없습니다");
+        }
+        if(shopSession.getIdx().longValue() != orders.getCustomer().getCuIdx().longValue()){
+            throw new MsgException("접근 권한이 없습니다");
         }
 
-        Map<String, Object> phResMap = ph.getPhResMap();
+        Payment payment = orders.getPayment();
 
-
+        return orders;
     }
 }

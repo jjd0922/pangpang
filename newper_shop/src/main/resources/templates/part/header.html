@@ -1,6 +1,31 @@
 <!--메인헤더-->
 <header th:fragment="main-header" xmlns:th="http://www.w3.org/1999/html">
-    <!--1행 없음-->
+    <!-- 1단 topbar -->
+    <!--<div class="main-header-top sm-display-none">
+        <div class="container">
+            <div class="width-flex-between">
+
+                <th:block th:each="ho, i : ${shop.getHeaderOrders()}">
+                    &lt;!&ndash;/* 1단 좌측 */&ndash;&gt;
+                    <div class="menu-left-grow" th:if="${ho.hoRow == 1} and ${ho.hoCol == 1}">
+                        <th:block th:replace="|/header/${ho.hoType.getClass(ho.hoRow, ho.hoCol)}.html|"></th:block>
+                    </div>
+
+                    &lt;!&ndash;/* 1단 중앙 */&ndash;&gt;
+                    <div class="menu-center-grow" th:if="${ho.hoRow == 1} and ${ho.hoCol == 2}">
+                        <div class="margin-auto">
+                            <th:block th:replace="|/header/${ho.hoType.getClass(ho.hoRow, ho.hoCol)}.html|"></th:block>
+                        </div>
+                    </div>
+
+                    &lt;!&ndash;/* 1단 우측 */&ndash;&gt;
+                    <div class="menu-right-grow" th:if="${ho.hoRow == 1} and ${ho.hoCol == 3}">
+                        <th:block th:replace="|/header/${ho.hoType.getClass(ho.hoRow, ho.hoCol)}.html|"></th:block>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>-->
     <!--2행-->
     <div class="main-header-middle">
         <div class="container">

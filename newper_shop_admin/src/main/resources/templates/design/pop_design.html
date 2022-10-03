@@ -96,6 +96,7 @@
                                                             <option value="body-radius-small" th:selected="${shopDesign?.get('EDGE') == 'body-radius-small'}">조금 둥글리기</option>
                                                             <option value="body-radius-medium" th:selected="${shopDesign?.get('EDGE') == 'body-radius-medium'}">조금 더 둥글리기</option>
                                                             <option value="body-radius-large" th:selected="${shopDesign?.get('EDGE') == 'body-radius-large'}">많이 둥글리기</option>
+                                                            <option value="body-radius-circle" th:selected="${shopDesign?.get('EDGE') == 'body-radius-circle'}">둥글게</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -325,7 +326,7 @@
                 type: 'post',
                 data: new FormData($('#colorForm')[0])
             }).done(function(res){
-                location.href=res.data.loc;
+                location.href=res.location;
             });
         }
     }

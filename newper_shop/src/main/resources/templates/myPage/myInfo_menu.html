@@ -10,7 +10,7 @@
         <li>
             <div class="default-table-title">아이디<span class="color-red">&nbsp;*</span></div>
             <div class="default-table-content">
-                <p class="fixed-id">hong1004</p>
+                <p class="fixed-id" th:text="${customer.cuId}">hong1004</p>
             </div>
         </li>
         <!-- 비밀번호 -->
@@ -26,7 +26,7 @@
         <li>
             <div class="default-table-title">이름<span class="color-red">&nbsp;*</span></div>
             <div class="default-table-content">
-                <input type="text" class="form-control name" maxlength="10" title="이름">
+                <input type="text" class="form-control name" maxlength="10" title="이름" th:value="${customer.cuName}">
             </div>
         </li>
         <!-- 성별 -->
@@ -34,11 +34,11 @@
             <div class="default-table-title">성별</div>
             <div class="default-table-content display-flex">
                 <div>
-                    <input type="radio" id="male" name="gender" value="남성">
+                    <input type="radio" id="male" name="gender" value="남성" th:checked="${customer.cuGender eq T(com.newper.constant.CuGender).M}">
                     <label for="male">남성</label>
                 </div>
                 <div>
-                    <input type="radio" id="female" name="gender" value="여성">
+                    <input type="radio" id="female" name="gender" value="여성" th:checked="${customer.cuGender eq T(com.newper.constant.CuGender).F}">
                     <label for="female">여성</label>
                 </div>
             </div>
@@ -48,63 +48,20 @@
             <div class="default-table-title">생년월일</div>
             <div class="default-table-content">
                 <div class="birth display-flex space-between">
-                    <select name="year" class="form-control">
+                    <select name="year" class="form-control" th:disabled="${customer != null}">
                         <option value="">선택</option>
-                        <option value="1995">1995</option>
-                        <option value="1996">1996</option>
-                        <option value="1997">1997</option>
-                        <option value="1998">1998</option>
-                        <option value="1999">1999</option>
-                        <option value="2000">2000</option>
+                        <option th:each="year: ${#numbers.sequence(1900, #calendars.year(#calendars.createNow()))}"
+                                th:value="${year}" th:text="${year}" th:selected="${year eq customer.cuBirth.getYear()}"></option>
                     </select>
-                    <select name="month" class="form-control">
+                    <select name="month" class="form-control" th:disabled="${customer != null}">
                         <option value="">선택</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        <option th:each="month: ${#numbers.sequence(1,12)}"
+                                th:value="${month}" th:text="${month}" th:selected="${month eq customer.cuBirth.getMonthValue()}"></option>
                     </select>
-                    <select name="day" class="form-control">
+                    <select name="day" class="form-control" th:disabled="${customer != null}">
                         <option value="">선택</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
+                        <option th:each="day: ${#numbers.sequence(1,31)}"
+                                th:value="${day}" th:text="${day}" th:selected="${day eq customer.cuBirth.getDayOfMonth()}"></option>
                     </select>
                 </div>
             </div>
@@ -140,24 +97,24 @@
             <div class="default-table-title">휴대폰 번호<span class="color-red">&nbsp;*</span></div>
             <div class="default-table-content">
                 <div class="display-flex space-between alignItems-center">
-                    <input type="text" id="" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 세자리">
+                    <input type="text" class="form-control phone" maxlength="3" name="phone1" title="휴대폰번호 첫 세자리" th:value="${customer?.cuPhone.split('-')[0]}">
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리">
+                    <input type="text" class="form-control phone" maxlength="4" name="phone2" title="휴대폰번호 중간 네자리" th:value="${customer?.cuPhone.split('-')[1]}">
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리">
+                    <input type="text" class="form-control phone" maxlength="4" name="phone3" title="휴대폰번호 마지막 네자리" th:value="${customer?.cuPhone.split('-')[2]}">
                 </div>
             </div>
         </li>
         <!-- 전화번호 -->
         <li class="phone2">
-            <div class="default-table-title">전화번호<span class="color-red">&nbsp;*</span></div>
+            <div class="default-table-title">전화번호</div>
             <div class="default-table-content">
                 <div class="display-flex space-between alignItems-center">
-                    <input type="text" id="" class="form-control phone" maxlength="3" name="" title="전화번호 지역번호">
+                    <input type="text" class="form-control phone" maxlength="3" name="" title="전화번호 지역번호">
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="" class="form-control phone" maxlength="4" name="" title="전화번호1">
+                    <input type="text" class="form-control phone" maxlength="4" name="" title="전화번호1">
                     <span>&nbsp;-&nbsp;</span>
-                    <input type="text" id="" class="form-control phone" maxlength="4" name="" title="전화번호2">
+                    <input type="text" class="form-control phone" maxlength="4" name="" title="전화번호2">
                 </div>
             </div>
         </li>
@@ -167,15 +124,15 @@
             <div class="default-table-content">
                 <div class="addr-info">
                     <div class="addr-input">
-                        <input type="text" class="form-control zip-code" id="k_address1" title="상세주소">
+                        <input type="text" class="form-control zip-code" id="k_address1" name="post" title="상세주소">
                         <div class="btn btn10 searchAddr-btn">
-                            <a href="javascript:;">우편번호 검색</a>
+                            <a href="javascript:daum_address();">우편번호 검색</a>
                         </div>
                         <input type="checkbox" id="default-addr" title="기본배송지 저장" class="custom-checkbox">
                         <label for="default-addr">기본배송지 저장</label>
                     </div>
                     <div class="form-control mb-5">
-                        <p>서울특별시 송파구 법원로 11길 11</p>
+                        <p id="address">서울특별시 송파구 법원로 11길 11</p>
                     </div>
                     <div class="addr-input">
                         <input type="text" title="상세 주소 입력" class="form-control addr-text" placeholder="상세주소를 입력하세요.">
@@ -187,24 +144,24 @@
     <!-- 동의 -->
     <div class="consent updateInfo-consent">
         <div>
-            <input type="checkbox" id="allConsent" class="custom-checkbox" name="" value="">
+            <input type="checkbox" id="allConsent" class="custom-checkbox" value="">
             <label for="allConsent"><span class="bold font-sm">전체동의</span><span class="color-grey999 font-xxsm">&nbsp;(선택 정보 포함)</span></label>
         </div>
         <div>
             <p>
-                <input type="checkbox" id="joinConsent1" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <input type="checkbox" id="joinConsent1" class="custom-checkbox" attr="agree" opt="essential" checked>
                 <label for="joinConsent1">[필수] 만 14세 이상</label>
             </p>
             <p>
-                <input type="checkbox" id="joinConsent2" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <input type="checkbox" id="joinConsent2" class="custom-checkbox" attr="agree" opt="essential" checked>
                 <label for="joinConsent2">[필수] 이용 약관 동의</label>
             </p>
             <p>
-                <input type="checkbox" id="joinConsent3" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <input type="checkbox" id="joinConsent3" class="custom-checkbox" attr="agree" opt="essential" checked>
                 <label for="joinConsent3">[필수] 개인정보 처리방침 동의</label>
             </p>
             <p>
-                <input type="checkbox" id="joinConsent4" class="custom-checkbox" name="" attr="agree" opt="essential">
+                <input type="checkbox" id="joinConsent4" class="custom-checkbox" attr="agree" opt="essential" checked>
                 <label for="joinConsent4">[필수] 개인정보 제공 동의</label>
             </p>
             <p>
@@ -213,11 +170,11 @@
             </p>
             <div>
                 <p>
-                    <input type="checkbox" id="joinSMS-check" class="custom-checkbox" name="cuMarketingSms" value="" attr="agree" opt="opt">
+                    <input type="checkbox" id="joinSMS-check" class="custom-checkbox" name="cuMarketingSms" value="" attr="agree" opt="opt" th:checked="${customer?.cuMarketingSms}">
                     <label for="joinSMS-check">SMS</label>
                 </p>
                 <p>
-                    <input type="checkbox" id="joinEmail-check" class="custom-checkbox" name="cuMarketingMail" value="" attr="agree" opt="opt">
+                    <input type="checkbox" id="joinEmail-check" class="custom-checkbox" name="cuMarketingMail" value="" attr="agree" opt="opt" th:checked="${customer?.cuMarketingMail}">
                     <label for="joinEmail-check">이메일</label>
                 </p>
             </div>
@@ -226,13 +183,14 @@
     <!-- 버튼 -->
     <div class="join-button-group">
         <div class="btn btn3 semi-bold">
-            <a href="javascript:;">취소</a>
+            <a href="javascript:openMenu();">취소</a>
         </div>
         <div class="btn btn2 semi-bold">
             <a href="javascript:;">회원정보 수정완료</a>
         </div>
     </div>
 
+    <script th:src="@{/js/daum_address.js}"></script>
     <script>
         function updateInfoBtn(menu){
             $.ajax({
@@ -243,6 +201,34 @@
                 $('#myInfoMenu').append(res);
             });
         }
+
+        /** 다음 주소 api사용 */
+        function daum_address() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    $('#k_address1').val(data.zonecode);
+                    $('#address').text(data.address);
+                }
+            }).open();
+        }
+
+        $(document).ready(function () {
+            isCheckedAll('input[opt=opt]', 'joinConsent5');
+            isCheckedAll('input[attr=agree]', 'allConsent');
+        });
+
+        $('#allConsent').change(function () {
+            agreeAll('input[attr=agree]',$(this).prop('checked'));
+        });
+        $('#joinConsent5').change(function () {
+            agreeAll('input[opt=opt]',$(this).prop('checked'));
+        });
+        $('input[opt=opt]').change(function () {
+            isCheckedAll('input[opt=opt]', 'joinConsent5');
+        });
+        $('input[attr=agree]').change(function () {
+            isCheckedAll('input[attr=agree]', 'allConsent');
+        });
     </script>
 </th:block>
 <!-- 회원정보수정 end-->
@@ -513,33 +499,69 @@
         <h2>비밀번호변경</h2>
         <p>고객님의 개인정보 변경을 위해 새로운 비밀번호를 등록하세요.</p>
     </div>
-    <!-- 테이블 -->
-    <ul class="default-table pw-table">
-        <!-- 기존 비밀번호 -->
-        <li>
-            <div class="default-table-title">기존 비밀번호</div>
-            <div class="default-table-content">
-                <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
-            </div>
-        </li>
-        <!-- 새 비밀번호 -->
-        <li>
-            <div class="default-table-title">새 비밀번호</div>
-            <div class="default-table-content joinPW-input-wrap">
-                <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자">
-                <input type="password" class="form-control" maxlength="12" title="비밀번호 확인" placeholder="비밀번호 확인">
-            </div>
-        </li>
-    </ul>
+
+    <form id="changePw">
+        <!-- 테이블 -->
+        <ul class="default-table pw-table">
+            <!-- 기존 비밀번호 -->
+            <li>
+                <div class="default-table-title">기존 비밀번호</div>
+                <div class="default-table-content">
+                    <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자" name="cuPwOld">
+                </div>
+            </li>
+            <!-- 새 비밀번호 -->
+            <li>
+                <div class="default-table-title">새 비밀번호</div>
+                <div class="default-table-content joinPW-input-wrap">
+                    <input type="password" class="form-control" maxlength="12" title="비밀번호" placeholder="비밀번호 영문, 숫자 혼합 8~12자" id="pw" name="cuPw">
+                    <input type="password" class="form-control" maxlength="12" title="비밀번호 확인" placeholder="비밀번호 확인" id="pwConfirm">
+                </div>
+            </li>
+        </ul>
+    </form>
+
     <!-- 버튼 -->
     <div class="join-button-group">
         <div class="btn btn3 semi-bold">
             <a onclick="openMyInfoMenu('updateInfo');">취소</a>
         </div>
         <div class="btn btn2 semi-bold">
-            <a onclick="alert('준비중!')">변경하기</a>
+            <a onclick="changePwd()">변경하기</a>
         </div>
     </div>
+
+    <script>
+        function changePwd() {
+            var pwOld = $('input[name=cuPwOld]');var pw = $('#pw'); var pwConfirm = $('#pwConfirm');
+            var pwRegex = /[0-9a-zA-Z]{8,12}/g;
+            if (pwOld.val() == null || pwOld.val() == '') {
+                alert("기존 비밀번호를 입력해주세요.");
+                pwOld.focus();
+                return ;
+            } else if (pw.val() == null || pw.val() == '') {
+                alert('비밀번호를 입력해주세요.');
+                pw.focus();
+                return ;
+            } else if (!pwRegex.test(pw.val())) {
+                alert('비밀번호는 영문과 숫자를 혼합하여 8~12자로 구성해야합니다.');
+                pw.focus();
+                return ;
+            } else if (pw.val() != pwConfirm.val()) {
+                alert('비밀번호가 일치하지 않습니다.');
+                pwConfirm.focus();
+                return ;
+            }
+            $.ajax({
+                url: '/customer/changePw.ajax'
+                ,type: 'post'
+                ,data: $('#changePw').serialize()
+                ,success: function () {
+                    openMyInfoMenu('updateInfo');
+                }
+            });
+        }
+    </script>
 </th:block>
 <!-- 비밀번호변경 end -->
 

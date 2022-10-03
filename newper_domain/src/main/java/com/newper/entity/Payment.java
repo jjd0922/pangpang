@@ -25,6 +25,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payIdx;
 
+    /** 결제 상태 표기 시에는 getPayStateString() method 사용*/
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payState = PayState.BEFORE;
@@ -32,17 +33,33 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PayState payCancelState = PayState.BEFORE;
     /** 결제 금액 payProductPrice + payDelivery*/
+    private int payTotal;
+    /** 할인 전 상품 금액*/
     private int payPrice;
-    /** 상품 금액*/
-    private int payProductPrice;
+    /** 할인 전 배송비*/
     private int payDelivery;
+    /** 사용 예치금*/
+    private int payPoint;
+    /** 사용 마일리지*/
+    private int payMileage;
+    /** 사용 쿠폰 할인 상품금액*/
+    private int payCouponPrice;
+    /** 사용 쿠폰 할인 배송비*/
+    private int payCouponDelivery;
     /** FK IAMPORT_METHOD.IPM_IDX */
     private Integer payIpmIdx;
 
-
-    private int payMileage;
+    /** 적립 마일리지*/
+    private int payPlusMileage;
     /** 적립 완료 여부*/
     private boolean payMileageFlag;
+    /**<pre>
+     * pay_method : 결제수단. iamport_method.ipm_name
+     * vbank_code : 가상계좌 은행코드
+     * vbank_name : 가상계좌 은행명
+     * vbank_num : 가상계좌 계좌번호
+     * vbank_holder : 가상계좌 예금주
+     * </pre>*/
     @Builder.Default
     private Map<String,Object> payJson = new HashMap<>();
 
@@ -108,21 +125,26 @@ public class Payment {
 
         return  paymentHistory;
     }
-    /** 결제 가격 계산*/
+    /** 결제 금액 계산*/
     public void calculatePrice(){
         List<OrderGs> orderGs = getOrders().getOrderGs();
-        int ogPrice = 0;
-        int ogPoint = 0;
-        int ogMileage = 0;
-        int ogCoupon = 0;
+        payPrice = 0;
+        payDelivery = 0;
+        payPoint = 0;
+        payMileage = 0;
+        payCouponPrice = 0;
+        payCouponDelivery = 0;
+
         for (OrderGs ogs : orderGs) {
-            ogPrice += ogs.getOgPrice();
-            ogPoint += ogs.getOgPoint();
-            ogMileage += ogs.getOgMileage();
-            ogCoupon += ogs.getOgCoupon();
+            payPrice  += ogs.getOgPrice();
+            payDelivery += ogs.getOgDelivery();
+            payPoint += ogs.getOgPoint();
+            payMileage += ogs.getOgMileage();
+            payCouponPrice += ogs.getOgCouponPrice();
+            payCouponDelivery += ogs.getOgCouponDelivery();
         }
-        setPayProductPrice(ogPrice - ogPoint - ogMileage - ogCoupon);
-        setPayPrice(payProductPrice + payDelivery);
+
+        setPayTotal(payPrice + payDelivery - payPoint -payMileage - payCouponPrice - payCouponDelivery);
     }
     /** 결제 성공*/
     public void paySuccess(){
@@ -171,4 +193,39 @@ public class Payment {
         }
         return null;
     }
+
+    /** PAY_JSON에 세팅 */
+    public void putPayJson(String key, Object value) {
+        getPayJson().put(key, value);
+    }
+    /** PAY_JSON에 값 가져오기 */
+    public Object getPayJsonValue(String key) {
+        return getPayJson().get(key);
+    }
+    /** PAY_JSON containsKey*/
+    public boolean payJsonContains(String key){
+        return getPayJson().containsKey(key);
+    }
+    /** 가상계좌 정보 문자열*/
+    public String vbankInfo(){
+        if (getPayJson().containsKey("vbank_name")) {
+            return getPayJson().get("vbank_name")+" "+payJson.get("vbank_num")+" 예금주: "+payJson.get("vbank_holder");
+        }else{
+            return "";
+        }
+    }
+    /** 결제 상태 문자열*/
+    public String getPayStateString(){
+        PayState payState = getPayState();
+        if (payState == PayState.WAIT) {
+            return getPayState().getOption();
+        }else{
+            return "결제 "+getPayState().getOption();
+        }
+    }
+    /** 할인 금액 가져오기. 0 = 할인전 상품금액 , 1 = 배송비 , 2 = 할인 */
+    public int discountAmount(){
+        return getPayPoint() + payMileage + payCouponPrice + payCouponDelivery;
+    }
+
 }

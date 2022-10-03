@@ -18,11 +18,11 @@
 </th:block>
 
 <!--페이지 타이틀 : 주문 프로세스-->
-<th:block th:fragment="pageTitle_2(pageMainTitle)">
+<th:block th:fragment="pageTitle_2(pageMainTitle, classOn)">
     <div class="container">
         <div class="page-title color-title flex-between">
             <h1 class="font-weight-500" th:text="${pageMainTitle}">페이지 타이틀</h1>
-            <th:block th:replace="part/menu :: cart-breadcrumb"></th:block>
+            <th:block th:replace="part/menu :: cart-breadcrumb(__${classOn}__)"></th:block>
         </div>
     </div>
 </th:block>
