@@ -51,11 +51,11 @@
                                                 <th th:text="${row}+'단'"></th>
                                                 <td th:each="col : ${#numbers.sequence(1,3)}">
                                                     <div class="input-group">
-                                                        <select class="select" th:attr="name='headerOrder'+${row}+'_'+${col}" onchange="changeHo(this)">
-                                                            <option th:each="value:${T(com.newper.constant.etc.HoType).values()}" th:if="${value.getHoClass(row, col) != null}" th:text="${value.getName()}" th:value="${value}"></option>
+                                                        <select class="select" th:attr="name='headerOrder'+${row}+'_'+${col}">
+                                                            <option th:each="value:${T(com.newper.constant.etc.HoType).values()}" th:if="${value.getHoClass(row, col) != null}" th:text="${value.getName()}" th:value="${value}" th:selected="${hoArr[row-1][col-1]?.hoType eq value}"></option>
                                                         </select>
-<!--                                                        <input type="text" th:placeholder="${hoArr[row-1][col-1]?.hoType.name()} == '헤더형배너'? ${hoArr[row-1][col-1]?.bannerGroup?.bgTitle}:'헤더형 배너 선택'" th:attr="name='bg'+${row}+'_'+${col}" readonly onclick="openBgSelect(this)" style="cursor:pointer;display:none; width: 40%;">-->
-<!--                                                        <input type="hidden" th:attr="name='bgIdx'+${row}+'_'+${col}">-->
+                                                        <input type="text" th:placeholder="${hoArr[row-1][col-1]?.hoType.name()} == '헤더형배너'? ${hoArr[row-1][col-1]?.bannerGroup?.bgTitle}:'헤더형 배너 선택'" th:attr="name='bg'+${row}+'_'+${col}" readonly onclick="openBgSelect(this)" style="cursor:pointer;display:none; width: 40%;">
+                                                        <input type="hidden" th:attr="name='bgIdx'+${row}+'_'+${col}">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -113,7 +113,6 @@
 
 <script th:inline="javascript">
     function saveBtn(){
-        alert('준비중!');
         if(window.confirm('저장 하시겠습니까?')){
             // $.ajax({
             //     url: location.pathname + '.ajax',
@@ -126,7 +125,7 @@
             //     location.reload();
             // });
 
-            $('#headerForm').attr('action', location.pathname+'.ajax');
+            $('#headerForm').attr('action', location.pathname+'.load');
             $('#headerForm').submit();
         }
     }

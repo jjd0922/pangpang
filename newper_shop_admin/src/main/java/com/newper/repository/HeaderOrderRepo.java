@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface HeaderOrderRepository extends JpaRepository<HeaderOrder,Long> {
+public interface HeaderOrderRepo extends JpaRepository<HeaderOrder,Long> {
 
     Optional<HeaderOrder> findByShopAndHoRowAndHoCol(Shop shop, int hoRow, int hoCol);
     List<HeaderOrder> findByShop(Shop shop);

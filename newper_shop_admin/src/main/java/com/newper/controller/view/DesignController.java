@@ -27,7 +27,7 @@ public class DesignController {
     private final ShopRepo shopRepo;
     private final MainSectionRepo mainSectionRepo;
     private final HeaderMenuRepo headerMenuRepo;
-    private final HeaderOrderRepository headerOrderRepository;
+    private final HeaderOrderRepo headerOrderRepo;
     private final MainSectionBannerRepo mainSectionBannerRepo;
     private final MainSectionMapper mainsectionMapper;
     private final ShopMapper shopMapper;
@@ -84,7 +84,7 @@ public class DesignController {
     public ModelAndView shopHeader(@PathVariable Integer shopIdx){
         ModelAndView mav = new ModelAndView("design/pop_header");
 
-        mav.addObject("hoArr", headerOrderRepository.HeaderOrderArray(shopRepo.getReferenceById(shopIdx)));
+        mav.addObject("hoArr", headerOrderRepo.HeaderOrderArray(shopRepo.getReferenceById(shopIdx)));
 
         return mav;
     }

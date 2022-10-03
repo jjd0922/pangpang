@@ -4,11 +4,9 @@ package com.newper.service;
 import com.newper.constant.etc.HoType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.HeaderOrder;
-import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
-import com.newper.repository.HeaderOrderRepository;
-import com.newper.repository.MainSectionRepo;
+import com.newper.repository.HeaderOrderRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepo shopRepo;
-    private final HeaderOrderRepository headerOrderRepository;
+    private final HeaderOrderRepo headerOrderRepo;
 
     /**분양몰 추가*/
     @Transactional
@@ -45,7 +43,7 @@ public class ShopService {
                         .hoRow(i)
                         .hoCol(j)
                         .build();
-                headerOrderRepository.saveAndFlush(headerOrder);
+                headerOrderRepo.saveAndFlush(headerOrder);
             }
         }
     }

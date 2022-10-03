@@ -9,7 +9,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.HeaderOrder;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
-import com.newper.repository.HeaderOrderRepository;
+import com.newper.repository.HeaderOrderRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class DesignService {
 
     private final ShopRepo shopRepo;
-    private final HeaderOrderRepository headerOrderRepository;
+    private final HeaderOrderRepo headerOrderRepo;
 
     /** 디자인 update*/
     @Transactional
@@ -63,7 +63,7 @@ public class DesignService {
 
         for(int i=1;i<=3;i++){
             for(int k=1;k<=3;k++){
-                HeaderOrder updateHo = headerOrderRepository.findByShopAndHoRowAndHoCol(shop, i,k).orElseGet(()-> {
+                HeaderOrder updateHo = headerOrderRepo.findByShopAndHoRowAndHoCol(shop, i,k).orElseGet(()-> {
                     return HeaderOrder.builder()
                             .shop(shop)
                             .build();
@@ -77,20 +77,10 @@ public class DesignService {
 
                 if(StringUtils.hasText(hoType_value)){
                     hoType = HoType.valueOf(hoType_value);
-                    if(hoType == HoType.헤더형배너){
-                        Long bgIdx = paramMap.getLong("bgIdx" + i + "_" + k, true);
-                        if(bgIdx == null){
-                            //헤더형 배너로 타입 변경 후 모달로 배너그룹 선택하지 않았을 때
-                            //기존 헤더값 유지 인경우도 bgIdx == null이므로 db에 type으로 체크
-                            if (updateHo.getHoType() != HoType.헤더형배너) {
-                                hoType=HoType.없음;
-                            }
-                        }
-                    }
                 }
                 updateHo.setHoType(hoType);
 
-                headerOrderRepository.saveAndFlush(updateHo);
+                headerOrderRepo.saveAndFlush(updateHo);
             }
         }
     }
