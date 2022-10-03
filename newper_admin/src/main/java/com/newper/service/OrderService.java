@@ -228,7 +228,7 @@ public class OrderService {
                 orderGs.setOgPrice(shopProductOption.getSpoPrice());
                 orderGs.setOgPoint(Integer.parseInt(paramMap.onlyNumber("OG_POINT_"+spo_idx)));
                 orderGs.setOgMileage(Integer.parseInt(paramMap.onlyNumber("OG_MILEAGE_"+spo_idx)));
-                orderGs.setOgCoupon(Integer.parseInt(paramMap.onlyNumber("OG_COUPON_"+spo_idx)));
+                orderGs.setOgCouponPrice(Integer.parseInt(paramMap.onlyNumber("OG_COUPON_"+spo_idx)));
 
                 price = price + shopProductOption.getSpoPrice();
                 delivery = delivery + shopProductOption.getGoodsStock().getProduct().getCompanyDelivery().getCdFee();
@@ -239,8 +239,8 @@ public class OrderService {
         }
 
         Payment payment = paramMap.mapParam(Payment.class);
-        payment.setPayPrice(0);
-        payment.setPayProductPrice(price);
+        payment.setPayTotal(0);
+        payment.setPayPrice(price);
         payment.setPayDelivery(delivery);
         payment.setPayMileage(mileage);
         payment.setPayJson(null);
