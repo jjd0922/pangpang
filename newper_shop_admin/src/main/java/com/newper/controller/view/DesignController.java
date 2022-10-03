@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,10 +132,20 @@ public class DesignController {
                 }
                 List<Map<String,Object>> mainSectionSps = mainsectionMapper.selectMainSectionShopProductCategoryByMsIdx(msIdx,scateIdx);
                 mav.addObject("mainSectionSps", mainSectionSps);
+
             }
+            List<ShopCategory> shopCategories = shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0);
+            for(int i=0;i<shopCategories.size();i++){
+                Map<String,Object> map = new HashMap<>();
+                map.put("scateIdx", shopCategories.get(i).getScateIdx());
+                map.put("msIdx",msIdx);
+
+                Map<String,Object> cntMap = mainsectionMapper.selectMainSectionSpCategoryCount(map);
+                String cnt = cntMap.get("CNT")+"";
+                shopCategories.get(i).setScateName(shopCategories.get(i).getScateName()+"("+cnt+")");
+            }
+            mav.addObject("shopCategories", shopCategories);
         }
-        List<ShopCategory> shopCategories = shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0);
-        mav.addObject("shopCategories", shopCategories);
 
         return mav;
     }

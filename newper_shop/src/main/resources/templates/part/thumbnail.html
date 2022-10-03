@@ -42,6 +42,50 @@
         </div>
     </div>
 </th:block>
+<!--썸네일 세로형 (map 데이터 반환형)-->
+<th:block th:fragment="thumbnail-default-map(shopProduct)">
+    <div class="thumbnail">
+        <div class="item-img">
+            <a th:href="@{|/shopProduct/${shopProduct?.SP_IDX}|}">
+                <img src="https://images.ajrepository.com/item_images/001060421/001060421M1.jpg" alt="">
+            </a>
+        </div>
+
+        <div class="item-info">
+            <div class="item-inner-wrap item-badge-wrap">
+                <div class="item-badge">
+                    <span class="item-condition item-conditionA-2">A급리퍼</span>
+                    <span class="item-condition item-conditionB-1">스크래치</span>
+                </div>
+                <div class="buy-count color-blue">판매수 37</div>
+            </div>
+            <div class="item-title"><a th:href="@{|/shopProduct/${shopProduct?.SP_IDX}|}" th:text="${shopProduct?.SP_NAME}">썸네일 기본형태 : 삼성 노트북3 Pro 대용량 코아i5 SSD 240G S급 클래스</a></div>
+            <div class="item-color">
+                <span><span></span></span>
+                <span><span></span></span>
+                <span><span></span></span>
+            </div>
+            <div class="item-inner-wrap">
+                <div class="item-price">
+                    <p><span class="discount-price" th:text="${#numbers.formatInteger(shopProduct?.SP_MIN_PRICE,0,'COMMA')}">359,000</span>원<span class="real-price" th:text="${#numbers.formatInteger(shopProduct?.SP_MAX_PRICE,0,'COMMA')}">897,000</span></p>
+                </div>
+                <div class="discount-rate">57%</div>
+            </div>
+            <div class="item-inner-wrap">
+                <div class="grade-wrap">
+                    <span class="grade"><i class="star"></i>5.0 (31)</span>
+                    <span>남은수량 4</span>
+                </div>
+                <div class="wish">25<i class="heart"></i></div>
+            </div>
+            <div class="item-footer">
+                <span class="color-blue"><i class="delivery"></i>당일배송</span>
+                &nbsp;
+                <span><i class="card"></i>무이자</span>
+            </div>
+        </div>
+    </div>
+</th:block>
 
 <!--썸네일 세로형 + 남은수량 아이콘 -->
 <th:block th:fragment="thumbnail-defaultQuantity">

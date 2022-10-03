@@ -1,6 +1,5 @@
 package com.newper.mapper;
 
-import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,4 +10,7 @@ public interface ShopProductMapper {
 
     /** ShopProductOption 조회 */
     List<Map<String, Object>> selectShopProductOptionList(long sp_idx);
+
+
+    List<Map<String,Object>> selectscateMainSectionProductList(Map<String,Object> map);
 }
