@@ -1,13 +1,18 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
+import com.newper.entity.Orders;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.CustomerRepo;
+import com.newper.repository.OrderGsRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.geometry.partitioning.BSPTreeVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +35,8 @@ public class MyPageController {
 
     private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
+
+    private Orders orders;
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -95,6 +102,22 @@ public class MyPageController {
     @PostMapping("myOrder/as/{menu}.load")
     public ModelAndView registAS(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
+
+//        mav.addObject("CU_IDX",shopSession.getIdx());
+//        mav.addObject("O_IDX",orders.getOIdx());
+//        long cuIdx = shopSession.getIdx();
+        if(menu.equals("asProductModal")){
+            mav.addObject("CU_IDX",shopSession.getIdx());
+//            mav.addObject("O_IDX",orders.getOIdx());
+            long cuIdx = shopSession.getIdx();
+            List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
+            mav.addObject("orders",list);
+//
+//            for(int i=0;i<list.size();i++){
+//                System.out.println("in~~~~~");
+//                System.out.println(list.get(i).entrySet());
+            }
+
 
         return mav;
     }

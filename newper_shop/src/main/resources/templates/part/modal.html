@@ -192,18 +192,18 @@
 
         $(".login").click(function(){
             $('body').addClass('no-scroll');
-            modal.show();
+            nonMemberLoginModal.show();
             return false;
         });
         // 모달 창 닫기
         $(".nonMemberLoginModal-close").click(function(){
             $('body').removeClass('no-scroll');
-            modal.hide();
+            nonMemberLoginModal.hide();
         });
         // 외부영역 클릭 시 팝업 닫기
         $(document).mousedown(function (e){
-            if(modal.has(e.target).length === 0){
-                modal.hide();
+            if(nonMemberLoginModal.has(e.target).length === 0){
+                nonMemberLoginModal.hide();
                 $('body').removeClass('no-scroll');
             } else {
                 $('body').addClass('no-scroll');
