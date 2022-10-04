@@ -41,5 +41,11 @@ public class CenterController {
         return mav;
     }
 
+    @GetMapping(value = "{type}")
+    public ModelAndView custCenterWithType(@PathVariable("type") String type) {
+        ModelAndView mav = new ModelAndView("custCenter/custCenter");
+        mav.addObject("type", type);
+        return mav;
+    }
 
 }
