@@ -7,7 +7,10 @@
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')" id="selectProductBtn">상품선택</a>
+                    <input type="hidden" name="AS_OG_IDX">
+                    <p class="btn btn-sm btn-info" id="test8" style="display: none"></p>
+
                 </div>
             </div>
         </li>
@@ -114,17 +117,16 @@
             })
         }
 
-
-        function showProductList(){
-            $.ajax({
-
-                url:'/myPage/productList.ajax',
-                type: 'post',
-                data: $('#asProductModal').serialize()
-
-            });
-        }
-
+        //
+        // function showProductList(){
+        //     $.ajax({
+        //
+        //         url:'/myPage/myOrder/as/{menu}.load',
+        //         type: 'post'
+        //
+        //     });
+        // }
+        //
 
 
 
@@ -142,9 +144,7 @@
 
                     $('#commonModal').show();
 
-                    showProductList()
-
-
+                    // showProductList()
                 }
                 ,error:function(){}
             })
@@ -222,7 +222,9 @@
             <div class="table-title">접수하실 상품</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a onclick="openAsProductModal('asProductModal')">상품선택</a>
+                    <a onclick="openAsProductModal('asProductModal')" id="selectProductBtn2">상품선택</a>
+                    <input type="hidden" name="AS_OG_IDX">
+<!--                    <a class="btn btn-sm btn-info" id="test9" style="display: none"></a>-->
                 </div>
             </div>
         </li>
@@ -324,6 +326,12 @@
     ,error:function(){}
     })
     }
+
+
+
+
+
+
     </script>
 
 
@@ -462,7 +470,9 @@
 
 
 <!-- AS접수 상품선택 모달창 -->
+
 <th:block th:fragment="asProductModal">
+<form id="selectForm">
     <div class="asProductModal">
         <h2>주문내역</h2>
         <div class="table-wrap">
@@ -472,23 +482,24 @@
                 <li>
                     <div class="table-title semi-bold">주문번호</div>
                     <div class="table-content display-flex space-between">
-                        <p class="font-xlg semi-bold">2022-08-07-36900</p>
-                        <p class="color-grey333">2022-08-10</p>
+<!--                        <p name="O_IDX" th:text="${orders.O_IDX}"></p>-->
+<!--                        <p class="bold" name="O_DATE" th:text="${orders.O_DATE}"></p>-->
                     </div>
                 </li>
                 <!-- 주문상품 -->
-                <li  th:each="orders:${orders}">
+                <li>
+
                     <div class="table-title semi-bold">주문상품</div>
                     <div class="table-content">
                         <ul class="width-100">
                             <!-- 상품 1 -->
-                            <li class="display-flex alignItems-center width-100">
-                                <input type="checkbox" class="custom-checkbox">
+                            <li class="display-flex alignItems-center width-100"  th:each="order: ${orders}">
+                                <input type="checkbox" class="custom-checkbox" name="OG_IDX" th:value="${order.OG_IDX}"> <!-- 라디오 버튼으로 변경해야함.-->
                                 <div class="display-flex alignItems-center width-100">
                                     <div class="order-item-thumb as-item-thumb">
                                         <a href="javascript:;">
                                             <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                            <p class="font-xsm color-grey999"  name="O_IDX" th:text="${orders.O_IDX}"></p>
+                                            <p class="font-xsm color-grey999" th:text="${order.OG_IDX}"></p>
                                         </a>
                                     </div>
                                     <div class="display-flex space-between width-100 alignItems-center">
@@ -496,7 +507,7 @@
                                             <div>
                                                 <a href="javascript:;">
                                                     <h3 class="font-md bold">
-                                                        <p class="font-xsm color-grey999" name="GS_NAME" th:text="${GS_NAME}"></p>
+                                                        <p class="font-xsm color-grey999" name="GS_NAME">[[${order?.get('GS_NAME')}]]</p>
                                                   </h3>
                                                 </a>
                                             </div>
@@ -508,11 +519,10 @@
                                             <p>1개</p>
                                         </div>
                                         <div class="font-md semi-bold">
-                                            <p  name="GS_PRICE" th:text="${GS_PRICE}"><span class="won">원</span></p>
+                                            <p  name="GS_PRICE">[[${order?.get('GS_PRICE')}]]<span class="won">원</span></p>
                                         </div>
                                     </div>
                                 </div>
-
                             </li>
 <!--                            &lt;!&ndash; 상품 2 &ndash;&gt;-->
 <!--                            <li class="display-flex alignItems-center width-100">-->
@@ -550,6 +560,9 @@
                     </div>
                 </li>
             </ul>
+        </div>
+    </div>
+
             <!-- 기간 만료 테이블 class="expiration" 추가 -->
             <ul class="table table3 expiration">
                 <!-- 주문번호 -->
@@ -634,10 +647,41 @@
                 </li>
             </ul>
         </div>
-        <a onclick="alert('준비중!')">선택완료</a>
+</form>
+        <a onclick="selectProduct()">선택완료</a>
+<!--    <a onclick=" $('#asProductModal').modal('hide');">선택완료</a>-->
     </div>
 
+<script>
+    function selectProduct(){
+        var OG_IDX = $('input:checkbox[name="OG_IDX"]:checked').val();
+        if(OG_IDX == null){
+            alert('주문상품을 선택해주세요.')
+            return false;
+        }
 
+        var GS_NAME = $('input:checkbox[name="OG_IDX"]:checked').parent().find($('p[name="GS_NAME"]')).text();
+
+        $('input[name="AS_OG_IDX"]').val(OG_IDX);
+        console.log(OG_IDX);
+        if (OG_IDX!=null){
+            console.log("here~~~~~~~~~~");
+            $('#selectProductBtn').text(GS_NAME);
+            $('#selectProductBtn2').text(GS_NAME);
+        }else{
+            console.log("bad~~");
+        }
+
+
+
+
+
+        $('#commonModal').hide();
+
+
+    }
+
+</script>
 </th:block>
 
 <th:block th:fragment="otherAsCompanyModal">
@@ -685,8 +729,3 @@
     </div>
 </th:block>
 
-<script>
-
-
-
-</script>
