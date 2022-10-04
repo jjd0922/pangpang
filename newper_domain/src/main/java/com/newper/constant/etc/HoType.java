@@ -13,6 +13,7 @@ public enum HoType {
     ,헤더형배너("헤더형 배너")
     ,주간_PICK("주간 PICK")
     ,없음("없음")
+    ,전시대분류("전시 대분류")
     ;
 
     @Getter
@@ -33,6 +34,19 @@ public enum HoType {
                 case 22: return "middle-logo-center";
                 case 23: return null;
                 case 31: return null;
+                case 32: return null;
+                case 33: return null;
+            }
+        }
+        if (this.equals(HoType.전시대분류)) {
+            switch (row*10+col){
+                case 11: return null;
+                case 12: return null;
+                case 13: return null;
+                case 21: return null;
+                case 22: return null;
+                case 23: return null;
+                case 31: return "bottom-category";
                 case 32: return null;
                 case 33: return null;
             }

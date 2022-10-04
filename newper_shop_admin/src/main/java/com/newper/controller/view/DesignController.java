@@ -83,7 +83,9 @@ public class DesignController {
     @GetMapping(value = "pop/header/{shopIdx}")
     public ModelAndView shopHeader(@PathVariable Integer shopIdx){
         ModelAndView mav = new ModelAndView("design/pop_header");
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰 입니다."));
 
+        mav.addObject("shop", shop);
         mav.addObject("hoArr", headerOrderRepo.HeaderOrderArray(shopRepo.getReferenceById(shopIdx)));
 
         return mav;
