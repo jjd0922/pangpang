@@ -9,7 +9,9 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -37,7 +39,8 @@ public class MainSection extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MsType msType;
     /** 섹션 정보*/
-    private String msJson;
+    @Builder.Default
+    private Map<String,Object> msJson = new HashMap<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mainSection", cascade = CascadeType.ALL)
     @Builder.Default
