@@ -5,6 +5,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Customer;
+import com.newper.entity.Orders;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.MypageService;
@@ -28,6 +29,8 @@ public class MyPageRestController {
     @Autowired
     private ShopSession shopSession;
 
+    private Orders orders;
+
     private final MypageService mypageService;
 
     private final CustomerRepo customerRepo;
@@ -47,6 +50,27 @@ public class MyPageRestController {
 //        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
         return rd;
     }
+
+
+
+    /** 전체주문내역 list */
+    @PostMapping("/selectProduct.ajax")
+    public ReturnDatatable selectProduct(ParamMap paramMap) {
+        System.out.println(paramMap.getMap());
+        ReturnDatatable rd = new ReturnDatatable("전체주문내역");
+        paramMap.put("CU_IDX",shopSession.getIdx());
+        paramMap.put("O_IDX",orders.getOIdx());
+        int cu_idx = paramMap.getInt("CU_IDX");
+        System.out.println("cu_idx = " + cu_idx);
+
+
+
+
+//        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
+        return rd;
+    }
+
+
 
 
     /** AS 등록 처리(뉴퍼마켓 구매제품) */

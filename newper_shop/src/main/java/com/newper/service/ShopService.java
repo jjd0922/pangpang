@@ -1,12 +1,10 @@
 package com.newper.service;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newper.component.ShopComp;
 import com.newper.entity.Domain;
 import com.newper.entity.MainSection;
 import com.newper.entity.Shop;
-import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
@@ -17,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,18 +76,6 @@ public class ShopService {
                 }
                 for(int k=0;k<mainSectionList.get(i).getMainSectionSps().size();k++){
                     mainSectionList.get(i).getMainSectionSps().get(k).getShopProduct().getSpName();
-                }
-                if(mainSectionList.get(i).getMsJson() !=null && !mainSectionList.get(i).getMsJson().equals("")){
-                    ObjectMapper mapper = new ObjectMapper();
-                    String json = mainSectionList.get(i).getMsJson();
-                    try {
-                        Map<String,Object> map = mapper.readValue(json,Map.class);
-                        map.put("msIdx", String.valueOf(mainSectionList.get(i).getMsIdx()));
-                        jsonList.add(map);
-                    }catch (IOException e){
-                        System.out.println(e);
-                        throw new MsgException("잠시 후 다시 시도해주세요.");
-                    }
                 }
             }
 

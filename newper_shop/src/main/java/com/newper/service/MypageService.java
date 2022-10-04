@@ -67,6 +67,12 @@ public class MypageService {
             throw new MsgException("휴대폰번호를 입력해주세요");
         }
 
+        try {
+            long as_og_idx = paramMap.getLong("AS_OG_IDX");
+            as.setOrderGs(orderGsRepo.getReferenceById(as_og_idx));
+        } catch (NumberFormatException nfe) {
+            throw new MsgException("상품을 선택해주세요.");
+        }
 
         String as_name = paramMap.getString("AS_NAME");
         if (as_name == null) {
@@ -75,7 +81,7 @@ public class MypageService {
             as.setAsName(as_name);
         }
 
-        as.setOrderGs(null);
+//        as.setOrderGs(null);
         as.setDeliveryNum(null);
         as.setAsState("");
         as.setAsDate(LocalDate.now());

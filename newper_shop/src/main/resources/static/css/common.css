@@ -1,43 +1,5 @@
 @charset "UTF-8";
 
-/* css reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing:
-    border-box;
-}
-li {
-    list-style: none;
-}
-a {
-    text-decoration: none;
-    color: #333;
-}
-body, html {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-    color:#333;
-    background: #fff;
-}
-.hidden {
-    display: none;
-}
-img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-html {
-    direction: ltr;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    box-shadow: none !important;
-}
-body.no-scroll {
-    overflow: hidden;
-}
-
 /* font */
 @font-face {
     font-family: 'Pretendard';
@@ -92,6 +54,44 @@ body.no-scroll {
     font-weight: 100;
     font-style: normal;
     font-display: swap;
+}
+
+/* css reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing:
+    border-box;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    color: #333;
+}
+body, html {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    color:#333;
+    background: #fff;
+}
+.hidden {
+    display: none;
+}
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+html {
+    direction: ltr;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: none !important;
+}
+body.no-scroll {
+    overflow: hidden;
 }
 
 .font-xxxlg {
@@ -585,22 +585,28 @@ header {
     border-radius: 30px;
 }
 .userMenu ul {
+    padding-right: 20px;
+}
+.userMenu ul {
     display: flex;
 }
 .userMenu ul li>a {
     padding: 0 20px;
     position: relative;
-    color: #999;
+    color: #666;
     font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.userMenu ul li>a.color-blue {
+/*.userMenu ul li>a.color-blue {
+    color: var(--scPoint);
+}*/
+.userMenu ul li.active >a {
     color: var(--scPoint);
 }
-.userMenu ul li:hover >a {
-    color: var(--scPoint);
+.userMenu ul li.active svg path {
+    fill: var(--scPoint);
 }
 .userMenu ul li:last-child>a {
     padding: 0 0 0 20px;
@@ -608,10 +614,10 @@ header {
 .userMenu ul li>a::after {
     content: "";
     display: inline-block;
-    width: 2px;
-    height: 15px;
+    width: 1px;
+    height: 14px;
     position: absolute;
-    bottom: 3px;
+    bottom: 2px;
     right: 0;
     background-color: #d1d1d1;
 }
@@ -1092,7 +1098,7 @@ nav .gnb-ctg-all {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*width: 130px;*/
+    cursor: pointer;
 }
 .thumbnail-icon img {
 	width: auto;
@@ -1103,9 +1109,31 @@ nav .gnb-ctg-all {
 	font-size: 13px;
 	font-weight: 400;
 	letter-spacing: -.75px;
-	margin-top: 2px;
+	margin-top: 1px;
     white-space: nowrap;
 }
+
+/* svg */
+svg {
+    overflow: visible;
+}
+
+.thumbnail-icon svg {
+	width: auto;
+	height: 40px;
+	max-width: 40px;
+}
+.thumbnail-icon svg path {
+    -webkit-transition: all .3s;
+    transition: all .3s ease;
+}
+.thumbnail-icon:active svg path,
+.thumbnail-icon:hover svg path {
+    fill: var(--scPoint);
+    transform: scale(1.1);
+    transform-origin: center bottom;
+}
+
 
 .sticky {
     position: sticky;

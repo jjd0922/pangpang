@@ -10,7 +10,9 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @DynamicUpdate
@@ -50,7 +52,8 @@ public class Shop extends BaseEntity{
     /** 로그인그룹 디스플레이 항목*/
 //    private String shopHdLoginGroup;
     /** 분양몰 디자인 (JsonString)*/
-    private String shopDesign;
+    @Builder.Default
+    private Map<String,Object> shopDesign = new HashMap<>();
 
     /** 도메인 리스트*/
     @Builder.Default
