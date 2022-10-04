@@ -65,6 +65,13 @@ public class Customer {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "couponGroup")
     private List<Coupon> couponList;
 
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        setCuPhone(getCuPhone().replaceAll("[^0-9]", ""));
+    }
+
+
     /** 로그인 성공시 data update*/
     public void login(){
         LocalDateTime now = LocalDateTime.now();
@@ -96,6 +103,11 @@ public class Customer {
         } else {
             setCuGender(CuGender.M);
         }
+    }
+
+    /** 휴대폰 번호 - 붙인 포맷으로 가져오기*/
+    public String getPhoneFormat(){
+        return "010-1234-1234";
     }
 
 }

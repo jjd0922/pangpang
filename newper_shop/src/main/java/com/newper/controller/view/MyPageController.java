@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
+import com.newper.dto.ParamMap;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
@@ -35,6 +36,12 @@ public class MyPageController {
     @PostMapping("{menu}.load")
     public ModelAndView myPageMenu(@PathVariable String menu){
         ModelAndView mav = new ModelAndView("myPage/"+menu);
+
+        return mav;
+    }
+    @PostMapping("modal/{modal}.load")
+    public ModelAndView myPageModal(@PathVariable String modal){
+        ModelAndView mav = new ModelAndView("myPage/myPage_common :: "+modal);
 
         return mav;
     }
@@ -152,11 +159,15 @@ public class MyPageController {
 
     /** 문의내역 하위 메뉴 load */
     @PostMapping("myList/qna/{menu}.load")
-    public ModelAndView myListQnaMenu(@PathVariable(required = false) String menu) {
+    public ModelAndView myListQnaMenu(@PathVariable(required = false) String menu, ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("myPage/myList_menu_qna :: " + menu);
 
         if(menu.equals("qnaModal")){
-            mav.addObject("modalTitle", "1:1문의 수정하기");
+            if(paramMap.containsKey("qnaIdx") && !paramMap.get("qnaIdx").equals("")){
+                mav.addObject("modalTitle", "1:1문의 수정하기");
+            }else{
+                mav.addObject("modalTitle", "1:1문의");
+            }
         }else if(menu.equals("qnaProductModal")){
             mav.addObject("modalTitle", "상품문의 수정하기");
         }

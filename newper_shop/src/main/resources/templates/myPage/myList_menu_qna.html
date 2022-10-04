@@ -7,7 +7,7 @@
             <p><span class="color-red">※</span>&nbsp;&nbsp;언제나 친절/신속하게 답변해드릴 것을 약속드리며, 궁금하신 사항은 문의하기 버튼을 클릭하셔서 문의해주세요!</p>
         </div>
         <div class="btn btn3">
-            <a href="javascript:;">1:1 문의하기</a>
+            <a onclick="qnaInsertModal(null)">1:1 문의하기</a>
         </div>
     </div>
 
@@ -52,7 +52,7 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn2"><a onclick="reviewInsertModal()">수정하기</a></div>
+                        <div class="btn btn2"><a onclick="qnaInsertModal('qnaIdx')">수정하기</a></div>
                         <div class="btn btn8"><a onclick="alert('준비중')">삭제</a></div>
                     </li>
                 </ul>
@@ -81,10 +81,13 @@
     </div>
 
     <script>
-        function reviewInsertModal(){
+        function qnaInsertModal(qnaIdx){
             $.ajax({
                 url: '/myPage/myList/qna/qnaModal.load'
                 ,type:'post'
+                ,data: {
+                    qnaIdx : qnaIdx
+                }
                 ,success:function(res){
 
                     $('.modalContent').empty();
@@ -218,12 +221,36 @@
 </th:block>
 <!-- 상품 문의내역 end-->
 
-<!-- 1:1문의 수정 modal -->
+<!-- 1:1문의 modal -->
 <th:block th:fragment="qnaModal">
     <span th:text="${modalTitle}"></span>
+    <table>
+        <tr>문의하실 상품</tr>
+        <td><a onclick="openProductModal('qnaProduct')">상품 선택</a></td>
+    </table>
 
+    <br>
     <button onclick="$('#commonModal').hide()">취소</button>
+    <br>
     <button onclick="alert('준비중!')">작성완료</button>
+
+    <script>
+        function openProductModal(modal){
+            $.ajax({
+                url:'/myPage/modal/'+modal+'.load'
+                ,type:'post'
+                ,success:function(res){
+
+                    $('#productModalContent').empty();
+                    $('#productModalContent').append(res);
+
+                    $('#commonModal').hide();
+                    $('#productModal').show();
+                }
+                ,error:function(){}
+            })
+        }
+    </script>
 </th:block>
 
 <!-- 상품문의 수정 modal -->
