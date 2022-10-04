@@ -24,7 +24,13 @@ public enum ShopDesign {
     ,THUMBNAIL("썸네일 타입", "")
     ,FOOTER("푸터그룹", "footer-type-a")
     ,SEARCH_BRAND("상품상세 정보상자", "prd-search-bl-sq")
-    ;
+
+
+    ,LOGIN_TYPE("로그인 타입", "ICON")
+    ,SEARCH_DESIGN("검색창 디자인", "header-search-type-a")
+    ,MENU_STYLE("메뉴 현위치 디자인", "menu-style-type-a")
+    ,SHOP_LOGO("분양몰 로고","");
+   ;
     private String option;
     private String defaultValue;
 

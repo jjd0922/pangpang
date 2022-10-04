@@ -58,16 +58,6 @@ public class ShopRestController {
         rm.setMessage("변경 완료");
         return rm;
     }
-    /** 분양몰 디자인 update*/
-    @PostMapping(value = "pop/design/{shopIdx}")
-    public ReturnMap updateShopDesign(@PathVariable Integer shopIdx, ParamMap paramMap){
-        ReturnMap rm = new ReturnMap();
-
-        shopService.shopDesignUpdate(shopIdx, paramMap);
-
-        rm.setMessage("변경 완료");
-        return rm;
-    }
 
     /**Shop DataTable*/
     @PostMapping("shop.dataTable")

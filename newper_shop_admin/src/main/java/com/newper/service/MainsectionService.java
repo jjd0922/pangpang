@@ -7,6 +7,7 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.MsType;
 import com.newper.constant.etc.MsJson;
+import com.newper.constant.etc.ShopDesign;
 import com.newper.dto.ParamMap;
 import com.newper.entity.MainSection;
 import com.newper.entity.MainSectionBanner;
@@ -67,29 +68,10 @@ public class MainsectionService {
         MainSection mainSection = mainSectionRepo.findById(paramMap.getLong("msIdx")).orElseThrow(()-> new MsgException("존재하지 않는 메인섹션 입니다."));
         MainSection mainSectionParam = paramMap.mapParam(MainSection.class);
 
-            try {
-                String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
-                String key;
-                String mainSectionDesignKey;
-                Map<String,Object> msJsonMap = new HashMap<>();
-                for(int i=0;i<paramKeys.length;i++){
-                    key = paramKeys[i];
-                    for(int k=0;k<MsJson.values().length;k++){
-                        mainSectionDesignKey = String.valueOf(MsJson.values()[k]);
-                        if(key.equals(mainSectionDesignKey)){
-                            msJsonMap.put(key,paramMap.get(key));
-                        }
-                    }
-                }
-
-                ObjectMapper om = new ObjectMapper();
-                om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-                String msJson = om.writeValueAsString(msJsonMap);
-                mainSection.setMsJson(msJson);
-            } catch (JsonProcessingException e){
-                System.out.println(e);
-                throw new MsgException("잠시 후 다시 시도해주세요.");
-            }
+        Map<String,Object> jsonMap = mainSection.getMsJson();
+        for (MsJson msJson : MsJson.values()) {
+            jsonMap.put(msJson.name(),paramMap.get(msJson.name()));
+        }
 
         mainSection.setMsName(mainSectionParam.getMsName());
         mainSection.setMsSubName(mainSectionParam.getMsSubName());
@@ -353,34 +335,15 @@ public class MainsectionService {
     @Transactional
     public Long mainsectionSave(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
         MainSection mainSection = paramMap.mapParam(MainSection.class);
-        try {
-            String [] paramKeys = paramMap.keySet().toArray(new String[paramMap.keySet().size()]);
-            String key;
-            String mainSectionDesignKey;
 
-            Map<String,Object> msJsonMap = new HashMap<>();
-            for(int i=0;i<paramKeys.length;i++){
-                key = paramKeys[i];
-                for(int k=0;k<MsJson.values().length;k++){
-                    mainSectionDesignKey = String.valueOf(MsJson.values()[k]);
-                    if(key.equals(mainSectionDesignKey)){
-                        msJsonMap.put(key,paramMap.get(key));
-                    }
-                }
-            }
-
-            ObjectMapper om = new ObjectMapper();
-            om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-            String msJson = om.writeValueAsString(msJsonMap);
-            mainSection.setMsJson(msJson);
-        } catch (JsonProcessingException e){
-            System.out.println(e);
-            throw new MsgException("잠시 후 다시 시도해주세요.");
+        Map<String,Object> jsonMap = new HashMap<>();
+        for (MsJson msJson : MsJson.values()) {
+            jsonMap.put(msJson.name(),paramMap.get(msJson.name()));
         }
 
         int size = mainSectionRepo.findByShop_shopIdx(mainSection.getShop().getShopIdx()).size();
         mainSection.setMsOrder(mainSection.getMsOrder()*(size+1));
-
+        mainSection.setMsJson(jsonMap);
         mainSectionRepo.save(mainSection);
 
         if(mainSection.getMsType().equals(MsType.BANNER)){

@@ -84,12 +84,6 @@ public class ShopService {
         shopRepo.deleteAllByIdInBatch(deleteShopIdxs);
     }
 
-    /** 분양몰 디자인 update*/
-    public void shopDesignUpdate(Integer shopIdx, ParamMap paramMap) {
-        Shop shop = shopRepo.findById(shopIdx).orElseThrow(() -> new MsgException("존재하지 않는 분양몰입니다."));
-
-    }
-
 }
 
 
