@@ -2,6 +2,7 @@ package com.newper.service;
 
 
 import com.newper.constant.etc.HoType;
+import com.newper.constant.etc.ShopDesign;
 import com.newper.dto.ParamMap;
 import com.newper.entity.HeaderOrder;
 import com.newper.entity.Shop;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -31,6 +34,12 @@ public class ShopService {
         shop.setShopMileage(0F);
         shop.setShopBasket("Y");
 
+        Map<String,Object> designMap = new HashMap<>();
+        for(ShopDesign shopDesign : ShopDesign.values()){
+            designMap.put(shopDesign.name(), shopDesign.getDefaultValue());
+        }
+
+        shop.setShopDesign(designMap);
         // shop 먼저 생성
         shopRepo.saveAndFlush(shop);
 
