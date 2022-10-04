@@ -599,11 +599,14 @@ header {
     flex-direction: column;
     align-items: center;
 }
-.userMenu ul li>a.color-blue {
+/*.userMenu ul li>a.color-blue {
+    color: var(--scPoint);
+}*/
+.userMenu ul li.active >a {
     color: var(--scPoint);
 }
-.userMenu ul li:hover >a {
-    color: var(--scPoint);
+.userMenu ul li.active svg path {
+    fill: var(--scPoint);
 }
 .userMenu ul li:last-child>a {
     padding: 0 0 0 20px;
@@ -1124,6 +1127,7 @@ svg {
     -webkit-transition: all .3s;
     transition: all .3s ease;
 }
+.thumbnail-icon:active svg path,
 .thumbnail-icon:hover svg path {
     fill: var(--scPoint);
     transform: scale(1.1);
