@@ -35,17 +35,20 @@ public class DesignService {
         for (ShopDesign shopDesign : ShopDesign.values()) {
             designMap.put(shopDesign.name(),paramMap.get(shopDesign.name()));
         }
-
-
-        System.out.println(shop.getShopDesign().entrySet());
-        System.out.println(designMap.entrySet());
-//        shop.setShopDesign(designMap);
     }
 
     /** 헤더 update*/
     @Transactional
     public void shopHeaderUpdate(ParamMap paramMap) {
         Shop shop = shopRepo.getReferenceById(paramMap.getInt("shopIdx"));
+        Map<String,Object> designMap = new HashMap<>();
+        for (ShopDesign shopDesign : ShopDesign.values()) {
+            if(paramMap.containsKey(shopDesign.name())){
+                designMap.put(shopDesign.name(),paramMap.get(shopDesign.name()));
+            }
+        }
+        shop.getShopDesign().putAll(designMap);
+        shop.setShopHdLoginGroup(paramMap.getList("shopHdLoginGroup"));
 
         for(int i=1;i<=3;i++){
             for(int k=1;k<=3;k++){
