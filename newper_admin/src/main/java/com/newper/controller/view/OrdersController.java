@@ -72,4 +72,10 @@ public class OrdersController {
     }
 
 
+    /** 교환/반품/AS 관리 */
+    @GetMapping("service")
+    public ModelAndView service(){
+        ModelAndView mav = new ModelAndView("orders/service");
+        return mav;
+    }
 }

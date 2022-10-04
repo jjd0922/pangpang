@@ -1,0 +1,381 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="asCheckReport">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">AS검수 리포트 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="col-lg-12" id="ProductDiv">
+                    <form id="asCheckReportForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+
+                                <fieldset class="mb-0">
+                                    <legend>1. 자산정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">검수자산관계번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="cgsIdx" id="cgsIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pIdx" id="pIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="pName" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gIdx" id="gIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">IMEI</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gImei" id="gImei" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">시리얼번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gSerial" id="gSerial" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- 타이틀 -->
+                                <fieldset class="mt-3">
+                                    <legend>2. 예상비용</legend>
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>공정구분</th>
+                                                    <th>예상공정항목</th>
+                                                    <th>예상비용</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>도색</td>
+                                                    <input type="hidden" name="paintIdx">
+                                                    <td><input type="text" name="paintContent" class="form-control"></td>
+                                                    <td><input type="text" name="paintCost" class="form-control text-won"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>수리</td>
+                                                    <input type="hidden" name="fixIdx">
+                                                    <td><input type="text" name="fixContent" class="form-control"></td>
+                                                    <td><input type="text" name="fixCost" class="form-control text-won"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>가공</td>
+                                                    <input type="hidden" name="processIdx">
+                                                    <td><input type="text" name="processContent" class="form-control"></td>
+                                                    <td><input type="text" name="processCost" class="form-control text-won"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend>3. 상품 SPEC정보</legend>
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>SPEC명</th>
+                                                <th>판매SPEC(확정)</th>
+                                                <th>가공SPEC(예정)</th>
+                                                <th>가공SPEC예상비용</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="specListTable">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend>4. 옵션</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션1</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption1" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션2</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption2" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">옵션3</span>
+                                                    </span>
+                                                    <select name="productOption" id="productOption3" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend>5. 첨부파일</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">첨부파일</span>
+                                                    </span>
+                                                    <input type="file" class="form-control" name="gFile" multiple>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-sm btn-primary mt-1" onclick="">사진</a>
+                                </fieldset>
+
+                                <fieldset class="mt-3">
+                                    <legend>6. 메모</legend>
+                                    <div class="row">
+                                        <!-- 입력필드 -->
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">메모</span>
+                                                    </span>
+                                                    <input type="input" class="form-control" name="gMemo">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="updateCheckReport();">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAsReport (id, rowIdx) {
+        $('#asCheckReport').modal('show');
+
+        var dataMap = getDatatablemap(id, rowIdx);
+
+        // 상품 & 자산 정보 세팅
+        $('#cgsIdx').val(dataMap.CGS_IDX);
+        $('#pIdx').val(dataMap.P_IDX);
+        $('#pName').val(dataMap.P_NAME);
+        $('#gIdx').val(dataMap.G_IDX);
+        $('#gImei').val(dataMap.G_IMEI);
+        $('#cgsCost').val(comma(dataMap.CGS_COST));
+        $('#gSerial').val(dataMap.G_SERIAL)
+        $('input[name=gMemo]').val(dataMap.G_MEMO);
+
+
+        
+        //예상 비용 세팅
+        setProcessNeed(dataMap);
+
+        // 상품 SPEC정보
+        setSpec(dataMap);
+
+        //옵션정보
+        setOption(dataMap);
+    }
+
+
+    function setProcessNeed(dataMap) {
+        $('input[name=paintIdx]').val(dataMap.PAINT_IDX)
+        $('input[name=paintContent]').val(dataMap.PAINT_CONTENT);
+        $('input[name=paintCost]').val(dataMap.PAINT_COST);
+
+        $('input[name=fixIdx]').val(dataMap.FIX_IDX)
+        $('input[name=fixContent]').val(dataMap.FIX_CONTENT);
+        $('input[name=fixCost]').val(dataMap.FIX_COST);
+
+        $('input[name=processIdx]').val(dataMap.PROCESS_IDX)
+        $('input[name=processContent]').val(dataMap.PROCESS_CONTENT);
+        $('input[name=processCost]').val(dataMap.PROCESS_COST);
+    }
+
+    //스펙 세팅
+    function setSpec(dataMap) {
+        if(dataMap.CATE_SPEC_LIST != null){
+            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+            $('#specListTable').empty();
+            for (var i = 0; i < specList.length; i++) {
+                var specTr
+                    ='<tr>'
+                    +'<td id="specList'+i+'" class="specListTd">'+specList[i]+'</td>'
+                    +'<input type="hidden" name="specName" value="' + specList[i] + '">'
+                    +'<td><input type="text" specList="'+i+'" id="sellSpec2_'+[i]+'" name="sellSpec2" class="form-control" readonly></td>'
+                    +'<td><input type="text" specList="'+i+'" id="pSpec1_'+[i]+'" name="pSpec1" class="form-control"></td>'
+                    +'<td><input type="text" id="psCost_'+[i]+'" name="psCost" class="form-control text-won"></td>'
+                    +'</tr>';
+
+                $('#specListTable').append(specTr);
+            }
+
+            var specListTd = $('.specListTd');
+            for (var i = 0; i < specListTd.length; i++) {
+                $.ajax({
+                    type: "GET",
+                    url:"/goods/specList.ajax?speclName=" + specListTd[i].innerHTML,
+                    async:false,
+                    success : function(result){
+                        $('input[specList='+i+']').autocomplete({
+                            source: result
+                            ,minLength: 0
+                        });
+                    }
+                });
+            }
+
+            if (dataMap.G_JSON) {
+                var gJson = JSON.parse(dataMap.G_JSON);
+                var sellSpec2 = listNullCheck(gJson.sellSpec2, specList.length);
+                for (var i = 0; i < sellSpec2.length; i++) {
+                    $('#sellSpec2_'+i).val(sellSpec2[i]);
+                }
+            }
+
+            if (dataMap.CGS_JSON != null) {
+                var cgsJson = JSON.parse(dataMap.CGS_JSON);
+                var pSpec1 = listNullCheck(cgsJson.pSpec1, specList.length);
+                var psCost = listNullCheck(cgsJson.psCost, specList.length);
+
+                for (var i = 0; i < pSpec1.length; i++) {
+                    $('#pSpec1_'+i).val(pSpec1[i]);
+                    $('#psCost_'+i).val(psCost[i]);
+                }
+
+            }
+        }
+    }
+
+    function setOption(dataMap) {
+        var options = JSON.parse(dataMap.P_OPTION);
+        for (var i = 0; i < 3; i++) {
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append('<option value="">없음</option>');
+        }
+
+        for (var i = 0; i < options.length; i++) {
+            var text = '';
+            for (var j = 0; j < options[i].values.length; j++) {
+                text += '<option value="' + options[i].title + ':' + options[i].values[j] + '">' + options[i].values[j] +'</option>'
+            }
+            var num = parseInt(i) + 1;
+            $('#productOption' + num).empty();
+            $('#productOption' + num).append(text);
+        }
+
+        var gOption = JSON.parse(dataMap.G_OPTION);
+        $.each(gOption, function (index, value) {
+            var num = parseInt(index) + 1;
+
+            var option = value.title+"\\:"+value.values;
+            $('#productOption'+num+' option[value='+option+']').prop('selected', true);        })
+
+    }
+
+
+    // 각각 검수쪽에서 리포트 등록
+    function updateCheckReport () {
+        textWonRemoveComma();
+
+        $.ajax({
+            type: "POST",
+            url:"/orders/asCheckReport.ajax",
+            processData: false,
+            contentType: false,
+            data: new FormData($('#asCheckReportForm')[0]),
+            async: false,
+            success : function(result){
+                location.reload();
+            }
+        });
+    }
+
+    // 숫자만 입력되도록
+    $(document).on('input', '.text-won', function (event) {
+        inputOnlyNumber($(event.target));
+    });
+</script>
+</html>

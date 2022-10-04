@@ -2,19 +2,24 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
-import com.newper.constant.CateType;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CategoryMapper;
+import com.newper.mapper.ChecksMapper;
+import com.newper.mapper.ProcessMapper;
+import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
+import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.ibatis.annotations.Param;
 import org.hibernate.criterion.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,8 +63,15 @@ public class OrderService {
     private final PaymentRepo paymentRepo;
 
     private final ProductRepo productRepo;
+    private final ProcessNeedRepo processNeedRepo;
+    private final ProcessSpecRepo processSpecRepo;
 
+    private final CheckGoodsRepo checkGoodsRepo;
+    private final GoodsRepo goodsRepo;
     private final DeliveryNumRepo deliveryNumRepo;
+
+    private final ProcessMapper processMapper;
+    private final ChecksMapper checksMapper;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -298,4 +310,145 @@ public class OrderService {
     }
 
 
+    /** AS리포트 등록 **/
+    @Transactional
+    public void asCheckReport(ParamMap paramMap) {
+        Goods goods = goodsRepo.findById(Long.parseLong(paramMap.getString("gIdx"))).get();
+        CheckGoods checkGoods = null;
+        if (paramMap.getIntZero("cgsIdx") == 0) {
+            int cgsCount = checksMapper.selectCheckGoodsCount(goods.getGIdx(), CgsType.AS.name());
+            checkGoods = CheckGoods
+                    .builder()
+                    .goods(goods)
+                    .cgsType(CgsType.AS)
+                    .cgsJson(new HashMap<>())
+                    .cgsCount(cgsCount + 1)
+                    .build();
+            checkGoodsRepo.save(checkGoods);
+        } else {
+            checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
+        }
+
+        Map<String, Object> cgsJson = checkGoods.getCgsJson();
+
+        List<Long> psCost = paramMap.getListLong("psCost");
+        cgsJson.put("psCost", psCost);
+
+        if (paramMap.get("pSpec1") != null) {
+            List<String> pSpec1 = paramMap.getList("pSpec1");
+            cgsJson.put("pSpec1", pSpec1);
+        }
+
+        if (paramMap.get("pSpec2") != null) {
+            List<String> pSpec2 = paramMap.getList("pSpec2");
+            cgsJson.put("pSpec2", pSpec2);
+        }
+
+        checkGoods.setCgsJson(cgsJson);
+        checkGoodsRepo.save(checkGoods);
+
+        paramMap.put("cgsIdx", checkGoods.getCgsIdx());
+
+        // 공정 필요 생성
+        saveProcessNeed(paramMap, PnType.PAINT);
+        saveProcessNeed(paramMap, PnType.FIX);
+        saveProcessNeed(paramMap, PnType.PROCESS);
+
+
+    }
+
+    @Transactional
+    public void saveProcessNeed(ParamMap paramMap, PnType pnType) {
+        String type = pnType.name().toLowerCase();
+        int idx = paramMap.getIntZero(type+"Idx");
+        String content = paramMap.getString(type+"Content");
+        int cost = paramMap.getInt(type+"Cost");
+
+        if (idx == 0 && !content.replaceAll(" ","").equals("") && cost != 0) {
+            int pnCount = processMapper.selectProcessNeedCount(paramMap.getLong("gIdx"), pnType.name());
+            ProcessNeed processNeed = ProcessNeed
+                    .builder()
+                    .goods(goodsRepo.getReferenceById(paramMap.getLong("gIdx")))
+                    .pnType(pnType)
+                    .pnContent(content)
+                    .pnCount(pnCount + 1)
+                    .pnExpectedCost(cost)
+                    .pnRealCost(0)
+                    .pnJson(new HashMap<>())
+                    .pnProcess(PnProcess.BEFORE)
+                    .pnState(PnState.NEED)
+                    .build();
+            processNeedRepo.save(processNeed);
+
+            Map<String, Object> pnJson = new HashMap<>();
+
+            List<Long> psCost = paramMap.getListLong("psCost");
+            pnJson.put("psCost", psCost);
+
+            if (paramMap.get("pSpec1") != null) {
+                List<String> pSpec1 = paramMap.getList("pSpec1");
+                pnJson.put("pSpec1", pSpec1);
+            }
+
+            if (paramMap.get("pSpec2") != null) {
+                List<String> pSpec2 = paramMap.getList("pSpec2");
+                pnJson.put("pSpec2", pSpec2);
+            }
+
+            processNeed.setPnJson(pnJson);
+            processNeed.setCheckGoods(checkGoodsRepo.getReferenceById(paramMap.getInt("cgsIdx")));
+
+
+            if (pnType.equals(PnType.PROCESS)) {
+                saveProcessSpec(paramMap, processNeed);
+            }
+            processNeedRepo.save(processNeed);
+        } else {
+            ProcessNeed processNeed =  processNeedRepo.findById(idx).get();
+            processNeed.setPnContent(content);
+            processNeed.setPnExpectedCost(cost);
+
+            Map<String, Object> pnJson = processNeed.getPnJson();
+
+            List<Long> psCost = paramMap.getListLong("psCost");
+            pnJson.put("psCost", psCost);
+
+            if (paramMap.get("pSpec1") != null) {
+                List<String> pSpec1 = paramMap.getList("pSpec1");
+                pnJson.put("pSpec1", pSpec1);
+            }
+
+            if (paramMap.get("pSpec2") != null) {
+                List<String> pSpec2 = paramMap.getList("pSpec2");
+                pnJson.put("pSpec2", pSpec2);
+            }
+
+            if (pnType.equals(PnType.PROCESS)) {
+                saveProcessSpec(paramMap, processNeed);
+            }
+
+            processNeedRepo.save(processNeed);
+        }
+    }
+
+    @Transactional
+    public void saveProcessSpec(ParamMap paramMap, ProcessNeed processNeed) {
+        List<ProcessSpec> processSpecList = processSpecRepo.findByProcessNeed(processNeed);
+        List<Long> psCost = paramMap.getListLong("psCost");
+        if (processSpecList.size() == 0) {
+            for (int i = 0; i < psCost.size(); i++) {
+                ProcessSpec processSpec = ProcessSpec
+                        .builder()
+                        .processNeed(processNeed)
+                        .psType(PsType.EXPECTED)
+                        .psCost(psCost.get(i).intValue())
+                        .build();
+                processSpecRepo.save(processSpec);
+            }
+        } else {
+            for (int i = 0; i < processSpecList.size(); i++) {
+                processSpecList.get(i).setPsCost(psCost.get(i).intValue());
+            }
+        }
+    }
 }

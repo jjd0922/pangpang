@@ -11,6 +11,7 @@ public enum CgsType implements EnumOption {
 
     IN("입고검수"),
     RE("재검수"),
+    AS("AS검수"),
     OUT("출고검수");
 
     private String option;

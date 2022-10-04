@@ -87,7 +87,7 @@ public class CheckService {
                     .checkGroup(checkGroup)
                     .cgsExpectedCost(0)
                     .cgsRealCost(0)
-                    .cgsType(cgsType.toString())
+                    .cgsType(cgsType)
                     .cgsCount(count + 1)
                     .cgsJson(new HashMap<>())
                     .build();
