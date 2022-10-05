@@ -50,18 +50,22 @@
 
                             <div class="collapse show">
                                 <div class="card-body pt-0">
-                                    <form id="shopCategoryForm">
+                                    <form id="searchForm">
                                         <div class="row">
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">분양몰</label>
-                                                    <select class="form-control form-control-sm select-search" name="SHOP_IDX" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="shopIdx" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option th:each="shop : ${shopList}" th:text="${shop.shopName}" th:value="${shop.shopIdx}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="d-block">섹션명</label>
-                                                    <input class="form-control form-control-sm w-120px" name="MS_NAME" data-placeholder="검색">
+                                                    <label class="d-block">이벤트 카테고리</label>
+                                                    <input class="form-control form-control-sm w-120px" name="egCategory" data-placeholder="검색">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="d-block">이벤트그룹명</label>
+                                                    <input class="form-control form-control-sm w-120px" name="egTitle" data-placeholder="검색">
                                                 </div>
 
                                                 <div class="form-group end">
@@ -84,10 +88,10 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1">신규등록</a>
+                                <a onclick="popEgDetail('new')" class="btn btn-sm btn-primary ml-1">신규등록</a>
                             </div>
 
-                            <table class="table" id="mainsectionTable"></table>
+                            <table class="table" id="eventGroupTable"></table>
 
                         </div>
                     </div>
@@ -124,9 +128,66 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
+    function searchBtn(){
+        $('#eventGroupTable').DataTable().page('first').ajax.url('/board/eventGroup.dataTable?' + $('#searchForm').serialize()).load(null, false);
+    }
+    function popEgDetail(egIdx){
+        var shopIdx = $('select[name="shopIdx"]').val();
+        var focusPopup = window.open('/board/event/'+egIdx+'/'+shopIdx, 'eventDetail', 'width=1000, height=900, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
 <script>
+    $(function(){
+        $('#eventGroupTable').DataTable({
+            dom: '<"datatable-header"Bip><"datatable-scroll"t>',
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            columnDefs: [ {
+                orderable: false,
+                targets:   [0]
+            } ],
+            ordering: false,
+            serverSide: true,
+            ajax:{
+                url:'/board/eventGroup.dataTable?'+$('#searchForm').serialize(),
+                type:'post'
+            },
+            "columns" : [
+                {'class':'select-checkbox m-w-2', 'title':'선택','data':'EG_IDX','defaultContent':'','render': function(data,type,full,meta){
+                    return '';
+                }},
+                {'title':'No','data':'No','render':function(data,type,full,meta){
+                    return meta.settings._iDisplayStart+meta.row+1;
+                }}
+                ,{'title':'분양몰','data':'SHOP_NAME', 'defaultContent':''}
+                ,{'title':'노출상태','data':'EG_DISPLAY', 'defaultContent':'', 'render':function(data,type,full,meta){
+                    if(data != null){
+                        if(data > 0){
+                            return '<span class="badge badge-flat border-info text-info">노출</span>';
+                        }else{
+                            return '<span class="badge badge-flat border-warning text-warning">미노출</span>';
+                        }
+                    }else{
+                        return '';
+                    }
+                }}
+                ,{'title':'이벤트그룹명','data':'EG_TITLE','defaultContent':'', 'render':function(data,type,full,meta){
+                    // return '<a class="btn btn-sm btn-primary" onClick="popEgDetail('+full.EG_IDX+')">'+ellipsisStr(full.EG_TITLE)+'</a>';
+                    return '<a class="btn btn-sm btn-primary" onClick="popEgDetail(1)">상세</a>';
+                }}
+                ,{'title':'이벤트 메뉴','data':'EG_CATEGORY', 'defaultContent':''}
+                ,{'title':'시작일','data':'EG_OPEN_DATE_TIME', 'defaultContent':''}
+                ,{'title':'종료일','data':'EG_CLOSE_DATE_TIME', 'defaultContent':''}
+                ,{'title':'메모','data':'EG_MEMO', 'defaultContent':''}
+                ,{'title':'등록자','data':'CREATED_BY', 'defaultContent':''}
+                ,{'title':'등록일','data':'CREATED_DATE_TIME', 'defaultContent':''}
+            ]
+        });
+    })
 </script>
 </body>
 </html>

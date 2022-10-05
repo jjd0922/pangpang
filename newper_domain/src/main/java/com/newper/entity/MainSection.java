@@ -38,7 +38,11 @@ public class MainSection extends BaseEntity {
     /** 섹션타입. 기획인 경우 배너,상품그룹의 순서 100자리수를 열로 사용 */
     @Enumerated(EnumType.STRING)
     private MsType msType;
-    /** 섹션 정보*/
+    /**
+     * key : value
+     *
+     * DISPLAY_TYPE : 디자인 타입 -> mainsection_msIdx 에서 value 확인
+     * */
     @Builder.Default
     private Map<String,Object> msJson = new HashMap<>();
 

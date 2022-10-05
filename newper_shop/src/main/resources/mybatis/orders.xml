@@ -13,12 +13,14 @@
         FROM
 
             order_gs
-            left join orders on O_IDX=OG_O_IDX
+            left join order_gs_group on OGG_IDX=OG_OGG_IDX
+            left join orders on O_IDX=OGG_O_IDX
             left join shop_product_option on OG_SPO_IDX=SPO_IDX
             left join goods_stock on SPO_GS_IDX=GS_IDX
             left join customer on O_CU_IDX=CU_IDX
         WHERE
             CU_IDX=#{cuIdx}
+            AND O_TEMP=1
 </select>
 
     <select id="selectOrderGsListByComIdx" resultType="map" parameterType="map">
