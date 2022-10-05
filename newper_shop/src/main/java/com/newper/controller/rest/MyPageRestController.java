@@ -35,40 +35,40 @@ public class MyPageRestController {
 
     private final CustomerRepo customerRepo;
 
-    /** 전체주문내역 list */
-    @PostMapping("/productList.ajax")
-    public ReturnDatatable productList(ParamMap paramMap) {
-        System.out.println(paramMap.getMap());
-        ReturnDatatable rd = new ReturnDatatable("전체주문내역");
-        paramMap.put("CU_IDX",shopSession.getIdx());
-        int cu_idx = paramMap.getInt("CU_IDX");
-        System.out.println("cu_idx = " + cu_idx);
+//    /** 전체주문내역 list */
+//    @PostMapping("/productList.ajax")
+//    public ReturnDatatable productList(ParamMap paramMap) {
+//        System.out.println(paramMap.getMap());
+//        ReturnDatatable rd = new ReturnDatatable("전체주문내역");
+//        paramMap.put("CU_IDX",shopSession.getIdx());
+//        int cu_idx = paramMap.getInt("CU_IDX");
+//        System.out.println("cu_idx = " + cu_idx);
+//
+//
+//
+//
+////        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
+//        return rd;
+//    }
 
 
 
-
-//        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
-        return rd;
-    }
-
-
-
-    /** 전체주문내역 list */
-    @PostMapping("/selectProduct.ajax")
-    public ReturnDatatable selectProduct(ParamMap paramMap) {
-        System.out.println(paramMap.getMap());
-        ReturnDatatable rd = new ReturnDatatable("전체주문내역");
-        paramMap.put("CU_IDX",shopSession.getIdx());
-        paramMap.put("O_IDX",orders.getOIdx());
-        int cu_idx = paramMap.getInt("CU_IDX");
-        System.out.println("cu_idx = " + cu_idx);
-
-
-
-
-//        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
-        return rd;
-    }
+//    /** 전체주문내역 list */
+//    @PostMapping("/selectProduct.ajax")
+//    public ReturnDatatable selectProduct(ParamMap paramMap) {
+//        System.out.println(paramMap.getMap());
+//        ReturnDatatable rd = new ReturnDatatable("전체주문내역");
+//        paramMap.put("CU_IDX",shopSession.getIdx());
+//        paramMap.put("O_IDX",orders.getOIdx());
+//        int cu_idx = paramMap.getInt("CU_IDX");
+//        System.out.println("cu_idx = " + cu_idx);
+//
+//
+//
+//
+////        rd.setData(ordersMapper.selectOrderGsListByCuIdx());
+//        return rd;
+//    }
 
 
 
