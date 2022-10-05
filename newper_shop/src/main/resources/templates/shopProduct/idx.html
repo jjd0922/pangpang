@@ -1311,14 +1311,21 @@
         }
         //주문하기
         function orderSpo(){
-          //회원
-          if( $('.nosessionClass').css('display') == 'none' ){
-            $('#spoForm input[name=login]').val('true');
-            $('#spoForm').submit();
-          }else{
-              //비회원 주문 모달
-              nonMemberLoginModal.show();
-          }
+            $.ajax({
+              url:'/login/check.ajax'
+              ,type:'get'
+            }).done(function(res){
+                console.log(res.data.login);
+                //회원
+                if(res.data.login){
+                    $('#spoForm input[name=login]').val('true');
+                    $('#spoForm').submit();
+                }else{
+                    //비회원 주문 모달
+                    //nonMemberLoginModal.show();
+                }
+            });
+
         }
         //비회원 구매
         function orderSpoNonMember(){

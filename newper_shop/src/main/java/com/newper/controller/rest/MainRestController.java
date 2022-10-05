@@ -1,10 +1,13 @@
 package com.newper.controller.rest;
 
+import com.newper.component.ShopSession;
 import com.newper.dto.ReturnMap;
 import com.newper.exception.MsgException;
+import com.newper.exception.NoSessionException;
 import com.newper.service.CustomerService;
 import com.newper.service.ShopService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,8 @@ public class MainRestController {
 
     private final ShopService shopService;
     private final CustomerService customerService;
+    @Autowired
+    private ShopSession shopSession;
 
     /** 쇼핑몰 정보 조회*/
     @PostConstruct
@@ -27,6 +32,7 @@ public class MainRestController {
     public void setShopComp(){
         shopService.setShopComp();
     }
+
     /** 로그인 */
     @PostMapping("login.ajax")
     public ReturnMap login(String id, String pw){
@@ -45,5 +51,15 @@ public class MainRestController {
     @GetMapping("logout.ajax")
     public void logout(HttpServletRequest request){
         request.getSession().invalidate();
+    }
+
+    /** 로그인 체크*/
+    @GetMapping("login/check.ajax")
+    public ReturnMap loginCheck(){
+        ReturnMap rm = new ReturnMap();
+
+        rm.put("login", shopSession.getIdx() != null);
+
+        return rm;
     }
 }
