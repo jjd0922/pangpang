@@ -73,13 +73,13 @@ public class Orders {
     private String oMemo;
 
     /**<pre>
-     * spo : { spoIdx_spoIdx:cnt ...}
+     * title : ogg_spo 이름 외 몇건 (주문명)
      * </pre>*/
     @Builder.Default
     private Map<String,Object> oJson = new HashMap<>();
 
-    @OneToMany(mappedBy = "ogIdx", cascade = CascadeType.ALL)
-    private List<OrderGs> orderGs;
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    private List<OrderGsGroup> orderGsGroupList;
 
     @PrePersist
     @PreUpdate
@@ -110,15 +110,13 @@ public class Orders {
         setOCode(oDate.format(DateTimeFormatter.ofPattern("yyMMdd")) + oTime.format(DateTimeFormatter.ofPattern("HHmm")) + getOIdx());
     }
 
-    /** 결제시 사용할 주문 제목 가져오기*/
-    public String getOrderPaymentTitle(){
-        List<OrderGs> orderGsList = getOrderGs();
-        Set<Long> ogSpo = new HashSet<>();
-        for (OrderGs gs : orderGsList) {
-            ogSpo.add(gs.getOrderGsGroup().getOggIdx());
+    /** oJson.get(key). null일 경우 "" 빈문자열 return*/
+    public Object getOJsonValue(String oJsonKey){
+        if (getOJson().containsKey(oJsonKey)) {
+            return getOJson().get(oJsonKey);
+        }else{
+            return "";
         }
-
-        return orderGsList.get(0).getShopProductOption().getSpoName()+" 외 "+ (ogSpo.size()-1)+"건";
     }
 
     public void setPayment(Payment payment){

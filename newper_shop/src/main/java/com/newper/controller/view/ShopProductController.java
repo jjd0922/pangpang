@@ -46,7 +46,6 @@ public class ShopProductController {
 
         List<Map<String, Object>> spoList = shopProductMapper.selectShopProductOptionList(shopProduct.getSpIdx());
 
-
         // key :spa_idx, value:  spo list
         Map<Object, List<Map<String, Object>>> spa_spo = spoList.stream().collect(Collectors.groupingBy(map -> map.get("SPO_SPA_IDX")));
         mav.addObject("spoMap", spa_spo);
