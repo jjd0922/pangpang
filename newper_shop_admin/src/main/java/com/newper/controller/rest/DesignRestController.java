@@ -88,7 +88,7 @@ public class DesignRestController {
         return rd;
     }
     /** mainsection insert/update */
-    @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}.load", "mainsection/new/{shopIdx}.load"})
+    @PostMapping(value = {"mainsection/{msIdx}/{shopIdx}.ajax", "mainsection/new/{shopIdx}.ajax"})
     public ModelAndView mainsectionInsertUpdate(@PathVariable(required = false) Long msIdx,@PathVariable("shopIdx") Integer shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
         ModelAndView mav = new ModelAndView("main/alertMove");
 
