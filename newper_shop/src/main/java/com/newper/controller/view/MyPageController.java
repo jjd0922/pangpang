@@ -200,9 +200,9 @@ public class MyPageController {
     @PostMapping("myList/review/{menu}.load")
     public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myList_menu_review :: " + menu);
-        if (menu.equals("possibleReview")) {
-            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
-        }
+//        if (menu.equals("possibleReview")) {
+//            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
+//        }
         return mav;
     }
 
