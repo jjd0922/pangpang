@@ -12,8 +12,8 @@ public enum HoType {
     ,메뉴_중앙("메뉴(중앙 정렬)")
     ,헤더내부_배너("헤더내부 배너")
     ,고정_메뉴("고정 메뉴")
-    ,없음("없음")
     ,전체_카테고리_버튼("전체 카테고리 버튼")
+    ,없음("없음")
     ;
 
     @Getter
@@ -99,7 +99,7 @@ public enum HoType {
                 case 22: return "menu-left";
                 case 23: return null;
                 case 31: return "menu-left";
-                case 32: return null;
+                case 32: return "menu-left";
                 case 33: return null;
             }
         }
