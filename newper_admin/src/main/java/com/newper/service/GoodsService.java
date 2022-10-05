@@ -71,7 +71,7 @@ public class GoodsService {
                 .build();
 
         if (product.getPType1().equals(PType1.NORMAL)) {
-            goods.setGState(GState.CHECK_DONE);
+//            goods.setGState(GState.CHECK_DONE);
         }
 
         Goods save = goodsRepo.save(goods);
@@ -298,53 +298,53 @@ public class GoodsService {
         GState gState = GState.valueOf(paramMap.getString("gState"));
         String[] gIdx = paramMap.getString("gIdx").split(",");
         // 재검수 완료 신청시 다른 공정이 있으면 상태값 공정 없으면 자산화 완료
-        if (GState.RE_CHECK_DONE.equals(gState)) {
-            for (int i = 0; i < gIdx.length; i++) {
-                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
-                int check = processMapper.checkProcessNeedOtherByGoods(goods.getGIdx());
-                System.out.println("sadlkfjhaslkd#  " + check);
-                if (check == 0) {
-                    System.out.println("상품화 완료");
-                    goods.setGState(GState.STOCK);
-                    goods.setGStockState(GStockState.STOCK_REQ);
-                } else {
-                    System.out.println("공정공정");
-                    goods.setGState(GState.RE_CHECK_DONE);
-                }
-                Map<String, Object> gJson = goods.getGJson();
-                this.updateGoodsBy(gJson);
-                goods.setGJson(gJson);
-
-                goodsRepo.save(goods);
-            }
-            // 입고 검수 완료시
-        } else if (GState.CHECK_DONE.equals(gState)){
-            for (int i = 0; i < gIdx.length; i++) {
-                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
-
-                // 해당 자산의 상태값이 입고검수중이 아니면
-//                if (!goods.getGState().equals(GState.CHECK_ING)) {
-//                    throw new MsgException("잘못된 접근입니다.");
+//        if (GState.RE_CHECK_DONE.equals(gState)) {
+//            for (int i = 0; i < gIdx.length; i++) {
+//                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+//                int check = processMapper.checkProcessNeedOtherByGoods(goods.getGIdx());
+//                System.out.println("sadlkfjhaslkd#  " + check);
+//                if (check == 0) {
+//                    System.out.println("상품화 완료");
+//                    goods.setGState(GState.STOCK);
+//                    goods.setGStockState(GStockState.STOCK_REQ);
+//                } else {
+//                    System.out.println("공정공정");
+//                    goods.setGState(GState.RE_CHECK_DONE);
 //                }
-
-                goods.setGState(gState);
-                Map<String, Object> gJson = goods.getGJson();
-                this.updateGoodsBy(gJson);
-                goods.setGJson(gJson);
-
-                goodsRepo.save(goods);
-            }
-        } else {
-            // 그외
-            for (int i = 0; i < gIdx.length; i++) {
-                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
-                goods.setGState(gState);
-                Map<String, Object> gJson = goods.getGJson();
-                this.updateGoodsBy(gJson);
-                goods.setGJson(gJson);
-                goodsRepo.save(goods);
-            }
-        }
+//                Map<String, Object> gJson = goods.getGJson();
+//                this.updateGoodsBy(gJson);
+//                goods.setGJson(gJson);
+//
+//                goodsRepo.save(goods);
+//            }
+//            // 입고 검수 완료시
+//        } else if (GState.CHECK_DONE.equals(gState)){
+//            for (int i = 0; i < gIdx.length; i++) {
+//                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+//
+//                // 해당 자산의 상태값이 입고검수중이 아니면
+////                if (!goods.getGState().equals(GState.CHECK_ING)) {
+////                    throw new MsgException("잘못된 접근입니다.");
+////                }
+//
+//                goods.setGState(gState);
+//                Map<String, Object> gJson = goods.getGJson();
+//                this.updateGoodsBy(gJson);
+//                goods.setGJson(gJson);
+//
+//                goodsRepo.save(goods);
+//            }
+//        } else {
+//            // 그외
+//            for (int i = 0; i < gIdx.length; i++) {
+//                Goods goods = goodsRepo.findById(Long.parseLong(gIdx[i])).get();
+//                goods.setGState(gState);
+//                Map<String, Object> gJson = goods.getGJson();
+//                this.updateGoodsBy(gJson);
+//                goods.setGJson(gJson);
+//                goodsRepo.save(goods);
+//            }
+//        }
     }
 
     /** 자산의 상태값이 변할때 변한 사람과 그 시간을 저장 */

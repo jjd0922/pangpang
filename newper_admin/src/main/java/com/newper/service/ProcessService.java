@@ -295,13 +295,13 @@ public class ProcessService {
             goodsService.updateGoodsBy(gJson);
 
             if (cgType.equals(CgType.IN)) { // 입고검수
-                goods.setGState(GState.CHECK_DONE);
+//                goods.setGState(GState.CHECK_DONE);
             } else if (cgType.equals(CgType.RE)) { // 재검수
                 goods.setGState(GState.STOCK);
                 goods.setGStockState(GStockState.STOCK_REQ);
                 gJson.put("reProcess", "N");
             } else { // 출고전 검수
-                goods.setGState(GState.OUT_CHECK_DONE);
+//                goods.setGState(GState.OUT_CHECK_DONE);
             }
 
 
@@ -359,7 +359,7 @@ public class ProcessService {
 //            this.insertProcessNeed(goods, paramMap, PnType.FIX);
 //            this.insertProcessNeed(goods, paramMap, PnType.PROCESS);
 
-            goods.setGState(GState.OUT_CHECK_DONE);
+//            goods.setGState(GState.OUT_CHECK_DONE);
         }
 
         goodsRepo.save(goods);
@@ -381,7 +381,7 @@ public class ProcessService {
                 goods.setGState(GState.STOCK);
                 goods.setGStockState(GStockState.STOCK_REQ);
             } else {
-                goods.setGState(GState.RE_CHECK_DONE);
+//                goods.setGState(GState.RE_CHECK_DONE);
             }
 
             CheckGoods checkGoods = checkGoodsRepo.findByGoodsAndCheckGroup(goods, checkGroup);
