@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,12 @@ public interface OrdersMapper {
 //
 //    /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
 //    Map<String, Object> selectShopCategoryBySp(long sp_idx);
+
+    List<Map<String,Object>> selectOGGForReview(@Param("cuId") String cuId,
+                                                @Param("shopIdx") Integer shopIdx,
+                                                @Param("start") Integer start,
+                                                @Param("length") Integer length);
+
+    /**oggIdx를 통해서 oIdx, spIdx 가져옴(map)*/
+    Map<String,Object> selectOrderAndShopByOggIdx(Long oggIdx);
 }
