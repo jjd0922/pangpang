@@ -18,7 +18,7 @@ import java.util.List;
 public class Review extends BaseEntityWithoutBy {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rIdx;
 
     @ManyToOne(fetch=FetchType.LAZY)
