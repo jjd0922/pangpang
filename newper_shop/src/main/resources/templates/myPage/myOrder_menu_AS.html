@@ -21,8 +21,8 @@
                 <div class="input-email">
                     <input type="text" id="email" name="AS_MAIL1" class="form-control" placeholder="이메일">
                     <span class="at">@</span>
-                    <input type="text" id="emailDomain" class="form-control">
-                    <select class="form-control" name="AS_MAIL2" >
+                    <input type="text" id="emailDomain" class="form-control" name="AS_MAIL3">
+                    <select class="form-control" name="AS_MAIL2" onchange="funtest()">
                         <option value="직접입력">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
@@ -100,6 +100,23 @@
     </form>
 
     <script>
+
+
+        function funtest(){
+            var AS_MAIL2 = $('select[name="AS_MAIL2"]').val();
+            console.log(AS_MAIL2);
+
+
+            if(AS_MAIL2=="직접입력"){
+                $('#emailDomain').removeAttr("readonly")
+                $('#emailDomain').val('')
+            }else{
+                $('#emailDomain').attr("readonly",true)
+                $('#emailDomain').val(AS_MAIL2)
+            }
+        }
+
+
 
         function createAS(){
             var param = new FormData($('#asForm')[0]);
