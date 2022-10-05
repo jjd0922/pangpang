@@ -38,10 +38,6 @@ public class ShopProduct extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SpState spState;
 
-    private Integer spMinPrice;
-    private Integer spMaxPrice;
-    private String spBaseName;
-    private Integer spBasePrice;
     private Float spPercent;
     private Integer spQuotaOnce;
     private Integer spQuotaId;
@@ -58,8 +54,7 @@ public class ShopProduct extends BaseEntity {
 
     /** <pre>
      * key : value
-     * scate_idx(전시분류) : scate_idx
-     * scate_name(전시분류) : scate_name
+     *
      * </pre>*/
     private Map<String,Object> spJson;
 
@@ -107,5 +102,11 @@ public class ShopProduct extends BaseEntity {
             }
         }
         return false;
+    }
+
+
+    /** 대표 썸네일 가져오기*/
+    public String getThumbnail(){
+        return getShopProductAddList().get(0).getShopProductOptionList().get(0).getGoodsStock().getGsThumbFile1();
     }
 }
