@@ -177,6 +177,8 @@
 <script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 
 <th:block th:replace="orders/modal/asCheckReport.html"/>
+<th:block th:replace="orders/modal/asModal.html"/>
+
 
 
 <script>
@@ -227,9 +229,10 @@
             ,{'title':'접수일','data':'','defaultContent':''}
             ,{'title':'무상AS여부','data':'','defaultContent':''}
             ,{'title':'무상AS잔여일수','data':'','defaultContent':''}
+            ,{'title':'AS상태','data':'AS_STATE_STR','defaultContent':''}
             ,{'title':'사유','data':'','defaultContent':''}
             ,{'title':'상세사유','data':'','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">조회</a>';
+                    return '<a class="btn btn-sm badge-indigo" onclick="openAsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">조회</a>';
                 }}
             ,{'title':'검수 리포트 등록','data':'','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm badge-indigo" onclick="openAsReport(\'' + meta.settings.sTableId + '\' , ' + meta.row + ');">조회</a>';

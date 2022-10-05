@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.AsState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -27,7 +28,8 @@ public class AfterService {
     @JoinColumn(name = "AS_OG_IDX", referencedColumnName = "ogIdx")
     private OrderGs orderGs;
 
-    private String asState;
+    @Enumerated(EnumType.STRING)
+    private AsState asState;
     private String asName;
     private String asMail;
     private String asPhone;

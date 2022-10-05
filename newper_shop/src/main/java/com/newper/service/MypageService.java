@@ -4,6 +4,7 @@ package com.newper.service;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.component.ShopSession;
+import com.newper.constant.AsState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
@@ -83,7 +84,7 @@ public class MypageService {
 
 //        as.setOrderGs(null);
         as.setDeliveryNum(null);
-        as.setAsState("");
+        as.setAsState(AsState.REQUEST);
         as.setAsDate(LocalDate.now());
         as.setAsTime(LocalTime.now());
 

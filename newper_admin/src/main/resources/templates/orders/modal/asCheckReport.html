@@ -88,6 +88,9 @@
                                 <!-- 타이틀 -->
                                 <fieldset class="mt-3">
                                     <legend>2. 예상비용</legend>
+                                    <span class="ml-2">
+                                        <a class="btn btn-sm btn-secondary ml-1" onclick="impAs();">AS불가</a>
+                                    </span>
                                     <div class="row">
                                         <table class="table">
                                             <thead>
@@ -231,6 +234,22 @@
 </div>
 
 <script>
+    function impAs() {
+        if (confirm("해당 자산을 AS불가 처리 하시겠습니까?")) {
+            $.ajax({
+                type: "POST",
+                url:"/orders/asImpossible.ajax",
+                processData: false,
+                contentType: false,
+                data: new FormData($('#asCheckReportForm')[0]),
+                async: false,
+                success : function(result){
+                    location.reload();
+                }
+            });
+        }
+    }
+
     function openAsReport (id, rowIdx) {
         $('#asCheckReport').modal('show');
 

@@ -310,6 +310,7 @@ public class OrderService {
     }
 
 
+
     /** AS리포트 등록 **/
     @Transactional
     public void asCheckReport(ParamMap paramMap) {
@@ -450,5 +451,12 @@ public class OrderService {
                 processSpecList.get(i).setPsCost(psCost.get(i).intValue());
             }
         }
+    }
+
+
+    /** AS 불가 처리 **/
+    public void asImpossible(ParamMap paramMap) {
+        Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+        goods.setGStockState(GStockState.AS_IMP);
     }
 }
