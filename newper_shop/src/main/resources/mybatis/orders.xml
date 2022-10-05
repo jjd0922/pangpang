@@ -44,4 +44,42 @@
           AND O_CODE = #{o_code}
         GROUP BY OGG_IDX
     </select>
+    <select id="selectOGGForReview" resultType="map">
+        <![CDATA[
+            SELECT
+                *
+            FROM
+                ORDER_GS_GROUP
+                ,ORDER_GS LEFT JOIN DELIVERY_NUM ON OG_DN_IDX = DN_IDX
+                ,ORDERS
+                ,SHOP_PRODUCT_OPTION
+                ,SHOP_PRODUCT_ADD
+                ,CUSTOMER
+            WHERE
+                O_CU_IDX = CU_IDX
+                AND O_SHOP_IDX = #{shopIdx}
+                AND DATEDIFF(NOW(), O_DATE) <= 3
+                AND OG_OGG_IDX = OGG_IDX
+                AND OG_O_IDX = O_IDX
+                AND OG_SPO_IDX = SPO_IDX
+                AND SPO_SPA_IDX = SPA_IDX
+                AND CU_ID = #{cuId}
+            GROUP BY OGG_IDX
+            ORDER BY O_DATE DESC
+            LIMIT #{start},${length}
+        ]]>
+    </select>
+    <select id="selectOrderAndShopByOggIdx" resultType="map">
+        SELECT
+            DISTINCT(O_IDX),
+            SPA_SP_IDX AS SP_IDX
+        FROM
+            ORDER_GS
+                LEFT JOIN ORDERS ON OG_O_IDX = O_IDX
+                LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
+        WHERE
+            OGG_IDX = #{oggIdx}
+    </select>
 </mapper>

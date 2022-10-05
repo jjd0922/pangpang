@@ -9,10 +9,7 @@ import com.newper.repository.CustomerRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -153,7 +150,9 @@ public class MyPageController {
     @PostMapping("myList/review/{menu}.load")
     public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myList_menu_review :: " + menu);
-
+        if (menu.equals("possibleReview")) {
+            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
+        }
         return mav;
     }
 

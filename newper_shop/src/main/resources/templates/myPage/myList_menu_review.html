@@ -266,7 +266,50 @@
 <!-- 리뷰 등록/수정 modal -->
 <th:block th:fragment="reviewModal">
     리뷰등록/수정 modal frame
+    <!--등록 form-->
+    <form id="reviewForm" enctype="multipart/form-data">
+        <input type="hidden" name="oggIdx">
+        <!--리뷰 평점 rate에 값 들어감-->
+        <div id="rStar" rate="0"><span class="review-star" th:each="cnt: ${#numbers.sequence(1,5)}" th:rate="${cnt}">☆</span></div>
+
+        <!--리뷰내용작성-->
+        <textarea name="rContent"></textarea>
+
+        <!--사진등록-->
+        <input type="file" name="photos" multiple="multiple">
+    </form>
 
     <button onclick="$('#commonModal').hide()">취소</button>
-    <button onclick="alert('준비중!')">작성완료</button>
+    <button onclick="saveReview()">작성완료</button>
+
+    <script>
+        /** 리뷰 등록 ajax */
+        function saveReview() {
+            var param = new FormData($('#reviewForm')[0]);
+            param.append('rStar', $('#rStar').attr('rate'));
+            $.ajax({
+                url: '/review/save.ajax'
+                ,type: 'post'
+                ,processData: false
+                ,contentType: false
+                ,data: param
+                ,success: function () {
+                    $('#commonModal').hide();
+                    openMyListMenu('review');
+                }
+            });
+        }
+
+        // 디자인 나오면 바꿀부분
+        $('.review-star').click(function () {
+            var rate = $(this).attr('rate');
+            $('#rStar').attr('rate', rate);
+            for (var r=1; r <= rate; r++) {
+                $('.review-star[rate='+r+']').text('★');
+            }
+            for (var r = 5; r > rate; r--) {
+                $('.review-star[rate='+r+']').text('☆');
+            }
+        });
+    </script>
 </th:block>
