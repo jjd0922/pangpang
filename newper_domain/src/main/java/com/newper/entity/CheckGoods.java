@@ -37,7 +37,8 @@ public class CheckGoods {
     @JoinColumn(name="CGS_G_IDX", referencedColumnName = "gIdx")
     private Goods goods;
 
-    private String cgsType;
+    @Enumerated(EnumType.STRING)
+    private CgsType cgsType;
 
     private int cgsCount;
 

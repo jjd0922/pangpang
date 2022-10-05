@@ -123,4 +123,21 @@ public class OrdersRestController {
         return rm;
     }
 
+    /** 교환/반품/AS 상태 자산 조회 */
+    @PostMapping("service.dataTable")
+    public ReturnDatatable service(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        returnDatatable.setData(ordersMapper.selectServiceGoodsDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(ordersMapper.countServiceGoodsDatatable(paramMap.getMap()));
+
+        return returnDatatable;
+    }
+
+    /** AS 검수 리포트 등록 (예외사항 필요해서 따로뺌) **/
+    @PostMapping("asCheckReport.ajax")
+    public ReturnMap asCheckReport(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.asCheckReport(paramMap);
+        return rm;
+    }
 }

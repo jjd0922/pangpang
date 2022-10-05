@@ -21,6 +21,31 @@
             CU_IDX=#{cuIdx}
 </select>
 
+    <select id="selectOrderGsListByComIdx" resultType="map" parameterType="map">
+SELECT
+	*
+FROM
+	orders
+	LEFT JOIN order_gs
+	on O_IDX=OG_IDX
+	LEFT JOIN shop_product_option
+	ON OG_SPO_IDX=SPO_IDX
+	LEFT JOIN goods_stock
+	ON GS_IDX=SPO_GS_IDX
+	LEFT JOIN product
+	ON GS_P_IDX=P_IDX
+	LEFT JOIN company
+	ON P_COM_IDX=COM_IDX
+where
+	COM_IDX=#{comIdx}
+	AND O_NAME=#{oName}
+	AND O_PHONE=#{oPhone}
+
+</select>
+
+
+
+
     <select id="selectShopCategoryBySp" resultType="map">
         SELECT
             SCATE_IDX, SCATE_NAME

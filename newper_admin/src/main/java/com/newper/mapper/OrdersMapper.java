@@ -39,4 +39,9 @@ public interface OrdersMapper {
     /**상품배송타입, 주문IDX로 주문상품 출고일 조회*/
     List<Map<String, Object>> selectOrdersReleaseDateByOIdxAndPDelType(Map<String, Object> map);
 
+    /** 교환/반품/AS 상태인 자산 조회 */
+    List<Map<String, Object>> selectServiceGoodsDatatable(Map<String, Object> map);
+
+    /** 교환/반품/AS 상태인 자산 카운트 */
+    long countServiceGoodsDatatable(Map<String, Object> map);
 }

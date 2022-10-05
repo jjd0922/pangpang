@@ -10,6 +10,12 @@ public interface OrdersMapper {
     /** mypage 주문상품 조회*/
     List<Map<String, Object>> selectOrderGsListByCuIdx (long cuIdx);
 
+
+    /**mypage 구매처 선택후 주문상품 조회*/
+
+    List<Map<String, Object>> selectOrderGsListByComIdx (Integer comIdx, String oName, String oPhone);
+
+
     /** ph_idx 로 o_code 조회 */
     String selectOcodeByPhIdx(String ph_idx);
 

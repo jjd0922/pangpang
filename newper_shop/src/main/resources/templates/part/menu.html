@@ -75,16 +75,20 @@
 <!--썸네일 메뉴 ---------------------------------------------------------->
 
 <!-- 썸네일 데이터 공통영역 -->
-<th:block th:fragment="thumbnailCategory">
+<th:block th:fragment="thumbnailCategory(idx)">
     <li class="swiper-slide" th:each="shopCategory : ${@shopComp.shopCategoryList}">
-        <a th:onclick="|loadCategoryProduct(${shopCategory.scateIdx}, ${mainsection.msIdx})|" class="thumbnail-icon cate">
+        <a th:if="${idx != null}" th:onclick="|loadCategoryProductMain(${shopCategory.scateIdx}, ${idx})|" class="thumbnail-icon cate">
+            <img th:src="@{../image/}+${shopCategory.scateIcon}+'.png'" th:alt="${shopCategory.scateName}">
+            <span th:text="${shopCategory.scateName}">노트북/데스크탑</span>
+        </a>
+        <a th:if="${idx == null}" th:onclick="|loadCategoryProduct(${shopCategory.scateIdx})|" class="thumbnail-icon cate">
             <img th:src="@{../image/}+${shopCategory.scateIcon}+'.png'" th:alt="${shopCategory.scateName}">
             <span th:text="${shopCategory.scateName}">노트북/데스크탑</span>
         </a>
     </li>
 
     <script>
-        function loadCategoryProduct(scateIdx, msIdx){
+        function loadCategoryProductMain(scateIdx, msIdx){
             $.ajax({
                 url:'/product/category/'+msIdx+'/'+scateIdx+'.ajax'
                 ,type:'post'
@@ -100,6 +104,22 @@
                 }
             });
         }
+        function loadCategoryProduct(scateIdx){
+            // $.ajax({
+            //     url:'/product/category/'+msIdx+'/'+scateIdx+'.ajax'
+            //     ,type:'post'
+            //     ,success:function(res){
+            //         var cateSection = $('#idx'+msIdx);
+            //         cateSection.empty();
+            //         cateSection.append(res);
+            //         if(scateIdx == ''){
+            //             $('#moveCategory').parent('div').hide();
+            //         }else{
+            //             $('#moveCategory').attr('href', '/product/category?scateIdx='+scateIdx);
+            //         }
+            //     }
+            // });
+        }
         $(function(){
             $('.cate').eq(0).trigger('click');
         });
@@ -113,12 +133,12 @@
             <div class="swiper swiper-ctg-tab">
                 <ul class="ctg-tab swiper-wrapper">
                     <li class="swiper-slide">
-                        <a class="thumbnail-icon cate">
+                        <a th:onclick="loadCategoryProduct('')" class="thumbnail-icon cate">
                             <img src="../image/menu-btn-blue.png" alt="전체보기">
                             <span>전체보기</span>
                         </a>
                     </li>
-                    <div th:replace="part/menu :: thumbnailCategory"></div>
+                    <div th:replace="part/menu :: thumbnailCategory(null)"></div>
                 </ul>
             </div>
         </div>
@@ -126,11 +146,11 @@
 </th:block>
 
 <!-- 메인 썸네일 카테고리 : 행 전체 모바일 스와이프 메뉴 : 전체보기 없음 -->
-<th:block th:fragment="thumbnailCategory2">
+<th:block th:fragment="thumbnailCategory2(idx)">
     <div class="container">
         <div class="swiper swiper-ctg-tab">
             <ul class="ctg-tab swiper-wrapper">
-                <div th:replace="part/menu :: thumbnailCategory"></div>
+                <div th:replace="part/menu :: thumbnailCategory(__${idx}__)"></div>
             </ul>
         </div>
     </div>

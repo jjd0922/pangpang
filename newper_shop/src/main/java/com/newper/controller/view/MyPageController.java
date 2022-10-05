@@ -1,11 +1,15 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
+import com.newper.constant.ShType;
 import com.newper.dto.ParamMap;
+import com.newper.entity.Company;
 import com.newper.entity.Orders;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
+import com.newper.repository.CompanyRepo;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.OrderGsRepo;
 import com.newper.repository.ShopRepo;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +42,15 @@ public class MyPageController {
     private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
 
+    private final CompanyRepo companyRepo;
+
+    private final CompanyMapper companyMapper;
+
+
+
+
     private Orders orders;
+
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -107,23 +120,42 @@ public class MyPageController {
     }
     /** AS접수 하위 메뉴 load */
     @PostMapping("myOrder/as/{menu}.load")
-    public ModelAndView registAS(@PathVariable(required = false) String menu) {
+    public ModelAndView registAS(@PathVariable(required = false) String menu, Integer comIdx, ParamMap paramMap, String oName, String oPhone) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
-
-//        mav.addObject("CU_IDX",shopSession.getIdx());
-//        mav.addObject("O_IDX",orders.getOIdx());
-//        long cuIdx = shopSession.getIdx();
-        if(menu.equals("asProductModal")){
-            mav.addObject("CU_IDX",shopSession.getIdx());
+        System.out.println("check!!!!!!!!!!");
+        if(menu.equals("asProductModal")) {
+            mav.addObject("CU_IDX", shopSession.getIdx());
 //            mav.addObject("O_IDX",orders.getOIdx());
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
-            mav.addObject("orders",list);
-//
-//            for(int i=0;i<list.size();i++){
-//                System.out.println("in~~~~~");
-//                System.out.println(list.get(i).entrySet());
-            }
+            mav.addObject("orders", list);
+        }else if(menu.equals("otherAsCompanyModal")) {
+
+            List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+
+            mav.addObject("company", comList);
+
+
+            }else if(menu.equals("asProductModal2")) {
+
+            Company company =paramMap.mapParam(Company.class);
+//            Integer comIdx1 = company.getComIdx();
+//            companyRepo.findCompanyByComIdx(comIdx);
+
+            mav.addObject("COM_IDX",company.getComIdx());
+
+            Orders orders1 = paramMap.mapParam(Orders.class);
+
+            mav.addObject("O_NAME",orders1.getOName());
+            mav.addObject("O_PHONE",orders1.getOPhone());
+
+            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(comIdx, oName, oPhone);
+
+            mav.addObject("orders", pList);
+
+            System.out.println("pList!!!!!!!!!!!!!!!!!!!!! = " + pList);
+
+        }
 
 
         return mav;

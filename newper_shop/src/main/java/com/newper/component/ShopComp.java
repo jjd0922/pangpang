@@ -32,7 +32,6 @@ public class ShopComp {
     private List<ShopCategory> shopCategoryList;
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
-    private List<Map<String,Object>> msJsonList;
     /** 도메인으로 headerOrder 가져오기*/
     public List<HeaderOrder> getHeaderOrder(String domain){return shopMap.get(domain).getHeaderOrderList(); }
 

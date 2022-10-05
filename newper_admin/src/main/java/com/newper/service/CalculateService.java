@@ -1,7 +1,5 @@
 package com.newper.service;
 
-import com.newper.component.AdminBucket;
-import com.newper.component.Common;
 import com.newper.component.SessionInfo;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
@@ -9,7 +7,7 @@ import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CalculateMapper;
 import com.newper.repository.*;
-import com.newper.storage.NewperStorage;
+import com.newper.repository.SabangRepo;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,14 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +39,8 @@ public class CalculateService {
     private final CalculateMapper calculateMapper;
 
     private final OrdersRepo ordersRepo;
-    private final GoodsStockRepo goodsStockRepo;
+    private final SabangRepo sabangRepo;
+    private final CalculateSalesRepo calculateSalesRepo;
 
 
     /** 정산 조정 완료 */
@@ -469,7 +466,6 @@ public class CalculateService {
         Sheet sheet = wb.getSheetAt(0);
         int rows = sheet.getPhysicalNumberOfRows();// 행 갯수
         Row firstRow = sheet.getRow(0);
-        int col = firstRow.getPhysicalNumberOfCells();// 열 갯수
 
         // 기준열
         String vsOrder = vendorSetting.getVsOrder(); // 주문번호
@@ -502,37 +498,36 @@ public class CalculateService {
             }
         }
 
-
-
-
         for (int i = 0; i < rows; i++) {
             Row row = sheet.getRow(i);
             String oCode = row.getCell(columnMap.get(vsOrder)).toString();
-            Orders orders = ordersRepo.findByOCode(oCode);
+            Orders orders = ordersRepo.findByoCode(oCode);
 
             if (orders == null) {
                 throw new MsgException("없는 주문번호 입니다.");
             }
 
-            String gsCode = row.getCell(columnMap.get(vsProduct)).toString();
-            GoodsStock goodsStock = goodsStockRepo.findGoodsStockByGsCode(gsCode);
+            String saMallProductId = row.getCell(columnMap.get(vsProduct)).toString();
+            Sabang sabang = sabangRepo.findBySaMallProductId(saMallProductId);
 
-            if (goodsStock == null) {
-                throw new MsgException("등록되어있지 않은 상품번호 입니다.");
+            if (sabang == null) {
+                throw new MsgException("없는 상품 주분 번호 입니다.");
             }
 
-//            OrderGs orderGs = ordersGsRepo.findby
+            Cell price = row.getCell(Integer.parseInt(columnMap.get(vsPrice).toString()));
+            Cell delivery = row.getCell(Integer.parseInt(columnMap.get(vsDeliveryCost).toString()));
+            Cell fee = row.getCell(Integer.parseInt(columnMap.get(vsFee).toString()));
+            Cell finalPrice = row.getCell(Integer.parseInt(columnMap.get(vsRealPrice).toString()));
 
+            OrderGs orderGs = sabang.getOrderGs();
+            CalculateSales calculateSales = calculateSalesRepo.findByOrderGs(orderGs);
 
+            calculateSales.setCcsPrice((int) price.getNumericCellValue());
+            calculateSales.setCcsDelivery((int) delivery.getNumericCellValue());
+            calculateSales.setCcsFee((int) fee.getNumericCellValue());
+            calculateSales.setCcsFinalCost((int) finalPrice.getNumericCellValue());
 
-
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsOrder).toString())));
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsProduct).toString())));
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsPrice).toString())));
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsDeliveryCost).toString())));
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsFee).toString())));
-            System.out.println(row.getCell(Integer.parseInt(columnMap.get(vsRealPrice).toString())));
+            calculateSalesRepo.save(calculateSales);
         }
-
     }
 }
