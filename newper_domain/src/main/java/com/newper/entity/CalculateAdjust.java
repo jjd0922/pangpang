@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.entity.common.BaseEntity;
+import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class CalculateAdjust extends BaseEntity {
+public class CalculateAdjust extends CreatedEntity {
     /** 조정금액 그룹 */
     @Id
     @GeneratedValue

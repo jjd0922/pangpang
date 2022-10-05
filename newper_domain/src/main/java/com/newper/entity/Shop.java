@@ -55,6 +55,10 @@ public class Shop extends BaseEntity{
     @Builder.Default
     private Map<String,Object> shopDesign = new HashMap<>();
 
+    /**value = shopHdLoginGroup.name()*/
+    @Builder.Default
+    private List<String> shopHdLoginGroup=new ArrayList<>();
+
     /** 도메인 리스트*/
     @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.ALL)

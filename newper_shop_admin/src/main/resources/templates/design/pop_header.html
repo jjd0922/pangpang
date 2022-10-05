@@ -54,13 +54,83 @@
                                                         <select class="select" th:attr="name='headerOrder'+${row}+'_'+${col}">
                                                             <option th:each="value:${T(com.newper.constant.etc.HoType).values()}" th:if="${value.getHoClass(row, col) != null}" th:text="${value.getName()}" th:value="${value}" th:selected="${hoArr[row-1][col-1]?.hoType eq value}"></option>
                                                         </select>
-                                                        <input type="text" th:placeholder="${hoArr[row-1][col-1]?.hoType.name()} == '헤더형배너'? ${hoArr[row-1][col-1]?.bannerGroup?.bgTitle}:'헤더형 배너 선택'" th:attr="name='bg'+${row}+'_'+${col}" readonly onclick="openBgSelect(this)" style="cursor:pointer;display:none; width: 40%;">
                                                         <input type="hidden" th:attr="name='bgIdx'+${row}+'_'+${col}">
                                                     </div>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend class="">2. 데스크탑 : 로그인 그룹 설정</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">형태</span>
+                                                        </span>
+                                                        <select class="form-control select" name="LOGIN_TYPE">
+                                                            <option value="TEXT" th:selected="${shop.shopDesign.get('LOGIN_TYPE') eq 'TEXT'}">문자</option>
+                                                            <option value="ICON" th:selected="${shop.shopDesign.get('LOGIN_TYPE') eq 'ICON'}">아이콘</option>
+                                                            <option value="LINE" th:selected="${shop.shopDesign.get('LOGIN_TYPE') eq 'LINE'}">문자 구분선</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">사용 항목</span>
+                                                        </span>
+                                                        <select data-placeholder="선택" class="form-control select" name="shopHdLoginGroup" multiple="multiple">
+                                                            <option value="LOGIN" th:selected="${#lists.contains( shop.shopHdLoginGroup, 'LOGIN' )}">로그인</option>
+                                                            <option value="BASKET" th:selected="${#lists.contains( shop.shopHdLoginGroup, 'BASKET' )}">장바구니</option>
+                                                            <option value="MY" th:selected="${#lists.contains( shop.shopHdLoginGroup, 'MY' )}">MY PAGE</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <legend class="">3. 데스크탑 : 디자인 스타일</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">검색창 디자인</span>
+                                                        </span>
+                                                        <select class="form-control select" name="SEARCH_DESIGN">
+                                                            <option value="header-search-type-a">테두리형</option>
+                                                            <option value="header-search-type-b" th:selected="${shop.shopDesign.get('SEARCH_DESIGN') eq 'header-search-type-b'}">배경형</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메뉴 현위치 디자인</span>
+                                                        </span>
+                                                        <select class="form-control select" name="MENU_STYLE">
+                                                            <option value="menu-style-type-a">배경형</option>
+                                                            <option value="menu-style-type-b" th:selected="${shop.shopDesign.get('MENU_STYLE') eq 'menu-style-type-b'}">밑줄형</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </fieldset>
                                 </div>
                             </div>

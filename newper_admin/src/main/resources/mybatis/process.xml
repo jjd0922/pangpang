@@ -503,12 +503,12 @@
         FROM
             CHECK_GROUP
                 LEFT JOIN CHECK_GOODS ON CG_IDX = CGS_CG_IDX
-            LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
-            LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
-            LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
-            LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
-            LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
-            LEFT JOIN PO ON G_PO_IDX = PO_IDX
+                LEFT JOIN GOODS ON CGS_G_IDX = G_IDX
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN PO ON G_PO_IDX = PO_IDX
         WHERE
             CG_IDX = #{cgIdx}
     </select>
