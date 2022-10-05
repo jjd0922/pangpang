@@ -262,7 +262,7 @@ public class ProcessService {
                 throw new MsgException("해당자산은 재검수요청 할 수 없는 자산 입니다.");
             }
         } else if (type.equals("IN_CHECK")) {
-            if (!gstate.equals(GState.RECEIVED)) {
+            if (!gstate.equals(GState.CHECK_NEED)) {
                 throw new MsgException("해당자산은 입고검수요청 할 수 없는 자산 입니다.");
             }
         }  if (type.equals("PROCESS") || type.equals("FIX") || type.equals("PAINT")) {
@@ -634,7 +634,7 @@ public class ProcessService {
             gIdx.add(Long.parseLong(goodsList.get(i).get("G_IDX").toString()));
         }
 
-        goodsMapper.updateGoodsState(gIdx, GState.RECEIVED.name());
+        goodsMapper.updateGoodsState(gIdx, GState.CHECK_NEED.name());
 
         checkGroupRepo.deleteById(cgIdx);
     }
