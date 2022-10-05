@@ -457,6 +457,5 @@ public class OrderService {
     /** AS 불가 처리 **/
     public void asImpossible(ParamMap paramMap) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
-        goods.setGStockState(GStockState.AS_IMP);
     }
 }
