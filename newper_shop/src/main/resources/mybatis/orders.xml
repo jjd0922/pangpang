@@ -74,22 +74,21 @@ where
     <select id="selectOGGForReview" resultType="map">
         <![CDATA[
             SELECT
-                *
+                O_DATE,
+                O_CODE,
+                OGG_CNT,
+                IF(ISNULL(DN_DATE), "", DN_DATE) AS DN_DATE
             FROM
-                ORDER_GS_GROUP
-                ,ORDER_GS LEFT JOIN DELIVERY_NUM ON OG_DN_IDX = DN_IDX
-                ,ORDERS
-                ,SHOP_PRODUCT_OPTION
-                ,SHOP_PRODUCT_ADD
-                ,CUSTOMER
+                ORDER_GS
+                    LEFT JOIN ORDERS ON OG_O_IDX = O_IDX
+                    LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                    LEFT JOIN DELIVERY_NUM ON OG_DN_IDX = DN_IDX
+                    LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                    LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
+                    LEFT JOIN CUSTOMER ON O_CU_IDX = CU_IDX
             WHERE
-                O_CU_IDX = CU_IDX
-                AND O_SHOP_IDX = #{shopIdx}
-                AND DATEDIFF(NOW(), O_DATE) <= 3
-                AND OG_OGG_IDX = OGG_IDX
-                AND OG_O_IDX = O_IDX
-                AND OG_SPO_IDX = SPO_IDX
-                AND SPO_SPA_IDX = SPA_IDX
+                O_SHOP_IDX = #{shopIdx}
+                AND DATEDIFF(NOW(), O_DATE) <= 60
                 AND CU_ID = #{cuId}
             GROUP BY OGG_IDX
             ORDER BY O_DATE DESC

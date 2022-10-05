@@ -224,9 +224,65 @@
 <!-- 1:1문의 modal -->
 <th:block th:fragment="qnaModal">
     <span th:text="${modalTitle}"></span>
+    문의하기
     <table>
-        <tr>문의하실 상품</tr>
-        <td><a onclick="openProductModal('qnaProduct')">상품 선택</a></td>
+        <tr>
+            <td>문의하실 상품</td>
+            <td><a onclick="openProductModal('qnaProduct')">상품 선택</a></td>
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td><input type="text" name="cuName"></td>
+        </tr>
+        <tr>
+            <td>이메일주소</td>
+            <td>
+                <input type="text" name="email1">@
+                <select name="domain">
+                    <option>직접입력</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="daum.net">daum.net</option>
+                    <option value="hotmail.com">hotmail.com</option>
+                    <option value="nate.com">nate.com</option>
+                    <option value="yahoo.co.kr">yahoo.co.kr</option>
+                    <option value="paran.com">paran.com</option>
+                    <option value="empas.com">empas.com</option>
+                    <option value="dreamwiz.com">dreamwiz.com</option>
+                    <option value="lycos.co.kr">lycos.co.kr</option>
+                    <option value="korea.com">korea.com</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="hanmir.com">hanmir.com</option>
+                </select>
+                <input type="checkbox" name="qnaMailAlarm">답변알림받기
+            </td>
+        </tr>
+        <tr>
+            <td>휴대전화</td>
+            <td>
+                <input type="text" name="phone1" maxlength="3">-
+                <input type="text" name="phone2" maxlength="4">-
+                <input type="text" name="phone3" maxlength="4">
+            </td>
+        </tr>
+        <tr>
+            <td>문의유형</td>
+            <td>
+                <select name="qnaType1"></select>
+                <select name="qnaType2"></select>
+            </td>
+        </tr>
+        <tr>
+            <td>제목</td>
+            <td><input type="text" name="qnaTitle" placeholder="제목을 입력하세요."></td>
+        </tr>
+        <tr>
+            <td>내용작성</td>
+            <td><textarea name="qnaContent" placeholder="문의하실 내용을 입력하세요."></textarea></td>
+        </tr>
+        <tr>
+            <td>사진첨부</td>
+            <td><input type="file" name="photos"></td>
+        </tr>
     </table>
 
     <br>
