@@ -2,10 +2,13 @@ package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
+import com.newper.entity.Company;
 import com.newper.entity.Orders;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
+import com.newper.repository.CompanyRepo;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.OrderGsRepo;
 import com.newper.repository.ShopRepo;
@@ -37,7 +40,15 @@ public class MyPageController {
     private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
 
+    private final CompanyRepo companyRepo;
+
+    private final CompanyMapper companyMapper;
+
+
+
+
     private Orders orders;
+
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -110,16 +121,22 @@ public class MyPageController {
     public ModelAndView registAS(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
 
-//        mav.addObject("CU_IDX",shopSession.getIdx());
-//        mav.addObject("O_IDX",orders.getOIdx());
-//        long cuIdx = shopSession.getIdx();
-        if(menu.equals("asProductModal")){
-            mav.addObject("CU_IDX",shopSession.getIdx());
+        if(menu.equals("asProductModal")) {
+            mav.addObject("CU_IDX", shopSession.getIdx());
 //            mav.addObject("O_IDX",orders.getOIdx());
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
-            mav.addObject("orders",list);
-//
+            mav.addObject("orders", list);
+        }else if(menu.equals("otherAsCompanyModal")) {
+
+            List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+
+            mav.addObject("company", comList);
+
+
+            System.out.println("comList~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ = " + comList);
+//            mav.addObject("company", company);
+
 //            for(int i=0;i<list.size();i++){
 //                System.out.println("in~~~~~");
 //                System.out.println(list.get(i).entrySet());
