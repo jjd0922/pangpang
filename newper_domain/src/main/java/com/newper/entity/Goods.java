@@ -66,7 +66,7 @@ public class Goods {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private GState gState = GState.RECEIVED;
+    private GState gState = GState.CHECK_NEED;
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private GStockState gStockState = GStockState.N;
@@ -91,7 +91,7 @@ public class Goods {
     /**바코드 삭제 전 조건 확인*/
     @PreRemove
     public void preRemove(){
-        if (getGState() != GState.RECEIVED) {
+        if (getGState() != GState.CHECK_NEED) {
             throw new MsgException("삭제할 수 없는 자산상태입니다");
         }
     }

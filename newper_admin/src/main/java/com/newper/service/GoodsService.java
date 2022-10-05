@@ -246,7 +246,7 @@ public class GoodsService {
 
         for (int i = 0; i < gIdxs.length; i++) {
             Goods goods = goodsRepo.findById(Long.parseLong(gIdxs[i])).get();
-            if (!goods.getGState().equals(GState.RECEIVED)) {
+            if (!goods.getGState().equals(GState.CHECK_NEED)) {
                 throw new MsgException(goods.getGBarcode() + "는 이미 입고검수한 자산입니다.");
             }
         }
