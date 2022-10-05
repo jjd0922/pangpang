@@ -18,6 +18,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class EventGroup extends BaseEntity {
 
     @Id
