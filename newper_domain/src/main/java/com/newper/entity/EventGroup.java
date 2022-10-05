@@ -29,18 +29,18 @@ public class EventGroup extends BaseEntity {
     @JoinColumn(name="EG_SHOP_IDX", referencedColumnName = "shopIdx")
     private Shop shop;
 
-    /** 이벤트그룹명*/
-    private String egName;
-    /** 썸네일 (WEB)*/
-    private String egThumbnailWeb;
-    /** 썸네일 (MOBILE)*/
-    private String egThumbnailMobile;
-    /** 이벤트 타입*/
-    @Enumerated(EnumType.STRING)
-    private EgType egType;
     /** 이벤트 메뉴*/
     @Enumerated(EnumType.STRING)
     private EgMenu egMenu;
+    /** 이벤트 타입*/
+    @Enumerated(EnumType.STRING)
+    private EgType egType;
+    /** 이벤트그룹명*/
+    private String egTitle;
+    /** 이벤트 내용 - 에디터 사용*/
+    private String egContent;
+    /** 노출 상태*/
+    private boolean egState;
 
     /** 시작일*/
     private LocalTime egOpenTime;
@@ -48,10 +48,15 @@ public class EventGroup extends BaseEntity {
     /** 종료일*/
     private LocalTime egCloseTime;
     private LocalDate egCloseDate;
-    /** 이벤트 내용 - 에디터 사용*/
-    private String egContent;
+    /** 메모*/
+    private String egMemo;
 
-//    @Builder.Default
-//    private Map<String,Object> egJson = new HashMap<>();
+    /**
+     * key : value
+     * EG_THUMBNAIL_WEB : 썸네일파일(WEB)
+     * EG_THUMBNAIL_MOBILE : 썸네일파일(MOBILE)
+     * */
+    @Builder.Default
+    private Map<String,Object> egJson = new HashMap<>();
 
 }
