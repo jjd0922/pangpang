@@ -127,23 +127,23 @@ public class Payment {
     }
     /** 결제 금액 계산*/
     public void calculatePrice(){
-        List<OrderGs> orderGs = getOrders().getOrderGs();
         payPrice = 0;
         payDelivery = 0;
         payPoint = 0;
         payMileage = 0;
         payCouponPrice = 0;
         payCouponDelivery = 0;
-
-        for (OrderGs ogs : orderGs) {
-            payPrice  += ogs.getOgPrice();
-            payDelivery += ogs.getOgDelivery();
-            payPoint += ogs.getOgPoint();
-            payMileage += ogs.getOgMileage();
-            payCouponPrice += ogs.getOgCouponPrice();
-            payCouponDelivery += ogs.getOgCouponDelivery();
+        for (OrderGsGroup ogg : getOrders().getOrderGsGroupList()) {
+            List<OrderGs> orderGs = ogg.getOrderGsList();
+            for (OrderGs ogs : orderGs) {
+                payPrice  += ogs.getOgPrice();
+                payDelivery += ogs.getOgDelivery();
+                payPoint += ogs.getOgPoint();
+                payMileage += ogs.getOgMileage();
+                payCouponPrice += ogs.getOgCouponPrice();
+                payCouponDelivery += ogs.getOgCouponDelivery();
+            }
         }
-
         setPayTotal(payPrice + payDelivery - payPoint -payMileage - payCouponPrice - payCouponDelivery);
     }
     /** 결제 성공*/

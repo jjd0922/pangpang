@@ -66,7 +66,6 @@ public class OrdersService {
         orders.setOLocation(OLocation.SHOP);
         orders.setShop(shopRepo.getReferenceById(shopSession.getShopIdx()));
 
-        List<OrderGs> orderGsList = new ArrayList<>();
         Map<ShopProduct, List<OrdersSpoDTO>> spoList = shopProductService.selectOrdersInfo(paramMap);
 
         int usedPoint = 0;
@@ -88,14 +87,12 @@ public class OrdersService {
                                 .build();
                         ogg.addOrderGs(orderGs);
 
-                        orderGsList.add(orderGs);
                         product_price += spo.getSpoPrice();
                     }
                     orderGsGroupRepo.save(ogg);
                 }
             }
         }
-        orders.setOrderGs(orderGsList);
 
         int ipm_idx = paramMap.getInt("ipm_idx");
         Payment payment = Payment.builder()
@@ -129,9 +126,9 @@ public class OrdersService {
         payment.putPayJson("pay_method", ipmMap.get("IPM_NAME"));
 
         IamportReq iamportReq = new IamportReq(paymentHistory.getPhIdx(),
-                (String)ipmMap.get("PG"),
+                (String) ipmMap.get("PG"),
                 payment.getPayPrice(),
-                orders.getOrderPaymentTitle());
+                orders.getOJsonValue("title")+"");
 
         String ippValue = (String) ipmMap.get("IPP_VALUE");
         switch (ippValue){

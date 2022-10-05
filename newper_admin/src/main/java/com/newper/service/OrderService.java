@@ -1,33 +1,24 @@
 package com.newper.service;
 
 import com.newper.component.AdminBucket;
-import com.newper.component.Common;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
-import com.newper.exception.MsgException;
-import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.ProcessMapper;
-import com.newper.mapper.SpecMapper;
 import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
-import com.newper.util.SpecFinder;
 import lombok.RequiredArgsConstructor;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.ibatis.annotations.Param;
-import org.hibernate.criterion.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -46,7 +37,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -457,6 +447,6 @@ public class OrderService {
     /** AS 불가 처리 **/
     public void asImpossible(ParamMap paramMap) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
-        goods.setGStockState(GStockState.AS_IMP);
+//        goods.setGStockState(GStockState.AS_IMP);
     }
 }
