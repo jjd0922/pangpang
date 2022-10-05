@@ -97,6 +97,7 @@ public class OrdersRestController {
         }
         return rm;
     }
+
     /**SHOP주문관리 데이터테이블*/
     @PostMapping("shopOrder.dataTable")
     public ReturnDatatable shopOrder(ParamMap paramMap){
@@ -138,6 +139,15 @@ public class OrdersRestController {
     public ReturnMap asCheckReport(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         orderService.asCheckReport(paramMap);
+        rm.setMessage("등록완료");
+        return rm;
+    }
+
+    /** AS불가 처리 **/
+    @PostMapping("asImpossible.ajax")
+    public ReturnMap asImpossible(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.asImpossible(paramMap);
         return rm;
     }
 }

@@ -1,0 +1,119 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="asModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">AS상세</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <div class="col-lg-12" id="ProductDiv">
+                    <form id="asForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>1. AS정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">사유</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="cgsIdx" id="cgsIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="pIdx" id="pIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품명</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="pName" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gIdx" id="gIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">IMEI</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gImei" id="gImei" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">시리얼번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="gSerial" id="gSerial" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="updateCheckReport();">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAsModal (id, rowIdx) {
+        $('#asModal').modal('show');
+
+        var dataMap = getDatatablemap(id, rowIdx);
+
+        // 상품 & 자산 정보 세팅
+        $('#cgsIdx').val(dataMap.CGS_IDX);
+        $('#pIdx').val(dataMap.P_IDX);
+        $('#pName').val(dataMap.P_NAME);
+        $('#gIdx').val(dataMap.G_IDX);
+        $('#gImei').val(dataMap.G_IMEI);
+        $('#cgsCost').val(comma(dataMap.CGS_COST));
+        $('#gSerial').val(dataMap.G_SERIAL)
+        $('input[name=gMemo]').val(dataMap.G_MEMO);;
+    }
+</script>
+</html>
