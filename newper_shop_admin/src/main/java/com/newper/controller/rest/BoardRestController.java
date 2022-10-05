@@ -47,4 +47,13 @@ public class BoardRestController {
         }
         return rm;
     }
+    /** 이벤트그룹 dataTables*/
+    @PostMapping("eventGroup.dataTable")
+    public ReturnDatatable event(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("이벤트/기획전 관리");
+        List<Map<String, Object>> list = boardMapper.selectNoticeDatatable(paramMap.getMap());
+        rd.setData(list);
+        rd.setRecordsTotal(boardMapper.countNoticeDatatable(paramMap.getMap()));
+        return rd;
+    }
 }

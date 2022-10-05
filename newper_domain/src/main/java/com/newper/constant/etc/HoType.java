@@ -10,10 +10,10 @@ public enum HoType {
     ,검색창_로그인그룹("검색창 + 로그인 그룹")
     ,메뉴_좌측("메뉴(좌측 정렬)")
     ,메뉴_중앙("메뉴(중앙 정렬)")
-    ,헤더형배너("헤더형 배너")
-    ,주간_PICK("주간 PICK")
+    ,헤더내부_배너("헤더내부_배너")
+    ,고정_메뉴("고정 메뉴")
     ,없음("없음")
-    ,전시대분류("전시 대분류")
+    ,전체_카테고리_버튼("전체 카테고리 버튼")
     ;
 
     @Getter
@@ -38,7 +38,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.전시대분류)) {
+        if (this.equals(HoType.전체_카테고리_버튼)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -116,7 +116,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.헤더형배너)) {
+        if (this.equals(HoType.헤더내부_배너)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -129,7 +129,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.주간_PICK)) {
+        if (this.equals(HoType.고정_메뉴)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
