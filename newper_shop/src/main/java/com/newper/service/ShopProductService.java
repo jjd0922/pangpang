@@ -42,6 +42,8 @@ public class ShopProductService {
             throw new MsgException("현재 볼 수 없는 상품입니다");
         }
 
+        shopProduct.getThumbnail();
+
         return shopProduct;
     }
     /** 주문 결제 페이지에서 보여질 상품 정보 조회. key shopProduct : : value (spo dto List (옵션 별)) */
