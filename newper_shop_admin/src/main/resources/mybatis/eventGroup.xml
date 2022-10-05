@@ -4,27 +4,21 @@
     <sql id="includeEventGroupDatatable">
         WHERE
             SHOP_IDX = EG_SHOP_IDX
-            AND EG_IDX = EC_EG_IDX
-            AND EC_IDX = ESP_EC_IDX
-            AND SP_IDX = ESP_SP_IDX
+            <if test="shopIdx != null and shopIdx != ''">
+                AND SHOP_IDX = #{shopIdx}
+            </if>
     </sql>
     <select id="selectEventGroupDatatable" resultType="map">
         SELECT
             EG.*
-            ,EC.*
-            ,ESP.*
-            ,SP.*
-            ,CONCAT(EG.CREATED_DATE,EG.CREATED_TIME) CREATED_DATE_TIME
-            ,CONCAT(EG.EG_OPEN_DATE,EG.EG_OPEN_TIME) EG_OPEN_DATE_TIME
-            ,CONCAT(EG.EG_CLOSE_DATE,EG.EG_CLOSE_TIME) EG_CLOSE_DATE_TIME
+            ,CONCAT(EG.CREATED_DATE," ", EG.CREATED_TIME) CREATED_DATE_TIME
+            ,CONCAT(EG.EG_OPEN_DATE," ",EG.EG_OPEN_TIME) EG_OPEN_DATE_TIME
+            ,CONCAT(EG.EG_CLOSE_DATE," ",EG.EG_CLOSE_TIME) EG_CLOSE_DATE_TIME
 
             ,S.SHOP_NAME
             ,S.SHOP_IDX
         FROM
             EVENT_GROUP EG
-            ,EVENT_CATEGORY EC
-            ,EVENT_SP ESP
-            ,SHOP_PRODUCT SP
             ,SHOP S
         <include refid="includeEventGroupDatatable"></include>
     </select>
@@ -33,9 +27,6 @@
             COUNT(EG.EG_IDX) CNT
         FROM
             EVENT_GROUP EG
-            ,EVENT_CATEGORY EC
-            ,EVENT_SP ESP
-            ,SHOP_PRODUCT SP
             ,SHOP S
         <include refid="includeEventGroupDatatable"></include>
     </select>

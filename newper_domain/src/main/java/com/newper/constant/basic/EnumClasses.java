@@ -82,6 +82,9 @@ public class EnumClasses {
         enumClasses.put("wh_state","WhState");
         enumClasses.put("ms_type","MsType");
 
+        enumClasses.put("eg_menu","EgMenu");
+        enumClasses.put("eg_type","EgType");
+
         return enumClasses;
     }
 }
