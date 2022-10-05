@@ -117,29 +117,12 @@
             })
         }
 
-        //
-        // function showProductList(){
-        //     $.ajax({
-        //
-        //         url:'/myPage/myOrder/as/{menu}.load',
-        //         type: 'post'
-        //
-        //     });
-        // }
-        //
-
 
         function openAsProductModal2(modal){
             console.log(modal)
             $.ajax({
                 url: '/myPage/myOrder/as/'+modal+'.load'
-                ,data:{
-                    comIdx : "comIdx",
-                    oName : "oName",
-                    oPhone : "oPhone"
-
-
-                }
+                ,data: $('#asForm2').serialize()
                 ,type:'post'
                 ,success:function(res){
 
@@ -304,20 +287,6 @@
                 ,error:function(){}
             })
         }
-
-
-        // function createAS2(){
-        //     $.ajax({
-        //         url: 'myPage/createAS2.ajax'
-        //         ,type:'post'
-        //         ,data:$('#asForm2').serialize(),
-        //         success:function(res){
-        //
-        //         }
-        //         ,error:function(){}
-        //     })
-        // }
-
 
         function createAS2(){
             var param = new FormData($('#asForm2')[0]);
@@ -513,13 +482,12 @@
                 </li>
                 <!-- 주문상품 -->
                 <li>
-
-                    <div class="table-title semi-bold">주문상품</div>
+                <div class="table-title semi-bold">주문상품</div>
                     <div class="table-content">
                         <ul class="width-100">
                             <!-- 상품 1 -->
                             <li class="display-flex alignItems-center width-100"  th:each="order: ${orders}">
-                                <input type="checkbox" class="custom-checkbox" name="OG_IDX" th:value="${order.OG_IDX}"> <!-- 라디오 버튼으로 변경해야함.-->
+                                <input type="radio" name="OG_IDX" th:value="${order.OG_IDX}"> <!-- 라디오 버튼으로 변경해야함.-->
                                 <div class="display-flex alignItems-center width-100">
                                     <div class="order-item-thumb as-item-thumb">
                                         <a href="javascript:;">
@@ -549,38 +517,6 @@
                                     </div>
                                 </div>
                             </li>
-<!--                            &lt;!&ndash; 상품 2 &ndash;&gt;-->
-<!--                            <li class="display-flex alignItems-center width-100">-->
-<!--                                <input type="checkbox" class="custom-checkbox">-->
-<!--                                <div class="display-flex alignItems-center width-100">-->
-<!--                                    <div class="order-item-thumb as-item-thumb">-->
-<!--                                        <a href="javascript:;">-->
-<!--                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">-->
-<!--                                            <p class="font-xsm color-grey999">001762984</p>-->
-<!--                                        </a>-->
-<!--                                    </div>-->
-<!--                                    <div class="display-flex space-between width-100 alignItems-center">-->
-<!--                                        <div class="order-item-info-wrap">-->
-<!--                                            <div>-->
-<!--                                                <a href="javascript:;">-->
-<!--                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량-->
-<!--                                                        듀얼하드 윈10</h3>-->
-<!--                                                </a>-->
-<!--                                            </div>-->
-<!--                                            <div class="font-xxsm order-item-info">-->
-<!--                                                <p>옵션 : 없음</p>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="font-md semi-bold">-->
-<!--                                            <p>1개</p>-->
-<!--                                        </div>-->
-<!--                                        <div class="font-md semi-bold">-->
-<!--                                            <p>600,000원</p>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                            </li>-->
                         </ul>
                     </div>
                 </li>
@@ -589,225 +525,180 @@
     </div>
 
             <!-- 기간 만료 테이블 class="expiration" 추가 -->
-            <ul class="table table3 expiration">
-                <!-- 주문번호 -->
-                <li>
-                    <div class="table-title semi-bold">주문번호</div>
-                    <div class="table-content display-flex space-between">
-                        <p class="font-xlg semi-bold">2022-08-07-36900</p>
-                        <p class="color-red">AS 기간만료</p>
-                    </div>
-                </li>
-                <!-- 주문상품 -->
-                <li>
-                    <div class="table-title semi-bold">주문상품</div>
-                    <div class="table-content">
-                        <ul class="width-100">
-                            <!-- 상품 1 -->
-                            <li class="display-flex alignItems-center width-100">
-                                <input type="checkbox" class="custom-checkbox">
-                                <div class="display-flex alignItems-center width-100">
-                                    <div class="order-item-thumb as-item-thumb">
+    <ul class="table table3 expiration">
+        <!-- 주문번호 -->
+        <li>
+            <div class="table-title semi-bold">주문번호</div>
+            <div class="table-content display-flex space-between">
+                <p class="font-xlg semi-bold">2022-08-07-36900</p>
+                <p class="color-red">AS 기간만료</p>
+            </div>
+        </li>
+        <!-- 주문상품 -->
+        <li>
+            <div class="table-title semi-bold">주문상품</div>
+            <div class="table-content">
+                <ul class="width-100">
+                    <!-- 상품 1 -->
+                    <li class="display-flex alignItems-center width-100">
+                        <input type="checkbox" class="custom-checkbox">
+                        <div class="display-flex alignItems-center width-100">
+                            <div class="order-item-thumb as-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
+                                </a>
+                            </div>
+                            <div class="display-flex space-between width-100 alignItems-center">
+                                <div class="order-item-info-wrap">
+                                    <div>
                                         <a href="javascript:;">
-                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                            <p class="font-xsm color-grey999">001762984</p>
+                                            <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                듀얼하드 윈10</h3>
                                         </a>
                                     </div>
-                                    <div class="display-flex space-between width-100 alignItems-center">
-                                        <div class="order-item-info-wrap">
-                                            <div>
-                                                <a href="javascript:;">
-                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                                        듀얼하드 윈10</h3>
-                                                </a>
-                                            </div>
-                                            <div class="font-xxsm order-item-info">
-                                                <p>옵션 : 없음</p>
-                                            </div>
-                                        </div>
-                                        <div class="font-md semi-bold">
-                                            <p>1개</p>
-                                        </div>
-                                        <div class="font-md semi-bold">
-                                            <p>600,000원</p>
-                                        </div>
+                                    <div class="font-xxsm order-item-info">
+                                        <p>옵션 : 없음</p>
                                     </div>
                                 </div>
+                                <div class="font-md semi-bold">
+                                    <p>1개</p>
+                                </div>
+                                <div class="font-md semi-bold">
+                                    <p>600,000원</p>
+                                </div>
+                            </div>
+                        </div>
 
-                            </li>
-                            <!-- 상품 2 -->
-                            <li class="display-flex alignItems-center width-100">
-                                <input type="checkbox" class="custom-checkbox">
-                                <div class="display-flex alignItems-center width-100">
-                                    <div class="order-item-thumb as-item-thumb">
+                    </li>
+                    <!-- 상품 2 -->
+                    <li class="display-flex alignItems-center width-100">
+                        <input type="checkbox" class="custom-checkbox">
+                        <div class="display-flex alignItems-center width-100">
+                            <div class="order-item-thumb as-item-thumb">
+                                <a href="javascript:;">
+                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                    <p class="font-xsm color-grey999">001762984</p>
+                                </a>
+                            </div>
+                            <div class="display-flex space-between width-100 alignItems-center">
+                                <div class="order-item-info-wrap">
+                                    <div>
                                         <a href="javascript:;">
-                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                            <p class="font-xsm color-grey999">001762984</p>
+                                            <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                                듀얼하드 윈10</h3>
                                         </a>
                                     </div>
-                                    <div class="display-flex space-between width-100 alignItems-center">
-                                        <div class="order-item-info-wrap">
-                                            <div>
-                                                <a href="javascript:;">
-                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                                        듀얼하드 윈10</h3>
-                                                </a>
-                                            </div>
-                                            <div class="font-xxsm order-item-info">
-                                                <p>옵션 : 없음</p>
-                                            </div>
-                                        </div>
-                                        <div class="font-md semi-bold">
-                                            <p>1개</p>
-                                        </div>
-                                        <div class="font-md semi-bold">
-                                            <p>600,000원</p>
-                                        </div>
+                                    <div class="font-xxsm order-item-info">
+                                        <p>옵션 : 없음</p>
                                     </div>
                                 </div>
-
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                                <div class="font-md semi-bold">
+                                    <p>1개</p>
+                                </div>
+                                <div class="font-md semi-bold">
+                                    <p>600,000원</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
 </form>
-        <a onclick="selectProduct()">선택완료</a>
-<!--    <a onclick=" $('#asProductModal').modal('hide');">선택완료</a>-->
-    </div>
+    <a onclick="selectProduct()">선택완료</a>
+</div>
 
-    <script>
-        function selectProduct(){
-            var OG_IDX = $('input:checkbox[name="OG_IDX"]:checked').val();
-            if(OG_IDX == null){
-                alert('주문상품을 선택해주세요.')
-                return false;
-            }
+<script>
+    function selectProduct(){
+        var OG_IDX = $('input:radio[name="OG_IDX"]:checked').val();
+        if(OG_IDX == null){
+            alert('주문상품을 선택해주세요.')
+            return false;
+        }
 
-            var GS_NAME = $('input:checkbox[name="OG_IDX"]:checked').parent().find($('p[name="GS_NAME"]')).text();
+        var GS_NAME = $('input:radio[name="OG_IDX"]:checked').parent().find($('p[name="GS_NAME"]')).text();
 
-            $('input[name="AS_OG_IDX"]').val(OG_IDX);
-            console.log(OG_IDX);
-            if (OG_IDX!=null){
-                console.log("here~~~~~~~~~~");
-                $('#selectProductBtn').text(GS_NAME);
-                $('#selectProductBtn2').text(GS_NAME);
-            }else{
-                console.log("bad~~");
-            }
-
-
-
-
-
-            $('#commonModal').hide();
-
+        $('input[name="AS_OG_IDX"]').val(OG_IDX);
+        console.log(OG_IDX);
+        if (OG_IDX!=null){
+            $('#selectProductBtn').text(GS_NAME);
+        }else{
 
         }
 
-    </script>
+        $('#commonModal').hide();
+
+
+    }
+
+</script>
 
 
 
 
 </th:block>
 
-    <th:block th:fragment="asProductModal2">
-        <form id="selectForm2">
-            <div class="asProductModal2">
-                <h2>주문내역</h2>
-                <div class="table-wrap">
-                    <!-- 테이블 -->
-                    <ul class="table table3">
-                        <!-- 주문번호 -->
-                        <li>
-                            <div class="table-title semi-bold">주문번호</div>
-                            <div class="table-content display-flex space-between">
-                                <!--                        <p name="O_IDX" th:text="${orders.O_IDX}"></p>-->
-                                <!--                        <p class="bold" name="O_DATE" th:text="${orders.O_DATE}"></p>-->
-                            </div>
-                        </li>
-                        <!-- 주문상품 -->
-                        <li>
+<th:block th:fragment="asProductModal2">
+    <form id="selectForm2">
+        <div class="asProductModal2">
+            <h2>주문내역</h2>
+            <div class="table-wrap">
+                <!-- 테이블 -->
+                <ul class="table table3">
+                    <!-- 주문번호 -->
+                    <li>
+                        <div class="table-title semi-bold">주문번호</div>
+                        <div class="table-content display-flex space-between">
+                        </div>
+                    </li>
+                    <!-- 주문상품 -->
+                    <li>
 
-                            <div class="table-title semi-bold">주문상품</div>
-                            <div class="table-content">
-                                <ul class="width-100">
-                                    <!-- 상품 1 -->
-                                    <li class="display-flex alignItems-center width-100"  th:each="order: ${orders}">
-                                        <input type="checkbox" class="custom-checkbox" name="OG_IDX" th:value="${order.OG_IDX}"> <!-- 라디오 버튼으로 변경해야함.-->
+                        <div class="table-title semi-bold">주문상품</div>
+                        <div class="table-content">
+                            <ul class="width-100">
+                                <!-- 상품 1 -->
+                                <li class="display-flex alignItems-center width-100"  th:each="order: ${orders}">
+                                    <input type="radio" name="OG_IDX" th:value="${order.OG_IDX}"> <!-- 라디오 버튼으로 변경해야함.-->
 
-                                        <input type="hidden" name="comIdx" class="form-control" th:value="${company?.comIdx}">
-                                        <input type="hidden" name="oName" class="form-control" th:value="${orders?.oName}">
-                                        <input type="hidden" name="oPhone" class="form-control" th:value="${orders?.oPhone}">
-                                        <div class="display-flex alignItems-center width-100">
-                                            <div class="order-item-thumb as-item-thumb">
-                                                <a href="javascript:;">
-                                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                                    <p class="font-xsm color-grey999" th:text="${order.OG_IDX}"></p>
-                                                </a>
+                                    <div class="display-flex alignItems-center width-100">
+                                        <div class="order-item-thumb as-item-thumb">
+                                            <a href="javascript:;">
+                                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                                <p class="font-xsm color-grey999" th:text="${order.OG_IDX}"></p>
+                                            </a>
+                                        </div>
+                                        <div class="display-flex space-between width-100 alignItems-center">
+                                            <div class="order-item-info-wrap">
+                                                <div>
+                                                    <a href="javascript:;">
+                                                        <h3 class="font-md bold">
+                                                            <p class="font-xsm color-grey999" name="GS_NAME">[[${order?.get('GS_NAME')}]]</p>
+                                                        </h3>
+                                                    </a>
+                                                </div>
+                                                <div class="font-xxsm order-item-info">
+                                                    <p>옵션 : 없음</p>
+                                                </div>
                                             </div>
-                                            <div class="display-flex space-between width-100 alignItems-center">
-                                                <div class="order-item-info-wrap">
-                                                    <div>
-                                                        <a href="javascript:;">
-                                                            <h3 class="font-md bold">
-                                                                <p class="font-xsm color-grey999" name="GS_NAME">[[${order?.get('GS_NAME')}]]</p>
-                                                            </h3>
-                                                        </a>
-                                                    </div>
-                                                    <div class="font-xxsm order-item-info">
-                                                        <p>옵션 : 없음</p>
-                                                    </div>
-                                                </div>
-                                                <div class="font-md semi-bold">
-                                                    <p>1개</p>
-                                                </div>
-                                                <div class="font-md semi-bold">
-                                                    <p  name="GS_PRICE">[[${order?.get('GS_PRICE')}]]<span class="won">원</span></p>
-                                                </div>
+                                            <div class="font-md semi-bold">
+                                                <p>1개</p>
+                                            </div>
+                                            <div class="font-md semi-bold">
+                                                <p  name="GS_PRICE">[[${order?.get('GS_PRICE')}]]<span class="won">원</span></p>
                                             </div>
                                         </div>
-                                    </li>
-                                    <!--                            &lt;!&ndash; 상품 2 &ndash;&gt;-->
-                                    <!--                            <li class="display-flex alignItems-center width-100">-->
-                                    <!--                                <input type="checkbox" class="custom-checkbox">-->
-                                    <!--                                <div class="display-flex alignItems-center width-100">-->
-                                    <!--                                    <div class="order-item-thumb as-item-thumb">-->
-                                    <!--                                        <a href="javascript:;">-->
-                                    <!--                                            <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">-->
-                                    <!--                                            <p class="font-xsm color-grey999">001762984</p>-->
-                                    <!--                                        </a>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <div class="display-flex space-between width-100 alignItems-center">-->
-                                    <!--                                        <div class="order-item-info-wrap">-->
-                                    <!--                                            <div>-->
-                                    <!--                                                <a href="javascript:;">-->
-                                    <!--                                                    <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량-->
-                                    <!--                                                        듀얼하드 윈10</h3>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </div>-->
-                                    <!--                                            <div class="font-xxsm order-item-info">-->
-                                    <!--                                                <p>옵션 : 없음</p>-->
-                                    <!--                                            </div>-->
-                                    <!--                                        </div>-->
-                                    <!--                                        <div class="font-md semi-bold">-->
-                                    <!--                                            <p>1개</p>-->
-                                    <!--                                        </div>-->
-                                    <!--                                        <div class="font-md semi-bold">-->
-                                    <!--                                            <p>600,000원</p>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
-                                    <!--                                </div>-->
-
-                                    <!--                            </li>-->
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </div>
+        </div>
 
             <!-- 기간 만료 테이블 class="expiration" 추가 -->
             <ul class="table table3 expiration">
@@ -894,18 +785,39 @@
             </ul>
             </div>
         </form>
-        <a onclick="selectProduct()">선택완료</a>
-        <!--    <a onclick=" $('#asProductModal').modal('hide');">선택완료</a>-->
+        <a onclick="selectProduct2()">선택완료</a>
         </div>
 
 
+<script>
+    function selectProduct2(){
+        var OG_IDX = $('input:radio[name="OG_IDX"]:checked').val();
+        if(OG_IDX == null){
+            alert('주문상품을 선택해주세요.')
+            return false;
+        }
+
+        var GS_NAME = $('input:radio[name="OG_IDX"]:checked').parent().find($('p[name="GS_NAME"]')).text();
+
+        $('input[name="AS_OG_IDX"]').val(OG_IDX);
+        console.log(OG_IDX);
+        if (OG_IDX!=null){
+            $('#selectProductBtn2').text(GS_NAME);
+        }else{
+            console.log("bad~~");
+        }
 
 
-    </th:block>
+        $('#commonModal').hide();
+
+
+    }
+
+</script>
+</th:block>
 
 <th:block th:fragment="otherAsCompanyModal">
     <div class="asProductModal text-center">
-<!--        <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('K')}">-->
         <h2>구매처 선택</h2>
         <ul class="col-list lg-2col sm-1col text-left">
             <li th:each="comList: ${company}">
@@ -913,51 +825,36 @@
                     <input type="radio" id="01" value="01" name="COM_IDX" th:value="${comList.COM_IDX}">
                     <label for="01" name="COM_NAME" th:text="${comList.COM_NAME}"></label>
                 </span>
-
             </li>
         </ul>
         <a class="btn btn-xxlg btn-point btn-width-md radius-xlarge margin-half" onclick="selectCompany()">선택완료</a>
     </div>
 
 
-
-
-
-
-
-
-
-    <script>
-        function selectCompany(){
-            var COM_IDX = $('input:radio[name="COM_IDX"]:checked').val();
-            if(COM_IDX == null){
-                alert('거래처를 선택해주세요.')
-                return false;
-            }
-
-            var COM_NAME = $('input:radio[name="COM_IDX"]:checked').parent().find($('label[name="COM_NAME"]')).text();
-
-            $('input[name="COM_IDX2"]').val(COM_IDX);
-            console.log(COM_IDX);
-            if (COM_IDX!=null){
-                console.log("here~~~~~~~~~~");
-                $('#selectCompanyBtn').text(COM_NAME);
-            }else{
-                console.log("bad~~");
-            }
-
-
-
-
-
-            $('#commonModal').hide();
-
-
+<script>
+    function selectCompany(){
+        var COM_IDX = $('input:radio[name="COM_IDX"]:checked').val();
+        if(COM_IDX == null){
+            alert('거래처를 선택해주세요.')
+            return false;
         }
 
-    </script>
+        var COM_NAME = $('input:radio[name="COM_IDX"]:checked').parent().find($('label[name="COM_NAME"]')).text();
+
+        $('input[name="COM_IDX2"]').val(COM_IDX);
+        console.log(COM_IDX);
+        if (COM_IDX!=null){
+            console.log("here~~~~~~~~~~");
+            $('#selectCompanyBtn').text(COM_NAME);
+        }else{
+            console.log("bad~~");
+        }
+
+        $('#commonModal').hide();
 
 
+    }
 
+</script>
 </th:block>
 
