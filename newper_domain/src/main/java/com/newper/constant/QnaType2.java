@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum QnaType2 implements EnumOption {
-    RECEIPT_CASH("현금영수증"); // 내용 확인 후 추가 필요
+    RECEIPT_CASH("현금영수증", QnaType1.RECEIPT); // 내용 확인 후 추가 필요
 
     private String option;
+    private QnaType1 qnaType1;
 }
