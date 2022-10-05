@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${event == null}?'이벤트그룹 신규등록':'이벤트그룹 상세'"></title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i><span th:text="${event == null}?'이벤트그룹 신규등록':'이벤트그룹 상세'"></span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="noticeForm">
+                            <div class="card">
+                                <div class="card-body popup-contents">
+                                    <fieldset class="mb-0">
+                                        <legend>1. 이벤트그룹 기본정보</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">이벤트그룹명</span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="egName" th:value="${event?.egName}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">분양몰</span>
+                                                        </span>
+                                                        <input class="form-control" type="text" readonly th:value="${shop.shopName}">
+                                                        <input type="hidden" name="shopIdx" th:value="${shop.shopIdx}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">시작일</span>
+                                                        </span>
+                                                        <input type="text" th:value="${event?.egOpenDate}" name="egOpenDate" class="form-control daterange-singlenull" readonly>
+                                                        <input type="time" th:value="${event?.egOpenTime}" name="egOpenTime" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">종료일</span>
+                                                        </span>
+                                                        <input type="text" th:value="${event?.egCloseDate}" name="egCloseDate" class="form-control daterange-singlenull" readonly>
+                                                        <input type="time" th:value="${event?.egCloseTime}" name="egCloseTime" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group" th:if="${eventGroup == null}">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">썸네일</span>
+                                                        </span>
+                                                        <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="egThumbnail" accept="image/*">
+                                                    </div>
+                                                    <div class="input-group" th:unless="${eventGroup == null}">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">썸네일</span>
+                                                        </span>
+                                                        <input th:if="${eventGroup.egThumbnail == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="egThumbnail" accept="image/*">
+                                                        <div class="form-control" th:if="${eventGroup.egThumbnail != null}">
+                                                            <a onclick="deleteThumbImage(this)" class="input-thumb-close" title="첨부 이미지 삭제">X</a>
+                                                            <img th:src="${eventGroup.egThumbnail}" class="input-thumb">
+                                                            <input type="file" name="egThumbnail" th:value="${eventGroup.egThumbnail}" accept="image/*" class="input-thumb-file">
+                                                            <input type="hidden" name="egThumbnail" th:value="${eventGroup.egThumbnail}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출 여부</span>
+                                                        </span>
+                                                        <select class="form-control select" name="egDisplay">
+                                                            <option value="1" th:selected="${event?.egDisplay > 0}">노출</option>
+                                                            <option value="-1" th:selected="${event?.egDisplay < 0}">미노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">메모</span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="egMemo" th:value="${event?.egMemo}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </fieldset>
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <legend>2. 이벤트그룹 옵션정보</legend>
+                                        <span class="input-group-text w-100 mb--1">내용</span>
+                                        <textarea id="summernote" name="egContent" th:utext="${event?.egContent}"></textarea>
+                                    </fieldset>
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <legend>
+                                            3. 이벤트그룹 카테고리
+                                            <a onclick="addEgCategory()" class="btn btn-sm btn-primary ml-1">카테고리 추가</a>
+                                        </legend>
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>카테고리</th>
+                                                    <th>이벤트 상품 카테고리</th>
+                                                    <th>상품수</th>
+                                                    <th>상품추가</th>
+                                                    <th>삭제</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <input type="hidden" class="egCateIdx">
+                                                            <a class="btn btn-sm btn-danger" th:onclick="|deleteEgCategory()|">삭제</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <legend>
+                                            3. 이벤트그룹 카테고리
+                                            <a onclick="addEgCategory()" class="btn btn-sm btn-primary ml-1">카테고리 추가</a>
+                                        </legend>
+                                        <div class="row">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>SHOP 노출 상품명</th>
+                                                    <th>내부 상품코드</th>
+                                                    <th>상품금액</th>
+                                                    <th>삭제</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="hidden" name="spIdx">
+                                                        <a class="btn btn-sm btn-danger" th:onclick="|deleteEgCategory()|">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <!-- /footer -->
+    </div>
+    <!-- /main content -->
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class="w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();">
+            <i class="icon-cross2 mr-1"></i>닫기
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/ui/moment/moment.min.js}"></script>
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pickers/daterangepicker.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<script th:src="@{/assets/js/demo_pages/picker_date.js}"></script>
+
+<!-- 에디터 -->
+<script th:src="@{/assets/js/plugins/editors/summernote/summernote.min.js}"></script>
+<script th:src="@{/assets/js/plugins/editors/summernote/lang/summernote-ko-KR.js}"></script>
+<script th:src="@{/assets/js/demo_pages/editor_summernote.js}"></script>
+
+<!-- 데이터테이블 -->
+<script th:src="@{/assets/js/plugins/tables/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/select.min.js}"></script>
+<script th:src="@{/assets/js/plugins/tables/datatables/extensions/buttons.min.js}"></script>
+
+<!-- 멀티 선택 (숫자) -->
+<script th:src="@{/assets/js/plugins/forms/selects/bootstrap_multiselect.js}"></script>
+<script th:src="@{/assets/js/demo_pages/form_multiselect.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<script th:src="@{/assets/js/common.js}"></script>
+
+<!-- 메뉴 호버 -->
+<script th:src="@{/assets/js/plugins/buttons/hover_dropdown.min.js}"></script>
+
+</body>
+
+<script th:inline="javascript">
+    function saveBtn(){
+        if(window.confirm('저장 하시겠습니까?')){
+            $.ajax({
+                url: location.pathname + '.ajax',
+                processData: false,
+                contentType: false,
+                type: 'post',
+                data: new FormData($('#noticeForm')[0])
+            }).done(function(res){
+                opener.refreshTable('#noticeTable');
+                location.reload();
+            });
+        }
+    }
+
+    //썸네일 제거
+    function deleteThumbImage(obj){
+        var agent = navigator.userAgent.toLowerCase();
+        if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ){
+            // ie 일때
+            $($(obj).parent().parent()).append('<input type="file" name="egThumbnail" accept="image/*" class="form-control form-control-plaintext">');
+            $($(obj).parent()).remove();
+        } else {
+            //other browser 일때
+            $($(obj).parent().children('img')).remove();
+            $($(obj).parent()).find('input').attr('value', '');
+            $($(obj)).remove();
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+        $('#summernote').summernote({
+            height: 400
+        });
+    }
+</script>
+</html>

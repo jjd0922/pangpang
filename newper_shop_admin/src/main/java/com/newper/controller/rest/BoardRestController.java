@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnDatatable;
 import com.newper.dto.ReturnMap;
 import com.newper.mapper.BoardMapper;
+import com.newper.mapper.EventGroupMapper;
 import com.newper.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class BoardRestController {
 
     private final BoardMapper boardMapper;
+    private final EventGroupMapper eventGroupMapper;
     private final BoardService boardService;
 
     /**공지사항 DataTable*/
@@ -46,5 +48,14 @@ public class BoardRestController {
             rm.setMessage("등록완료");
         }
         return rm;
+    }
+    /** 이벤트그룹 dataTables*/
+    @PostMapping("eventGroup.dataTable")
+    public ReturnDatatable event(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable("이벤트/기획전 관리");
+        List<Map<String, Object>> list = eventGroupMapper.selectEventGroupDatatable(paramMap.getMap());
+        rd.setData(list);
+        rd.setRecordsTotal(eventGroupMapper.countEventGroupDatatable(paramMap.getMap()));
+        return rd;
     }
 }

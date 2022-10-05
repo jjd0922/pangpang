@@ -51,7 +51,10 @@ public class Shop extends BaseEntity{
 //    private String shopHdMeta;
     /** 로그인그룹 디스플레이 항목*/
 //    private String shopHdLoginGroup;
-    /** 분양몰 디자인 (JsonString)*/
+    /** 분양몰 디자인 (JsonString)
+     * key : value
+     * ShopDesign Enum 에서 확인
+     * */
     @Builder.Default
     private Map<String,Object> shopDesign = new HashMap<>();
 
@@ -71,6 +74,10 @@ public class Shop extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
     @OrderBy(value = "hoCol, hoRow")
     private List<HeaderOrder> headerOrderList = new ArrayList<>();
+
+    /** 이벤트그룹 리스트*/
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
+    private List<EventGroup> eventGroupList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
     private List<CouponGroup> couponGroups;
