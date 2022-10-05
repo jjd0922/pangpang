@@ -1,6 +1,7 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
+import com.newper.constant.ShType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.Orders;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -118,9 +120,9 @@ public class MyPageController {
     }
     /** AS접수 하위 메뉴 load */
     @PostMapping("myOrder/as/{menu}.load")
-    public ModelAndView registAS(@PathVariable(required = false) String menu) {
+    public ModelAndView registAS(@PathVariable(required = false) String menu, Integer comIdx, ParamMap paramMap, String oName, String oPhone) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
-
+        System.out.println("check!!!!!!!!!!");
         if(menu.equals("asProductModal")) {
             mav.addObject("CU_IDX", shopSession.getIdx());
 //            mav.addObject("O_IDX",orders.getOIdx());
@@ -134,13 +136,26 @@ public class MyPageController {
             mav.addObject("company", comList);
 
 
-            System.out.println("comList~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ = " + comList);
-//            mav.addObject("company", company);
+            }else if(menu.equals("asProductModal2")) {
 
-//            for(int i=0;i<list.size();i++){
-//                System.out.println("in~~~~~");
-//                System.out.println(list.get(i).entrySet());
-            }
+            Company company =paramMap.mapParam(Company.class);
+//            Integer comIdx1 = company.getComIdx();
+//            companyRepo.findCompanyByComIdx(comIdx);
+
+            mav.addObject("COM_IDX",company.getComIdx());
+
+            Orders orders1 = paramMap.mapParam(Orders.class);
+
+            mav.addObject("O_NAME",orders1.getOName());
+            mav.addObject("O_PHONE",orders1.getOPhone());
+
+            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(comIdx, oName, oPhone);
+
+            mav.addObject("orders", pList);
+
+            System.out.println("pList!!!!!!!!!!!!!!!!!!!!! = " + pList);
+
+        }
 
 
         return mav;
