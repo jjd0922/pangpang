@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,12 +121,11 @@ public class MyPageController {
     }
     /** AS접수 하위 메뉴 load */
     @PostMapping("myOrder/as/{menu}.load")
-    public ModelAndView registAS(@PathVariable(required = false) String menu, Integer comIdx, ParamMap paramMap, String oName, String oPhone) {
+    public ModelAndView registAS(@PathVariable(required = false) String menu, ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
         System.out.println("check!!!!!!!!!!");
         if(menu.equals("asProductModal")) {
             mav.addObject("CU_IDX", shopSession.getIdx());
-//            mav.addObject("O_IDX",orders.getOIdx());
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             mav.addObject("orders", list);
@@ -139,17 +139,23 @@ public class MyPageController {
             }else if(menu.equals("asProductModal2")) {
 
             Company company =paramMap.mapParam(Company.class);
-//            Integer comIdx1 = company.getComIdx();
-//            companyRepo.findCompanyByComIdx(comIdx);
+            Orders orders = paramMap.mapParam(Orders.class);
+            Integer comIdx = Integer.parseInt(paramMap.get("COM_IDX2").toString());
 
-            mav.addObject("COM_IDX",company.getComIdx());
+            String oName = String.valueOf(paramMap.get("AS_NAME"));
+            String phone = paramMap.getString("AS_PHONE1")+paramMap.get("AS_PHONE2")+paramMap.get("AS_PHONE3");
 
-            Orders orders1 = paramMap.mapParam(Orders.class);
+            mav.addObject("COM_IDX2",comIdx);
 
-            mav.addObject("O_NAME",orders1.getOName());
-            mav.addObject("O_PHONE",orders1.getOPhone());
+            mav.addObject("AS_NAME", oName);
 
-            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(comIdx, oName, oPhone);
+            mav.addObject("oPhone", phone);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("comIdx",comIdx);
+            map.put("oName",oName);
+            map.put("oPhone",phone);
+            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(map);
 
             mav.addObject("orders", pList);
 
