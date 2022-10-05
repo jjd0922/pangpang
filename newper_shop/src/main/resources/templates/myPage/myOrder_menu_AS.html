@@ -161,7 +161,8 @@
             <div class="table-title">구매처</div>
             <div class="table-content">
                 <div class="btn btn5 itemSelect-btn">
-                    <a onclick="openAsCompanyModal('otherAsCompanyModal')">구매처 선택</a>
+                    <a onclick="openAsCompanyModal('otherAsCompanyModal')" id="selectCompany">구매처 선택</a>
+                    <input type="hidden" name="COM_IDX2">
                 </div>
             </div>
         </li>
@@ -686,46 +687,59 @@
 
 <th:block th:fragment="otherAsCompanyModal">
     <div class="asProductModal text-center">
+<!--        <input type="hidden" name="TF_TYPE" th:value="${T(com.newper.constant.TfType).valueOf('K')}">-->
         <h2>구매처 선택</h2>
         <ul class="col-list lg-2col sm-1col text-left">
-            <li>
+            <li th:each="comList: ${company}">
                 <span class="radioSet">
-                    <input type="radio" name="radio2" id="01" value="01">
-                    <label for="01">11번가</label>
+                    <input type="radio" id="01" value="01" name="COM_IDX" th:value="${comList.COM_IDX}" >
+                    <label for="01" th:text="${comList.COM_NAME}" name="COM_NAME">[[${comList?.get('COM_NAME')}]]</label>
                 </span>
-            </li>
-            <li>
-                <span class="radioSet">
-                    <input type="radio" name="radio2" id="02" value="02">
-                    <label for="02">스토어팜</label>
-                </span>
-            </li>
-            <li>
-                <span class="radioSet">
-                    <input type="radio" name="radio2" id="03" value="03">
-                    <label for="03">옥션</label>
-                </span>
-            </li>
-            <li>
-                <span class="radioSet">
-                    <input type="radio" name="radio2" id="04" value="04">
-                    <label for="04">위메프</label>
-                </span>
-            </li>
-            <li>
-                <span class="radioSet">
-                    <input type="radio" name="radio2" id="05" value="05">
-                    <label for="05">지마켓</label>
-                </span>
-            </li>
-            <li>
-                <span class="radioSet">
-                    <input type="radio" name="radio2" id="06" value="06">
-                    <label for="06">GS샵</label>
-                </span>
+
             </li>
         </ul>
-        <a class="btn btn-xxlg btn-point btn-width-md radius-xlarge margin-half">선택완료</a>
+        <a class="btn btn-xxlg btn-point btn-width-md radius-xlarge margin-half" onclick="selectCompany()">선택완료</a>
     </div>
+
+
+
+
+
+
+
+
+
+    <script>
+        function selectCompany(){
+            var COM_IDX = $('input:radio[name="COM_IDX"]:checked').val();
+            if(COM_IDX == null){
+                alert('거래처를 선택해주세요.')
+                return false;
+            }
+
+            var COM_NAME = $('input:radio[name="COM_IDX"]:checked').parent().find($('p[name="COM_NAME"]')).text();
+
+            $('input[name="COM_IDX2"]').val(COM_IDX);
+            console.log(COM_IDX);
+            if (COM_IDX!=null){
+                console.log("here~~~~~~~~~~");
+                $('#selectCompany').text(COM_NAME);
+            }else{
+                console.log("bad~~");
+            }
+
+
+
+
+
+            $('#commonModal').hide();
+
+
+        }
+
+    </script>
+
+
+
 </th:block>
 
