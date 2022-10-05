@@ -110,4 +110,8 @@ public class Customer {
         return getCuPhone().replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
     }
 
+    /** 휴대폰 번호 3등분 끊어서 가져오기*/
+    public String[] getPhoneArr() {
+        return getPhoneFormat().split("-");
+    }
 }
