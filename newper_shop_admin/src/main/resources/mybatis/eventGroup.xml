@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newper.mapper.EventGroupMapper">
+    <sql id="includeEventGroupDatatable">
+        WHERE
+            SHOP_IDX = EG_SHOP_IDX
+            <if test="shopIdx != null and shopIdx != ''">
+                AND SHOP_IDX = #{shopIdx}
+            </if>
+    </sql>
+    <select id="selectEventGroupDatatable" resultType="map">
+        SELECT
+            EG.*
+            ,CONCAT(EG.CREATED_DATE," ", EG.CREATED_TIME) CREATED_DATE_TIME
+            ,CONCAT(EG.EG_OPEN_DATE," ",EG.EG_OPEN_TIME) EG_OPEN_DATE_TIME
+            ,CONCAT(EG.EG_CLOSE_DATE," ",EG.EG_CLOSE_TIME) EG_CLOSE_DATE_TIME
+
+            ,S.SHOP_NAME
+            ,S.SHOP_IDX
+        FROM
+            EVENT_GROUP EG
+            ,SHOP S
+        <include refid="includeEventGroupDatatable"></include>
+    </select>
+    <select id="countEventGroupDatatable" resultType="long">
+        SELECT
+            COUNT(EG.EG_IDX) CNT
+        FROM
+            EVENT_GROUP EG
+            ,SHOP S
+        <include refid="includeEventGroupDatatable"></include>
+    </select>
+</mapper>

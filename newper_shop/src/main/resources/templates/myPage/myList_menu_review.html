@@ -81,8 +81,8 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                        <div class="btn btn2"><a onclick="reviewInsertModal()">리뷰작성하기</a></div>
+                        <a href="javascript:;" class="btn btn-xs btn-point-outline btn-width-xs radius-xlarge origin-btn">주문상세보기</a>
+                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
                     </li>
                 </ul>
             </li>
@@ -133,8 +133,8 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn3"><a href="javascript:;">주문상세보기</a></div>
-                        <div class="btn btn2"><a onclick="reviewInsertModal()">리뷰작성하기</a></div>
+                        <a href="javascript:;" class="btn btn-xs btn-point-outline btn-width-xs radius-xlarge origin-btn">주문상세보기</a>
+                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
                     </li>
                 </ul>
             </li>
@@ -236,8 +236,8 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn2"><a onclick="reviewUpdateModal()">리뷰수정</a></div>
-                        <div class="btn btn8"><a onclick="reviewInsertModal()">삭제</a></div>
+                        <a onclick="reviewUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge">리뷰수정</a>
+                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
             </li>
@@ -266,7 +266,50 @@
 <!-- 리뷰 등록/수정 modal -->
 <th:block th:fragment="reviewModal">
     리뷰등록/수정 modal frame
+    <!--등록 form-->
+    <form id="reviewForm" enctype="multipart/form-data">
+        <input type="hidden" name="oggIdx">
+        <!--리뷰 평점 rate에 값 들어감-->
+        <div id="rStar" rate="0"><span class="review-star" th:each="cnt: ${#numbers.sequence(1,5)}" th:rate="${cnt}">☆</span></div>
 
-    <button onclick="$('#commonModal').hide()">취소</button>
-    <button onclick="alert('준비중!')">작성완료</button>
+        <!--리뷰내용작성-->
+        <textarea name="rContent"></textarea>
+
+        <!--사진등록-->
+        <input type="file" name="photos" multiple="multiple">
+    </form>
+
+    <a onclick="$('#commonModal').hide()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">취소</a>
+    <a onclick="saveReview()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>
+
+    <script>
+        /** 리뷰 등록 ajax */
+        function saveReview() {
+            var param = new FormData($('#reviewForm')[0]);
+            param.append('rStar', $('#rStar').attr('rate'));
+            $.ajax({
+                url: '/review/save.ajax'
+                ,type: 'post'
+                ,processData: false
+                ,contentType: false
+                ,data: param
+                ,success: function () {
+                    $('#commonModal').hide();
+                    openMyListMenu('review');
+                }
+            });
+        }
+
+        // 디자인 나오면 바꿀부분
+        $('.review-star').click(function () {
+            var rate = $(this).attr('rate');
+            $('#rStar').attr('rate', rate);
+            for (var r=1; r <= rate; r++) {
+                $('.review-star[rate='+r+']').text('★');
+            }
+            for (var r = 5; r > rate; r--) {
+                $('.review-star[rate='+r+']').text('☆');
+            }
+        });
+    </script>
 </th:block>

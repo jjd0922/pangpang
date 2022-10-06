@@ -42,10 +42,13 @@ public class ShopProductController {
 
         ShopProduct shopProduct = shopProductService.selectShopProductInfo(spIdx, shopSession.getShopIdx());
         mav.addObject("sp", shopProduct);
+
+        //thumbnail list
+
+
         mav.addObject("scate", categoryMapper.selectShopCategoryBySp(spIdx));
 
         List<Map<String, Object>> spoList = shopProductMapper.selectShopProductOptionList(shopProduct.getSpIdx());
-
 
         // key :spa_idx, value:  spo list
         Map<Object, List<Map<String, Object>>> spa_spo = spoList.stream().collect(Collectors.groupingBy(map -> map.get("SPO_SPA_IDX")));

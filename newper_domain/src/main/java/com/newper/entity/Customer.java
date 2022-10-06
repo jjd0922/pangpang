@@ -82,7 +82,7 @@ public class Customer {
     public void join(Map<String,Object> nice) {
         setCuName(nice.get("NAME").toString());
         setCuPhone(nice.get("MOBILE_NO").toString());
-        setCuTelecom(nice.get("MOBILE_CO").toString().replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3"));
+        setCuTelecom(nice.get("MOBILE_CO").toString());
         setCuCi(getCuId()); // 임시값
         setCuDi(nice.get("DI").toString());
         setCuBirth(LocalDate.parse(nice.get("BIRTHDATE").toString(), DateTimeFormatter.ofPattern("yyyyMMdd")));
@@ -107,7 +107,11 @@ public class Customer {
 
     /** 휴대폰 번호 - 붙인 포맷으로 가져오기*/
     public String getPhoneFormat(){
-        return "010-1234-1234";
+        return getCuPhone().replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
     }
 
+    /** 휴대폰 번호 3등분 끊어서 가져오기*/
+    public String[] getPhoneArr() {
+        return getPhoneFormat().split("-");
+    }
 }

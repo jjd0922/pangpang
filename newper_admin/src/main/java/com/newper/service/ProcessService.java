@@ -262,7 +262,7 @@ public class ProcessService {
                 throw new MsgException("해당자산은 재검수요청 할 수 없는 자산 입니다.");
             }
         } else if (type.equals("IN_CHECK")) {
-            if (!gstate.equals(GState.RECEIVED)) {
+            if (!gstate.equals(GState.CHECK_NEED)) {
                 throw new MsgException("해당자산은 입고검수요청 할 수 없는 자산 입니다.");
             }
         }  if (type.equals("PROCESS") || type.equals("FIX") || type.equals("PAINT")) {
@@ -295,13 +295,13 @@ public class ProcessService {
             goodsService.updateGoodsBy(gJson);
 
             if (cgType.equals(CgType.IN)) { // 입고검수
-                goods.setGState(GState.CHECK_DONE);
+//                goods.setGState(GState.CHECK_DONE);
             } else if (cgType.equals(CgType.RE)) { // 재검수
                 goods.setGState(GState.STOCK);
                 goods.setGStockState(GStockState.STOCK_REQ);
                 gJson.put("reProcess", "N");
             } else { // 출고전 검수
-                goods.setGState(GState.OUT_CHECK_DONE);
+//                goods.setGState(GState.OUT_CHECK_DONE);
             }
 
 
@@ -359,7 +359,7 @@ public class ProcessService {
 //            this.insertProcessNeed(goods, paramMap, PnType.FIX);
 //            this.insertProcessNeed(goods, paramMap, PnType.PROCESS);
 
-            goods.setGState(GState.OUT_CHECK_DONE);
+//            goods.setGState(GState.OUT_CHECK_DONE);
         }
 
         goodsRepo.save(goods);
@@ -381,7 +381,7 @@ public class ProcessService {
                 goods.setGState(GState.STOCK);
                 goods.setGStockState(GStockState.STOCK_REQ);
             } else {
-                goods.setGState(GState.RE_CHECK_DONE);
+//                goods.setGState(GState.RE_CHECK_DONE);
             }
 
             CheckGoods checkGoods = checkGoodsRepo.findByGoodsAndCheckGroup(goods, checkGroup);
@@ -634,7 +634,7 @@ public class ProcessService {
             gIdx.add(Long.parseLong(goodsList.get(i).get("G_IDX").toString()));
         }
 
-        goodsMapper.updateGoodsState(gIdx, GState.RECEIVED.name());
+        goodsMapper.updateGoodsState(gIdx, GState.CHECK_NEED.name());
 
         checkGroupRepo.deleteById(cgIdx);
     }

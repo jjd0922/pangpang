@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -22,9 +23,13 @@ public class OrderGsGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long oggIdx;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OGG_O_IDX", referencedColumnName = "oIdx")
+    private Orders orders;
+
     /** spo prefix 없이 {spoIdx}_{spoIdx} 로 구성*/
     private String oggSpo;
-    /** 1부터 시작*/
+    /** 수량*/
     private int oggCnt;
 
     @Builder.Default

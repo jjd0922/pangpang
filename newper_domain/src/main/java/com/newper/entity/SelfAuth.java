@@ -22,7 +22,7 @@ import java.util.Map;
 @Builder
 public class SelfAuth {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long saIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)

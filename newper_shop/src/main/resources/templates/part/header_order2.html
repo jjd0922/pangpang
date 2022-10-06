@@ -1,9 +1,10 @@
 <!-- 2행 로고 중앙 / 2-2 -->
 <th:block th:fragment="middle-logo-center">
     <!-- 2단 로고 그룹 선택시 클래스명: middle-logo-center -->
-    <div class="logo-group">
-        <a href="/index" class="logo" th:title="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">
-            <img th:src="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SHOP_LOGO')}" th:alt="${@shopComp.getShopMap().get(#request.getServerName()).shopName}" data-no-retina="">
+    <div class="logo-group logo-center">
+        <a th:href="@{/}" class="logo" th:title="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">
+            <!--<img th:src="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SHOP_LOGO')}" th:alt="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">-->
+            <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
         </a>
     </div>
 </th:block>
@@ -11,33 +12,208 @@
 <th:block th:fragment="middle-logo-left">
     <!-- 2단 로고 그룹 선택시 클래스명: middle-logo-left -->
     <div class="logo-group">
-        <a href="/index" class="logo" th:title="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">
-            <img th:src="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SHOP_LOGO')}" th:alt="${@shopComp.getShopMap().get(#request.getServerName()).shopName}" data-no-retina="">
+        <a th:href="@{/}" class="logo" th:title="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">
+            <!--<img th:src="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SHOP_LOGO')}" th:alt="${@shopComp.getShopMap().get(#request.getServerName()).shopName}">-->
+            <img th:attr="src=@{/image/logo.png},title='로고타이틀',alt='로고알트'">
         </a>
     </div>
 </th:block>
 <!-- 2행 검색창 / 2-2, 2-3 -->
 <th:block th:fragment="middle-search">
     <!-- 2단 검색창 선택시 클래스명: middle-search -->
-    <div class="search_main" th:classappend="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SEARCH_DESIGN')}">
+    <!--<div class="search_main" th:classappend="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SEARCH_DESIGN')}">
         <form method="post" name="searchForm" id="searchForm" class="search_form">
             <fieldset class="input position-relative">
                 <input type ="text" id="searchInput" name="input" class="main-search"  placeholder="검색어를 입력해주세요.">
                 <a type="submit" class="main-search-btn text-16" title="검색하기"><i class="ti-search"></i></a>
             </fieldset>
         </form>
+    </div>-->
+    <div class="searchSection">
+        <div class="searchBar">
+            <form name="searchForm" id="searchForm" action="" method="get" onsubmit="return false;">
+                <input type="text" id="searchInput" name="i" class="form-control main-search" value="">
+            </form>
+            <div class="search-icon"></div>
+        </div>
+        <div class="searchBar-open">
+            <div class="searchBar-banner-slide">
+                <div class="swiper swiper-searchBar">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">폭염주의보 발령! 에어컨 써큘레이터 초특가!</li>
+                        <li class="swiper-slide">금손이 되기위한 나만의 잇템</li>
+                    </ul>
+                </div>
+                <div class="searchBar-prev"></div>
+                <div class="searchBar-next"></div>
+            </div>
+            <div class="searchWord">
+                <ul class="searchWord-tab">
+                    <li class="on">인기검색어</li>
+                    <li>추천검색어</li>
+                </ul>
+                <div class="searchWord-content">
+                    <div class="popular-searchWord on">
+                        <ul>
+                            <li>
+                                <span class="ranking top-ranking">1</span>
+                                <a href="javascript:;">노트북</a>
+                            </li>
+                            <li>
+                                <span class="ranking top-ranking">2</span>
+                                <a href="javascript:;">모니터</a>
+                            </li>
+                            <li>
+                                <span class="ranking top-ranking">3</span>
+                                <a href="javascript:;">컴퓨터</a>
+                            </li>
+                            <li>
+                                <span class="ranking">4</span>
+                                <a href="javascript:;">아이패드</a>
+                            </li>
+                            <li>
+                                <span class="ranking">5</span>
+                                <a href="javascript:;">TV</a>
+                            </li>
+                            <li>
+                                <span class="ranking">6</span>
+                                <a href="javascript:;">냉장고</a>
+                            </li>
+                            <li>
+                                <span class="ranking">7</span>
+                                <a href="javascript:;">선풍기</a>
+                            </li>
+                            <li>
+                                <span class="ranking">8</span>
+                                <a href="javascript:;">그램</a>
+                            </li>
+                            <li>
+                                <span class="ranking">9</span>
+                                <a href="javascript:;">맥북</a>
+                            </li>
+                            <li>
+                                <span class="ranking">10</span>
+                                <a href="javascript:;">lg 그램</a>
+                            </li>
+                        </ul>
+                        <p>2022-08-29 13:40 기준</p>
+                    </div>
+                    <div class="suggestion-searchWord">
+                        <ul>
+                            <li><a href="javascript:;">노트북</a></li>
+                            <li><a href="javascript:;">여름맞이 삼성 에어컨</a></li>
+                            <li><a href="javascript:;">뉴퍼마켓 런칭 기념</a></li>
+                            <li><a href="javascript:;">아이패드</a></li>
+                            <li><a href="javascript:;">데스크탑 세일</a></li>
+                            <li><a href="javascript:;">여름장마 시작!</a></li>
+                            <li><a href="javascript:;">에어랩</a></li>
+                            <li><a href="javascript:;">태블릿</a></li>
+                            <li><a href="javascript:;">LG 스마트TV 특별혜택</a></li>
+                            <li><a href="javascript:;">게이밍 할일전</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </th:block>
 <!-- 3행 검색창 / 3-3 -->
 <th:block th:fragment="bottom-search">
     <!-- 3단 검색창 선택시 클래스명: bottom-search -->
-    <div class="search_main" th:classappend="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SEARCH_DESIGN')}">
+    <!--<div class="search_main" th:classappend="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('SEARCH_DESIGN')}">
         <form method="post" name="searchForm" id="searchForm" class="search_form">
             <fieldset class="input position-relative">
                 <input type="text" id="searchInput" name="input" class="main-search"  placeholder="검색어를 입력해주세요.">
-                <button type="submit" class="main-search-btn text-16" title="검색하기"><i class="ti-search"></i></button>
+                <a type="submit" class="main-search-btn text-16" title="검색하기"><i class="ti-search"></i></button>
             </fieldset>
         </form>
+    </div>-->
+    <div class="searchSection">
+        <div class="searchBar">
+            <form name="searchForm" id="searchForm" action="" method="get" onsubmit="return false;">
+                <input type="text" id="searchInput" name="i" class="form-control main-search" value="">
+            </form>
+            <div class="search-icon"></div>
+        </div>
+        <div class="searchBar-open">
+            <div class="searchBar-banner-slide">
+                <div class="swiper swiper-searchBar">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">폭염주의보 발령! 에어컨 써큘레이터 초특가!</li>
+                        <li class="swiper-slide">금손이 되기위한 나만의 잇템</li>
+                    </ul>
+                </div>
+                <div class="searchBar-prev"></div>
+                <div class="searchBar-next"></div>
+            </div>
+            <div class="searchWord">
+                <ul class="searchWord-tab">
+                    <li class="on">인기검색어</li>
+                    <li>추천검색어</li>
+                </ul>
+                <div class="searchWord-content">
+                    <div class="popular-searchWord on">
+                        <ul>
+                            <li>
+                                <span class="ranking top-ranking">1</span>
+                                <a href="javascript:;">노트북</a>
+                            </li>
+                            <li>
+                                <span class="ranking top-ranking">2</span>
+                                <a href="javascript:;">모니터</a>
+                            </li>
+                            <li>
+                                <span class="ranking top-ranking">3</span>
+                                <a href="javascript:;">컴퓨터</a>
+                            </li>
+                            <li>
+                                <span class="ranking">4</span>
+                                <a href="javascript:;">아이패드</a>
+                            </li>
+                            <li>
+                                <span class="ranking">5</span>
+                                <a href="javascript:;">TV</a>
+                            </li>
+                            <li>
+                                <span class="ranking">6</span>
+                                <a href="javascript:;">냉장고</a>
+                            </li>
+                            <li>
+                                <span class="ranking">7</span>
+                                <a href="javascript:;">선풍기</a>
+                            </li>
+                            <li>
+                                <span class="ranking">8</span>
+                                <a href="javascript:;">그램</a>
+                            </li>
+                            <li>
+                                <span class="ranking">9</span>
+                                <a href="javascript:;">맥북</a>
+                            </li>
+                            <li>
+                                <span class="ranking">10</span>
+                                <a href="javascript:;">lg 그램</a>
+                            </li>
+                        </ul>
+                        <p>2022-08-29 13:40 기준</p>
+                    </div>
+                    <div class="suggestion-searchWord">
+                        <ul>
+                            <li><a href="javascript:;">노트북</a></li>
+                            <li><a href="javascript:;">여름맞이 삼성 에어컨</a></li>
+                            <li><a href="javascript:;">뉴퍼마켓 런칭 기념</a></li>
+                            <li><a href="javascript:;">아이패드</a></li>
+                            <li><a href="javascript:;">데스크탑 세일</a></li>
+                            <li><a href="javascript:;">여름장마 시작!</a></li>
+                            <li><a href="javascript:;">에어랩</a></li>
+                            <li><a href="javascript:;">태블릿</a></li>
+                            <li><a href="javascript:;">LG 스마트TV 특별혜택</a></li>
+                            <li><a href="javascript:;">게이밍 할일전</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </th:block>
 <!-- 2행 로그인그룹 / 2-3-->
@@ -70,42 +246,53 @@
                     <span class="text">마이페이지</span>
                 </a>
             </p>
+            <p class="content" th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                <a href="/custCenter" class="login-group-small login-group-text" title="고객센터">
+                    <span class="text">고객센터</span>
+                </a>
+            </p>
         </th:block>
     </div>
 
     <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'ICON'}" >
-        <th:block th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
-                <a href="javascript:;" class="login-group-small login-group-icon login nosessionClass" title="로그인">
-                    <span class="icon ti-lock"></span>
-                    <span class="text">로그인</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
-                <a href="/customer/joinWelcome" class="login-group-small login-group-icon" title="회원가입">
-                    <span class="icon ti-plus"></span>
-                    <span class="text">회원가입</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx != null}">
-                <a href="javascript:logout()" class="login-group-small login-group-icon" title="로그아웃" >
-                    <span class="icon ti-unlock"></span>
-                    <span class="text">로그아웃</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('BASKET')} and ${@shopSession.idx != null}">
-                <a href="/cart" class="login-group-small login-group-icon" title="장바구니">
-                    <span class="icon ti-bag"></span>
-                    <span class="text">장바구니</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
-                <a href="/myPage" class="login-group-small login-group-icon" title="마이페이지">
-                    <span class="icon ti-user"></span>
-                    <span class="text">마이페이지</span>
-                </a>
-            </p>
-        </th:block>
+        <div class="userMenu">
+            <ul>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
+                    <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M9.17,25.71c-.35,0-.64,.32-.64,.71v7.04c0,.39,.29,.71,.64,.71H26.55c3.62,0,5.96-2.12,5.96-5.4V6.55c0-.39-.29-.71-.64-.71H14.48c-3.62,0-5.96,2.12-5.96,5.4v2.32c0,.39,.29,.71,.64,.71s.64-.32,.64-.71v-2.32c0-2.53,1.7-3.98,4.67-3.98H31.22V28.77c0,2.53-1.7,3.98-4.67,3.98H9.81v-6.33c0-.39-.29-.71-.64-.71Z"/><path class="cls-2" d="M2.83,19.28c-.35,0-.64,.32-.64,.71s.29,.71,.64,.71H21.02l-5.98,5.16c-.14,.12-.22,.29-.24,.48-.02,.19,.03,.38,.14,.53,.21,.29,.63,.34,.89,.11l7.47-6.46s.04-.04,.06-.06c.01-.02,.02-.03,.03-.05,.02-.02,.03-.05,.05-.08l.03-.05s.02-.06,.03-.1l.02-.06s.01-.09,.01-.14l-.03-.21s-.02-.06-.03-.09c-.04-.07-.05-.1-.07-.13,0,0-.02-.02-.03-.04-.02-.03-.04-.05-.07-.07l-.02-.02-7.44-6.43c-.13-.11-.29-.17-.46-.15-.17,.02-.33,.11-.43,.26-.11,.15-.16,.34-.14,.53,.02,.19,.11,.36,.24,.48l5.98,5.16H2.83Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">로그인</span>
+                    </a>
+                    <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Login"><g><path class="cls-2" d="M9.22,5.48c-.35,0-.64,.33-.64,.73V28.98c0,3.36,2.32,5.53,5.91,5.53H31.74c.35,0,.63-.33,.63-.73v-7.21c0-.4-.29-.73-.63-.73s-.63,.33-.63,.73v6.48H14.49c-2.95,0-4.64-1.48-4.64-4.07V6.95H26.46c2.95,0,4.64,1.48,4.64,4.07v2.38c0,.4,.29,.73,.63,.73s.63-.33,.63-.73v-2.38c0-3.36-2.32-5.53-5.91-5.53H9.22Z"/><path class="cls-2" d="M25.51,12.67c-.14,0-.28,.05-.39,.15l-7.39,6.6s-.05,.06-.07,.08c-.02,.02-.03,.03-.04,.05-.01,.02-.03,.05-.05,.1-.03,.06-.04,.1-.05,.13l-.03,.22s0,.09,.02,.14v.04s.03,.08,.05,.11v.03s.05,.07,.07,.1c0,.01,.02,.03,.03,.04,.02,.03,.04,.05,.06,.07l7.4,6.61c.27,.24,.67,.18,.88-.12,.11-.15,.16-.35,.14-.54-.02-.2-.11-.37-.24-.49l-5.92-5.28h18.04c.35,0,.64-.33,.64-.73s-.29-.73-.64-.73H19.98l5.92-5.28c.14-.12,.22-.3,.24-.49,.02-.2-.03-.39-.14-.55-.11-.15-.26-.25-.43-.27-.02,0-.04,0-.06,0Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">로그아웃</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}" class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}" th:styleappend="${@shopSession.idx != null?'display:none;':''}">
+                    <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">회원가입</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('MY')}" class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                    <a th:href="@{/myPage}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">마이쇼핑</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('BASKET')}" th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
+                    <a th:href="@{/cart}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M1.56,6.38c-.34,0-.62,.28-.62,.62s.28,.62,.62,.62H7.45l.1,.41,4.84,19.15c.07,.28,.32,.47,.6,.47H29.55c.28,0,.53-.19,.6-.47l3.52-13.92c.05-.18,0-.38-.11-.53-.12-.15-.3-.24-.49-.24H9.95l-.04-.18-1.38-5.46c-.07-.28-.32-.47-.6-.47H1.56ZM29.06,26.41H13.47l-.04-.17-3.16-12.51h22l-3.2,12.68Z"/><path class="cls-2" d="M28.25,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/><path class="cls-2" d="M14.02,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">장바구니</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('CENTER')}" th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
+                    <a th:href="@{/custCenter}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><path class="cls-2" d="M19.8,27.57c-2.13,0-3.87,1.74-3.87,3.87s1.74,3.87,3.87,3.87,3.87-1.74,3.87-3.87v-.15s.07-.03,.07-.03c4.44-1.72,7.17-4.41,8.13-5.49l.03-.04h.08s.39-.07,.39-.07c2.8-.49,4.84-2.91,4.84-5.75,0-3.02-2.26-5.52-5.26-5.82h-.09s-.02-.09-.02-.09c-1.34-5.48-5.71-9.3-10.61-9.3h-1.98c-4.9,0-9.26,3.82-10.61,9.28l-.02,.09h-.1c-3.17,.05-5.75,2.67-5.75,5.84s2.62,5.85,5.85,5.85l.9-.03v-8.25c0-6.32,4.36-11.47,9.73-11.47h1.98c5.37,0,9.73,5.14,9.73,11.47v7.35l-.03,.04c-.69,.77-3.28,3.42-7.44,5.09l-.11,.04-.05-.11c-.62-1.4-2.01-2.31-3.54-2.31Zm0,6.43c-1.41,0-2.56-1.15-2.56-2.56s1.15-2.56,2.56-2.56,2.56,1.15,2.56,2.56-1.15,2.56-2.56,2.56Zm-11.58-9.58l-.14-.02c-2.27-.28-3.99-2.21-3.99-4.48s1.78-4.28,4.13-4.5h.16s-.02,.14-.02,.14c-.09,.72-.14,1.33-.14,1.92v6.94Zm24.05-.06v-6.87c0-.57-.04-1.16-.13-1.87l-.02-.17,.17,.04c2.1,.43,3.62,2.3,3.62,4.44s-1.43,3.91-3.48,4.4l-.15,.04Z"/></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">고객센터</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
 
@@ -131,12 +318,58 @@
                     <span class="text">장바구니</span>
                 </a>
             </p>
-            <p class="content" th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
-                <a href="/myPage" class="login-group-small login-group-text-division" title="마이페이지">
-                    <span class="text">마이페이지</span>
+            <p class="content" th:if="${loginStr.equals('BASKET')} and ${@shopSession.idx != null}">
+                <a href="/cart" class="login-group-small login-group-text-division" title="장바구니">
+                    <span class="text">장바구니</span>
+                </a>
+            </p>
+            <p class="content" th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                <a href="/custCenter" class="login-group-small login-group-text-division" title="고객센터">
+                    <span class="text">고객센터</span>
                 </a>
             </p>
         </th:block>
+    </div>
+
+    <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'ICON_LINE'}" >
+        <div class="userMenu">
+            <ul>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
+                    <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M9.17,25.71c-.35,0-.64,.32-.64,.71v7.04c0,.39,.29,.71,.64,.71H26.55c3.62,0,5.96-2.12,5.96-5.4V6.55c0-.39-.29-.71-.64-.71H14.48c-3.62,0-5.96,2.12-5.96,5.4v2.32c0,.39,.29,.71,.64,.71s.64-.32,.64-.71v-2.32c0-2.53,1.7-3.98,4.67-3.98H31.22V28.77c0,2.53-1.7,3.98-4.67,3.98H9.81v-6.33c0-.39-.29-.71-.64-.71Z"/><path class="cls-2" d="M2.83,19.28c-.35,0-.64,.32-.64,.71s.29,.71,.64,.71H21.02l-5.98,5.16c-.14,.12-.22,.29-.24,.48-.02,.19,.03,.38,.14,.53,.21,.29,.63,.34,.89,.11l7.47-6.46s.04-.04,.06-.06c.01-.02,.02-.03,.03-.05,.02-.02,.03-.05,.05-.08l.03-.05s.02-.06,.03-.1l.02-.06s.01-.09,.01-.14l-.03-.21s-.02-.06-.03-.09c-.04-.07-.05-.1-.07-.13,0,0-.02-.02-.03-.04-.02-.03-.04-.05-.07-.07l-.02-.02-7.44-6.43c-.13-.11-.29-.17-.46-.15-.17,.02-.33,.11-.43,.26-.11,.15-.16,.34-.14,.53,.02,.19,.11,.36,.24,.48l5.98,5.16H2.83Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">로그인</span>
+                    </a>
+                    <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Login"><g><path class="cls-2" d="M9.22,5.48c-.35,0-.64,.33-.64,.73V28.98c0,3.36,2.32,5.53,5.91,5.53H31.74c.35,0,.63-.33,.63-.73v-7.21c0-.4-.29-.73-.63-.73s-.63,.33-.63,.73v6.48H14.49c-2.95,0-4.64-1.48-4.64-4.07V6.95H26.46c2.95,0,4.64,1.48,4.64,4.07v2.38c0,.4,.29,.73,.63,.73s.63-.33,.63-.73v-2.38c0-3.36-2.32-5.53-5.91-5.53H9.22Z"/><path class="cls-2" d="M25.51,12.67c-.14,0-.28,.05-.39,.15l-7.39,6.6s-.05,.06-.07,.08c-.02,.02-.03,.03-.04,.05-.01,.02-.03,.05-.05,.1-.03,.06-.04,.1-.05,.13l-.03,.22s0,.09,.02,.14v.04s.03,.08,.05,.11v.03s.05,.07,.07,.1c0,.01,.02,.03,.03,.04,.02,.03,.04,.05,.06,.07l7.4,6.61c.27,.24,.67,.18,.88-.12,.11-.15,.16-.35,.14-.54-.02-.2-.11-.37-.24-.49l-5.92-5.28h18.04c.35,0,.64-.33,.64-.73s-.29-.73-.64-.73H19.98l5.92-5.28c.14-.12,.22-.3,.24-.49,.02-.2-.03-.39-.14-.55-.11-.15-.26-.25-.43-.27-.02,0-.04,0-.06,0Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">로그아웃</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}" class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}" th:styleappend="${@shopSession.idx != null?'display:none;':''}">
+                    <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">회원가입</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('MY')}" class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                    <a th:href="@{/myPage}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">마이쇼핑</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('BASKET')}" th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
+                    <a th:href="@{/cart}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M1.56,6.38c-.34,0-.62,.28-.62,.62s.28,.62,.62,.62H7.45l.1,.41,4.84,19.15c.07,.28,.32,.47,.6,.47H29.55c.28,0,.53-.19,.6-.47l3.52-13.92c.05-.18,0-.38-.11-.53-.12-.15-.3-.24-.49-.24H9.95l-.04-.18-1.38-5.46c-.07-.28-.32-.47-.6-.47H1.56ZM29.06,26.41H13.47l-.04-.17-3.16-12.51h22l-3.2,12.68Z"/><path class="cls-2" d="M28.25,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/><path class="cls-2" d="M14.02,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">장바구니</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('CENTER')}" th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
+                    <a th:href="@{/custCenter}" class="thumbnail-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><path class="cls-2" d="M19.8,27.57c-2.13,0-3.87,1.74-3.87,3.87s1.74,3.87,3.87,3.87,3.87-1.74,3.87-3.87v-.15s.07-.03,.07-.03c4.44-1.72,7.17-4.41,8.13-5.49l.03-.04h.08s.39-.07,.39-.07c2.8-.49,4.84-2.91,4.84-5.75,0-3.02-2.26-5.52-5.26-5.82h-.09s-.02-.09-.02-.09c-1.34-5.48-5.71-9.3-10.61-9.3h-1.98c-4.9,0-9.26,3.82-10.61,9.28l-.02,.09h-.1c-3.17,.05-5.75,2.67-5.75,5.84s2.62,5.85,5.85,5.85l.9-.03v-8.25c0-6.32,4.36-11.47,9.73-11.47h1.98c5.37,0,9.73,5.14,9.73,11.47v7.35l-.03,.04c-.69,.77-3.28,3.42-7.44,5.09l-.11,.04-.05-.11c-.62-1.4-2.01-2.31-3.54-2.31Zm0,6.43c-1.41,0-2.56-1.15-2.56-2.56s1.15-2.56,2.56-2.56,2.56,1.15,2.56,2.56-1.15,2.56-2.56,2.56Zm-11.58-9.58l-.14-.02c-2.27-.28-3.99-2.21-3.99-4.48s1.78-4.28,4.13-4.5h.16s-.02,.14-.02,.14c-.09,.72-.14,1.33-.14,1.92v6.94Zm24.05-.06v-6.87c0-.57-.04-1.16-.13-1.87l-.02-.17,.17,.04c2.1,.43,3.62,2.3,3.62,4.44s-1.43,3.91-3.48,4.4l-.15,.04Z"/></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
+                        <span class="text-xsmall">고객센터</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </th:block>
 <!-- 3행 로그인그룹 / 3-3 -->
@@ -167,6 +400,11 @@
             <p class="content" th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
                 <a href="/myPage" class="login-group-small login-group-text" title="마이페이지">
                     <span class="text">마이페이지</span>
+                </a>
+            </p>
+            <p class="content" th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                <a href="/custCenter" class="login-group-small login-group-text" title="고객센터">
+                    <span class="text">고객센터</span>
                 </a>
             </p>
         </th:block>
@@ -203,6 +441,12 @@
                     <span class="text">마이페이지</span>
                 </a>
             </p>
+            <p class="content" th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
+                <a href="/custCenter" class="login-group-small" title="고객센터">
+                    <span class="icon ti-user"></span>
+                    <span class="text">고객센터</span>
+                </a>
+            </p>
         </th:block>
     </div>
     <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'LINE'}" >
@@ -232,6 +476,11 @@
                 <span class="text">마이페이지</span>
             </a>
         </p>
+            <p class="content" th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                <a href="/custCenter" class="login-group-small login-group-text-division" title="고객센터">
+                    <span class="text">고객센터</span>
+                </a>
+            </p>
         </th:block>
     </div>
 
@@ -252,9 +501,9 @@
     <!--로그인 그룹-->
     <div class="login-group">
         <p class="profile-btn">
-            <button onclick="myToggle()" class="bg-transparent">
+            <a onclick="myToggle()" class="bg-transparent">
                 <i class="group-icon ti-user"></i>
-            </button>
+            </a>
         </p>
         <div id="toggleList"style="visibility: hidden">
             <ul th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'TEXT'}">
@@ -273,6 +522,9 @@
                     </li>
                     <li th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
                         <a href="/myPage" title="마이페이지">마이페이지</a>
+                    </li>
+                    <li th:if="${loginStr.equals('MY')} and ${@shopSession.idx == null}">
+                        <a href="/custCenter" title="고객센터">고객센터</a>
                     </li>
                 </th:block>
             </ul>
@@ -293,6 +545,9 @@
                     </li>
                     <li th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
                         <a href="/myPage" title="마이페이지">마이페이지</a>
+                    </li>
+                    <li th:if="${loginStr.equals('CNETER')} and ${@shopSession.idx == null}">
+                        <a href="/custCenter" title="고객센터">고객센터</a>
                     </li>
                 </th:block>
             </ul>
@@ -336,6 +591,9 @@
                     <li th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
                         <a href="/myPage" title="마이페이지">마이페이지</a>
                     </li>
+                    <li th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                        <a href="/custCenter" title="고객센터">고객센터</a>
+                    </li>
                 </th:block>
 
             </ul>
@@ -355,6 +613,9 @@
                     </li>
                     <li th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
                         <a href="/myPage" title="마이페이지">마이페이지</a>
+                    </li>
+                    <li th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
+                        <a href="/custCenter" title="고객센터">고객센터</a>
                     </li>
                 </th:block>
 
@@ -384,7 +645,7 @@
         <div class="swiper-gnb-next"></div>
     </div>
 </th:block>
-<!-- 2행 헤더내부_배너 / 2-3 -->
+<!-- 2행 헤더내부 배너 / 2-3 -->
 <th:block th:fragment="middle-banner">
     <!-- 2단 광고배너 선택시 클래스명: middle-banner -->
     <div class="banner-group">
@@ -395,209 +656,210 @@
 </th:block>
 <!-- 3행 전체 카테고리 버튼 / 3-1 -->
 <th:block th:fragment="all-category-btn">
-    <div class="menu-btn-wrap">
-        <div class="menu-btn">
+    <nav>
+        <div class="menu-btn-wrap">
+            <div class="menu-btn"></div>
+            <p>전체 카테고리</p>
         </div>
-        <p>전체 카테고리</p>
-    </div>
-    <div class="gnb-ctg-all">
-        <ul class="ctg-all">
-            <li th:each="shopCategory : ${@shopComp.shopCategoryList}">
-                <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
-                <div class="ctg-open" style="display: none;">
-                    <div class="ctg-first-area">
-                        <ul>
-                            <li>
-                                <a href="javascript:;">LG전자</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">삼성전자</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">한성컴퓨터</a>
-                                <ul class="first-area-sub">
-                                    <li>
-                                        <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">키보드<span class="separation"></span>마우스</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">키보드 마우스 패드</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">노트북 주변기기</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">프린터 복합기</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">스피커</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">기타</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:;">벤큐</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">DELL</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">알파스캔</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">주연테크</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">ASUS</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">HP</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">제이씨현시스템</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">필립스</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">MSI</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">크로스오버존</a>
-                            </li>
-                        </ul>
+        <div class="gnb-ctg-all">
+            <ul class="ctg-all">
+                <li th:each="shopCategory : ${@shopComp.shopCategoryList}">
+                    <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
+                    <div class="ctg-open" style="display: none;">
+                        <div class="ctg-first-area">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;">LG전자</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">삼성전자</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">한성컴퓨터</a>
+                                    <ul class="first-area-sub">
+                                        <li>
+                                            <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">키보드<span class="separation"></span>마우스</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">키보드 마우스 패드</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">노트북 주변기기</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">프린터 복합기</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">스피커</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">기타</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">벤큐</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">DELL</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">알파스캔</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">주연테크</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">ASUS</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">HP</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">제이씨현시스템</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">필립스</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">MSI</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">크로스오버존</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <!--                    <li>-->
-            <!--                        <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>-->
-            <!--                        <div class="ctg-open" style="display: none;">-->
-            <!--                            <div class="ctg-first-area">-->
-            <!--                                <ul>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">LG전자</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">삼성전자</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">한성컴퓨터</a>-->
-            <!--                                        <ul class="first-area-sub">-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">키보드 마우스 패드</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">노트북 주변기기</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">프린터 복합기</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">스피커</a>-->
-            <!--                                            </li>-->
-            <!--                                            <li>-->
-            <!--                                                <a href="javascript:;">기타</a>-->
-            <!--                                            </li>-->
-            <!--                                        </ul>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">벤큐</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">DELL</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">알파스캔</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">주연테크</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">ASUS</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">HP</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">제이씨현시스템</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">필립스</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">MSI</a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">크로스오버존</a>-->
-            <!--                                    </li>-->
-            <!--                                </ul>-->
-            <!--                            </div>-->
-            <!--                            <div class="ctg-second-area">-->
-            <!--                                <ul class="second-area-1">-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">-->
-            <!--                                            <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">-->
-            <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
-            <!--                                            <div class="item-price">-->
-            <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
-            <!--                                            </div>-->
-            <!--                                        </a>-->
-            <!--                                    </li>-->
-            <!--                                    <li>-->
-            <!--                                        <a href="javascript:;">-->
-            <!--                                            <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">-->
-            <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
-            <!--                                            <div class="item-price">-->
-            <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
-            <!--                                            </div>-->
-            <!--                                        </a>-->
-            <!--                                    </li>-->
-            <!--                                </ul>-->
-            <!--                                <div class="second-area-2">-->
-            <!--                                    <a href="javascript:;">-->
-            <!--                                        <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">-->
-            <!--                                    </a>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                    </li>-->
-            <!--                    <li><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>-->
-            <!--                    <li><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>-->
-            <!--                    <li><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>-->
-            <!--                    <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>-->
-            <!--                    <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>-->
-            <!--                    <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>-->
-            <!--                    <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>-->
-        </ul>
-    </div>
+                </li>
+                <!--                    <li>-->
+                <!--                        <a href="javascript:;">모니터<span class="separation"></span>주변기기</a>-->
+                <!--                        <div class="ctg-open" style="display: none;">-->
+                <!--                            <div class="ctg-first-area">-->
+                <!--                                <ul>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">LG전자</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">삼성전자</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">한성컴퓨터</a>-->
+                <!--                                        <ul class="first-area-sub">-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">프린터<span class="separation"></span>복합기</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">유무선공유기<span class="separation"></span>허브</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">외장 HDD<span class="separation"></span>SSD</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">보조배터리<span class="separation"></span>충전기</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">키보드<span class="separation"></span>마우스</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">키보드 마우스 패드</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">노트북 주변기기</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">프린터 복합기</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">스피커</a>-->
+                <!--                                            </li>-->
+                <!--                                            <li>-->
+                <!--                                                <a href="javascript:;">기타</a>-->
+                <!--                                            </li>-->
+                <!--                                        </ul>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">벤큐</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">DELL</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">알파스캔</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">주연테크</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">ASUS</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">HP</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">제이씨현시스템</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">필립스</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">MSI</a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">크로스오버존</a>-->
+                <!--                                    </li>-->
+                <!--                                </ul>-->
+                <!--                            </div>-->
+                <!--                            <div class="ctg-second-area">-->
+                <!--                                <ul class="second-area-1">-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">-->
+                <!--                                            <img src="https://images.ajrepository.com/item_images/001124955/001124955L1.jpg">-->
+                <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+                <!--                                            <div class="item-price">-->
+                <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
+                <!--                                            </div>-->
+                <!--                                        </a>-->
+                <!--                                    </li>-->
+                <!--                                    <li>-->
+                <!--                                        <a href="javascript:;">-->
+                <!--                                            <img src="https://images.ajrepository.com/item_images/001101944/001101944L1.jpg">-->
+                <!--                                            <div class="item-title">삼성 27인치 IPS 슬림베젤 프리싱크 모니터</div>-->
+                <!--                                            <div class="item-price">-->
+                <!--                                                <span class="discount-price color-red">199,000</span>원&nbsp;&nbsp;&nbsp;<span class="real-price">243,000</span><p></p>-->
+                <!--                                            </div>-->
+                <!--                                        </a>-->
+                <!--                                    </li>-->
+                <!--                                </ul>-->
+                <!--                                <div class="second-area-2">-->
+                <!--                                    <a href="javascript:;">-->
+                <!--                                        <img src="https://images.ajrepository.com/root/pages/banner/images/HACB_8F_3.jpg">-->
+                <!--                                    </a>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </li>-->
+                <!--                    <li><a href="javascript:;">태블릿<span class="separation"></span>휴대폰<span class="separation"></span>웨어러블</a></li>-->
+                <!--                    <li><a href="javascript:;">음향<span class="separation"></span>이어폰<span class="separation"></span>스피커</a></li>-->
+                <!--                    <li><a href="javascript:;">가전<span class="separation"></span>TV<span class="lseparation"></span>세탁기<span class="separation"></span>냉장고</a></li>-->
+                <!--                    <li><a href="javascript:;">주방<span class="separation"></span>생활<span class="separation"></span>레져</a></li>-->
+                <!--                    <li><a href="javascript:;">차량용품<span class="separation"></span>블랙박스</a></li>-->
+                <!--                    <li><a href="javascript:;">패션<span class="separation"></span>잡화<span class="separation"></span>뷰티</a></li>-->
+                <!--                    <li><a href="javascript:;">식품<span class="separation"></span>헬스케어</a></li>-->
+            </ul>
+        </div>
+    </nav>
 </th:block>
 <!-- 3행 고정 메뉴 (임의 생성) / 3-3 -->
 <th:block th:fragment="menu-fixed"><!--외부링크-->
@@ -606,6 +868,5 @@
 
 <!-- 없음 > 파일 2개로 찢음에 따라 공통 사용되는 없음 타입 두개가 됨 (order_1과 order_2에 중복) -->
 <th:block th:fragment="block-none">
+    <div></div>
 </th:block>
-
-<!-- 불필요시 또는 명칭변경 시 요청해주세요(문성모에게) -->

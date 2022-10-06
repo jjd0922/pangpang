@@ -6,9 +6,7 @@
             </p>
             <p><span class="color-red">※</span>&nbsp;&nbsp;언제나 친절/신속하게 답변해드릴 것을 약속드리며, 궁금하신 사항은 문의하기 버튼을 클릭하셔서 문의해주세요!</p>
         </div>
-        <div class="btn btn3">
-            <a onclick="qnaInsertModal(null)">1:1 문의하기</a>
-        </div>
+        <a onclick="qnaInsertModal(null)" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">1:1 문의하기</a>
     </div>
 
     <!-- 테이블 -->
@@ -52,8 +50,8 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn2"><a onclick="qnaInsertModal('qnaIdx')">수정하기</a></div>
-                        <div class="btn btn8"><a onclick="alert('준비중')">삭제</a></div>
+                        <a onclick="qnaInsertModal('qnaIdx')" class="btn btn-xs btn-point btn-width-xs radius-xlarge">수정하기</a>
+                        <a onclick="alert('준비중')" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
                 <div class="inquiry-open font-md">
@@ -168,8 +166,8 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn2"><a onclick="reviewUpdateModal()">문의수정</a></div>
-                        <div class="btn btn8"><a onclick="alert('준비중')">삭제</a></div>
+                        <a onclick="reviewUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge">문의수정</a>
+                        <a onclick="alert('준비중')" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
                 <div class="inquiry-open font-md">
@@ -224,15 +222,78 @@
 <!-- 1:1문의 modal -->
 <th:block th:fragment="qnaModal">
     <span th:text="${modalTitle}"></span>
-    <table>
-        <tr>문의하실 상품</tr>
-        <td><a onclick="openProductModal('qnaProduct')">상품 선택</a></td>
-    </table>
+    문의하기
+    <form id="qnaForm" enctype="multipart/form-data">
+        <table th:with="customer=${@customerRepo.findByCuId(@shopSession.getId())}">
+            <tr>
+                <td>문의하실 상품</td>
+                <td><a onclick="openProductModal('qnaProduct')">상품 선택</a></td>
+            </tr>
+            <tr>
+                <td>이름</td>
+                <td><input type="text" name="cuName" th:value="${customer?.cuName}"></td>
+            </tr>
+            <tr>
+                <td>이메일주소</td>
+                <td>
+                    <input type="text" name="email1">@
+                    <select name="domain">
+                        <option>직접입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="hotmail.com">hotmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="yahoo.co.kr">yahoo.co.kr</option>
+                        <option value="paran.com">paran.com</option>
+                        <option value="empas.com">empas.com</option>
+                        <option value="dreamwiz.com">dreamwiz.com</option>
+                        <option value="lycos.co.kr">lycos.co.kr</option>
+                        <option value="korea.com">korea.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="hanmir.com">hanmir.com</option>
+                    </select>
+                    <input type="checkbox" name="qnaMailAlarm">답변알림받기
+                </td>
+            </tr>
+            <tr>
+                <td>휴대전화</td>
+                <td th:with="phone=${customer?.getPhoneArr()}">
+                    <input type="text" name="phone1" maxlength="3" th:value="${phone[0]}">-
+                    <input type="text" name="phone2" maxlength="4" th:value="${phone[1]}">-
+                    <input type="text" name="phone3" maxlength="4" th:value="${phone[2]}">
+                    <input type="checkbox" name="qnaPhoneAlarm">답변알림받기
+                </td>
+            </tr>
+            <tr>
+                <td>문의유형</td>
+                <td>
+                    <select name="qnaType1">
+                        <option th:each="opt: ${T(com.newper.constant.QnaType1).values()}" th:text="${opt.option}" th:value="${opt.name()}"></option>
+                    </select>
+                    <select name="qnaType2">
+                        <option th:each="opt: ${T(com.newper.constant.QnaType2).values()}" th:text="${opt.option}" th:value="${opt.name()}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="qnaTitle" placeholder="제목을 입력하세요."></td>
+            </tr>
+            <tr>
+                <td>내용작성</td>
+                <td><textarea name="qnaContent" placeholder="문의하실 내용을 입력하세요."></textarea></td>
+            </tr>
+            <tr>
+                <td>사진첨부</td>
+                <td><input type="file" name="photos"></td>
+            </tr>
+        </table>
+    </form>
 
     <br>
-    <button onclick="$('#commonModal').hide()">취소</button>
+    <a onclick="$('#commonModal').hide()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">취소</a>
     <br>
-    <button onclick="alert('준비중!')">작성완료</button>
+    <a onclick="saveQna()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>
 
     <script>
         function openProductModal(modal){
@@ -250,6 +311,20 @@
                 ,error:function(){}
             })
         }
+
+        /** 1:1 문의 등록 */
+        function saveQna() {
+            var param = new FormData($('#qnaForm')[0]);
+            $.ajax({
+                url: '/qna/save.ajax'
+                ,type: 'post'
+                ,data: param
+                ,success: function () {
+                    $('#commonModal').hide();
+                    openMyListQnaMenu('qnaHistory');
+                }
+            });
+        }
     </script>
 </th:block>
 
@@ -257,7 +332,7 @@
 <th:block th:fragment="qnaProductModal">
     <span th:text="${modalTitle}"></span>
 
-    <button onclick="$('#commonModal').hide()">취소</button>
-    <button onclick="alert('준비중!')">작성완료</button>
+    <a onclick="$('#commonModal').hide()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">취소</a>
+    <a onclick="alert('준비중!')" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>
 </th:block>
 <!-- 상품문의 등록/수정 modal end-->

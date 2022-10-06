@@ -13,12 +13,14 @@
         FROM
 
             order_gs
-            left join orders on O_IDX=OG_O_IDX
+            left join order_gs_group on OGG_IDX=OG_OGG_IDX
+            left join orders on O_IDX=OGG_O_IDX
             left join shop_product_option on OG_SPO_IDX=SPO_IDX
             left join goods_stock on SPO_GS_IDX=GS_IDX
             left join customer on O_CU_IDX=CU_IDX
         WHERE
             CU_IDX=#{cuIdx}
+            AND O_TEMP=1
 </select>
 
     <select id="selectOrderGsListByComIdx" resultType="map" parameterType="map">
@@ -70,5 +72,42 @@ where
           AND OG_O_IDX=O_IDX
           AND O_CODE = #{o_code}
         GROUP BY OGG_IDX
+    </select>
+    <select id="selectOGGForReview" resultType="map">
+        <![CDATA[
+            SELECT
+                O_DATE,
+                O_CODE,
+                OGG_CNT,
+                IF(ISNULL(DN_DATE), "", DN_DATE) AS DN_DATE
+            FROM
+                ORDER_GS
+                    LEFT JOIN ORDERS ON OG_O_IDX = O_IDX
+                    LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                    LEFT JOIN DELIVERY_NUM ON OG_DN_IDX = DN_IDX
+                    LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                    LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
+                    LEFT JOIN CUSTOMER ON O_CU_IDX = CU_IDX
+            WHERE
+                O_SHOP_IDX = #{shopIdx}
+                AND DATEDIFF(NOW(), O_DATE) <= 60
+                AND CU_ID = #{cuId}
+            GROUP BY OGG_IDX
+            ORDER BY O_DATE DESC
+            LIMIT #{start},${length}
+        ]]>
+    </select>
+    <select id="selectOrderAndShopByOggIdx" resultType="map">
+        SELECT
+            DISTINCT(O_IDX),
+            SPA_SP_IDX AS SP_IDX
+        FROM
+            ORDER_GS
+                LEFT JOIN ORDERS ON OG_O_IDX = O_IDX
+                LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
+        WHERE
+            OGG_IDX = #{oggIdx}
     </select>
 </mapper>

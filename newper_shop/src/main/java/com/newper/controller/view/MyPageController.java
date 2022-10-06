@@ -1,7 +1,6 @@
 package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
-import com.newper.constant.ShType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Company;
 import com.newper.entity.Orders;
@@ -11,21 +10,17 @@ import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.CompanyRepo;
 import com.newper.repository.CustomerRepo;
-import com.newper.repository.OrderGsRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.math3.geometry.partitioning.BSPTreeVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,19 +33,11 @@ public class MyPageController {
     private ShopSession shopSession;
 
     private final CustomerRepo customerRepo;
-
     private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
-
     private final CompanyRepo companyRepo;
-
     private final CompanyMapper companyMapper;
-
-
-
-
     private Orders orders;
-
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -120,12 +107,11 @@ public class MyPageController {
     }
     /** AS접수 하위 메뉴 load */
     @PostMapping("myOrder/as/{menu}.load")
-    public ModelAndView registAS(@PathVariable(required = false) String menu, Integer comIdx, ParamMap paramMap, String oName, String oPhone) {
+    public ModelAndView registAS(@PathVariable(required = false) String menu, ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu_AS :: " + menu);
         System.out.println("check!!!!!!!!!!");
         if(menu.equals("asProductModal")) {
             mav.addObject("CU_IDX", shopSession.getIdx());
-//            mav.addObject("O_IDX",orders.getOIdx());
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             mav.addObject("orders", list);
@@ -139,17 +125,23 @@ public class MyPageController {
             }else if(menu.equals("asProductModal2")) {
 
             Company company =paramMap.mapParam(Company.class);
-//            Integer comIdx1 = company.getComIdx();
-//            companyRepo.findCompanyByComIdx(comIdx);
+            Orders orders = paramMap.mapParam(Orders.class);
+            Integer comIdx = Integer.parseInt(paramMap.get("COM_IDX2").toString());
 
-            mav.addObject("COM_IDX",company.getComIdx());
+            String oName = String.valueOf(paramMap.get("AS_NAME"));
+            String phone = paramMap.getString("AS_PHONE1")+paramMap.get("AS_PHONE2")+paramMap.get("AS_PHONE3");
 
-            Orders orders1 = paramMap.mapParam(Orders.class);
+            mav.addObject("COM_IDX2",comIdx);
 
-            mav.addObject("O_NAME",orders1.getOName());
-            mav.addObject("O_PHONE",orders1.getOPhone());
+            mav.addObject("AS_NAME", oName);
 
-            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(comIdx, oName, oPhone);
+            mav.addObject("oPhone", phone);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("comIdx",comIdx);
+            map.put("oName",oName);
+            map.put("oPhone",phone);
+            List<Map<String, Object>> pList = ordersMapper.selectOrderGsListByComIdx(map);
 
             mav.addObject("orders", pList);
 
@@ -208,7 +200,9 @@ public class MyPageController {
     @PostMapping("myList/review/{menu}.load")
     public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu) {
         ModelAndView mav = new ModelAndView("myPage/myList_menu_review :: " + menu);
-
+//        if (menu.equals("possibleReview")) {
+//            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
+//        }
         return mav;
     }
 

@@ -1,8 +1,8 @@
 <!-- 회원정보수정-->
 <th:block th:fragment="updateInfo">
     <!-- 회원탈퇴 버튼 -->
-    <div class="btn btn6 mem-secession-btn">
-        <a onclick="updateInfoBtn('deleteCustomer')">회원탈퇴</a>
+    <div class="mem-secession-btn">
+        <a onclick="updateInfoBtn('deleteCustomer')" class="btn btn-sm btn-black-outline radius-xlarge">회원탈퇴</a>
     </div>
     <!-- 테이블 -->
     <ul class="default-table">
@@ -17,8 +17,8 @@
         <li>
             <div class="default-table-title">비밀번호<span class="color-red">&nbsp;*</span></div>
             <div class="default-table-content">
-                <div class="btn btn10 pw-change">
-                    <a onclick="updateInfoBtn('changePwd')">비밀번호변경</a>
+                <div class="pw-change">
+                    <a onclick="updateInfoBtn('changePwd')" class="btn btn-xxlg btn-point-outline radius-xlarge pw-change">비밀번호변경</a>
                 </div>
             </div>
         </li>
@@ -125,9 +125,7 @@
                 <div class="addr-info">
                     <div class="addr-input">
                         <input type="text" class="form-control zip-code" id="k_address1" name="post" title="상세주소">
-                        <div class="btn btn10 searchAddr-btn">
-                            <a href="javascript:daum_address();">우편번호 검색</a>
-                        </div>
+                        <a href="javascript:daum_address();" class="btn btn-md btn-point radius-xlarge">우편번호 검색</a>
                         <input type="checkbox" id="default-addr" title="기본배송지 저장" class="custom-checkbox">
                         <label for="default-addr">기본배송지 저장</label>
                     </div>
@@ -182,12 +180,8 @@
     </div>
     <!-- 버튼 -->
     <div class="join-button-group">
-        <div class="btn btn3 semi-bold">
-            <a href="javascript:openMenu();">취소</a>
-        </div>
-        <div class="btn btn2 semi-bold">
-            <a href="javascript:;">회원정보 수정완료</a>
-        </div>
+        <a href="javascript:openMenu();" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">취소</a>
+        <a href="javascript:;" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">회원정보 수정완료</a>
     </div>
 
     <script th:src="@{/js/daum_address.js}"></script>
@@ -265,12 +259,8 @@
 
     <!-- 버튼 -->
     <div class="display-flex center">
-        <div class="btn btn3">
-            <a onclick="refundUpdate('refundDelete')">계좌삭제</a>
-        </div>
-        <div class="btn btn2">
-            <a onclick="refundUpdate('refundUpdate')">환불계좌수정</a>
-        </div>
+        <a onclick="refundUpdate('refundDelete')" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">계좌삭제</a>
+        <a onclick="refundUpdate('refundUpdate')" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">환불계좌수정</a>
     </div>
 
 
@@ -294,7 +284,7 @@
 <th:block th:fragment="refundDelete">
 계좌삭제 완료 페이지
 
-    <button onclick="openMyInfoMenu('refundAccount')">완료</button>
+    <a onclick="openMyInfoMenu('refundAccount')" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">완료</a>
 </th:block>
 <!-- 계좌삭제 end-->
 
@@ -349,12 +339,8 @@
     </div>
 
     <div class="display-flex center">
-        <div class="btn btn3">
-            <a onclick="openMyInfoMenu('refundAccount');">취소</a>
-        </div>
-        <div class="btn btn2">
-            <a onclick="alert('준비중')">환불계좌등록</a>
-        </div>
+        <a onclick="openMyInfoMenu('refundAccount');" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">취소</a>
+        <a onclick="alert('준비중')" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">환불계좌등록</a>
     </div>
 </th:block>
 <!-- 환불계좌 수정 end-->
@@ -367,9 +353,7 @@
             <p><span class="color-red">※</span>&nbsp;&nbsp;자주 사용하시는 배송지를 최대 20개 까지 등록하실 수 있습니다.
             </p>
         </div>
-        <div class="btn btn3">
-            <a href="javascript:;">신규배송지 등록</a>
-        </div>
+        <a href="javascript:;" class="btn btn-xlg btn-point-outline btn-width-md radius-xlarge origin-btn">신규배송지 등록</a>
     </div>
 
     <div>
@@ -410,8 +394,8 @@
                     </li>
                     <!-- 수정/삭제 -->
                     <li class="flex-column button-vertical-group">
-                        <div class="btn btn2 addrManagement-btn"><a href="javascript:;">수정</a></div>
-                        <div class="btn btn3 addrManagement-btn"><a href="javascript:;">삭제</a></div>
+                        <a href="javascript:;" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn addrManagement-btn">수정</a>
+                        <a href="javascript:;" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge origin-btn addrManagement-btn">삭제</a>
                     </li>
                 </ul>
             </li>
@@ -480,12 +464,8 @@
 
         <!-- 버튼 -->
         <div class="join-button-group">
-            <div class="btn btn3 semi-bold">
-                <a onclick="alert('준비중!')">회원탈퇴</a>
-            </div>
-            <div class="btn btn2 semi-bold">
-                <a onclick="openMyInfoMenu('updateInfo');">취소</a>
-            </div>
+            <a onclick="alert('준비중!')" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">회원탈퇴</a>
+            <a onclick="openMyInfoMenu('updateInfo');" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">취소</a>
         </div>
     </div>
 
@@ -523,12 +503,8 @@
 
     <!-- 버튼 -->
     <div class="join-button-group">
-        <div class="btn btn3 semi-bold">
-            <a onclick="openMyInfoMenu('updateInfo');">취소</a>
-        </div>
-        <div class="btn btn2 semi-bold">
-            <a onclick="changePwd()">변경하기</a>
-        </div>
+        <a onclick="openMyInfoMenu('updateInfo');" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">취소</a>
+        <a onclick="changePwd()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">변경하기</a>
     </div>
 
     <script>

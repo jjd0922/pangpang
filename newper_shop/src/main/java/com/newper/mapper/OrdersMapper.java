@@ -1,6 +1,9 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +16,7 @@ public interface OrdersMapper {
 
     /**mypage 구매처 선택후 주문상품 조회*/
 
-    List<Map<String, Object>> selectOrderGsListByComIdx (Integer comIdx, String oName, String oPhone);
-
+    List<Map<String, Object>> selectOrderGsListByComIdx (Map<String,Object> map);
 
     /** ph_idx 로 o_code 조회 */
     String selectOcodeByPhIdx(String ph_idx);
@@ -24,4 +26,12 @@ public interface OrdersMapper {
 //
 //    /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
 //    Map<String, Object> selectShopCategoryBySp(long sp_idx);
+
+    List<Map<String,Object>> selectOGGForReview(@Param("cuId") String cuId,
+                                                @Param("shopIdx") Integer shopIdx,
+                                                @Param("start") Integer start,
+                                                @Param("length") Integer length);
+
+    /**oggIdx를 통해서 oIdx, spIdx 가져옴(map)*/
+    Map<String,Object> selectOrderAndShopByOggIdx(Long oggIdx);
 }
