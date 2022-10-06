@@ -14,19 +14,8 @@
                         <div class="card mb-1">
                             <div class="card-body popup-contents mb-1">
                                 <fieldset class="mb-0">
-                                    <legend>1. AS정보</legend>
+                                    <legend>1. 자산정보</legend>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">사유</span>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="cgsIdx" id="cgsIdx" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -64,9 +53,26 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">IMEI</span>
+                                                        <span class="input-group-text">자산바코드</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="gImei" id="gImei" readonly>
+                                                    <input type="text" class="form-control" name="gBarcode" id="gBarcode" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="mb-0">
+                                    <legend>2. 고객정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">이름</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="asName" id="asName" readonly>
+                                                    <input type="hidden" name="asIdx" id="asIdx" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,9 +81,53 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
-                                                        <span class="input-group-text">시리얼번호</span>
+                                                        <span class="input-group-text">이메일</span>
                                                     </span>
-                                                    <input type="text" class="form-control" name="gSerial" id="gSerial" readonly>
+                                                    <input type="text" class="form-control" id="asMail" name="asMail" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">휴대폰</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="asPhone" id="asPhone" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">요청일</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="asDate" id="asDate" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">고객사유</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="asMemo" id="asMemo" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상세사유</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="asReason" id="asReason">
                                                 </div>
                                             </div>
                                         </div>
@@ -92,7 +142,7 @@
 
             <!-- Footer -->
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
-                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="updateCheckReport();">저장</button>
+                <button type="button" class="btn btn-sm btn-secondary ml-1" id="inCheckBtn" onclick="saveAsReason();">저장</button>
             </div>
             <!-- /footer -->
         </div>
@@ -100,20 +150,35 @@
 </div>
 
 <script>
+    function saveAsReason() {
+        $.ajax({
+            url:'/orders/saveAsReason.ajax',
+            type:'post',
+            data:$('#asForm').serialize(),
+            success(){
+                location.reload();
+            }
+        });
+    }
+
     function openAsModal (id, rowIdx) {
         $('#asModal').modal('show');
-
         var dataMap = getDatatablemap(id, rowIdx);
-
-        // 상품 & 자산 정보 세팅
-        $('#cgsIdx').val(dataMap.CGS_IDX);
+        // 자산정보
         $('#pIdx').val(dataMap.P_IDX);
         $('#pName').val(dataMap.P_NAME);
         $('#gIdx').val(dataMap.G_IDX);
-        $('#gImei').val(dataMap.G_IMEI);
-        $('#cgsCost').val(comma(dataMap.CGS_COST));
-        $('#gSerial').val(dataMap.G_SERIAL)
-        $('input[name=gMemo]').val(dataMap.G_MEMO);;
+        $('#gBarcode').val(dataMap.G_BARCODE);
+
+        // 고객 정보
+        $('#asIdx').val(dataMap.AS_IDX);
+        $('#asName').val(dataMap.AS_NAME);
+        $('#adMail').val(dataMap.AS_MAIL);
+        $('#asPhone').val(dataMap.AS_PHONE);
+        $('#asDate').val(dataMap.AS_DATE);
+        $('#asMemo').val(dataMap.AS_MEMO);
+        $('#asReason').val(JSON.parse(dataMap.AS_JSON).asReason);
+
     }
 </script>
 </html>

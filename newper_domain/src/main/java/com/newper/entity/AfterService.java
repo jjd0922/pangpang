@@ -34,7 +34,6 @@ public class AfterService {
     private String asMail;
     private String asPhone;
     private String asMemo;
-//    private String asFile;
     private LocalDate asDate;
     private LocalTime asTime;
 
@@ -43,11 +42,15 @@ public class AfterService {
     private Map<String,Object> asFile = new HashMap<String, Object>();
 
 
-//
-//    @Transient
-//    private String asFileOri;
-//    @Transient
-//    private String asFileNameOri;
+    /**<pre>
+     * {
+     * asReason : "",
+     * asCost :[1000, 2000],
+     * asDate:[yyyy-MM-dd,yyyy-MM-dd]
+     * }
+     * </pre> */
+    @Builder.Default
+    private Map<String, Object> asJson = new HashMap<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)

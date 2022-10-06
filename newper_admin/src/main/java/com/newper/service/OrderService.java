@@ -1,5 +1,6 @@
 package com.newper.service;
 
+import com.newper.api.SweetTracker;
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.*;
@@ -72,6 +73,7 @@ public class OrderService {
 
     private final ProcessMapper processMapper;
     private final ChecksMapper checksMapper;
+    private final AfterServiceRepo afterServiceRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -432,6 +434,7 @@ public class OrderService {
         }
     }
 
+    /** 가공 내역 */
     @Transactional
     public void saveProcessSpec(ParamMap paramMap, ProcessNeed processNeed) {
         List<ProcessSpec> processSpecList = processSpecRepo.findByProcessNeed(processNeed);
@@ -455,8 +458,39 @@ public class OrderService {
 
 
     /** AS 불가 처리 **/
+    @Transactional
     public void asImpossible(ParamMap paramMap) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
-        goods.setGStockState(GStockState.AS_IMP);
+    }
+
+    /** AS상세 사유 등록 */
+    @Transactional
+    public void saveAsReason(ParamMap paramMap) {
+        AfterService afterService = afterServiceRepo.findById(paramMap.getLong("asIdx")).get();
+        Map<String, Object> asJson = afterService.getAsJson();
+        asJson.put("asReason", paramMap.getString("asReason"));
+        afterService.setAsJson(asJson);
+        afterServiceRepo.save(afterService);
+    }
+
+    /** 회수송장생성 */
+    @Transactional
+    public void saveDeliveryNumAs(ParamMap paramMap) {
+        System.out.println("param: " + paramMap.entrySet());
+        List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
+
+        for (int i = 0; i < ogIdx.size(); i++) {
+            OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
+
+
+
+//            DeliveryNum deliveryNum = DeliveryNum
+//                    .builder()
+//                    .dnType(DnType.AS_IN)
+//                    .orderGs(orderGs)
+//                    .dnState()
+//
+//                    .build()
+        }
     }
 }
