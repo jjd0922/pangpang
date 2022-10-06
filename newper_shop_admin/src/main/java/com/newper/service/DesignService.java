@@ -62,7 +62,7 @@ public class DesignService {
                 updateHo.setHoCol(k);
 
                 String hoType_value=paramMap.getString("headerOrder" + i + "_" + k);
-                HoType hoType=HoType.없음;
+                HoType hoType=HoType.NONE;
 
                 if(StringUtils.hasText(hoType_value)){
                     hoType = HoType.valueOf(hoType_value);

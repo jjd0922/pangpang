@@ -48,7 +48,7 @@ public class ShopService {
             for(int j = 1; j <=3; j++){
                 HeaderOrder headerOrder = HeaderOrder.builder()
                         .shop(shop)
-                        .hoType(HoType.없음)
+                        .hoType(HoType.NONE)
                         .hoRow(i)
                         .hoCol(j)
                         .build();

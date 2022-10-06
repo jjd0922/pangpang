@@ -1,31 +1,30 @@
 package com.newper.constant.etc;
 
+import com.newper.constant.basic.EnumOption;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-public enum HoType {
+@Getter
+@AllArgsConstructor
+public enum HoType implements EnumOption {
 
-    로고("로고")
-    ,검색창("검색창")
-    ,로그인그룹("로그인 그룹")
-    ,검색창_로그인그룹("검색창 + 로그인 그룹")
-    ,메뉴_좌측("메뉴(좌측 정렬)")
-    ,메뉴_중앙("메뉴(중앙 정렬)")
-    ,헤더내부_배너("헤더내부_배너")
-    ,고정_메뉴("고정 메뉴")
-    ,메뉴_전체_카테고리_버튼("메뉴(전체 카테고리 버튼)")
-    ,없음("없음")
+    LOGO("로고")
+    ,SEARCH("검색창")
+    ,LOGIN("로그인 그룹")
+    ,SEARCH_LOGIN("검색창 + 로그인 그룹")
+    ,MENU_LEFT("메뉴(좌측 정렬)")
+    ,MENU_CENTER("메뉴(중앙 정렬)")
+    ,HEAD_INNER_BANNER("헤더내부_배너")
+    ,FIX_MENU("고정 메뉴")
+    ,MENU_ALL_CATEGORY_BTN("메뉴(전체 카테고리 버튼)")
+    ,NONE("없음")
     ;
 
-    @Getter
-    private String name;
-
-    HoType(String name) {
-        this.name = name;
-    }
+    private String option;
 
     /**단 열에 따라서 class 가져오기*/
     public String getHoClass(int row, int col) {
-        if (this.equals(HoType.로고)) {
+        if (this.equals(HoType.LOGO)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -38,7 +37,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.메뉴_전체_카테고리_버튼)) {
+        if (this.equals(HoType.MENU_ALL_CATEGORY_BTN)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -51,7 +50,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.검색창)) {
+        if (this.equals(HoType.SEARCH)) {
             switch (row*10+col){
                 case 11: return "top-search";
                 case 12: return "top-search";
@@ -64,7 +63,7 @@ public enum HoType {
                 case 33: return "bottom-search";
             }
         }
-        if (this.equals(HoType.로그인그룹)) {
+        if (this.equals(HoType.LOGIN)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return "top-login-group";
@@ -77,7 +76,7 @@ public enum HoType {
                 case 33: return "bottom-login-group";
             }
         }
-        if (this.equals(HoType.검색창_로그인그룹)) {
+        if (this.equals(HoType.SEARCH_LOGIN)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return "top-search-login-group";
@@ -90,7 +89,7 @@ public enum HoType {
                 case 33: return "bottom-search-login-group";
             }
         }
-        if (this.equals(HoType.메뉴_좌측)) {
+        if (this.equals(HoType.MENU_LEFT)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -103,7 +102,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.메뉴_중앙)) {
+        if (this.equals(HoType.MENU_CENTER)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -116,7 +115,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.헤더내부_배너)) {
+        if (this.equals(HoType.HEAD_INNER_BANNER)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -129,7 +128,7 @@ public enum HoType {
                 case 33: return null;
             }
         }
-        if (this.equals(HoType.고정_메뉴)) {
+        if (this.equals(HoType.FIX_MENU)) {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
@@ -142,7 +141,7 @@ public enum HoType {
                 case 33: return "menu-fixed";
             }
         }
-        if (this.equals(HoType.없음)) {
+        if (this.equals(HoType.NONE)) {
             switch (row*10+col){
                 case 11: return "block-none";
                 case 12: return "block-none";
