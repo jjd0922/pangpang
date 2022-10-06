@@ -4,15 +4,13 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 송장 타입 DELIVERY_NUM.DN_TYPE*/
+/** 보내는 주체 타입 DELIVERY_NUM.DN_SENDER*/
 @Getter
 @AllArgsConstructor
-public enum DnType implements EnumOption {
+public enum DnSender implements EnumOption {
 
-    DELIVERY("배송"),
-    REFUND("반품"),
-    AS_IN("AS입고"),
-    AS_OUT("AS출고");
+    CUSTOMER("고객"),
+    COMPANY("회사");
 
     private String option;
 }

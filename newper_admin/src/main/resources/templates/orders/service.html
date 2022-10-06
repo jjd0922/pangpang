@@ -204,11 +204,13 @@
     /** 회수송장생성 */
     function saveDeliveryNumAs() {
         var ogIdx = dataTableGetSelectedDataArray('orderTable', 'OG_IDX')
+        var asIdx = dataTableGetSelectedDataArray('orderTable', 'AS_IDX')
         $.ajax({
            url:'saveDeliveryNumAs.ajax',
            type:'post',
            data:{
-               'ogIdx':ogIdx
+               'ogIdx':ogIdx,
+               'asIdx':asIdx
            }
         });
     }

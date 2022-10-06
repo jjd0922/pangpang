@@ -1,12 +1,12 @@
 package com.newper.service;
 
-import com.newper.api.SweetTracker;
 import com.newper.component.AdminBucket;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
 import com.newper.mapper.ChecksMapper;
+import com.newper.mapper.OrdersMapper;
 import com.newper.mapper.ProcessMapper;
 import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
@@ -64,6 +64,7 @@ public class OrderService {
     private final ProcessMapper processMapper;
     private final ChecksMapper checksMapper;
     private final AfterServiceRepo afterServiceRepo;
+    private final OrdersMapper ordersMapper;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -466,21 +467,25 @@ public class OrderService {
     /** 회수송장생성 */
     @Transactional
     public void saveDeliveryNumAs(ParamMap paramMap) {
-        System.out.println("param: " + paramMap.entrySet());
         List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
+        List<Long> asIdx = paramMap.getListLong("asIdx[]");
 
         for (int i = 0; i < ogIdx.size(); i++) {
+            AfterService afterService = afterServiceRepo.findById(asIdx.get(i)).get();
             OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
 
 
+            DeliveryNum deliveryNum = DeliveryNum
+                    .builder()
+                    .dnNum("TEST")
+                    .dnState("test")
+                    .dnCompany("test")
+                    .dnSender(DnSender.COMPANY)
+                    .build();
+            deliveryNumRepo.save(deliveryNum);
 
-//            DeliveryNum deliveryNum = DeliveryNum
-//                    .builder()
-//                    .dnType(DnType.AS_IN)
-//                    .orderGs(orderGs)
-//                    .dnState()
-//
-//                    .build()
+
+
         }
     }
 }

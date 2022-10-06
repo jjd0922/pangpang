@@ -11,9 +11,9 @@ public enum CcCycle implements EnumOption {
 
     /**월1회*/
     MONTH1("월1회")
-    /**월2회*/
+    /**월2회 (1-15,16-말일)*/
     ,MONTH2("월2회")
-    /**주*/
+    /**주 (일요일 - 토요일) */
     ,WEEK("주")
     /**일*/
     ,DAY("일")

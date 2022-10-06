@@ -1,13 +1,12 @@
 package com.newper.entity;
 
-import com.newper.constant.DnType;
-import com.newper.entity.common.BaseEntity;
+import com.newper.constant.DnSender;
+import com.newper.constant.OgdnType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.Date;
@@ -27,17 +26,13 @@ public class DeliveryNum extends CreatedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dnIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="DN_OG_IDX", referencedColumnName = "ogIdx")
-    private OrderGs orderGs;
-
     private String dnState;
     private String dnNum;
     private String dnCompany;
 
-    @Enumerated(EnumType.STRING)
-    private DnType dnType;
 
+    @Enumerated(EnumType.STRING)
+    private DnSender dnSender;
     private LocalDate dnDate;
     private LocalDate dnRelease;
     private LocalDate dnSchedule;
