@@ -17,6 +17,7 @@ public enum PType2 implements EnumOption {
     ,EXPENDABLES("소모품")
     /** 사은품*/
     ,GIFTS("사은품")
+    ,SERVICE("서비스")
     /** 해당사항없음*/
     ,ELSE("해당사항없음")
     ;

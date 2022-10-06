@@ -38,10 +38,10 @@ public class ShopProduct extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SpState spState;
 
-    private Integer spMinPrice;
-    private Integer spMaxPrice;
+    private int spMinPrice;
+    private int spMaxPrice;
     private String spBaseName;
-    private Integer spBasePrice;
+    private int spBasePrice;
     private Float spPercent;
     private Integer spQuotaOnce;
     private Integer spQuotaId;

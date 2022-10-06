@@ -17,6 +17,7 @@
                                     <div class="form-group">
                                         <label class="d-block">재고코드</label>
                                         <input type="text" name="gsCode" class="form-control form-control-sm w-120px">
+                                        <input type="hidden" name="pType2">
                                     </div>
 
                                     <div class="form-group">
@@ -60,11 +61,59 @@
 <script th:inline="javascript">
     function showGoodsStockModal(res,boolean) {
         $('#searchGoodsStockModal').modal('show');
+        $('input[name="pType2"]').val('');
         selectGoodsStockDatatable(res,boolean);
     }
 
     function searchGoodsStockDataTable() {
         $("#goodsStockModalTable").DataTable().page('first').ajax.url('/product/goodsStock.datatable?'+$('#goodsStockModalForm').serialize()).load();
+    }
+
+    function showEssentialAdd(cnt){
+        $('input[name="pType2"]').val('SERVICE');
+        $('#gsSelect').attr('onclick', 'selectEssentialAdd('+cnt+')');
+        $("#goodsStockModalTable").DataTable({
+            dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+            ordering: false,
+            autoWidth: true,
+            destroy: true,
+            select: {
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            serverSide: true,
+            ajax:{
+                url:'/product/goodsStock.datatable?pType2=SERVICE',
+                type:'post'
+            },
+            columnDefs: [ {
+                orderable: false,
+                targets: [0]
+            } ],
+            columns : [
+                {'class':'select-checkbox m-w-2', 'title':'선택','data':'GS_IDX','defaultContent':'','render':function(data,type,full,meta){
+                        return '<input type="hidden" name="GS_IDX" value="'+data+'">';
+                    }}
+                ,{'title':'대표썸네일','data':'GS_THUMB_FILE1','render':function(data,type,full,meta){
+                        if(data==''){
+                            return '';
+                        }else{
+                            return '<img src="'+data+'" class="input-thumb">'
+                        }
+                    }}
+                ,{'title':'재고코드','data':'GS_CODE','defaultContent':''}
+                ,{'title':'재고품명','data':'GS_NAME','defaultContent':''}
+                ,{'title':'기준판매가(재고)','data':'CATE_NAME1','defaultContent':''}
+                ,{'title':'등급','data':'GS_RANK','defaultContent':''}
+                ,{'title':'옵션1','data':'OPTION1','defaultContent':''}
+                ,{'title':'옵션2','data':'OPTION2','defaultContent':''}
+                ,{'title':'옵션3','data':'OPTION3','defaultContent':''}
+                ,{'title':'스펙','data':'SPEC_LOOKUP','defaultContent':''}
+            ]
+        });
+        $('#searchGoodsStockModal').modal('show');
+
+
     }
 
 </script>
@@ -90,8 +139,8 @@
                     targets: [0]
                 } ],
                 columns : [
-                    {'class':'select-checkbox m-w-2', 'title':'선택','data':'GS__IDX','defaultContent':'','render':function(data,type,full,meta){
-                            return '<input type="hidden" name="SP_IDX" value="'+data+'">';
+                    {'class':'select-checkbox m-w-2', 'title':'선택','data':'GS_IDX','defaultContent':'','render':function(data,type,full,meta){
+                            return '<input type="hidden" name="GS_IDX" value="'+data+'">';
                         }}
                     ,{'title':'대표썸네일','data':'GS_THUMB_FILE1','render':function(data,type,full,meta){
                             if(data==''){
