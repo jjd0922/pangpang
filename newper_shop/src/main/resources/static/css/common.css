@@ -420,7 +420,7 @@ header {
     position: relative;
 }
 .searchBar {
-    width: 600px;
+    /*width: 600px;*/
     height: 50px;
     background-color: #f1f1f1;
     border-radius: 35px;
@@ -487,6 +487,9 @@ header {
 }
 .swiper-searchBar {
     margin: 0 30px;
+}
+.swiper-searchBar .swiper-wrapper {
+    align-items: center;
 }
 .searchBar-banner-slide li {
     text-align: center;
@@ -688,7 +691,7 @@ nav {
     font-size: 18px;
     display: flex;
     align-items: center;
-    padding-left: 35px;
+    padding: 0 35px;
     cursor: pointer;
     background-color: var(--scPoint);
     color: #fff;
@@ -698,11 +701,17 @@ nav {
     color: #ffffff !important;
 }
 
-.main-header-bottom .container div:nth-child(2) {
-	flex: 1 1 auto;
+.main-header-middle .container>div:nth-child(1),
+.main-header-bottom .container>div:nth-child(1) {
+    flex: 0 0 content;
 }
-.main-header-bottom .container div:nth-child(3) {
-	flex: 1 0 0;
+.main-header-middle .container>div:nth-child(2),
+.main-header-bottom .container>div:nth-child(2) {
+	flex: 0 1 auto;
+}
+.main-header-middle .container>div:nth-child(3),
+.main-header-bottom .container>div:nth-child(3) {
+	flex: 0 0 content;
 }
 .swiper-gnb {
     height: 100%;
@@ -760,26 +769,27 @@ nav {
 }
 .snb {
     height: 100%;
-    position: absolute;
+    /*position: absolute;
     top: 50%;
     right: 1%;
-    transform: translateY(-50%);
+    transform: translateY(-50%);*/
 }
 .snb::before {
     content: "";
     position: absolute;
-    left: 0;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    width: 2px;
+    width: 1px;
     height: 15px;
     background: #d1d1d1;
 }
 .snb a {
     height: 100%;
     padding: 0 20px;
-    position: relative;
+    margin-left: 15px;
     display: inline-flex;
+    justify-content: flex-end;
     align-items: center;
     white-space: nowrap;
 }
@@ -1547,6 +1557,11 @@ footer {
 .flex-column {
     flex-direction: column;
 }
+
+.flex-nowrap {
+    flex-wrap: nowrap !important;
+}
+
 .space-between {
     justify-content: space-between;
 }
