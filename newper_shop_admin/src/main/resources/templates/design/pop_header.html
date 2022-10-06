@@ -52,7 +52,7 @@
                                                 <td th:each="col : ${#numbers.sequence(1,3)}">
                                                     <div class="input-group">
                                                         <select class="select" th:attr="name='headerOrder'+${row}+'_'+${col}">
-                                                            <option th:each="value:${T(com.newper.constant.etc.HoType).values()}" th:if="${value.getHoClass(row, col) != null}" th:text="${value.getName()}" th:value="${value}" th:selected="${hoArr[row-1][col-1]?.hoType eq value}"></option>
+                                                            <option th:each="value:${T(com.newper.constant.etc.HoType).values()}" th:if="${value.getHoClass(row, col) != null}" th:text="${value.getOption()}" th:value="${value}" th:selected="${hoArr[row-1][col-1]?.hoType eq value}"></option>
                                                         </select>
                                                         <input type="hidden" th:attr="name='bgIdx'+${row}+'_'+${col}">
                                                     </div>
