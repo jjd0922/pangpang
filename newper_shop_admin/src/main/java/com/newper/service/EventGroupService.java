@@ -118,4 +118,11 @@ public class EventGroupService {
             eventGroup.setEgState(true);
         }
     }
+
+    @Transactional
+    public void deleteEventGroup(ParamMap paramMap) {
+        List<Long> egIdxs = paramMap.getListLong("egIdxs[]");
+
+        eventGroupRepo.deleteAllById(egIdxs);
+    }
 }
