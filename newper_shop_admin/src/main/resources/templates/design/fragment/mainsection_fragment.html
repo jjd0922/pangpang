@@ -68,21 +68,46 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group" th:if="${banner == null}">
                     <span class="input-group-prepend">
                         <span class="input-group-text">배너이미지(WEB)</span>
                     </span>
                     <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="msbnWebFile" accept="image/*">
                 </div>
+                <div class="input-group" th:unless="${banner == null}">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(WEB)</span>
+                    </span>
+                    <input th:if="${banner.msbnWebFile == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="msbnWebFile" accept="image/*">
+                    <div class="form-control" th:if="${banner.msbnWebFile != null}">
+                        <a onclick="deleteImageWeb(this)" class="input-thumb-close" title="첨부 이미지 삭제">X</a>
+                        <img th:src="${banner.msbnWebFile}" class="input-thumb">
+                        <input type="file" name="msbnWebFile" th:value="${banner.msbnWebFile}" accept="image/*" class="input-thumb-file">
+                        <input type="hidden" name="msbnWebFile" th:value="${banner.msbnWebFile}">
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="col-sm-12 col-md-6">
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group" th:if="${banner == null}">
                     <span class="input-group-prepend">
                         <span class="input-group-text">배너이미지(MOBILE)</span>
                     </span>
                     <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="msbnMobileFile" accept="image/*">
+                </div>
+                <div class="input-group" th:unless="${banner == null}">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">배너이미지(MOBILE)</span>
+                    </span>
+                    <input th:if="${banner.msbnMobileFile == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="msbnMobileFile" accept="image/*">
+                    <div class="form-control" th:if="${banner.msbnMobileFile != null}">
+                        <a onclick="deleteImageMob(this)" class="input-thumb-close" title="첨부 이미지 삭제">X</a>
+                        <img th:src="${banner.msbnMobileFile}" class="input-thumb">
+                        <input type="file" name="msbnMobileFile" th:value="${banner.msbnMobileFile}" accept="image/*" class="input-thumb-file">
+                        <input type="hidden" name="msbnMobileFile" th:value="${banner.msbnMobileFile}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,6 +132,33 @@
         function removeBannerDom(obj){
             if(window.confirm('배너를 삭제하시겠습니까? \n 설정 후 아래 *저장 버튼을 눌러야 DB에 반영됩니다.')){
                 $($(obj).parents('.row')[0]).remove();
+            }
+        }
+        //이미지 제거
+        function deleteImageWeb(obj){
+            var agent = navigator.userAgent.toLowerCase();
+            if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ){
+                // ie 일때
+                $($(obj).parent().parent()).append('<input type="file" name="msbnWebFile" accept="image/*" class="form-control form-control-plaintext">');
+                $($(obj).parent()).remove();
+            } else {
+                //other browser 일때
+                $($(obj).parent().children('img')).remove();
+                $($(obj).parent()).find('input').attr('value', '');
+                $($(obj)).remove();
+            }
+        }
+        function deleteImageMob(obj){
+            var agent = navigator.userAgent.toLowerCase();
+            if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ){
+                // ie 일때
+                $($(obj).parent().parent()).append('<input type="file" name="msbnMobileFile" accept="image/*" class="form-control form-control-plaintext">');
+                $($(obj).parent()).remove();
+            } else {
+                //other browser 일때
+                $($(obj).parent().children('img')).remove();
+                $($(obj).parent()).find('input').attr('value', '');
+                $($(obj)).remove();
             }
         }
     </script>
