@@ -20,6 +20,22 @@
         <if test="uName != null and uName != ''">AND U_NAME LIKE CONCAT('%',#{uName},'%')</if>
         <if test="whIdx != null and whIdx != ''">AND WH_IDX LIKE CONCAT('%',#{whIdx},'%')</if>
     </sql>
+    <sql id="includeLocationMoveDatatable">
+        <if test="lmState != null">
+            <foreach collection="lmState" open="AND LM_STATE IN (" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="createdBy != null and createdBy != ''">AND CREATED_BY LIKE CONCAT('%',#{createdBy},'%')</if>
+        <if test="LM_U_IDX != null and LM_U_IDX != ''">AND LM_U_IDX LIKE CONCAT('%',#{LM_U_IDX},'%')</if>
+        <if test="LM_IDX != null and LM_IDX != ''">AND LM_IDX LIKE CONCAT('%',#{LM_IDX},'%')</if>
+        <if test="LM_IN_DATE != null and LM_IN_DATE != ''">AND LM_IN_DATE BETWEEN SUBSTR(#{LM_IN_DATE}, 1, 10) AND SUBSTR(#{LM_IN_DATE}, 13)</if>
+        <if test="LM_OUT_DATE != null and LM_OUT_DATE != ''">AND LM_OUT_DATE BETWEEN SUBSTR(#{LM_OUT_DATE}, 1, 10) AND SUBSTR(#{LM_OUT_DATE}, 13)</if>
+        <if test="OUT_LOC_WH_IDX != null and OUT_LOC_WH_IDX != ''">AND OUT_LOCATION.LOC_WH_IDX LIKE CONCAT('%',#{OUT_LOC_WH_IDX},'%')</if>
+        <if test="OUT_LOC_CODE != null and OUT_LOC_CODE != ''">AND OUT_LOCATION.LOC_CODE LIKE CONCAT('%',#{OUT_LOC_CODE},'%')</if>
+        <if test="IN_LOC_WH_IDX != null and IN_LOC_WH_IDX != ''">AND IN_LOCATION.LOC_WH_IDX LIKE CONCAT('%',#{IN_LOC_WH_IDX},'%')</if>
+        <if test="IN_LOC_CODE != null and IN_LOC_CODE != ''">AND IN_LOCATION.LOC_CODE LIKE CONCAT('%',#{IN_LOC_CODE},'%')</if>
+    </sql>
 
     <select id="selectLocationDatatable" resultType="map">
         SELECT
@@ -262,7 +278,7 @@
         SELECT
         LM_STATE,
         LM_IDX,
-        --         CREATED_BY,
+        LOCATION_MOVE.created_by,
         LM_U_IDX,
         LM_OUT_DATE,
         LM_IN_DATE,
@@ -285,6 +301,9 @@
         ON out_warehouse.WH_IDX=out_location.LOC_WH_IDX
         LEFT JOIN warehouse AS in_warehouse
         ON in_warehouse.WH_IDX=in_location.LOC_WH_IDX
+        <where>
+            <include refid="includeLocationMoveDatatable"></include>
+        </where>
         ORDER BY
         LM_IDX DESC
         <if test="length != -1">

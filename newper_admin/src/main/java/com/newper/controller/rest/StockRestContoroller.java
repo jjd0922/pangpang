@@ -260,6 +260,8 @@ public class StockRestContoroller {
     public ReturnDatatable stockMove(ParamMap paramMap) {
         ReturnDatatable rd = new ReturnDatatable();
 
+        paramMap.multiSelect("LM_STATE");
+
         rd.setData(locationMapper.selectStockMoveDatatable(paramMap.getMap()));
         rd.setRecordsTotal(locationMapper.countStockMoveDatatable(paramMap.getMap()));
 
