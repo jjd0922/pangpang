@@ -21,10 +21,10 @@
 <section th:insert="part/menu :: menu-full2" class="padding-section"></section>
 
 <!--메뉴 : 행 일부 메뉴 - 좌측 버튼형 : 이벤트 하위 카테고리 분류-->
-<section th:insert="part/menu :: menu-part" class="padding-section padding-menu"></section>
+<section th:insert="part/menu :: menu-part('__${fragType}__')" class="padding-section padding-menu"></section>
 
 <!--이미지 배너 : 2단-->
-<div th:insert="part/banner :: banner_2" class="padding-section button-tab-content"></div>
+<div th:insert="part/banner :: banner_2('__${fragType}__')" class="padding-section button-tab-content"></div>
 
 <!-- 푸터 -->
 <th:block th:replace="part/footer :: main-footer"></th:block>
@@ -37,4 +37,18 @@
 
     </div>
 </body>
+<script>
+    function sortEventMenu(menu){
+        $.ajax({
+            url:'/event/'+menu+'.ajax'
+            ,type:'post'
+            ,success:function(res){
+                $('#eventBannerList').replaceWith(res);
+            }
+        });
+    }
+    function moveEventDetail(egIdx){
+
+    }
+</script>
 </html>

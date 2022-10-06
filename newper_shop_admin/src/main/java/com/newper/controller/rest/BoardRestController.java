@@ -87,4 +87,11 @@ public class BoardRestController {
         eventGroupService.toggleEventGroup(paramMap);
         return rm;
     }
+    @PostMapping("event/delete.ajax")
+    public ReturnMap deleteEventGroup(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        eventGroupService.deleteEventGroup(paramMap);
+        rm.setMessage("삭제 완료");
+        return rm;
+    }
 }

@@ -89,8 +89,8 @@
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
                                 <a onclick="popEgDetail('new')" class="btn btn-sm btn-primary ml-1">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="deleteAllEventGroup()">일괄 삭제</a>
                             </div>
-
                             <table class="table" id="eventGroupTable"></table>
 
                         </div>
@@ -152,6 +152,27 @@
             }
             ,error:function(){}
         })
+    }
+    function deleteAllEventGroup(){
+        var idx = dataTableGetSelectedDataArray('eventGroupTable', 'EG_IDX');
+        if(idx.length == 0){
+            alert('선택된 내역이 없습니다.');
+            return false;
+        }else{
+            if(window.confirm('분양몰을 삭제하시겠습니까?')){
+                $.ajax({
+                    url:'/board/event/delete.ajax'
+                    ,type:'post'
+                    ,data:{
+                        egIdxs : idx
+                    }
+                    ,success:function(res){
+                        $('#eventGroupTable').DataTable.ajax.reload();
+                    }
+                    ,error:function(){}
+                })
+            }
+        }
     }
 </script>
 
