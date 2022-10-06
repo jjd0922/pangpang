@@ -6,6 +6,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
 import com.newper.mapper.ChecksMapper;
+import com.newper.mapper.OrdersMapper;
 import com.newper.mapper.ProcessMapper;
 import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
@@ -62,6 +63,8 @@ public class OrderService {
 
     private final ProcessMapper processMapper;
     private final ChecksMapper checksMapper;
+    private final AfterServiceRepo afterServiceRepo;
+    private final OrdersMapper ordersMapper;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -422,6 +425,7 @@ public class OrderService {
         }
     }
 
+    /** 가공 내역 */
     @Transactional
     public void saveProcessSpec(ParamMap paramMap, ProcessNeed processNeed) {
         List<ProcessSpec> processSpecList = processSpecRepo.findByProcessNeed(processNeed);
@@ -445,7 +449,43 @@ public class OrderService {
 
 
     /** AS 불가 처리 **/
+    @Transactional
     public void asImpossible(ParamMap paramMap) {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
+    }
+
+    /** AS상세 사유 등록 */
+    @Transactional
+    public void saveAsReason(ParamMap paramMap) {
+        AfterService afterService = afterServiceRepo.findById(paramMap.getLong("asIdx")).get();
+        Map<String, Object> asJson = afterService.getAsJson();
+        asJson.put("asReason", paramMap.getString("asReason"));
+        afterService.setAsJson(asJson);
+        afterServiceRepo.save(afterService);
+    }
+
+    /** 회수송장생성 */
+    @Transactional
+    public void saveDeliveryNumAs(ParamMap paramMap) {
+        List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
+        List<Long> asIdx = paramMap.getListLong("asIdx[]");
+
+        for (int i = 0; i < ogIdx.size(); i++) {
+            AfterService afterService = afterServiceRepo.findById(asIdx.get(i)).get();
+            OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
+
+
+            DeliveryNum deliveryNum = DeliveryNum
+                    .builder()
+                    .dnNum("TEST")
+                    .dnState("test")
+                    .dnCompany("test")
+                    .dnSender(DnSender.COMPANY)
+                    .build();
+            deliveryNumRepo.save(deliveryNum);
+
+
+
+        }
     }
 }

@@ -150,4 +150,22 @@ public class OrdersRestController {
         orderService.asImpossible(paramMap);
         return rm;
     }
+
+    /** AS 상세 사유 둥록 **/
+    @PostMapping("saveAsReason.ajax")
+    public ReturnMap saveAsReason(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.saveAsReason(paramMap);
+        rm.setMessage("상세사유 등록 완료");
+        return rm;
+    }
+
+    /** 회수송장생성 */
+    @PostMapping("saveDeliveryNumAs.ajax")
+    public ReturnMap saveDeliveryNumAs(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.saveDeliveryNumAs(paramMap);
+        rm.setMessage("송장생성 완료");
+        return rm;
+    }
 }
