@@ -32,7 +32,6 @@ public class DSConfig {
                 .password(aesEncrypt.decrypt(password))
                 .driverClassName(driver)
                 .build();
-        System.out.println("----"+dataSource.toString());
         return dataSource;
     }
 }
