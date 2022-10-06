@@ -96,10 +96,10 @@ public enum HoType {
                 case 12: return null;
                 case 13: return null;
                 case 21: return null;
-                case 22: return "menu-left";
+                case 22: return null;
                 case 23: return null;
                 case 31: return "menu-left";
-                case 32: return "menu-left";
+                case 32: return null;
                 case 33: return null;
             }
         }
