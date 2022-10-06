@@ -22,7 +22,7 @@
                 </table>
                 <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                     <div class="btn-group">
-                        <input type="hidden" name="no">
+                        <input type="hidden" name="index">
                         <a class="btn btn-sm btn-primary" onclick="selectAllProduct()">일괄추가</a>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 <script>
     function openCategoryShopProductModal(no){
 
-        $('input[name="no"]').val(no);
+        $('input[name="index"]').val(no);
         $('#categoryShopProductModal').modal('show');
 
         initShopProductCategoryModalTable('');
@@ -46,13 +46,13 @@
         var spName = dataTableGetSelectedDataArray('shopProductModalTable', 'SP_NAME');
         var scateName = dataTableGetSelectedDataArray('shopProductModalTable', 'SCATE_NAME');
 
-        var categoryNo = $('input[name="no"]').val();
+        var categoryNo = $('input[name="index"]').val();
 
         if(spIdx.length == 0){
             alert('선택된 상품이 없습니다.');
             return false;
         }else{
-            var no = $('input[name="spIdx"]').length;
+            var no = $('.spIdx').length;
             for(var i=0; i< spIdx.length; i++) {
                 if ($('input[name="spIdx"][value=' + spIdx[i] + ']').length > 0) {
                 }else{
@@ -61,7 +61,7 @@
                     tr+='<td>'+no+'</td>';
                     tr+='<td>'+scateName[i]+'</td>';
                     tr+='<td><input type="hidden" name="categoryNo" value="'+categoryNo+'">'+spState[i]+'</td>';
-                    tr+='<td><input type="hidden" class="spIdx" name="spIdx" value="'+spIdx[i]+'">'+spName[i]+'</td>';
+                    tr+='<td><input type="hidden" class="spIdx" name="spIdx'+categoryNo+'" value="'+spIdx[i]+'">'+spName[i]+'</td>';
                     tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteEgCategoryProduct('+spIdx[i]+')">삭제</a></td>';
                     tr+='</tr>'
 
@@ -87,7 +87,7 @@
             tr+='<td>'+no+'</td>';
             tr+='<td>'+dataMap.SCATE_NAME+'</td>';
             tr+='<td><input type="hidden" name="categoryNo" value="'+categoryNo+'">'+dataMap.SP_STATE+'</td>';
-            tr+='<td><input type="hidden" class="spIdx" name="spIdx" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
+            tr+='<td><input type="hidden" class="spIdx" name="spIdx'+categoryNo+'" value="'+dataMap.SP_IDX+'">'+dataMap.SP_NAME+'</td>';
             tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteBannerShopProduct('+dataMap.SP_IDX+')">삭제</a></td>';
             tr+='</tr>'
 
