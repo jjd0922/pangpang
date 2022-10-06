@@ -35,28 +35,28 @@
         <!-- 작성가능 상품 리스트 -->
         <ul>
             <!-- 상품 1 -->
-            <li>
+            <li th:each="ogg: ${review_ogg}" th:if="${ogg != null}">
                 <ul class="table-content2 writeable-table-content">
                     <!-- 주문일자 -->
                     <li class="flex-column">
-                        <p class="bold">2022-08-10</p>
+                        <p class="bold" th:text="${ogg.O_DATE}">2022-08-10</p>
                         <div class="color-grey999 table-order-num">
                             <p>주문번호</p>
-                            <p>16616564654535</p>
+                            <p th:text="${ogg.O_CODE}">16616564654535</p>
                         </div>
                     </li>
                     <!-- 상품명 -->
                     <li class="itemName">
                         <div class="order-item-thumb">
-                            <a href="javascript:;">
-                                <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                <p class="font-xsm color-grey999">001762984</p>
+                            <a th:href="|shopProduct/${ogg.SP_IDX}|">
+                                <img src="https://dummyimage.com/100x100/eeeeee/777777" th:src="${ogg.GS_THUMB_FILE1}" alt="상품이미지">
+                                <p class="font-xsm color-grey999" th:text="${ogg.SP_IDX}">001762984</p>
                             </a>
                         </div>
                         <div class="order-item-info-wrap">
                             <div>
-                                <a href="javascript:;">
-                                    <h3 class="font-sm bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                <a th:href="|shopProduct/${ogg.SP_IDX}|">
+                                    <h3 class="font-sm bold" th:text="${ogg.SP_NAME}">삼성 노트북 코어i5 램8G SSD 대용량
                                         듀얼하드 윈10</h3>
                                 </a>
                             </div>
@@ -77,12 +77,12 @@
                     </li>
                     <!-- 배송완료일 -->
                     <li>
-                        <p class="bold">2022.08.10</p>
+                        <p class="bold" th:text="${ogg.DN_DATE}">2022.08.10</p>
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
                         <a href="javascript:;" class="btn btn-xs btn-point-outline btn-width-xs radius-xlarge origin-btn">주문상세보기</a>
-                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
+                        <a th:onclick="|reviewInsertModal(${ogg.OGG_IDX})|" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
                     </li>
                 </ul>
             </li>
@@ -134,7 +134,7 @@
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
                         <a href="javascript:;" class="btn btn-xs btn-point-outline btn-width-xs radius-xlarge origin-btn">주문상세보기</a>
-                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
+                        <a onclick="reviewInsertModal(1)" class="btn btn-xs btn-point btn-width-xs radius-xlarge origin-btn">리뷰작성하기</a>
                     </li>
                 </ul>
             </li>
@@ -142,10 +142,14 @@
     </div>
 
     <script>
-        function reviewInsertModal(){
+        function reviewInsertModal(oggIdx){
             $.ajax({
                 url: '/myPage/myList/review/reviewModal.load'
                 ,type:'post'
+                ,data: {
+                    oggIdx: oggIdx
+                    ,insert: true
+                }
                 ,success:function(res){
 
                     $('.modalContent').empty();
@@ -196,12 +200,12 @@
         <!-- 작성가능 상품 리스트 -->
         <ul>
             <!-- 상품 1 -->
-            <li>
+            <li th:each="r: ${review}">
                 <ul class="table-content2 completed-table-content">
                     <!-- 상품명 -->
                     <li class="itemName">
                         <div class="order-item-thumb">
-                            <a href="javascript:;">
+                            <a th:href="|shopProduct/${r?.shopProduct?.spIdx}|">
                                 <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
                                 <p class="font-xsm color-grey999">001762984</p>
                             </a>
@@ -222,22 +226,22 @@
                     </li>
                     <!-- 리뷰내용 -->
                     <li class="table-review-content">
-                        <p class="font-sm">정말 리퍼 같지 않고 박스만 없지 거짓말 조금 보태
+                        <p class="font-sm" th:text="${r.rContent}">정말 리퍼 같지 않고 박스만 없지 거짓말 조금 보태
                             새거나 다름 없네요.</p>
                     </li>
                     <!-- 평점 -->
                     <li>
                         <!--5점:grade-100, 4점:grade-80, 3점:grade-60, 2점:grade-40, 1점:grade-20-->
-                        <div class="review-grade grade-80 flex-column"><i></i><span>4.9</span></div>
+                        <div th:class="|review-grade flex-column grade-${r.rStar*20}|"><i></i><span th:text="${r.rStar}">4.9</span></div>
                     </li>
                     <!-- 작성일 -->
                     <li>
-                        <p class="bold">2022.08.10</p>
+                        <p class="bold" th:text="${r.createdDate}">2022.08.10</p>
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <a onclick="reviewUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge">리뷰수정</a>
-                        <a onclick="reviewInsertModal()" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
+                        <a th:onclick="|reviewUpdateModal(${r.rIdx})|" class="btn btn-xs btn-point btn-width-xs radius-xlarge">리뷰수정</a>
+                        <a th:onclick="|deleteReview(${r.rIdx})|" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
             </li>
@@ -245,10 +249,14 @@
     </div>
 
     <script>
-        function reviewUpdateModal(){
+        function reviewUpdateModal(rIdx){
             $.ajax({
                 url: '/myPage/myList/review/reviewModal.load'
                 ,type:'post'
+                ,data: {
+                    rIdx: rIdx
+                    ,insert: false
+                }
                 ,success:function(res){
 
                     $('.modalContent').empty();
@@ -257,6 +265,17 @@
                     $('#commonModal').show();
                 }
                 ,error:function(){}
+            })
+        }
+
+        /** 리뷰 삭제 */
+        function deleteReview(rIdx) {
+            $.ajax({
+                url: '/review/delete/'+rIdx+'.ajax'
+                ,type: 'post'
+                , success: function (res) {
+                    openMyListReviewMenu('completeReview');
+                }
             })
         }
     </script>
@@ -268,23 +287,28 @@
     리뷰등록/수정 modal frame
     <!--등록 form-->
     <form id="reviewForm" enctype="multipart/form-data">
-        <input type="hidden" name="oggIdx">
+        <input type="hidden" name="oggIdx" th:value="${oggIdx}" th:if="${oggIdx}">
         <!--리뷰 평점 rate에 값 들어감-->
-        <div id="rStar" rate="0"><span class="review-star" th:each="cnt: ${#numbers.sequence(1,5)}" th:rate="${cnt}">☆</span></div>
+        <div id="rStar" th:rate="${review != null} ? ${review.rStar} : 0"><span class="review-star" th:each="cnt: ${#numbers.sequence(1,5)}" th:rate="${cnt}">☆</span></div>
 
         <!--리뷰내용작성-->
-        <textarea name="rContent"></textarea>
+        <textarea name="rContent" th:text="${review?.rContent}"></textarea>
 
         <!--사진등록-->
-        <input type="file" name="photos" multiple="multiple">
+        <img attr="review" th:if="${review != null}" th:each="list: ${review?.rJson}" th:src="${list}" />
+        <input type="file" name="photos" multiple="multiple" accept=".jpg,.jpeg,.png,.gif">
     </form>
 
     <a onclick="$('#commonModal').hide()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">취소</a>
-    <a onclick="saveReview()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>
+    <a th:onclick="${review == null} ? 'saveReview()' : 'updateReview()'" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>
 
     <script>
         /** 리뷰 등록 ajax */
         function saveReview() {
+            if (parseInt($('input[type=file]').get(0).files.length) > 10) {
+                alert("최대 10개의 이미지 등록이 가능합니다.");
+                return ;
+            }
             var param = new FormData($('#reviewForm')[0]);
             param.append('rStar', $('#rStar').attr('rate'));
             $.ajax({
@@ -295,9 +319,31 @@
                 ,data: param
                 ,success: function () {
                     $('#commonModal').hide();
-                    openMyListMenu('review');
+                    openMyListReviewMenu('possibleReview');
                 }
             });
+        }
+
+        /** 리뷰 수정 ajax*/
+        function updateReview() {
+            if (parseInt($('input[type=file]').get(0).files.length) > (10-$('img[attr=review]').length)) {
+                alert("최대 10개의 이미지 등록이 가능합니다.");
+                return ;
+            }
+            var param = new FormData($('#reviewForm')[0]);
+            param.append('rStar', Number($('#rStar').attr('rate')));
+            $.ajax({
+               url: '/review/update/'+[[${review.rIdx}]]+'.ajax'
+               ,type: 'post'
+               ,processData: false
+               ,contentType: false
+               ,data: param
+               ,success: function () {
+                    $('#commonModal').hide();
+                    openMyListReviewMenu('completeReview');
+               }
+            });
+
         }
 
         // 디자인 나오면 바꿀부분
