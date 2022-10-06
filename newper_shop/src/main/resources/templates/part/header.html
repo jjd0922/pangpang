@@ -47,15 +47,15 @@
         <div class="container flex-between flex-nowrap">
             <th:block th:each="ho: ${@shopComp.getHeaderOrder(#request.getServerName())}">
 
-                <div class="bottom-header-left" th:if="${ho.hoRow == 3} and ${ho.hoCol == 1}">
+                <div th:if="${ho.hoRow == 3} and ${ho.hoCol == 1}">
                     <th:block th:replace="part/header_order2 :: __${ho.hoType.getHoClass(ho.hoRow, ho.hoCol)}__"></th:block>
                 </div>
 
-                <div class="bottom-header-center"th:if="${ho.hoRow == 3} and ${ho.hoCol == 2}">
+                <div th:if="${ho.hoRow == 3} and ${ho.hoCol == 2}">
                     <th:block th:replace="part/header_order2 :: __${ho.hoType.getHoClass(ho.hoRow, ho.hoCol)}__"></th:block>
                 </div>
 
-                <div class="bottom-header-right" th:if="${ho.hoRow == 3} and ${ho.hoCol == 3}">
+                <div th:if="${ho.hoRow == 3} and ${ho.hoCol == 3}">
                     <th:block th:replace="part/header_order2 :: __${ho.hoType.getHoClass(ho.hoRow, ho.hoCol)}__"></th:block>
                 </div>
 
