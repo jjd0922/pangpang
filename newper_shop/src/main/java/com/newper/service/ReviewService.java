@@ -6,6 +6,7 @@ import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
 import com.newper.entity.Review;
+import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.OrdersRepo;
@@ -38,18 +39,23 @@ public class ReviewService {
     public void saveReview(ParamMap paramMap, MultipartFile[] mfs) {
         Review review = paramMap.mapParam(Review.class);
         Customer customer = customerRepo.getReferenceByCuId(shopSession.getId());
+        if (customer == null) {
+            throw new MsgException("로그인이 필요합니다.");
+        }
         review.setCustomer(customer);
 
         Map<String, Object> map = ordersMapper.selectOrderAndShopByOggIdx(paramMap.getLong("oggIdx"));
         review.setOrders(ordersRepo.getReferenceById(Long.parseLong(map.get("O_IDX") + "")));
         review.setShopProduct(shopProductRepo.getReferenceById(Long.parseLong(map.get("SP_IDX")+"")));
 
-        List<String> fileList = new ArrayList<>();
-        for (MultipartFile mf : mfs) {
-            String file = Common.uploadFilePath(mf, "shop_product/review/", AdminBucket.OPEN);
-            fileList.add(file);
+        if (mfs.length > 0) {
+            List<String> fileList = new ArrayList<>();
+            for (MultipartFile mf : mfs) {
+                String file = Common.uploadFilePath(mf, "shop_product/review/", AdminBucket.OPEN);
+                fileList.add(file);
+            }
+            review.setRJson(fileList);
         }
-        review.setRJson(fileList);
         reviewRepo.save(review);
     }
 }
