@@ -4,6 +4,7 @@ import com.newper.entity.EventGroup;
 import com.newper.entity.Shop;
 import com.newper.entity.ShopCategory;
 import com.newper.exception.MsgException;
+import com.newper.mapper.EventGroupMapper;
 import com.newper.repository.EventGroupRepo;
 import com.newper.repository.NoticeRepo;
 import com.newper.repository.ShopCategoryRepo;
@@ -26,6 +27,7 @@ public class BoardController {
     private final NoticeRepo noticeRepo;
     private final ShopCategoryRepo shopCategoryRepo;
     private final EventGroupRepo eventGroupRepo;
+    private final EventGroupMapper eventGroupMapper;
 
     /** 이벤트 관리*/
     @GetMapping("event")
@@ -97,8 +99,10 @@ public class BoardController {
         ModelAndView mav = new ModelAndView("board/event_egIdx");
 
         if(egIdx != null){
-            EventGroup eventGroup = eventGroupRepo.findShopByEgIdx(egIdx);
+            EventGroup eventGroup = eventGroupRepo.findByegIdx(egIdx);
             mav.addObject("event", eventGroup);
+            mav.addObject("eventSpList", eventGroupMapper.eventCategoryProductListByEgIdx(egIdx));
+            mav.addObject("cateSpSizeMap", eventGroupMapper.eventCategoryProductCountListByEgIdx(egIdx));
         }
         Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
         mav.addObject("shop", shop);
