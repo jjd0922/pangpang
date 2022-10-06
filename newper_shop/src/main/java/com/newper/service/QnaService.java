@@ -6,6 +6,7 @@ import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
 import com.newper.entity.Qna;
+import com.newper.entity.QnaSp;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.QnaRepo;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,8 @@ public class QnaService {
         Customer customer = customerRepo.getReferenceByCuId(shopSession.getId());
         qna.setCustomer(customer);
 
+        // qna_ogg_idx set해야함 (있는경우)
+
         List<String> photoList = new ArrayList<>();
         for (MultipartFile file : files) {
             String photo = Common.uploadFilePath(file, "qna/", AdminBucket.SECRET);
@@ -42,5 +45,15 @@ public class QnaService {
         qna.setQnaJson(photoList);
 
         qnaRepo.save(qna);
+    }
+
+    /**상품문의 등록*/
+    @Transactional
+    public void saveQnaSp(ParamMap paramMap) {
+        QnaSp qnaSp = paramMap.mapParam(QnaSp.class);
+        Customer customer = customerRepo.getReferenceByCuId(shopSession.getId());
+        if (customer != null) {
+            qnaSp.setCustomer(customer);
+        }
     }
 }

@@ -24,5 +24,13 @@ public class QnaRestController {
         return rm;
     }
 
+    /** 상품문의 등록 ajax*/
+    @PostMapping("/sp/save.ajax")
+    public ReturnMap saveQnaSp(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        qnaService.saveQnaSp(paramMap);
+        return rm;
+    }
+
 
 }
