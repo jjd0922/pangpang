@@ -4,9 +4,14 @@ import com.newper.component.AdminBucket;
 import com.newper.component.Common;
 import com.newper.constant.EgJson;
 import com.newper.dto.ParamMap;
+import com.newper.entity.EventCategory;
 import com.newper.entity.EventGroup;
+import com.newper.entity.EventSp;
 import com.newper.exception.MsgException;
+import com.newper.repository.EventCategoryRepo;
 import com.newper.repository.EventGroupRepo;
+import com.newper.repository.EventSpRepo;
+import com.newper.repository.ShopProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,8 +29,10 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class EventGroupService {
 
-
+    private final ShopProductRepo shopProductRepo;
     private final EventGroupRepo eventGroupRepo;
+    private final EventCategoryRepo eventCategoryRepo;
+    private final EventSpRepo eventSpRepo;
     /** 이벤트 그룹 update */
     @Transactional
     public void eventGroupUpdate(ParamMap paramMap, MultipartHttpServletRequest mfRequest) {
@@ -76,8 +84,27 @@ public class EventGroupService {
         eventGroup.setEgCloseDate(egCloseDate);
         eventGroup.setEgCloseTime(egCloseTime);
         eventGroup.setEgJson(jsonMap);
-        eventGroupRepo.save(eventGroup);
+        eventGroupRepo.saveAndFlush(eventGroup);
 
+        List<String> ecTitleList = paramMap.getList("ecTitle");
+        for(int i=0;i<ecTitleList.size();i++){
+            EventCategory eventCategory = EventCategory.builder()
+                    .eventGroup(eventGroup)
+                    .ecTitle(ecTitleList.get(i))
+                    .ecOrder(i+1)
+                    .build();
+            eventCategoryRepo.saveAndFlush(eventCategory);
+
+            List<String> spIdxs = paramMap.getList("spIdx"+(i+1));
+            for(int k=0;k<spIdxs.size();k++){
+                EventSp eventSp = EventSp.builder()
+                        .eventCategory(eventCategory)
+                        .shopProduct(shopProductRepo.getReferenceById(Long.parseLong(spIdxs.get(k))))
+                        .espOrder(k+1)
+                        .build();
+                eventSpRepo.saveAndFlush(eventSp);
+            }
+        }
 
         return eventGroup.getEgIdx();
     }

@@ -156,8 +156,8 @@
                                                             <span class="input-group-text">노출 상태</span>
                                                         </span>
                                                         <select class="form-control select" name="egState">
-                                                            <option value="true" th:selected="${event?.egState == true}">노출</option>
                                                             <option value="false" th:selected="${event?.egState == false}">미노출</option>
+                                                            <option value="true" th:selected="${event?.egState == true}">노출</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -200,7 +200,15 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="eventCategoryTbody">
-
+                                                <th:block th:if="${event != null && (event?.eventCategoryList != null and not event?.eventCategoryList.isEmpty())}" th:each="eventCategory:${event?.eventCategoryList}">
+                                                    <tr>
+                                                        <td><input th:type="hidden" name="egCate" th:value="${eventCategory.ecIdx}"><span th:text="${eventCategoryStat.count}"></span></td>
+                                                        <td><input type="text" class="form-control ecTitle" name="ecTitle" th:value="${eventCategory.ecTitle}"></td>
+                                                        <td th:each="cateSpSize:${cateSpSizeMap}" th:if="${cateSpSize.EC_IDX == eventCategory.ecIdx}" th:text="${cateSpSize.CNT}"></td>
+                                                        <td><a class="btn btn-sm btn-primary" th:onclick="|openCategoryShopProductModal('__${eventCategory.ecIdx}__')|">상품추가</a></td>
+                                                        <td><a class="btn btn-sm btn-danger" onclick="deleteEgCategory(this)">삭제</a></td>
+                                                    </tr>
+                                                </th:block>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -223,7 +231,15 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="categoryShopProductTbody">
-
+                                                <th:block th:if="${event != null && (eventSpList != null and not eventSpList.isEmpty())}" th:each="eventSp:${eventSpList}">
+                                                    <tr>
+                                                        <td th:text="${eventSpStat.count}"></td>
+                                                        <td th:text="${eventSp.SCATE_NAME}"></td>
+                                                        <td><input type="hidden" name="categoryNo" th:value="${eventSp.EC_IDX}">[[${eventSp.SP_STATE}]]</td>
+                                                        <td><input type="hidden" class="spIdx" th:name="|spIdx${eventSp.EC_IDX}|" th:value="${eventSp.SP_IDX}">[[${eventSp.SP_NAME}]]</td>
+                                                        <td><a class="btn btn-sm btn-danger" th:onclick="|deleteEgCategoryProduct(${eventSp.SP_IDX})|">삭제</a></td>
+                                                    </tr>
+                                                </th:block>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -345,12 +361,12 @@
         var tbody = $('#eventCategoryTbody')
         var no = tbody.find('tr').length +1;
         var tr = '<tr>';
-        tr+='<td><input type="hidden" name="egCate" value="'+no+'">'+no+'</td>';
-        tr+='<td><input type="text" class="form-control ecTitle" name="ecTitle"></td>';
-        tr+='<td>0</td>';
-        tr+='<td><a class="btn btn-sm btn-primary" onclick="openCategoryShopProductModal('+no+')">상품추가</a></td>';
-        tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteEgCategory(this)">삭제</a></td>';
-        tr+='</tr>';
+            tr+='<td><input type="hidden" name="egCate" value="'+no+'">'+no+'</td>';
+            tr+='<td><input type="text" class="form-control ecTitle" name="ecTitle"></td>';
+            tr+='<td>0</td>';
+            tr+='<td><a class="btn btn-sm btn-primary" onclick="openCategoryShopProductModal('+no+')">상품추가</a></td>';
+            tr+='<td><a class="btn btn-sm btn-danger" onclick="deleteEgCategory(this)">삭제</a></td>';
+            tr+='</tr>';
         tbody.append(tr);
     }
     function deleteEgCategory(obj){

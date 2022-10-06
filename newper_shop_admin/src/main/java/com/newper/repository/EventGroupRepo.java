@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EventGroupRepo extends JpaRepository<EventGroup,Long> {
 
-    @EntityGraph(attributePaths = {"shop"})
-    EventGroup findShopByEgIdx(Long egIdx);
+    @EntityGraph(attributePaths = {"shop","eventCategoryList"})
+    EventGroup findByegIdx(Long egIdx);
 }

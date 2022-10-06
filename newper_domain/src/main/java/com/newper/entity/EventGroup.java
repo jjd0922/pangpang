@@ -9,7 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -51,6 +53,12 @@ public class EventGroup extends BaseEntity {
     private LocalDate egCloseDate;
     /** 메모*/
     private String egMemo;
+
+    /** 이벤트 그룹 카테고리 */
+    @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL)
+    @OrderBy(value = "ecOrder asc")
+    @Builder.Default
+    private List<EventCategory> eventCategoryList = new ArrayList<>();
 
     /**
      * key : value
