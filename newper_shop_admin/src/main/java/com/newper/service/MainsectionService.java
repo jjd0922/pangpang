@@ -97,6 +97,8 @@ public class MainsectionService {
             List<String> msbnOrders = paramMap.getList("msbnOrder");
             List<MultipartFile> msbnWebFiles = mfRequest.getFiles("msbnWebFile");
             List<MultipartFile> msbnMobileFiles = mfRequest.getFiles("msbnMobileFile");
+            List<String> msbnWebFileStr = paramMap.getList("msbnWebFile");
+            List<String> msbnMobileFileStr = paramMap.getList("msbnMobileFile");
             List<String> msbnUrls = paramMap.getList("msbnUrl");
             msbnOrders.remove(msbnOrders.size()-1);
             int size = Math.max(mainSectionBanners.size(), msbnOrders.size());
@@ -119,8 +121,7 @@ public class MainsectionService {
                         msbn.setMsbnUrl(msbnUrls.get(i));
 
                         if(msbnWebFiles.get(i).isEmpty()){
-                            msbn.setMsbnWebFile(msbn.getMsbnWebFile());
-                            msbn.setMsbnWebFile(msbn.getMsbnWebFileName());
+                            msbn.setMsbnWebFile(msbnWebFileStr.get(i));
                         }else{
                             webFile = Common.uploadFilePath(msbnWebFiles.get(i), "mainsection/banner/web/", AdminBucket.OPEN);
                             webFileName = msbnWebFiles.get(i).getOriginalFilename();
@@ -129,8 +130,7 @@ public class MainsectionService {
                             msbn.setMsbnWebFileName(webFileName);
                         }
                         if(msbnMobileFiles.get(i).isEmpty()){
-                            msbn.setMsbnMobileFile(msbn.getMsbnMobileFile());
-                            msbn.setMsbnMobileFileName(msbn.getMsbnMobileFileName());
+                            msbn.setMsbnMobileFile(msbnMobileFileStr.get(i));
                         }else{
                             mobileFile = Common.uploadFilePath(msbnMobileFiles.get(i), "mainsection/banner/mobile/", AdminBucket.OPEN);
                             mobileFileName = msbnMobileFiles.get(i).getOriginalFilename();
@@ -147,11 +147,11 @@ public class MainsectionService {
                                 .msbnUrl(paramMap.getList("msbnUrl").get(i)+"")
                                 .build();
 
-                        if(!msbnWebFiles.get(i).getOriginalFilename().equals("")){
+                        if(!msbnWebFiles.isEmpty()){
                             webFile = Common.uploadFilePath(mfRequest.getFile("msbnWebFile"), "mainsection/banner/web/", AdminBucket.OPEN);
                             webFileName = mfRequest.getFile("msbnWebFile").getOriginalFilename();
                         }
-                        if(!msbnMobileFiles.get(i).getOriginalFilename().equals("")){
+                        if(!msbnMobileFiles.isEmpty()){
                             mobileFile = Common.uploadFilePath(mfRequest.getFile("msbnMobileFile"), "mainsection/banner/mobile/", AdminBucket.OPEN);
                             mobileFileName = mfRequest.getFile("msbnMobileFile").getOriginalFilename();
                         }
@@ -347,6 +347,8 @@ public class MainsectionService {
         mainSectionRepo.save(mainSection);
 
         if(mainSection.getMsType().equals(MsType.BANNER)){
+            List<MultipartFile> msbnWebFile = mfRequest.getFiles("msbnWebFile");
+            List<MultipartFile> msbnMobileFile = mfRequest.getFiles("msbnMobileFile");
             for(int i=1;i<paramMap.getList("msbnOrder").size();i++){
                 String webFile="";
                 String webFileName="";
@@ -358,13 +360,13 @@ public class MainsectionService {
                         .msbnUrl(paramMap.getList("msbnUrl").get(i)+"")
                         .build();
 
-                if(!mfRequest.getFile("msbnWebFile").getOriginalFilename().equals("")){
-                    webFile = Common.uploadFilePath(mfRequest.getFile("msbnWebFile"), "mainsection/banner/web/", AdminBucket.OPEN);
-                    webFileName = mfRequest.getFile("msbnWebFile").getOriginalFilename();
+                if(!msbnWebFile.get(i).isEmpty()){
+                    webFile = Common.uploadFilePath(msbnWebFile.get(i), "mainsection/banner/web/", AdminBucket.OPEN);
+                    webFileName = msbnWebFile.get(i).getOriginalFilename();
                 }
-                if(!mfRequest.getFile("msbnMobileFile").getOriginalFilename().equals("")){
-                    mobileFile = Common.uploadFilePath(mfRequest.getFile("msbnMobileFile"), "mainsection/banner/mobile/", AdminBucket.OPEN);
-                    mobileFileName = mfRequest.getFile("msbnMobileFile").getOriginalFilename();
+                if(!msbnMobileFile.get(i).isEmpty()){
+                    mobileFile = Common.uploadFilePath(msbnMobileFile.get(i), "mainsection/banner/mobile/", AdminBucket.OPEN);
+                    mobileFileName = msbnMobileFile.get(i).getOriginalFilename();
                 }
                 msbn.setMsbnWebFile(webFile);
                 msbn.setMsbnWebFileName(webFileName);
