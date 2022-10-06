@@ -262,19 +262,29 @@
         SELECT
         LM_STATE,
         LM_IDX,
---         CREATED_BY,
+        --         CREATED_BY,
         LM_U_IDX,
         LM_OUT_DATE,
         LM_IN_DATE,
-        LOC_IDX,
-        LOC_WH_IDX,
-        LOC_FORM,
-        LOC_CODE,
+        out_location.LOC_IDX AS OUT_LOC_IDX,
+        out_location.LOC_WH_IDX AS OUT_LOC_WH_IDX,
+        out_location.LOC_FORM AS OUT_LOC_FORM,
+        out_location.LOC_CODE AS OUT_LOC_CODE,
+        in_location.LOC_IDX AS IN_LOC_IDX,
+        in_location.LOC_WH_IDX AS IN_LOC_WH_IDX,
+        in_location.LOC_FORM AS IN_LOC_FORM,
+        in_location.LOC_CODE AS IN_LOC_CODE,
         LM_COUNT
         FROM
-        LOCATION
-        LEFT JOIN LOCATION_MOVE ON LOC_IDX = LM_LOC_IDX
-        LEFT JOIN WAREHOUSE ON WH_IDX=LOC_WH_IDX
+        LOCATION_MOVE
+        LEFT JOIN location AS out_location
+        ON out_location.LOC_IDX = LM_LOC_IDX
+        LEFT join location AS in_location
+        ON in_location.LOC_IDX=LM_LOC_IDX2
+        LEFT JOIN WAREHOUSE AS out_warehouse
+        ON out_warehouse.WH_IDX=out_location.LOC_WH_IDX
+        LEFT JOIN warehouse AS in_warehouse
+        ON in_warehouse.WH_IDX=in_location.LOC_WH_IDX
         ORDER BY
         LM_IDX DESC
         <if test="length != -1">
