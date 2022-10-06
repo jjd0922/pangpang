@@ -16,12 +16,15 @@
 </th:block>
 
 <!--[메인메뉴 : 이벤트 분류] 통합-->
-<th:block th:fragment="menu-full2">
+<th:block th:fragment="menu-full2(type)">
     <div class="container">
+        <th:block th:if="${type == 'event'}">
         <ul class="menu-full menu-box">
-            <li class="on">진행 중인 이벤트</li>
-            <li>종료된 이벤트</li>
+            <li class="on" onclick="firstSortEventMenu('open')">진행 중인 이벤트</li>
+            <li onclick="firstSortEventMenu('close')">종료된 이벤트</li>
+            <input type="hidden" id="firstMenuFlag" value="open">
         </ul>
+        </th:block>
     </div>
 </th:block>
 
@@ -53,8 +56,8 @@
     <div class="container">
         <th:block th:if="${type == 'event'}">
         <ul class="menu-part menu-button underline-dark">
-            <li class="on" onclick="sortEventMenu('all')">전체</li>
-            <li th:each="menu:${T(com.newper.constant.EgMenu).values()}" th:value="${menu}" th:text="${menu.option}" th:onclick="|sortEventMenu('__${menu}__')|">IT</li>
+            <li class="on" onclick="secondSortEventMenu('all')">전체</li>
+            <li th:each="menu:${T(com.newper.constant.EgMenu).values()}" th:value="${menu}" th:text="${menu.option}" th:onclick="|secondSortEventMenu('__${menu}__')|">IT</li>
         </ul>
         </th:block>
         <th:block th:if="${type == 'else'}">

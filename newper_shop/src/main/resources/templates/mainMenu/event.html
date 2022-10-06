@@ -18,7 +18,7 @@
 <section th:insert="part/title :: pageTitle_main('이벤트 / 기획전')" class="padding-section page-title-padding"></section>
 
 <!--메뉴 : 행 전체 메뉴 - 박스형 하단 라인 : 이벤트 분류-->
-<section th:insert="part/menu :: menu-full2" class="padding-section"></section>
+<section th:insert="part/menu :: menu-full2('__${fragType}__')" class="padding-section"></section>
 
 <!--메뉴 : 행 일부 메뉴 - 좌측 버튼형 : 이벤트 하위 카테고리 분류-->
 <section th:insert="part/menu :: menu-part('__${fragType}__')" class="padding-section padding-menu"></section>
@@ -38,22 +38,31 @@
     </div>
 </body>
 <script>
-    function sortEventMenu(menu){
+    function firstSortEventMenu(order){
         $.ajax({
-            url:'/event/'+menu+'.ajax'
+            url:'/event/'+order+'/all.ajax'
+            ,type:'post'
+            ,success:function(res){
+                $('#bannerList').replaceWith(res);
+                $('#firstMenuFlag').val(order);
+            }
+        })
+    }
+    function secondSortEventMenu(menu){
+        var order = $('#firstMenuFlag').val();
+        $.ajax({
+            url:'/event/'+order+'/'+menu+'.ajax'
             ,type:'post'
             ,success:function(res){
                 $('#bannerList').replaceWith(res);
             }
         });
     }
-    function moveEventDetail(egIdx){
-        location.href="event"
-    }
+
 </script>
 <script>
     $(function(){
-        sortEventMenu('all');
+        secondSortEventMenu('all');
     });
 </script>
 </html>

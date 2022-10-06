@@ -4,17 +4,16 @@ import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.mapper.IamportMapper;
 import com.newper.repository.EventGroupRepo;
-import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDate;
 
 @Slf4j
 @Controller
@@ -64,7 +63,8 @@ public class MainController {
         ModelAndView mav = new ModelAndView("mainMenu/event");
 
         mav.addObject("fragType","event");
-        mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrue(shopSession.getShopIdx()));
+        mav.addObject("eventGroupList",
+                eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgCloseDateAfter(shopSession.getShopIdx(), LocalDate.now() ));
         return mav;
     }
     /* myPage 나의쇼핑정보 */

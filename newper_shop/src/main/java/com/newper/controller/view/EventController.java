@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/event/")
@@ -27,17 +29,29 @@ public class EventController {
     }
 
     /** 이벤트 /기획전 menu load */
-    @PostMapping("{menu}.ajax")
-    public ModelAndView sortEvent(@PathVariable("menu") String menu){
+    @PostMapping("{order}/{menu}.ajax")
+    public ModelAndView secondSortEvent(@PathVariable("order") String order, @PathVariable("menu") String menu){
         ModelAndView mav = new ModelAndView("part/banner :: banner_2");
-        if(!menu.equals("all")){
-            for(EgMenu egMenu : EgMenu.values()){
-                if(menu.equals(egMenu.name())){
-                    mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgMenu(shopSession.getShopIdx(),egMenu));
+        if(order.equals("open")){
+            if(!menu.equals("all")){
+                for(EgMenu egMenu : EgMenu.values()){
+                    if(menu.equals(egMenu.name())){
+                        mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgMenuAndEgCloseDateAfter(shopSession.getShopIdx(),egMenu, LocalDate.now() ));
+                    }
                 }
+            }else{
+                mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgCloseDateAfter(shopSession.getShopIdx(), LocalDate.now() ));
             }
-        }else{
-            mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrue(shopSession.getShopIdx()));
+        }else if(order.equals("close")){
+            if(!menu.equals("all")){
+                for(EgMenu egMenu : EgMenu.values()){
+                    if(menu.equals(egMenu.name())){
+                        mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgMenuAndEgCloseDateBefore(shopSession.getShopIdx(),egMenu, LocalDate.now() ));
+                    }
+                }
+            }else{
+                mav.addObject("eventGroupList", eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgCloseDateBefore(shopSession.getShopIdx(), LocalDate.now() ));
+            }
         }
         return mav;
     }
