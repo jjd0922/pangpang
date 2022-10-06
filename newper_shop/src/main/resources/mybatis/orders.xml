@@ -76,14 +76,17 @@ where
     <select id="selectOGGForReview" resultType="map">
         <![CDATA[
             SELECT
+                O_IDX,
+                OG_IDX,
+                OGG_IDX,
                 O_DATE,
                 O_CODE,
                 GS_THUMB_FILE1,
                 GS_THUMB_FILE_NAME1,
-                SPA_SP_IDX,
                 OGG_CNT,
-                OGG_IDX,
-                IF(ISNULL(DN_DATE), "", DN_DATE) AS DN_DATE
+                IF(ISNULL(DN_DATE), "", DN_DATE) AS DN_DATE,
+                SP_IDX,
+                SP_NAME
             FROM
                 ORDER_GS_GROUP
                     LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
@@ -93,13 +96,14 @@ where
                     LEFT JOIN GOODS_STOCK ON SPO_GS_IDX = GS_IDX
                     LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
                     LEFT JOIN CUSTOMER ON O_CU_IDX = CU_IDX
+                    LEFT JOIN SHOP_PRODUCT ON SPA_SP_IDX = SP_IDX
             WHERE
                 O_SHOP_IDX = #{shopIdx}
                 AND DATEDIFF(NOW(), O_DATE) <= 60
                 AND CU_ID = #{cuId}
             ORDER BY O_DATE DESC
             LIMIT
-                {start}, {length}
+                #{start}, #{length}
         ]]>
     </select>
     <select id="selectOrderAndShopByOggIdx" resultType="map">
@@ -107,9 +111,9 @@ where
             DISTINCT(O_IDX),
             SPA_SP_IDX AS SP_IDX
         FROM
-            ORDER_GS
-                LEFT JOIN ORDERS ON OG_O_IDX = O_IDX
-                LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+            ORDER_GS_GROUP
+                LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
+                LEFT JOIN ORDER_GS ON OG_OGG_IDX = OGG_IDX
                 LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
                 LEFT JOIN SHOP_PRODUCT_ADD ON SPO_SPA_IDX = SPA_IDX
         WHERE

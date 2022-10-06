@@ -8,8 +8,8 @@ import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
-import com.newper.repository.CompanyRepo;
 import com.newper.repository.CustomerRepo;
+import com.newper.repository.ReviewRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,8 @@ public class MyPageController {
     private final CustomerRepo customerRepo;
     private final OrdersMapper ordersMapper;
     private final ShopRepo shopRepo;
-    private final CompanyRepo companyRepo;
     private final CompanyMapper companyMapper;
-    private Orders orders;
+    private final ReviewRepo reviewRepo;
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -198,11 +197,20 @@ public class MyPageController {
 
     /** 상품리뷰 하위 메뉴 load */
     @PostMapping("myList/review/{menu}.load")
-    public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu) {
+    public ModelAndView myListReviewMenu(@PathVariable(required = false) String menu, ParamMap paramMap) {
         ModelAndView mav = new ModelAndView("myPage/myList_menu_review :: " + menu);
-//        if (menu.equals("possibleReview")) {
-//            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
-//        }
+        if (menu.equals("possibleReview")) {
+            mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
+        } else if (menu.equals("completeReview")) {
+            mav.addObject("review", reviewRepo.findReviewsByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
+        }
+        if (menu.equals("reviewModal")) {
+            if (paramMap.getString("insert").equals("true")) {
+                mav.addObject("oggIdx", paramMap.getLong("oggIdx"));
+            } else {
+                mav.addObject("review", reviewRepo.findById(paramMap.getLong("rIdx")).orElseThrow(()-> new MsgException("존재하지 않는 리뷰입니다.")));
+            }
+        }
         return mav;
     }
 

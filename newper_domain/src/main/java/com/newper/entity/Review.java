@@ -36,6 +36,11 @@ public class Review extends BaseEntityWithoutBy {
     @Builder.Default
     private List<String> rJson = new ArrayList<>();
 
-    private String rStar;
+    private Integer rStar;
     private String rContent;
+
+    public void updateReview(Review newReview) {
+        setRStar(newReview.getRStar());
+        setRContent(newReview.getRContent());
+    }
 }
