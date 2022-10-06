@@ -24,7 +24,7 @@
 <section th:insert="part/menu :: menu-part('__${fragType}__')" class="padding-section padding-menu"></section>
 
 <!--이미지 배너 : 2단-->
-<div th:insert="part/banner :: banner_2('__${fragType}__')" class="padding-section button-tab-content"></div>
+<div th:insert="part/banner :: banner_2" class="padding-section button-tab-content"></div>
 
 <!-- 푸터 -->
 <th:block th:replace="part/footer :: main-footer"></th:block>
@@ -43,12 +43,17 @@
             url:'/event/'+menu+'.ajax'
             ,type:'post'
             ,success:function(res){
-                $('#eventBannerList').replaceWith(res);
+                $('#bannerList').replaceWith(res);
             }
         });
     }
     function moveEventDetail(egIdx){
-
+        location.href="event"
     }
+</script>
+<script>
+    $(function(){
+        sortEventMenu('all');
+    });
 </script>
 </html>

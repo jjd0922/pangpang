@@ -32,18 +32,20 @@
 </th:block>
 
 <!--배너 : 2열 배너-->
-<th:block th:fragment="banner_2(type)">
-    <th:block th:if="${type == 'event'}">
-    <div class="container" id="eventBannerList">
-        <ul class="col-list lg-2col sm-1col">
-            <li th:each="eventGroup : ${eventGroupList}" th:onclick="|moveEventDetail(${eventGroup.egIdx})|">
-                <img th:src="${eventGroup.egJson.get('EG_THUMBNAIL_WEB')}" th:alt="${eventGroup.egTitle}">
+<th:block th:fragment="banner_2">
+    <th:block th:if="${eventGroupList != null and not eventGroupList.isEmpty()}">
+    <div class="container" id="bannerList">
+        <ul class="col-list lg-2col sm-1col" >
+            <li th:each="eventGroup : ${eventGroupList}" th:onclick="moveEventDetail(${eventGroup.egIdx})|">
+                <a th:title="${eventGroup.egTitle}" th:href="|/event/${eventGroup.egIdx}|">
+                    <img th:src="${eventGroup.egJson.get('EG_THUMBNAIL_WEB')}" th:alt="${eventGroup.egTitle}">
+                </a>
             </li>
         </ul>
     </div>
     </th:block>
-    <th:block th:if="${type == 'else'}">
-        <div class="container">
+    <th:block th:if="${eventGroupList == null or eventGroupList.isEmpty()}">
+        <div class="container" id="bannerList">
             <ul class="col-list lg-2col sm-1col">
                 <li>
                     <img src="https://dummyimage.com/660x210/eee/777" alt="이벤트 광고">
