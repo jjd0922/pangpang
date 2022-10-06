@@ -159,7 +159,7 @@
             alert('선택된 내역이 없습니다.');
             return false;
         }else{
-            if(window.confirm('분양몰을 삭제하시겠습니까?')){
+            if(window.confirm('이벤트그룹을 삭제하시겠습니까?')){
                 $.ajax({
                     url:'/board/event/delete.ajax'
                     ,type:'post'
@@ -167,7 +167,7 @@
                         egIdxs : idx
                     }
                     ,success:function(res){
-                        $('#eventGroupTable').DataTable.ajax.reload();
+                        $('#eventGroupTable').DataTable().ajax.reload();
                     }
                     ,error:function(){}
                 })

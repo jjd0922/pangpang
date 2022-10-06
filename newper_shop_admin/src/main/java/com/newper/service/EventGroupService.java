@@ -119,6 +119,7 @@ public class EventGroupService {
         }
     }
 
+    @Transactional
     public void deleteEventGroup(ParamMap paramMap) {
         List<Long> egIdxs = paramMap.getListLong("egIdxs[]");
 
