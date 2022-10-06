@@ -182,7 +182,7 @@ public class PoService {
         Po poParam = paramMap.mapParam(Po.class);
         po.updateAll(poParam);
 
-        if (po.getPoState().equals(PoState.REQUEST)) {
+        if (po.getPoState().equals(PoState.WAITING)) {
             throw new MsgException("이미 승인요청된 발주건 입니다.");
         }
 
@@ -453,7 +453,7 @@ public class PoService {
                 hiworksRepo.save(hiworks);
 
                 po.setHiworks(hiworks);
-                po.setPoState(PoState.REQUEST);
+                po.setPoState(PoState.WAITING);
 
                 poRepo.save(po);
                 count++;
@@ -476,10 +476,10 @@ public class PoService {
 
                 if (paramMap.getString("type").equals("Y")) {
                     hiworks.get().setHwState(HwState.APPROVED);
-                    po.setPoState(PoState.APPROVAL);
+                    po.setPoState(PoState.WAITING);
                 } else {
                     hiworks.get().setHwState(HwState.REJECT);
-                    po.setPoState(PoState.REJECT);
+                    po.setPoState(PoState.WAITING);
                 }
 
                 hiworksRepo.save(hiworks.get());
@@ -523,13 +523,13 @@ public class PoService {
         for (int i = 0; i < poIdxs.length; i++) {
             Po po = poRepo.findById(Integer.parseInt(poIdxs[i])).get();
             // 승인완료일때만 발주완료 가능
-            if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.COMPLETE) && po.getPoState().equals(PoState.APPROVAL)){
+            if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.COMPLETE) && po.getPoState().equals(PoState.WAITING)){
                 po.setPoState(PoState.COMPLETE);
                 poRepo.save(po);
                 count++;
             }
             // 승인반려일때만 발주취소 가능
-            else if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.CANCEL) && po.getPoState().equals(PoState.REJECT)) {
+            else if (PoState.valueOf(paramMap.getString("poState")).equals(PoState.CANCEL) && po.getPoState().equals(PoState.WAITING)) {
                 po.setPoState(PoState.CANCEL);
                 poRepo.save(po);
                 count++;
@@ -591,7 +591,7 @@ public class PoService {
     public void poComplete(ParamMap paramMap) {
         int poIdx = paramMap.getInt("poIdx");
         Po po = poRepo.findById(poIdx).get();
-        po.setPoState(PoState.RE_APPROVAL);
+        po.setPoState(PoState.WAITING);
 
 //        paintProcess
         // 자산값 처리
