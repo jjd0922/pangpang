@@ -91,19 +91,29 @@
 
     <select id="selectGoodStockDatatalbe" resultType="map">
         select
-            *,
-            replace(JSON_EXTRACT(P_NAVER,'$.P_NAVER1'),'"','') NAVER,
-            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"','') OPTION1,
-            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"','') OPTION2,
-            replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"','') OPTION3
+            goods_stock.*,product.*,IFNULL(dt.cnt,0) cnt,
+            ifnull(replace(JSON_EXTRACT(GS_NAVER,'$.GS_NAVER1'),'"',''),'') NAVER,
+            ifnull(replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"',''),'') OPTION1,
+            ifnull(replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"',''),'') OPTION2,
+            ifnull(replace(JSON_EXTRACT(GS_OPTION,'$.OPTION3'),'"',''),'') OPTION3,
+            IFNULL(SPEC_LOOKUP,'') SPEC_LOOKUP
         from
             goods_stock
             left join spec
             on SPEC_IDX = GS_SPEC_IDX
             left join product
             on GS_P_IDX=P_IDX
+            LEFT JOIN (SELECT
+                        G_GS_IDX,COUNT(*) AS cnt
+                        FROM
+                        goods
+                        WHERE
+                        G_STOCK_STATE='STOCK'
+                        GROUP BY G_GS_IDX) dt
+            ON dt.G_GS_IDX=GS_IDX
         WHERE
             GS_IDX is not null
+            <if test="pType2!=null and pType2!=''">and P_TYPE2=#{pType2}</if>
         <if test="length!=-1">
             limit #{start},#{length}
         </if>

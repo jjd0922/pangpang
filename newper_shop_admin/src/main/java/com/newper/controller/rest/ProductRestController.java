@@ -162,5 +162,14 @@ public class ProductRestController {
         return returnDatatable;
     }
 
+    /**샵상품 저장*/
+    @PostMapping("saveShopProduct.ajax")
+    public ReturnMap saveShopProduct(ParamMap paramMap){
+        ReturnMap returnMap = new ReturnMap();
+        System.out.println(paramMap.getMap());
+        returnMap.setMessage("GOOD DAY");
+        return returnMap;
+    }
+
 
 }

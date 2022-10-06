@@ -493,3 +493,9 @@ function ellipsisStr(str){
 function fileDownload(path, name) {
     location.href = "/download/?obj=" + encodeURIComponent(path) + '&fileName=' + encodeURIComponent(name);
 }
+
+//onkeyUp에 주면 숫자+콤마. (한글제거)
+function numCommaKeyUp(){
+    var tar=$(event.target);
+    $(tar).val(comma($(tar).val()));
+}

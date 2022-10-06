@@ -118,7 +118,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4">
+                                <!--<div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-prepend">
@@ -132,7 +132,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -174,11 +174,11 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            썸네일1
-                                        </span>
-                                    </span>
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    썸네일1
+                                                </span>
+                                            </span>
                                             <input th:if="${#strings.isEmpty(product?.pThumbFile1)}" type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file form-control">
                                             <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile1)}">
                                                 <img th:src="${product?.pThumbFile1}" class="input-thumb">
@@ -191,11 +191,11 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            썸네일2
-                                        </span>
-                                    </span>
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    썸네일2
+                                                </span>
+                                            </span>
                                             <input th:if="${#strings.isEmpty(product?.pThumbFile2)}" type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file form-control">
                                             <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile2)}">
                                                 <img th:src="${product?.pThumbFile2}" class="input-thumb">
@@ -208,11 +208,11 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            썸네일3
-                                        </span>
-                                    </span>
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    썸네일3
+                                                </span>
+                                            </span>
                                             <input th:if="${#strings.isEmpty(product?.pThumbFile3)}" type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file form-control">
                                             <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile3)}">
                                                 <img th:src="${product?.pThumbFile3}" class="input-thumb">
@@ -228,7 +228,7 @@
                         <fieldset class="mb-0">
                             <span class="input-group-text w-100 mb--1">상세이미지</span>
                             <textarea id="summerNote1" name="P_CONTENT1" th:text="${content1}"></textarea>
-                            <span class="input-group-text w-100 mb--1">공통이미지</span>
+                            <span class="input-group-text w-100 mb--1">MD 상품평</span>
                             <textarea id="summerNote2" name="P_CONTENT2" th:text="${content2}"></textarea>
                         </fieldset>
                     </div>
@@ -241,10 +241,10 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">기준판매가(상품) 합</span>
-                                    </span>
-                                            <input type="text" name="P_COST" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text">기준판매가(상품) 합</span>
+                                            </span>
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +254,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">기준판매가(재고) 합</span>
                                     </span>
-                                            <input type="text" name="P_RETAIL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">SHOP 판매가(뉴퍼마켓가) 합</span>
                                     </span>
-                                            <input type="text" name="P_SELL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">할인가 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_PRICE" class="form-control text-right" onkeyup="numCommaKeyUp()" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">네이버최저가의 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_TOGETHER" class="form-control text-right" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0 : ${product?.pDelTogether}">
                                         </div>
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">유통가의 합</span>
                                     </span>
-                                            <input type="text" name="P_DEL_TOGETHER" class="form-control text-right" onkeyup="numCommaKeyUp()" max="3" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0 : ${product?.pDelTogether}">
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +307,9 @@
                         <fieldset class="mb-0">
                             <legend>4.재고상품 구성<span class="small ml-2"></span>
                                 <a class="btn btn-sm badge-indigo" onclick="essentialAdd()">필수상품 추가</a>
+                                <a class="btn btn-sm badge-indigo" onclick="chooseAdd()">선택상품 추가</a>
                                 <input type="hidden" id="essentialCnt" value="1">
+                                <input type="hidden" id="chooseAddCnt" value="1">
                             </legend>
                             <div class="row" id="essential">
                                 <div class="col-sm-12">
@@ -323,10 +325,10 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="form-control">
-                                        1번 필수상품
-                                        <a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal(1,true)">재고상품 검색</a>
-                                    </span>
+                                            <span class="form-control">
+                                                1번 필수상품
+                                                <a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal(1,true)">재고상품 검색</a>
+                                            </span>
                                         </div>
                                     </div>
                                     <table class="table table-bordered" id="essentialTable1">
@@ -358,25 +360,65 @@
                                         <tbody id="essential_area1">
                                         </tbody>
                                     </table>
+                                    <div class="form-group">
+                                        <div class="input-group" id="essentialAdd1">
+                                            <span class="form-control">
+                                                1번 종속상품
+                                                <a class="btn btn-sm badge-indigo" onclick="showEssentialAdd(1)">종속상품 검색</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr class="alpha-brown text-bold">
+                                                <th>NO</th>
+                                                <th>상품코드</th>
+                                                <th>상품명</th>
+                                                <th>모델명</th>
+                                                <th>재고코드</th>
+                                                <th>재고상품명</th>
+                                                <th>등급</th>
+                                                <th>옵션1</th>
+                                                <th>옵션2</th>
+                                                <th>옵션3</th>
+                                                <th>스펙</th>
+                                                <th>기준매입원가</th>
+                                                <th>네이버최저가</th>
+                                                <th>유통가</th>
+                                                <th>기준판매가(상품)</th>
+                                                <th>기준판매가(재고)</th>
+                                                <th>SHOP 판매가(뉴퍼마켓가)</th>
+                                                <th>삭제</th>
+                                            </tr>
+                                        </thead>
+                                        <input type="hidden" id="essentialAddCnt1" value="0">
+                                        <tbody id="essentialAddBody1">
+                                        </tbody>
+                                    </table>
+                                    <div class="form-group">
+                                    </div>
                                 </div>
                             </div>
                             <br>
                         </fieldset>
                         <fieldset class="mb-0">
-                            <div class="row">
+                            <div class="row" id="choose">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="input-group">
                                     <span class="input-group-text w-100 mb--1">
                                         4-2 추가(선택)상품
-                                        <a class="btn btn-sm badge-indigo legitRipple" onclick="">재고상품 검색</a>
+                                        <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
+                                        <input type="hidden" id="chooseCnt1" value="0">
                                     </span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                     <span class="form-control">
-                                        <a class="btn btn-sm badge-indigo" onclick="">판매가 저장</a>
+                                        1번 선택상품
+                                        <a class="btn btn-sm badge-indigo legitRipple" onclick="showGoodsStockModal(1,false)">재고상품 검색</a>
                                     </span>
                                         </div>
                                     </div>
@@ -488,13 +530,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                부적격상품
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        부적격상품
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -504,13 +546,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                상품숨김기능
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        할인율제외
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -520,27 +562,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                무상서비스 기간 선택
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        딱지이미지1 사용여부
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
-                                            <input type="text" name="" class="form-control form-control-sm daterange-singlenull" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-4">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                할인율제외
-                                            </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -550,13 +578,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                할인율표기여부
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        딱지이미지2 사용여부
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -566,13 +594,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                타임특가 여부
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        딱지이미지3 사용여부
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -582,13 +610,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                구매 최대수량(1회 최대구매 수량)
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        구매 최대수량(1회 최대구매 수량)
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <input type="text" name="" class="form-control">
                                         </div>
                                     </div>
@@ -596,13 +624,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                아이디당 구매제한(전체기간)
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        아이디당 구매제한(전체기간)
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <input type="text" name="" class="form-control">
                                         </div>
                                     </div>
@@ -610,13 +638,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                최소 주문수량
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        최소 주문수량
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <input type="text" name="" class="form-control">
                                         </div>
                                     </div>
@@ -624,13 +652,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                수도권배송상품 여부
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        적립금 사용제한 여부
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -640,13 +668,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                앱전용상품 여부
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        앱전용상품 여부
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -656,13 +684,13 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                네이버최저가/유통가
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        네이버최저가/유통가
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
                                             <input type="text" name="" class="form-control">
                                         </div>
                                     </div>
@@ -670,13 +698,29 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-group">
                                         <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                네이버최저가 리미트
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        네이버최저가 리미트
+                                                    </span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </span>
+                                            <select class="form-control select " data-placeholder="선택" name="">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        할인쿠폰 사용제한 여부
+                                                    </span>
+                                                </span>
+                                            </span>
                                             <select class="form-control select " data-placeholder="선택" name="">
                                                 <option></option>
                                             </select>
@@ -729,7 +773,7 @@
             </form>
             <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
                 <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();"><i class="icon-cross2 mr-1"></i>닫기</button>
-                <button th:if="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>저장</button>
+                <button th:if="${product}==null" onclick="saveShopProduct()" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>저장</button>
                 <button th:unless="${product}==null" onclick="" type="button" class="btn btn-sm btn-secondary ml-1" ><i class="icon-floppy-disk mr-1"></i>수정</button>
             </div>
         </div>
@@ -793,6 +837,10 @@
 
     function essentialAdd(){
         var essentialCnt = $('#essentialCnt').val();
+        if(essentialCnt==3){
+            alert("필수상품은 최대 3개까지 구성할 수 있습니다.");
+            return false;
+        }
         essentialCnt++;
         $('#essentialCnt').val(essentialCnt);
         var str = '';
@@ -801,43 +849,124 @@
         str += '<table class="table table-bordered" id="essentialTable'+essentialCnt+'"><thead><tr class="alpha-brown text-bold">';
         str += '<th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
         str += '<th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>할인가(최종혜택가)</th><th>재고자산</th><th>삭제</th></tr>'
-        str += '</thead><input type="hidden" id="eaCnt'+essentialCnt+'" value="0"><tbody id="essential_area'+essentialCnt+'"></tbody></table></div>'
+        str += '</thead><input type="hidden" id="eaCnt'+essentialCnt+'" value="0"><tbody id="essential_area'+essentialCnt+'"></tbody></table><div class="form-group"><div class="input-group" id="essentialAdd'+essentialCnt+'"><span class="form-control">'+essentialCnt+'번 종속상품<a class="btn btn-sm badge-indigo" onclick="showEssentialAdd('+essentialCnt+')">종속상품 검색</a></span></div></div>'
+        str += '<br><table class="table table-bordered"><thead><tr class="alpha-brown text-bold"><th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th><th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>삭제</th></tr></thead><input type="hidden" id="essentialAddCnt'+essentialCnt+'" value="0"><tbody id="essentialAddBody'+essentialCnt+'"></tbody></table><div class="form-group"></div></div>'
         $('#essential').append(str);
     }
 
-    function selectProduct(cnt,boolean){
-
-        var rowData = dataTableGetSelectedDataArray('goodsStockModalTable', row);
-        $('#searchGoodsStockModal').modal('hide');
-        $('input[name="SHOP_NAME"]').val(rowData.SHOP_NAME);
-        var eaCnt = $('#eaCnt'+cnt).val();
-        eaCnt++;
-        $('#eaCnt'+cnt).val(eaCnt);
+    function chooseAdd(){
+        var chooseAddCnt = $('#chooseAddCnt').val();
+        if(chooseAddCnt==3){
+            alert("선택상품은 최대 3개까지 구성할 수 있습니다.");
+            return false;
+        }
+        chooseAddCnt++;
+        $('#chooseAddCnt').val(chooseAddCnt);
         var str = '';
-        str += '<tr id="essentialTr'+cnt+'-'+eaCnt+'"><td id="essentialTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
-        str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
-        str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
-        str += '<td><input type="text" class="form-control" name="SPO_MONEY'+cnt+'-'+eaCnt+'" onkeyup="numCommaKeyUp()"></td>'
-        str += '<td><input type="text" class="form-control" name="SPO_DISCOUNT'+cnt+'-'+eaCnt+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX'+cnt+'-'+eaCnt+'" value="'+rowData.GS_IDX+'"></td>'
-        str += '<td>ea</td>'
-        str += '<td><button onclick="deleteGoodsStock('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
+        str += '<div class="col-sm-12"><div class="form-group"><div class="input-group">';
+        str += '<span class="form-control">'+chooseAddCnt+'번 선택상품<a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal('+essentialCnt+','+false+')">재고상품 검색</a></span></div></div>';
+        str += '<table class="table table-bordered" id="essentialTable'+essentialCnt+'"><thead><tr class="alpha-brown text-bold">';
+        str += '<th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
+        str += '<th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>할인가(최종혜택가)</th><th>재고자산</th><th>삭제</th></tr>'
+        str += '</thead><input type="hidden" id="eaCnt'+essentialCnt+'" value="0"><tbody id="essential_area'+essentialCnt+'"></tbody></table></div>'
+        $('#choose').append(str);
 
+    }
 
-        $('#essential_area'+cnt).append(str);
+    function selectProduct(cnt,boolean){
+        var row=$('#goodsStockModalTable').DataTable().rows({selected:true})[0];
+        if(boolean){
+            for(var i=0;i<row.length;i++){
+                var rowData = getDatatablemap('goodsStockModalTable', row[i]);
+                if(!($('#GS_IDX'+cnt+'-'+rowData.GS_IDX).length>0)){
+                    var eaCnt = $('#eaCnt'+cnt).val();
+                    eaCnt++;
+                    $('#eaCnt'+cnt).val(eaCnt);
+                    var str = '';
+                    str += '<tr id="essentialTr'+cnt+'-'+eaCnt+'"><td id="essentialTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                    str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
+                    str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                    str += '<td>'+rowData.cnt+'</td>'
+                    str += '<td><button onclick="deleteGoodsStock('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
+                    $('#essential_area'+cnt).append(str);
+                }
+
+            }
+        }else{
+            for(var i=0;i<row.length;i++){
+                var rowData = getDatatablemap('goodsStockModalTable', row[i]);
+                if(!($('#GS_IDX_NO'+cnt+'-'+rowData.GS_IDX).length>0)){
+                    var eaCnt = $('#chooseCnt'+cnt).val();
+                    eaCnt++;
+                    $('#chooseCnt'+cnt).val(eaCnt);
+                    var str = '';
+                    str += '<tr id="chooseTr'+cnt+'-'+eaCnt+'"><td id="chooseTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                    str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
+                    str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                    str += '<td>'+rowData.cnt+'</td>'
+                    str += '<td><button onclick="deleteChooseGoodsStock('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
+                    $('#choose_area').append(str);
+                }
+            }
+        }
+        $('#searchGoodsStockModal').modal('hide');
+
     }
 
     function deleteGoodsStock(cnt,eaCnt) {
         $('#essentialTr'+cnt+'-'+eaCnt).remove();
-        var eaCnt = $('#eaCnt'+cnt).val();
-        eaCnt--;
-        $('#eaCnt'+cnt).val(eaCnt);
-        $('tr[id^="essentialTr"]').each(function(index,element){
-            console.log(index)
-            console.log(element)
-            $('#essentialTr'+cnt+'-'+eaCnt).attr('id','essentialTr'+cnt+'-'+(index+1));
-            $('#essentialTd'+cnt+'-'+eaCnt).html(index+1);
-            $('#essentialTd'+cnt+'-'+eaCnt).attr('id','essentialTd'+cnt+'-'+(index+1));
-        })
+    }
+
+    function deleteChooseGoodsStock(cnt,eaCnt){
+        $('#chooseTr'+cnt+'-'+eaCnt).remove();
+    }
+
+    function selectEssentialAdd(cnt){
+        var row=$('#goodsStockModalTable').DataTable().rows({selected:true})[0];
+        for(var i=0;i<row.length;i++){
+            var rowData = getDatatablemap('goodsStockModalTable', row[i]);
+            var eaCnt = $('#essentialAddCnt'+cnt).val();
+            eaCnt++;
+            $('#essentialAddCnt'+cnt).val(eaCnt);
+            if(!($('#GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX).length>0)){
+                var str = '';
+                str += '<tr id="essentialAddTr'+cnt+'-'+eaCnt+'"><td id="essentialAddTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
+                str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
+                str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_ADD'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                str += '<td><button onclick="deleteEssentialAdd('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
+                $('#essentialAddBody'+cnt).append(str);
+            }
+
+        }
+        $('#searchGoodsStockModal').modal('hide');
+    }
+
+    function deleteEssentialAdd(cnt,eaCnt) {
+        $('#essentialAddTr'+cnt+'-'+eaCnt).remove();
+    }
+
+    function saveShopProduct(){
+        if(confirm("저장하시겠습니까?")){
+            var param = new FormData($('#productForm')[0]);
+            $.ajax({
+                url:'/product/saveShopProduct.ajax',
+                type:'post',
+                processData:false,
+                contentType:false,
+                data:param,
+                success: function(res){
+                    if(res.message.indexOf('저장되었습니다.')!=-1){
+                        window.location.reload();
+                        opener.location.reload();
+                    }
+                }
+            })
+        }
     }
 
 </script>
