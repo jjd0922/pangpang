@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -21,6 +23,12 @@ public class EventCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EC_EG_IDX", referencedColumnName = "egIdx")
     private EventGroup eventGroup;
+
+    /** 이벤트 그룹 카테고리 상품 */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "eventCategory", cascade = CascadeType.DETACH)
+    @OrderBy(value = "espOrder asc")
+    @Builder.Default
+    private List<EventSp> eventSpList = new ArrayList<>();
 
     /** 이벤트 카테고리명*/
     private String ecTitle;

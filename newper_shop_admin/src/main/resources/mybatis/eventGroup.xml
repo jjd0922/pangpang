@@ -30,4 +30,51 @@
             ,SHOP S
         <include refid="includeEventGroupDatatable"></include>
     </select>
+
+    <select id="eventCategoryProductListByEgIdx" resultType="map" parameterType="long">
+        SELECT
+            SCATE_IDX
+             ,SCATE_NAME
+
+             ,EC_IDX
+
+             ,SP_NAME
+             ,SP_STATE
+             ,SP_IDX
+        FROM
+            EVENT_SP
+                LEFT JOIN event_category ON ESP_EC_IDX = EC_IDX
+                LEFT JOIN event_group ON EC_EG_IDX = EG_IDX
+           ,SHOP_PRODUCT
+           ,CATEGORY
+           ,CATEGORY_SHOP_CATEGORY
+           ,SHOP_CATEGORY
+        WHERE
+            ESP_SP_IDX = SP_IDX
+          AND SP_CATE_IDX = CATE_IDX
+          AND CSC_CATE_IDX = CATE_IDX
+          AND CSC_SCATE_IDX = SCATE_IDX
+          AND EG_IDX = #{egIdx}
+    </select>
+
+    <select id="eventCategoryProductCountListByEgIdx" resultType="map" parameterType="Long">
+        SELECT
+            IFNULL(COUNT(SCATE_IDX),0) CNT
+             ,EC_IDX
+        FROM
+            EVENT_SP
+                LEFT JOIN event_category ON ESP_EC_IDX = EC_IDX
+                LEFT JOIN event_group ON EC_EG_IDX = EG_IDX
+           ,SHOP_PRODUCT
+           ,CATEGORY
+           ,CATEGORY_SHOP_CATEGORY
+           ,SHOP_CATEGORY
+        WHERE
+            ESP_SP_IDX = SP_IDX
+          AND SP_CATE_IDX = CATE_IDX
+          AND CSC_CATE_IDX = CATE_IDX
+          AND CSC_SCATE_IDX = SCATE_IDX
+          AND EG_IDX = #{egIdx}
+        GROUP BY EC_IDX
+    </select>
 </mapper>
