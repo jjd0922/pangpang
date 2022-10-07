@@ -47,6 +47,9 @@ public class ProductRestController {
     public ModelAndView productCategoryList(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("part/thumbnailList :: thumbanil-default-map-list-search-result");
 
+        paramMap.printEntrySet();
+
+
         Map<String,Object> result = shopProductService.selectShopProductListBySearch(paramMap);
         mav.addObject("shopProductList", result.get("shopProductList"));
         mav.addObject("count", result.get("count"));
