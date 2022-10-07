@@ -227,7 +227,7 @@
         <th:block th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
             <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
                 <a href="javascript:;" class="login-group-small login-group-text login nosessionClass" title="로그인">
-                    <span class="text">로그인</span>
+                    <span class="text">로그인 TEXT</span>
                 </a>
             </p>
             <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
@@ -262,49 +262,75 @@
         <div class="userMenu">
             <ul>
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
-                    <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
+                    <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass" title="로그인">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M9.17,25.71c-.35,0-.64,.32-.64,.71v7.04c0,.39,.29,.71,.64,.71H26.55c3.62,0,5.96-2.12,5.96-5.4V6.55c0-.39-.29-.71-.64-.71H14.48c-3.62,0-5.96,2.12-5.96,5.4v2.32c0,.39,.29,.71,.64,.71s.64-.32,.64-.71v-2.32c0-2.53,1.7-3.98,4.67-3.98H31.22V28.77c0,2.53-1.7,3.98-4.67,3.98H9.81v-6.33c0-.39-.29-.71-.64-.71Z"/><path class="cls-2" d="M2.83,19.28c-.35,0-.64,.32-.64,.71s.29,.71,.64,.71H21.02l-5.98,5.16c-.14,.12-.22,.29-.24,.48-.02,.19,.03,.38,.14,.53,.21,.29,.63,.34,.89,.11l7.47-6.46s.04-.04,.06-.06c.01-.02,.02-.03,.03-.05,.02-.02,.03-.05,.05-.08l.03-.05s.02-.06,.03-.1l.02-.06s.01-.09,.01-.14l-.03-.21s-.02-.06-.03-.09c-.04-.07-.05-.1-.07-.13,0,0-.02-.02-.03-.04-.02-.03-.04-.05-.07-.07l-.02-.02-7.44-6.43c-.13-.11-.29-.17-.46-.15-.17,.02-.33,.11-.43,.26-.11,.15-.16,.34-.14,.53,.02,.19,.11,.36,.24,.48l5.98,5.16H2.83Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">로그인</span>
                     </a>
-                    <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
+                    <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass" title="로그아웃">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Login"><g><path class="cls-2" d="M9.22,5.48c-.35,0-.64,.33-.64,.73V28.98c0,3.36,2.32,5.53,5.91,5.53H31.74c.35,0,.63-.33,.63-.73v-7.21c0-.4-.29-.73-.63-.73s-.63,.33-.63,.73v6.48H14.49c-2.95,0-4.64-1.48-4.64-4.07V6.95H26.46c2.95,0,4.64,1.48,4.64,4.07v2.38c0,.4,.29,.73,.63,.73s.63-.33,.63-.73v-2.38c0-3.36-2.32-5.53-5.91-5.53H9.22Z"/><path class="cls-2" d="M25.51,12.67c-.14,0-.28,.05-.39,.15l-7.39,6.6s-.05,.06-.07,.08c-.02,.02-.03,.03-.04,.05-.01,.02-.03,.05-.05,.1-.03,.06-.04,.1-.05,.13l-.03,.22s0,.09,.02,.14v.04s.03,.08,.05,.11v.03s.05,.07,.07,.1c0,.01,.02,.03,.03,.04,.02,.03,.04,.05,.06,.07l7.4,6.61c.27,.24,.67,.18,.88-.12,.11-.15,.16-.35,.14-.54-.02-.2-.11-.37-.24-.49l-5.92-5.28h18.04c.35,0,.64-.33,.64-.73s-.29-.73-.64-.73H19.98l5.92-5.28c.14-.12,.22-.3,.24-.49,.02-.2-.03-.39-.14-.55-.11-.15-.26-.25-.43-.27-.02,0-.04,0-.06,0Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">로그아웃</span>
                     </a>
                 </li>
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}" class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}" th:styleappend="${@shopSession.idx != null?'display:none;':''}">
-                    <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon">
+                    <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon" title="회원가입">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">회원가입</span>
                     </a>
                 </li>
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('MY')}" class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
-                    <a th:href="@{/myPage}" class="thumbnail-icon">
+                    <a th:href="@{/myPage}" class="thumbnail-icon" title="마이쇼핑">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M20,4.93c-4.17,0-7.56,3.39-7.56,7.56s3.39,7.56,7.56,7.56,7.56-3.39,7.56-7.56-3.39-7.56-7.56-7.56Zm0,13.69c-3.38,0-6.13-2.75-6.13-6.13s2.75-6.13,6.13-6.13,6.13,2.75,6.13,6.13-2.75,6.13-6.13,6.13Z"/><path class="cls-2" d="M19.99,22.44c3.61,0,7,1.15,9.56,3.24,2.68,2.19,4.26,5.21,4.56,8.73,.03,.39,.39,.69,.77,.65,.19-.02,.37-.1,.49-.25,.12-.15,.18-.33,.17-.52-.65-7.69-7.18-13.28-15.54-13.28s-14.74,5.35-15.52,13.01c-.02,.19,.04,.38,.16,.52,.12,.15,.29,.24,.48,.26,.19,.02,.37-.04,.52-.16,.15-.12,.24-.29,.26-.48,.35-3.5,1.94-6.48,4.59-8.6,2.52-2.01,5.89-3.12,9.5-3.12Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">마이쇼핑</span>
                     </a>
                 </li>
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('BASKET')}" th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
-                    <a th:href="@{/cart}" class="thumbnail-icon">
+                    <a th:href="@{/cart}" class="thumbnail-icon" title="장바구니">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M1.56,6.38c-.34,0-.62,.28-.62,.62s.28,.62,.62,.62H7.45l.1,.41,4.84,19.15c.07,.28,.32,.47,.6,.47H29.55c.28,0,.53-.19,.6-.47l3.52-13.92c.05-.18,0-.38-.11-.53-.12-.15-.3-.24-.49-.24H9.95l-.04-.18-1.38-5.46c-.07-.28-.32-.47-.6-.47H1.56ZM29.06,26.41H13.47l-.04-.17-3.16-12.51h22l-3.2,12.68Z"/><path class="cls-2" d="M28.25,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/><path class="cls-2" d="M14.02,29.46c-1.69,0-3.06,1.37-3.06,3.06s1.37,3.06,3.06,3.06,3.06-1.37,3.06-3.06-1.37-3.06-3.06-3.06Zm0,5.07c-1.11,0-2.02-.9-2.02-2.02s.9-2.02,2.02-2.02,2.02,.9,2.02,2.02-.9,2.02-2.02,2.02Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">장바구니</span>
                     </a>
                 </li>
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('CENTER')}" th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
-                    <a th:href="@{/custCenter}" class="thumbnail-icon">
+                    <a th:href="@{/custCenter}" class="thumbnail-icon" title="고객센터">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><path class="cls-2" d="M19.8,27.57c-2.13,0-3.87,1.74-3.87,3.87s1.74,3.87,3.87,3.87,3.87-1.74,3.87-3.87v-.15s.07-.03,.07-.03c4.44-1.72,7.17-4.41,8.13-5.49l.03-.04h.08s.39-.07,.39-.07c2.8-.49,4.84-2.91,4.84-5.75,0-3.02-2.26-5.52-5.26-5.82h-.09s-.02-.09-.02-.09c-1.34-5.48-5.71-9.3-10.61-9.3h-1.98c-4.9,0-9.26,3.82-10.61,9.28l-.02,.09h-.1c-3.17,.05-5.75,2.67-5.75,5.84s2.62,5.85,5.85,5.85l.9-.03v-8.25c0-6.32,4.36-11.47,9.73-11.47h1.98c5.37,0,9.73,5.14,9.73,11.47v7.35l-.03,.04c-.69,.77-3.28,3.42-7.44,5.09l-.11,.04-.05-.11c-.62-1.4-2.01-2.31-3.54-2.31Zm0,6.43c-1.41,0-2.56-1.15-2.56-2.56s1.15-2.56,2.56-2.56,2.56,1.15,2.56,2.56-1.15,2.56-2.56,2.56Zm-11.58-9.58l-.14-.02c-2.27-.28-3.99-2.21-3.99-4.48s1.78-4.28,4.13-4.5h.16s-.02,.14-.02,.14c-.09,.72-.14,1.33-.14,1.92v6.94Zm24.05-.06v-6.87c0-.57-.04-1.16-.13-1.87l-.02-.17,.17,.04c2.1,.43,3.62,2.3,3.62,4.44s-1.43,3.91-3.48,4.4l-.15,.04Z"/></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">고객센터</span>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 
-
     <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'LINE'}" >
         <th:block th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
+            <div class="userMenu">
+                <ul>
+                    <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
+                        <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
+                            <span class="text-xsmall">로그인 ICON_LINE</span>
+                        </a>
+                        <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
+                            <span class="text-xsmall">로그아웃</span>
+                        </a>
+                    </li>
+                    <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}" class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}" th:styleappend="${@shopSession.idx != null?'display:none;':''}">
+                        <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon">
+                            <span class="text-xsmall">회원가입</span>
+                        </a>
+                    </li>
+                    <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('MY')}" class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                        <a th:href="@{/myPage}" class="thumbnail-icon">
+                            <span class="text-xsmall">마이쇼핑</span>
+                        </a>
+                    </li>
+                    <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('BASKET')}" th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
+                        <a th:href="@{/cart}" class="thumbnail-icon">
+                            <span class="text-xsmall">장바구니</span>
+                        </a>
+                    </li>
+                    <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('CENTER')}" th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
+                        <a th:href="@{/custCenter}" class="thumbnail-icon">
+                            <span class="text-xsmall">고객센터</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--
             <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
                 <a href="javascript:;" class="login-group-small login-group-text-division login nosessionClass" title="로그인">
-                    <span class="text">로그인</span>
+                    <span class="text">로그인 LINE</span>
                 </a>
             </p>
             <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
@@ -331,7 +357,7 @@
                 <a href="/custCenter" class="login-group-small login-group-text-division" title="고객센터">
                     <span class="text">고객센터</span>
                 </a>
-            </p>
+            </p>-->
         </th:block>
     </div>
 
@@ -341,7 +367,7 @@
                 <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
                     <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Logout"><g><path class="cls-2" d="M9.17,25.71c-.35,0-.64,.32-.64,.71v7.04c0,.39,.29,.71,.64,.71H26.55c3.62,0,5.96-2.12,5.96-5.4V6.55c0-.39-.29-.71-.64-.71H14.48c-3.62,0-5.96,2.12-5.96,5.4v2.32c0,.39,.29,.71,.64,.71s.64-.32,.64-.71v-2.32c0-2.53,1.7-3.98,4.67-3.98H31.22V28.77c0,2.53-1.7,3.98-4.67,3.98H9.81v-6.33c0-.39-.29-.71-.64-.71Z"/><path class="cls-2" d="M2.83,19.28c-.35,0-.64,.32-.64,.71s.29,.71,.64,.71H21.02l-5.98,5.16c-.14,.12-.22,.29-.24,.48-.02,.19,.03,.38,.14,.53,.21,.29,.63,.34,.89,.11l7.47-6.46s.04-.04,.06-.06c.01-.02,.02-.03,.03-.05,.02-.02,.03-.05,.05-.08l.03-.05s.02-.06,.03-.1l.02-.06s.01-.09,.01-.14l-.03-.21s-.02-.06-.03-.09c-.04-.07-.05-.1-.07-.13,0,0-.02-.02-.03-.04-.02-.03-.04-.05-.07-.07l-.02-.02-7.44-6.43c-.13-.11-.29-.17-.46-.15-.17,.02-.33,.11-.43,.26-.11,.15-.16,.34-.14,.53,.02,.19,.11,.36,.24,.48l5.98,5.16H2.83Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
-                        <span class="text-xsmall">로그인</span>
+                        <span class="text-xsmall">로그인 ICON_LINE</span>
                     </a>
                     <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
                         <svg xmlns="http://www.w3.org/2000/svg" id="_레이어_2" viewBox="0 0 40 40"><defs><style>.cls-1{fill:none;}.cls-2{fill:#666;}</style></defs><g id="MENU_Login"><g><path class="cls-2" d="M9.22,5.48c-.35,0-.64,.33-.64,.73V28.98c0,3.36,2.32,5.53,5.91,5.53H31.74c.35,0,.63-.33,.63-.73v-7.21c0-.4-.29-.73-.63-.73s-.63,.33-.63,.73v6.48H14.49c-2.95,0-4.64-1.48-4.64-4.07V6.95H26.46c2.95,0,4.64,1.48,4.64,4.07v2.38c0,.4,.29,.73,.63,.73s.63-.33,.63-.73v-2.38c0-3.36-2.32-5.53-5.91-5.53H9.22Z"/><path class="cls-2" d="M25.51,12.67c-.14,0-.28,.05-.39,.15l-7.39,6.6s-.05,.06-.07,.08c-.02,.02-.03,.03-.04,.05-.01,.02-.03,.05-.05,.1-.03,.06-.04,.1-.05,.13l-.03,.22s0,.09,.02,.14v.04s.03,.08,.05,.11v.03s.05,.07,.07,.1c0,.01,.02,.03,.03,.04,.02,.03,.04,.05,.06,.07l7.4,6.61c.27,.24,.67,.18,.88-.12,.11-.15,.16-.35,.14-.54-.02-.2-.11-.37-.24-.49l-5.92-5.28h18.04c.35,0,.64-.33,.64-.73s-.29-.73-.64-.73H19.98l5.92-5.28c.14-.12,.22-.3,.24-.49,.02-.2-.03-.39-.14-.55-.11-.15-.26-.25-.43-.27-.02,0-.04,0-.06,0Z"/></g></g><g id="_레이어_87"><rect class="cls-1"/></g></svg>
