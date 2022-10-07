@@ -81,6 +81,8 @@ public class Orders {
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrderGsGroup> orderGsGroupList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="orders", cascade= CascadeType.ALL)
+    private List<Review> reviews;
 
     @PrePersist
     @PreUpdate
