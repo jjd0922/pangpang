@@ -7,18 +7,16 @@
     <select id="selectOrderDatatable" resultType="map">
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
-            CU_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, PAY_PRODUCT_PRICE,
-            PAY_DELIVERY, PAY_PRICE,
-            if(PAY_STATE='결제취소',PAY_PRICE,0) AS PAY_CANCEL_PRICE,
-            PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
-            ADDR4, AD_ENTRANCE, O_DATE, O_TIME,
-            O_POINT, O_COUPON, O_MILEAGE, O_PRICE, O_GS_PRICE,
-            (O_GS_PRICE - O_PRICE) O_EVENT,
-            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_DATE'),'"',''),'') PAY_DATE,
-            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CODE'),'"',''),'') PAY_CODE,
-            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_DATE'),'"',''),'') PAY_CANCEL_DATE,
-            if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),'') PAY_CANCEL_CODE
-
+            CU_PHONE, O_NAME, O_PHONE, O_TEL, O_LOCATION,
+            PAY_STATE, (PAY_JSON->>'$.pay_method') AS PAY_METHOD,
+            (PAY_JSON->>'$.pg_tid') AS PG_TID,
+            (PAY_JSON->>'$.pg_tid2') AS PG_TID2,
+            SPO_SHOP_PRICE_SUM, (SPO_SHOP_PRICE_SUM-SPO_PRICE_SUM) AS SPO_EVENT,
+            (PAY_COUPON_PRICE+PAY_COUPON_DELIVERY) AS COUPON_SUM,
+            PAY_MILEAGE, PAY_POINT, PAY_TOTAL, PAY_PLUS_MILEAGE, PAY_DELIVERY,
+            if(PAY_STATE='결제취소',PAY_TOTAL,0) AS PAY_CANCEL_TOTAL,
+            AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
+            ADDR4, AD_ENTRANCE, O_DATE, O_TIME
         FROM
             orders
                 LEFT JOIN customer
@@ -29,17 +27,19 @@
                     ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                     ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN order_gs_group
+                    ON OGG_O_IDX=O_IDX
                 LEFT JOIN (SELECT
-                                OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
-                                SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                            OG_OGG_IDX,
+                            SUM(SPO_SHOP_PRICE) SPO_SHOP_PRICE_SUM, SUM(SPO_PRICE) SPO_PRICE_SUM
                             FROM
-                                order_gs
-                                LEFT JOIN shop_product_option
-                                ON OG_SPO_IDX=SPO_IDX
-                                LEFT JOIN goods_stock
-                                ON SPO_GS_IDX=GS_IDX
-                                GROUP BY OG_O_IDX)dt
-                    ON O_IDX=dt.OG_O_IDX
+                            order_gs
+                            LEFT JOIN shop_product_option
+                            ON OG_SPO_IDX=SPO_IDX
+                            LEFT JOIN goods_stock
+                            ON SPO_GS_IDX=GS_IDX
+                            GROUP BY OG_OGG_IDX)dt
+                    ON OGG_IDX=dt.OG_OGG_IDX
 
         order by O_IDX desc
         <if test="length!=-1">
@@ -59,35 +59,36 @@
                           ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN (SELECT
-                               OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
-                               SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                               OG_OGG_IDX,
+                               SUM(SPO_SHOP_PRICE) SPO_SHOP_PRICE_SUM, SUM(SPO_PRICE) SPO_PRICE_SUM
                            FROM
                                order_gs
                                    LEFT JOIN shop_product_option
                                              ON OG_SPO_IDX=SPO_IDX
                                    LEFT JOIN goods_stock
                                              ON SPO_GS_IDX=GS_IDX
-                           GROUP BY OG_O_IDX)dt
-                          ON O_IDX=dt.OG_O_IDX
+                           GROUP BY OG_OGG_IDX)dt
+                          ON OGG_IDX=dt.OG_OGG_IDX
+
     </select>
 
     <select id="selectOrderDetail" resultType="map">
         SELECT
-            O_IDX, O_CODE, SHOP_NAME, CU_ID, O_NAME, CU_IDX,
-            O_PHONE, O_LOCATION, PAY_STATE, PAY_METHOD, PAY_PRODUCT_PRICE,
-            PAY_DELIVERY, PAY_PRICE,
-            if(PAY_STATE='결제취소',PAY_PRICE,0) AS PAY_CANCEL_PRICE,
-            PAY_MILEAGE, AD_NAME, AD_PHONE, POST, CONCAT(ADDR1,' ',ADDR2,' ',ADDR3) AS ADDRS,
-            ADDR1, ADDR2, ADDR3,
-            ADDR4, AD_ENTRANCE, O_DATE, O_TIME, AD_MEMO,
-            O_POINT, O_COUPON, O_MILEAGE, O_PRICE, O_GS_PRICE,
-            (O_GS_PRICE - O_PRICE) O_EVENT,
-            ifnull(if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_DATE'),'"',''),''),'') PAY_DATE,
-            ifnull(if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CODE'),'"',''),''),'') PAY_CODE,
-            ifnull(if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_DATE'),'"',''),''),'') PAY_CANCEL_DATE,
-            ifnull(if(PAY_JSON!='',replace(JSON_EXTRACT(PAY_JSON,'$.PAY_CANCEL_CODE'),'"',''),''),'') PAY_CANCEL_CODE
-
+            O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
+            CU_PHONE, O_NAME, O_PHONE, O_TEL, O_LOCATION,
+            PAY_STATE, (PAY_JSON->>'$.pay_method') AS PAY_METHOD,
+            ifnull((PAY_JSON->>'$.pg_tid'),'') AS PG_TID,
+            ifnull((PAY_JSON->>'$.pg_tid2'),'') AS PG_TID2,
+            SPO_SHOP_PRICE_SUM, (SPO_SHOP_PRICE_SUM-SPO_PRICE_SUM) AS SPO_EVENT,
+            (PAY_COUPON_PRICE+PAY_COUPON_DELIVERY) AS COUPON_SUM,
+            PAY_MILEAGE, PAY_POINT, PAY_TOTAL, PAY_PLUS_MILEAGE, PAY_DELIVERY,
+            if(PAY_STATE='결제취소',PAY_TOTAL,0) AS PAY_CANCEL_TOTAL,
+            AD_NAME, AD_PHONE, POST, ADDR1, ADDR2, ADDR3,
+            ADDR4, AD_ENTRANCE, O_DATE, O_TIME, CU_IDX,
+            AD_MEMO
         FROM
             orders
                 LEFT JOIN customer
@@ -98,53 +99,55 @@
                           ON O_AD_IDX=AD_IDX
                 LEFT JOIN payment
                           ON O_PAY_IDX=PAY_IDX
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN (SELECT
-                               OG_IDX, OG_O_IDX, SUM(OG_POINT) O_POINT, SUM(OG_MILEAGE) O_MILEAGE,
-                               SUM(OG_COUPON) O_COUPON, SUM(SPO_PRICE) O_PRICE, SUM(GS_PRICE) O_GS_PRICE
+                               OG_OGG_IDX,
+                               SUM(SPO_SHOP_PRICE) SPO_SHOP_PRICE_SUM, SUM(SPO_PRICE) SPO_PRICE_SUM
                            FROM
                                order_gs
                                    LEFT JOIN shop_product_option
                                              ON OG_SPO_IDX=SPO_IDX
                                    LEFT JOIN goods_stock
                                              ON SPO_GS_IDX=GS_IDX
-                           GROUP BY OG_O_IDX)dt
-                          ON O_IDX=dt.OG_O_IDX
+                           GROUP BY OG_OGG_IDX)dt
+                          ON OGG_IDX=dt.OG_OGG_IDX
         where
             O_IDX=#{O_IDX}
     </select>
 
     <select id="selectGoodsStockDetailByOIdx" resultType="map">
         SELECT
-            P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,
-            GS_CODE, ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
-            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
-            OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX where O_IDX=#{O_IDX}),0) AS DELIVERY,
-            (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX where O_IDX=#{O_IDX}),0)) AS TOTAL,
-            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX where O_IDX=#{O_IDX}),0),0) MILEAGE,
-            OG_IDX
+            P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,GS_CODE,
+            ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME,
+            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+            G_STATE, GS_PRICE, SPO_PRICE, SPO_SHOP_PRICE, (SPO_SHOP_PRICE-SPO_PRICE) AS DISCOUNT,
+            ori.OG_POINT, ori.OG_MILEAGE, ori.OG_DELIVERY, ori.OG_COUPON_PRICE, ori.OG_COUPON_DELIVERY,
+            ori.OG_PLUS_MILEAGE, ori.OG_IDX
         FROM
             orders
-                LEFT JOIN order_gs
-                          ON OG_O_IDX=O_IDX
-                LEFT JOIN shop_product_option
-                          ON OG_SPO_IDX=SPO_IDX
-                LEFT JOIN goods_stock
-                          ON SPO_GS_IDX=GS_IDX
-                LEFT JOIN delivery_num
-                          ON OG_DN_IDX=DN_IDX
-                LEFT JOIN product
-                          ON GS_P_IDX=P_IDX
-                LEFT JOIN payment
-                          ON O_PAY_IDX=PAY_IDX
-                LEFT JOIN shop_product_add
-                          ON SPO_SPA_IDX=SPA_IDX
-                LEFT JOIN shop_product
-                          ON SPA_SP_IDX=SP_IDX
-                LEFT JOIN goods
-                          ON OG_G_IDX=G_IDX
+            LEFT JOIN order_gs_group
+            ON OGG_O_IDX=O_IDX
+            LEFT JOIN order_gs ori
+            ON ori.OG_OGG_IDX=OGG_IDX
+            left JOIN order_gs child
+            ON ori.OG_OG_IDX=child.OG_IDX
+            LEFT JOIN shop_product_option
+            ON ori.OG_SPO_IDX=SPO_IDX
+            LEFT JOIN shop_product_add
+            ON SPO_SPA_IDX=SPA_IDX
+            LEFT JOIN shop_product
+            ON SPA_SP_IDX=SP_IDX
+            LEFT JOIN goods_stock
+            ON SPO_GS_IDX=GS_IDX
+            LEFT JOIN product
+            ON GS_P_IDX=P_IDX
+            LEFT JOIN payment
+            ON PAY_IDX=O_PAY_IDX
+            LEFT JOIN goods
+            ON ori.OG_G_IDX=G_IDX
         where
             O_IDX=#{O_IDX}
         <if test="length!=-1">

@@ -1,11 +1,11 @@
 package com.newper.entity;
 
+import com.newper.entity.common.AddressEmb;
 import com.newper.entity.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @DynamicUpdate
@@ -28,7 +28,7 @@ public class Address extends BaseEntity {
     private String adTitle;
 
     @Embedded
-    private com.newper.entity.common.Address address;
+    private AddressEmb address;
 
     private String adPhone;
     private String adMemo;

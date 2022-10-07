@@ -2,7 +2,7 @@ package com.newper.entity;
 
 import com.newper.constant.ComState;
 import com.newper.constant.ComType;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
@@ -45,7 +45,7 @@ public class Company extends BaseEntity {
     private String comAccount;
 
     @Embedded
-    private Address address = Address.builder().build();
+    private AddressEmb address = AddressEmb.builder().build();
 
     private String comNumFile;
     private String comNumFileName;
@@ -120,7 +120,7 @@ public class Company extends BaseEntity {
         }
     }
 
-    public void updateCompany(Company company, Address address, CompanyEmployee companyEmployee) {
+    public void updateCompany(Company company, AddressEmb address, CompanyEmployee companyEmployee) {
         setComType(company.getComType());
         setComState(company.getComState());
         setComName(company.getComName());

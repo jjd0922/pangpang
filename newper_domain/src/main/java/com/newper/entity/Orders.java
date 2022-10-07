@@ -41,7 +41,7 @@ public class Orders {
     private Payment payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "O_AD_IDX", referencedColumnName = "adIdx")
+    @JoinColumn(name = "O_OA_IDX", referencedColumnName = "oaIdx")
     private OrderAddress orderAddress;
 
     @Enumerated(EnumType.STRING)
@@ -128,5 +128,19 @@ public class Orders {
     public void setODateTime(LocalDateTime dt){
         setODate(dt.toLocalDate());
         setOTime(dt.toLocalTime());
+    }
+
+    public void setOrderAddress(OrderAddress orderAddress) {
+        this.orderAddress = orderAddress;
+        orderAddress.setOrders(this);
+    }
+    public void addOrderGsGroup(OrderGsGroup ogg){
+        List<OrderGsGroup> oggList = getOrderGsGroupList();
+        if (oggList == null) {
+            oggList = new ArrayList<>();
+            setOrderGsGroupList(oggList);
+        }
+        oggList.add(ogg);
+        ogg.setOrders(this);
     }
 }

@@ -110,7 +110,7 @@
                                             </span>
                                         </span>
                                         <input type="text" name="PAY_CODE" class="form-control" th:if="${order==null}">
-                                        <input type="text" name="PAY_CODE" class="form-control" th:value="${order?.PAY_CODE}" disabled th:unless="${order==null}">
+                                        <input type="text" name="PAY_CODE" class="form-control" th:value="${order?.PG_TID}" disabled th:unless="${order==null}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -125,7 +125,7 @@
                                                결제일
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_DATE" class="form-control daterange-singlenull" th:value="${order?.PAY_DATE}" th:disabled="${order!=null}">
+                                        <input type="text" name="PAY_DATE" class="form-control daterange-singlenull" value="" th:disabled="${order!=null}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -142,7 +142,7 @@
                                                카드결제취소코드
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_CANCEL_CODE" class="form-control" th:value="${order?.PAY_CANCEL_CODE}" disabled>
+                                        <input type="text" name="PAY_CANCEL_CODE" class="form-control" th:value="${order?.PG_TID2}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -156,7 +156,7 @@
                                                카드결제취소일
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_CANCEL_DATE" class="form-control" th:value="${order?.PAY_CANCEL_DATE}" disabled>
+                                        <input type="text" name="PAY_CANCEL_DATE" class="form-control" value="" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -196,7 +196,7 @@
                                                판매가(뉴퍼마켓가) 합
                                             </span>
                                         </span>
-                                        <input type="text" name="O_GS_PRICE" class="form-control" th:value="${order?.O_GS_PRICE}" disabled>
+                                        <input type="text" name="O_GS_PRICE" class="form-control" th:value="${order?.SPO_SHOP_PRICE_SUM}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불은행
@@ -210,7 +210,7 @@
                                                할인가 합
                                             </span>
                                         </span>
-                                        <input type="text" name="O_EVENT" class="form-control" th:value="${order?.O_EVENT}" disabled>
+                                        <input type="text" name="O_EVENT" class="form-control" th:value="${order?.SPO_EVENT}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불계좌번호
@@ -224,7 +224,7 @@
                                                 쿠폰할인가 합
                                             </span>
                                         </span>
-                                        <input type="text" name="O_COUPON" class="form-control" th:value="${order?.O_COUPON}" disabled>
+                                        <input type="text" name="O_COUPON" class="form-control" th:value="${order?.COUPON_SUM}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불예금주
@@ -238,7 +238,7 @@
                                                사용적립금(마일리지) 합
                                             </span>
                                         </span>
-                                        <input type="text" name="O_MILEAGE" class="form-control" th:value="${order?.O_MILEAGE}" disabled>
+                                        <input type="text" name="O_MILEAGE" class="form-control" th:value="${order?.PAY_MILEAGE}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                환불처리금액합계
@@ -252,7 +252,7 @@
                                                사용적립금(예치금)
                                             </span>
                                         </span>
-                                        <input type="text" name="O_POINT" class="form-control" th:value="${order?.O_POINT}" disabled>
+                                        <input type="text" name="O_POINT" class="form-control" th:value="${order?.PAY_POINT}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -272,7 +272,7 @@
                                                예정적립금합
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_MILEAGE" class="form-control" th:value="${order?.PAY_MILEAGE}" disabled>
+                                        <input type="text" name="PAY_MILEAGE" class="form-control" th:value="${order?.PAY_PLUS_MILEAGE}" disabled>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -280,13 +280,13 @@
                                                최종결제금액
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_PRICE" class="form-control" th:value="${order?.PAY_PRICE}" disabled>
+                                        <input type="text" name="PAY_PRICE" class="form-control" th:value="${order?.PAY_TOTAL}" disabled>
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                결제취소금액
                                             </span>
                                         </span>
-                                        <input type="text" name="PAY_CANCEL_PRICE" class="form-control" th:value="${order?.PAY_CANCEL_PRICE}" disabled>
+                                        <input type="text" name="PAY_CANCEL_PRICE" class="form-control" th:value="${order?.PAY_CANCEL_TOTAL}" disabled>
                                     </div>
                                 </div>
                             </div>
