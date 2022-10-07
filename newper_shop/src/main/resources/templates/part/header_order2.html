@@ -224,38 +224,38 @@
 <th:block th:fragment="middle-login-group">
     <!-- 2단 로그인 그룹 클래스명: middle-login-group -->
     <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'TEXT'}" >
-        <th:block th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
-                <a href="javascript:;" class="login-group-small login-group-text login nosessionClass" title="로그인">
-                    <span class="text">로그인 TEXT</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
-                <a href="/customer/joinWelcome" class="login-group-small login-group-text" title="회원가입">
-                    <span class="text">회원가입</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx != null}">
-                <a href="javascript:logout()" class="login-group-small login-group-text" title="로그아웃" >
-                    <span class="text">로그아웃</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('BASKET')} and ${@shopSession.idx != null}">
-                <a href="/cart" class="login-group-small login-group-text" title="장바구니">
-                    <span class="text">장바구니</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('MY')} and ${@shopSession.idx != null}">
-                <a href="/myPage" class="login-group-small login-group-text" title="마이페이지">
-                    <span class="text">마이페이지</span>
-                </a>
-            </p>
-            <p class="content" th:if="${loginStr.equals('CENTER')} and ${@shopSession.idx == null}">
-                <a href="/custCenter" class="login-group-small login-group-text" title="고객센터">
-                    <span class="text">고객센터</span>
-                </a>
-            </p>
-        </th:block>
+        <div class="userMenu">
+            <ul>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}">
+                    <a th:styleappend="${@shopSession.idx != null?'display:none;':''}" href="javascript:;" class="thumbnail-icon login nosessionClass">
+                        <span class="text-xsmall">로그인 ICON_LINE</span>
+                    </a>
+                    <a th:styleappend="${@shopSession.idx == null?'display:none;':''}" href="javascript:logout()" class="thumbnail-icon sessionClass">
+                        <span class="text-xsmall">로그아웃</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('LOGIN')}" class="nosessionClass" th:classappend="${#request.getRequestURI().equals('/customer/joinWelcome')?'active':''}" th:styleappend="${@shopSession.idx != null?'display:none;':''}">
+                    <a th:href="@{/customer/joinWelcome}" class="thumbnail-icon">
+                        <span class="text-xsmall">회원가입</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('MY')}" class="sessionClass" th:classappend="${#request.getRequestURI().equals('/myPage')?'active':''}" th:styleappend="${@shopSession.idx == null?'display:none;':''}">
+                    <a th:href="@{/myPage}" class="thumbnail-icon">
+                        <span class="text-xsmall">마이쇼핑</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('BASKET')}" th:classappend="${#request.getRequestURI().equals('/cart')?'active':''}">
+                    <a th:href="@{/cart}" class="thumbnail-icon">
+                        <span class="text-xsmall">장바구니</span>
+                    </a>
+                </li>
+                <li th:each="loginStr : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}" th:if="${loginStr.equals('CENTER')}" th:classappend="${#request.getRequestURI().equals('/custCenter')?'active':''}">
+                    <a th:href="@{/custCenter}" class="thumbnail-icon">
+                        <span class="text-xsmall">고객센터</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="login-group" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'ICON'}" >
