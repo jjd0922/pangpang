@@ -4,6 +4,7 @@ package com.newper.entity;
 import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Getter
 @Setter
