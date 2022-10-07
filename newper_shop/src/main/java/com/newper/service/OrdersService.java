@@ -79,7 +79,7 @@ public class OrdersService {
                             .build();
                     for (ShopProductOption spo : dto.getSpoList()) {
                         OrderGs orderGs = OrderGs.builder()
-                                .orders(orders)
+//                                .orders(orders)
                                 .shopProductOption(spo)
                                 .ogPrice(spo.getSpoPrice())
                                 .build();
