@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SpState implements EnumOption {
 
-     Y("판매")
-    ,N("판매중지")
+    N("판매중지")
+    ,Y("판매")
 
     ;
 

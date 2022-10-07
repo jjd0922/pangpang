@@ -323,7 +323,7 @@ public class CompanyService {
         }
         CompanyDelivery companyDelivery = paramMap.mapParam(CompanyDelivery.class);
 
-        ori.setCdCompany(companyDelivery.getCdCompany());
+        ori.setCompany2(companyDelivery.getCompany2());
         ori.setCdBasic(companyDelivery.getCdBasic());
         ori.setCdType(companyDelivery.getCdType());
         ori.setCdFree(companyDelivery.getCdFree());
