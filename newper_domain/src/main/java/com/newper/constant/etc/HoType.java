@@ -31,7 +31,7 @@ public enum HoType implements EnumOption {
                 case 13: return null;
                 case 21: return "middle-logo-left";
                 case 22: return "middle-logo-center";
-                case 23: return null;
+                case 23: return "middle-logo-left";
                 case 31: return null;
                 case 32: return null;
                 case 33: return null;
@@ -42,7 +42,7 @@ public enum HoType implements EnumOption {
                 case 11: return null;
                 case 12: return null;
                 case 13: return null;
-                case 21: return null;
+                case 21: return "all-category-btn";
                 case 22: return null;
                 case 23: return null;
                 case 31: return "all-category-btn";
@@ -56,22 +56,22 @@ public enum HoType implements EnumOption {
                 case 11: return null;
                 case 12: return null;
                 case 13: return null;
-                case 21: return null;
+                case 21: return "middle-search";
                 case 22: return "middle-search";
                 case 23: return "middle-search";
                 case 31: return null;
                 case 32: return null;
-                case 33: return null;
+                case 33: return "middle-search";
             }
         }
         /*LOGIN : top-login-group, middle-login-group, bottom-login-group*/
         if (this.equals(HoType.LOGIN)) {
             switch (row*10+col){
-                case 11: return null;
-                case 12: return null;
+                case 11: return "top-login-group";
+                case 12: return "top-login-group";
                 case 13: return "top-login-group";
                 case 21: return "middle-login-group";
-                case 22: return null;
+                case 22: return "middle-login-group";
                 case 23: return "middle-login-group";
                 case 31: return null;
                 case 32: return null;
@@ -97,7 +97,7 @@ public enum HoType implements EnumOption {
                 case 11: return null;
                 case 12: return null;
                 case 13: return null;
-                case 21: return null;
+                case 21: return "menu-left";
                 case 22: return null;
                 case 23: return null;
                 case 31: return "menu-left";
@@ -123,7 +123,7 @@ public enum HoType implements EnumOption {
                 case 11: return null;
                 case 12: return null;
                 case 13: return null;
-                case 21: return null;
+                case 21: return "middle-banner";
                 case 22: return null;
                 case 23: return "middle-banner";
                 case 31: return null;
@@ -138,7 +138,7 @@ public enum HoType implements EnumOption {
                 case 13: return null;
                 case 21: return null;
                 case 22: return null;
-                case 23: return null;
+                case 23: return "menu-fixed";
                 case 31: return null;
                 case 32: return null;
                 case 33: return "menu-fixed";

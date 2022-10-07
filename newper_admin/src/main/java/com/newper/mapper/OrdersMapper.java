@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -50,4 +51,7 @@ public interface OrdersMapper {
 
     /** 반품 배송 카운트 */
     long countReturnDatatable(Map<String, Object> map);
+
+    /** 주문건에 포함되어있는 주문상품 조회  */
+    List<Map<String, Object>> selectOrderGsByoIdx(Map<String, Object> param);
 }

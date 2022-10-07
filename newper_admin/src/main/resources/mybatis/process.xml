@@ -245,11 +245,18 @@
             PN_G_IDX = #{gIdx}
         AND
             PN_TYPE = #{pnType}
-        ORDER BY
-            PN_COUNT DESC
-        LIMIT
-            0, 1
     </select>
+
+    <update id="updateProcessNeedLast">
+        UPDATE
+            PROCESS_NEED
+        SET
+            PN_LAST = 0
+        WHERE
+            PN_G_IDX = #{gIdx}
+        AND
+            PN_TYPE = #{pnType}
+    </update>
 
     <insert id="insertGoodsTemp">
         INSERT INTO GOODS_TEMP (
@@ -298,12 +305,12 @@
             G_BARCODE,
             G_IMEI,
             G_JSON,
-            PN_JSON,
+            NOW.PN_JSON AS PN_JSON,
             CATE_SPEC_LIST,
-            PN_STATE,
+            NOW.PN_STATE,
             PP_JSON,
-            PN_IDX,
-            PN_CONTENT,
+            NOW.PN_IDX,
+            NOW.PN_CONTENT,
             PP_JSON ->> '$.inSpec1' AS INSPEC1,
             G_JSON ->> '$.inSpec2' AS INSPEC2,
             PP_JSON ->> '$.sellSpec1' AS SELLSPEC1,
@@ -323,8 +330,11 @@
             @PAINTCOST + @FIXCOST + @PROCESSCOST AS TOTAL_COST
         FROM
             PROCESS_GROUP
-                LEFT JOIN PROCESS_NEED ON PG_IDX = PN_PG_IDX
+                LEFT JOIN PROCESS_NEED AS NOW ON PG_IDX = NOW.PN_PG_IDX
                 LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+                LEFT JOIN PROCESS_NEED AS PAINT ON G_IDX = PAINT.PN_G_IDX AND PAINT.PN_TYPE = 'PAINT' AND PAINT.PN_LAST = 1
+                LEFT JOIN PROCESS_NEED AS FIX ON G_IDX = FIX.PN_G_IDX AND FIX.PN_TYPE = 'FIX' AND FIX.PN_LAST = 1
+                LEFT JOIN PROCESS_NEED AS PROCESS ON G_IDX = PROCESS.PN_G_IDX AND PROCESS.PN_TYPE = 'PROCESS' AND PROCESS.PN_LAST = 1
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
                 LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
@@ -727,5 +737,66 @@
         <where>
             <include refid="includeCheckGoodsDataTable"></include>
         </where>
+    </select>
+
+    <select id="selectAsCheckDatatable" resultType="Map">
+        SELECT
+            AS_IDX,
+            AS_STATE,
+            AS_DATE,
+            P_IDX,
+            P_NAME,
+            G_IDX,
+            G_IMEI,
+            G_SERIAL,
+            G_MEMO,
+            CATE_SPEC_LIST,
+            G_JSON,
+
+            PROCESS.PN_JSON AS PN_JSON,
+
+            PAINT.PN_IDX AS PAINT_IDX,
+            PAINT.PN_CONTENT AS PAINT_CONTENT,
+            PAINT.PN_EXPECTED_COST AS PAINT_COST,
+
+            FIX.PN_IDX AS FIX_IDX,
+            FIX.PN_CONTENT AS FIX_CONTENT,
+            FIX.PN_EXPECTED_COST AS FIX_COST,
+
+            PROCESS.PN_IDX AS PROCESS_IDX,
+            PROCESS.PN_CONTENT AS PROCESS_CONTENT,
+            PROCESS.PN_EXPECTED_COST AS PROCESS_COST,
+
+            IF(PAINT.PN_STATE IS NULL, '', IF(PAINT.PN_STATE = 'COMPLETE' OR PAINT.PN_PROCESS = 'N', 'N', 'Y')) AS PAINT_PROCESS,
+            IF(FIX.PN_STATE IS NULL, '', IF(FIX.PN_STATE = 'COMPLETE' OR FIX.PN_PROCESS = 'N', 'N', 'Y')) AS FIX_PROCESS,
+            IF(PROCESS.PN_STATE IS NULL, '', IF(PROCESS.PN_STATE = 'COMPLETE' OR PROCESS.PN_PROCESS = 'N', 'N', 'Y')) AS PROCESS_PROCESS,
+            PAINT.PN_EXPECTED_COST+FIX.PN_EXPECTED_COST+PROCESS.PN_EXPECTED_COST AS TOTAL_COST
+        FROM
+            AFTER_SERVICE
+                LEFT JOIN GOODS ON AS_G_IDX = G_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
+                LEFT JOIN PROCESS_NEED AS FIX ON AS_IDX = FIX.PN_AS_IDX AND FIX.PN_TYPE = 'FIX'
+                LEFT JOIN PROCESS_NEED AS PROCESS ON AS_IDX = PROCESS.PN_AS_IDX AND PROCESS.PN_TYPE = 'PROCESS'
+        WHERE
+            G_IDX IS NOT NULL
+        LIMIT
+            #{start}, #{length}
+    </select>
+
+    <select id="countAsCheckDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            AFTER_SERVICE
+                LEFT JOIN GOODS ON AS_G_IDX = G_IDX
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
+                LEFT JOIN PROCESS_NEED AS FIX ON AS_IDX = FIX.PN_AS_IDX AND FIX.PN_TYPE = 'FIX'
+                LEFT JOIN PROCESS_NEED AS PROCESS ON AS_IDX = PROCESS.PN_AS_IDX AND PROCESS.PN_TYPE = 'PROCESS'
+        WHERE
+            G_IDX IS NOT NULL
     </select>
 </mapper>

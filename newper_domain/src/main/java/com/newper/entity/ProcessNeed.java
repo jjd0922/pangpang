@@ -36,6 +36,9 @@ public class ProcessNeed {
     @JoinColumn(name="PN_CGS_IDX", referencedColumnName = "cgsIdx")
     private CheckGoods checkGoods;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="PN_AS_IDX", referencedColumnName = "asIdx")
+    private AfterService afterService;
 
 
     @Builder.Default

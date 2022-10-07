@@ -9,9 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AsState implements EnumOption {
 
-    REQUEST("AS요청")
-    ,IMPOSSIBLE("AS불가")
-    ,COMPLETE("AS완료");
+    REQUEST("AS 요청")
+    ,AS_CHECK("AS 검수완료")
+    ,IMPOSSIBLE("AS 불가")
+    ,PROCESS("AS 수리 완료")
+    ,COMPLETE("AS 완료");
 
     private String option;
 }

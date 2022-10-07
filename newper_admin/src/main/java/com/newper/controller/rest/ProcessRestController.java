@@ -351,8 +351,25 @@ public class ProcessRestController {
     @PostMapping("checkProcessGroup.ajax")
     public ReturnMap checkProcessGroup(ParamMap paramMap){
         ReturnMap rm = new ReturnMap();
-        ;
         rm.setMessage(processService.checkProcessGroup(paramMap));
+        return rm;
+    }
+
+    /** AS 검수 dataTable 조회 */
+    @PostMapping("asCheck.dataTable")
+    public ReturnDatatable asCheckDatatable(ParamMap paramMap){
+        ReturnDatatable rd = new ReturnDatatable();
+        rd.setData(processMapper.selectAsCheckDatatable(paramMap.getMap()));
+        rd.setRecordsTotal(processMapper.countAsCheckDatatable(paramMap.getMap()));
+        return rd;
+    }
+
+    /** AS 검수 리포트 등록 **/
+    @PostMapping("asCheckReport.ajax")
+    public ReturnMap asCheckReport(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        processService.asCheckReport(paramMap);
+        rm.setMessage("등록완료");
         return rm;
     }
 }

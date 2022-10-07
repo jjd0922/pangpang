@@ -55,8 +55,11 @@ public interface ProcessMapper {
     Map<String, Object> goodsProcessCheck(String gIdx, String type);
 
 
-    /** 해당자산 공정필요 공정타입 횟수 조히 */
+    /** 해당자산 공정필요 공정타입 횟수 조회 */
     int selectProcessNeedCount(@Param("gIdx") Long gIdx, @Param("pnType") String pnType);
+
+    /** 해당자산 공정필요 공정타입 마지막 데이터 0 처리 */
+    void updateProcessNeedLast(@Param("gIdx") Long gIdx, @Param("pnType") String pnType);
 
     /** 임시그룹 자산 등록 */
     void insertGoodsTemp(@Param("gIdx") Long gIdx, @Param("ggtIdx") int ggtIdx);
@@ -76,11 +79,6 @@ public interface ProcessMapper {
     /** 해당자산 다른 공정 필요가 있는지 체크 */
     int checkProcessNeedOtherByGoods(@Param("gIdx") Long gIdx);
 
-
-    /**  */
-    List selectCheckGoods(Map<String, Object> map);
-
-    long countCheckGoods(Map<String, Object> map);
 
     /** 해당공정그룹에 포함되어있는 완료되지 않은 자산 체크 */
     int checkProcessNeedOtherByChecks(@Param("cgIdx") int cgIdx);
@@ -103,4 +101,12 @@ public interface ProcessMapper {
 
     /** 검수그룹안 데이터 개수 조회 */
     long countCheckGoodsDataTable(Map<String, Object> map);
+
+    /** AS 데이터 조회 */
+    List<Map<String, Object>> selectAsCheckDatatable(Map<String, Object> map);
+
+    /** AS 데이터 카운트 */
+    long countAsCheckDatatable(Map<String, Object> map);
+
+
 }

@@ -326,29 +326,25 @@
     <select id="selectServiceGoodsDatatable" resultType="Map">
         SELECT
             *,
-            P_IDX,
-            P_NAME,
-            G_IDX,
-            G_BARCODE,
 
             PAINT.PN_IDX AS PAINT_IDX,
             PAINT.PN_CONTENT AS PAINT_CONTENT,
             PAINT.PN_EXPECTED_COST AS PAINT_COST,
+            PAINT.PN_PROCESS AS PAINT_PROCESS,
 
             FIX.PN_IDX AS FIX_IDX,
             FIX.PN_CONTENT AS FIX_CONTENT,
             FIX.PN_EXPECTED_COST AS FIX_COST,
+            FIX.PN_PROCESS AS FIX_PROCESS,
 
             PROCESS.PN_IDX AS PROCESS_IDX,
             PROCESS.PN_CONTENT AS PROCESS_CONTENT,
             PROCESS.PN_EXPECTED_COST AS PROCESS_COST,
+            PROCESS.PN_PROCESS AS PROCESS_PROCESS,
 
-            G_JSON,
-            AS_JSON,
-
-            IF(PAINT.PN_STATE IS NULL, '', IF(PAINT.PN_STATE = 'COMPLETE' OR PAINT.PN_PROCESS = 'N', 'N', 'Y')) AS PAINT_PROCESS,
-            IF(FIX.PN_STATE IS NULL, '', IF(FIX.PN_STATE = 'COMPLETE' OR FIX.PN_PROCESS = 'N', 'N', 'Y')) AS FIX_PROCESS,
-            IF(PROCESS.PN_STATE IS NULL, '', IF(PROCESS.PN_STATE = 'COMPLETE' OR PROCESS.PN_PROCESS = 'N', 'N', 'Y')) AS PROCESS_PROCESS,
+            IF(PAINT.PN_STATE IS NULL, '', IF(PAINT.PN_STATE = 'COMPLETE' OR PAINT.PN_PROCESS = 'N', 'N', 'Y')) AS PAINT_PROCESS2,
+            IF(FIX.PN_STATE IS NULL, '', IF(FIX.PN_STATE = 'COMPLETE' OR FIX.PN_PROCESS = 'N', 'N', 'Y')) AS FIX_PROCESS2,
+            IF(PROCESS.PN_STATE IS NULL, '', IF(PROCESS.PN_STATE = 'COMPLETE' OR PROCESS.PN_PROCESS = 'N', 'N', 'Y')) AS PROCESS_PROCESS2,
             PAINT.PN_EXPECTED_COST+FIX.PN_EXPECTED_COST+PROCESS.PN_EXPECTED_COST AS TOTAL_COST
         FROM
             AFTER_SERVICE
@@ -415,5 +411,20 @@
         <where>
             <include refid="includeOrderDatatable"></include>
         </where>
+    </select>
+
+    <select id="selectOrderGsByoIdx" resultType="Map">
+        SELECT
+            OG_IDX,
+            G_BARCODE,
+            GS_NAME
+        FROM
+            ORDERS
+                LEFT JOIN ORDER_GS_GROUP ON O_IDX = OGG_O_IDX
+                LEFT JOIN ORDER_GS ON OGG_IDX = OG_OGG_IDX
+                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
+                LEFT JOIN GOODS_STOCK ON G_GS_IDX = GS_IDX
+        WHERE
+            O_IDX = #{oIdx}
     </select>
 </mapper>
