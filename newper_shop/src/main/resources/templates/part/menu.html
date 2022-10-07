@@ -16,12 +16,15 @@
 </th:block>
 
 <!--[메인메뉴 : 이벤트 분류] 통합-->
-<th:block th:fragment="menu-full2">
+<th:block th:fragment="menu-full2(type)">
     <div class="container">
+        <th:block th:if="${type == 'event'}">
         <ul class="menu-full menu-box">
-            <li class="on">진행 중인 이벤트</li>
-            <li>종료된 이벤트</li>
+            <li class="on" onclick="firstSortEventMenu('open')">진행 중인 이벤트</li>
+            <li onclick="firstSortEventMenu('close')">종료된 이벤트</li>
+            <input type="hidden" id="firstMenuFlag" value="open">
         </ul>
+        </th:block>
     </div>
 </th:block>
 
@@ -49,15 +52,24 @@
 
 <!--행 일부 메뉴(menu-part) - 좌측 버튼형 ------------------------------------------>
 <!--이벤트 하위 카테고리 분류-->
-<th:block th:fragment="menu-part">
+<th:block th:fragment="menu-part(type)">
     <div class="container">
+        <th:block th:if="${type == 'event'}">
         <ul class="menu-part menu-button underline-dark">
-            <li class="on">전체</li>
-            <li>IT</li>
-            <li>가전</li>
-            <li>생활</li>
+            <li class="on" onclick="secondSortEventMenu('all')">전체</li>
+            <li th:each="menu:${T(com.newper.constant.EgMenu).values()}" th:value="${menu}" th:text="${menu.option}" th:onclick="|secondSortEventMenu('__${menu}__')|">IT</li>
         </ul>
+        </th:block>
+        <th:block th:if="${type == 'else'}">
+            <ul class="menu-part menu-button underline-dark">
+                <li class="on">전체</li>
+                <li>IT</li>
+                <li>가전</li>
+                <li>생활</li>
+            </ul>
+        </th:block>
     </div>
+
 </th:block>
 
 <!--주문 프로세스 브레드 크럼-->
@@ -88,22 +100,6 @@
     </li>
 
     <script>
-        function loadCategoryProductMain(scateIdx, msIdx){
-            $.ajax({
-                url:'/product/category/'+msIdx+'/'+scateIdx+'.ajax'
-                ,type:'post'
-                ,success:function(res){
-                    var cateSection = $('#idx'+msIdx);
-                    cateSection.empty();
-                    cateSection.append(res);
-                    if(scateIdx == ''){
-                        $('#moveCategory').parent('div').hide();
-                    }else{
-                        $('#moveCategory').attr('href', '/product/category?scateIdx='+scateIdx);
-                    }
-                }
-            });
-        }
         function loadCategoryProduct(scateIdx){
             // $.ajax({
             //     url:'/product/category/'+msIdx+'/'+scateIdx+'.ajax'

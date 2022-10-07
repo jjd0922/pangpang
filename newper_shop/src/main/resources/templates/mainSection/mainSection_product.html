@@ -459,6 +459,25 @@
 
             </ul>
         </div>
+
+        <script>
+            function loadCategoryProductMain(scateIdx, msIdx){
+                $.ajax({
+                    url:'/product/category/'+msIdx+'/'+scateIdx+'.ajax'
+                    ,type:'post'
+                    ,success:function(res){
+                        var cateSection = $('#idx'+msIdx);
+                        cateSection.empty();
+                        cateSection.append(res);
+                        if(scateIdx == ''){
+                            $('#moveCategory').parent('div').hide();
+                        }else{
+                            $('#moveCategory').attr('href', '/product/category?scateIdx='+scateIdx);
+                        }
+                    }
+                });
+            }
+        </script>
     </section><!-- // MD 추천 카테고리 끝-->
 </th:block>
 

@@ -1,25 +1,30 @@
 package com.newper.controller.view;
 
+import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.mapper.IamportMapper;
+import com.newper.repository.EventGroupRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
+    @Autowired
+    private ShopSession shopSession;
+
     private final IamportMapper iamportMapper;
+    private final EventGroupRepo eventGroupRepo;
 
     @GetMapping(value = { "", "index"})
     public ModelAndView index(){
@@ -54,11 +59,14 @@ public class MainController {
         return mav;
     }
     @GetMapping(value = "event")
-    public ModelAndView event(){
+    public ModelAndView event(ParamMap paramMap){
         ModelAndView mav = new ModelAndView("mainMenu/event");
+
+        mav.addObject("fragType","event");
+        mav.addObject("eventGroupList",
+                eventGroupRepo.findEventGroupByShop_shopIdxAndEgStateTrueAndEgCloseDateAfter(shopSession.getShopIdx(), LocalDate.now() ));
         return mav;
     }
-
     /* myPage 나의쇼핑정보 */
     @GetMapping(value = "myPage")
     public ModelAndView myPage(ParamMap paramMap){

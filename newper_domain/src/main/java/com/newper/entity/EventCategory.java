@@ -25,7 +25,7 @@ public class EventCategory {
     private EventGroup eventGroup;
 
     /** 이벤트 그룹 카테고리 상품 */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "eventCategory", cascade = CascadeType.DETACH)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "eventCategory", cascade = CascadeType.ALL)
     @OrderBy(value = "espOrder asc")
     @Builder.Default
     private List<EventSp> eventSpList = new ArrayList<>();
