@@ -1,6 +1,7 @@
 package com.newper.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -12,4 +13,6 @@ public interface CategoryMapper {
 
     /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
     Map<String, Object> selectShopCategoryBySp(long sp_idx);
+
+    List<Map<String,Object>> selectShopCategoryByShopIdx(@Param("shopIdx") Integer shopIdx);
 }

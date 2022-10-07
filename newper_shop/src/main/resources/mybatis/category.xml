@@ -43,19 +43,19 @@
             AND CSC_CATE_IDX=SP_CATE_IDX
             and SP_IDX = #{sp_idx}
     </select>
-    <select id="selectShopCategoryBySp2" resultType="map" parameterType="Integer">
+    <select id="selectShopCategoryByShopIdx" resultType="map" parameterType="Integer">
         SELECT
-            *
+            SCATE_IDX, SCATE_NAME
         FROM
             SHOP_CATEGORY
-            ,CATEGORY
-            ,CATEGORY_SHOP_CATEGORY
-            ,SHOP_PRODUCT
+           ,CATEGORY
+                LEFT JOIN shop_product ON CATE_IDX = SP_CATE_IDX
+           ,category_shop_category
         WHERE
             CSC_CATE_IDX = CATE_IDX
-            AND CSC_SCATE_IDX = SCATE_IDX
-            AND SP_CATE_IDX = CATE_IDX
-            AND CATE_IDX = SP_CATE_IDX
-            AND SP_SHOP_IDX = #{shopIdx}
+          AND CSC_SCATE_IDX = SCATE_IDX
+          AND SP_CATE_IDX = CATE_IDX
+          AND SP_SHOP_IDX = #{shopIdx}
+        GROUP BY SCATE_IDX, SCATE_NAME
     </select>
 </mapper>

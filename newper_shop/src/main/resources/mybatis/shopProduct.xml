@@ -31,4 +31,33 @@
             AND MS_IDX = #{msIdx}
             AND SCATE_IDX = #{scateIdx}
     </select>
+
+    <select id="selectCategoryProductList" resultType="map" parameterType="map">
+        SELECT
+            d.*
+        FROM
+            category a
+           ,shop_category b
+           ,category_shop_category c
+           ,shop_product d
+        WHERE
+            CATE_IDX = CSC_CATE_IDX
+          AND SCATE_IDX = CSC_SCATE_IDX
+          AND SP_CATE_IDX = CATE_IDX
+--           AND CATE_IDX = 38
+    </select>
+    <select id="countCategoryProductList" resultType="Integer" parameterType="map">
+        SELECT
+            count(sp_idx) cnt
+        FROM
+            category a
+           ,shop_category b
+           ,category_shop_category c
+           ,shop_product d
+        WHERE
+            CATE_IDX = CSC_CATE_IDX
+          AND SCATE_IDX = CSC_SCATE_IDX
+          AND SP_CATE_IDX = CATE_IDX
+--           AND CATE_IDX = 38
+    </select>
 </mapper>

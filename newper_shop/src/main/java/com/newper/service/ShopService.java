@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ public class ShopService {
     private final DomainRepo domainRepo;
     private final ShopMapper shopMapper;
     private final CategoryMapper categoryMapper;
-    private final ShopCategoryRepo shopCategoryRepo;
     private final MainSectionRepo mainSectionRepo;
 
 
@@ -63,8 +64,11 @@ public class ShopService {
 //                }
 //            }
 
+            List<Map<String,Object>> categoryList = new ArrayList<>();
+
             // 카테고리 정보
-            shopComp.setShopCategoryList(shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0));
+            shopComp.setShopCategoryList(categoryList);
+//            shopComp.setShopCategoryList(shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0));
 
             // 메인섹션리스트
             List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxAndMsOrderGreaterThanOrderByMsOrderAsc(shop.getShopIdx(), 0);

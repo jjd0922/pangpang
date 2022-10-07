@@ -29,7 +29,7 @@ public class ShopComp {
     /** 분양몰 디자인 */
     private String shopDesign;
     /** 전시 대분류 */
-    private List<ShopCategory> shopCategoryList;
+    private List<Map<String,Object>> shopCategoryList;
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
     /** 도메인으로 headerOrder 가져오기*/

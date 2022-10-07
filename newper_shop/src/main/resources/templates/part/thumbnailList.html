@@ -1,3 +1,18 @@
+<!-- 썸네일 목록 : 1행 4열 (map 데이터 반환형)-->
+<th:block th:fragment="thumbanil-default-map-list">
+    <ul class="col-list lg-4col sm-2col searchResult-vertical-thumb">
+        <li th:each="shopProduct : ${shopProductList}">
+            <div class="thumb-wrap boxShadow-hover">
+                <div class="compareAdd-wrap">
+                    <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
+                    <label for="compareAdd"><span class="font-sm">비교담기</span></label>
+                </div>
+                <div th:replace="part/thumbnail :: thumbnail-default-map(${shopProduct})"></div>
+            </div>
+        </li>
+    </ul>
+</th:block>
+
 <!--썸네일 목록 : 타임세일 (1행 1열)-->
 <th:block th:fragment="thumbnailLayout_1">
     <div class="container">
