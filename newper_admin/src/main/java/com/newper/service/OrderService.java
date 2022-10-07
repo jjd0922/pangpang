@@ -197,7 +197,7 @@ public class OrderService {
         OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
         AddressEmb address = paramMap.mapParam(AddressEmb.class);
         orderAddress.setAddress(address);
-        orderAddress.setAdEntrance("");
+        orderAddress.setOaEntrance("");
         ordersAddressRepo.save(orderAddress);
         Orders orders = paramMap.mapParam(Orders.class);
         paramMap.remove("O_IDX");
@@ -268,12 +268,12 @@ public class OrderService {
         OrderAddress oriOrderAddress = ordersRepo.getReferenceById(paramMap.getLong("O_IDX")).getOrderAddress();
         OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
         AddressEmb address = paramMap.mapParam(AddressEmb.class);
-        orderAddress.setAdIdx(oriOrderAddress.getAdIdx());
+        orderAddress.setOaIdx(oriOrderAddress.getOaIdx());
         orderAddress.setAddress(address);
-        orderAddress.setAdEntrance(oriOrderAddress.getAdEntrance());
+        orderAddress.setOaEntrance(oriOrderAddress.getOaEntrance());
 
         ordersAddressRepo.save(orderAddress);
-        return orderAddress.getAdIdx();
+        return orderAddress.getOaIdx();
     }
 
 
