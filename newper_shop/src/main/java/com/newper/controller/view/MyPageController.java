@@ -2,6 +2,7 @@ package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
+import com.newper.entity.AfterService;
 import com.newper.entity.Company;
 import com.newper.entity.Orders;
 import com.newper.entity.Shop;
@@ -56,13 +57,12 @@ public class MyPageController {
     @PostMapping("myOrder/{menu}.load")
     public ModelAndView myOrderMenu(@PathVariable String menu){
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu :: " + menu);
-
-
+        System.out.println(menu);
         mav.addObject("CU_IDX",shopSession.getIdx());
         long cuIdx = shopSession.getIdx();
         List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
         mav.addObject("orders",list);
-        System.out.println("list = " + list);
+        System.out.println(mav.getViewName());
         return mav;
     }
     /** 주문/배송조회 하위 메뉴 load */
@@ -98,7 +98,10 @@ public class MyPageController {
             orderMenuTitle = "취소/교환/반품";
         }else if(menu.equals("all")){
             orderMenuTitle = "전체 주문 내역";
+            long cuIdx = shopSession.getIdx();
+            List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             shopList = shopRepo.findAll();
+            mav.addObject("orders",list);
         }
         mav.addObject("shopList", shopList);
         mav.addObject("orderMenuTitle", orderMenuTitle);
@@ -114,11 +117,12 @@ public class MyPageController {
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             mav.addObject("orders", list);
-        }else if(menu.equals("otherAsCompanyModal")) {
 
-            List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+            }else if(menu.equals("otherAsCompanyModal")) {
 
-            mav.addObject("company", comList);
+                List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+
+                mav.addObject("company", comList);
 
 
             }else if(menu.equals("asProductModal2")) {
@@ -146,8 +150,12 @@ public class MyPageController {
 
             System.out.println("pList!!!!!!!!!!!!!!!!!!!!! = " + pList);
 
+        }else if(menu.equals("asList")) {
+            mav.addObject("CU_IDX", shopSession.getIdx());
+            long cuIdx = shopSession.getIdx();
+            List<Map<String, Object>> listt = ordersMapper.selectOrderGsListByAsIdx(cuIdx);
+            mav.addObject("afterService", listt);
         }
-
 
         return mav;
     }
