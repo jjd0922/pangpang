@@ -4,7 +4,7 @@ package com.newper.service;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.UserMapper;
@@ -85,7 +85,7 @@ public class UserService {
         }
 
 
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         user.setAddress(address);
 
         String u_birth = paramMap.getString("U_BIRTH");
@@ -132,7 +132,7 @@ public class UserService {
 
         User user=paramMap.mapParam(User.class);
         Auth auth = paramMap.mapParam(Auth.class);
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         Company company = paramMap.mapParam(Company.class);
         System.out.println("userIdx : " + user.getUIdx());
 

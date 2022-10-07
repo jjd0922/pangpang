@@ -10,6 +10,7 @@ import com.newper.dto.IamportReq;
 import com.newper.dto.OrdersSpoDTO;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import com.newper.exception.NoSessionException;
 import com.newper.iamport.IamportApi;
@@ -40,6 +41,7 @@ public class OrdersService {
     private final IamportMapper iamportMapper;
     private final OrderGsGroupRepo orderGsGroupRepo;
     private final ShopProductService shopProductService;
+    private final OrderAddressRepo orderAddressRepo;
 
     @Autowired
     private ShopSession shopSession;
@@ -52,7 +54,7 @@ public class OrdersService {
             customer = customerRepo.getReferenceById(shopSession.getIdx());
         }
 
-
+        //orders
         Orders orders = paramMap.mapParam(Orders.class);
         orders.setCustomer(customer);
         LocalDateTime now = LocalDateTime.now();
@@ -63,20 +65,32 @@ public class OrdersService {
         Shop shop = shopRepo.getReferenceById(shopSession.getShopIdx());
         orders.setShop(shop);
 
+        //배송지
+        OrderAddress oa = paramMap.mapParam(OrderAddress.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
+        oa.setAddress(address);
+        oa.getAddress().setPost("12345");
+        oa.setAdPhone("01012341234");
+        orderAddressRepo.save(oa);
+        orders.setOrderAddress(oa);
 
+
+        //spo 필수 선택 됐는지 검증
         Map<ShopProduct, List<OrdersSpoDTO>> spoList = shopProductService.selectOrdersInfo(paramMap);
-
         int usedPoint = 0;
         int usedMileage = 0;
         int delivery = 0;
         int product_price = 0;
         for (ShopProduct shopProduct : spoList.keySet()) {
             for (OrdersSpoDTO dto : spoList.get(shopProduct)) {
+                OrderGsGroup ogg = OrderGsGroup.builder()
+                        .oggSpo(dto.getVal().replace("spo",""))
+                        .oggCnt(dto.getCnt())
+                        .build();
+
+                orders.addOrderGsGroup(ogg);
+
                 for (int i = 0 ;i < dto.getCnt(); i++) {
-                    OrderGsGroup ogg = OrderGsGroup.builder()
-                            .oggSpo(dto.getVal().replace("spo",""))
-                            .oggCnt(i+1)
-                            .build();
                     for (ShopProductOption spo : dto.getSpoList()) {
                         OrderGs orderGs = OrderGs.builder()
 //                                .orders(orders)
@@ -87,7 +101,7 @@ public class OrdersService {
 
                         product_price += spo.getSpoPrice();
                     }
-                    orderGsGroupRepo.save(ogg);
+//                    orderGsGroupRepo.save(ogg);
                 }
             }
         }

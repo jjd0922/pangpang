@@ -129,4 +129,18 @@ public class Orders {
         setODate(dt.toLocalDate());
         setOTime(dt.toLocalTime());
     }
+
+    public void setOrderAddress(OrderAddress orderAddress) {
+        this.orderAddress = orderAddress;
+        orderAddress.setOrders(this);
+    }
+    public void addOrderGsGroup(OrderGsGroup ogg){
+        List<OrderGsGroup> oggList = getOrderGsGroupList();
+        if (oggList == null) {
+            oggList = new ArrayList<>();
+            setOrderGsGroupList(oggList);
+        }
+        oggList.add(ogg);
+        ogg.setOrders(this);
+    }
 }

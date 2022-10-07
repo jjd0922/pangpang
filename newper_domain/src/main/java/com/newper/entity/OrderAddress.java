@@ -1,14 +1,13 @@
 package com.newper.entity;
 
 
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class OrderAddress{
     private String adEntrance;
 
     @Embedded
-    private Address address;
+    private AddressEmb address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderAddress")
     private List<Orders> ordersList;
@@ -43,14 +42,23 @@ public class OrderAddress{
     public void ordersAddressSave(){
 
         if (!StringUtils.hasText(getAdName())) {
-            throw new MsgException("배송자(설치자) 이름을 입력해주세요.");
+            throw new MsgException("받으시는 분 이름을 입력해주세요.");
         }
         if (!StringUtils.hasText(getAdPhone())) {
-            throw new MsgException("배송자(설치자) 연락처를 입력해주세요.");
+            throw new MsgException("받으시는 분 연락처를 입력해주세요.");
         }
         if (!StringUtils.hasText(getAddress().getPost())) {
-            throw new MsgException("배송지를 입력해주세요.");
+            throw new MsgException("받으시는 분 주소를 입력해주세요.");
         }
 
+    }
+
+    public void setOrders(Orders orders) {
+        List<Orders> ordersList = getOrdersList();
+        if (ordersList == null) {
+            ordersList = new ArrayList<>();
+            setOrdersList(ordersList);
+        }
+        ordersList.add(orders);
     }
 }

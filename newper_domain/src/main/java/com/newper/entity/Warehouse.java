@@ -2,7 +2,7 @@ package com.newper.entity;
 
 
 import com.newper.constant.WhState;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -33,7 +33,7 @@ public class Warehouse {
     private String whName;
 
     @Embedded
-    private Address address;
+    private AddressEmb address;
 
     @PrePersist
     @PreUpdate
