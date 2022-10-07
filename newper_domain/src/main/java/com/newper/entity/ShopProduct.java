@@ -2,8 +2,10 @@ package com.newper.entity;
 
 import com.newper.constant.SpState;
 import com.newper.entity.common.BaseEntity;
+import com.newper.exception.MsgException;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,13 +36,18 @@ public class ShopProduct extends BaseEntity {
     private Category category;
 
     private String spName;
+    private String spInfo;
+    private String spMd;
 
     @Enumerated(EnumType.STRING)
     private SpState spState;
-
+    private int spUseMileage;
+    private int spUseCoupon;
     private Float spPercent;
     private Integer spQuotaOnce;
     private Integer spQuotaId;
+    private byte spOnlyApp;
+    private int spMinimum;
     private String spTag;
 
     private LocalDate spShowStartDate;
@@ -108,5 +115,17 @@ public class ShopProduct extends BaseEntity {
     /** 대표 썸네일 가져오기*/
     public String getThumbnail(){
         return getShopProductAddList().get(0).getShopProductOptionList().get(0).getGoodsStock().getGsThumbFile1();
+    }
+
+
+    @PrePersist
+    @PreUpdate
+    public void preSave(){
+        if(getShop() == null){
+            throw new MsgException("판매SHOP을 선택해주세요.");
+        }
+        if(getCategory() == null){
+            throw new MsgException("필수상품을 선택해주세요.");
+        }
     }
 }

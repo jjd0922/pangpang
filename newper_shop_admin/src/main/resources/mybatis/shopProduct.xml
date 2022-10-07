@@ -91,7 +91,7 @@
 
     <select id="selectGoodStockDatatalbe" resultType="map">
         select
-            goods_stock.*,product.*,IFNULL(dt.cnt,0) cnt,
+            goods_stock.*,product.*,IFNULL(dt.cnt,0) cnt, category2.*,
             ifnull(replace(JSON_EXTRACT(GS_NAVER,'$.GS_NAVER1'),'"',''),'') NAVER,
             ifnull(replace(JSON_EXTRACT(GS_OPTION,'$.OPTION1'),'"',''),'') OPTION1,
             ifnull(replace(JSON_EXTRACT(GS_OPTION,'$.OPTION2'),'"',''),'') OPTION2,
@@ -111,6 +111,10 @@
                         G_STOCK_STATE='STOCK'
                         GROUP BY G_GS_IDX) dt
             ON dt.G_GS_IDX=GS_IDX
+            LEFT JOIN category AS category1
+            ON category1.CATE_IDX=P_CATE_IDX
+            LEFT JOIN category AS category2
+            ON category2.CATE_IDX=category1.CATE_PARENT_IDX
         WHERE
             GS_IDX is not null
             <if test="pType2!=null and pType2!=''">and P_TYPE2=#{pType2}</if>

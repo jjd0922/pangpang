@@ -6,6 +6,7 @@ import com.newper.dto.ReturnMap;
 import com.newper.mapper.ShopCategoryMapper;
 import com.newper.mapper.ShopProductMapper;
 import com.newper.service.ShopCategoryService;
+import com.newper.service.ShopProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
@@ -26,8 +27,9 @@ import java.util.Map;
 public class ProductRestController {
 
     private final ShopCategoryMapper shopCategoryMapper;
-    private final ShopCategoryService shopCategoryService;
     private final ShopProductMapper shopProductMapper;
+    private final ShopCategoryService shopCategoryService;
+    private final ShopProductService shopProductService;
 
 
 
@@ -164,9 +166,9 @@ public class ProductRestController {
 
     /**샵상품 저장*/
     @PostMapping("saveShopProduct.ajax")
-    public ReturnMap saveShopProduct(ParamMap paramMap){
+    public ReturnMap saveShopProduct(ParamMap paramMap,MultipartFile SP_THUMB_FILE1, MultipartFile SP_THUMB_FILE2, MultipartFile SP_THUMB_FILE3){
         ReturnMap returnMap = new ReturnMap();
-        System.out.println(paramMap.getMap());
+        shopProductService.shopProductSave(paramMap, SP_THUMB_FILE1, SP_THUMB_FILE2, SP_THUMB_FILE3);
         returnMap.setMessage("GOOD DAY");
         return returnMap;
     }
