@@ -1,3 +1,22 @@
+<!-- 썸네일 목록 : 1행 4열 + 검색 결과(map 데이터 반환형)-->
+<th:block th:fragment="thumbanil-default-map-list-search-result">
+    <div class="itemSort-header">
+        <p><span class="color-red" th:text="${count}">848</span>&nbsp;개의 검색결과</p>
+        <div>
+            <select name="itemSort-option" id="itemSort-option">
+                <option value="orderByHit">인기순</option>
+                <option value="orderByNew">신규런칭</option>
+                <option value="orderByPriceAsc">낮은가격순</option>
+                <option value="orderByPriceDesc">높은가격순</option>
+                <option value="orderByReview">상품평 많은순</option>
+            </select>
+            <i class="itemSort itemSort1 on"></i>
+            <i class="itemSort itemSort2"></i>
+        </div>
+    </div>
+    <div th:insert="part/thumbnailList :: thumbanil-default-map-list"></div>
+</th:block>
+
 <!-- 썸네일 목록 : 1행 4열 (map 데이터 반환형)-->
 <th:block th:fragment="thumbanil-default-map-list">
     <ul class="col-list lg-4col sm-2col searchResult-vertical-thumb">
@@ -192,7 +211,7 @@
                     </li>
                 </ul>
             </div>
-        </ul>
+        </div>
     </div>
 </th:block>
 

@@ -45,13 +45,11 @@ public class ProductRestController {
     /** 카테고리 별 상품 리스트 */
     @PostMapping(value = "category.ajax")
     public ModelAndView productCategoryList(ParamMap paramMap){
-        ModelAndView mav = new ModelAndView("part/thumbnailList :: thumbanil-default-map-list");
+        ModelAndView mav = new ModelAndView("part/thumbnailList :: thumbanil-default-map-list-search-result");
 
-//        Map<String,Object> result = shopProductService.selectShopProductListBySearch(paramMap);
-//        mav.addObject("shopProductList", result.get("shopProductList"));
-//        mav.addObject("count", result.get("count"));
-        List<Map<String,Object>> shopProductList = shopProductMapper.selectCategoryProductList(paramMap.getMap());
-        mav.addObject("shopProductList", shopProductList);
+        Map<String,Object> result = shopProductService.selectShopProductListBySearch(paramMap);
+        mav.addObject("shopProductList", result.get("shopProductList"));
+        mav.addObject("count", result.get("count"));
         return mav;
     }
 }

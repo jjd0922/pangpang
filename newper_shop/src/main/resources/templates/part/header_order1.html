@@ -45,7 +45,7 @@
         </th:block>
     </div>
 
-    <div class="login-group-text login-group-text-division" th:if="${shop.getHeader().getHdLoginType() == 'LINE'}">
+    <div class="login-group-text login-group-text-division" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'LINE'}">
         <th:block th:each="loginStr, i : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
             <th:block th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
                 <a href="javascript:;" title="로그인" class="text login nosessionClass">로그인</a>

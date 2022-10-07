@@ -43,23 +43,17 @@
             <!-- 좌측 nav category all -->
             <ul class="ctg-all">
                 <li th:each="shopCategory : ${@shopComp.shopCategoryList}">
-                    <a th:href="@{|/product/category?scateIdx=${shopCategory.scateIdx}|}" th:text="${shopCategory.scateName}">노트북<span class="separation"></span>데스크탑</a>
+                    <a th:href="@{|/product/category?scateIdx=${shopCategory.SCATE_IDX}|}" th:text="${shopCategory.SCATE_NAME}">노트북<span class="separation"></span>데스크탑</a>
                     <div class="ctg-open">
                         <div class="ctg-first-area">
                             <ul>
-                                <li>
-                                    <a href="javascript:;">LG전자</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">한성컴퓨터</a>
-                                    <ul class="first-area-sub">
-                                        <li>
-                                            <a href="javascript:;">프린터<span class="separation"></span>복합기</a>
+                                <li th:if="${@shopComp.getMiddleCategoryList().containsKey(shopCategory.SCATE_IDX)}" th:each="middleCategory: ${@shopComp.getMiddleCategoryList().get(shopCategory.SCATE_IDX)}">
+                                    <a th:href="@{|/product/category?scateIdx=${shopCategory.SCATE_IDX}&parentCateIdx=${middleCategory.CATE_IDX}|}" th:text="${middleCategory.CATE_NAME}">LG전자</a>
+                                    <ul class="first-area-sub" th:if="${@shopComp.getSmallCategoryList().containsKey(middleCategory.CATE_IDX)}">
+                                        <li th:each="smallCategory: ${@shopComp.getSmallCategoryList().get(middleCategory.CATE_IDX)}">
+                                            <a th:href="@{|/product/category?scateIdx=${shopCategory.SCATE_IDX}&parentCateIdx=${middleCategory.CATE_IDX}&cateIdx=${smallCategory.CATE_IDX}|}" th:text="${smallCategory.CATE_NAME}">프린터<span class="separation"></span>복합기</a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">벤큐</a>
                                 </li>
                             </ul>
                         </div>
@@ -75,9 +69,9 @@
                                     </a>
                                 </li>
                             </ul>
-                            <div class="second-area-2" th:if="${shopCategory.scateThumbnail != ''}">
+                            <div class="second-area-2" th:if="${shopCategory.SCATE_THUMBNAIL != ''}">
                                 <a href="javascript:;">
-                                    <img th:src="@{${shopCategory.scateThumbnail}}">
+                                    <img th:src="@{${shopCategory.SCATE_THUMBNAIL}}">
                                 </a>
                             </div>
                         </div>

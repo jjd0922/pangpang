@@ -28,8 +28,15 @@ public class ShopComp {
     private Map<String,Object> shopColorMap;
     /** 분양몰 디자인 */
     private String shopDesign;
-    /** 전시 대분류 */
+    /** 전시 */
     private List<Map<String,Object>> shopCategoryList;
+    /** 중분류 */
+    private Map<Object, List<Map<String, Object>>> middleCategoryList;
+    /** 소분류 */
+    private Map<Object, List<Map<String, Object>>> smallCategoryList;
+    /** 상품 카테고리 */
+    private List<Map<String,Object>> shopProductCategoryList;
+
     /** 메인섹션 */
     private List<MainSection> mainSectionList;
     /** 도메인으로 headerOrder 가져오기*/
