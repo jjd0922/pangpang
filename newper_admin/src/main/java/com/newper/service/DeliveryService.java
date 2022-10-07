@@ -2,6 +2,7 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.DnState;
 import com.newper.constant.OState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.DeliveryNum;
@@ -129,9 +130,12 @@ public class DeliveryService {
                 System.out.println(OG_IDX);
                 if(OG_IDX!=null){
                     DeliveryNum deliveryNum = DeliveryNum.builder().build();
-                    deliveryNum.setDnState("");
+                    deliveryNum.setDnState(DnState.REQUEST);
                     deliveryNum.setDnNum(DN_NUM);
-                    deliveryNum.setDnCompany(DN_COMPANY);
+
+                    /** DN_COMPANY -> DN_COM_IDX */
+//                    deliveryNum.setDnCompany(DN_COMPANY);
+
                     deliveryNum.setDnJson(null);
                     deliveryNum.setCreatedDate(LocalDate.now());
                     deliveryNumRepo.save(deliveryNum);
@@ -183,9 +187,13 @@ public class DeliveryService {
                 jsonObject.put("files",jsonArray);
                 jsonObject.put("memo",paramMap.getString("DN_MEMO"));
 
-                deliveryNum.setDnState("");
+                deliveryNum.setDnState(DnState.REQUEST);
                 deliveryNum.setDnNum("");
-                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
+
+                /** DN_COMPANY -> DN_COM_IDX */
+//                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
+
+
                 deliveryNum.setDnJson(jsonObject);
                 deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));

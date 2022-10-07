@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.DnSender;
+import com.newper.constant.DnState;
 import com.newper.constant.DnType;
 import com.newper.constant.OgdnType;
 import com.newper.entity.common.CreatedEntity;
@@ -34,14 +35,13 @@ public class DeliveryNum extends CreatedEntity {
     @Enumerated(EnumType.STRING)
     private DnType dnType;
 
-
-    private String dnState;
-    private String dnNum;
-    private String dnCompany;
-
+    @Enumerated(EnumType.STRING)
+    private DnState dnState;
 
     @Enumerated(EnumType.STRING)
     private DnSender dnSender;
+
+    private String dnNum;
     private LocalDate dnDate;
     private LocalDate dnRelease;
     private LocalDate dnSchedule;

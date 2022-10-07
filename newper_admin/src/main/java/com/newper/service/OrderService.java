@@ -65,6 +65,7 @@ public class OrderService {
     private final ChecksMapper checksMapper;
     private final AfterServiceRepo afterServiceRepo;
     private final OrderGsDnRepo orderGsDnRepo;
+    private final CompanyRepo companyRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -285,8 +286,11 @@ public class OrderService {
             if(orderGs.getDeliveryNum()==null){
                 DeliveryNum dn = DeliveryNum.builder().build();
                 dn.setRandomInvoice(12);
-                dn.setDnState("");
-                dn.setDnCompany("우체국");
+                dn.setDnState(DnState.REQUEST);
+
+                /** DN_COMPANY -> DN_COM_IDX */
+//                dn.setDnCompany("우체국");
+
                 dn.setDnJson(null);
                 dn.setCreatedDate(LocalDate.now());
 
@@ -474,12 +478,11 @@ public class OrderService {
             AfterService afterService = afterServiceRepo.findById(asIdx.get(i)).get();
             OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
 
-
             DeliveryNum deliveryNum = DeliveryNum
                     .builder()
                     .dnNum("TEST")
-                    .dnState("test")
-                    .dnCompany("test")
+                    .dnState(DnState.REQUEST)
+                    .company(companyRepo.getReferenceById(6))
                     .dnSender(DnSender.COMPANY)
                     .build();
             deliveryNumRepo.save(deliveryNum);
