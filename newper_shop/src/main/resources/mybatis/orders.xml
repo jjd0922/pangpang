@@ -20,8 +20,31 @@
             left join customer on O_CU_IDX=CU_IDX
         WHERE
             CU_IDX=#{cuIdx}
-            AND O_TEMP=1
-</select>
+            AND O_REAL=1
+    </select>
+    <select id="selectOrderGsListByAsIdx" resultType="map" parameterType="map">
+        SELECT
+            O_DATE,
+            O_IDX,
+            GS_NAME,
+            GS_PRICE,
+            O_STATE,
+            CU_IDX,
+            OG_IDX,
+            AS_IDX
+        FROM
+            order_gs
+                left join order_gs_group on OGG_IDX=OG_OGG_IDX
+                left join orders on O_IDX=OGG_O_IDX
+                left join shop_product_option on OG_SPO_IDX=SPO_IDX
+                left join goods_stock on SPO_GS_IDX=GS_IDX
+                left join customer on O_CU_IDX=CU_IDX
+                left join after_service on AS_OG_IDX=OG_IDX
+        WHERE
+            AS_IDX IS NOT null
+            and CU_IDX=#{cuIdx}
+             and O_REAL=1
+    </select>
 
     <select id="selectOrderGsListByComIdx" resultType="map" parameterType="map">
 SELECT

@@ -1,12 +1,7 @@
 package com.newper.service;
 
-import com.newper.constant.TfType;
 import com.newper.dto.ParamMap;
-import com.newper.entity.Auth;
-import com.newper.entity.Company;
 import com.newper.entity.TemplateForm;
-import com.newper.entity.User;
-import com.newper.entity.common.Address;
 import com.newper.exception.MsgException;
 import com.newper.repository.TemplateFormRepo;
 import lombok.RequiredArgsConstructor;

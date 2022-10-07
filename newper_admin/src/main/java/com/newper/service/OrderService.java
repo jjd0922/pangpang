@@ -4,7 +4,7 @@ import com.newper.component.AdminBucket;
 import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.OrdersMapper;
@@ -195,7 +195,7 @@ public class OrderService {
             paramMap.remove("O_SHOP_IDX");
         }
         OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         orderAddress.setAddress(address);
         orderAddress.setAdEntrance("");
         ordersAddressRepo.save(orderAddress);
@@ -267,7 +267,7 @@ public class OrderService {
     public Long orderUpdate(ParamMap paramMap){
         OrderAddress oriOrderAddress = ordersRepo.getReferenceById(paramMap.getLong("O_IDX")).getOrderAddress();
         OrderAddress orderAddress = paramMap.mapParam(OrderAddress.class);
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         orderAddress.setAdIdx(oriOrderAddress.getAdIdx());
         orderAddress.setAddress(address);
         orderAddress.setAdEntrance(oriOrderAddress.getAdEntrance());

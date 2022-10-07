@@ -6,7 +6,7 @@ import com.newper.constant.CcState;
 import com.newper.constant.CdType;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.repository.*;
@@ -40,7 +40,7 @@ public class CompanyService {
         // employee, address
         CompanyEmployee companyEmployee = paramMap.mapParam(CompanyEmployee.class);
         CompanyEmployee savedCe = companyEmployeeRepo.save(companyEmployee);
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         Company company = paramMap.mapParam(Company.class);
         company.setCompanyEmployee(savedCe);
         company.setAddress(address);
@@ -89,7 +89,7 @@ public class CompanyService {
         companyEmployee.ceAllUpdate(ceParam);
 
         // company update
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         Company companyParam = paramMap.mapParam(Company.class);
 
         if (StringUtils.hasText(paramMap.getString("uIdx"))) {

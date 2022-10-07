@@ -8,7 +8,7 @@ import com.newper.entity.Company;
 import com.newper.entity.Location;
 import com.newper.entity.User;
 import com.newper.entity.Warehouse;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
 import com.newper.mapper.LocationMapper;
 import com.newper.mapper.WarehouseMapper;
@@ -50,7 +50,7 @@ public class WarehouseService {
         }
 
         Warehouse warehouse = paramMap.mapParam(Warehouse.class);
-        Address address = paramMap.mapParam(Address.class);
+        AddressEmb address = paramMap.mapParam(AddressEmb.class);
         Company company = Company.builder().comIdx(paramMap.getInt("comIdx")).build();
 
         warehouse.setAddress(address);
@@ -80,7 +80,7 @@ public class WarehouseService {
         warehouse.setWhName(newWh.getWhName());
         warehouse.setWhState(newWh.getWhState());
         warehouse.setCompany(Company.builder().comIdx(paramMap.getInt("comIdx")).build());
-        warehouse.setAddress(paramMap.mapParam(Address.class));
+        warehouse.setAddress(paramMap.mapParam(AddressEmb.class));
     }
 
     /** 창고 상태 일괄변경 */

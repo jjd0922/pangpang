@@ -54,7 +54,7 @@
 
             <!-- 주문 내역 상품 리스트 -->
             <ul>
-                <th:block th:if="${orders == null}">
+                <th:block th:if="${orders} == null">
                     <li class="myShopping-table-item orderHistory-item">
                         <ul>
                             <li style="width: 100%;">주문내역이 없습니다.</li>
@@ -62,72 +62,75 @@
                     </li>
                 </th:block>
                 <!-- 상품 1 -->
-                <li th:each="orders:${orders}">
-                    <ul class="table-content2 recent-orderHistory-table-content">
-                        <!-- 주문일자 -->
-                        <li class="flex-column">
-                            <p class="bold" name="O_DATE" th:text="${orders.O_DATE}"></p>
-<!--                            <input type="hidden" name="CU_IDX" th:text="${CU_IDX}">-->
-                            <div class="color-grey999 table-order-num">
-                                <p>주문번호</p>
-<!--                                <p name="O_IDX" th:text="${orders.O_IDX}"></p>-->
-                            </div>
-                        </li>
-                        <!-- 상품명 -->
-                        <li class="itemName">
-                            <div class="order-item-thumb" >
-                                <a href="javascript:;">
-                                    <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                                    <p class="font-xsm color-grey999" name="GS_NAME" th:text="${GS_NAME}"></p>
-                                </a>
-                            </div>
-                            <div class="order-item-info-wrap">
-                                <div>
+                <th:block th:unless="${orders} == null">
+                    <li th:each="orders:${orders}">
+                        <ul class="table-content2 recent-orderHistory-table-content">
+                            <!-- 주문일자 -->
+                            <li class="flex-column">
+                                <p class="bold" name="O_DATE" th:text="${orders.O_DATE}"></p>
+                                <!--                            <input type="hidden" name="CU_IDX" th:text="${CU_IDX}">-->
+                                <div class="color-grey999 table-order-num">
+                                    <p>주문번호</p>
+                                    <!--                                <p name="O_IDX" th:text="${orders.O_IDX}"></p>-->
+                                </div>
+                            </li>
+                            <!-- 상품명 -->
+                            <li class="itemName">
+                                <div class="order-item-thumb" >
                                     <a href="javascript:;">
-<!--                                        <h3 class="font-sm bold" name="P_OPTION" th:text="${orders.P_OPTION}">삼성 노트북 코어i5 램8G SSD 대용량-->
-                                            듀얼하드 윈10</h3>
+                                        <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
+                                        <p class="font-xsm color-grey999" name="GS_NAME" th:text="${GS_NAME}"></p>
                                     </a>
                                 </div>
-                                <div class="font-xxsm order-item-info">
-                                    <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
-                                    <p>사이즈 : 15인치</p>
-                                    <p>용량 : 램 8G SSD 대용량</p>
+                                <div class="order-item-info-wrap">
+                                    <div>
+                                        <a href="javascript:;">
+                                            <!--                                        <h3 class="font-sm bold" name="P_OPTION" th:text="${orders.P_OPTION}">삼성 노트북 코어i5 램8G SSD 대용량-->
+                                            듀얼하드 윈10</h3>
+                                        </a>
+                                    </div>
+                                    <div class="font-xxsm order-item-info">
+                                        <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                        <p>사이즈 : 15인치</p>
+                                        <p>용량 : 램 8G SSD 대용량</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <!-- AS기간 -->
-                        <li class="as-period">
-                            <p class="color-blue bold">AS케어상품</p>
-                            <p>3개월 무상 (기본제공)</p>
-                            <p>-</p>
-                            <p>2022-08-01&#8764;<br>2022-10-01</p>
-                        </li>
-                        <!-- 수량 -->
-                        <li>
-                            <p class="font-sm bold">1개</p>
-                        </li>
-                        <!-- 결제금액 -->
-                        <li>
-                            <p class="font-sm bold" name="GS_PRICE" th:text="${GS_PRICE}"><span class="won">원</span></p>
-                        </li>
-                        <!-- 주문현황 -->
-                        <li class="flex-column bold orderStatus">
-                            <!-- 상품준비중 -->
-                            <p class="color-blue" name="O_STATE" th:text="${orders.O_STATE}"></p>
-                            <!-- 배송완료
-                            <p>배송완료</p>
-                            <div>
-                                <p>CJ 대한통운</p>
-                                <p class="color-grey999">5612121212135</p>
-                            </div> -->
-                        </li>
-                        <!-- 상세조회 -->
-                        <li class="flex-column button-vertical-group">
-                            <a onclick="orderDetail()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">주문상세보기</a>
-                            <a onclick="receiptDetail()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">영수증조회</a>
-                        </li>
-                    </ul>
-                </li>
+                            </li>
+                            <!-- AS기간 -->
+                            <li class="as-period">
+                                <p class="color-blue bold">AS케어상품</p>
+                                <p>3개월 무상 (기본제공)</p>
+                                <p>-</p>
+                                <p>2022-08-01&#8764;<br>2022-10-01</p>
+                            </li>
+                            <!-- 수량 -->
+                            <li>
+                                <p class="font-sm bold">1개</p>
+                            </li>
+                            <!-- 결제금액 -->
+                            <li>
+                                <p class="font-sm bold" name="GS_PRICE" th:text="${GS_PRICE}"><span class="won">원</span></p>
+                            </li>
+                            <!-- 주문현황 -->
+                            <li class="flex-column bold orderStatus">
+                                <!-- 상품준비중 -->
+                                <p class="color-blue" name="O_STATE" th:text="${orders.O_STATE}"></p>
+                                <!-- 배송완료
+                                <p>배송완료</p>
+                                <div>
+                                    <p>CJ 대한통운</p>
+                                    <p class="color-grey999">5612121212135</p>
+                                </div> -->
+                            </li>
+                            <!-- 상세조회 -->
+                            <li class="flex-column button-vertical-group">
+                                <a onclick="orderDetail()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge origin-btn">주문상세보기</a>
+                                <a onclick="receiptDetail()" class="btn btn-xxlg btn-point btn-width-md radius-xlarge origin-btn">영수증조회</a>
+                            </li>
+                        </ul>
+                    </li>
+                </th:block>
+
             </ul>
 
         </div>

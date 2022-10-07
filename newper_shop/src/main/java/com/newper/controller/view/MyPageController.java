@@ -2,18 +2,17 @@ package com.newper.controller.view;
 
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
+import com.newper.entity.AfterService;
 import com.newper.entity.Company;
 import com.newper.entity.Orders;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
-import com.newper.repository.CustomerRepo;
-import com.newper.repository.QnaRepo;
-import com.newper.repository.ReviewRepo;
-import com.newper.repository.ShopRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.domain.Sort.Order.desc;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +40,7 @@ public class MyPageController {
     private final CompanyMapper companyMapper;
     private final ReviewRepo reviewRepo;
     private final QnaRepo qnaRepo;
+    private final QnaSpRepo qnaSpRepo;
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -58,13 +60,12 @@ public class MyPageController {
     @PostMapping("myOrder/{menu}.load")
     public ModelAndView myOrderMenu(@PathVariable String menu){
         ModelAndView mav = new ModelAndView("myPage/myOrder_menu :: " + menu);
-
-
+        System.out.println(menu);
         mav.addObject("CU_IDX",shopSession.getIdx());
         long cuIdx = shopSession.getIdx();
         List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
         mav.addObject("orders",list);
-        System.out.println("list = " + list);
+        System.out.println(mav.getViewName());
         return mav;
     }
     /** 주문/배송조회 하위 메뉴 load */
@@ -100,7 +101,10 @@ public class MyPageController {
             orderMenuTitle = "취소/교환/반품";
         }else if(menu.equals("all")){
             orderMenuTitle = "전체 주문 내역";
+            long cuIdx = shopSession.getIdx();
+            List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             shopList = shopRepo.findAll();
+            mav.addObject("orders",list);
         }
         mav.addObject("shopList", shopList);
         mav.addObject("orderMenuTitle", orderMenuTitle);
@@ -116,11 +120,12 @@ public class MyPageController {
             long cuIdx = shopSession.getIdx();
             List<Map<String, Object>> list = ordersMapper.selectOrderGsListByCuIdx(cuIdx);
             mav.addObject("orders", list);
-        }else if(menu.equals("otherAsCompanyModal")) {
 
-            List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+            }else if(menu.equals("otherAsCompanyModal")) {
 
-            mav.addObject("company", comList);
+                List<Map<String, Object>> comList = companyMapper.selectCompanyType();
+
+                mav.addObject("company", comList);
 
 
             }else if(menu.equals("asProductModal2")) {
@@ -148,8 +153,12 @@ public class MyPageController {
 
             System.out.println("pList!!!!!!!!!!!!!!!!!!!!! = " + pList);
 
+        }else if(menu.equals("asList")) {
+            mav.addObject("CU_IDX", shopSession.getIdx());
+            long cuIdx = shopSession.getIdx();
+            List<Map<String, Object>> listt = ordersMapper.selectOrderGsListByAsIdx(cuIdx);
+            mav.addObject("afterService", listt);
         }
-
 
         return mav;
     }
@@ -204,7 +213,7 @@ public class MyPageController {
         if (menu.equals("possibleReview")) {
             mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
         } else if (menu.equals("completeReview")) {
-            mav.addObject("review", reviewRepo.findReviewsByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
+            mav.addObject("review", reviewRepo.findAllByCustomer(customerRepo.getReferenceById(shopSession.getIdx()),Sort.by(desc("rIdx"))));
         }
         if (menu.equals("reviewModal")) {
             if (paramMap.getString("insert").equals("true")) {
@@ -224,13 +233,16 @@ public class MyPageController {
         if(menu.equals("qnaModal")){
             if(paramMap.containsKey("qnaIdx") && !paramMap.get("qnaIdx").equals("")){
                 mav.addObject("modalTitle", "1:1문의 수정하기");
+                mav.addObject("qna", qnaRepo.findById(paramMap.getLong("qnaIdx")).orElseThrow(() -> new MsgException("존재하지 않는 1:1문의입니다.")));
             }else{
                 mav.addObject("modalTitle", "1:1문의");
             }
         }else if(menu.equals("qnaProductModal")){
             mav.addObject("modalTitle", "상품문의 수정하기");
         }else if(menu.equals("qnaHistory")) {
-            mav.addObject("qnaList", qnaRepo.findAllByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
+            mav.addObject("qnaList", qnaRepo.findAllByCustomerOrderByQnaIdxDesc(customerRepo.getReferenceById(shopSession.getIdx())));
+        }else if(menu.equals("productQnaHistory")){
+            mav.addObject("qnaSpList", qnaSpRepo.findAllByCustomerOrderByQspIdxDesc(customerRepo.getReferenceById(shopSession.getIdx())));
         }
         return mav;
     }

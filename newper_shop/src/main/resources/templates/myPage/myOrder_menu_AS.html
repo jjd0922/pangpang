@@ -376,21 +376,20 @@
             </div>
         </li>
         <!-- AS 신청제품 -->
-        <li>
-            <div class="table-title">AS 신청제품</div>
+        <li  th:each="order: ${afterService}">
+            <div class="table-title" name="OG_IDX" th:value="${order.OG_IDX}">AS 신청제품</div>
             <div class="table-content display-flex space-between">
                 <div class="display-flex alignItems-center">
                     <div class="order-item-thumb as-item-thumb">
                         <a href="javascript:;">
                             <img src="https://dummyimage.com/100x100/eeeeee/777777" alt="상품이미지">
-                            <p class="font-xsm color-grey999">001762984</p>
+                            <p class="font-xsm color-grey999" th:text="${order.OG_IDX}"></p>
                         </a>
                     </div>
                     <div class="order-item-info-wrap">
                         <div>
                             <a href="javascript:;">
-                                <h3 class="font-md bold">삼성 노트북 코어i5 램8G SSD 대용량
-                                    듀얼하드 윈10</h3>
+                                <h3 class="font-md bold">[[${order?.get('GS_NAME')}]]</h3>
                             </a>
                         </div>
                         <div class="font-xxsm order-item-info">
@@ -399,7 +398,7 @@
                     </div>
                 </div>
                 <div class="font-md bold">
-                    <p>결제금액 : 600,000원</p>
+                    <p>[[${order?.get('GS_PRICE')}]]</p>
                 </div>
                 <div class="openClose">
                     <img class='openClose1' th:attr="src=@{/image/arrow/open-arrow4.png},title='열기',alt='열기'">

@@ -1,7 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.UType;
-import com.newper.entity.common.Address;
+import com.newper.entity.common.AddressEmb;
 import com.newper.entity.common.BaseEntity;
 import com.newper.exception.MsgException;
 import lombok.*;
@@ -64,7 +64,7 @@ public class User extends BaseEntity {
     private String uPassword;
 
     @Embedded
-    private Address address;
+    private AddressEmb address;
 
     @OneToMany(mappedBy = "user")
     private List<Company> companies;
