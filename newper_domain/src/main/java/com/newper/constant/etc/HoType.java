@@ -69,7 +69,7 @@ public enum HoType implements EnumOption {
             switch (row*10+col){
                 case 11: return null;
                 case 12: return null;
-                case 13: return "middle-login-group";
+                case 13: return "top-login-group";
                 case 21: return "middle-login-group";
                 case 22: return null;
                 case 23: return "middle-login-group";

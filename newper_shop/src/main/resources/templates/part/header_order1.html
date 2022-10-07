@@ -45,7 +45,7 @@
         </th:block>
     </div>
 
-    <div class="login-group-text login-group-text-division" th:if="${shop.getHeader().getHdLoginType() == 'LINE'}">
+    <div class="login-group-text login-group-text-division" th:if="${@shopComp.getShopMap().get(#request.getServerName()).shopDesign.get('LOGIN_TYPE') == 'TEXT'}">
         <th:block th:each="loginStr, i : ${@shopComp.getShopMap().get(#request.getServerName()).getShopHdLoginGroup()}">
             <th:block th:if="${loginStr.equals('LOGIN')} and ${@shopSession.idx == null}">
                 <a href="javascript:;" title="로그인" class="text login nosessionClass">로그인</a>
@@ -111,6 +111,7 @@
 
 <!-- 없음 > 파일 2개로 찢음에 따라 공통 사용되는 없음 타입 두개가 됨 (order_1과 order_2에 중복) -->
 <th:block th:fragment="block-none">
+    <span></span>
 </th:block>
 
 <!-- 불필요시 또는 명칭변경 시 요청해주세요(문성모에게) -->
