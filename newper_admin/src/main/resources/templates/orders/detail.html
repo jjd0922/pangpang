@@ -309,13 +309,13 @@
                                                배송자(설치자) 이름
                                             </span>
                                         </span>
-                                        <input type="text" name="AD_NAME" class="form-control" th:value="${order?.AD_NAME}">
+                                        <input type="text" name="OA_NAME" class="form-control" th:value="${order?.OA_NAME}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
                                                배송/설치메세지
                                             </span>
                                         </span>
-                                        <input type="text" name="AD_MEMO" class="form-control" th:value="${order?.AD_MEMO}">
+                                        <input type="text" name="OA_MEMO" class="form-control" th:value="${order?.OA_MEMO}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-prepend">
@@ -323,7 +323,7 @@
                                                배송자(설치자) 연락처
                                             </span>
                                         </span>
-                                        <input type="text" name="AD_PHONE" class="form-control" th:value="${order?.AD_PHONE}">
+                                        <input type="text" name="OA_PHONE" class="form-control" th:value="${order?.OA_PHONE}">
                                         <span class="input-group-prepend">
                                             <span class="input-group-text">
 
@@ -520,6 +520,7 @@
 
 <th:block th:replace="orders/modal/customerModal.html"/>
 <th:block th:replace="orders/modal/productModal.html"/>
+<th:block th:replace="orders/modal/asModal.html"/>
 <!-- 공통 js -->
 
 <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icons/icomoon/styles.min.css}">
@@ -796,10 +797,7 @@
             targets:   [0]
         } ],
         "columns" : [
-            {'class':'select-checkbox m-w-2', 'title':'선택','data':'OG_IDX','defaultContent':'','render':function(data,type,full,meta){
-                    return '<input type="hidden" name="OG_IDX" value="'+data+'">';
-                }}
-            ,{'title':'주문상품코드','data':'P_IDX'}
+            {'title':'주문상품코드','data':'OG_IDX'}
             ,{'title':'출고구분','data':'null','defaultContent':''}
             ,{'title':'주문상태','data':'O_STATE_STR'}
             ,{'title':'환불상태','data':'PAY_CANCEL_STATE_STR','defaultContent':'', 'render':function(data,type,full,meta){
