@@ -21,15 +21,15 @@ import java.util.List;
 public class OrderAddress{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adIdx;
+    private Long oaIdx;
 
-    private String adName;
+    private String oaName;
 
-    private String adPhone;
+    private String oaPhone;
 
-    private String adMemo;
+    private String oaMemo;
 
-    private String adEntrance;
+    private String oaEntrance;
 
     @Embedded
     private AddressEmb address;
@@ -41,10 +41,10 @@ public class OrderAddress{
     @PreUpdate
     public void ordersAddressSave(){
 
-        if (!StringUtils.hasText(getAdName())) {
+        if (!StringUtils.hasText(getOaName())) {
             throw new MsgException("받으시는 분 이름을 입력해주세요.");
         }
-        if (!StringUtils.hasText(getAdPhone())) {
+        if (!StringUtils.hasText(getOaPhone())) {
             throw new MsgException("받으시는 분 연락처를 입력해주세요.");
         }
         if (!StringUtils.hasText(getAddress().getPost())) {

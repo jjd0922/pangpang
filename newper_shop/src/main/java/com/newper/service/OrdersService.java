@@ -70,7 +70,7 @@ public class OrdersService {
         AddressEmb address = paramMap.mapParam(AddressEmb.class);
         oa.setAddress(address);
         oa.getAddress().setPost("12345");
-        oa.setAdPhone("01012341234");
+        oa.setOaPhone("01012341234");
         orderAddressRepo.save(oa);
         orders.setOrderAddress(oa);
 
