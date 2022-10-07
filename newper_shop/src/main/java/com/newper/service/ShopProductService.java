@@ -6,6 +6,7 @@ import com.newper.entity.ShopProduct;
 import com.newper.entity.ShopProductAdd;
 import com.newper.entity.ShopProductOption;
 import com.newper.exception.MsgException;
+import com.newper.mapper.ShopProductMapper;
 import com.newper.repository.ShopProductAddRepo;
 import com.newper.repository.ShopProductOptionRepo;
 import com.newper.repository.ShopProductRepo;
@@ -22,6 +23,7 @@ public class ShopProductService {
     private final ShopProductRepo shopProductRepo;
     private final ShopProductAddRepo shopProductAddRepo;
     private final ShopProductOptionRepo shopProductOptionRepo;
+    private final ShopProductMapper shopProductMapper;
 
     /** 주문상세에서 보여질 분양몰 상품 정보 조회. sessionShopIdx != null인 경우 분양몰 일치하는지도 체크 */
     @Transactional(readOnly = true)
@@ -143,5 +145,15 @@ public class ShopProductService {
         }
 
         return dtoMap;
+    }
+    /** 카테고리 별 상품 리스트 */
+    public Map<String, Object> selectShopProductListBySearch(ParamMap paramMap) {
+        Map<String, Object> map = new HashMap<>();
+        List<Map<String,Object>> shopProductList = shopProductMapper.selectCategoryProductList(paramMap.getMap());
+        int count = shopProductMapper.countCategoryProductList(paramMap.getMap());
+
+        map.put("shopProductList", shopProductList);
+        map.put("count", count);
+        return map;
     }
 }

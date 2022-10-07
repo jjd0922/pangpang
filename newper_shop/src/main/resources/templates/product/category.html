@@ -3,7 +3,7 @@
 <head th:replace="part/head :: head('상품 카테고리')"></head>
 
 <body th:classappend="${@shopComp.getShopDesign()}">
-    <div class="page-container">
+<div class="page-container">
 
 <!-- 헤더 카테고리 -->
 <th:block th:replace="part/header :: main-header"></th:block>
@@ -18,11 +18,17 @@
 <section class="padding-section padding-half">
     <div class="container">
         <p class="menu-route">
-            <span class="color-grey999">노트북/데스크탑</span><i class="circle-down2"></i>
+            <span class="color-grey999" th:text="${cateMenuName?.get('SCATE_NAME')}">노트북/데스크탑</span><i class="circle-down2"></i>
+
+            <th:block th:if="${cateMenuName?.get('MIDDLE_NAME') != null }">
             &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
-            <span class="color-grey999">노트북/스마트PC</span><i class="circle-down2"></i>
+            <span class="color-grey999" th:text="${cateMenuName?.get('MIDDLE_NAME')}">노트북/스마트PC</span><i class="circle-down2"></i>
+            </th:block>
+
+            <th:block th:if="${cateMenuName?.get('SMALL_NAME') != null }">
             &nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;
-            <span class="color-grey333">울트라북</span></span><i class="circle-down2"></i>
+            <span class="color-grey333" th:text="${cateMenuName?.get('SMALL_NAME')}">울트라북</span></span><i class="circle-down2"></i>
+            </th:block>
         </p>
     </div>
 </section>
@@ -52,10 +58,14 @@
 </section>
 
 <section class="category-table padding-menu">
+    <form id="searchCategoryForm">
+    <input type="hidden" name="scateIdx" th:value="${scateIdx}">
+    <input type="hidden" name="parentCateIdx" th:value="${parentCateIdx}">
+    <input type="hidden" name="cateIdx" th:value="${cateIdx}">
     <div class="container">
     <!-- 상품 카테고리 대분류/중분류 목록페이지 -->
         <div class="cate-title">
-            <p>노트북/데스크탑</p>
+            <p th:text="${cateMenuName?.get('SCATE_NAME')}">노트북/데스크탑</p>
         </div>
         <!-- 상위 카테고리 [대중소분류/상품상태] -->
         <div class="cate-table-wrap">
@@ -65,33 +75,27 @@
                     <div class="cate-table-title">대분류</div>
                     <!-- 선택된 카테고리는 li에 class="on" 추가 -->
                     <ul class="cate-table-cont">
-                        <li>노트북/데스크탑</li>
-                        <li>모니터/주변기기</li>
-                        <li>태블릿/휴대폰/웨어러블</li>
-                        <li>음향/이어폰/스피커</li>
-                        <li>가전/TV/세탁기/냉장고</li>
-                        <li>주방/생활/레져</li>
-                        <li>차량용품/블랙박스</li>
-                        <li>패션/잡화/뷰티</li>
-                        <li>식품/헬스케어</li>
+                        <li th:each="shopCategory : ${@shopComp.shopCategoryList}" th:classappend="${shopCategory.SCATE_IDX == scateIdx}? 'on' : ''">
+                            <a th:href="@{|/product/category?scateIdx=${shopCategory.SCATE_IDX}|}" th:text="${shopCategory.SCATE_NAME}"></a>
+                        </li>
                     </ul>
                 </li>
                 <!-- 중분류 -->
-                <li>
+                <li th:if="${#maps.containsKey(@shopComp.middleCategoryList,scateIdx)}">
                     <div class="cate-table-title">중분류</div>
                     <ul class="cate-table-cont">
-                        <li class="on">노트북/스마트PC</li>
-                        <li>컴퓨터/일체형PC</li>
-                        <li>애플/맥북/아이맥</li>
+                        <li th:each="middleCategory: ${@shopComp.getMiddleCategoryList().get(__${scateIdx}__)}" th:classappend="${middleCategory.CATE_IDX == parentCateIdx}? 'on':''">
+                            <a th:href="@{|/product/category?scateIdx=${scateIdx}&parentCateIdx=${middleCategory.CATE_IDX}|}" th:text="${middleCategory.CATE_NAME}"></a>
+                        </li>
                     </ul>
                 </li>
                 <!-- 소분류 -->
-                <li>
+                <li th:if="${parentCateIdx != null && #maps.containsKey(@shopComp.smallCategoryList,parentCateIdx)}">
                     <div class="cate-table-title">소분류</div>
                     <ul class="cate-table-cont">
-                        <li>일반용</li>
-                        <li>게임용</li>
-                        <li class="on">울트라북</li>
+                        <li th:each="smallCategory: ${@shopComp.smallCategoryList.get(__${parentCateIdx}__)}" th:classappend="${smallCategory.CATE_IDX == cateIdx}? 'on':''">
+                            <a th:href="@{|/product/category?scateIdx=${scateIdx}&parentCateIdx=${parentCateIdx}&cateIdx=${smallCategory.CATE_IDX}|}" th:text="${smallCategory.CATE_NAME}"></a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -227,108 +231,45 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    </form>
+</section>
 
     <!-- 검색결과 -->
-    <section class="padding-section container">
-        <div class="itemSort-header">
-            <p><span class="color-red">848</span>&nbsp;개의 검색결과</p>
-            <div>
-                <select name="itemSort-option" id="itemSort-option">
-                    <option value="orderByHit">인기순</option>
-                    <option value="orderByNew">신규런칭</option>
-                    <option value="orderByPriceAsc">낮은가격순</option>
-                    <option value="orderByPriceDesc">높은가격순</option>
-                    <option value="orderByReview">상품평 많은순</option>
-                </select>
-                <i class="itemSort itemSort1 on"></i>
-                <i class="itemSort itemSort2"></i>
-            </div>
-        </div>
+<section class="padding-section container" id="searchThumbnailList">
 
-        <!-- 1행 4열 썸네일로 보기 -->
-        <div>
-            <ul class="col-list lg-4col sm-2col searchResult-vertical-thumb">
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-default(null)"></div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <!-- 1행 1열 썸네일로 보기 -->
-        <div>
-            <ul class="col-list lg-1col">
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-wrap boxShadow-hover">
-                        <div class="compareAdd-wrap">
-                            <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                            <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                        </div>
-                        <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>
-                    </div>
-                </li>
-                <li>
-                <div class="thumb-wrap boxShadow-hover">
-                    <div class="compareAdd-wrap">
-                        <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">
-                        <label for="compareAdd"><span class="font-sm">비교담기</span></label>
-                    </div>
-                    <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>
-                </div>
-            </li>
-            </ul>
-        </div>
-    </div>
+<!--         1행 1열 썸네일로 보기-->
+<!--    <div>-->
+<!--        <ul class="col-list lg-1col">-->
+<!--            <li>-->
+<!--                <div class="thumb-wrap boxShadow-hover">-->
+<!--                    <div class="compareAdd-wrap">-->
+<!--                        <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">-->
+<!--                        <label for="compareAdd"><span class="font-sm">비교담기</span></label>-->
+<!--                    </div>-->
+<!--                    <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <div class="thumb-wrap boxShadow-hover">-->
+<!--                    <div class="compareAdd-wrap">-->
+<!--                        <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">-->
+<!--                        <label for="compareAdd"><span class="font-sm">비교담기</span></label>-->
+<!--                    </div>-->
+<!--                    <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <div class="thumb-wrap boxShadow-hover">-->
+<!--                    <div class="compareAdd-wrap">-->
+<!--                        <input type="checkbox" id="compareAdd" class="custom-checkbox" name="" value="">-->
+<!--                        <label for="compareAdd"><span class="font-sm">비교담기</span></label>-->
+<!--                    </div>-->
+<!--                    <div th:replace="part/thumbnail :: thumbnail-searchResults"></div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
 </section>
 
 <!-- 푸터 -->
@@ -340,6 +281,29 @@
 <!--js-->
 <th:block th:replace="part/js"></th:block>
 
-    </div>
+</div>
 </body>
+<script>
+    function searchCategoryProductList(){
+        $.ajax({
+            url:'/product/category.ajax'
+            ,type:'post'
+            ,data: $('#searchCategoryForm').serialize()
+            ,success:function (res){
+                $('#searchThumbnailList').empty();
+                $('#searchThumbnailList').append(res);
+
+                // action
+                // $('#myOrderTabMenu').children('li').removeClass("on");
+                // $('#myOrderTabMenu').find($('#'+menu)).addClass("on");
+            }
+            ,error(){}
+        })
+    }
+</script>
+<script>
+    $(function(){
+        searchCategoryProductList();
+    })
+</script>
 </html>

@@ -1,6 +1,8 @@
 package com.newper.controller.rest;
 
+import com.newper.dto.ParamMap;
 import com.newper.mapper.ShopProductMapper;
+import com.newper.service.ShopProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import java.util.Map;
 public class ProductRestController {
 
     private final ShopProductMapper shopProductMapper;
+    private final ShopProductService shopProductService;
 
     @PostMapping("best/{scateIdx}.load")
     public List<Map<String,Object>> todayBestShopProduct(@PathVariable(value = "scateIdx", required = false) Integer scateIdx){
@@ -37,6 +40,16 @@ public class ProductRestController {
         map.put("scateIdx", scateIdx);
         List<Map<String,Object>> mainsectionscateProductList = shopProductMapper.selectscateMainSectionProductList(map);
         mav.addObject("shopProductList", mainsectionscateProductList);
+        return mav;
+    }
+    /** 카테고리 별 상품 리스트 */
+    @PostMapping(value = "category.ajax")
+    public ModelAndView productCategoryList(ParamMap paramMap){
+        ModelAndView mav = new ModelAndView("part/thumbnailList :: thumbanil-default-map-list-search-result");
+
+        Map<String,Object> result = shopProductService.selectShopProductListBySearch(paramMap);
+        mav.addObject("shopProductList", result.get("shopProductList"));
+        mav.addObject("count", result.get("count"));
         return mav;
     }
 }

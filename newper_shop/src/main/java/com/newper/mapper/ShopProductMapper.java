@@ -13,4 +13,7 @@ public interface ShopProductMapper {
 
 
     List<Map<String,Object>> selectscateMainSectionProductList(Map<String,Object> map);
+    /** 카테고리 별 상품 조회*/
+    List<Map<String, Object>> selectCategoryProductList(Map<String, Object> map);
+    int countCategoryProductList(Map<String, Object> map);
 }

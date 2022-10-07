@@ -9,7 +9,6 @@ import com.newper.mapper.CategoryMapper;
 import com.newper.mapper.ShopMapper;
 import com.newper.repository.DomainRepo;
 import com.newper.repository.MainSectionRepo;
-import com.newper.repository.ShopCategoryRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +27,30 @@ public class ShopService {
     private final ShopRepo shopRepo;
     private final DomainRepo domainRepo;
     private final ShopMapper shopMapper;
-    private final CategoryMapper categoryMapper;
-    private final ShopCategoryRepo shopCategoryRepo;
     private final MainSectionRepo mainSectionRepo;
+    private final CategoryMapper categoryMapper;
 
 
     /** shop 정보 가져오기 */
     public void setShopComp() {
 
         List<Domain> domainList = domainRepo.findWithShopBy();
+
+        // 카테고리 정보
+        //전시대분류 전체 LIST
+        List<Map<String, Object>> scateList = categoryMapper.selectAllShopCategory();
+        shopComp.setShopCategoryList(scateList);
+        //중분류 전체 조회
+        // key : 전시 idx / value : 중분류
+        List<Map<String, Object>> middleCateList = categoryMapper.selectAllMiddleCategory();
+        Map<Object, List<Map<String, Object>>> csc_scate_idx = middleCateList.stream().collect(Collectors.groupingBy(map -> map.get("CSC_SCATE_IDX")));
+        shopComp.setMiddleCategoryList(csc_scate_idx);
+        //소분류
+        // key : 중분류 idx / value : 소분류
+        List<Map<String, Object>> smallCateList = categoryMapper.selectAllSmallCategory();
+        Map<Object, List<Map<String, Object>>> middle_cate_idx = smallCateList.stream().collect(Collectors.groupingBy(map -> map.get("CATE_PARENT_IDX")));
+        shopComp.setSmallCategoryList(middle_cate_idx);
+
         for (Domain domain : domainList) {
             Shop shop = domain.getShop();
             shopComp.getShopMap().put(domain.getDomUrl(), shop);
@@ -50,21 +65,7 @@ public class ShopService {
             shopComp.setShopDesignClass(shopDesignMap);
             shopComp.setShopColorMap(shopDesignMap);
 
-//            List<ShopCategory> shopCategoryList = shopCategoryRepo.findAll();
-//            List<Map<String,Object>> allCateList = new ArrayList<>();
-//            for(int i = 0; i< shopCategoryList.size();i++){
-//                Integer scateIdx = shopCategoryList.get(i).getScateIdx();
-//                Map<String,Object> map = new HashMap<>();
-//                map.put("scateIdx", scateIdx);
-//                map.put("shopIdx", shop.getShopIdx());
-//                List<Map<String, Object>> cateList= categoryMapper.selectAllCategoryByShopProduct(map);
-//                for(int k=0;k<cateList.size();k++){
-//                    allCateList.add(cateList.get(k));
-//                }
-//            }
 
-            // 카테고리 정보
-            shopComp.setShopCategoryList(shopCategoryRepo.findAllByAndScateOrderGreaterThanOrderByScateOrderAsc(0));
 
             // 메인섹션리스트
             List<MainSection> mainSectionList = mainSectionRepo.findByShop_shopIdxAndMsOrderGreaterThanOrderByMsOrderAsc(shop.getShopIdx(), 0);
@@ -78,7 +79,12 @@ public class ShopService {
             }
             shopComp.setMainSectionList(mainSectionList);
 
+            // 분양몰 별 카테고리 리스트
+            List<Map<String,Object>> spCateList = categoryMapper.selectAllCategoryByProduct(shop.getShopIdx());
+            shopComp.setShopProductCategoryList(spCateList);
         }
+
+
     }
 
 }

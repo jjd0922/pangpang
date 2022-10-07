@@ -98,7 +98,9 @@ public class ParamMap {
     }
 
     public void printEntrySet(){
+        System.out.println("////////////////////////////");
         System.out.println( map.entrySet());
+        System.out.println("////////////////////////////");
     }
 
     public Set<String> keySet(){
