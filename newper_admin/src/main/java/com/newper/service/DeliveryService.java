@@ -141,7 +141,7 @@ public class DeliveryService {
                     deliveryNumRepo.save(deliveryNum);
 
                     OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
-                    orderGs.setDeliveryNum(deliveryNum);
+                    
                     ordersGsRepo.save(orderGs);
                 }else{
                     result += "<p>" + i + "번째 데이터 해당하는 주문의 재고상품이 없습니다.</p>";
@@ -198,7 +198,7 @@ public class DeliveryService {
                 deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNumRepo.save(deliveryNum);
-                orderGs.setDeliveryNum(deliveryNum);
+                
                 ordersGsRepo.save(orderGs);
                 cnt++;
             }catch (Exception e){
@@ -226,18 +226,18 @@ public class DeliveryService {
         for (String key : map.keySet()) {
             Long OG_IDX = Long.parseLong(key.replace("delivery_num_",""));
             OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
-            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
-            if(deliveryNum==null){
-                throw new MsgException("송장 미등록 주문상품입니다.");
-            }
-
-            deliveryNum.setDnNum(map.get(key)+"");
-            deliveryNum.setDnRelease(LocalDate.now());
-            deliveryNumRepo.saveAndFlush(deliveryNum);
-            orderGs.setDeliveryNum(deliveryNum);
+//            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
+//            if(deliveryNum==null){
+//                throw new MsgException("송장 미등록 주문상품입니다.");
+//            }
+//
+//            deliveryNum.setDnNum(map.get(key)+"");
+//            deliveryNum.setDnRelease(LocalDate.now());
+//            deliveryNumRepo.saveAndFlush(deliveryNum);
+            
             ordersGsRepo.saveAndFlush(orderGs);
 
-            oIdx=orderGs.getOrders().getOIdx();
+//            oIdx=orderGs.getOrders().getOIdx();
         }
         boolean check = true;
         Map<String, Object> reMap = new HashMap<>();

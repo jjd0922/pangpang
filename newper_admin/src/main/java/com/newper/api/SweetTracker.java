@@ -37,7 +37,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -139,7 +138,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -223,7 +221,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -271,7 +268,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성

@@ -228,7 +228,7 @@ public class OrderService {
                 int spo_idx = Integer.parseInt(spoIdx);
                 ShopProductOption shopProductOption = shopProductOptionRepo.getReferenceById(spo_idx);
                 OrderGs orderGs = paramMap.mapParam(OrderGs.class);
-                orderGs.setOrders(orders);
+//                orderGs.setOrders(orders);
                 orderGs.setShopProductOption(shopProductOption);
 
                 orderGs.setOgPrice(shopProductOption.getSpoPrice());
@@ -283,23 +283,23 @@ public class OrderService {
         System.out.println(list);
         for(int i=0; i<list.size(); i++){
             OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
-            if(orderGs.getDeliveryNum()==null){
-                DeliveryNum dn = DeliveryNum.builder().build();
-                dn.setRandomInvoice(12);
-                dn.setDnState(DnState.REQUEST);
-
-                /** DN_COMPANY -> DN_COM_IDX */
-//                dn.setDnCompany("우체국");
-
-                dn.setDnJson(null);
-                dn.setCreatedDate(LocalDate.now());
-
-                deliveryNumRepo.save(dn);
-
-                orderGs.setDeliveryNum(dn);
-                ordersGsRepo.save(orderGs);
-                cnt++;
-            }
+//            if(orderGs.getDeliveryNum()==null){
+//                DeliveryNum dn = DeliveryNum.builder().build();
+//                dn.setRandomInvoice(12);
+//                dn.setDnState(DnState.REQUEST);
+//
+//                /** DN_COMPANY -> DN_COM_IDX */
+////                dn.setDnCompany("우체국");
+//
+//                dn.setDnJson(null);
+//                dn.setCreatedDate(LocalDate.now());
+//
+//                deliveryNumRepo.save(dn);
+//
+//                orderGs.setDeliveryNum(dn);
+//                ordersGsRepo.save(orderGs);
+//                cnt++;
+//            }
 
         }
 
