@@ -165,7 +165,7 @@ public class OrdersRestController {
     public ReturnMap saveDeliveryNumAs(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         orderService.saveDeliveryNumAs(paramMap);
-        rm.setMessage("송장생성 완료");
+        rm.setMessage("회수송장생성 완료");
         return rm;
     }
 }

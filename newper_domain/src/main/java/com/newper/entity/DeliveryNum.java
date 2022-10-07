@@ -1,6 +1,7 @@
 package com.newper.entity;
 
 import com.newper.constant.DnSender;
+import com.newper.constant.DnType;
 import com.newper.constant.OgdnType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
@@ -25,6 +26,14 @@ public class DeliveryNum extends CreatedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dnIdx;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DN_COM_IDX", referencedColumnName = "comIdx")
+    private Company company;
+
+    @Enumerated(EnumType.STRING)
+    private DnType dnType;
+
 
     private String dnState;
     private String dnNum;

@@ -64,7 +64,7 @@ public class OrderService {
     private final ProcessMapper processMapper;
     private final ChecksMapper checksMapper;
     private final AfterServiceRepo afterServiceRepo;
-    private final OrdersMapper ordersMapper;
+    private final OrderGsDnRepo orderGsDnRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -484,8 +484,17 @@ public class OrderService {
                     .build();
             deliveryNumRepo.save(deliveryNum);
 
+            afterService.setDeliveryNum(deliveryNum);
+            afterServiceRepo.save(afterService);
 
+            OrderGsDn orderGsDn = OrderGsDn
+                    .builder()
+                    .orderGs(orderGs)
+                    .deliveryNum(deliveryNum)
+                    .ogdnType(OgdnType.AS_IN)
+                    .build();
 
+            orderGsDnRepo.save(orderGsDn);
         }
     }
 }
