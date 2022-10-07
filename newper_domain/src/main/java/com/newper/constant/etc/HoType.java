@@ -124,7 +124,7 @@ public enum HoType implements EnumOption {
                 case 12: return null;
                 case 13: return null;
                 case 21: return "middle-banner";
-                case 22: return null;
+                case 22: return "middle-banner";
                 case 23: return "middle-banner";
                 case 31: return null;
                 case 32: return null;
