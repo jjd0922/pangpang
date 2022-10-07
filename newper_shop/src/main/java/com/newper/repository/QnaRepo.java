@@ -11,5 +11,5 @@ public interface QnaRepo extends JpaRepository<Qna, Long> {
 
     /** 고객별 1:1문의 리스트*/
     @EntityGraph(attributePaths = {"orderGsGroup.orders", "customer", "qnaAnswer"})
-    List<Qna> findAllByCustomer(Customer customer);
+    List<Qna> findAllByCustomerOrderByQnaIdxDesc(Customer customer);
 }

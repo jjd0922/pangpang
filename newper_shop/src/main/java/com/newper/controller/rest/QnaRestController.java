@@ -4,6 +4,7 @@ import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.service.QnaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,20 @@ public class QnaRestController {
         ReturnMap rm = new ReturnMap();
         qnaService.saveQna(paramMap, photos);
         rm.setMessage("1:1문의 등록 완료");
+        return rm;
+    }
+
+    @PostMapping("update/{qnaIdx}.ajax")
+    public ReturnMap updateQna(@PathVariable("qnaIdx") Long qnaIdx, ParamMap paramMap, MultipartFile[] photos) {
+        ReturnMap rm = new ReturnMap();
+        qnaService.updateQna(qnaIdx, paramMap, photos);
+        return rm;
+    }
+    
+    @PostMapping("delete/{qnaIdx}.ajax")
+    public ReturnMap deleteQna(@PathVariable("qnaIdx") Long qnaIdx) {
+        ReturnMap rm = new ReturnMap();
+        qnaService.deleteQna(qnaIdx);
         return rm;
     }
 

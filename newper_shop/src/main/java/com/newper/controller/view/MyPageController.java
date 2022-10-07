@@ -14,6 +14,7 @@ import com.newper.repository.ReviewRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.domain.Sort.Order.desc;
 
 @RequiredArgsConstructor
 @RestController
@@ -204,7 +207,7 @@ public class MyPageController {
         if (menu.equals("possibleReview")) {
             mav.addObject("review_ogg", ordersMapper.selectOGGForReview(shopSession.getId(), shopSession.getShopIdx(), 1, 5));
         } else if (menu.equals("completeReview")) {
-            mav.addObject("review", reviewRepo.findReviewsByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
+            mav.addObject("review", reviewRepo.findAllByCustomer(customerRepo.getReferenceById(shopSession.getIdx()),Sort.by(desc("rIdx"))));
         }
         if (menu.equals("reviewModal")) {
             if (paramMap.getString("insert").equals("true")) {
@@ -224,13 +227,14 @@ public class MyPageController {
         if(menu.equals("qnaModal")){
             if(paramMap.containsKey("qnaIdx") && !paramMap.get("qnaIdx").equals("")){
                 mav.addObject("modalTitle", "1:1문의 수정하기");
+                mav.addObject("qna", qnaRepo.findById(paramMap.getLong("qnaIdx")).orElseThrow(() -> new MsgException("존재하지 않는 1:1문의입니다.")));
             }else{
                 mav.addObject("modalTitle", "1:1문의");
             }
         }else if(menu.equals("qnaProductModal")){
             mav.addObject("modalTitle", "상품문의 수정하기");
         }else if(menu.equals("qnaHistory")) {
-            mav.addObject("qnaList", qnaRepo.findAllByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
+            mav.addObject("qnaList", qnaRepo.findAllByCustomerOrderByQnaIdxDesc(customerRepo.getReferenceById(shopSession.getIdx())));
         }
         return mav;
     }
