@@ -196,4 +196,11 @@ public class ProcessController {
         ModelAndView mav = new ModelAndView("process/outCheck");
         return mav;
     }
+
+    /** AS검수 */
+    @GetMapping(value = "as/check")
+    public ModelAndView asCheck(ParamMap paramMap) {
+        ModelAndView mav = new ModelAndView("process/asCheck");
+        return mav;
+    }
 }

@@ -538,3 +538,10 @@ function textWonRemoveComma() {
         $(this).val(val);
     })
 }
+
+function textWonComma() {
+    $.each($('.text-won'), function (index, value) {
+        var val = comma($(this).val());
+        $(this).val(val);
+    })
+}

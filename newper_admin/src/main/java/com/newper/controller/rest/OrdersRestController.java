@@ -134,15 +134,6 @@ public class OrdersRestController {
         return returnDatatable;
     }
 
-    /** AS 검수 리포트 등록 (예외사항 필요해서 따로뺌) **/
-    @PostMapping("asCheckReport.ajax")
-    public ReturnMap asCheckReport(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        orderService.asCheckReport(paramMap);
-        rm.setMessage("등록완료");
-        return rm;
-    }
-
     /** AS불가 처리 **/
     @PostMapping("asImpossible.ajax")
     public ReturnMap asImpossible(ParamMap paramMap) {
@@ -160,15 +151,6 @@ public class OrdersRestController {
         return rm;
     }
 
-    /** 회수 고객발송 처리 **/
-    @PostMapping("saveAsDnType.ajax")
-    public ReturnMap saveAsDnType(ParamMap paramMap) {
-        ReturnMap rm = new ReturnMap();
-        orderService.saveAsDnType(paramMap);
-        rm.setMessage("고객발송 처리 완료");
-        return rm;
-    }
-
     /** 회수송장생성 & 반송 */
     @PostMapping("saveDeliveryNumAs.ajax")
     public ReturnMap saveDeliveryNumAs(ParamMap paramMap) {
@@ -177,4 +159,29 @@ public class OrdersRestController {
         rm.setMessage("송장생성 완료");
         return rm;
     }
+
+    /** 해당 AS요청건의 주문에 있는 주문 상품들 조회 */
+    @PostMapping("selectOrderGs.ajax")
+    public List<Map<String, Object>> selectOrderGs(ParamMap paramMap) {
+        return ordersMapper.selectOrderGsByoIdx(paramMap.getMap());
+    }
+
+    /** 해당 AS 요청건 주문 매핑 */
+    @PostMapping("setAsOgIdx.ajax")
+    public ReturnMap setAsOgIdx(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.setAsOgIdx(paramMap);
+        rm.setMessage("주문상품 매핑 완료");
+        return rm;
+    }
+
+    /** 해당 AS 요청건 금액 저장 */
+    @PostMapping("saveAsCost.ajax")
+    public ReturnMap saveAsCost(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.saveAsCost(paramMap);
+        rm.setMessage("금액 수정 완료");
+        return rm;
+    }
+
 }

@@ -137,10 +137,10 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="saveAsDnType();">고객발송회수</a>
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="saveDeliveryNumAs('IN', 'CUSTOMER');">고객발송회수</a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('IN');">회수송장생성</a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('IN', 'COMPANY');">회수송장생성</a>
                                     </div>
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1">출고송장생성</a>
@@ -152,7 +152,7 @@
                                         <a type="button" class="btn btn-sm btn-primary ml-1">교환</a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('OUT');">반송</a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('OUT', 'COMPANY');">반송</a>
                                     </div>
                                 </div>
                             </div>
@@ -198,29 +198,13 @@
 
 <script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 
-<th:block th:replace="orders/modal/asCheckReport.html"/>
 <th:block th:replace="orders/modal/asModal.html"/>
-
+<th:block th:replace="orders/modal/asCheckReport.html"/>
 
 
 <script>
-    /** 회수 고객발송 처리 */
-    function saveAsDnType() {
-        var asIdx = dataTableGetSelectedDataArray('orderTable', 'AS_IDX')
-        $.ajax({
-            url:'saveAsDnType.ajax',
-            type:'post',
-            data:{
-                'asIdx':asIdx,
-            },
-            success() {
-                location.reload();
-            }
-        });
-    }
-
     /** 회수송장생성 & 반송 */
-    function saveDeliveryNumAs(type) {
+    function saveDeliveryNumAs(type, sender) {
         var ogIdx = dataTableGetSelectedDataArray('orderTable', 'OG_IDX')
         var asIdx = dataTableGetSelectedDataArray('orderTable', 'AS_IDX')
         $.ajax({
@@ -229,7 +213,8 @@
            data:{
                'ogIdx':ogIdx,
                'asIdx':asIdx,
-               'type':type
+               'type':type,
+               'sender':sender
            },
            success() {
                location.reload();
@@ -282,7 +267,8 @@
             ,{'title':'배송자(설치자) 주소','data':'ADDRS','defaultContent':''}
             ,{'title':'배송자(설치자) 상세주소','data':'ADDR4','defaultContent':''}
             ,{'title':'배송자(설치자) 메시지(현관비밀번호)','data':'AD_ENTRANCE','defaultContent':''}
-            ,{'title':'자산코드','data':'G_IDX','defaultContent':''}
+            ,{'title':'자산번호','data':'G_IDX','defaultContent':''}
+            ,{'title':'자산바코드','data':'G_BARCODE','defaultContent':''}
             ,{'title':'상품코드','data':'P_IDX','defaultContent':''}
             ,{'title':'상품명','data':'P_NAME','defaultContent':''}
             ,{'title':'주문일','data':'','defaultContent':''}
@@ -291,7 +277,7 @@
             ,{'title':'무상AS잔여일수','data':'','defaultContent':''}
             ,{'title':'AS상태','data':'AS_STATE_STR','defaultContent':''}
             ,{'title':'사유','data':'','defaultContent':''}
-            ,{'title':'상세사유','data':'','render':function(data,type,full,meta){
+            ,{'title':'AS상세','data':'','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm badge-indigo" onclick="openAsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">조회</a>';
                 }}
             ,{'title':'공정항목','data':'','defaultContent':''}
@@ -301,9 +287,9 @@
             ,{'title':'자산공정이력','data':'','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm badge-indigo" onclick="">조회</a>';
                 }}
-            ,{'title':'도색','data':'PAINT_PROCESS','defaultContent':''}
-            ,{'title':'수리','data':'FIX_PROCESS','defaultContent':''}
-            ,{'title':'가공','data':'PROCESS_PROCESS','defaultContent':''}
+            ,{'title':'도색','data':'PAINT_PROCESS2','defaultContent':''}
+            ,{'title':'수리','data':'FIX_PROCESS2','defaultContent':''}
+            ,{'title':'가공','data':'PROCESS_PROCESS2','defaultContent':''}
             ,{'title':'도색비(예정)','data':'PAINT_COST','defaultContent':''}
             ,{'title':'도색항목(예정)','data':'PAINT_CONTENT','defaultContent':''}
             ,{'title':'수리비(예정)','data':'FIX_COST','defaultContent':''}
@@ -311,13 +297,10 @@
             ,{'title':'가공비(예정)','data':'PROCESS_COST','defaultContent':''}
             ,{'title':'가공항목(예정)','data':'PROCESS_CONTENT','defaultContent':''}
             ,{'title':'공정예정비합계','data':'TOTAL_COST','defaultContent':''}
-            ,{'title':'고객입금금액 합계','data':'','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">조회</a>';
+            ,{'title':'공정영업검수','data':'','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="openAsCheckReport(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">조회</a>';
                 }}
             ,{'title':'실공정비합계','data':'','defaultContent':''}
-            ,{'title':'고객입금금액 합계','data':'','render':function(data,type,full,meta){
-                    return '<a class="btn btn-sm badge-indigo" onclick="">조회</a>';
-                }}
             ,{'title':'입고택배사','data':'','defaultContent':''}
             ,{'title':'입고송장번호','data':'','defaultContent':''}
             ,{'title':'입고일','data':'','defaultContent':''}

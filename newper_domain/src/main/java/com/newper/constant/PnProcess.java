@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PnProcess implements EnumOption {
 
-    BEFORE("영업검수전"),
+    BEFORE("선택전"),
     N("미진행")
     ,Y("진행")
     ;

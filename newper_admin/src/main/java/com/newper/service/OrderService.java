@@ -67,6 +67,7 @@ public class OrderService {
     private final AfterServiceRepo afterServiceRepo;
     private final OrderGsDnRepo orderGsDnRepo;
     private final CompanyRepo companyRepo;
+    private final ProcessService processService;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -307,152 +308,6 @@ public class OrderService {
         return cnt+" 건 등록 완료";
     }
 
-
-
-    /** AS리포트 등록 **/
-    @Transactional
-    public void asCheckReport(ParamMap paramMap) {
-        Goods goods = goodsRepo.findById(Long.parseLong(paramMap.getString("gIdx"))).get();
-        CheckGoods checkGoods = null;
-        if (paramMap.getIntZero("cgsIdx") == 0) {
-            int cgsCount = checksMapper.selectCheckGoodsCount(goods.getGIdx(), CgsType.AS.name());
-            checkGoods = CheckGoods
-                    .builder()
-                    .goods(goods)
-                    .cgsType(CgsType.AS)
-                    .cgsJson(new HashMap<>())
-                    .cgsCount(cgsCount + 1)
-                    .build();
-            checkGoodsRepo.save(checkGoods);
-        } else {
-            checkGoods = checkGoodsRepo.findById(paramMap.getInt("cgsIdx")).get();
-        }
-
-        Map<String, Object> cgsJson = checkGoods.getCgsJson();
-
-        List<Long> psCost = paramMap.getListLong("psCost");
-        cgsJson.put("psCost", psCost);
-
-        if (paramMap.get("pSpec1") != null) {
-            List<String> pSpec1 = paramMap.getList("pSpec1");
-            cgsJson.put("pSpec1", pSpec1);
-        }
-
-        if (paramMap.get("pSpec2") != null) {
-            List<String> pSpec2 = paramMap.getList("pSpec2");
-            cgsJson.put("pSpec2", pSpec2);
-        }
-
-        checkGoods.setCgsJson(cgsJson);
-        checkGoodsRepo.save(checkGoods);
-
-        paramMap.put("cgsIdx", checkGoods.getCgsIdx());
-
-        // 공정 필요 생성
-        saveProcessNeed(paramMap, PnType.PAINT);
-        saveProcessNeed(paramMap, PnType.FIX);
-        saveProcessNeed(paramMap, PnType.PROCESS);
-
-
-    }
-
-    @Transactional
-    public void saveProcessNeed(ParamMap paramMap, PnType pnType) {
-        String type = pnType.name().toLowerCase();
-        int idx = paramMap.getIntZero(type+"Idx");
-        String content = paramMap.getString(type+"Content");
-        int cost = paramMap.getInt(type+"Cost");
-
-        if (idx == 0 && !content.replaceAll(" ","").equals("") && cost != 0) {
-            int pnCount = processMapper.selectProcessNeedCount(paramMap.getLong("gIdx"), pnType.name());
-            ProcessNeed processNeed = ProcessNeed
-                    .builder()
-                    .goods(goodsRepo.getReferenceById(paramMap.getLong("gIdx")))
-                    .pnType(pnType)
-                    .pnContent(content)
-                    .pnCount(pnCount + 1)
-                    .pnExpectedCost(cost)
-                    .pnRealCost(0)
-                    .pnJson(new HashMap<>())
-                    .pnProcess(PnProcess.BEFORE)
-                    .pnState(PnState.NEED)
-                    .build();
-            processNeedRepo.save(processNeed);
-
-            Map<String, Object> pnJson = new HashMap<>();
-
-            List<Long> psCost = paramMap.getListLong("psCost");
-            pnJson.put("psCost", psCost);
-
-            if (paramMap.get("pSpec1") != null) {
-                List<String> pSpec1 = paramMap.getList("pSpec1");
-                pnJson.put("pSpec1", pSpec1);
-            }
-
-            if (paramMap.get("pSpec2") != null) {
-                List<String> pSpec2 = paramMap.getList("pSpec2");
-                pnJson.put("pSpec2", pSpec2);
-            }
-
-            processNeed.setPnJson(pnJson);
-            processNeed.setCheckGoods(checkGoodsRepo.getReferenceById(paramMap.getInt("cgsIdx")));
-
-
-            if (pnType.equals(PnType.PROCESS)) {
-                saveProcessSpec(paramMap, processNeed);
-            }
-            processNeedRepo.save(processNeed);
-        } else {
-            ProcessNeed processNeed =  processNeedRepo.findById(idx).get();
-            processNeed.setPnContent(content);
-            processNeed.setPnExpectedCost(cost);
-
-            Map<String, Object> pnJson = processNeed.getPnJson();
-
-            List<Long> psCost = paramMap.getListLong("psCost");
-            pnJson.put("psCost", psCost);
-
-            if (paramMap.get("pSpec1") != null) {
-                List<String> pSpec1 = paramMap.getList("pSpec1");
-                pnJson.put("pSpec1", pSpec1);
-            }
-
-            if (paramMap.get("pSpec2") != null) {
-                List<String> pSpec2 = paramMap.getList("pSpec2");
-                pnJson.put("pSpec2", pSpec2);
-            }
-
-            if (pnType.equals(PnType.PROCESS)) {
-                saveProcessSpec(paramMap, processNeed);
-            }
-
-            processNeedRepo.save(processNeed);
-        }
-    }
-
-    /** 가공 내역 */
-    @Transactional
-    public void saveProcessSpec(ParamMap paramMap, ProcessNeed processNeed) {
-        List<ProcessSpec> processSpecList = processSpecRepo.findByProcessNeed(processNeed);
-        List<Long> psCost = paramMap.getListLong("psCost");
-        if (processSpecList.size() == 0) {
-            for (int i = 0; i < psCost.size(); i++) {
-                ProcessSpec processSpec = ProcessSpec
-                        .builder()
-                        .processNeed(processNeed)
-                        .psType(PsType.EXPECTED)
-                        .psCost(psCost.get(i).intValue())
-                        .build();
-                processSpecRepo.save(processSpec);
-            }
-        } else {
-            for (int i = 0; i < processSpecList.size(); i++) {
-                processSpecList.get(i).setPsCost(psCost.get(i).intValue());
-            }
-        }
-    }
-
-
     /** AS 불가 처리 **/
     @Transactional
     public void asImpossible(ParamMap paramMap) {
@@ -469,7 +324,7 @@ public class OrderService {
         afterServiceRepo.save(afterService);
     }
 
-    /** 회수송장생성 */
+    /** 회수송장 & 반송 생성 */
     @Transactional
     public void saveDeliveryNumAs(ParamMap paramMap) {
         List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
@@ -480,8 +335,8 @@ public class OrderService {
             AfterService afterService = afterServiceRepo.findByAsIdx(asIdx.get(i));
             OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
 
-            // 회수송장 등록인데 이미 송장이 있거나 고객발송인 경우
-            if (type.equals("IN") && (afterService.getDeliveryNum() != null || afterService.getAsDnType().equals(AsDnType.CUSTOMER))) {
+            // 회수송장 등록인데 이미 송장이 있는경우
+            if (type.equals("IN") && afterService.getDeliveryNum() != null) {
                 throw new MsgException("이미 회수 신청한 AS건 입니다.");
             }
 
@@ -489,19 +344,22 @@ public class OrderService {
             if (type.equals("OUT")) {
                 if (afterService.getDeliveryNum2() != null) {
                     throw new MsgException("이미 반송처리된 AS건 입니다.");
-                } else if (afterService.getDeliveryNum() == null || afterService.getAsDnType().equals(AsDnType.CUSTOMER)) {
+                } else if (afterService.getDeliveryNum() == null ) {
                     throw new MsgException("회수되지 않은 AS건 입니다.");
                 }
             }
+
+            DnSender dnSender = DnSender.valueOf(paramMap.getString("sender"));
 
             DeliveryNum deliveryNum = DeliveryNum
                     .builder()
                     .dnNum("TEST")
                     .company(companyRepo.getReferenceById(6))
                     .dnState(DnState.REQUEST)
-                    .dnSender(DnSender.COMPANY)
+                    .dnSender(dnSender)
                     .dnType(DnType.DELIVERY)
                     .build();
+
             deliveryNumRepo.save(deliveryNum);
 
             OgdnType ogdnType;
@@ -513,7 +371,6 @@ public class OrderService {
                 ogdnType = OgdnType.AS_OUT;
             }
 
-            afterService.setAsDnType(AsDnType.COMPANY);
             afterServiceRepo.save(afterService);
 
             OrderGsDn orderGsDn = OrderGsDn
@@ -527,11 +384,29 @@ public class OrderService {
         }
     }
 
-    /** AS건 고객발송처리 */
+    /** 해당 AS건 주문상품, 자산 매핑 */
     @Transactional
-    public void saveAsDnType(ParamMap paramMap) {
+    public void setAsOgIdx(ParamMap paramMap) {
+        AfterService afterService = afterServiceRepo.findByAsIdx(paramMap.getLong("asIdx"));
+
+        if (!afterService.getAsState().equals(AsState.REQUEST)) {
+            throw new MsgException("이미 작업중인 AS건입니다.");
+        }
+
+        OrderGs orderGs = ordersGsRepo.getReferenceById(paramMap.getLong("ogIdx"));
+        Goods goods = goodsRepo.getReferenceById(paramMap.getLong("gIdx"));
+
+        afterService.setOrderGs(orderGs);
+        afterService.setGoods(goods);
+        afterServiceRepo.save(afterService);
+    }
 
 
-//        afterService.setAsDnType(AsDnType.valueOf(paramMap.getString("asDnType")));
+    /** 해당 AS 요청건 금액 저장 */
+    @Transactional
+    public void saveAsCost(ParamMap paramMap) {
+        AfterService afterService = afterServiceRepo.findById(paramMap.getLong("asIdx")).get();
+        afterService.setAsReqMoney(paramMap.getIntZero("asReqMoney"));
+        afterService.setAsRcvMoney(paramMap.getIntZero("asRcvMoney"));
     }
 }
