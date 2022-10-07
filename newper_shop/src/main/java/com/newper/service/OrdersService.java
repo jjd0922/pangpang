@@ -44,27 +44,25 @@ public class OrdersService {
     @Autowired
     private ShopSession shopSession;
 
-    /** insert orders, payment*/
+    /** insert orders, payment. cuIdx == null인 경우 비회원 주문*/
     @Transactional
-    public Orders insertOrder(ParamMap paramMap){
-        LocalDateTime now = LocalDateTime.now();
-
-        //회원 주문인데 세션 만료된 경우 alert 띄우기 (비회원 주문 가능). 회원 주문 적립금 때문에 구분해서 체크함
-        String login = paramMap.getString("login");
+    public Orders insertOrder(ParamMap paramMap, Long cuIdx){
         Customer customer = null;
-        if (login.equals("true")) {
-            if(shopSession.getIdx() == null){
-                throw new NoSessionException();
-            }
+        if (cuIdx != null) {
             customer = customerRepo.getReferenceById(shopSession.getIdx());
         }
 
+
         Orders orders = paramMap.mapParam(Orders.class);
         orders.setCustomer(customer);
-        orders.setODate(now.toLocalDate());
-        orders.setOTime(now.toLocalTime());
+        LocalDateTime now = LocalDateTime.now();
+        orders.setODateTime(now);
+
         orders.setOLocation(OLocation.SHOP);
-        orders.setShop(shopRepo.getReferenceById(shopSession.getShopIdx()));
+
+        Shop shop = shopRepo.getReferenceById(shopSession.getShopIdx());
+        orders.setShop(shop);
+
 
         Map<ShopProduct, List<OrdersSpoDTO>> spoList = shopProductService.selectOrdersInfo(paramMap);
 
