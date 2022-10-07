@@ -1,6 +1,8 @@
 package com.newper.entity;
 
 import com.newper.constant.DnSender;
+import com.newper.constant.DnState;
+import com.newper.constant.DnType;
 import com.newper.constant.OgdnType;
 import com.newper.entity.common.CreatedEntity;
 import lombok.*;
@@ -26,13 +28,20 @@ public class DeliveryNum extends CreatedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dnIdx;
 
-    private String dnState;
-    private String dnNum;
-    private String dnCompany;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DN_COM_IDX", referencedColumnName = "comIdx")
+    private Company company;
 
+    @Enumerated(EnumType.STRING)
+    private DnType dnType;
+
+    @Enumerated(EnumType.STRING)
+    private DnState dnState;
 
     @Enumerated(EnumType.STRING)
     private DnSender dnSender;
+
+    private String dnNum;
     private LocalDate dnDate;
     private LocalDate dnRelease;
     private LocalDate dnSchedule;

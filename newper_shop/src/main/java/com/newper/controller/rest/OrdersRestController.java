@@ -3,8 +3,10 @@ package com.newper.controller.rest;
 import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
+import com.newper.entity.Customer;
 import com.newper.entity.Orders;
 import com.newper.exception.MsgException;
+import com.newper.exception.NoSessionException;
 import com.newper.iamport.IamportApi;
 import com.newper.mapper.OrdersMapper;
 import com.newper.mapper.PaymentMapper;
@@ -34,13 +36,27 @@ public class OrdersRestController {
 
     /** 주문 insert 및, iamport 결제 요청 */
     @PostMapping("iamport/pay.ajax")
-    public ReturnMap iamportPay(ParamMap paramMap, int ipm_idx) {
+    public ReturnMap iamportPay(ParamMap paramMap, Integer ipm_idx) {
         ReturnMap rm = new ReturnMap();
 
         rm.put("id", "imp07732252");
 
+        if (ipm_idx == null) {
+            throw new MsgException("결제수단을 선택해주세요");
+        }
+
+        //회원 주문인데 세션 만료된 경우 alert 띄우기 (비회원 주문 가능). 회원 주문 적립금 때문에 구분해서 체크함
+        String login = paramMap.getString("login");
+        Long cuIdx = null;
+        if (login.equals("true")) {
+            if(shopSession.getIdx() == null){
+                throw new NoSessionException();
+            }
+            cuIdx = shopSession.getIdx();
+        }
+
         try{
-            Orders orders = ordersService.insertOrder(paramMap);
+            Orders orders = ordersService.insertOrder(paramMap, cuIdx);
             JSONObject req = ordersService.insertIamportReq(orders);
             rm.put("req", req);
         }catch (MsgException mse){

@@ -21,11 +21,12 @@ public class QnaRestController {
     public ReturnMap saveQna(ParamMap paramMap, MultipartFile[] photos) {
         ReturnMap rm = new ReturnMap();
         qnaService.saveQna(paramMap, photos);
+        rm.setMessage("1:1문의 등록 완료");
         return rm;
     }
 
     /** 상품문의 등록 ajax*/
-    @PostMapping("/sp/save.ajax")
+    @PostMapping("sp/save.ajax")
     public ReturnMap saveQnaSp(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         qnaService.saveQnaSp(paramMap);

@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -49,7 +50,7 @@ public class Orders {
     /** 주문코드 oDate+oTime+oIdx */
     private String oCode;
     /**임시여부. false인 경우 고객에게 노출X*/
-    private boolean oTemp;
+    private boolean oReal;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
@@ -122,5 +123,10 @@ public class Orders {
     public void setPayment(Payment payment){
         this.payment = payment;
         payment.setOrders(this);
+    }
+    /** 주문일 세팅*/
+    public void setODateTime(LocalDateTime dt){
+        setODate(dt.toLocalDate());
+        setOTime(dt.toLocalTime());
     }
 }

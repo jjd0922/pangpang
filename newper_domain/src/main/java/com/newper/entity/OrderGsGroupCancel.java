@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicInsert
@@ -14,19 +15,23 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Sabang {
+public class OrderGsGroupCancel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long saIdx;
+    private Long oggcIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SA_O_IDX", referencedColumnName = "oIdx")
-    private Orders orders;
+    @JoinColumn(name = "OGGC_OC_IDX", referencedColumnName = "ocIdx")
+    private OrderCancel orderCancel;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SA_OG_IDX", referencedColumnName = "ogIdx")
-    private OrderGs orderGs;
+    @JoinColumn(name = "OGGC_SPO_IDX", referencedColumnName = "spoIdx")
+    private ShopProductOption shopProductOption;
 
-    private String saMallProductId;
+    private int oggcCnt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGsGroupCancel")
+    private List<OrderGs> orderGsList;
+
 }

@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +30,13 @@ public class Payment {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payState = PayState.BEFORE;
+    private LocalDate payDate;
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private PayState payCancelState = PayState.BEFORE;
+    private LocalDate payCancelDate;
+
     /** 결제 금액 payProductPrice + payDelivery*/
     private int payTotal;
     /** 할인 전 상품 금액*/
@@ -59,6 +64,8 @@ public class Payment {
      * vbank_name : 가상계좌 은행명
      * vbank_num : 가상계좌 계좌번호
      * vbank_holder : 가상계좌 예금주
+     *
+     * 결제승인코드,취소코드 필요
      * </pre>*/
     @Builder.Default
     private Map<String,Object> payJson = new HashMap<>();

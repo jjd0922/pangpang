@@ -4,7 +4,7 @@
     <sql id="includeMainsectionDatatable">
         AND SHOP_IDX = #{shopIdx}
         <if test="msName != null and msName != ''">
-            AND MS_NAME LIKE '%'||#{msName}||'%'
+            AND MS_NAME LIKE CONCAT('%',#{msName},'%')
         </if>
     </sql>
     <select id="selectMainSectionDatatable" resultType="map">

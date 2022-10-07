@@ -2,6 +2,7 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
+import com.newper.constant.DnState;
 import com.newper.constant.OState;
 import com.newper.dto.ParamMap;
 import com.newper.entity.DeliveryNum;
@@ -129,15 +130,18 @@ public class DeliveryService {
                 System.out.println(OG_IDX);
                 if(OG_IDX!=null){
                     DeliveryNum deliveryNum = DeliveryNum.builder().build();
-                    deliveryNum.setDnState("");
+                    deliveryNum.setDnState(DnState.REQUEST);
                     deliveryNum.setDnNum(DN_NUM);
-                    deliveryNum.setDnCompany(DN_COMPANY);
+
+                    /** DN_COMPANY -> DN_COM_IDX */
+//                    deliveryNum.setDnCompany(DN_COMPANY);
+
                     deliveryNum.setDnJson(null);
                     deliveryNum.setCreatedDate(LocalDate.now());
                     deliveryNumRepo.save(deliveryNum);
 
                     OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
-                    orderGs.setDeliveryNum(deliveryNum);
+                    
                     ordersGsRepo.save(orderGs);
                 }else{
                     result += "<p>" + i + "번째 데이터 해당하는 주문의 재고상품이 없습니다.</p>";
@@ -183,14 +187,18 @@ public class DeliveryService {
                 jsonObject.put("files",jsonArray);
                 jsonObject.put("memo",paramMap.getString("DN_MEMO"));
 
-                deliveryNum.setDnState("");
+                deliveryNum.setDnState(DnState.REQUEST);
                 deliveryNum.setDnNum("");
-                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
+
+                /** DN_COMPANY -> DN_COM_IDX */
+//                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
+
+
                 deliveryNum.setDnJson(jsonObject);
                 deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNumRepo.save(deliveryNum);
-                orderGs.setDeliveryNum(deliveryNum);
+                
                 ordersGsRepo.save(orderGs);
                 cnt++;
             }catch (Exception e){
@@ -218,18 +226,18 @@ public class DeliveryService {
         for (String key : map.keySet()) {
             Long OG_IDX = Long.parseLong(key.replace("delivery_num_",""));
             OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
-            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
-            if(deliveryNum==null){
-                throw new MsgException("송장 미등록 주문상품입니다.");
-            }
-
-            deliveryNum.setDnNum(map.get(key)+"");
-            deliveryNum.setDnRelease(LocalDate.now());
-            deliveryNumRepo.saveAndFlush(deliveryNum);
-            orderGs.setDeliveryNum(deliveryNum);
+//            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
+//            if(deliveryNum==null){
+//                throw new MsgException("송장 미등록 주문상품입니다.");
+//            }
+//
+//            deliveryNum.setDnNum(map.get(key)+"");
+//            deliveryNum.setDnRelease(LocalDate.now());
+//            deliveryNumRepo.saveAndFlush(deliveryNum);
+            
             ordersGsRepo.saveAndFlush(orderGs);
 
-            oIdx=orderGs.getOrders().getOIdx();
+//            oIdx=orderGs.getOrders().getOIdx();
         }
         boolean check = true;
         Map<String, Object> reMap = new HashMap<>();

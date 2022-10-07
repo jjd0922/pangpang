@@ -79,7 +79,7 @@ public class PaymentService {
                     //가상계좌 (결제 결과 상관없이 update. 결제 결과는 아래서 update)
                     if ("vbank".equals((String) jo_response.get("pay_method"))) {
                         payment.setPayState(PayState.WAIT);
-                        orders.setOTemp(true);
+                        orders.setOReal(true);
 
                         payment.putPayJson("vbank_code", jo_response.get("vbank_code"));
                         payment.putPayJson("vbank_name", jo_response.get("vbank_name"));
@@ -91,7 +91,7 @@ public class PaymentService {
                     //결제 성공
                     if(status.equals("paid")){
                         paymentHistory.setPhResult(PhResult.DONE);
-                        orders.setOTemp(true);
+                        orders.setOReal(true);
 
                         //amount (number): 주문(결제)금액
                         int amount = Integer.parseInt(jo_response.get("amount") + "");

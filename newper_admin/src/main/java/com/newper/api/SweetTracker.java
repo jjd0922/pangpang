@@ -37,7 +37,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -52,7 +51,9 @@ public class SweetTracker {
 
             jsonObject.put("fid", te.getFid());
             jsonObject.put("num", deliveryNum.getDnNum());
-            jsonObject.put("code", deliveryNum.getDnCompany());
+
+            /** DN_COMPANY -> DN_COM_IDX */
+//            jsonObject.put("code", deliveryNum.getDnCompany());
 
             RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
             te.setTraReq(jsonObject.toJSONString());
@@ -137,7 +138,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -221,7 +221,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성
@@ -269,7 +268,6 @@ public class SweetTracker {
         Response response = null;
         try{
             Tracking te = new Tracking();
-            te.setDeliveryNum(deliveryNum);
             te.setTraType("REQUEST");
 
             //추적 API 생성

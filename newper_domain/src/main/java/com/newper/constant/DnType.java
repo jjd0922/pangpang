@@ -4,14 +4,13 @@ import com.newper.constant.basic.EnumOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/** 설치 / 배송 타입 DELIVERY_NUM.DN_TYPE*/
 @Getter
 @AllArgsConstructor
-public enum SpState implements EnumOption {
+public enum DnType implements EnumOption {
 
-    N("판매중지")
-    ,Y("판매")
-
-    ;
+    DELIVERY("배송"),
+    INSTALL("설치");
 
     private String option;
 }

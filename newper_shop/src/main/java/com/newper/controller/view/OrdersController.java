@@ -70,6 +70,12 @@ public class OrdersController {
         mav.addObject("payNormalList", iamportMapper.selectIamportMethodList());
         mav.addObject("payEasyList", iamportMapper.selectIamportPgList());
 
+        //비회원 구매 여부.
+        if (shopSession.getIdx() != null) {
+            mav.addObject("member_order", true);
+        }else{
+            mav.addObject("member_order", paramMap.get("login"));
+        }
 
         return mav;
     }

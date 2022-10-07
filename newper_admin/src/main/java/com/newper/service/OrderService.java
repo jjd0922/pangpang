@@ -64,7 +64,8 @@ public class OrderService {
     private final ProcessMapper processMapper;
     private final ChecksMapper checksMapper;
     private final AfterServiceRepo afterServiceRepo;
-    private final OrdersMapper ordersMapper;
+    private final OrderGsDnRepo orderGsDnRepo;
+    private final CompanyRepo companyRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -227,7 +228,7 @@ public class OrderService {
                 int spo_idx = Integer.parseInt(spoIdx);
                 ShopProductOption shopProductOption = shopProductOptionRepo.getReferenceById(spo_idx);
                 OrderGs orderGs = paramMap.mapParam(OrderGs.class);
-                orderGs.setOrders(orders);
+//                orderGs.setOrders(orders);
                 orderGs.setShopProductOption(shopProductOption);
 
                 orderGs.setOgPrice(shopProductOption.getSpoPrice());
@@ -282,20 +283,23 @@ public class OrderService {
         System.out.println(list);
         for(int i=0; i<list.size(); i++){
             OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
-            if(orderGs.getDeliveryNum()==null){
-                DeliveryNum dn = DeliveryNum.builder().build();
-                dn.setRandomInvoice(12);
-                dn.setDnState("");
-                dn.setDnCompany("우체국");
-                dn.setDnJson(null);
-                dn.setCreatedDate(LocalDate.now());
-
-                deliveryNumRepo.save(dn);
-
-                orderGs.setDeliveryNum(dn);
-                ordersGsRepo.save(orderGs);
-                cnt++;
-            }
+//            if(orderGs.getDeliveryNum()==null){
+//                DeliveryNum dn = DeliveryNum.builder().build();
+//                dn.setRandomInvoice(12);
+//                dn.setDnState(DnState.REQUEST);
+//
+//                /** DN_COMPANY -> DN_COM_IDX */
+////                dn.setDnCompany("우체국");
+//
+//                dn.setDnJson(null);
+//                dn.setCreatedDate(LocalDate.now());
+//
+//                deliveryNumRepo.save(dn);
+//
+//                orderGs.setDeliveryNum(dn);
+//                ordersGsRepo.save(orderGs);
+//                cnt++;
+//            }
 
         }
 
@@ -474,18 +478,26 @@ public class OrderService {
             AfterService afterService = afterServiceRepo.findById(asIdx.get(i)).get();
             OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
 
-
             DeliveryNum deliveryNum = DeliveryNum
                     .builder()
                     .dnNum("TEST")
-                    .dnState("test")
-                    .dnCompany("test")
+                    .dnState(DnState.REQUEST)
+                    .company(companyRepo.getReferenceById(6))
                     .dnSender(DnSender.COMPANY)
                     .build();
             deliveryNumRepo.save(deliveryNum);
 
+            afterService.setDeliveryNum(deliveryNum);
+            afterServiceRepo.save(afterService);
 
+            OrderGsDn orderGsDn = OrderGsDn
+                    .builder()
+                    .orderGs(orderGs)
+                    .deliveryNum(deliveryNum)
+                    .ogdnType(OgdnType.AS_IN)
+                    .build();
 
+            orderGsDnRepo.save(orderGsDn);
         }
     }
 }
