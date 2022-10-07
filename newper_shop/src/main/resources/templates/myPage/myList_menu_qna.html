@@ -23,11 +23,11 @@
         <!-- 1:1문의 상품 리스트 -->
         <ul>
             <!-- 상품 1 -->
-            <li>
+            <li th:each="qna: ${qnaList}">
                 <ul class="table-content2 direct-inquiry-table-content">
-                    <!-- 주분번호 -->
+                    <!-- 주문번호 -->
                     <li>
-                        <p class="bold">123456873131</p>
+                        <p class="bold" th:text="${qna?.orderGsGroup?.orders?.oIdx}">123456873131</p>
                     </li>
                     <!-- 문의유형 -->
                     <li class="inquiry-type">
@@ -236,9 +236,9 @@
             <tr>
                 <td>이메일주소</td>
                 <td>
-                    <input type="text" name="email1">@
+                    <input type="text" name="email">@
                     <select name="domain">
-                        <option>직접입력</option>
+                        <option value="">직접입력</option>
                         <option value="naver.com">naver.com</option>
                         <option value="daum.net">daum.net</option>
                         <option value="hotmail.com">hotmail.com</option>
@@ -258,9 +258,9 @@
             <tr>
                 <td>휴대전화</td>
                 <td th:with="phone=${customer?.getPhoneArr()}">
-                    <input type="text" name="phone1" maxlength="3" th:value="${phone[0]}">-
-                    <input type="text" name="phone2" maxlength="4" th:value="${phone[1]}">-
-                    <input type="text" name="phone3" maxlength="4" th:value="${phone[2]}">
+                    <input type="text" name="phone1" maxlength="3" th:value="${phone != null} ? ${phone[0]}">-
+                    <input type="text" name="phone2" maxlength="4" th:value="${phone != null} ? ${phone[1]}">-
+                    <input type="text" name="phone3" maxlength="4" th:value="${phone != null} ? ${phone[2]}">
                     <input type="checkbox" name="qnaPhoneAlarm">답변알림받기
                 </td>
             </tr>
@@ -285,7 +285,7 @@
             </tr>
             <tr>
                 <td>사진첨부</td>
-                <td><input type="file" name="photos" accept=".jpg,.gif"></td>
+                <td><input type="file" name="photos" accept=".jpg,.gif" multiple="multiple"></td>
             </tr>
         </table>
     </form>
@@ -314,12 +314,13 @@
 
         /** 1:1 문의 등록 */
         function saveQna() {
-            var param = new FormData($('#qnaForm')[0]);
             $.ajax({
                 url: '/qna/save.ajax'
                 ,type: 'post'
-                ,data: param
-                ,success: function () {
+                ,processData: false
+                ,contentType: false
+                ,data: new FormData($('#qnaForm')[0])
+                ,success: function (res) {
                     $('#commonModal').hide();
                     openMyListQnaMenu('qnaHistory');
                 }

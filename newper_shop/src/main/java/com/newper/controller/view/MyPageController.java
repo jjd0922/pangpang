@@ -9,6 +9,7 @@ import com.newper.exception.MsgException;
 import com.newper.mapper.CompanyMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.CustomerRepo;
+import com.newper.repository.QnaRepo;
 import com.newper.repository.ReviewRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class MyPageController {
     private final ShopRepo shopRepo;
     private final CompanyMapper companyMapper;
     private final ReviewRepo reviewRepo;
+    private final QnaRepo qnaRepo;
 
     /** 마이쇼핑 메뉴(최상위) load*/
     @PostMapping("{menu}.load")
@@ -227,6 +229,8 @@ public class MyPageController {
             }
         }else if(menu.equals("qnaProductModal")){
             mav.addObject("modalTitle", "상품문의 수정하기");
+        }else if(menu.equals("qnaHistory")) {
+            mav.addObject("qnaList", qnaRepo.findAllByCustomer(customerRepo.getReferenceById(shopSession.getIdx())));
         }
         return mav;
     }
