@@ -70,8 +70,11 @@
                         <div class="card mb-1">
                             <div class="card-body popup-contents mb-1">
                                 <fieldset class="mt-3">
-                                    <legend>2. 공정항목</legend>
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="openStockProcessDiv();">추가</button>
+                                    <legend>2. 공정항목
+                                        <span class="ml-2">
+                                            <a class="btn btn-sm btn-primary ml-1" onclick="openStockProcessDiv()">추가</a>
+                                        </span>
+                                    </legend>
                                     <div class="row">
                                         <table class="table">
                                             <thead>
@@ -286,7 +289,7 @@
             '<td>'+dataMap.P_NAME+'</td>' +
             '<td>'+dataMap.P_IDX+'</td>' +
             '<td>'+dataMap.P_COST+'</td>' +
-            '<td><input type="text" name="gsCost" class="form-control" value="0"></td>' +
+            '<td><input type="text" name="gsCost" class="form-control text-won" value="0"></td>' +
             '<input type="hidden" name="gsIdx" value="'+dataMap.GS_IDX+'">' +
             '<td><button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deleteProcessSpec('+dataMap.PS_IDX+','+dataMap.PN_IDX+');">삭제</button></td>' +
             '</tr>';
@@ -326,6 +329,11 @@
             ,{'class':'m-w-max', 'title':'옵션2','data':'OPTION2', 'defaultContent':''}
             ,{'class':'m-w-max', 'title':'옵션3','data':'OPTION3', 'defaultContent':''}
         ]
+    });
+
+    // 숫자만 입력되도록
+    $(document).on('input', '.text-won', function (event) {
+        inputOnlyNumber($(event.target));
     });
 </script>
 </html>

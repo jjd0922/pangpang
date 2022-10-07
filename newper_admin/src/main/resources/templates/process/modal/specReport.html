@@ -19,10 +19,20 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-prepend">
+                                                        <span class="input-group-text">공정코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="pnIdx" name="pnIdx" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
                                                         <span class="input-group-text">상품코드</span>
                                                     </span>
                                                     <input type="text" class="form-control" id="pIdx" readonly>
-                                                    <input type="hidden" id="pnIdx" name="pnIdx">
                                                 </div>
                                             </div>
                                         </div>
@@ -191,11 +201,14 @@
     //스펙 세팅
     function setSpec(dataMap) {
         if(dataMap.CATE_SPEC_LIST != null){
+
+
+            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
+
             var gJson = JSON.parse(dataMap.G_JSON);
             var pnJson = JSON.parse(dataMap.PN_JSON);
             var ppJson = JSON.parse(dataMap.PP_JSON);
 
-            var specList = JSON.parse(dataMap.CATE_SPEC_LIST);
             var inSpec1 = listNullCheck(ppJson.inSpec1, specList.length);
             var inSpec2 = listNullCheck(gJson.inSpec2, specList.length);
             var sellSpec1 = listNullCheck(ppJson.sellSpec1, specList.length);
@@ -273,6 +286,7 @@
 
 
     function saveProcessSpec() {
+        textWonRemoveComma();
         $.ajax({
             url: '/process/saveProcessSpec.ajax',
             data: $('#specForm').serialize(),

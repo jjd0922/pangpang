@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProcessSpecRepo extends JpaRepository<ProcessSpec, Integer> {
+public interface ProcessSpecRepo extends JpaRepository<ProcessSpec, Long> {
     List<ProcessSpec> findByProcessNeed(ProcessNeed processNeed);
 }

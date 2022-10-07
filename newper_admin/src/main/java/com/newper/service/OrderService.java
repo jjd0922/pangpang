@@ -341,12 +341,33 @@ public class OrderService {
             }
 
             // 반송 송장 등록일 경우
-            if (type.equals("OUT")) {
+            if (type.equals("RETURN")) {
                 if (afterService.getDeliveryNum2() != null) {
                     throw new MsgException("이미 반송처리된 AS건 입니다.");
                 } else if (afterService.getDeliveryNum() == null ) {
                     throw new MsgException("회수되지 않은 AS건 입니다.");
                 }
+            }
+
+            //출고일경우
+            if (type.equals("OUT")) {
+                if (afterService.getDeliveryNum2() != null) {
+                    throw new MsgException("이미 출고완료된 AS건 입니다.");
+                }
+
+                if (afterService.getDeliveryNum() == null ) {
+                    throw new MsgException("회수되지 않은 AS건 입니다.");
+                }
+
+                if (!afterService.getAsState().equals(AsState.PROCESS)) {
+                    throw new MsgException("수리가 완료되지 않은 AS건 입니다.");
+                }
+
+                Goods goods = afterService.getGoods();
+                goods.setGStockState(GStockState.OUT);
+                goodsRepo.save(goods);
+
+                afterService.setAsState(AsState.COMPLETE);
             }
 
             DnSender dnSender = DnSender.valueOf(paramMap.getString("sender"));

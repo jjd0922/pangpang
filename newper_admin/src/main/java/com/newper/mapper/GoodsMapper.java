@@ -38,9 +38,6 @@ public interface GoodsMapper {
     /** 자산조회 */
     List<Map<String,Object>> selectGoodsDataTable(Map<String, Object> map);
 
-    /** 자산조회 */
-    List<Map<String,Object>> selectGoodsDataTable1(Map<String, Object> map);
-
     /** 자산 개수 조회 */
     long countGoodsDataTable(Map<String, Object> map);
 

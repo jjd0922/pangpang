@@ -3,7 +3,7 @@
 <mapper namespace="com.newper.mapper.ProcessMapper">
     <sql id="includeProcessNeedDataTable">
         <if test="gIdx != null and gIdx != ''">AND PN_G_IDX = #{gIdx}</if>
-        <if test="pgIdx != null and pgIdx != ''">AND PN_PG_IDX = #{pgIdx}</if>
+        <if test="pgIdx != null and pgIdx != ''">AND PG_IDX = #{pgIdx}</if>
         <if test="pnIdx != null and pnIdx != ''">AND PN_IDX = #{pnIdx}</if>
         <if test="pnType != null and pnType != ''">AND PN_TYPE = #{pnType}</if>
         <if test="pnState != null and pnState != ''">AND PN_STATE = #{pnState}</if>
@@ -299,18 +299,18 @@
         SELECT
             G_IDX,
             G_STATE,
+            PN.PN_STATE AS PN_STATE,
             P_IDX,
             P_NAME,
             POR_COST,
             G_BARCODE,
             G_IMEI,
             G_JSON,
-            NOW.PN_JSON AS PN_JSON,
+            PN.PN_JSON AS PN_JSON,
             CATE_SPEC_LIST,
-            NOW.PN_STATE,
             PP_JSON,
-            NOW.PN_IDX,
-            NOW.PN_CONTENT,
+            PN.PN_IDX,
+            PN.PN_CONTENT,
             PP_JSON ->> '$.inSpec1' AS INSPEC1,
             G_JSON ->> '$.inSpec2' AS INSPEC2,
             PP_JSON ->> '$.sellSpec1' AS SELLSPEC1,
@@ -319,7 +319,7 @@
             PROCESS.PN_JSON ->> '$.pSpec2' AS PSPEC2
         FROM
             PROCESS_GROUP
-                LEFT JOIN PROCESS_NEED AS NOW ON PG_IDX = NOW.PN_PG_IDX
+                LEFT JOIN PROCESS_NEED AS PN ON PG_IDX = PN.PN_PG_IDX
                 LEFT JOIN GOODS ON PN_G_IDX = G_IDX
                 LEFT JOIN PROCESS_NEED AS PAINT ON G_IDX = PAINT.PN_G_IDX AND PAINT.PN_TYPE = 'PAINT' AND PAINT.PN_LAST = 1
                 LEFT JOIN PROCESS_NEED AS FIX ON G_IDX = FIX.PN_G_IDX AND FIX.PN_TYPE = 'FIX' AND FIX.PN_LAST = 1
@@ -331,6 +331,8 @@
         <where>
             <include refid="includeProcessNeedDataTable"></include>
         </where>
+        LIMIT
+            #{start}, #{length}
     </select>
 
     <select id="countProcessNeedByGroup" resultType="Long">
@@ -338,8 +340,15 @@
             COUNT(*)
         FROM
             PROCESS_GROUP
-                LEFT JOIN PROCESS_NEED ON PG_IDX = PN_PG_IDX
+                LEFT JOIN PROCESS_NEED AS PN ON PG_IDX = PN.PN_PG_IDX
                 LEFT JOIN GOODS ON PN_G_IDX = G_IDX
+                LEFT JOIN PROCESS_NEED AS PAINT ON G_IDX = PAINT.PN_G_IDX AND PAINT.PN_TYPE = 'PAINT' AND PAINT.PN_LAST = 1
+                LEFT JOIN PROCESS_NEED AS FIX ON G_IDX = FIX.PN_G_IDX AND FIX.PN_TYPE = 'FIX' AND FIX.PN_LAST = 1
+                LEFT JOIN PROCESS_NEED AS PROCESS ON G_IDX = PROCESS.PN_G_IDX AND PROCESS.PN_TYPE = 'PROCESS' AND PROCESS.PN_LAST = 1
+                LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
+                LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
+                LEFT JOIN PO_RECEIVED ON G_POR_IDX = POR_IDX
+                LEFT JOIN PO_PRODUCT ON POR_PP_IDX = PP_IDX
         <where>
             <include refid="includeProcessNeedDataTable"></include>
         </where>

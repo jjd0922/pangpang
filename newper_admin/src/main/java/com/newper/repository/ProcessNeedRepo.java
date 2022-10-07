@@ -13,7 +13,7 @@ public interface ProcessNeedRepo extends JpaRepository<ProcessNeed, Integer> {
 
     List<ProcessNeed> findByGoods_gIdxAndPnType(long gIdx, String pnType);
 
-    @EntityGraph(attributePaths = {"goods"})
+    @EntityGraph(attributePaths = {"goods", "afterService"})
     ProcessNeed findByPnIdx(int pnIdx);
 
     List<ProcessNeed> findByGoodsAndPnProcessAndPnState(Goods goods, PnProcess pnProcess, PnState pnState);

@@ -18,7 +18,7 @@ import java.util.Map;
 public class ProcessSpec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer psIdx;
+    private Long psIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PS_PN_IDX", referencedColumnName = "pnIdx")
