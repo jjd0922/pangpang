@@ -50,24 +50,26 @@ public enum HoType implements EnumOption {
                 case 33: return null;
             }
         }
+        /*SEARCH : top-search, middle-search, bottom-search*/
         if (this.equals(HoType.SEARCH)) {
             switch (row*10+col){
-                case 11: return "top-search";
-                case 12: return "top-search";
-                case 13: return "top-search";
+                case 11: return null;
+                case 12: return null;
+                case 13: return null;
                 case 21: return null;
                 case 22: return "middle-search";
                 case 23: return "middle-search";
                 case 31: return null;
                 case 32: return null;
-                case 33: return "bottom-search";
+                case 33: return null;
             }
         }
+        /*LOGIN : top-login-group*/
         if (this.equals(HoType.LOGIN)) {
             switch (row*10+col){
                 case 11: return null;
-                case 12: return "top-login-group";
-                case 13: return "top-login-group";
+                case 12: return null;
+                case 13: return null;
                 case 21: return null;
                 case 22: return null;
                 case 23: return "middle-login-group";
@@ -76,17 +78,18 @@ public enum HoType implements EnumOption {
                 case 33: return "bottom-login-group";
             }
         }
+        /*SEARCH_LOGIN : 1단 top-search-login-group, 2,3단 middle-search-login-group*/
         if (this.equals(HoType.SEARCH_LOGIN)) {
             switch (row*10+col){
                 case 11: return null;
-                case 12: return "top-search-login-group";
-                case 13: return "top-search-login-group";
+                case 12: return null;
+                case 13: return null;
                 case 21: return null;
                 case 22: return null;
-                case 23: return "middle-search-login-group";
+                case 23: return null;
                 case 31: return null;
                 case 32: return null;
-                case 33: return "bottom-search-login-group";
+                case 33: return null;
             }
         }
         if (this.equals(HoType.MENU_LEFT)) {
