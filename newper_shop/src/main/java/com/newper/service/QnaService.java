@@ -6,22 +6,20 @@ import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Customer;
 import com.newper.entity.Qna;
-import com.newper.entity.QnaSp;
 import com.newper.exception.MsgException;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.QnaRepo;
+import com.newper.repository.QnaSpRepo;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,7 @@ public class QnaService {
 
     private final CustomerRepo customerRepo;
     private final QnaRepo qnaRepo;
+    private final QnaSpRepo qnaSpRepo;
 
     /** 1:1 문의 등록 */
     @Transactional
@@ -93,18 +92,18 @@ public class QnaService {
         qna.setQnaJson(photoList);
     }
 
-    /**상품문의 등록*/
-    @Transactional
-    public void saveQnaSp(ParamMap paramMap) {
-        QnaSp qnaSp = paramMap.mapParam(QnaSp.class);
-        Customer customer = customerRepo.getReferenceByCuId(shopSession.getId());
-        if (customer != null) {
-            qnaSp.setCustomer(customer);
-        }
-    }
-
     @Transactional
     public void deleteQna(Long qnaIdx) {
         qnaRepo.deleteById(qnaIdx);
+    }
+
+    @Transactional
+    public void updateQsp(Long qspIdx, ParamMap paramMap) {
+
+    }
+
+    @Transactional
+    public void deleteQsp(Long qspIdx) {
+        qnaSpRepo.deleteById(qspIdx);
     }
 }

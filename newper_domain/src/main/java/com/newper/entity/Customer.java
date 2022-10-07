@@ -62,8 +62,14 @@ public class Customer {
     private String cuCi;
     private String cuDi;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "couponGroup")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Coupon> couponList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Qna> qnaList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<QnaSp> qnaSpList;
 
     @PrePersist
     @PreUpdate

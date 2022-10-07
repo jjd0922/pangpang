@@ -35,6 +35,8 @@ public class OrderGsGroup {
     @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGsGroup", cascade = CascadeType.ALL)
     private List<OrderGs> orderGsList = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="orderGsGroup", cascade = CascadeType.ALL)
+    private List<Qna> qnaList;
 
     public void addOrderGs(OrderGs og) {
         getOrderGsList().add(og);

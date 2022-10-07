@@ -4,10 +4,8 @@ import com.newper.entity.common.CreatedEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -23,4 +21,9 @@ public class QnaAnswer extends CreatedEntity {
     private Long qnaaIdx;
 
     private String qnaaContent;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "qnaAnswer", cascade = CascadeType.ALL)
+    private List<Qna> qnaList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "qnaAnswer", cascade = CascadeType.ALL)
+    private List<QnaSp> qnaSpList;
 }

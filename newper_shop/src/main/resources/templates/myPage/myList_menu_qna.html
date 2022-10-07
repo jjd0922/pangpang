@@ -103,7 +103,7 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <a th:onclick="|qnaInsertModal(${qna.qnaIdx})|" class="btn btn-xs btn-point btn-width-xs radius-xlarge">수정하기</a>
+                        <a th:onclick="|qnaInsertModal(${qna.qnaIdx})|" class="btn btn-xs btn-point btn-width-xs radius-xlarge" th:if="${qna.qnaAnswer == null}">수정하기</a>
                         <a th:onclick="|deleteQna(${qna.qnaIdx})|" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
@@ -232,7 +232,7 @@
                     </li>
                     <!-- 버튼 -->
                     <li class="flex-column button-vertical-group">
-                        <a onclick="reviewUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge">문의수정</a>
+                        <a onclick="qspUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge">문의수정</a>
                         <a onclick="alert('준비중')" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
                     </li>
                 </ul>
@@ -257,11 +257,76 @@
                     </div>
                 </div>
             </li>
+            <!-- 상품 2 -->
+            <li th:each="qsp: ${qnaSpList}">
+                <ul class="table-content2 item-inquiry-table-content">
+                    <!-- 상품명 -->
+                    <li class="itemName">
+                        <div class="order-item-info-wrap">
+                            <div>
+                                <a th:href="|shopProduct/${qsp?.shopProduct?.spIdx}|">
+                                    <h3 class="font-sm bold">삼성 노트북 코어i5 램8G SSD 대용량
+                                        듀얼하드 윈10</h3>
+                                </a>
+                            </div>
+                            <div class="font-xxsm order-item-info">
+                                <p>종류 : 삼성 노트북 코어 I5듀얼하드 윈 10</p>
+                                <p>사이즈 : 15인치</p>
+                                <p>용량 : 램 8G SSD 대용량</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 문의유형 -->
+                    <li>
+                        <p class="semi-bold" th:text="${T(com.newper.constant.QspType).valueOf(qsp?.qspType).getOption()}">성능 및 스펙</p>
+                    </li>
+                    <!-- 문의제목 -->
+                    <li class="inquiry-title">
+                        <p class="semi-bold" th:text="${qsp?.qspTitle}">성능 및 스펙</p>
+                    </li>
+                    <!-- 답변상태 -->
+                    <li>
+                        <!-- 답변대기-->
+                        <p class="semi-bold" th:if="${qsp.qnaAnswer == null}">답변대기</p>
+                        <!-- 답변완료 -->
+                        <p class="semi-bold color-red" th:if="${qsp.qnaAnswer != null}">답변완료</p>
+                    </li>
+                    <!-- 작성일 -->
+                    <li>
+                        <p class="bold" th:text="${qsp?.getDateFormatDot()}">2022.08.10</p>
+                    </li>
+                    <!-- 버튼 -->
+                    <li class="flex-column button-vertical-group">
+                        <a onclick="qspUpdateModal()" class="btn btn-xs btn-point btn-width-xs radius-xlarge" th:if="${qsp.qnaAnswer == null}">문의수정</a>
+                        <a th:onclick="|deleteQnaSp(${qsp?.qspIdx})|" class="btn btn-xs btn-dark-gray-outline btn-width-xs radius-xlarge">삭제</a>
+                    </li>
+                </ul>
+                <div class="inquiry-open font-md">
+                    <div>
+                        <div>
+                            <span class="inquiry-badge font-xxsm">문의</span>
+                        </div>
+                        <p class="color-grey666" th:text="${qsp?.qspContent}">배송 언제되는지 정확한 날짜가 알고 싶어요~~!</p>
+                    </div>
+                    <div th:if="${qsp.qnaAnswer != null}">
+                        <div>
+                            <span class="inquiry-answer font-xxsm">답변</span>
+                        </div>
+                        <p class="color-grey666" th:text="${qsp?.qnaAnswer?.qnaaContent}">안녕하세요 고객님!! 뉴퍼마켓을 이용해주셔서 감사합니다.<br>
+                            뉴퍼마켓 직배송 상품
+                            - 결제 후 1일~2일이내 발송되어 받아보시는데까지 약 2~3일 소요됩니다.
+                            부득이 주문량 많아 발송이 지연되는 경우(5일 이상) 별도 안내 or 공지드리오니 안심하셔도 됩니다.<br>
+                            입점업체 배송 상품
+                            - 업체 사정에 따라, 결제 후 2일~3일 이내 발송되어 받아보시는데까지 약 3~4일 소요 됩니다.
+                            - 단, 대형가전(TV, 냉장고, 세탁기 등), 설치상품, 주문제작상품의 경우 별도 예상 배송일을 공지드립니다.</p>
+                    </div>
+                </div>
+            </li>
         </ul>
     </div>
 
     <script>
-        function reviewUpdateModal(){
+        function qspUpdateModal(){
             $.ajax({
                 url: '/myPage/myList/qna/qnaProductModal.load'
                 ,type:'post'
@@ -275,6 +340,19 @@
                 ,error:function(){}
             })
         }
+
+        function deleteQnaSp(qspIdx) {
+            if (confirm("삭제하시겠습니까?")) {
+                $.ajax({
+                    url: 'qna/sp/delete/'+qspIdx+'.ajax'
+                    ,type: 'post'
+                    ,success:function(){
+                        openMyListQnaMenu('productQnaHistory');
+                    }
+                });
+            }
+        }
+
         // 상품문의 내역  클릭 시 문의내용과 답변 보이기
         $('.inquiry-title').click(function() {
             $(this).toggleClass('on');
@@ -413,6 +491,24 @@
 <!-- 상품문의 수정 modal -->
 <th:block th:fragment="qnaProductModal">
     <span th:text="${modalTitle}"></span>
+    <form id="qspForm" enctype="multipart/form-data">
+        <input type="hidden" name="spIdx" value="">
+
+        <br>문의유형
+        <div th:each="opt: ${T(com.newper.constant.QspType).values()}">
+            <input type="checkbox" name="qspType" th:value="${opt.name}">
+            <span th:text="${opt.getOption()}"></span>
+        </div>
+
+        제목
+        <input type="text" name="qspTitle" placeholder="제목을 입력하세요."><br>
+
+        문의내용작성
+        <input type="text" name="qspContent" placeholder="내용을 입력하세요."><br>
+
+        <!--비밀글 여부-->
+        <input type="checkbox" name="qspSecret">비밀글 문의
+    </form>
 
     <a onclick="$('#commonModal').hide()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">취소</a>
     <a onclick="alert('준비중!')" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">작성완료</a>

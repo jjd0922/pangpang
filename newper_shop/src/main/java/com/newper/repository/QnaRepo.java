@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface QnaRepo extends JpaRepository<Qna, Long> {
 
-    /** 고객별 1:1문의 리스트*/
+    /** 고객별 1:1문의 리스트 */
     @EntityGraph(attributePaths = {"orderGsGroup.orders", "customer", "qnaAnswer"})
     List<Qna> findAllByCustomerOrderByQnaIdxDesc(Customer customer);
 }

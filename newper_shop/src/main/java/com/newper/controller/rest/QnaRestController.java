@@ -40,11 +40,17 @@ public class QnaRestController {
         return rm;
     }
 
-    /** 상품문의 등록 ajax*/
-    @PostMapping("sp/save.ajax")
-    public ReturnMap saveQnaSp(ParamMap paramMap) {
+    @PostMapping("sp/update/{qspIdx}.ajax")
+    public ReturnMap updateQsp(@PathVariable("qspIdx") Long qspIdx, ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
-        qnaService.saveQnaSp(paramMap);
+        qnaService.updateQsp(qspIdx, paramMap);
+        return rm;
+    }
+
+    @PostMapping("sp/delete/{qspIdx}.ajax")
+    public ReturnMap deleteQsp(@PathVariable("qspIdx") Long qspIdx) {
+        ReturnMap rm = new ReturnMap();
+        qnaService.deleteQsp(qspIdx);
         return rm;
     }
 

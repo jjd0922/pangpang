@@ -59,6 +59,12 @@ public class ShopProduct extends BaseEntity {
     private LocalDate spSellEndDate;
     private LocalTime spSellEndTime;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProduct", cascade = CascadeType.ALL)
+    @OrderBy("rIdx desc")
+    private List<Review> reviews;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopProduct", cascade = CascadeType.ALL)
+    private List<QnaSp> qnaSpList;
+
     /** <pre>
      * key : value
      *
