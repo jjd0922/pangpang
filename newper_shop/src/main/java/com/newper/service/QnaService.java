@@ -15,11 +15,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +42,32 @@ public class QnaService {
 
         // qna_ogg_idx set해야함 (있는경우)
 
+        // qnaMail
+        String mail = "";
+        if (StringUtils.hasText(paramMap.getString("email"))) {
+            String pattern = "\\w+\\.\\w+(\\.\\w+)?";
+            if (!Pattern.matches(pattern, paramMap.getString("domain"))) {
+                throw new MsgException("정확한 이메일을 입력해 주세요");
+            }
+            mail = paramMap.get("email") + "@" + paramMap.get("domain");
+        }
+        if (mail.equals("") && qna.isQnaMailAlarm()) {
+            throw new MsgException("답변알림을 받으시려면 이메일주소를 입력해주세요.");
+        }
+        qna.setQnaMail(mail);
+        // qnaPhone
+        String phone = paramMap.getString("phone1") + paramMap.get("phone2") + paramMap.get("phone3");
+        if (phone.equals("") && qna.isQnaPhoneAlarm()) {
+            throw new MsgException("답변알림을 받으시려면 휴대폰 번호를 입력해 주세요.");
+        }
+        qna.setQnaPhone(phone);
+        // qnaJson
         List<String> photoList = new ArrayList<>();
         String[] acceptArray = {"jpg","gif"};
         for (MultipartFile file : files) {
+            if (file.isEmpty()) { // 파일 없을 시 반복문 종료
+                break;
+            }
             String extension = FilenameUtils.getExtension(file.getOriginalFilename());
             boolean isAcceptable = Arrays.stream(acceptArray).anyMatch(element -> element.equals(extension));
             if (!isAcceptable) {
