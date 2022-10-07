@@ -1,15 +1,11 @@
 package com.newper.entity;
 
-import com.newper.constant.CcgAdjust;
-import com.newper.constant.OgCalCloseState;
-import com.newper.constant.OgCalConfirmState;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @DynamicInsert
@@ -34,4 +30,8 @@ public class OrderGsGroupCancel {
     private ShopProductOption shopProductOption;
 
     private int oggcCnt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGsGroupCancel")
+    private List<OrderGs> orderGsList;
+
 }
