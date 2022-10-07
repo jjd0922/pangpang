@@ -74,6 +74,8 @@
                                         </span>
                                             <input type="text" name="SHOP_NAME" class="form-control" readonly>
                                             <input type="hidden" name="SP_SHOP_IDX">
+                                            <input type="hidden" id="checkProduct" value="false">
+                                            <input type="hidden" name="SP_CATE_IDX">
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +88,6 @@
                                             </span>
                                         </span>
                                             <select class="form-control select" data-placeholder="선택" name="SP_STATE">
-                                                <option></option>
                                                 <option th:each="opt: ${T(com.newper.constant.SpState).values()}" th:text="${opt.option}" th:value="${opt.name()}"></option>
                                             </select>
                                         </div>
@@ -179,11 +180,10 @@
                                                     썸네일1
                                                 </span>
                                             </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile1)}" type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile1)}">
-                                                <img th:src="${product?.pThumbFile1}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE1" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE1" th:value="${product?.pThumbFile1}">
+                                            <div class="form-control">
+                                                <img th:if="${product}!=null" th:src="${product?.pThumbFile1}" class="input-thumb">
+                                                <img th:unless="${product}!=null" class="input-thumb" id="THUMB_FILE1">
+                                                <input type="file" name="SP_THUMB_FILE1" accept="image/*" class="input-thumb-file">
                                             </div>
                                         </div>
                                     </div>
@@ -196,11 +196,10 @@
                                                     썸네일2
                                                 </span>
                                             </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile2)}" type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile2)}">
-                                                <img th:src="${product?.pThumbFile2}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE2" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE2" th:value="${product?.pThumbFile2}">
+                                            <div class="form-control">
+                                                <img th:if="${product}!=null" th:src="${product?.pThumbFile2}" class="input-thumb">
+                                                <img th:unless="${product}!=null" class="input-thumb" id="THUMB_FILE2">
+                                                <input type="file" name="SP_THUMB_FILE2" accept="image/*" class="input-thumb-file">
                                             </div>
                                         </div>
                                     </div>
@@ -213,11 +212,10 @@
                                                     썸네일3
                                                 </span>
                                             </span>
-                                            <input th:if="${#strings.isEmpty(product?.pThumbFile3)}" type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file form-control">
-                                            <div class="form-control" th:unless="${#strings.isEmpty(product?.pThumbFile3)}">
-                                                <img th:src="${product?.pThumbFile3}" class="input-thumb">
-                                                <input type="file" name="P_THUMB_FILE3" accept="image/*" class="input-thumb-file">
-                                                <input type="hidden" name="re_P_THUMB_FILE3" th:value="${product?.pThumbFile3}">
+                                            <div class="form-control">
+                                                <img th:if="${product}!=null" th:src="${product?.pThumbFile3}" class="input-thumb">
+                                                <img th:unless="${product}!=null" class="input-thumb" id="THUMB_FILE3">
+                                                <input type="file" name="SP_THUMB_FILE3" accept="image/*" class="input-thumb-file">
                                             </div>
                                         </div>
                                     </div>
@@ -227,9 +225,9 @@
                         <br>
                         <fieldset class="mb-0">
                             <span class="input-group-text w-100 mb--1">상세이미지</span>
-                            <textarea id="summerNote1" name="P_CONTENT1" th:text="${content1}"></textarea>
+                            <textarea id="summerNote1" name="SP_INFO" th:text="${info}"></textarea>
                             <span class="input-group-text w-100 mb--1">MD 상품평</span>
-                            <textarea id="summerNote2" name="P_CONTENT2" th:text="${content2}"></textarea>
+                            <textarea id="summerNote2" name="SP_MD" th:text="${md}"></textarea>
                         </fieldset>
                     </div>
                 </div>
@@ -244,7 +242,7 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-text">기준판매가(상품) 합</span>
                                             </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pCost,0,'COMMA')}">
+                                            <input type="text" name="SP_P_SELL_PRICE_SUM" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +252,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">기준판매가(재고) 합</span>
                                     </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pRetailPrice,0,'COMMA')}">
+                                            <input type="text" name="SP_GS_PRICE_SUM" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +262,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">SHOP 판매가(뉴퍼마켓가) 합</span>
                                     </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pSellPrice,0,'COMMA')}">
+                                            <input type="text" name="SP_SPO_SHOP_PRICE_SUM" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +272,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">할인가 합</span>
                                     </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0:${#numbers.formatInteger(product?.pDelPrice,0,'COMMA')}">
+                                            <input type="text" name="SP_SPO_PRICE_SUM" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +282,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">네이버최저가의 합</span>
                                     </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="SP_NAVER_SUM" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -294,7 +292,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">유통가의 합</span>
                                     </span>
-                                            <input type="text" name="" class="form-control text-right" th:value="${product}==null? 0 : ${product?.pDelTogether}">
+                                            <input type="text" name="SP_RETAIL_PRICE" class="form-control text-right" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -334,7 +332,6 @@
                                     <table class="table table-bordered" id="essentialTable1">
                                         <thead>
                                         <tr class="alpha-brown text-bold">
-                                            <th>NO</th>
                                             <th>상품코드</th>
                                             <th>상품명</th>
                                             <th>모델명</th>
@@ -372,7 +369,6 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr class="alpha-brown text-bold">
-                                                <th>NO</th>
                                                 <th>상품코드</th>
                                                 <th>상품명</th>
                                                 <th>모델명</th>
@@ -425,7 +421,6 @@
                                     <table class="table table-bordered">
                                         <thead id="choose_head">
                                         <tr class="alpha-brown text-bold">
-                                            <th>NO</th>
                                             <th>상품코드</th>
                                             <th>상품명</th>
                                             <th>모델명</th>
@@ -537,8 +532,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_ELIGIBLE">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -553,8 +550,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_DISCOUNT">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -569,8 +568,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_IMAGE1">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -585,8 +586,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_IMAGE2">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -601,8 +604,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_IMAGE3">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -617,7 +622,7 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control">
+                                            <input type="text" name="SP_QUOTA_ONCE" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -631,7 +636,7 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control">
+                                            <input type="text" name="SP_QUOTA_ID" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -645,7 +650,7 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control">
+                                            <input type="text" name="SP_MINIMUM" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -655,12 +660,14 @@
                                             <span class="input-group-prepend">
                                                 <span class="input-group-prepend">
                                                     <span class="input-group-text">
-                                                        적립금 사용제한 여부
+                                                        마일리지 사용제한 여부
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_USE_MILEAGE">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -675,8 +682,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_ONLY_APP">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -691,7 +700,7 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <input type="text" name="" class="form-control">
+                                            <input type="text" name="SP_NAVER_PRICE" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -705,8 +714,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_NAVER_LIMIT">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -721,8 +732,10 @@
                                                     </span>
                                                 </span>
                                             </span>
-                                            <select class="form-control select " data-placeholder="선택" name="">
+                                            <select class="form-control select " data-placeholder="선택" name="SP_USE_COUPON">
                                                 <option></option>
+                                                <option>Y</option>
+                                                <option>N</option>
                                             </select>
                                         </div>
                                     </div>
@@ -847,7 +860,7 @@
         str += '<div class="col-sm-12"><div class="form-group"><div class="input-group">';
         str += '<span class="form-control">'+essentialCnt+'번 필수상품<a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal('+essentialCnt+','+true+')">재고상품 검색</a></span></div></div>';
         str += '<table class="table table-bordered" id="essentialTable'+essentialCnt+'"><thead><tr class="alpha-brown text-bold">';
-        str += '<th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
+        str += '<th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
         str += '<th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>할인가(최종혜택가)</th><th>재고자산</th><th>삭제</th></tr>'
         str += '</thead><input type="hidden" id="eaCnt'+essentialCnt+'" value="0"><tbody id="essential_area'+essentialCnt+'"></tbody></table><div class="form-group"><div class="input-group" id="essentialAdd'+essentialCnt+'"><span class="form-control">'+essentialCnt+'번 종속상품<a class="btn btn-sm badge-indigo" onclick="showEssentialAdd('+essentialCnt+')">종속상품 검색</a></span></div></div>'
         str += '<br><table class="table table-bordered"><thead><tr class="alpha-brown text-bold"><th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th><th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>삭제</th></tr></thead><input type="hidden" id="essentialAddCnt'+essentialCnt+'" value="0"><tbody id="essentialAddBody'+essentialCnt+'"></tbody></table><div class="form-group"></div></div>'
@@ -866,7 +879,7 @@
         str += '<div class="col-sm-12"><div class="form-group"><div class="input-group">';
         str += '<span class="form-control">'+chooseAddCnt+'번 선택상품<a class="btn btn-sm badge-indigo" onclick="showGoodsStockModal('+essentialCnt+','+false+')">재고상품 검색</a></span></div></div>';
         str += '<table class="table table-bordered" id="essentialTable'+essentialCnt+'"><thead><tr class="alpha-brown text-bold">';
-        str += '<th>NO</th><th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
+        str += '<th>상품코드</th><th>상품명</th><th>모델명</th><th>재고코드</th><th>재고상품명</th><th>등급</th><th>옵션1</th><th>옵션2</th><th>옵션3</th><th>스펙</th>';
         str += '<th>기준매입원가</th><th>네이버최저가</th><th>유통가</th><th>기준판매가(상품)</th><th>기준판매가(재고)</th><th>SHOP 판매가(뉴퍼마켓가)</th><th>할인가(최종혜택가)</th><th>재고자산</th><th>삭제</th></tr>'
         str += '</thead><input type="hidden" id="eaCnt'+essentialCnt+'" value="0"><tbody id="essential_area'+essentialCnt+'"></tbody></table></div>'
         $('#choose').append(str);
@@ -875,6 +888,7 @@
 
     function selectProduct(cnt,boolean){
         var row=$('#goodsStockModalTable').DataTable().rows({selected:true})[0];
+        var checkProduct = $('#checkProduct').val();
         if(boolean){
             for(var i=0;i<row.length;i++){
                 var rowData = getDatatablemap('goodsStockModalTable', row[i]);
@@ -883,17 +897,38 @@
                     eaCnt++;
                     $('#eaCnt'+cnt).val(eaCnt);
                     var str = '';
-                    str += '<tr id="essentialTr'+cnt+'-'+eaCnt+'"><td id="essentialTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                    str += '<tr id="essentialTr'+cnt+'-'+eaCnt+'"><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
                     str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
                     str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
-                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"></td>'
-                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp();sumSpoMoney();" value="'+comma(rowData.GS_PRICE)+'"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp();sumSpoDiscount();" value="'+comma(rowData.GS_PRICE)+'"><input type="hidden" name="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
                     str += '<td>'+rowData.cnt+'</td>'
                     str += '<td><button onclick="deleteGoodsStock('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
                     $('#essential_area'+cnt).append(str);
+
+                    if(cnt==1&&i==0){
+                        if(checkProduct=='false'){
+                            $('input[name="SP_CATE_IDX"]').val(rowData.CATE_IDX)
+                            if(rowData.GS_THUMB_FILE1!=''){
+                                $('#THUMB_FILE1').attr("src",rowData.GS_THUMB_FILE1);
+                            }
+                            if(rowData.GS_THUMB_FILE2!=''){
+                                $('#THUMB_FILE2').attr("src",rowData.GS_THUMB_FILE2);
+                            }
+                            if(rowData.GS_THUMB_FILE3!=''){
+                                $('#THUMB_FILE3').attr("src",rowData.GS_THUMB_FILE3);
+                            }
+                            $('#summerNote1').summernote('code',summernoteContent(rowData.GS_CONTENT));
+
+                            $('#checkProduct').val('true');
+                        }
+                    }
+
                 }
 
             }
+            sumSpoMoney();
+            sumSpoDiscount();
         }else{
             for(var i=0;i<row.length;i++){
                 var rowData = getDatatablemap('goodsStockModalTable', row[i]);
@@ -902,11 +937,11 @@
                     eaCnt++;
                     $('#chooseCnt'+cnt).val(eaCnt);
                     var str = '';
-                    str += '<tr id="chooseTr'+cnt+'-'+eaCnt+'"><td id="chooseTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                    str += '<tr id="chooseTr'+cnt+'-'+eaCnt+'"><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
                     str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
                     str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
-                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"></td>'
-                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()" value="'+comma(rowData.GS_PRICE)+'"></td>'
+                    str += '<td><input type="text" class="form-control text-right" name="SPO_DISCOUNT_NO'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()" value="'+comma(rowData.GS_PRICE)+'"><input type="hidden" name="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_NO'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
                     str += '<td>'+rowData.cnt+'</td>'
                     str += '<td><button onclick="deleteChooseGoodsStock('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
                     $('#choose_area').append(str);
@@ -934,10 +969,10 @@
             $('#essentialAddCnt'+cnt).val(eaCnt);
             if(!($('#GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX).length>0)){
                 var str = '';
-                str += '<tr id="essentialAddTr'+cnt+'-'+eaCnt+'"><td id="essentialAddTd'+cnt+'-'+eaCnt+'">'+eaCnt+'</td><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
+                str += '<tr id="essentialAddTr'+cnt+'-'+eaCnt+'"><td>'+rowData.P_IDX+'</td><td>'+rowData.P_NAME+'</td><td>'+rowData.P_MODEL+'</td><td>'+rowData.GS_CODE+'</td><td>'+rowData.GS_NAME+'</td>';
                 str += '<td>'+rowData.GS_RANK+'</td><td>'+rowData.OPTION1+'</td><td>'+rowData.OPTION2+'</td><td>'+rowData.OPTION3+'</td><td>'+rowData.SPEC_LOOKUP+'</td><td>'+comma(rowData.P_COST)+'</td>'
                 str += '<td>'+comma(rowData.NAVER)+'</td><td>'+comma(rowData.P_RETAIL_PRICE)+'</td><td>'+comma(rowData.P_SELL_PRICE)+'</td><td>'+comma(rowData.GS_PRICE)+'</td>'
-                str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_ADD'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()"><input type="hidden" name="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
+                str += '<td><input type="text" class="form-control text-right" name="SPO_MONEY_ADD'+cnt+'-'+rowData.GS_IDX+'" onkeyup="numCommaKeyUp()" value="'+comma(rowData.GS_PRICE)+'"><input type="hidden" name="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" id="GS_IDX_ADD'+cnt+'-'+rowData.GS_IDX+'" value="'+rowData.GS_IDX+'"></td>'
                 str += '<td><button onclick="deleteEssentialAdd('+cnt+','+eaCnt+')" class="btn btn-sm btn-secondary ml-1">삭제</button></td>'
                 $('#essentialAddBody'+cnt).append(str);
             }
@@ -967,6 +1002,50 @@
                 }
             })
         }
+    }
+
+    function sumSpoMoney(){
+        var sm1 = document.querySelectorAll('[name^="SPO_MONEY1"]')[0];
+        var sm2 = document.querySelectorAll('[name^="SPO_MONEY2"]')[0];
+        var sm3 = document.querySelectorAll('[name^="SPO_MONEY3"]')[0];
+        var sm1_value=0;
+        var sm2_value=0;
+        var sm3_value=0;
+        if(sm1!=undefined){
+            sm1_value=sm1.value.replace(/[^0-9.]/gi,'');
+            sm1_value=Number(sm1_value);
+        }
+        if(sm2!=undefined){
+            sm2_value=sm2.value.replace(/[^0-9.]/gi,'');
+            sm2_value=Number(sm2_value);
+        }
+        if(sm3!=undefined){
+            sm3_value=sm3.value.replace(/[^0-9.]/gi,'');
+            sm3_value=Number(sm3_value);
+        }
+        $('input[name="SP_SPO_SHOP_PRICE_SUM"]').val(comma(sm1_value+sm2_value+sm3_value));
+    }
+
+    function sumSpoDiscount(){
+        var sd1 = document.querySelectorAll('[name^="SPO_DISCOUNT1"]')[0];
+        var sd2 = document.querySelectorAll('[name^="SPO_DISCOUNT2"]')[0];
+        var sd3 = document.querySelectorAll('[name^="SPO_DISCOUNT3"]')[0];
+        var sd1_value=0;
+        var sd2_value=0;
+        var sd3_value=0;
+        if(sd1!=undefined){
+            sd1_value=sd1.value.replace(/[^0-9.]/gi,'');
+            sd1_value=Number(sd1_value);
+        }
+        if(sd2!=undefined){
+            sd2_value=sd2.value.replace(/[^0-9.]/gi,'');
+            sd2_value=Number(sd2_value);
+        }
+        if(sd3!=undefined){
+            sd3_value=sd3.value.replace(/[^0-9.]/gi,'');
+            sd3_value=Number(sd3_value);
+        }
+        $('input[name="SP_SPO_PRICE_SUM"]').val(comma(sd1_value+sd2_value+sd3_value));
     }
 
 </script>

@@ -177,7 +177,7 @@ public class OrdersService {
     @Transactional
     public Orders selectOrdersDetail(String oCode){
         Orders orders = ordersRepo.findInfoByoCode(oCode);
-        if(!orders.isOTemp()){
+        if(!orders.isOReal()){
             throw new MsgException("주문 내역이 없습니다");
         }
         if(shopSession.getIdx().longValue() != orders.getCustomer().getCuIdx().longValue()){

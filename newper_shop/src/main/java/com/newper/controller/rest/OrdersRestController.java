@@ -34,11 +34,15 @@ public class OrdersRestController {
 
     /** 주문 insert 및, iamport 결제 요청 */
     @PostMapping("iamport/pay.ajax")
-    public ReturnMap iamportPay(ParamMap paramMap, int ipm_idx) {
+    public ReturnMap iamportPay(ParamMap paramMap, Integer ipm_idx) {
         ReturnMap rm = new ReturnMap();
 
         rm.put("id", "imp07732252");
 
+        if (ipm_idx == null) {
+            throw new MsgException("결제수단을 선택해주세요");
+        }
+                
         try{
             Orders orders = ordersService.insertOrder(paramMap);
             JSONObject req = ordersService.insertIamportReq(orders);

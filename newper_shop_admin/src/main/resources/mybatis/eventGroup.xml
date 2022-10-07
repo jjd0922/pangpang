@@ -7,6 +7,12 @@
             <if test="shopIdx != null and shopIdx != ''">
                 AND SHOP_IDX = #{shopIdx}
             </if>
+            <if test="egMenu != null and egMenu != ''">
+                AND EG_MENU = #{egMenu}
+            </if>
+            <if test="egTitle != null and egTitle != ''">
+                AND EG_TITLE LIKE CONCAT('%',#{egTitle},'%')
+            </if>
     </sql>
     <select id="selectEventGroupDatatable" resultType="map">
         SELECT

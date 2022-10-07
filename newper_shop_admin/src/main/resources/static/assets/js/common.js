@@ -440,6 +440,15 @@ function comma(strOri){
     return str;
 }
 
+function summernoteContent(content){
+    content=content.replaceAll("&lt;","<");
+    content=content.replaceAll("&#37;","%");
+    content=content.replaceAll("&gt;",">");
+    content=content.replaceAll("&quot;","\"");
+
+    return content;
+}
+
 // input file 이미지 사이즈 체크(가로 세로 같을 경우 + 이미지 파일일 경우만 가능)
 // input file 태그에 onchange로 사용
 function imageSizeCheck(obj){

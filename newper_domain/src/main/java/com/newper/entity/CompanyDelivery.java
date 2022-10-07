@@ -25,7 +25,10 @@ public class CompanyDelivery extends BaseEntity {
     @JoinColumn(name = "CD_COM_IDX", referencedColumnName = "comIdx")
     private Company company;
 
-    private String cdCompany;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CD_COM_IDX2", referencedColumnName = "comIdx")
+    private Company company2;
+
     private byte cdBasic;
 
     @Enumerated(EnumType.STRING)

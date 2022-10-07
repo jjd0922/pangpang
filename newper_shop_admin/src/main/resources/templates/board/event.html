@@ -60,8 +60,11 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="d-block">이벤트 카테고리</label>
-                                                    <input class="form-control form-control-sm w-120px" name="egCategory" data-placeholder="검색">
+                                                    <label class="d-block">이벤트 메뉴</label>
+                                                    <select class="form-control form-control-sm select-search" name="egMenu" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                        <option th:each="menu: ${T(com.newper.constant.EgMenu).values()}" th:text="${menu.getOption()}" th:value="${menu.name()}"></option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="d-block">이벤트그룹명</label>

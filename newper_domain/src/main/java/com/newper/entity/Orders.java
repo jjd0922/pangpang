@@ -49,7 +49,7 @@ public class Orders {
     /** 주문코드 oDate+oTime+oIdx */
     private String oCode;
     /**임시여부. false인 경우 고객에게 노출X*/
-    private boolean oTemp;
+    private boolean oReal;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

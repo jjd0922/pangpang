@@ -337,8 +337,7 @@
                                 <span>25</span>
                             </div>
                         </div>
-                        <span class="nonMember-buy nosessionClass"
-                              th:styleappend="${@shopSession.idx != null?'display:none;':''}">비회원 구매</span>
+                        <span class="nonMember-buy nosessionClass pointer" th:styleappend="${@shopSession.idx != null?'display:none;':''}" onclick="nonMemberShow()">비회원 구매</span>
                     </div>
                 </li>
             </ul>
@@ -1303,17 +1302,20 @@
               url:'/login/check.ajax'
               ,type:'get'
             }).done(function(res){
-                console.log(res.data.login);
                 //회원
                 if(res.data.login){
                     $('#spoForm input[name=login]').val('true');
                     $('#spoForm').submit();
                 }else{
-                    //비회원 주문 모달
-                    //nonMemberLoginModal.show();
+                    //로그인 모달
+                    modal.show();
                 }
             });
 
+        }
+        //비회원 구매 클릭 시 물어보는 모달
+        function nonMemberShow(){
+            nonMemberLoginModal.show();
         }
         //비회원 구매
         function orderSpoNonMember(){
