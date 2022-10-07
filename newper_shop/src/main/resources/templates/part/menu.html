@@ -89,13 +89,13 @@
 <!-- 썸네일 데이터 공통영역 -->
 <th:block th:fragment="thumbnailCategory(idx)">
     <li class="swiper-slide" th:each="shopCategory : ${@shopComp.shopCategoryList}">
-        <a th:if="${idx != null}" th:onclick="|loadCategoryProductMain(${shopCategory.scateIdx}, ${idx})|" class="thumbnail-icon cate">
-            <img th:src="@{../image/}+${shopCategory.scateIcon}+'.png'" th:alt="${shopCategory.scateName}">
-            <span th:text="${shopCategory.scateName}">노트북/데스크탑</span>
+        <a th:if="${idx != null}" th:onclick="|loadCategoryProductMain(${shopCategory.SCATE_IDX}, ${idx})|" class="thumbnail-icon cate">
+            <img th:src="@{../image/}+${shopCategory.SCATE_ICON}+'.png'" th:alt="${shopCategory.SCATE_NAME}">
+            <span th:text="${shopCategory.SCATE_NAME}">노트북/데스크탑</span>
         </a>
-        <a th:if="${idx == null}" th:onclick="|loadCategoryProduct(${shopCategory.scateIdx})|" class="thumbnail-icon cate">
-            <img th:src="@{../image/}+${shopCategory.scateIcon}+'.png'" th:alt="${shopCategory.scateName}">
-            <span th:text="${shopCategory.scateName}">노트북/데스크탑</span>
+        <a th:if="${idx == null}" th:onclick="|loadCategoryProduct(${shopCategory.SCATE_IDX})|" class="thumbnail-icon cate">
+            <img th:src="@{../image/}+${shopCategory.SCATE_ICON}+'.png'" th:alt="${shopCategory.SCATE_NAME}">
+            <span th:text="${shopCategory.SCATE_NAME}">노트북/데스크탑</span>
         </a>
     </li>
 

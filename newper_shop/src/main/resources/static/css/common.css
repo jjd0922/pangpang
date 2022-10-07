@@ -417,10 +417,16 @@ header {
 /*.logo a {
     display: inline-flex;
 }*/
-.main-header-middle
 .searchSection {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
 }
+/*.searchSection {
+    padding-top: 10px;
+}*/
 .searchBar {
     width: 600px;
     height: 50px;
@@ -615,81 +621,52 @@ header {
     background: #eaeef4;
     border-radius: 30px;
 }
-.userMenu ul {
-    padding: 0 20px;
-}
+/* 로그인 그룹 */
 .userMenu ul {
     display: flex;
+    padding: 5px 0;
 }
-.userMenu ul li>a {
-    padding: 0 20px;
-    position: relative;
+.userMenu ul li {
     color: #666;
     font-size: 16px;
-    /*display: flex;
-    flex-direction: column;
-    align-items: center;*/
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-/*.userMenu ul li>a.color-blue {
-    color: var(--scPoint);
-}*/
-.userMenu ul li.active >a {
+.userMenu ul li.active {
     color: var(--scPoint);
 }
 .userMenu ul li.active svg path {
     fill: var(--scPoint);
 }
-.userMenu ul li:last-child>a {
-    padding: 0 0 0 20px;
+/*.userMenu ul li i {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 3px;
+}*/
+/* 구분선 */
+.dividing-line ul li {
+    padding: 0;
 }
-.userMenu ul li>a::after {
+.dividing-line ul li::after {
     content: "";
     display: inline-block;
     width: 1px;
     height: 14px;
-    position: absolute;
-    bottom: 2px;
-    right: 0;
+    margin: 0 15px;
     background-color: #d1d1d1;
+    align-self: self-end;
+    margin-bottom: 2px;
 }
-.userMenu ul li:last-child>a::after {
+.dividing-line ul li:last-child::after {
     content: none;
 }
-.userMenu ul li>a>i {
-    width: 30px;
-    height: 30px;
-    margin-bottom: 3px;
-}
-.login-icon {
-    background: url("../image/header/login.png") no-repeat center/contain;
-}
-.userMenu>ul>li:hover .login-icon {
-    background: url("../image/header/login-active.png") no-repeat center/contain;
-}
-.logout {
-    background: url("../image/header/logout.png") no-repeat center/contain;
-}
-.userMenu>ul>li:hover .logout {
-    background: url("../image/header/logout-active.png") no-repeat center/contain;
-}
-.signUp {
-    background: url("../image/header/signUp.png") no-repeat center/contain;
-}
-.myShopping {
-    background: url("../image/header/myShopping.png") no-repeat center/contain;
-}
-.cart {
-    background: url("../image/header/cart.png") no-repeat center/contain;
-}
-.userMenu>ul>li:hover .cart {
-    background: url("../image/header/cart-active.png") no-repeat center/contain;
-}
-.sc {
-    background: url("../image/header/sc.png") no-repeat center/contain;
-}
-.userMenu>ul>li:hover .sc {
-    background: url("../image/header/sc-active.png") no-repeat center/contain;
-}
+
+/*.dividing-line-bottom ul li::after {
+    align-self: end;
+    margin-bottom: 0.1em;
+}*/
 
 nav {
     height:70px;
@@ -742,6 +719,7 @@ nav {
 	display: flex;
     align-items: center;
     height: 100%;
+    padding-left: 25px;
 }
 .swiper-gnb {
     height: 100%;
@@ -798,11 +776,8 @@ nav {
     opacity: 0;
 }
 .snb {
+    position: relative;
     height: 100%;
-    /*position: absolute;
-    top: 50%;
-    right: 1%;
-    transform: translateY(-50%);*/
 }
 .snb::before {
     content: "";

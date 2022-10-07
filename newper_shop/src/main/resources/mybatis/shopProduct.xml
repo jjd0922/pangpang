@@ -31,4 +31,41 @@
             AND MS_IDX = #{msIdx}
             AND SCATE_IDX = #{scateIdx}
     </select>
+    <sql id="includeCategoryProductList">
+        mid_cate.CATE_IDX = csc.CSC_CATE_IDX
+        AND scate.SCATE_IDX = csc.CSC_SCATE_IDX
+        AND sp.SP_CATE_IDX = small_cate.CATE_IDX
+        AND small_cate.CATE_PARENT_IDX = mid_cate.cate_idx
+        AND scate.SCATE_IDX = #{scateIdx}
+        <if test="parentCateIdx != null and parentCateIdx !=''">
+            AND mid_cate.CATE_IDX = #{parentCateIdx}
+        </if>
+        <if test="cateIdx != null and cateIdx !=''">
+            AND small_cate.CATE_IDX = #{cateIdx}
+        </if>
+    </sql>
+    <select id="selectCategoryProductList" resultType="map" parameterType="map">
+        SELECT
+            sp.*
+        FROM
+            category mid_cate
+           ,shop_category scate
+           ,category_shop_category csc
+           ,shop_product sp
+           ,category small_cate
+        WHERE
+            <include refid="includeCategoryProductList"/>
+    </select>
+    <select id="countCategoryProductList" resultType="Integer" parameterType="map">
+        SELECT
+            count(sp.sp_idx) cnt
+        FROM
+            category mid_cate
+           ,shop_category scate
+           ,category_shop_category csc
+           ,shop_product sp
+           ,category small_cate
+        WHERE
+            <include refid="includeCategoryProductList"/>
+    </select>
 </mapper>
