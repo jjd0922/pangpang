@@ -14,6 +14,10 @@ public interface OrdersMapper {
     List<Map<String, Object>> selectOrderGsListByCuIdx (long cuIdx);
 
 
+    /** mypage 주문상품 조회*/
+    List<Map<String, Object>> selectOrderGsListByAsIdx (long asIdx);
+
+
     /**mypage 구매처 선택후 주문상품 조회*/
 
     List<Map<String, Object>> selectOrderGsListByComIdx (Map<String,Object> map);
