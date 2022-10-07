@@ -9,6 +9,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
@@ -33,6 +35,8 @@ public class OrderAddress{
     @Embedded
     private Address address;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderAddress")
+    private List<Orders> ordersList;
 
     @PrePersist
     @PreUpdate
@@ -49,5 +53,4 @@ public class OrderAddress{
         }
 
     }
-
 }
