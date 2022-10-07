@@ -10,145 +10,161 @@
 <th:block th:replace="common/header.html"></th:block>
 
 <!-- 본문 영역 시작 -->
-<div class="page-content">
-    <div class="content-wrapper">
-        <div class="content-inner">
-            <div class="content container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header header-elements-inline">
-                                <h6 class="card-title">
-                                    <div class="breadcrumb breadcrumb-caret">
-                                        <span class="breadcrumb-item">
-                                            <i class="mr-1" th:classappend="${mainIcon}"></i>
-                                            <th:block th:text="${mainTitle}"></th:block>
-                                        </span>
-                                        <span class="breadcrumb-item font-weight-bold text-secondary">
-                                            <i class="mr-1" th:classappend="${subIcon}"></i>
-                                            <th:block th:text="${subTitle}"></th:block>
-                                        </span>
-                                    </div>
-                                </h6>
-                            </div>
-                            <div class="collapse show" id="collapse-button-collapsed">
-                                <div class="card-body pt-0">
-                                    <form id="returnForm">
-                                        <div class="row">
-                                            <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
-                                                <div class="form-group">
-                                                    <label class="d-block">주문완료일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
-                                                </div>
+    <div class="page-content">
+        <div class="content-wrapper">
+            <div class="content-inner">
+                <div class="content container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header header-elements-inline">
+                                    <h6 class="card-title">
+                                        <div class="breadcrumb breadcrumb-caret">
+                                            <span class="breadcrumb-item">
+                                                <i class="mr-1" th:classappend="${mainIcon}"></i>
+                                                <th:block th:text="${mainTitle}"></th:block>
+                                            </span>
+                                            <span class="breadcrumb-item font-weight-bold text-secondary">
+                                                <i class="mr-1" th:classappend="${subIcon}"></i>
+                                                <th:block th:text="${subTitle}"></th:block>
+                                            </span>
+                                        </div>
+                                    </h6>
+                                </div>
+                                <div class="collapse show" id="collapse-button-collapsed">
+                                    <div class="card-body pt-0">
+                                        <form id="returnForm">
+                                            <div class="row">
+                                                <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
+                                                    <div class="form-group">
+                                                        <label class="d-block">주문완료일</label>
+                                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_NAME">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출고요청일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출고요청일</label>
+                                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_PHONE">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출고(배송중)일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출고(배송중)일</label>
+                                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="COM_NAME">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">배송완료일</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">배송완료일</label>
+                                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_ID">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출고구분</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출고구분</label>
+                                                        <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">주문상태</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">주문상태</label>
+                                                        <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">자산상태</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">자산바코드</label>
+                                                        <input type="text" class="form-control" name="gBarcode">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">주문코드<br>(사방넷통합주문번호)</label>
-                                                    <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_AUTH_IDX">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">자산상태</label>
+                                                        <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">주문상품코드<br>(사방넷주문번호)</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">주문코드<br>(사방넷통합주문번호)</label>
+                                                        <input type="text" class="form-control form-control-sm w-120px" placeholder="검색" name="U_AUTH_IDX">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">수취인명</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">주문상품코드<br>(사방넷주문번호)</label>
+                                                        <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출하창고</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">수취인명</label>
+                                                        <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출고택배사</label>
-                                                    <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
-                                                        <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
-                                                    </select>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출하창고</label>
+                                                        <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
 
-                                                <div class="form-group">
-                                                    <label class="d-block">출고송장번호</label>
-                                                    <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출고택배사</label>
+                                                        <select name="U_STATE" data-placeholder="다중선택가능"  class="form-control multiselect-reset" multiple="multiple" data-fouc>
+                                                            <option th:each="opt: ${T(com.newper.constant.UState).values()}" th:text="${opt.getOption()}" th:value="${opt.name()}"></option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="form-group end">
-                                                    <button type="button" class="btn btn-secondary" onclick="searchBtn()">
-                                                        <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
-                                                    </button>
+                                                    <div class="form-group">
+                                                        <label class="d-block">출고송장번호</label>
+                                                        <input type="text" name="createdDate" class="form-control form-control-sm w-datarange daterange-basic">
+                                                    </div>
+
+                                                    <div class="form-group end">
+                                                        <button type="button" class="btn btn-secondary" onclick="searchBtn()">
+                                                            <span class="ladda-label"><i class="icon-search4 mr-1" onclick="searchBtn()"></i>조회하기</span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- 카드 2열 레이아웃 -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
-                                <div class="btn-group">
-                                    <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn1()">
-                                           수거송장업로드
-                                        </a>
-                                    </div>
-                                    <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
-                                            수거송장등록
-                                        </a>
+                    <!-- 카드 2열 레이아웃 -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
+                                    <div class="btn-group">
+                                        <div class="header-elements">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" onclick="Btn1()">
+                                               수거송장업로드
+                                            </a>
+                                        </div>
+                                        <div class="header-elements">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn2">
+                                                수거송장등록
+                                            </a>
+                                        </div>
+
+                                        <div class="header-elements">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3">
+                                                입고처리
+                                            </a>
+                                        </div>
+
+                                        <div class="header-elements">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn4">
+                                                강제입고
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <table class="table" id="returnTable"></table>
                         </div>
-                        <table class="table" id="returnTable"></table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 
 </body>
 
@@ -180,11 +196,6 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
-
-
-<script>
-
-</script>
 
 <script>
     function searchBtn() {
@@ -225,32 +236,33 @@
             {
                 'class': 'select-checkbox',
                 'title': '선택',
-                'data': 'SP_IDX',
+                'data': 'OGDN_IDX',
                 'defaultContent': '',
                 'render': function (data, type, full, meta) {
                     return '';
                 }
             }
-            , {'title': '주문완료일', 'data': 'U_PHONE'}
-            , {'title': '출고요청일', 'data': 'U_PHONE'}
-            , {'title': '배송출고일', 'data': 'U_PHONE'}
-            , {'title': '배송완료일', 'data': 'U_PHONE'}
-            , {'title': '출고구분', 'data': 'U_PHONE'}
-            , {'title': '주문상태', 'data': 'U_PHONE'}
-            , {'title': '자산상태', 'data': 'U_PHONE'}
-            , {
-                'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
+            ,{'title':'주문완료일','data': '','defaultContent':''}
+            ,{'title':'출고요청일','data': '','defaultContent':''}
+            ,{'title':'배송출고일','data': '','defaultContent':''}
+            ,{'title':'배송완료일','data': '','defaultContent':''}
+            ,{'title':'출고구분','data': '','defaultContent':''}
+            ,{'title':'주문상태','data': '','defaultContent':''}
+            ,{'title':'자산상태','data': 'G_STATE_STR','defaultContent':''}
+            ,{'title':'자산번호','data': 'G_IDX','defaultContent':''}
+            ,{'title':'자산바코드','data': 'G_BARCODE','defaultContent':''}
+            ,{'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
                     return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
                 }
             }
-            , {'title': '주문코드<br>사방넷 주문번호', 'data': 'U_PHONE'}
-            , {'title': '쇼핑몰명', 'data': 'COM_NAME'}
-            , {'title': '상품코드', 'data': 'U_ID'}
-            , {'title': '자산코드', 'data': 'U_DEPART'}
-            , {'title': '상품명', 'data': 'U_POSITION'}
-            , {'title': '수량', 'data': 'U_PERSON_MAIL'}
-            , {'title': '주문자명', 'data': 'U_COMPANY_TEL'}
-            , {'title': '주문자연락처', 'data': 'U_STATE_STR', 'defaultContent':''}
+            ,{'title':'주문코드<br>사방넷 주문번호','data': '','defaultContent':''}
+            ,{'title':'쇼핑몰명','data':'','defaultContent':''}
+            ,{'title':'상품코드','data':'','defaultContent':''}
+            ,{'title':'자산코드','data':'','defaultContent':''}
+            ,{'title':'상품명','data':'','defaultContent':''}
+            ,{'title':'수량','data':'','defaultContent':''}
+            ,{'title':'주문자명','data':'','defaultContent':''}
+            ,{'title':'주문자연락처','data':'','defaultContent':''}
         ]
     });
 

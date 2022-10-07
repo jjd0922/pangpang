@@ -44,4 +44,10 @@ public interface OrdersMapper {
 
     /** 교환/반품/AS 상태인 자산 카운트 */
     long countServiceGoodsDatatable(Map<String, Object> map);
+
+    /** 반품 배송 조회 */
+    List<Map<String, Object>> selectReturnDatatable(Map<String, Object> map);
+
+    /** 반품 배송 카운트 */
+    long countReturnDatatable(Map<String, Object> map);
 }

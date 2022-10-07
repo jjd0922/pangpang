@@ -1,5 +1,6 @@
 package com.newper.entity;
 
+import com.newper.constant.AsDnType;
 import com.newper.constant.AsState;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -46,6 +47,10 @@ public class AfterService {
 
     @Enumerated(EnumType.STRING)
     private AsState asState;
+
+    @Enumerated(EnumType.STRING)
+    private AsDnType asDnType;
+
     private String asType;
     private String asName;
     private String asMail;

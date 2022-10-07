@@ -160,12 +160,21 @@ public class OrdersRestController {
         return rm;
     }
 
-    /** 회수송장생성 */
+    /** 회수 고객발송 처리 **/
+    @PostMapping("saveAsDnType.ajax")
+    public ReturnMap saveAsDnType(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.saveAsDnType(paramMap);
+        rm.setMessage("고객발송 처리 완료");
+        return rm;
+    }
+
+    /** 회수송장생성 & 반송 */
     @PostMapping("saveDeliveryNumAs.ajax")
     public ReturnMap saveDeliveryNumAs(ParamMap paramMap) {
         ReturnMap rm = new ReturnMap();
         orderService.saveDeliveryNumAs(paramMap);
-        rm.setMessage("회수송장생성 완료");
+        rm.setMessage("송장생성 완료");
         return rm;
     }
 }

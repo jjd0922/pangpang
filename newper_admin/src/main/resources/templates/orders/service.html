@@ -137,7 +137,10 @@
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs();">회수송장생성</a>
+                                        <a type="button" class="btn btn-sm btn-secondary ml-1" onclick="saveAsDnType();">고객발송회수</a>
+                                    </div>
+                                    <div class="header-elements">
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('IN');">회수송장생성</a>
                                     </div>
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1">출고송장생성</a>
@@ -149,7 +152,7 @@
                                         <a type="button" class="btn btn-sm btn-primary ml-1">교환</a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1">반송</a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('OUT');">반송</a>
                                     </div>
                                 </div>
                             </div>
@@ -201,8 +204,23 @@
 
 
 <script>
-    /** 회수송장생성 */
-    function saveDeliveryNumAs() {
+    /** 회수 고객발송 처리 */
+    function saveAsDnType() {
+        var asIdx = dataTableGetSelectedDataArray('orderTable', 'AS_IDX')
+        $.ajax({
+            url:'saveAsDnType.ajax',
+            type:'post',
+            data:{
+                'asIdx':asIdx,
+            },
+            success() {
+                location.reload();
+            }
+        });
+    }
+
+    /** 회수송장생성 & 반송 */
+    function saveDeliveryNumAs(type) {
         var ogIdx = dataTableGetSelectedDataArray('orderTable', 'OG_IDX')
         var asIdx = dataTableGetSelectedDataArray('orderTable', 'AS_IDX')
         $.ajax({
@@ -210,7 +228,8 @@
            type:'post',
            data:{
                'ogIdx':ogIdx,
-               'asIdx':asIdx
+               'asIdx':asIdx,
+               'type':type
            },
            success() {
                location.reload();

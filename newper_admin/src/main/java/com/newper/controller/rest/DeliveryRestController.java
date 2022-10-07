@@ -228,4 +228,15 @@ public class DeliveryRestController {
         return rm;
     }
 
+
+    /** 배송반품관리 조회 */
+    @PostMapping("return.dataTable")
+    public ReturnDatatable returnDatatable(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        paramMap.put("P_DEL_TYPE","DELIVERY");
+        returnDatatable.setData(ordersMapper.selectReturnDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(ordersMapper.countReturnDatatable(paramMap.getMap()));
+
+        return returnDatatable;
+    }
 }

@@ -59,9 +59,9 @@ public class CalculateService {
             orderGs = ordersGsRepo.findById(Long.parseLong(paramMap.getString("ogIdx"))).get();
 
             // 정산완료인건 수정 불가
-            if (orderGs.getOgCalConfirmState().equals(CcgConfirmState.COMPLETE)) {
-                throw new MsgException("해당 정산건은 이미 정산이 완료되었습니다.");
-            }
+//            if (orderGs.getOgCalConfirmState().equals(CcgConfirmState.COMPLETE)) {
+//                throw new MsgException("해당 정산건은 이미 정산이 완료되었습니다.");
+//            }
         }
 
         int ccgAdjustCost = 0;
@@ -95,8 +95,8 @@ public class CalculateService {
             calculateGroup.setCcgAdjust(CcgAdjust.ADJUST);
             calculateGroupRepo.save(calculateGroup);
         } else {
-            orderGs.setOgCalAdjustCost(ccgAdjustCost);
-            orderGs.setOgCalAdjust(CcgAdjust.ADJUST);
+//            orderGs.setOgCalAdjustCost(ccgAdjustCost);
+//            orderGs.setOgCalAdjust(CcgAdjust.ADJUST);
         }
     }
 
@@ -132,19 +132,19 @@ public class CalculateService {
             orderGs = ordersGsRepo.findById(Long.parseLong(paramMap.getString("ogIdx"))).get();
 
             // 정산완료인건 수정 불가
-            if (orderGs.getOgCalConfirmState().equals(CcgConfirmState.COMPLETE)) {
-                throw new MsgException("해당 정산건은 이미 정산이 완료되었습니다.");
-            }
-            adjustCost = orderGs.getOgCalAdjustCost();
+//            if (orderGs.getOgCalConfirmState().equals(CcgConfirmState.COMPLETE)) {
+//                throw new MsgException("해당 정산건은 이미 정산이 완료되었습니다.");
+//            }
+//            adjustCost = orderGs.getOgCalAdjustCost();
 
             CalculateAdjust calculateAdjust = calculateAdjustRepo.findById(paramMap.getInt("ccaIdx")).get();
             adjustCost -= calculateAdjust.getCcaCost();
 
-            orderGs.setOgCalAdjustCost(adjustCost);
-
-            if (adjustCost == 0) {
-                orderGs.setOgCalAdjust(CcgAdjust.NORMAL);
-            }
+//            orderGs.setOgCalAdjustCost(adjustCost);
+//
+//            if (adjustCost == 0) {
+//                orderGs.setOgCalAdjust(CcgAdjust.NORMAL);
+//            }
 
             calculateAdjustRepo.deleteById(paramMap.getInt("ccaIdx"));
             ordersGsRepo.save(orderGs);
@@ -304,73 +304,73 @@ public class CalculateService {
     public void updateConfirmStateSales(ParamMap paramMap) {
         String[] ogIdx = paramMap.getString("ogIdx").split(",");
         for (int i = 0; i < ogIdx.length; i++) {
-            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(ogIdx[i])).get();
-            OgCalConfirmState ogConfirmState_ori = orderGs.getOgCalConfirmState();
-            OgCalConfirmState ogConfirmState_new = OgCalConfirmState.valueOf(paramMap.getString("ogCalConfirmState"));
-
-            // 해당 정산건 마감 완료시 제한
-            if (ogConfirmState_ori.equals(CcgCloseState.COMPLETE)) {
-                throw new MsgException("해당정산건은 마감되어 상태변경이 불가능합니다.");
-            }
-
-            // 정산확정인 상태에서 정산확정 처리가 들어올시
-            if (ogConfirmState_ori.equals(CcgConfirmState.COMPLETE) && ogConfirmState_new.equals(CcgConfirmState.COMPLETE)) {
-                throw new MsgException("이미 정산 확정상태입니다.");
-            }
-
-            // 정산취소인 상태에서 정산취소 처리가 들어올시
-            if (ogConfirmState_ori.equals(CcgConfirmState.CANCEL) && ogConfirmState_new.equals(CcgConfirmState.CANCEL)) {
-                throw new MsgException("이미 정산 확정취소상태입니다.");
-            }
-
-            //정산대기 상태에서 정산취소 처리가 들어올시
-            if (ogConfirmState_ori.equals(CcgConfirmState.WAIT) && ogConfirmState_new.equals(CcgConfirmState.CANCEL)) {
-                throw new MsgException("정산대기인 정산건은 취소 할 수 없습니다.");
-            }
-
-            orderGs.setOgCalConfirmState(ogConfirmState_new);
-            orderGs.setOgCalConfirmMemo(paramMap.getString("ogCalConfirmMemo"));
-            orderGs.setOgCalConfirmBy(sessionInfo.getId());
-            orderGs.setOgCalConfirmDate(LocalDate.now());
-            ordersGsRepo.save(orderGs);
+//            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(ogIdx[i])).get();
+//            OgCalConfirmState ogConfirmState_ori = orderGs.getOgCalConfirmState();
+//            OgCalConfirmState ogConfirmState_new = OgCalConfirmState.valueOf(paramMap.getString("ogCalConfirmState"));
+//
+//            // 해당 정산건 마감 완료시 제한
+//            if (ogConfirmState_ori.equals(CcgCloseState.COMPLETE)) {
+//                throw new MsgException("해당정산건은 마감되어 상태변경이 불가능합니다.");
+//            }
+//
+//            // 정산확정인 상태에서 정산확정 처리가 들어올시
+//            if (ogConfirmState_ori.equals(CcgConfirmState.COMPLETE) && ogConfirmState_new.equals(CcgConfirmState.COMPLETE)) {
+//                throw new MsgException("이미 정산 확정상태입니다.");
+//            }
+//
+//            // 정산취소인 상태에서 정산취소 처리가 들어올시
+//            if (ogConfirmState_ori.equals(CcgConfirmState.CANCEL) && ogConfirmState_new.equals(CcgConfirmState.CANCEL)) {
+//                throw new MsgException("이미 정산 확정취소상태입니다.");
+//            }
+//
+//            //정산대기 상태에서 정산취소 처리가 들어올시
+//            if (ogConfirmState_ori.equals(CcgConfirmState.WAIT) && ogConfirmState_new.equals(CcgConfirmState.CANCEL)) {
+//                throw new MsgException("정산대기인 정산건은 취소 할 수 없습니다.");
+//            }
+//
+//            orderGs.setOgCalConfirmState(ogConfirmState_new);
+//            orderGs.setOgCalConfirmMemo(paramMap.getString("ogCalConfirmMemo"));
+//            orderGs.setOgCalConfirmBy(sessionInfo.getId());
+//            orderGs.setOgCalConfirmDate(LocalDate.now());
+//            ordersGsRepo.save(orderGs);
         }
     }
 
     /** 매출정산 마감 처리 */
     @Transactional
     public void updateCloseStateSales(ParamMap paramMap) {
-        String[] ogIdx = paramMap.getString("ogIdx").split(",");
-        for (int i = 0; i < ogIdx.length; i++) {
-            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(ogIdx[i])).get();
-            OgCalCloseState ogCalCloseState_ori = orderGs.getOgCalCloseState();
-            OgCalCloseState ogCalCloseState_new = OgCalCloseState.valueOf(paramMap.getString("ogCalCloseState"));
-
-            // 정상 미확정건 마감 처리 불가
-            if (!ogCalCloseState_ori.equals(OgCalCloseState.COMPLETE)) {
-                throw new MsgException("정산미확정정 건으로 마감 처리 할 수 없습니다.");
-            }
-
-            // 해당 정산건 마감완료인데 마감완료요청시 불가
-            if (ogCalCloseState_ori.equals(OgCalCloseState.COMPLETE) && ogCalCloseState_new.equals(OgCalCloseState.COMPLETE)) {
-                throw new MsgException("이미 마감 완료된 정산건입니다.");
-            }
-
-            // 해당 정산건 마감취소인데 마감취소요청시 불가
-            if (ogCalCloseState_ori.equals(OgCalCloseState.CANCEL) && ogCalCloseState_new.equals(OgCalCloseState.CANCEL)) {
-                throw new MsgException("이미 마감 완료된 정산건입니다.");
-            }
-
-            // 해당 정산건 마감취대기인데인데 마감취소요청시 불가
-            if (ogCalCloseState_ori.equals(OgCalCloseState.WAIT) && ogCalCloseState_new.equals(OgCalCloseState.CANCEL)) {
-                throw new MsgException("마감 완료된 정산건만 마감 취소 할 수 있습니다.");
-            }
-
-            orderGs.setOgCalCloseState(ogCalCloseState_new);
-            orderGs.setOgCalCloseBy(sessionInfo.getId());
-            orderGs.setOgCalCloseDate(LocalDate.now());
-            orderGs.setOgCalCloseMemo(paramMap.getString("ogCalCloseMemo"));
-            ordersGsRepo.save(orderGs);
-        }
+//        String[] ogIdx = paramMap.getString("ogIdx").split(",");
+//        for (int i = 0; i < ogIdx.length; i++) {
+//            OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(ogIdx[i])).get();
+//            OgCalCloseState ogCalCloseState_ori = orderGs.getOgCalCloseState();
+//            OgCalCloseState ogCalCloseState_new = OgCalCloseState.valueOf(paramMap.getString("ogCalCloseState"));
+//
+//            // 정상 미확정건 마감 처리 불가
+//            if (!ogCalCloseState_ori.equals(OgCalCloseState.COMPLETE)) {
+//                throw new MsgException("정산미확정정 건으로 마감 처리 할 수 없습니다.");
+//            }
+//
+//            // 해당 정산건 마감완료인데 마감완료요청시 불가
+//            if (ogCalCloseState_ori.equals(OgCalCloseState.COMPLETE) && ogCalCloseState_new.equals(OgCalCloseState.COMPLETE)) {
+//                throw new MsgException("이미 마감 완료된 정산건입니다.");
+//            }
+//
+//            // 해당 정산건 마감취소인데 마감취소요청시 불가
+//            if (ogCalCloseState_ori.equals(OgCalCloseState.CANCEL) && ogCalCloseState_new.equals(OgCalCloseState.CANCEL)) {
+//                throw new MsgException("이미 마감 완료된 정산건입니다.");
+//            }
+//
+//            // 해당 정산건 마감취대기인데인데 마감취소요청시 불가
+//            if (ogCalCloseState_ori.equals(OgCalCloseState.WAIT) && ogCalCloseState_new.equals(OgCalCloseState.CANCEL)) {
+//                throw new MsgException("마감 완료된 정산건만 마감 취소 할 수 있습니다.");
+//            }
+//
+//            orderGs.setOgCalCloseState(ogCalCloseState_new);
+//            orderGs.setOgCalCloseBy(sessionInfo.getId());
+//            orderGs.setOgCalCloseDate(LocalDate.now());
+//            orderGs.setOgCalCloseMemo(paramMap.getString("ogCalCloseMemo"));
+//            ordersGsRepo.save(orderGs);
+//        }
     }
 
     @Transactional

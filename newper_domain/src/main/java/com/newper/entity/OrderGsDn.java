@@ -19,7 +19,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class OrderGsDn extends CreatedEntity {
+public class OrderGsDn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

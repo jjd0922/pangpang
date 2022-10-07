@@ -5,6 +5,7 @@ import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.Address;
+import com.newper.exception.MsgException;
 import com.newper.mapper.ChecksMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.mapper.ProcessMapper;
@@ -458,7 +459,7 @@ public class OrderService {
         Goods goods = goodsRepo.findById(paramMap.getLong("gIdx")).get();
     }
 
-    /** AS상세 사유 등록 */
+    /** AS 상세사유 & 회수방식 등록 */
     @Transactional
     public void saveAsReason(ParamMap paramMap) {
         AfterService afterService = afterServiceRepo.findById(paramMap.getLong("asIdx")).get();
@@ -473,31 +474,64 @@ public class OrderService {
     public void saveDeliveryNumAs(ParamMap paramMap) {
         List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
         List<Long> asIdx = paramMap.getListLong("asIdx[]");
+        String type = paramMap.getString("type");
 
         for (int i = 0; i < ogIdx.size(); i++) {
-            AfterService afterService = afterServiceRepo.findById(asIdx.get(i)).get();
+            AfterService afterService = afterServiceRepo.findByAsIdx(asIdx.get(i));
             OrderGs orderGs = ordersGsRepo.findById(ogIdx.get(i)).get();
+
+            // 회수송장 등록인데 이미 송장이 있거나 고객발송인 경우
+            if (type.equals("IN") && (afterService.getDeliveryNum() != null || afterService.getAsDnType().equals(AsDnType.CUSTOMER))) {
+                throw new MsgException("이미 회수 신청한 AS건 입니다.");
+            }
+
+            // 반송 송장 등록일 경우
+            if (type.equals("OUT")) {
+                if (afterService.getDeliveryNum2() != null) {
+                    throw new MsgException("이미 반송처리된 AS건 입니다.");
+                } else if (afterService.getDeliveryNum() == null || afterService.getAsDnType().equals(AsDnType.CUSTOMER)) {
+                    throw new MsgException("회수되지 않은 AS건 입니다.");
+                }
+            }
 
             DeliveryNum deliveryNum = DeliveryNum
                     .builder()
                     .dnNum("TEST")
-                    .dnState(DnState.REQUEST)
                     .company(companyRepo.getReferenceById(6))
+                    .dnState(DnState.REQUEST)
                     .dnSender(DnSender.COMPANY)
+                    .dnType(DnType.DELIVERY)
                     .build();
             deliveryNumRepo.save(deliveryNum);
 
-            afterService.setDeliveryNum(deliveryNum);
+            OgdnType ogdnType;
+            if (type.equals("IN")) {
+                afterService.setDeliveryNum(deliveryNum);
+                ogdnType = OgdnType.AS_IN;
+            } else {
+                afterService.setDeliveryNum2(deliveryNum);
+                ogdnType = OgdnType.AS_OUT;
+            }
+
+            afterService.setAsDnType(AsDnType.COMPANY);
             afterServiceRepo.save(afterService);
 
             OrderGsDn orderGsDn = OrderGsDn
                     .builder()
                     .orderGs(orderGs)
                     .deliveryNum(deliveryNum)
-                    .ogdnType(OgdnType.AS_IN)
+                    .ogdnType(ogdnType)
                     .build();
 
             orderGsDnRepo.save(orderGsDn);
         }
+    }
+
+    /** AS건 고객발송처리 */
+    @Transactional
+    public void saveAsDnType(ParamMap paramMap) {
+
+
+//        afterService.setAsDnType(AsDnType.valueOf(paramMap.getString("asDnType")));
     }
 }

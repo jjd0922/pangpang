@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newper.mapper.OrdersMapper">
+    <sql id="includeOrderDatatable">
+        <if test="gBarcode != null and gBarcode != ''">AND G_BARCODE LIKE CONCAT('%', #{gBarcode}, '%')</if>
+    </sql>
     <select id="selectOrderDatatable" resultType="map">
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
@@ -320,6 +323,11 @@
     <select id="selectServiceGoodsDatatable" resultType="Map">
         SELECT
             *,
+            P_IDX,
+            P_NAME,
+            G_IDX,
+            G_BARCODE,
+
             PAINT.PN_IDX AS PAINT_IDX,
             PAINT.PN_CONTENT AS PAINT_CONTENT,
             PAINT.PN_EXPECTED_COST AS PAINT_COST,
@@ -350,6 +358,10 @@
                 LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
                 LEFT JOIN PROCESS_NEED AS FIX ON AS_IDX = FIX.PN_AS_IDX AND FIX.PN_TYPE = 'FIX'
                 LEFT JOIN PROCESS_NEED AS PROCESS ON AS_IDX = PROCESS.PN_AS_IDX AND PROCESS.PN_TYPE = 'PROCESS'
+                LEFT JOIN DELIVERY_NUM AS IN_DELIVERY ON AS_DN_IDX = IN_DELIVERY.DN_IDX
+                LEFT JOIN DELIVERY_NUM AS OUT_DELIVERY ON AS_DN_IDX2 = OUT_DELIVERY.DN_IDX
+        LIMIT
+            #{start}, #{length}
     </select>
 
     <select id="countServiceGoodsDatatable" resultType="Long">
@@ -366,5 +378,39 @@
                 LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
                 LEFT JOIN PROCESS_NEED AS FIX ON AS_IDX = FIX.PN_AS_IDX AND FIX.PN_TYPE = 'FIX'
                 LEFT JOIN PROCESS_NEED AS PROCESS ON AS_IDX = PROCESS.PN_AS_IDX AND PROCESS.PN_TYPE = 'PROCESS'
+                LEFT JOIN DELIVERY_NUM AS IN_DELIVERY ON AS_DN_IDX = IN_DELIVERY.DN_IDX
+                LEFT JOIN DELIVERY_NUM AS OUT_DELIVERY ON AS_DN_IDX2 = OUT_DELIVERY.DN_IDX
+    </select>
+
+    <select id="selectReturnDatatable" resultType="Map">
+        SELECT
+            *
+        FROM
+            ORDER_GS_DN
+                LEFT JOIN ORDER_GS ON OGDN_OG_IDX = OG_IDX
+                LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
+                LEFT JOIN DELIVERY_NUM ON OGDN_DN_IDX = DN_IDX
+                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
+        <where>
+            <include refid="includeOrderDatatable"></include>
+        </where>
+        LIMIT
+            #{start}, #{length}
+    </select>
+
+    <select id="countReturnDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            ORDER_GS_DN
+                LEFT JOIN ORDER_GS ON OGDN_OG_IDX = OG_IDX
+                LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
+                LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
+                LEFT JOIN DELIVERY_NUM ON OGDN_DN_IDX = DN_IDX
+                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
+        <where>
+            <include refid="includeOrderDatatable"></include>
+        </where>
     </select>
 </mapper>

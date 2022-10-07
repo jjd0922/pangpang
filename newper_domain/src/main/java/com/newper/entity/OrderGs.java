@@ -74,32 +74,4 @@ public class OrderGs {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OG_CD_IDX", referencedColumnName = "cdIdx")
     private CompanyDelivery companyDelivery;
-
-
-
-
-
-
-
-    /** 삭제예정 */
-    /** 정산 관련 데이터 **/
-    @Enumerated(EnumType.STRING)
-    private CcgAdjust ogCalAdjust;
-    private int ogCalAdjustCost;
-    private int ogCalTotalCost;
-    private int ogCalFinalCost;
-
-    /** 정산상태 */
-    @Enumerated(EnumType.STRING)
-    private OgCalConfirmState ogCalConfirmState;
-    private LocalDate ogCalConfirmDate;
-    private String ogCalConfirmBy;
-    private String ogCalConfirmMemo;
-
-    /** 마감상태 **/
-    @Enumerated(EnumType.STRING)
-    private OgCalCloseState ogCalCloseState;
-    private LocalDate ogCalCloseDate;
-    private String ogCalCloseBy;
-    private String ogCalCloseMemo;
 }
