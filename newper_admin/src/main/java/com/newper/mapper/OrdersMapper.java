@@ -54,4 +54,9 @@ public interface OrdersMapper {
 
     /** 주문건에 포함되어있는 주문상품 조회  */
     List<Map<String, Object>> selectOrderGsByoIdx(Map<String, Object> param);
+
+    /** 주문 당 교환/AS요청 가능한 상품 리스트*/
+    List<Map<String, Object>> selectOrderGsListBySpoDepthOne(Map<String, Object> map);
+    Integer countOrderGsListBySpoDepthOne(Map<String, Object> map);
+
 }
