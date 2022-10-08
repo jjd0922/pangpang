@@ -184,4 +184,24 @@ public class OrdersRestController {
         return rm;
     }
 
+    /**주문 당 교환/AS요청 가능한 상품 리스트*/
+    @PostMapping("orderGsList.dataTable")
+    public ReturnDatatable orderGsList(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        returnDatatable.setData(ordersMapper.selectOrderGsListBySpoDepthOne(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(ordersMapper.countOrderGsListBySpoDepthOne(paramMap.getMap()));
+        return returnDatatable;
+    }
+
+    /**반품/교환/AS사유*/
+    @PostMapping("reasonSave.ajax")
+    public ReturnMap reasonSave(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        Long res = orderService.reasonAsSave(paramMap);
+        if(res>0){
+            System.out.println("good");
+        }
+        return rm;
+    }
+
 }
