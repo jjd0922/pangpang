@@ -1,12 +1,15 @@
 package com.newper.service;
 
 
+import com.newper.constant.FbType;
 import com.newper.constant.etc.HoType;
 import com.newper.constant.etc.ShopDesign;
 import com.newper.dto.ParamMap;
+import com.newper.entity.FloatingBar;
 import com.newper.entity.HeaderOrder;
 import com.newper.entity.Shop;
 import com.newper.exception.MsgException;
+import com.newper.repository.FloatingBarRepo;
 import com.newper.repository.HeaderOrderRepo;
 import com.newper.repository.ShopRepo;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class ShopService {
 
     private final ShopRepo shopRepo;
     private final HeaderOrderRepo headerOrderRepo;
+    private final FloatingBarRepo floatingBarRepo;
 
     /**분양몰 추가*/
     @Transactional
@@ -55,6 +59,18 @@ public class ShopService {
                 headerOrderRepo.saveAndFlush(headerOrder);
             }
         }
+        for(int i=0;i<FbType.values().length;i++){
+            if(FbType.values()[i].name().equals("ETC")){
+                continue;
+            }
+            FloatingBar fb = FloatingBar.builder()
+                    .fbName(FbType.values()[i].getOption())
+                    .fbDisplay((i + 1)*-1)
+                    .fbType(FbType.values()[i])
+                    .build();
+            shop.addFloatingBar(fb);
+        }
+
     }
     /** 분양몰 수정*/
     @Transactional

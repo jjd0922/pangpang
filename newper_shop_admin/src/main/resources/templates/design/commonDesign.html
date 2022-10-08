@@ -130,10 +130,8 @@ function popFooter(shopIdx){
     alert("준비중! + shopIdx==" + shopIdx);
 }
 function popFloating(shopIdx){
-    alert("준비중! + shopIdx==" + shopIdx);
-}
-function popThumbnail(shopIdx){
-    alert("준비중! + shopIdx==" + shopIdx);
+    var focusPopup = window.open('/design/pop/floating/'+shopIdx, 'shopHeader', 'width=1000, height=800, scrollbars=yes, resizable=yes');
+    focusPopup.focus();
 }
 function popCommonImage(shopIdx){
     alert("준비중! + shopIdx==" + shopIdx);
@@ -169,9 +167,6 @@ $(function(){
             }}
             ,{'title':'플로팅바','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
                 return '<a class="btn btn-sm btn-primary" onclick="popFloating('+data+')">플로팅바설정</a>';
-            }}
-            ,{'title':'썸네일','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm btn-primary" onclick="popThumbnail('+data+')">썸네일설정</a>';
             }}
             ,{'title':'공통이미지','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
                 return '<a class="btn btn-sm btn-primary" onclick="popCommonImage('+data+')">공통이미지설정</a>';

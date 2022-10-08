@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping(value = "/design/")
 @Controller
@@ -88,6 +89,20 @@ public class DesignController {
         mav.addObject("shop", shop);
         mav.addObject("hoArr", headerOrderRepo.HeaderOrderArray(shopRepo.getReferenceById(shopIdx)));
 
+        return mav;
+    }
+    /** 분양몰 플로팅바*/
+    @GetMapping(value = "pop/floating/{shopIdx}")
+    public ModelAndView shopFloating(@PathVariable Integer shopIdx){
+        ModelAndView mav = new ModelAndView("design/pop_floating");
+        Shop shop = shopRepo.findWithFbByShopIdx(shopIdx);
+
+        mav.addObject("shop", shop);
+        List<FloatingBar> fbList = shop.getFloatingBarList();
+        Map<String, List<FloatingBar>> fbMap = fbList.stream().collect(Collectors.groupingBy(fb ->{
+            return fb.getFbType().name();
+        }));
+        mav.addObject("fbMap", fbMap);
         return mav;
     }
     /** GNB 메뉴 신규, 상세*/
