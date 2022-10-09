@@ -207,4 +207,22 @@ public class OrdersRestController {
 
         return returnDatatable;
     }
+
+    /** AS불가시 교환 & 환불 처리 */
+    @PostMapping("asCancel.ajax")
+    public ReturnMap asCancel(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.asCancel(paramMap);
+        rm.setMessage("처리 완료");
+        return rm;
+    }
+
+    /** 환불 교환 신청 */
+    @PostMapping("saveOrderCancel.ajax")
+    public ReturnMap saveOrderCancel(ParamMap paramMap) {
+        ReturnMap rm = new ReturnMap();
+        orderService.saveOrderCancel(paramMap);
+        rm.setMessage("신청완료 완료");
+        return rm;
+    }
 }

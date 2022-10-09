@@ -6,9 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OCancelState implements EnumOption {
+public enum OcState implements EnumOption {
 
-    NONE(""),
     REQUEST("요청"),
     COMPLETE("완료")
     ;

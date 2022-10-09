@@ -16,6 +16,8 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.aspectj.weaver.ast.Or;
+import org.hibernate.criterion.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -68,6 +70,8 @@ public class OrderService {
     private final OrderGsDnRepo orderGsDnRepo;
     private final CompanyRepo companyRepo;
     private final ProcessService processService;
+    private final OrderCancelRepo orderCancelRepo;
+    private final OrderGsGroupCancelRepo orderGsGroupCancelRepo;
 
     @Transactional
     public String sabangOrder(String startDate, String endDate){
@@ -473,4 +477,111 @@ public class OrderService {
         return afterService.getAsIdx();
     }
 
+    /** 교환&반품 처리 */
+    @Transactional
+    public void asCancel(ParamMap paramMap) {
+        List<Long> asIdx = paramMap.getListLong("asIdx[]");
+        List<Long> ogIdx = paramMap.getListLong("ogIdx[]");
+        OcType ocType = OcType.valueOf(paramMap.getString("type"));
+
+        for (int i = 0; i < asIdx.size(); i++) {
+            AfterService afterService = afterServiceRepo.findByAsIdx(asIdx.get(i));
+            OrderGs orderGs = ordersGsRepo.findByOgIdx(ogIdx.get(i));
+
+            if (!afterService.getAsState().equals(AsState.IMPOSSIBLE)) {
+                throw new MsgException("해당 AS 건은 AS가 불가능한 상태가 아닙니다.");
+            }
+
+
+            if (afterService.getGoods() == null) {
+                throw new MsgException("아직 입고되지 않은 AS건 입니다.");
+            }
+
+            afterService.setAsState(AsState.COMPLETE);
+
+            OrderCancel orderCancel = OrderCancel
+                    .builder()
+                    .orders(orderGs.getOrderGsGroup().getOrders())
+                    .orderAddress(orderGs.getOrderGsGroup().getOrders().getOrderAddress())
+                    .ocRequestDate(LocalDate.now())
+                    .ocRequestTime(LocalTime.now())
+                    .ocState(OcState.REQUEST)
+                    .ocReason("AS 불가")
+                    .ocType(ocType)
+                    .ocContent("AS 불가")
+                    .ocRefundState(OcRefundState.REQUEST)
+                    .ocRefundBank("")
+                    .ocRefundNum("")
+                    .ocRefundMoney(orderGs.getOgPrice())
+                    .ocRefundPoint(orderGs.getOgPoint())
+                    .ocRefundMileage(orderGs.getOgMileage())
+                    .ocRefundPlusMileage(orderGs.getOgPlusMileage())
+                    .build();
+
+            orderCancelRepo.save(orderCancel);
+
+            OrderGsGroupCancel orderGsGroupCancel = OrderGsGroupCancel
+                    .builder()
+                    .orderCancel(orderCancel)
+                    .shopProductOption(orderGs.getShopProductOption())
+                    .build();
+
+
+            orderGsGroupCancelRepo.save(orderGsGroupCancel);
+
+            afterService.setOrderCancel(orderCancel);
+            afterServiceRepo.save(afterService);
+        }
+    }
+
+    /** 반품 교환 신청 */
+    @Transactional
+    public void saveOrderCancel(ParamMap paramMap) {
+        OcType ocType = OcType.valueOf(paramMap.getString("ocType"));
+        OrderGs orderGs = ordersGsRepo.findByOgIdx(paramMap.getLong("ogIdx"));
+
+        OrderCancel orderCancel = paramMap.mapParam(OrderCancel.class);
+        orderCancel.setOrders(orderGs.getOrderGsGroup().getOrders());
+        orderCancel.setOcState(OcState.REQUEST);
+        orderCancel.setOcRefundState(OcRefundState.REQUEST);
+        orderCancel.setOrderAddress(orderGs.getOrderGsGroup().getOrders().getOrderAddress());
+        orderCancelRepo.save(orderCancel);
+
+        //환불
+        OrderGsGroupCancel orderGsGroupCancel = OrderGsGroupCancel
+                .builder()
+                .orderCancel(orderCancel)
+                .shopProductOption(orderGs.getShopProductOption())
+                .build();
+
+        orderGsGroupCancelRepo.save(orderGsGroupCancel);
+
+        orderGs.setOrderGsGroupCancel(orderGsGroupCancel);
+        // 교환
+        if (ocType.equals(OcType.CHANGE)) {
+            OrderGs orderGs_change = OrderGs
+                    .builder()
+                    .shopProductOption(orderGs.getShopProductOption())
+                    .orderGsGroup(orderGs.getOrderGsGroup())
+                    .ogPrice(orderGs.getOgPrice())
+                    .ogPoint(orderGs.getOgPoint())
+                    .ogMileage(orderGs.getOgMileage())
+                    .ogDelivery(orderGs.getOgDelivery())
+                    .ogCouponPrice(orderGs.getOgCouponPrice())
+                    .ogCouponDelivery(orderGs.getOgCouponDelivery())
+                    .ogPlusMileage(orderGs.getOgPlusMileage())
+                    .ogDate(LocalDate.now())
+                    .ogTime(LocalTime.now())
+                    .goods(null)
+                    .coupon(orderGs.getCoupon())
+                    .companyDelivery(orderGs.getCompanyDelivery())
+                    .orderGs(orderGs)
+                    .build();
+
+            ordersGsRepo.save(orderGs_change);
+        }
+
+        ordersGsRepo.save(orderGs);
+
+    }
 }

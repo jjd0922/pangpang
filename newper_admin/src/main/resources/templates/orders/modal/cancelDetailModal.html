@@ -1,0 +1,187 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="cancelDetailModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">교환/환불 상세</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form id="cancelDetailForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>1. 등록정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">타입</span>
+                                                    </span>
+                                                    <select class="form-control form-control-sm" name="ocType" onchange="updateRefund();" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option value="CHANGE">교환</option>
+                                                        <option value="REFUND">환불</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">주문상품코드</span>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="ogIdx" readonly>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">반품/교환 사유</span>
+                                                    </span>
+                                                    <textarea class="form-control" name="ocReason"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">반품/교환 상세사유</span>
+                                                    </span>
+                                                    <textarea class="form-control" name="ocContent"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불계좌번호</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" name="ocRefundNum">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불계좌은행</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" name="ocRefundBank">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불금액</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right text-won" name="ocRefundMoney" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불 예치금</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right text-won" name="ocRefundPoint" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불 마일리지</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right text-won" name="ocRefundMileage" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">회수 마일리지</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right text-won" name="ocRefundPlusMileage" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
+                                    <a type="button" class="btn btn-danger" id="reasonSave" onclick="saveOrderCancel();"></i>저장</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var cancelMap;
+    function updateRefund() {
+        if ($('select[name=ocType]').val() == 'REFUND') {
+            $('input[name=ocRefundMoney]').val(comma(cancelMap.OG_PRICE));
+            $('input[name=ocRefundPoint]').val(comma(cancelMap.OG_POINT));
+            $('input[name=ocRefundMileage]').val(comma(cancelMap.OG_MILEAGE));
+            $('input[name=ocRefundPlusMileage]').val(comma(cancelMap.OG_PLUS_MILEAGE));
+        } else {
+            $('input[name=ocRefundMoney]').val(0);
+            $('input[name=ocRefundPoint]').val(0);
+            $('input[name=ocRefundMileage]').val(0);
+            $('input[name=ocRefundPlusMileage]').val(0);
+        }
+    }
+
+    function openCancelDetailModal(row) {
+        cancelMap = getDatatablemap('cancelModalTable', row);
+        $('#cancelModal').modal('hide');
+        $('#cancelDetailForm')[0].reset();
+        $('#cancelDetailModal').modal('show');
+        $('input[name=ogIdx]').val(cancelMap.OG_IDX);
+
+        updateRefund();
+    }
+
+    function saveOrderCancel(){
+        textWonRemoveComma()
+
+        $.ajax({
+            url:'/orders/saveOrderCancel.ajax',
+            type:'POST',
+            data:$('#cancelDetailForm').serialize(),
+            success: function(res){
+                location.reload();
+            }
+        })
+    }
+
+</script>
+</html>

@@ -6,11 +6,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OCancelState implements EnumOption {
+public enum OcType implements EnumOption {
 
-    NONE(""),
-    REQUEST("요청"),
-    COMPLETE("완료")
+    REFUND("환불"),
+    CHANGE("교환")
     ;
 
     private String option;

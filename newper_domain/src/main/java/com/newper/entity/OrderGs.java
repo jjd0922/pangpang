@@ -37,6 +37,11 @@ public class OrderGs {
     @JoinColumn(name = "OG_OGGC_IDX", referencedColumnName = "oggcIdx")
     private OrderGsGroupCancel orderGsGroupCancel;
 
+    /** 교환으로 나간 주문 구성 상품*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OG_OG_IDX", referencedColumnName = "ogIdx")
+    private OrderGs orderGs;
+
 
 
     /** 할인 전 상품 금액 spo_price*/
@@ -76,7 +81,5 @@ public class OrderGs {
     @JoinColumn(name = "OG_CD_IDX", referencedColumnName = "cdIdx")
     private CompanyDelivery companyDelivery;
 
-    /** 교환으로 나간 주문 구성 상품*/
-    private Long ogOgIdx;
 
 }

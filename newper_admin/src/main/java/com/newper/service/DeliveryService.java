@@ -280,19 +280,20 @@ public class DeliveryService {
     /** 강제입고 완료 */
     @Transactional
     public void deliveryCompulsion(ParamMap paramMap) {
+        DeliveryNum deliveryNum = deliveryNumRepo.findById(paramMap.getLong("dnIdx")).get();
+        deliveryNum.setDnState(DnState.COMPLETE);
+
         Goods goods = goodsRepo.findBygBarcode(paramMap.getString("gBarcode"));
-        OrderGs orderGs = ordersGsRepo.findByGoods(goods);
+        OrderGs orderGs = ordersGsRepo.findTopByGoodsOrderByOgIdx(goods);
 
         if (orderGs == null) {
             throw new MsgException("해당 자산은 출고된 자산이 아닙니다.");
         }
 
-        DeliveryNum deliveryNum = deliveryNumRepo.findByDnNum(paramMap.getString("dnNum"));
-        deliveryNum.setDnState(DnState.COMPLETE);
+
         OrderGsDn orderGsDn = orderGsDnRepo.findByDeliveryNum(deliveryNum);
         orderGsDn.setOrderGs(orderGs);
         orderGsDnRepo.save(orderGsDn);
-
 
     }
 }
