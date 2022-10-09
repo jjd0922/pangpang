@@ -1,0 +1,102 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="barcodeModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">주문상세</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="ProductDiv">
+                    <form id="barcodeModalForm" onsubmit="inModalFormSubmit()">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>1. 검색</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산바코드</span>
+                                                    </span>
+                                                    <input class="form-control" id="gBarcode" name="gBarcode" onfocus="focusOnBarcode()" placeholder="바코드 입력 후 엔터를 눌러주세요">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <table class="table" id="barcodeModalTable">
+                                    <thead>
+                                        <tr>
+                                            <th>자산번호</th>
+                                            <th>자산바코드</th>
+                                            <th>송장번호</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="barcodeTbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="navbar navbar-dark border-bottom-0 border-top d-flex justify-content-between py-2">
+                <button type="button" class="btn btn-sm btn-secondary ml-1" onclick="deliveryComplete();">저장</button>
+            </div>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function barcodeModal () {
+        $('#barcodeModal').modal('show');
+    }
+
+    function focusOnBarcode() {
+        $('#barcodeModalForm input[name=gBarcode]').val('');
+    }
+
+    function deliveryComplete() {
+        $.ajax({
+            url:'/delivery/deliveryComplete.ajax'
+            ,type:'post'
+            ,data:$('#barcodeModalForm').serialize()
+            ,success() {
+                location.reload();
+            }
+        })
+    }
+
+    function inModalFormSubmit(){
+        //submit 방지
+        event.preventDefault();
+        $.ajax({
+            url:'/delivery/barcodeCheck.ajax'
+            ,type:'post'
+            ,data:$('#barcodeModalForm').serialize()
+        }).done(function(res){
+            if (res == '') {
+                alert('없는 자산입니다.');
+                focusOnBarcode();
+                return false;
+            }
+
+            var html =
+                '<tr>' +
+                    '<input type="hidden" name="dnIdx" value="'+res.DN_IDX+'">' +
+                    '<td>'+res.G_IDX+'</td>' +
+                    '<td>'+res.G_BARCODE+'</td>' +
+                    '<td>'+res.DN_NUM+'</td>' +
+                '</tr>';
+            $('#barcodeTbody').append(html);
+            focusOnBarcode();
+        });
+    }
+</script>
+</html>

@@ -239,4 +239,28 @@ public class DeliveryRestController {
 
         return returnDatatable;
     }
+
+    /** 입고처리 바코드 체크 */
+    @PostMapping("barcodeCheck.ajax")
+    public Map<String, Object> barcodeCheck(ParamMap paramMap){
+        return deliveryMapper.selectDeliveryByGoods(paramMap.getMap());
+    }
+
+    /** 입고처리 */
+    @PostMapping("deliveryComplete.ajax")
+    public ReturnMap deliveryComplete(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        deliveryService.deliveryComplete(paramMap);
+        rm.setMessage("입고완료");
+        return rm;
+    }
+
+    /** 강제입고 */
+    @PostMapping("deliveryCompulsion.ajax")
+    public ReturnMap deliveryCompulsion(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+        deliveryService.deliveryCompulsion(paramMap);
+        rm.setMessage("입고완료");
+        return rm;
+    }
 }

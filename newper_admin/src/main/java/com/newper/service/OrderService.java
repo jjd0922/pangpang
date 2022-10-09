@@ -371,10 +371,16 @@ public class OrderService {
             }
 
             DnSender dnSender = DnSender.valueOf(paramMap.getString("sender"));
+            String dnNum;
+            if (dnSender.equals(DnSender.CUSTOMER)) {
+                dnNum = "고객발송";
+            } else {
+                dnNum = "TEST";
+            }
 
             DeliveryNum deliveryNum = DeliveryNum
                     .builder()
-                    .dnNum("TEST")
+                    .dnNum(dnNum)
                     .company(companyRepo.getReferenceById(6))
                     .dnState(DnState.REQUEST)
                     .dnSender(dnSender)
@@ -415,10 +421,8 @@ public class OrderService {
         }
 
         OrderGs orderGs = ordersGsRepo.getReferenceById(paramMap.getLong("ogIdx"));
-        Goods goods = goodsRepo.getReferenceById(paramMap.getLong("gIdx"));
 
         afterService.setOrderGs(orderGs);
-        afterService.setGoods(goods);
         afterServiceRepo.save(afterService);
     }
 

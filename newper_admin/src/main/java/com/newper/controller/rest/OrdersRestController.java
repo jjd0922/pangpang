@@ -160,12 +160,6 @@ public class OrdersRestController {
         return rm;
     }
 
-    /** 해당 AS요청건의 주문에 있는 주문 상품들 조회 */
-    @PostMapping("selectOrderGs.ajax")
-    public List<Map<String, Object>> selectOrderGs(ParamMap paramMap) {
-        return ordersMapper.selectOrderGsByoIdx(paramMap.getMap());
-    }
-
     /** 해당 AS 요청건 주문 매핑 */
     @PostMapping("setAsOgIdx.ajax")
     public ReturnMap setAsOgIdx(ParamMap paramMap) {
@@ -184,4 +178,13 @@ public class OrdersRestController {
         return rm;
     }
 
+    /** 주문상품 조회 **/
+    @PostMapping("orderGs.dataTable")
+    public ReturnDatatable orderGsDatatable(ParamMap paramMap){
+        ReturnDatatable returnDatatable = new ReturnDatatable();
+        returnDatatable.setData(ordersMapper.selectOrderGsDatatable(paramMap.getMap()));
+        returnDatatable.setRecordsTotal(ordersMapper.countOrderGsDatatable(paramMap.getMap()));
+
+        return returnDatatable;
+    }
 }

@@ -292,6 +292,23 @@
 
     // 각각 검수쪽에서 리포트 등록
     function updateCheckReport () {
+        if ($('select[name=paintProcess]').val() == 'BEFORE') {
+            alert('도색 진행여부를 선택해 주세요');
+            return false;
+        }
+
+        if ($('select[name=fixProcess]').val() == 'BEFORE') {
+            alert('수리 진행여부를 선택해 주세요');
+            return false;
+        }
+
+        if ($('select[name=processProcess]').val() == 'BEFORE') {
+            alert('가공 진행여부를 선택해 주세요');
+            return false;
+        }
+
+
+
         textWonRemoveComma();
         $.ajax({
             type: "POST",

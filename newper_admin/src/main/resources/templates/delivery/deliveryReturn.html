@@ -145,14 +145,8 @@
                                         </div>
 
                                         <div class="header-elements">
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3">
+                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn3" onclick="barcodeModal()">
                                                 입고처리
-                                            </a>
-                                        </div>
-
-                                        <div class="header-elements">
-                                            <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn4">
-                                                강제입고
                                             </a>
                                         </div>
                                     </div>
@@ -196,11 +190,13 @@
 
 <script th:src="@{/assets/js/common.js}"></script>
 
+<th:block th:replace="delivery/modal/inBarcodeModal.html"/>
+<th:block th:replace="delivery/modal/compulsionModal.html"/>
+
 
 <script>
     function searchBtn() {
-        var table = $('#returnTable').DataTable();
-        table.page('first').ajax.url('/delivery/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
+        returnTable.page('first').ajax.url('/delivery/return.dataTable?' + $('#returnForm').serialize()).load(null, false);
     }
 
     function Btn1(){
@@ -251,6 +247,11 @@
             ,{'title':'자산상태','data': 'G_STATE_STR','defaultContent':''}
             ,{'title':'자산번호','data': 'G_IDX','defaultContent':''}
             ,{'title':'자산바코드','data': 'G_BARCODE','defaultContent':''}
+            ,{'title':'송장번호','data': 'DN_NUM','defaultContent':''}
+            ,{'title': '강제입고', 'data': 'DN_NUM', 'render': function (data, type, full, meta) {
+                    return '<a href="#" onclick="compulsionModal(\''+data+'\');" class="badge badge-danger">강제입고</a>'
+                }
+            }
             ,{'title': '주문코드<br>사방넷 통합주문번호', 'data': null, 'render': function (data, type, full, meta) {
                     return '<a href="#" onclick="customerDetailPop('+full.CU_IDX+')" class="badge badge-primary">상세</a>'
                 }

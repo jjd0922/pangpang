@@ -1,0 +1,74 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="compulsionModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">강제입고</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="ProductDiv">
+                    <form id="compulsionModalForm" onsubmit="compulsionFormSubmit()">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>1. 검색</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">자산바코드</span>
+                                                    </span>
+                                                    <input class="form-control" name="gBarcode" onfocus="focusOnBarcode2()" placeholder="바코드 입력 후 엔터를 눌러주세요">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">송장번호</span>
+                                                    </span>
+                                                    <input class="form-control" id="dnNum" name="dnNum" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function compulsionModal (dnNum) {
+        $('#compulsionModal').modal('show');
+        $('#dnNum').val(dnNum);
+    }
+
+    function focusOnBarcode2() {
+        $('#compulsionModalForm input[name=gBarcode]').val('');
+    }
+
+    function compulsionFormSubmit() {
+        event.preventDefault();
+
+        $.ajax({
+            url:'/delivery/deliveryCompulsion.ajax',
+            type:'post',
+            data:$('#compulsionModalForm').serialize(),
+            success() {
+                location.reload();
+            }
+        })
+    }
+</script>
+</html>

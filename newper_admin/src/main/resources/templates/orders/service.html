@@ -143,7 +143,7 @@
                                         <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('IN', 'COMPANY');">회수송장생성</a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('RETURN', 'COMPANY');">출고송장생성</a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('OUT', 'COMPANY');">출고송장생성</a>
                                     </div>
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1">반품</a>
@@ -152,7 +152,7 @@
                                         <a type="button" class="btn btn-sm btn-primary ml-1">교환</a>
                                     </div>
                                     <div class="header-elements">
-                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('OUT', 'COMPANY');">반송</a>
+                                        <a type="button" class="btn btn-sm btn-primary ml-1" onclick="saveDeliveryNumAs('RETURN', 'COMPANY');">반송</a>
                                     </div>
                                 </div>
                             </div>
@@ -199,6 +199,7 @@
 <script th:src="@{/assets/js/autocomplete/autocomplete-jquery-ui.min.js}"></script>
 
 <th:block th:replace="orders/modal/asModal.html"/>
+<th:block th:replace="orders/modal/ordersModal.html"/>
 <th:block th:replace="orders/modal/asCheckReport.html"/>
 
 
@@ -279,6 +280,9 @@
             ,{'title':'사유','data':'','defaultContent':''}
             ,{'title':'AS상세','data':'','render':function(data,type,full,meta){
                     return '<a class="btn btn-sm badge-indigo" onclick="openAsModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">조회</a>';
+                }}
+            ,{'title':'주문매핑','data':'','render':function(data,type,full,meta){
+                    return '<a class="btn btn-sm badge-indigo" onclick="openOrderModal(\'' + meta.settings.sTableId + '\' , ' + meta.row + ')">주문매핑</a>';
                 }}
             ,{'title':'공정항목','data':'','defaultContent':''}
             ,{'title':'공정상태','data':'','defaultContent':''}

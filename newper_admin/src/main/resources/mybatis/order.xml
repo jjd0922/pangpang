@@ -360,7 +360,7 @@
                 LEFT JOIN ORDER_GS ON AS_OG_IDX = OG_IDX
                 LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
                 LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
-                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
+                LEFT JOIN GOODS ON AS_G_IDX = G_IDX
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
                 LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
@@ -380,7 +380,7 @@
                 LEFT JOIN ORDER_GS ON AS_OG_IDX = OG_IDX
                 LEFT JOIN ORDER_GS_GROUP ON OG_OGG_IDX = OGG_IDX
                 LEFT JOIN ORDERS ON OGG_O_IDX = O_IDX
-                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
+                LEFT JOIN GOODS ON AS_G_IDX = G_IDX
                 LEFT JOIN PRODUCT ON G_P_IDX = P_IDX
                 LEFT JOIN CATEGORY ON P_CATE_IDX = CATE_IDX
                 LEFT JOIN PROCESS_NEED AS PAINT ON AS_IDX = PAINT.PN_AS_IDX AND PAINT.PN_TYPE = 'PAINT'
@@ -422,18 +422,63 @@
         </where>
     </select>
 
-    <select id="selectOrderGsByoIdx" resultType="Map">
+    <sql id="includeOrderGsDatatable">
+        <if test="oCode != null and oCode != ''">O_CODE LIKE CONCAT('%', #{oCode}, '%')</if>
+        <if test="dnNum != null and dnNum != ''">DN_NUM LIKE CONCAT('%', #{dnNum}, '%')</if>
+        <if test="oName != null and oName != ''">O_NAME LIKE CONCAT('%', #{oName}, '%')</if>
+        <if test="oPhone != null and oPhone != ''">O_PHONE LIKE CONCAT('%', #{oPhone}, '%')</if>
+        <if test="oaName != null and oaName != ''">OA_NAME LIKE CONCAT('%', #{oaName}, '%')</if>
+        <if test="oaPhone != null and oaPhone != ''">OA_PHONE LIKE CONCAT('%', #{oaPhone}, '%')</if>
+        <if test="addr != null and addr != ''">#{addr} LIKE CONCAT('%', POST + ADDR1 + ADDR2 + ADDR3 + ADDR4, '%')</if>
+        <if test="gsCode != null and gsCode != ''">GS_CODE LIKE CONCAT('%', #{gsCode}, '%')</if>
+        <if test="spoName != null and spoName != ''">SHOP_NAME LIKE CONCAT('%', #{spoName}, '%')</if>
+        <if test="cuIdx != null and cuIdx != ''">O_CU_IDX = #{cuIdx}</if>
+    </sql>
+    <select id="selectOrderGsDatatable" resultType="Map">
         SELECT
+            O_CODE,
+            DN_NUM,
+            O_NAME,
+            O_PHONE,
+            OA_NAME,
+            OA_PHONE,
+            POST,
+            ADDR1,
+            ADDR2,
+            ADDR3,
+            ADDR4,
+            GS_CODE,
+            SPO_NAME,
             OG_IDX,
-            G_BARCODE,
-            GS_NAME
+            OG_G_IDX AS G_IDX
         FROM
             ORDERS
+                LEFT JOIN ORDER_ADDRESS ON O_OA_IDX = OA_IDX
                 LEFT JOIN ORDER_GS_GROUP ON O_IDX = OGG_O_IDX
                 LEFT JOIN ORDER_GS ON OGG_IDX = OG_OGG_IDX
-                LEFT JOIN GOODS ON OG_G_IDX = G_IDX
-                LEFT JOIN GOODS_STOCK ON G_GS_IDX = GS_IDX
-        WHERE
-            O_IDX = #{oIdx}
+                LEFT JOIN ORDER_GS_DN ON OG_IDX = OGDN_OG_IDX
+                LEFT JOIN DELIVERY_NUM ON OGDN_DN_IDX = DN_IDX
+                LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                LEFT JOIN GOODS_STOCK ON SPO_GS_IDX = GS_IDX
+        <where>
+            <include refid="includeOrderGsDatatable"></include>
+        </where>
+        LIMIT
+            #{start}, #{length}
+    </select>
+
+    <select id="countOrderGsDatatable" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            ORDERS
+                LEFT JOIN ORDER_ADDRESS ON O_OA_IDX = OA_IDX
+                LEFT JOIN ORDER_GS_GROUP ON O_IDX = OGG_O_IDX
+                LEFT JOIN ORDER_GS ON OGG_IDX = OG_OGG_IDX
+                LEFT JOIN SHOP_PRODUCT_OPTION ON OG_SPO_IDX = SPO_IDX
+                LEFT JOIN GOODS_STOCK ON SPO_GS_IDX = GS_IDX
+        <where>
+            <include refid="includeOrderGsDatatable"></include>
+        </where>
     </select>
 </mapper>

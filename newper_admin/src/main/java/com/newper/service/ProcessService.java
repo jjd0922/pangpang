@@ -633,7 +633,7 @@ public class ProcessService {
             // 완료처리시
            if (pnState.equals(PnState.COMPLETE)) {
                int check = processMapper.checkProcessNeedOtherByGoods(goods.getGIdx());
-               if (check == 0) {
+               if (check == 1) {
                    if (processNeed.getAfterService() != null) {
                        // AS건 바로 출고전 검수
                        goods.setGState(GState.STOCK);
@@ -701,9 +701,10 @@ public class ProcessService {
         String type = pnType.name().toLowerCase();
         int idx = paramMap.getIntZero(type+"Idx");
         String content = paramMap.getString(type+"Content");
-        int cost = paramMap.getInt(type+"Cost");
+        int cost = paramMap.getIntZero(type+"Cost");
         ProcessNeed processNeed;
-        if (idx == 0 && !content.replaceAll(" ","").equals("") && cost != 0) {
+//        && !content.replaceAll(" ","").equals("") && cost != 0
+        if (idx == 0) {
             int pnCount = processMapper.selectProcessNeedCount(paramMap.getLong("gIdx"), pnType.name());
             processMapper.updateProcessNeedLast(paramMap.getLong("gIdx"), pnType.name());
             processNeed = ProcessNeed

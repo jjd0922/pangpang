@@ -52,6 +52,9 @@ public interface OrdersMapper {
     /** 반품 배송 카운트 */
     long countReturnDatatable(Map<String, Object> map);
 
-    /** 주문건에 포함되어있는 주문상품 조회  */
-    List<Map<String, Object>> selectOrderGsByoIdx(Map<String, Object> param);
+    /** 주문상품조회 */
+    List<Map<String, Object>> selectOrderGsDatatable(Map<String, Object> map);
+
+    /** 주문상품 카운트 */
+    long countOrderGsDatatable(Map<String, Object> map);
 }

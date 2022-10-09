@@ -62,41 +62,9 @@
                                     </div>
                                 </fieldset>
 
-                                <fieldset class="mb-0">
-                                    <legend>2. 주문정보
-                                        <span class="ml-2">
-                                            <a class="btn btn-sm btn-primary ml-1" onclick="setAsOgIdx()">주문상품 매핑</a>
-                                        </span>
-                                    </legend>
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">주문코드</span>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="oCode" id="oCode" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <div class="input-group">
-                                                    <span class="input-group-prepend">
-                                                        <span class="input-group-text">주문상품/자산바코드</span>
-                                                    </span>
-                                                    <select class="form-control" id="ogIdx" name="ogIdx">
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
 
                                 <fieldset class="mb-0">
-                                    <legend>3. 고객정보
+                                    <legend>2. 고객정보
                                         <span class="ml-2">
                                             <a class="btn btn-sm btn-primary ml-1" onclick="saveAsReason()">사유저장</a>
                                         </span>
@@ -172,7 +140,7 @@
                                 </fieldset>
 
                                 <fieldset class="mt-3">
-                                    <legend>4. 금액
+                                    <legend>3. 금액
                                         <span class="ml-2">
                                             <a class="btn btn-sm btn-primary ml-1" onclick="saveAsCost()">금액저장</a>
                                         </span>
@@ -243,26 +211,10 @@
         $.ajax({
             type: "POST",
             url:"/orders/saveAsCost.ajax",
-            processData: false,
-            contentType: false,
-            data: new FormData($('#asCostModalForm')[0]),
+            type:'post',
+            data:$('#asForm').serialize(),
             async: false,
             success : function(result){
-                location.reload();
-            }
-        });
-    }
-
-    function setAsOgIdx() {
-        $.ajax({
-            url:'/orders/setAsOgIdx.ajax',
-            type:'post',
-            data:{
-                'ogIdx':$('#ogIdx').val(),
-                'gIdx':$('#gIdx').val(),
-                'asIdx':$('#asIdx').val()
-            },
-            success(){
                 location.reload();
             }
         });
@@ -283,17 +235,13 @@
         $('#asModal').modal('show');
         var dataMap = getDatatablemap(id, rowIdx);
 
+        setOrders(dataMap.O_CU_IDX);
         setOrderGs(dataMap.O_IDX);
         // 자산정보
         $('#pIdx').val(dataMap.P_IDX);
         $('#pName').val(dataMap.P_NAME);
         $('#gIdx').val(dataMap.G_IDX);
         $('#gBarcode').val(dataMap.G_BARCODE);
-
-        //주문정보
-        $('#oCode').val(dataMap.O_CODE);
-        $('#ogIdx option[value='+dataMap.OG_IDX+']').prop('selected', true);
-
         // 고객 정보
         $('#asIdx').val(dataMap.AS_IDX);
         $('#asName').val(dataMap.AS_NAME);
@@ -311,26 +259,6 @@
 
         textWonComma();
 
-    }
-
-    function setOrderGs(oIdx) {
-        $.ajax({
-            url:'/orders/selectOrderGs.ajax',
-            type:'post',
-            async: false,
-            data: {
-                'oIdx':oIdx
-            },
-            success(result){
-                var html = '';
-
-                $.each(result, function (index, value) {
-                   html += '<option value="'+value.OG_IDX+'">'+value.GS_NAME+'/'+value.G_BARCODE+'</option>'
-                });
-
-                $('#ogIdx').append(html);
-            }
-        });
     }
 </script>
 </html>

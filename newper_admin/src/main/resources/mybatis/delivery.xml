@@ -75,4 +75,24 @@
 
     </select>
 
+    <select id="selectDeliveryByGoods" resultType="Map">
+        SELECT
+            G_IDX,
+            G_BARCODE,
+            IF(AS_IDX IS NULL AND OGGC_IDX IS NULL, 0, DN_IDX) AS DN_IDX,
+            IF(AS_IDX IS NULL AND OGGC_IDX IS NULL, '미확인', DN_NUM) AS DN_NUM
+        FROM
+            GOODS
+                LEFT JOIN ORDER_GS ON G_IDX = OG_G_IDX
+                LEFT JOIN ORDER_GS_DN ON OG_IDX = OGDN_OG_IDX
+                LEFT JOIN DELIVERY_NUM ON OGDN_DN_IDX = DN_IDX
+                LEFT JOIN AFTER_SERVICE ON DN_IDX = AS_DN_IDX
+                LEFT JOIN ORDER_GS_GROUP_CANCEL ON OG_SPO_IDX = OGGC_SPO_IDX
+        WHERE
+            G_BARCODE = #{gBarcode}
+        ORDER BY
+            DN_IDX DESC
+        LIMIT
+            0, 1
+    </select>
 </mapper>

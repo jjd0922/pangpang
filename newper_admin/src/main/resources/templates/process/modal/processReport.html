@@ -261,6 +261,9 @@
     }
 
     function saveProcessComp() {
+        textWonRemoveComma();
+
+
         $.ajax({
             url: '/process/saveProcess.ajax',
             data: new FormData($('#processCompModal')[0]),
@@ -330,6 +333,8 @@
             ,{'class':'m-w-max', 'title':'옵션3','data':'OPTION3', 'defaultContent':''}
         ]
     });
+
+
 
     // 숫자만 입력되도록
     $(document).on('input', '.text-won', function (event) {

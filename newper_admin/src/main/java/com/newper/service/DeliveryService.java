@@ -5,16 +5,10 @@ import com.newper.component.Common;
 import com.newper.constant.DnState;
 import com.newper.constant.OState;
 import com.newper.dto.ParamMap;
-import com.newper.entity.DeliveryNum;
-import com.newper.entity.Goods;
-import com.newper.entity.OrderGs;
-import com.newper.entity.Orders;
+import com.newper.entity.*;
 import com.newper.exception.MsgException;
 import com.newper.mapper.OrdersMapper;
-import com.newper.repository.DeliveryNumRepo;
-import com.newper.repository.GoodsRepo;
-import com.newper.repository.OrdersGsRepo;
-import com.newper.repository.OrdersRepo;
+import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -45,7 +39,8 @@ public class DeliveryService {
     private final OrdersGsRepo ordersGsRepo;
     private final OrdersMapper ordersMapper;
     private final GoodsRepo goodsRepo;
-
+    private final AfterServiceRepo afterServiceRepo;
+    private final OrderGsDnRepo orderGsDnRepo;
 
 
     /** 송장등록 엑셀 업로드*/
@@ -260,4 +255,44 @@ public class DeliveryService {
     }
 
 
+    /** 입고처리 완료 처리 */
+    @Transactional
+    public void deliveryComplete(ParamMap paramMap) {
+        List<Long> dnIdx = paramMap.getListLong("dnIdx");
+        DnState dnState = DnState.COMPLETE;
+
+        for (int i = 0; i < dnIdx.size(); i++) {
+            if (dnIdx.get(i) != 0) {
+                DeliveryNum deliveryNum = deliveryNumRepo.findById(dnIdx.get(i)).get();
+                deliveryNum.setDnState(dnState);
+                deliveryNumRepo.save(deliveryNum);
+
+                AfterService afterService = afterServiceRepo.findByDeliveryNum(deliveryNum);
+                if (afterService != null) {
+                    OrderGsDn orderGsDn = orderGsDnRepo.findByDeliveryNum(deliveryNum);
+                    afterService.setGoods(orderGsDn.getOrderGs().getGoods());
+                    afterServiceRepo.save(afterService);
+                }
+            }
+        }
+    }
+
+    /** 강제입고 완료 */
+    @Transactional
+    public void deliveryCompulsion(ParamMap paramMap) {
+        Goods goods = goodsRepo.findBygBarcode(paramMap.getString("gBarcode"));
+        OrderGs orderGs = ordersGsRepo.findByGoods(goods);
+
+        if (orderGs == null) {
+            throw new MsgException("해당 자산은 출고된 자산이 아닙니다.");
+        }
+
+        DeliveryNum deliveryNum = deliveryNumRepo.findByDnNum(paramMap.getString("dnNum"));
+        deliveryNum.setDnState(DnState.COMPLETE);
+        OrderGsDn orderGsDn = orderGsDnRepo.findByDeliveryNum(deliveryNum);
+        orderGsDn.setOrderGs(orderGs);
+        orderGsDnRepo.save(orderGsDn);
+
+
+    }
 }

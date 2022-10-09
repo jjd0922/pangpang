@@ -14,7 +14,6 @@ public enum GStockState implements EnumOption {
     ,STOCK("가용재고")
     ,OUT_REQ("출고 검수 재고")
     ,OUT("출고완료")
-
     ,MOVE("자산이동중")
 
     ;

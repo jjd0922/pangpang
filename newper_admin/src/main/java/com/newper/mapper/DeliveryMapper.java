@@ -13,4 +13,6 @@ public interface DeliveryMapper {
     Integer countDeliveryDatatable(Map<String, Object> map);
 
 
+    /** 입고된 자산으로 송장 번호 확인 */
+    Map<String, Object> selectDeliveryByGoods(Map<String, Object> map);
 }
