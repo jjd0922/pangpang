@@ -55,7 +55,7 @@ public class AfterService {
     private LocalDate asDate;
     private LocalTime asTime;
 
-    private String asMoneyState;
+    private byte asMoneyState;
 
     private int asCost;
     private int asReqMoney;
@@ -72,6 +72,7 @@ public class AfterService {
      * asReason : "",
      * asCost :[1000, 2000],
      * asDate:[yyyy-MM-dd,yyyy-MM-dd]
+     * asOrder:{"key":"value"}
      * }
      * </pre> */
     @Builder.Default

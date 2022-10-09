@@ -107,7 +107,7 @@
                 <li>
                     <div class="cate-table-title">상품상태</div>
                     <ul class="cate-table-cont">
-                        <li>새상품</li>
+                        <li onclick="addOption()">새상품</li>
                         <li>박스개봉</li>
                         <li>단기사용</li>
                         <li>해외리퍼</li>
@@ -213,16 +213,16 @@
         </div>
         <!-- 펼침 & 접기 -->
         <div class="cate-selectedOption-wrap">
-            <div class="cate-selectedOption color-blue font-sm">
-                <p>노트북/스마트PC<i class="close"></i></p>
-                <p>울트라북<i class="close"></i></p>
-                <p>삼성<i class="close"></i></p>
-                <p>LG<i class="close"></i></p>
-                <p>DELL<i class="close"></i></p>
-                <div class="item-color">
-                    <span><span></span></span>
-                    <i class="close"></i>
-                </div>
+            <div class="cate-selectedOption color-blue font-sm" id="optionList">
+<!--                <p>노트북/스마트PC<i class="close"></i></p>-->
+<!--                <p>울트라북<i class="close"></i></p>-->
+<!--                <p>삼성<i class="close"></i></p>-->
+<!--                <p>LG<i class="close"></i></p>-->
+<!--                <p>DELL<i class="close"></i></p>-->
+<!--                <div class="item-color">-->
+<!--                    <span><span></span></span>-->
+<!--                    <i class="close"></i>-->
+<!--                </div>-->
             </div>
             <div>
                 <p class="revert"><i class="revert-icon"></i>전체해제</p>
@@ -299,6 +299,15 @@
             }
             ,error(){}
         })
+    }
+    function addOption(){
+        var html = '';
+        html += '<p>노트북/스마트PC<i className="close"></i></p>'
+        html += '<input type="hidden" name="testtstsst" value="ststststst">'
+
+        $('#optionList').append(html)
+
+        searchCategoryProductList();
     }
 </script>
 <script>

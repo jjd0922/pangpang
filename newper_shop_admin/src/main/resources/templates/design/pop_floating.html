@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>플로팅바 설정</title>
+
+    <th:block th:replace="/common/css.html"></th:block>
+</head>
+
+<body>
+
+<!-- 본문 영역 시작 -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content-inner">
+            <div class="page-header page-header-dark">
+                <div class="page-header-content container-fluid header-elements-md-inline px-3">
+                    <div class="d-flex">
+                        <div class="page-title">
+                            <h4 class="font-weight-semibold"><i class="icon-basket mr-1"></i>플로팅바 설정</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content area -->
+            <div class="content container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body popup-contents">
+                                <form id="floatingForm" method="post" enctype="multipart/form-data">
+                                    <fieldset class="mb-0">
+                                        <legend class="">1. 플로팅메뉴 기본정보</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">분양몰</span>
+                                                        </span>
+                                                        <input class="form-control" readonly th:value="${shop.shopName}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출상태</span>
+                                                        </span>
+                                                        <select class="form-control select" name="fbDisplay">
+                                                            <option value="1">노출</option>
+                                                            <option value="-1">미노출</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">플로팅 그룹</span>
+                                                        </span>
+                                                        <select class="form-control select" name="FLOAT_BORDER">
+                                                            <option value="floating-type-a" th:selected="${shop.getShopDesign.get('FLOAT_BORDER') eq 'floating-type-a'}">타입 A - 둥근 테두리 + 그림자</option>
+                                                            <option value="floating-type-b" th:selected="${shop.getShopDesign.get('FLOAT_BORDER') eq 'floating-type-b'}">타입 B - 각진 테두리 + 외각선</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">최근 본 상품</span>
+                                                        </span>
+                                                        <select class="form-control select" name="recent">
+                                                            <option value="1">사용</option>
+                                                            <option value="-1" th:selected="${fbMap.get('RECENT').get(0).fbDisplay le 0}">미사용</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">장바구니</span>
+                                                        </span>
+                                                        <select class="form-control select" name="basket">
+                                                            <option value="2">사용</option>
+                                                            <option value="-2" th:selected="${fbMap.get('BASKET').get(0).fbDisplay le 0}">미사용</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <br>
+                                    <fieldset class="mb-0">
+                                        <legend class="">2. 상담전화 정보</legend>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">사용구분</span>
+                                                        </span>
+                                                        <select class="form-control select" name="sangdam">
+                                                            <option value="1">사용</option>
+                                                            <option value="-1" th:selected="${fbMap.get('TEL').get(0).fbDisplay le 0}">미사용</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">연락처</span>
+                                                        </span>
+                                                        <input type="text" class="form-control" name="sangdam_url" th:value="${fbMap.get('TEL').get(0).fbUrl}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">썸네일(WEB)</span>
+                                                        </span>
+                                                        <input th:if="${fbMap.get('TEL').get(0).fbThumbnail == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="sangdam_thumbnail" accept="image/*">
+                                                        <div class="form-control" th:if="${fbMap.get('TEL').get(0).fbThumbnail != null}">
+                                                            <img th:src="${fbMap.get('TEL').get(0).fbThumbnail == '/default/fb_tel.png'?'__@{/default/fb_tel.png}__': fbMap.get('TEL').get(0).fbThumbnail}" class="input-thumb">
+                                                            <input type="file" name="sangdam_thumbnail" accept="image/*" class="input-thumb-file">
+                                                            <input type="hidden" name="sangdam_thumbnail" th:value="${fbMap.get('TEL').get(0).fbThumbnail}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">썸네일(MOBILE)</span>
+                                                        </span>
+                                                        <input th:if="${fbMap.get('TEL').get(0).fbThumbnailMobile == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="sangdam_thumbnail_mobile" accept="image/*">
+                                                        <div class="form-control" th:if="${fbMap.get('TEL').get(0).fbThumbnailMobile != null}">
+                                                            <img th:src="${fbMap.get('TEL').get(0).fbThumbnailMobile == '/default/fb_tel.png'?'__@{/default/fb_tel.png}__': fbMap.get('TEL').get(0).fbThumbnailMobile}" class="input-thumb">
+                                                            <input type="file" name="sangdam_thumbnail_mobile" accept="image/*" class="input-thumb-file">
+                                                            <input type="hidden" name="sangdam_thumbnail_mobile" th:value="${fbMap.get('TEL').get(0).fbThumbnailMobile}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <span class="input-group-text">노출순서</span>
+                                                        </span>
+                                                        <input type="number" class="form-control" min="3" name="sangdam_order" th:value="${fbMap.get('TEL').get(0).absDisplay()}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <br>
+                                    <fieldset class="mb-0" id="copyDivParent">
+                                        <legend class="">3. 기타이미지
+                                            <a class="btn btn-sm btn-primary ml-1" onclick="addDiv()">추가</a>
+                                        </legend>
+                                        <div th:if="${not fbMap.get('ETC').isEmpty }" th:each="etc : ${fbMap.get('ETC')}">
+                                            <div class="row mb-3 cloneDiv">
+                                                <div class="col-sm-12">
+                                                    <div class="mb-1 text-right">
+                                                        <a type="button" class="btn btn-sm btn-danger ml-1" onclick="deleteDiv()">삭제</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">TITLE</span>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="add_name" th:value="${etc.fbName}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">연결 URL</span>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="add_url" th:value="${etc.fbUrl}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">사용구분</span>
+                                                            </span>
+                                                            <select class="form-control form-control-sm w-120px" name="add">
+                                                                <option value="1">사용</option>
+                                                                <option value="-1" th:selected="${etc.fbDisplay le 0}">미사용</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">노출순서</span>
+                                                            </span>
+                                                            <input type="number" class="form-control" min="4" value="4" name="add_order" th:value="${etc.absDisplay()}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">썸네일(WEB)</span>
+                                                            </span>
+                                                            <input th:if="${etc.fbThumbnail == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="add_thumbnail" accept="image/*">
+                                                            <div class="form-control" th:if="${etc.fbThumbnail != null}">
+                                                                <img th:src="${etc.fbThumbnail == '/default/fb_default.png'?'__@{/default/fb_default.png}__': etc.fbThumbnail}" class="input-thumb">
+                                                                <input type="file" name="add_thumbnail" accept="image/*" class="input-thumb-file">
+                                                                <input type="hidden" name="add_thumbnail" th:value="${etc.fbThumbnail}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                                <span class="input-group-text">썸네일(MOBILE)</span>
+                                                            </span>
+                                                            <input th:if="${etc.fbThumbnailMobile == null}" type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="add_thumbnail_mobile" accept="image/*">
+                                                            <div class="form-control" th:if="${etc.fbThumbnailMobile != null}">
+                                                                <img th:src="${etc.fbThumbnailMobile == '/default/fb_default.png'?'__@{/default/fb_default.png}__': etc.fbThumbnailMobile}" class="input-thumb">
+                                                                <input type="file" name="add_thumbnail_mobile" accept="image/*" class="input-thumb-file">
+                                                                <input type="hidden" name="add_thumbnail_mobile" th:value="${etc.fbThumbnailMobile}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /inner content -->
+
+        <!-- Footer -->
+        <!-- /footer -->
+    </div>
+    <!-- /main content -->
+</div>
+
+<div class="navbar navbar-expand-lg navbar-dark">
+    <div class="w-100 text-right mt-1 mb-1">
+        <button type="button" class="btn btn-sm btn-light float-left" onclick="window.close();">
+            <i class="icon-cross2 mr-1"></i>닫기
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="saveBtn()"> <i class="icon-floppy-disk mr-1"></i>저장</button>
+    </div>
+</div>
+
+<!-- 공통 js -->
+<script th:src="@{/assets/js/main/jquery.min.js}"></script>
+<script th:src="@{/assets/js/main/bootstrap.bundle.min.js}"></script>
+
+<!-- input -->
+<script th:src="@{/assets/js/plugins/extensions/jquery_ui/interactions.min.js}"></script>
+<script th:src="@{/assets/js/plugins/forms/selects/select2.min.js}"></script>
+
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/plugins/pickers/color/spectrum.js}"></script>
+
+<!-- 맞춤 js -->
+<script th:src="@{/assets/js/app.js}"></script>
+<!-- input -->
+<script th:src="@{/assets/js/demo_pages/form_select2.js}"></script>
+<!-- 컬러픽커 -->
+<script th:src="@{/assets/js/demo_pages/picker_color.js}"></script>
+
+<script th:src="@{/assets/js/common.js}"></script>
+
+</body>
+
+<div style="display: none" id="copyDiv">
+    <div class="row mb-3 cloneDiv">
+        <div class="col-sm-12">
+            <div class="mb-1 text-right">
+                <a type="button" class="btn btn-sm btn-danger ml-1" onclick="deleteDiv()">삭제</a>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">TITLE</span>
+                    </span>
+                    <input type="text" class="form-control" name="add_name">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">연결 URL</span>
+                    </span>
+                    <input type="text" class="form-control" name="add_url">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">사용구분</span>
+                    </span>
+                    <select class="form-control form-control-sm w-120px" name="add">
+                        <option value="1">사용</option>
+                        <option value="-1">미사용</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">노출순서</span>
+                    </span>
+                    <input type="number" class="form-control" min="4" value="4" name="add_order">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">썸네일(WEB)</span>
+                    </span>
+                    <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="add_thumbnail" accept="image/*">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-prepend">
+                        <span class="input-group-text">썸네일(MOBILE)</span>
+                    </span>
+                    <input type="file" class="form-control form-control-plaintext" placeholder="파일첨부" name="add_thumbnail_mobile" accept="image/*">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    //추가
+    function addDiv(){
+        $('#copyDivParent').append($('#copyDiv').html());
+        var size = $('#copyDivParent').find('.cloneDiv').length;
+        for(var i=0;i<size;i++){
+            $('input[name="add_order"]').eq(i).val(i+4);
+        }
+    }
+    //삭제
+    function deleteDiv(){
+        $($(event.target).parents('.row')[0]).remove();
+    }
+    function saveBtn(){
+        if(window.confirm('저장 하시겠습니까?')){
+            $('#floatingForm').attr('action', location.pathname+'.load');
+            $('#floatingForm').submit();
+        }
+    }
+
+</script>
+<script th:inline="javascript">
+    window.onload=function(){
+
+    }
+
+</script>
+</html>

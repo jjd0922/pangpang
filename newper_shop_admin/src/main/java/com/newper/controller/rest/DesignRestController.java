@@ -70,6 +70,17 @@ public class DesignRestController {
         mav.addObject("loc", "/design/pop/header/"+shopIdx);
         return mav;
     }
+    /** 플로팅바 저장*/
+    @PostMapping(value = "pop/floating/{shopIdx}.load")
+    public ModelAndView shopFloating(@PathVariable Integer shopIdx, ParamMap paramMap, MultipartHttpServletRequest mfRequest){
+        ModelAndView mav = new ModelAndView("main/alertMove");
+        paramMap.put("shopIdx", shopIdx);
+        designService.shopFloatingSave(paramMap, mfRequest);
+
+        mav.addObject("msg", "수정 완료");
+        mav.addObject("loc", "/design/pop/floating/"+shopIdx);
+        return mav;
+    }
 
     /** mainsection DataTable*/
     @PostMapping("mainsection.dataTable")

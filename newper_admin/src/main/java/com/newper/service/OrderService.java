@@ -434,4 +434,43 @@ public class OrderService {
         afterService.setAsReqMoney(paramMap.getIntZero("asReqMoney"));
         afterService.setAsRcvMoney(paramMap.getIntZero("asRcvMoney"));
     }
+
+    /**admin order detail 에서 as신청*/
+    @Transactional
+    public Long reasonAsSave(ParamMap paramMap){
+        System.out.println(paramMap.getMap());
+        paramMap.remove("key");
+        JSONObject jsonObject = new JSONObject();
+        for(Map.Entry<String,Object> entry : paramMap.getMap().entrySet()){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            jsonObject.put(key, value);
+        }
+        Map <String, Object> map = new HashMap<>();
+        map.put("asOrder",jsonObject);
+        map.put("asReason",paramMap.get("AS_REASON_DETAIL"));
+        OrderGs orderGs = ordersGsRepo.findById(paramMap.getLong("AS_OG_IDX")).get();
+        OrderGsGroup orderGsGroup = orderGs.getOrderGsGroup();
+        Orders orders = orderGsGroup.getOrders();
+        AfterService afterService = AfterService.builder().orderGs(orderGs)
+                .asState(AsState.REQUEST)
+                .asType("")
+                .asName(orders.getOName())
+                .asMail("")
+                .asPhone(orders.getOPhone())
+                .asMemo("")
+                .asFile(null)
+                .asDate(LocalDate.now())
+                .asTime(LocalTime.now())
+                .asJson(map)
+                .asCost(0)
+                .asReqMoney(0)
+                .asRcvMoney(0)
+                .asFinalCost(0)
+                .asMoneyState((byte)0)
+                .build();
+        afterServiceRepo.save(afterService);
+        return afterService.getAsIdx();
+    }
+
 }

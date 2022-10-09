@@ -1,0 +1,140 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal" tabindex="-1" role="dialog" id="requestModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">반품/교환/AS 사유</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form id="requestForm">
+                        <div class="card mb-1">
+                            <div class="card-body popup-contents mb-1">
+                                <fieldset class="mb-0">
+                                    <legend>1. 등록정보</legend>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">사유</span>
+                                                    </span>
+                                                    <select class="form-control form-control-sm" name="AS_REASON" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                        <option>무상</option>
+                                                        <option>유상</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">종류</span>
+                                                    </span>
+                                                    <select class="form-control form-control-sm" name="AS_FORM" data-placeholder="선택" data-container-css-class="select-sm">
+                                                        <option></option>
+                                                        <option>단순문의</option>
+                                                        <option>반품문의</option>
+                                                        <option>교환문의</option>
+                                                        <option>AS문의</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">반품/교환/AS 상세사유</span>
+                                                    </span>
+                                                    <textarea class="form-control" name="AS_REASON_DETAIL"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">상품환불요청액</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" onkeyup="numCommaKeyUp()" name="AS_RETURN_PRICE">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">배송비환불요청액</span>
+                                                    </span>
+                                                    <input type="text" class="form-control text-right" onkeyup="numCommaKeyUp()" name="AS_RETURN_DELIVERY">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-prepend">
+                                                        <span class="input-group-text">환불메모</span>
+                                                    </span>
+                                                    <textarea class="form-control"  name="AS_RETURN_MEMO"></textarea>
+                                                    <input type="hidden" name="AS_OG_IDX">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-dismiss="modal"><i class="icon-cross2 mr-1"></i>닫기</button>
+                                    <a type="button" class="btn btn-danger" id="reasonSave" onclick=""></i>저장</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    function openOrderDetailAsModal(row,key) {
+        var rowData = getDatatablemap('productGroupModalTable', row);
+        $('#productGroupModal').modal('hide');
+        $('#requestForm')[0].reset();
+        $('#requestModal').modal('show');
+        if(key=='as'){
+            $('select[name="AS_FORM"]').val('AS문의');
+            $('input[name="AS_RETURN_PRICE"]').attr('disabled',true);
+            $('input[name="AS_RETURN_DELIVERY"]').attr('disabled',true);
+            $('input[name="AS_OG_IDX"]').val(rowData.OG_IDX);
+            $('#reasonSave').attr('onclick','reasonSave(\''+key+'\')');
+        }
+    }
+
+    function reasonSave(key){
+        var param = $('#requestForm').serialize();
+        param = param+'&key='+key;
+        $.ajax({
+            url:'/orders/reasonSave.ajax',
+            type: 'POST',
+            data:param,
+            success: function(res){
+
+            }
+        })
+
+    }
+
+</script>
+</html>

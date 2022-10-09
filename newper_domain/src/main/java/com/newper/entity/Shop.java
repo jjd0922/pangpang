@@ -74,7 +74,11 @@ public class Shop extends BaseEntity{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
     @OrderBy(value = "hoCol, hoRow")
     private List<HeaderOrder> headerOrderList = new ArrayList<>();
-
+    /** 분양몰 플로팅바 */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.ALL)
+    @OrderBy(value = "abs(fbDisplay) asc")
+    @Builder.Default
+    private List<FloatingBar> floatingBarList = new ArrayList<>();
     /** 이벤트그룹 리스트*/
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.DETACH)
     private List<EventGroup> eventGroupList = new ArrayList<>();
@@ -93,5 +97,8 @@ public class Shop extends BaseEntity{
         }
     }
 
-
+    public void addFloatingBar(FloatingBar fb){
+        getFloatingBarList().add(fb);
+        fb.setShop(this);
+    }
 }

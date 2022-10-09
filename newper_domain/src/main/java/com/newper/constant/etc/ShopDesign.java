@@ -29,7 +29,9 @@ public enum ShopDesign {
     ,LOGIN_TYPE("로그인 타입", "ICON")
     ,SEARCH_DESIGN("검색창 디자인", "header-search-type-a")
     ,MENU_STYLE("메뉴 현위치 디자인", "menu-style-type-a")
-    ,SHOP_LOGO("분양몰 로고","");
+    ,SHOP_LOGO("분양몰 로고","")
+
+    ,FLOAT_BORDER("플로팅 그룹 디자인", "floating-type-a")
    ;
     private String option;
     private String defaultValue;

@@ -481,4 +481,58 @@
             <include refid="includeOrderGsDatatable"></include>
         </where>
     </select>
+
+    <select id="selectOrderGsListBySpoDepthOne" resultType="map">
+        SELECT
+            *,
+        if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+        if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+        if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3
+        FROM
+            orders
+            LEFT JOIN order_gs_group
+            ON OGG_O_IDX=O_IDX
+            LEFT JOIN order_gs
+            ON OG_OGG_IDX=OGG_IDX
+            LEFT JOIN shop_product_option
+            ON SPO_IDX=OG_SPO_IDX
+            LEFT JOIN goods_stock
+            ON SPO_GS_IDX=GS_IDX
+            LEFT JOIN shop_product_add
+            ON SPA_IDX=SPO_SPA_IDX
+            LEFT JOIN product
+            ON P_IDX=GS_P_IDX
+            LEFT JOIN shop_product
+            ON SPA_SP_IDX=SP_IDX
+        WHERE
+            O_IDX=#{O_IDX}
+            AND SPO_DEPTH=1
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
+    </select>
+    <select id="countOrderGsListBySpoDepthOne" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            orders
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
+                LEFT JOIN order_gs
+                          ON OG_OGG_IDX=OGG_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_IDX=OG_SPO_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN shop_product_add
+                          ON SPA_IDX=SPO_SPA_IDX
+                LEFT JOIN product
+                          ON P_IDX=GS_P_IDX
+                LEFT JOIN shop_product
+                          ON SPA_SP_IDX=SP_IDX
+        WHERE
+            O_IDX=#{O_IDX}
+            AND SPO_DEPTH=1
+    </select>
+
 </mapper>
