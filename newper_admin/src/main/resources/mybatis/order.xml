@@ -168,60 +168,60 @@
         SELECT
             P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,O_IDX,O_CODE
             GS_CODE, ifnull(G_AJ_BARCODE,'') as G_AJ_BARCODE, P_NAME, SP_NAME,P_NAME,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace(JSON_EXTRACT(P_OPTION,'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
-            G_STATE, GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON, OG_MILEAGE,
-            OG_POINT, truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0) AS DELIVERY,
-            (GS_PRICE-(GS_PRICE-SPO_PRICE)-OG_COUPON-OG_MILEAGE-OG_POINT+truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0)) AS TOTAL,
-            truncate(PAY_MILEAGE/truncate(PAY_DELIVERY/(SELECT COUNT(*) FROM orders LEFT JOIN order_gs ON OG_O_IDX=O_IDX),0),0) MILEAGE,
-            OG_IDX
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[0].values','"|\\[|\\]',''),''),'') OPTION1,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[1].values','"|\\[|\\]',''),''),'') OPTION2,
+            if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[2].values','"|\\[|\\]',''),''),'') OPTION3,
+            G_STATE, GS_PRICE, (SPO_SHOP_PRICE-SPO_PRICE) AS DISCOUNT, OG_COUPON_PRICE, OG_MILEAGE,
+            OG_POINT,OG_IDX
         FROM
-             orders
+            orders
+                LEFT JOIN order_gs_group
+                          on OGG_O_IDX=O_IDX
                 LEFT JOIN order_gs
-                    ON OG_O_IDX=O_IDX
+                          ON OG_OGG_IDX=OGG_IDX
                 LEFT JOIN shop_product_option
-                    ON OG_SPO_IDX=SPO_IDX
-                LEFT JOIN goods_stock
-                    ON SPO_GS_IDX=GS_IDX
-                LEFT JOIN delivery_num
-                    ON OG_DN_IDX=DN_IDX
-                LEFT JOIN product
-                    ON GS_P_IDX=P_IDX
-                LEFT JOIN payment
-                    ON O_PAY_IDX=PAY_IDX
+                          ON SPO_IDX=OG_SPO_IDX
                 LEFT JOIN shop_product_add
-                    ON SPO_SPA_IDX=SPA_IDX
+                          ON SPA_IDX=SPO_SPA_IDX
                 LEFT JOIN shop_product
-                    ON SPA_SP_IDX=SP_IDX
+                          ON SP_IDX=SPA_SP_IDX
+                LEFT JOIN goods_stock
+                          ON GS_IDX=SPO_GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+                LEFT JOIN payment
+                          ON PAY_IDX=O_PAY_IDX
                 LEFT JOIN goods
-                    ON G_GS_IDX=GS_IDX
+                          ON OG_G_IDX=G_IDX
 
+        <if test="length!=-1">
+            limit #{start},#{length}
+        </if>
     </select>
 
     <select id="countOrderShopDatatable" resultType="integer">
         SELECT
             count(*)
         FROM
-        orders
-        LEFT JOIN order_gs
-        ON OG_O_IDX=O_IDX
-        LEFT JOIN shop_product_option
-        ON OG_SPO_IDX=SPO_IDX
-        LEFT JOIN goods_stock
-        ON SPO_GS_IDX=GS_IDX
-        LEFT JOIN delivery_num
-        ON OG_DN_IDX=DN_IDX
-        LEFT JOIN product
-        ON GS_P_IDX=P_IDX
-        LEFT JOIN payment
-        ON O_PAY_IDX=PAY_IDX
-        LEFT JOIN shop_product_add
-        ON SPO_SPA_IDX=SPA_IDX
-        LEFT JOIN shop_product
-        ON SPA_SP_IDX=SP_IDX
-        LEFT JOIN goods
-        ON G_GS_IDX=GS_IDX
+            orders
+                LEFT JOIN order_gs_group
+                          on OGG_O_IDX=O_IDX
+                LEFT JOIN order_gs
+                          ON OG_OGG_IDX=OGG_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_IDX=OG_SPO_IDX
+                LEFT JOIN shop_product_add
+                          ON SPA_IDX=SPO_SPA_IDX
+                LEFT JOIN shop_product
+                          ON SP_IDX=SPA_SP_IDX
+                LEFT JOIN goods_stock
+                          ON GS_IDX=SPO_GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+                LEFT JOIN payment
+                          ON PAY_IDX=O_PAY_IDX
+                LEFT JOIN goods
+                          ON OG_G_IDX=G_IDX
 
     </select>
     

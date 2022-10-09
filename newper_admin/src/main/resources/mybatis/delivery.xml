@@ -5,41 +5,48 @@
 
         SELECT
             OG_IDX, O_DATE, delivery_num.CREATED_DATE AS REQ_DATE, DN_RELEASE, DN_DATE,
-            O_STATE, G_STATE, O_IDX, OG_DN_IDX,
+            O_STATE, G_STATE, O_IDX, DN_IDX,
             G_STOCK_STATE, O_CODE, SHOP_NAME, P_IDX, G_BARCODE,
-            P_NAME, O_NAME, O_PHONE, AD_NAME, AD_PHONE,
+            P_NAME, O_NAME, O_PHONE, OA_NAME, OA_PHONE,
             order_address.POST, CONCAT(order_address.ADDR1, ' ', order_address.ADDR2, ' ', order_address.ADDR3, ' ', order_address.ADDR4) AS ADDRS,
-            WH_NAME, DN_COMPANY, DN_NUM, AD_MEMO
+            WH_NAME, COM_NAME, DN_NUM, OA_MEMO
         FROM
             orders
-                LEFT JOIN order_gs
-                    ON OG_O_IDX=O_IDX
-                LEFT JOIN shop_product_option
-                    ON OG_SPO_IDX=SPO_IDX
-                LEFT JOIN goods_stock
-                    ON SPO_GS_IDX=GS_IDX
-                LEFT JOIN delivery_num
-                    ON OG_DN_IDX=DN_IDX
-                LEFT JOIN product
-                    ON GS_P_IDX=P_IDX
-                LEFT JOIN payment
-                    ON O_PAY_IDX=PAY_IDX
-                LEFT JOIN shop_product_add
-                    ON SPO_SPA_IDX=SPA_IDX
-                LEFT JOIN shop_product
-                    ON SPA_SP_IDX=SP_IDX
-                LEFT JOIN goods
-                    ON G_IDX=OG_G_IDX
-                LEFT JOIN shop
-                    ON O_SHOP_IDX=SHOP_IDX
-                LEFT JOIN order_address
-                    ON O_AD_IDX=AD_IDX
-                LEFT JOIN location
-                    ON G_LOC_IDX=LOC_IDX
-                LEFT JOIN warehouse
-                    ON LOC_WH_IDX=WH_IDX
+            LEFT JOIN order_gs_group
+            ON OGG_O_IDX=O_IDX
+            LEFT JOIN order_gs
+            ON OGG_IDX=OG_OGG_IDX
+            LEFT JOIN shop_product_option
+            ON OG_SPO_IDX=SPO_IDX
+            LEFT JOIN goods_stock
+            ON SPO_GS_IDX=GS_IDX
+            LEFT JOIN order_gs_dn
+            ON OGDN_OG_IDX=OG_IDX
+            LEFT JOIN delivery_num
+            ON OGDN_DN_IDX=DN_IDX
+            LEFT JOIN product
+            ON GS_P_IDX=P_IDX
+            LEFT JOIN payment
+            ON O_PAY_IDX=PAY_IDX
+            LEFT JOIN shop_product_add
+            ON SPO_SPA_IDX=SPA_IDX
+            LEFT JOIN shop_product
+            ON SPA_SP_IDX=SP_IDX
+            LEFT JOIN goods
+            ON G_IDX=OG_G_IDX
+            LEFT JOIN shop
+            ON O_SHOP_IDX=SHOP_IDX
+            LEFT JOIN order_address
+            ON O_OA_IDX=OA_IDX
+            LEFT JOIN location
+            ON G_LOC_IDX=LOC_IDX
+            LEFT JOIN warehouse
+            ON LOC_WH_IDX=WH_IDX
+            LEFT JOIN company
+            ON DN_COM_IDX=COM_IDX
         where
             P_DEL_TYPE=#{P_DEL_TYPE}
+            AND (DN_IDX IS null or OGDN_TYPE='DELIVERY')
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -50,14 +57,18 @@
            COUNT(*)
         FROM
             orders
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN order_gs
-                          ON OG_O_IDX=O_IDX
+                          ON OGG_IDX=OG_OGG_IDX
                 LEFT JOIN shop_product_option
                           ON OG_SPO_IDX=SPO_IDX
                 LEFT JOIN goods_stock
                           ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN order_gs_dn
+                          ON OGDN_OG_IDX=OG_IDX
                 LEFT JOIN delivery_num
-                          ON OG_DN_IDX=DN_IDX
+                          ON OGDN_DN_IDX=DN_IDX
                 LEFT JOIN product
                           ON GS_P_IDX=P_IDX
                 LEFT JOIN payment
@@ -70,8 +81,17 @@
                           ON G_IDX=OG_G_IDX
                 LEFT JOIN shop
                           ON O_SHOP_IDX=SHOP_IDX
+                LEFT JOIN order_address
+                          ON O_OA_IDX=OA_IDX
+                LEFT JOIN location
+                          ON G_LOC_IDX=LOC_IDX
+                LEFT JOIN warehouse
+                          ON LOC_WH_IDX=WH_IDX
+                LEFT JOIN company
+                          ON DN_COM_IDX=COM_IDX
         where
             P_DEL_TYPE=#{P_DEL_TYPE}
+          AND (DN_IDX IS null or OGDN_TYPE='DELIVERY')
 
     </select>
 
