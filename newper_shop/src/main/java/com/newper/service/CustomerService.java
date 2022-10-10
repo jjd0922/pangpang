@@ -6,9 +6,11 @@ import com.newper.constant.CuGender;
 import com.newper.constant.SaCode;
 import com.newper.dto.ParamMap;
 import com.newper.entity.AesEncrypt;
+import com.newper.entity.Cart;
 import com.newper.entity.Customer;
 import com.newper.entity.SelfAuth;
 import com.newper.exception.MsgException;
+import com.newper.repository.CartRepo;
 import com.newper.repository.CustomerRepo;
 import com.newper.repository.SelfAuthRepo;
 import com.newper.repository.ShopRepo;
@@ -35,6 +37,7 @@ public class CustomerService {
     private final CustomerRepo customerRepo;
     private final SelfAuthRepo selfAuthRepo;
     private final ShopRepo shopRepo;
+    private final CartRepo cartRepo;
 
 
     /** 로그인 처리 */
@@ -179,5 +182,26 @@ public class CustomerService {
 
         customer.setCuPw(paramMap.getString("cuPw"));
         customer.setCuPwChange(LocalDate.now());
+    }
+    /** 장바구니 insert*/
+    @Transactional
+    public void insertCart(ParamMap paramMap){
+
+        Customer customer = customerRepo.getReferenceById(shopSession.getIdx());
+
+        for (String key : paramMap.keySet()) {
+            if (key.indexOf("spo") == 0) {
+
+                Cart cart = cartRepo.findByCustomerAndCartSpo(customer, key).orElseGet(() -> {
+                    return Cart.builder()
+                            .customer(customer)
+                            .cartSpo(key)
+                            .build();
+                });
+                cart.addCartCnt(paramMap.getInt(key));
+                cartRepo.save(cart);
+            }
+        }
+
     }
 }

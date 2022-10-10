@@ -1,5 +1,6 @@
 package com.newper.controller.rest;
 
+import com.newper.component.ShopSession;
 import com.newper.dto.ParamMap;
 import com.newper.dto.ReturnMap;
 import com.newper.entity.Customer;
@@ -8,6 +9,7 @@ import com.newper.mapper.CustomerMapper;
 import com.newper.repository.CustomerRepo;
 import com.newper.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/customer/")
 public class CustomerRestController {
+
+    @Autowired
+    private ShopSession shopSession;
 
     private final CustomerRepo customerRepo;
     private final CustomerService customerService;
@@ -78,6 +83,22 @@ public class CustomerRestController {
         ReturnMap rm = new ReturnMap();
         customerService.changePw(paramMap);
         rm.setMessage("비밀번호 변경이 완료되었습니다.");
+        return rm;
+    }
+    /** 장바구니 담기*/
+    @PostMapping("cart.ajax")
+    public ReturnMap cart(ParamMap paramMap){
+        ReturnMap rm = new ReturnMap();
+
+        Long cuIdx = shopSession.getIdx();
+        if (cuIdx == null) {
+            rm.put("cart", false);
+        }else{
+            rm.put("cart", true);
+            customerService.insertCart(paramMap);
+
+        }
+
         return rm;
     }
 

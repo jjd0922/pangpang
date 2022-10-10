@@ -20,20 +20,17 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer col;
+    private Long cartIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "C_CU_IDX", referencedColumnName = "cuIdx")
+    @JoinColumn(name = "CART_CU_IDX", referencedColumnName = "cuIdx")
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "C_SP_IDX", referencedColumnName = "spIdx")
-    private ShopProduct shopProduct;
+    private String cartSpo;
+    private int cartCnt;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDate createdDate;
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalTime createdTime;
+    /** 장바구니 수량 plus*/
+    public void addCartCnt(int cartCnt) {
+        setCartCnt(getCartCnt() + cartCnt);
+    }
 }

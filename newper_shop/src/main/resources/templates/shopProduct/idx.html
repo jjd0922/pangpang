@@ -335,7 +335,7 @@
                         <div class="flex-between">
                             <div>
                                 <a href="javascript:orderSpo();" class="btn btn-xxlg btn-point btn-width-md radius-xlarge">바로구매</a>
-                                <a href="javascript:;" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">장바구니</a>
+                                <a href="javascript:intoCart()" class="btn btn-xxlg btn-point-outline btn-width-md radius-xlarge">장바구니</a>
                             </div>
                             <div class="prod-heart">
                                 <i class="heart"></i>
@@ -973,7 +973,7 @@
             <!-- 버튼 -->
             <div class="fixed-buy-bot container">
                 <div>
-                    <a href="javascript:;" class="btn bnt2 fixed-cart-btn">장바구니</a>
+                    <a href="javascript:intoCart();" class="btn bnt2 fixed-cart-btn">장바구니</a>
                     <a href="javascript:;" class="btn bnt3 fixed-buy-btn">구매하기</a>
                     <div class="prod-heart">
                         <i class="heart"></i>
@@ -1008,7 +1008,151 @@
 
     <!--js-->
     <th:block th:replace="part/js"></th:block>
+    <script>
+        //옵션 선택
+        function selectSpo(obj) {
+            if ($(obj).attr('spa_required') == 'true') {
+                var spoIdxs = '';
+                var spoNames = '';
+                var spoPrices = 0;
+                var spaReqList = $('select[spa_required=true]');
+                for (var i = 0; i < spaReqList.length; i++) {
+                    var spoIdx = $(spaReqList.get(i)).val();
+                    if (spoIdx == '') {
+                        return;
+                    }
 
+                    var selectedOpt = $($(spaReqList.get(i)).find('option:selected')[0]);
+                    spoIdxs += spoIdx;
+                    spoNames += selectedOpt.html();
+                    spoPrices += Number(selectedOpt.attr('spo_price'));
+
+                    if (i + 1 != spaReqList.length) {
+                        spoIdxs += '_';
+                        spoNames += '   ';
+                    }
+
+                }
+
+                addSpo(spoIdxs, spoNames, spoPrices, true);
+
+                $('select[spa_required=true]').val('');
+
+            } else {
+                var selectedOpt = $($(obj).find('option:selected')[0]);
+                addSpo(selectedOpt.val(), selectedOpt.html(), selectedOpt.attr('spo_price'), false);
+                $(obj).val('');
+            }
+        }
+
+        //선택된 옵션 추가
+        function addSpo(val, name, price, required) {
+
+            if ($('input[name=spo' + val + ']').length > 0) {
+                alert('이미 추가된 옵션입니다');
+                return;
+            }
+            var spo = '';
+
+            spo += '<li>';
+            spo += '  <div class="prod-op-price-group">';
+            spo += '    <p>' + name + '</p>';
+            spo += '    <div class="prod-op-price-group select-amount-wrap">';
+            spo += '      <div class="select-amount">';
+            spo += '        <span class="amount-minus" onclick="changeSpo(\'' + val + '\', -1)">-</span>';
+            spo += '        <input type="text" name="spo' + val + '" value="1" readOnly spo_price="' + price + '">';
+            spo += '          <span class="amount-plus" onclick="changeSpo(\'' + val + '\', 1)">+</span>';
+            spo += '      </div>';
+            spo += '      <div>';
+            spo += '        + <span>' + comma(price) + '</span><span class="won">원</span>';
+            spo += '      </div>';
+            spo += '      <i class="option-close" onclick="delSpo(\'' + val + '\')"></i>';
+            spo += '    </div>';
+            spo += '  </div>';
+            spo += '</li>';
+
+            if(required){
+                $('#spoUl').append(spo);
+            }else{
+                $('#spoAddUl').append(spo);
+            }
+            calSpo();
+        }
+
+        //선택 옵션 삭제
+        function delSpo(val) {
+            $('input[name=spo' + val + ']').parents('li')[0].remove();
+            calSpo();
+        }
+
+        //옵션 수량 총 금액 계산
+        function calSpo(){
+            var spoList = $('input[name^=spo]');
+            if(spoList.length == 0 ){
+                $('#spoTotalPrice').html('0');
+            }else{
+                var spoTotalPrice = 0;
+                for (var i = 0; i < spoList.length; i++) {
+                    spoTotalPrice += Number(spoList[i].attributes.spo_price.value) * Number(spoList[i].value);
+                }
+                $('#spoTotalPrice').html( comma(spoTotalPrice) );
+            }
+        }
+        //선택 옵션 수량 변경
+        function changeSpo(val, cnt){
+            var cnt = Number($('input[name=spo'+val+']').val())+cnt;
+            if (cnt < 1) {
+                cnt = 1;
+            }
+            $('input[name=spo'+val+']').val(cnt);
+            calSpo();
+        }
+        //주문하기
+        function orderSpo(){
+            if($('#spoUl li').length == 0 ){
+                alert('필수 옵션을 선택해주세요');
+                return;
+            }
+            $.ajax({
+                url:'/login/check.ajax'
+                ,type:'get'
+            }).done(function(res){
+                //회원
+                if(res.data.login){
+                    $('#spoForm input[name=login]').val('true');
+                    $('#spoForm').submit();
+                }else{
+                    //로그인 모달
+                    modal.show();
+                }
+            });
+
+        }
+        //비회원 구매 클릭 시 물어보는 모달
+        function nonMemberShow(){
+            nonMemberLoginModal.show();
+        }
+        //비회원 구매
+        function orderSpoNonMember(){
+            $('#spoForm input[name=login]').val('false');
+            $('#spoForm').submit();
+        }
+        //장바구니 담기
+        function intoCart(){
+            if($('#spoUl li').length == 0 ){
+                alert('필수 옵션을 선택해주세요');
+                return;
+            }
+            
+            $.ajax({
+              url:'/customer/cart.ajax'
+              ,type:'post'
+              ,data:$('#spoForm').serialize()
+            }).done(function(res){
+
+            });
+        }
+    </script>
     <script>
         // 썸네일 확대 슬라이드
         var prodThumbs = new Swiper('.prod-thumbList-swiper', {
@@ -1206,135 +1350,6 @@
                 $('.fixed-buy').removeClass('on');
             }
         });
-
-        //옵션 선택
-        function selectSpo(obj) {
-            if ($(obj).attr('spa_required') == 'true') {
-                var spoIdxs = '';
-                var spoNames = '';
-                var spoPrices = 0;
-                var spaReqList = $('select[spa_required=true]');
-                for (var i = 0; i < spaReqList.length; i++) {
-                    var spoIdx = $(spaReqList.get(i)).val();
-                    if (spoIdx == '') {
-                        return;
-                    }
-
-                    var selectedOpt = $($(spaReqList.get(i)).find('option:selected')[0]);
-                    spoIdxs += spoIdx;
-                    spoNames += selectedOpt.html();
-                    spoPrices += Number(selectedOpt.attr('spo_price'));
-
-                    if (i + 1 != spaReqList.length) {
-                        spoIdxs += '_';
-                        spoNames += '   ';
-                    }
-
-                }
-
-                addSpo(spoIdxs, spoNames, spoPrices, true);
-
-                $('select[spa_required=true]').val('');
-
-            } else {
-                var selectedOpt = $($(obj).find('option:selected')[0]);
-                addSpo(selectedOpt.val(), selectedOpt.html(), selectedOpt.attr('spo_price'), false);
-                $(obj).val('');
-            }
-        }
-
-        //선택된 옵션 추가
-        function addSpo(val, name, price, required) {
-
-            if ($('input[name=spo' + val + ']').length > 0) {
-                alert('이미 추가된 옵션입니다');
-                return;
-            }
-            var spo = '';
-
-            spo += '<li>';
-            spo += '  <div class="prod-op-price-group">';
-            spo += '    <p>' + name + '</p>';
-            spo += '    <div class="prod-op-price-group select-amount-wrap">';
-            spo += '      <div class="select-amount">';
-            spo += '        <span class="amount-minus" onclick="changeSpo(\'' + val + '\', -1)">-</span>';
-            spo += '        <input type="text" name="spo' + val + '" value="1" readOnly spo_price="' + price + '">';
-            spo += '          <span class="amount-plus" onclick="changeSpo(\'' + val + '\', 1)">+</span>';
-            spo += '      </div>';
-            spo += '      <div>';
-            spo += '        + <span>' + comma(price) + '</span><span class="won">원</span>';
-            spo += '      </div>';
-            spo += '      <i class="option-close" onclick="delSpo(\'' + val + '\')"></i>';
-            spo += '    </div>';
-            spo += '  </div>';
-            spo += '</li>';
-
-            if(required){
-                $('#spoUl').append(spo);
-            }else{
-                $('#spoAddUl').append(spo);
-            }
-            calSpo();
-        }
-
-        //선택 옵션 삭제
-        function delSpo(val) {
-            $('input[name=spo' + val + ']').parents('li')[0].remove();
-            calSpo();
-        }
-
-        //옵션 수량 총 금액 계산
-        function calSpo(){
-          var spoList = $('input[name^=spo]');
-          if(spoList.length == 0 ){
-            $('#spoTotalPrice').html('0');
-          }else{
-            var spoTotalPrice = 0;
-            for (var i = 0; i < spoList.length; i++) {
-              spoTotalPrice += Number(spoList[i].attributes.spo_price.value) * Number(spoList[i].value);
-            }
-            $('#spoTotalPrice').html( comma(spoTotalPrice) );
-          }
-        }
-        //선택 옵션 수량 변경
-        function changeSpo(val, cnt){
-          var cnt = Number($('input[name=spo'+val+']').val())+cnt;
-          if (cnt < 1) {
-            cnt = 1;
-          }
-          $('input[name=spo'+val+']').val(cnt);
-          calSpo();
-        }
-        //주문하기
-        function orderSpo(){
-            if($('#spoUl li').length == 0 ){
-                alert('필수 옵션을 선택해주세요');
-                return;
-            }
-            $.ajax({
-              url:'/login/check.ajax'
-              ,type:'get'
-            }).done(function(res){
-                //회원
-                if(res.data.login){
-                    $('#spoForm input[name=login]').val('true');
-                    $('#spoForm').submit();
-                }else{
-                    //로그인 모달
-                    modal.show();
-                }
-            });
-
-        }
-        //비회원 구매 클릭 시 물어보는 모달
-        function nonMemberShow(){
-            nonMemberLoginModal.show();
-        }
-        //비회원 구매
-        function orderSpoNonMember(){
-            $('#spoForm input[name=login]').val('false');
-            $('#spoForm').submit();
-        }
     </script>
 
 </div>

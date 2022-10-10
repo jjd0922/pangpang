@@ -70,6 +70,8 @@ public class Customer {
     private List<Qna> qnaList;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
     private List<QnaSp> qnaSpList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
     @PrePersist
     @PreUpdate
