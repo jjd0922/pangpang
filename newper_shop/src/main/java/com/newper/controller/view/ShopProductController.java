@@ -46,7 +46,7 @@ public class ShopProductController {
         //thumbnail list
 
 
-        mav.addObject("scate", categoryMapper.selectShopCategoryBySp(spIdx));
+        mav.addObject("cateMap", categoryMapper.selectShopCategoryBySp(spIdx));
 
         List<Map<String, Object>> spoList = shopProductMapper.selectShopProductOptionList(shopProduct.getSpIdx());
 

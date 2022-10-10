@@ -35,13 +35,20 @@
     </select>
     <select id="selectShopCategoryBySp" resultType="map">
         SELECT
-            SCATE_IDX, SCATE_NAME
+            SM_CATE.CATE_IDX SM_CATE_IDX
+            ,SM_CATE.CATE_NAME SM_CATE_NAME
+            ,MD_CATE.CATE_IDX MD_CATE_IDX
+            ,MD_CATE.CATE_NAME MD_CATE_NAME
+            ,SCATE_IDX, SCATE_NAME
         FROM
-            CATEGORY_SHOP_CATEGORY, SHOP_CATEGORY,SHOP_PRODUCT
+            SHOP_PRODUCT, category SM_CATE , CATEGORY MD_CATE
+            ,CATEGORY_SHOP_CATEGORY, SHOP_CATEGORY
         WHERE
-            SCATE_IDX = CSC_SCATE_IDX
-            AND CSC_CATE_IDX=SP_CATE_IDX
-            and SP_IDX = #{sp_idx}
+            SM_CATE.CATE_IDX=SP_CATE_IDX
+            AND SM_CATE.CATE_PARENT_IDX = MD_CATE.CATE_IDX
+            AND MD_CATE.CATE_IDX = CSC_CATE_IDX
+            AND SCATE_IDX = CSC_SCATE_IDX
+            AND SP_IDX =  #{sp_idx}
     </select>
     <select id="selectAllShopCategory" resultType="map">
         SELECT

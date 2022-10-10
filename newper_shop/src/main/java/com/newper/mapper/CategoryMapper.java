@@ -18,7 +18,7 @@ public interface CategoryMapper {
     /** 분양몰이 사용중인 상품의 카테고리 조회*/
     List<Map<String, Object>> selectAllCategoryByShopProduct(Map<String,Object> map);
 
-    /** sp_idx 로 전시 분류 scate_idx, scate_name 조회 */
+    /** sp_idx 로 카테고리 조회 */
     Map<String, Object> selectShopCategoryBySp(long sp_idx);
     /** 카테고리 페이지 내 카테고리명 호출*/
     Map<String, Object> selectCategoryMenuName(Map<String, Object> map);
