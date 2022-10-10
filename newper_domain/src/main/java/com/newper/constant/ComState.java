@@ -13,7 +13,7 @@ public enum ComState implements EnumOption {
     /**정상업체*/
     NORMAL("정상업체")
     /**거래중지*/
-    ,TEMP("승인전")
+    ,TEMP("보류")
     ,STOP("거래중지")
     /**기타*/
     ,ETC("기타")
