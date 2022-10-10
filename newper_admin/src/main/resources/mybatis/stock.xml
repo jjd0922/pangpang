@@ -7,10 +7,14 @@
 
         FROM
             ORDERS
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN ORDER_GS
-                          ON OG_O_IDX=O_IDX
+                          ON OG_OGG_IDX=OGG_IDX
+                LEFT JOIN order_gs_dn
+                          ON OGDN_OG_IDX=OG_IDX
                 LEFT JOIN delivery_num
-                          ON OG_DN_IDX=DN_IDX
+                          ON OGDN_DN_IDX=DN_IDX
                 LEFT JOIN shop_product_option
                           ON SPO_IDX=OG_SPO_IDX
                 LEFT JOIN GOODS_STOCK
@@ -43,7 +47,8 @@
             )ct
                           ON ct.GS_IDX1=SPO_GS_IDX
         WHERE
-            DN_IDX IS NOT NULL
+            DN_IDX IS null
+           or OGDN_TYPE='DELIVERY'
         group by GS_IDX
     </select>
 

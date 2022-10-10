@@ -47,4 +47,7 @@ public interface CompanyMapper {
     /**입점사별 배송비 템플릿 기본설정 체크시 기존의 기본설정 해제*/
     void updateCompanyDeliveryByComIdx(int COM_IDX);
 
+    /**CT_TYPE별 거래처 리스트*/
+    List<Map<String, Object>> selectCompanyListByCtType(String CT_TYPE);
+
 }

@@ -53,7 +53,7 @@ public class StockRestContoroller {
     @PostMapping("picking2.dataTable")
     public ReturnDatatable picking2(ParamMap paramMap) {
         ReturnDatatable returnDatatable = new ReturnDatatable();
-
+        System.out.println(paramMap.getMap());
         Integer gs_idx = null;
         if(paramMap.get("GS_IDX")!=null){
             gs_idx=paramMap.getInt("GS_IDX");

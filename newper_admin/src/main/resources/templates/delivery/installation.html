@@ -128,11 +128,11 @@
                         <div class="card">
                             <div class="card-footer bg-white d-sm-flex justify-content-sm-between align-items-center">
                                 <div class="btn-group">
-                                    <div class="header-elements">
+                                    <!--<div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" id="Btn1">
                                             설치업체배정
                                         </a>
-                                    </div>
+                                    </div>-->
                                     <div class="header-elements">
                                         <a type="button" class="btn btn-sm btn-primary ml-1" onclick="installation()">
                                             설치정보등록
@@ -205,6 +205,7 @@
             $('#DN_FILE_NAME').text('');
             $('#DN_FILE_NAME').removeAttr("href");
             $('input[name="DN_FILE"]').show();
+            $('#mdSave').show();
             $('#installationModal').modal('show');
         }
     }
@@ -222,6 +223,7 @@
         $('input[name="DN_FILE"]').show();
         $('#DN_FILE_NAME').text('');
         $('#DN_FILE_NAME').removeAttr("href");
+        $('#mdSave').show();
         $('#installationModal').modal('show');
     }
 
@@ -234,12 +236,14 @@
                 $('input[name="idxs"]').val(res.data.idxs);
                 $('input[name="DN_SCHEDULE"]').val(res.data.DN_SCHEDULE);
                 $('input[name="DN_DATE"]').val(res.data.DN_DATE);
+                $('select[name="COM_IDX"]').val(res.data.DN_COM_IDX);
                 $('#DN_FILE_NAME').text(res.data.DN_FILE_NAME);
                 $('#DN_FILE_NAME').attr("href","/download/?fileName="+res.data.DN_FILE_NAME+"&obj="+res.data.DN_FILE);
                 $('input[name="DN_COMPANY"]').val(res.data.DN_COMPANY);
                 $('input[name="DN_MEMO"]').val(res.data.DN_MEMO);
                 $('#DN_FILE_NAME').show();
                 $('input[name="DN_FILE"]').hide()
+                $('#mdSave').hide();
                 $('#installationModal').modal('show');
             }
         })
@@ -315,14 +319,14 @@
             , {'title': '상품명', 'data': 'P_NAME','defaultContent':''}
             , {'title': '주문자명', 'data': 'O_NAME','defaultContent':''}
             , {'title': '주문자연락처', 'data': 'O_PHONE','defaultContent':''}
-            , {'title': '배송자(설치자)이름', 'data': 'AD_NAME','defaultContent':''}
-            , {'title': '배송자(설치자)연락처', 'data': 'AD_PHONE','defaultContent':''}
+            , {'title': '배송자(설치자)이름', 'data': 'OA_NAME','defaultContent':''}
+            , {'title': '배송자(설치자)연락처', 'data': 'OA_PHONE','defaultContent':''}
             , {'title': '우편번호', 'data': 'POST','defaultContent':''}
             , {'title': '주소', 'data': 'ADDRS','defaultContent':''}
-            , {'title': '배송(설치)메세지', 'data': 'AD_MEMO','defaultContent':''}
+            , {'title': '배송(설치)메세지', 'data': 'OA_MEMO','defaultContent':''}
             , {'title': '출하창고', 'data': 'WH_NAME','defaultContent':''}
-            , {'title': '설치업체', 'data': 'DN_COMPANY','defaultContent':''}
-            , {'title': '설치확인서', 'data': 'OG_DN_IDX','defaultContent':'','render':function(data, type, full, meta){
+            , {'title': '설치업체', 'data': 'COM_NAME','defaultContent':''}
+            , {'title': '설치확인서', 'data': 'DN_IDX','defaultContent':'','render':function(data, type, full, meta){
                 if(data==null){
                     return '<a onclick="installCheck('+full.OG_IDX+')" class="badge badge-danger">설치확인서</a>'
                 }else{

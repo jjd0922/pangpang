@@ -429,7 +429,7 @@ public class ProductRestController {
 
         List<Map<String,Object>> list = productMapper.selectShopProductByOrdersModalDataTable(paramMap.getMap());
         returnDatatable.setData(list);
-        returnDatatable.setRecordsTotal(list.size());
+        returnDatatable.setRecordsTotal(productMapper.countShopProductByOrdersModalDataTable(paramMap.getMap()));
         return returnDatatable;
     }
 

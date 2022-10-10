@@ -1,6 +1,7 @@
 package com.newper.service;
 
 import com.newper.constant.GState;
+import com.newper.constant.GStockState;
 import com.newper.constant.PType1;
 import com.newper.dto.ParamMap;
 import com.newper.entity.Goods;
@@ -32,7 +33,7 @@ public class StockService {
             Goods goods = goodsRepo.getReferenceById(G_IDX);
             GState g_state = goods.getGState();
             if(g_state.equals(GState.STOCK)){
-             /*   goods.setGState(GState.BEFORE_RELEASE_REQ);*/
+                goods.setGStockState(GStockState.OUT_REQ);
                 goodsRepo.saveAndFlush(goods);
                 cnt++;
             }

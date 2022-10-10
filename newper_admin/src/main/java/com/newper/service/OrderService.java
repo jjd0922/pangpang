@@ -6,9 +6,7 @@ import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.entity.common.AddressEmb;
 import com.newper.exception.MsgException;
-import com.newper.mapper.ChecksMapper;
-import com.newper.mapper.OrdersMapper;
-import com.newper.mapper.ProcessMapper;
+import com.newper.mapper.*;
 import com.newper.repository.*;
 import com.newper.storage.NewperStorage;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +68,8 @@ public class OrderService {
     private final OrderGsDnRepo orderGsDnRepo;
     private final CompanyRepo companyRepo;
     private final ProcessService processService;
+    private final DeliveryMapper deliveryMapper;
+    private final OrderGsGroupRepo orderGsGroupRepo;
     private final OrderCancelRepo orderCancelRepo;
     private final OrderGsGroupCancelRepo orderGsGroupCancelRepo;
 
@@ -202,11 +202,11 @@ public class OrderService {
         AddressEmb address = paramMap.mapParam(AddressEmb.class);
         orderAddress.setAddress(address);
         orderAddress.setOaEntrance("");
-        ordersAddressRepo.save(orderAddress);
+        ordersAddressRepo.saveAndFlush(orderAddress);
         Orders orders = paramMap.mapParam(Orders.class);
         paramMap.remove("O_IDX");
         orders.setOrderAddress(orderAddress);
-        orders.setPayment(null);
+//        orders.setPayment(null);
         if(paramMap.get("CU_IDX").equals("")){
             orders.setCustomer(null);
         }else{
@@ -223,7 +223,7 @@ public class OrderService {
             orders.setOTime(oTime);
         }
         orders.setOMemo("");
-        ordersRepo.save(orders);
+        ordersRepo.saveAndFlush(orders);
         Long o_idx = orders.getOIdx();
         int price = 0;
         int delivery = 0;
@@ -231,8 +231,12 @@ public class OrderService {
         for(Map.Entry<String, Object> entry : paramMap.entrySet()) {
             if(entry.getKey().contains("OG_COUPON_")) {
                 String spoIdx = entry.getKey().replace("OG_COUPON_", "");
-                int spo_idx = Integer.parseInt(spoIdx);
-                ShopProductOption shopProductOption = shopProductOptionRepo.getReferenceById(spo_idx);
+
+                OrderGsGroup orderGsGroup = OrderGsGroup.builder().orders(orders).oggSpo(spoIdx).oggCnt(1).build();
+                orderGsGroupRepo.saveAndFlush(orderGsGroup);
+
+                Long spo_idx = Long.parseLong(spoIdx);
+                ShopProductOption shopProductOption = shopProductOptionRepo.findById(spo_idx).get();
                 OrderGs orderGs = paramMap.mapParam(OrderGs.class);
 //                orderGs.setOrders(orders);
                 orderGs.setShopProductOption(shopProductOption);
@@ -241,6 +245,7 @@ public class OrderService {
                 orderGs.setOgPoint(Integer.parseInt(paramMap.onlyNumber("OG_POINT_"+spo_idx)));
                 orderGs.setOgMileage(Integer.parseInt(paramMap.onlyNumber("OG_MILEAGE_"+spo_idx)));
                 orderGs.setOgCouponPrice(Integer.parseInt(paramMap.onlyNumber("OG_COUPON_"+spo_idx)));
+                orderGs.setOrderGsGroup(orderGsGroup);
 
                 price = price + shopProductOption.getSpoPrice();
                 delivery = delivery + shopProductOption.getGoodsStock().getProduct().getCompanyDelivery().getCdFee();
@@ -289,23 +294,42 @@ public class OrderService {
         System.out.println(list);
         for(int i=0; i<list.size(); i++){
             OrderGs orderGs = ordersGsRepo.findById(Long.parseLong(list.get(i)+"")).get();
-//            if(orderGs.getDeliveryNum()==null){
-//                DeliveryNum dn = DeliveryNum.builder().build();
-//                dn.setRandomInvoice(12);
-//                dn.setDnState(DnState.REQUEST);
-//
-//                /** DN_COMPANY -> DN_COM_IDX */
-////                dn.setDnCompany("우체국");
-//
-//                dn.setDnJson(null);
-//                dn.setCreatedDate(LocalDate.now());
-//
-//                deliveryNumRepo.save(dn);
-//
-//                orderGs.setDeliveryNum(dn);
-//                ordersGsRepo.save(orderGs);
-//                cnt++;
-//            }
+            ShopProductOption shopProductOption = orderGs.getShopProductOption();
+            GoodsStock goodsStock = shopProductOption.getGoodsStock();
+            Product product = goodsStock.getProduct();
+            Map<String,Object> ogdnMap = new HashMap<>();
+            ogdnMap.put("OGDN_OG_IDX",orderGs.getOgIdx());
+            ogdnMap.put("OGDN_TYPE",OgdnType.DELIVERY);
+            List<Map<String,Object>> ogdnList = deliveryMapper.selectOrderGsDnListByOgdnIdxAndOgdnType(ogdnMap);
+            if(ogdnList.size()>0){
+                for(int y=0; y<ogdnList.size(); y++){
+                    if(ogdnList.get(y).get("OGDN_TYPE").equals(OgdnType.DELIVERY)){
+                        Long dn_idx = Long.parseLong(ogdnList.get(y).get("OGDN_DN_IDX")+"");
+                        DeliveryNum deliveryNum = deliveryNumRepo.getReferenceById(dn_idx);
+                        deliveryNum.setRandomInvoice(12);
+                        deliveryNumRepo.save(deliveryNum);
+                    }
+                }
+            }else{
+                DeliveryNum dn = DeliveryNum.builder().build();
+                dn.setRandomInvoice(12);
+                dn.setDnType(DnType.valueOf(product.getPDelType().name()));
+                dn.setDnState(DnState.REQUEST);
+
+                /** DN_COMPANY -> DN_COM_IDX */
+                dn.setCompany(companyRepo.getReferenceById(6));
+                dn.setDnSender(DnSender.COMPANY);
+                dn.setDnJson(null);
+                dn.setCreatedDate(LocalDate.now());
+
+                deliveryNumRepo.saveAndFlush(dn);
+
+                OrderGsDn orderGsDn = OrderGsDn.builder().ogdnType(OgdnType.DELIVERY).orderGs(orderGs).deliveryNum(dn).build();
+                orderGsDnRepo.save(orderGsDn);
+            }
+
+            cnt++;
+
 
         }
 
