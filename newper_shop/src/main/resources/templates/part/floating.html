@@ -8,18 +8,13 @@
         <div class="floating-top">
             <p class="text-white">포토리뷰 쓰고 1만 포인트 받자!</p>
         </div>
-        <div class="floating-thumb">
+        <div class="floating-thumb" th:each="fb : ${@shopComp.getShopMap().get(#request.getServerName()).getFloatingBarList()}" th:if="${fb.fbDisplay > 0 && fb.fbType.name() eq 'RECENT'}">
             <p>최근 본 상품</p>
             <div class="swiper swiper-floating">
-                <ul class="swiper-wrapper">
+                <ul class="swiper-wrapper" id="fbUl">
                     <li class="swiper-slide">
                         <a href="javascript:;">
                             <img src="https://dummyimage.com/55x55/eeeeee/777777" alt="최근 본 상품">
-                        </a>
-                    </li>
-                    <li class="swiper-slide">
-                        <a href="javascript:;">
-                            <img src="https://dummyimage.com/55x55/333333/ffffff" alt="최근 본 상품">
                         </a>
                     </li>
                 </ul>
@@ -32,10 +27,8 @@
             </div>
         </div>
         <div class="floating-mid">
-            <a href="javascript:;">회원혜택</a>
-            <a href="javascript:;">AS접수</a>
-            <a href="javascript:;">정품등록</a>
-            <a href="javascript:;">지점안내</a>
+            <a href="/" th:each="fb : ${@shopComp.getShopMap().get(#request.getServerName()).getFloatingBarList()}" th:if="${fb.fbDisplay > 0 && fb.fbType.name() eq 'TEL' }" th:text="${fb.fbName}"></a>
+            <a th:href="@{${fb.fbUrl}}" th:each="fb : ${@shopComp.getShopMap().get(#request.getServerName()).getFloatingBarList()}" th:if="${fb.fbDisplay > 0 && (fb.fbType.name() ne 'RECENT' && fb.fbType.name() ne 'TEL') }" th:text="${fb.fbName}"></a>
         </div>
         <div class="floating-sns">
             <a href="https://pf.kakao.com/_hxhxijV" target="_blank">
