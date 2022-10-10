@@ -15,4 +15,7 @@ public interface DeliveryMapper {
 
     /** 입고된 자산으로 송장 번호 확인 */
     Map<String, Object> selectDeliveryByGoods(Map<String, Object> map);
+
+    /**주문 구성상품, 구분으로 송장 조회*/
+    List<Map<String,Object>> selectOrderGsDnListByOgdnIdxAndOgdnType(Map<String, Object> map);
 }

@@ -23,5 +23,6 @@ public interface ProductMapper {
 
     /**신규 주문 구성상품 datatable*/
     List<Map<String, Object>> selectShopProductByOrdersModalDataTable(Map<String, Object> map);
+    Integer countShopProductByOrdersModalDataTable(Map<String, Object> map);
 }
 

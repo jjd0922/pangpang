@@ -83,7 +83,7 @@
         SELECT
             O_IDX, O_CODE, SHOP_NAME, CU_ID, CU_NAME,
             CU_PHONE, O_NAME, O_PHONE, O_TEL, O_LOCATION,
-            PAY_STATE, (PAY_JSON->>'$.pay_method') AS PAY_METHOD,
+            PAY_STATE, ifnull((PAY_JSON->>'$.pay_method'),'') AS PAY_METHOD,
             ifnull((PAY_JSON->>'$.pg_tid'),'') AS PG_TID,
             ifnull((PAY_JSON->>'$.pg_tid2'),'') AS PG_TID2,
             sum(SPO_SHOP_PRICE_SUM) SPO_SHOP_PRICE_SUM, SUM((SPO_SHOP_PRICE_SUM-SPO_PRICE_SUM)) AS SPO_EVENT,
@@ -127,14 +127,16 @@
 
     <select id="selectGoodsStockDetailByOIdx" resultType="map">
         SELECT
-            order_gs_group.*,shop_product_option.*,P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,GS_CODE,
-            ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME,
-            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
-            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
-            if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
-            G_STATE, GS_PRICE, SPO_PRICE, SPO_SHOP_PRICE, (SPO_SHOP_PRICE-SPO_PRICE) AS DISCOUNT,
-            ori.OG_POINT, ori.OG_MILEAGE, ori.OG_DELIVERY, ori.OG_COUPON_PRICE, ori.OG_COUPON_DELIVERY,
-            ori.OG_PLUS_MILEAGE, ori.OG_IDX
+        order_gs_group.*,shop_product_option.*,P_IDX,O_STATE,PAY_CANCEL_STATE,SP_IDX,GS_CODE,
+        ifnull(G_BARCODE,'') as G_BARCODE, P_NAME, SP_NAME, PAY_CANCEL_DATE,
+        if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[0].values'),'"|\\[|\\]',''),''),'') OPTION1,
+        if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[1].values'),'"|\\[|\\]',''),''),'') OPTION2,
+        if(P_OPTION!='',ifnull(regexp_replace((P_OPTION->>'$[2].values'),'"|\\[|\\]',''),''),'') OPTION3,
+        G_STATE, GS_PRICE, SPO_PRICE, SPO_SHOP_PRICE, (SPO_SHOP_PRICE-SPO_PRICE) AS DISCOUNT,
+        ori.OG_POINT, ori.OG_MILEAGE, ori.OG_DELIVERY, (ori.OG_COUPON_PRICE+ori.OG_COUPON_DELIVERY) OG_COUPON,
+        ori.OG_PLUS_MILEAGE, ori.OG_IDX, dt.*, delivery_num.*, (ori.OG_DELIVERY-ori.OG_COUPON_DELIVERY) DELIVERY,
+        (ori.OG_PRICE-ori.OG_POINT-ori.OG_MILEAGE+ori.OG_DELIVERY-ori.OG_COUPON_PRICE-ori.OG_COUPON_DELIVERY) TOTAL,
+        DN_STATE,COM_NAME
         FROM
             orders
             LEFT JOIN order_gs_group
@@ -157,6 +159,21 @@
             ON PAY_IDX=O_PAY_IDX
             LEFT JOIN goods
             ON ori.OG_G_IDX=G_IDX
+            LEFT JOIN (SELECT
+                            *
+                        FROM
+                            order_gs_dn
+                        WHERE
+                            OGDN_IDX IN (SELECT
+                                            MAX(OGDN_IDX)
+                                        FROM
+                                            order_gs_dn
+                                        GROUP BY OGDN_OG_IDX)) dt
+            ON dt.OGDN_OG_IDX=ori.OG_IDX
+            LEFT JOIN delivery_num
+            ON OGDN_DN_IDX=DN_IDX
+            left join company
+            on COM_IDX=DN_COM_IDX
         where
             O_IDX=#{O_IDX}
         <if test="length!=-1">
@@ -249,12 +266,14 @@
     <select id="selectGoodsGsDetailByOIdxAndPType" resultType="map">
         select
             OG_IDX, P_IDX, SHOP_NAME, P_NAME, O_NAME,
-            O_PHONE, DN_COMPANY, DN_NUM, G_BARCODE, GS_CODE,
+            O_PHONE, COM_NAME, DN_NUM, G_BARCODE, GS_CODE,
             DN_RELEASE
         from
-            order_gs
-            left join orders
-        on O_IDX=OG_O_IDX
+            orders
+            left join order_gs_group
+            on OGG_O_IDX=O_IDX
+            left join order_gs
+            on OGG_IDX=OG_OGG_IDX
             left join shop
             on O_SHOP_IDX=SHOP_IDX
             left join shop_product_option
@@ -263,13 +282,18 @@
             on SPO_GS_IDX=GS_IDX
             left join product
             on GS_P_IDX=P_IDX
+            left join order_gs_dn
+            on OGDN_OG_IDX=OG_IDX
             left join delivery_num
-            on OG_DN_IDX=DN_IDX
+            on OGDN_DN_IDX=DN_IDX
             left join goods
             on OG_G_IDX=G_IDX
+            left join company
+            on COM_IDX=DN_COM_IDX
         where
-            OG_O_IDX=#{O_IDX}
+            O_IDX=#{O_IDX}
             and P_DEL_TYPE=#{P_DEL_TYPE}
+            and OGDN_TYPE in ('DELIVERY', 'AS_OUT')
     </select>
 
     <select id="selectOrdersListByBeforeRelease" resultType="map">
@@ -298,12 +322,20 @@
             O_IDX,OG_IDX,G_BARCODE,G_IDX
         FROM
             orders
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN order_gs
-                          ON OG_O_IDX=O_IDX
+                          ON OG_OGG_IDX=OGG_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_IDX=OG_SPO_IDX
+                LEFT JOIN goods_stock
+                          ON GS_IDX=SPO_GS_IDX
                 LEFT JOIN goods
-                          ON OG_G_IDX=G_IDX
+                          ON GS_IDX=G_GS_IDX
+                left join order_gs_dn
+                          on OGDN_OG_IDX=OG_IDX
                 LEFT JOIN delivery_num
-                          ON OG_DN_IDX=DN_IDX
+                          ON OGDN_DN_IDX=DN_IDX
         WHERE
             O_IDX=#{O_IDX}
           AND G_BARCODE=#{G_BARCODE}
@@ -315,10 +347,14 @@
             DN_RELEASE
         FROM
             orders
+                LEFT JOIN order_gs_group
+                          ON OGG_O_IDX=O_IDX
                 LEFT JOIN order_gs
-                          ON O_IDX=OG_O_IDX
+                          ON OG_OGG_IDX=OGG_IDX
+                left join order_gs_dn
+                          on OGDN_OG_IDX=OG_IDX
                 LEFT JOIN delivery_num
-                          ON OG_DN_IDX=DN_IDX
+                          ON OGDN_DN_IDX=DN_IDX
                 LEFT JOIN shop_product_option
                           ON OG_SPO_IDX=SPO_IDX
                 LEFT JOIN goods_stock

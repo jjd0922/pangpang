@@ -222,8 +222,8 @@
             if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[0].values','"|\\[|\\]',''),''),'') OPTION1,
             if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[1].values','"|\\[|\\]',''),''),'') OPTION2,
             if(P_OPTION!='',ifnull(regexp_replace(P_OPTION->>'$[2].values','"|\\[|\\]',''),''),'') OPTION3,
-            GS_PRICE, (GS_PRICE-SPO_PRICE) AS DISCOUNT, P_DEL_PRICE, truncate(SPO_PRICE * SP_PERCENT / 100,0) AS MILEAGE,
-            SPO_IDX
+            GS_PRICE, (SPO_SHOP_PRICE-SPO_PRICE) AS DISCOUNT, P_DEL_PRICE, truncate(SPO_PRICE * SP_PERCENT / 100,0) AS MILEAGE,
+            SPO_IDX, SPA_REQUIRED
         FROM
             shop_product
                 LEFT JOIN shop_product_add
@@ -234,8 +234,28 @@
                           ON SPO_GS_IDX=GS_IDX
                 LEFT JOIN product
                           ON GS_P_IDX=P_IDX
+        where
+            GS_IDX IS NOT NULL
+            and SPO_DEPTH=1
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
+    </select>
+    <select id="countShopProductByOrdersModalDataTable" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            shop_product
+                LEFT JOIN shop_product_add
+                          ON SP_IDX=SPA_SP_IDX
+                LEFT JOIN shop_product_option
+                          ON SPO_SPA_IDX=SPA_IDX
+                LEFT JOIN goods_stock
+                          ON SPO_GS_IDX=GS_IDX
+                LEFT JOIN product
+                          ON GS_P_IDX=P_IDX
+        where
+            GS_IDX IS NOT NULL
+            and SPO_DEPTH=1
     </select>
 </mapper>

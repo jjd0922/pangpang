@@ -5,7 +5,7 @@
 
         SELECT
             OG_IDX, O_DATE, delivery_num.CREATED_DATE AS REQ_DATE, DN_RELEASE, DN_DATE,
-            O_STATE, G_STATE, O_IDX, DN_IDX,
+            O_STATE, G_STATE, O_IDX, DN_IDX, DN_SCHEDULE,
             G_STOCK_STATE, O_CODE, SHOP_NAME, P_IDX, G_BARCODE,
             P_NAME, O_NAME, O_PHONE, OA_NAME, OA_PHONE,
             order_address.POST, CONCAT(order_address.ADDR1, ' ', order_address.ADDR2, ' ', order_address.ADDR3, ' ', order_address.ADDR4) AS ADDRS,
@@ -46,7 +46,7 @@
             ON DN_COM_IDX=COM_IDX
         where
             P_DEL_TYPE=#{P_DEL_TYPE}
-            AND (DN_IDX IS null or OGDN_TYPE='DELIVERY')
+            AND (OGDN_IDX IS null or OGDN_TYPE='DELIVERY')
         <if test="length!=-1">
             limit #{start},#{length}
         </if>
@@ -91,7 +91,7 @@
                           ON DN_COM_IDX=COM_IDX
         where
             P_DEL_TYPE=#{P_DEL_TYPE}
-          AND (DN_IDX IS null or OGDN_TYPE='DELIVERY')
+          AND (OGDN_IDX IS null or OGDN_TYPE='DELIVERY')
 
     </select>
 
@@ -114,5 +114,17 @@
             DN_IDX DESC
         LIMIT
             0, 1
+    </select>
+
+    <select id="selectOrderGsDnListByOgdnIdxAndOgdnType" resultType="map">
+        select
+            *
+        from
+            order_gs_dn
+            left join delivery_num
+            on OGDN_DN_IDX=DN_IDX
+        where
+            OGDN_OG_IDX=#{OGDN_OG_IDX}
+            and OGDN_TYPE=#{OGDN_TYPE}
     </select>
 </mapper>

@@ -180,6 +180,7 @@ public class DeliveryRestController {
         rm.put("DN_DATE", deliveryNum.getDnDate());
         rm.put("DN_FILE_NAME", lt.get(1));
         rm.put("DN_FILE", lt.get(0));
+        rm.put("DN_COM_IDX",deliveryNum.getCompany().getComIdx());
 
         /** DN_COMPANY -> DN_COM_IDX */
 //        rm.put("DN_COMPANY", deliveryNum.getDnCompany());

@@ -10,6 +10,7 @@
         <if test="whName != null and whName !=''">AND WH_NAME LIKE CONCAT('%',#{whName},'%')</if>
         <if test="comName != null and comName != ''">AND COM_NAME LIKE CONCAT('%',#{comName},'%')</if>
         <if test="ceName != null and ceName != ''">AND CE_NAME LIKE CONCAT('%',#{ceName},'%')</if>
+        <if test="locWhIdx != null and locWhIdx != ''">and LOC_WH_IDX= #{locWhIdx}</if>
     </sql>
     <select id="selectWarehouseDatatable" resultType="map">
         SELECT
@@ -25,7 +26,6 @@
                 LEFT JOIN COMPANY_EMPLOYEE ON COM_CE_IDX = CE_IDX
                 LEFT JOIN LOCATION ON LOC_WH_IDX = WH_IDX
         <where>
-             LOC_WH_IDX= #{locWhIdx}
             <include refid="includeWarehouseDatatable"></include>
         </where>
         ORDER BY

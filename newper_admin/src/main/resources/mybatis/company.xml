@@ -406,4 +406,22 @@
             and CD_BASIC=1
     </update>
 
+    <select id="selectCompanyListByCtType" resultType="map">
+        SELECT
+            COM_IDX,
+            COM_NAME,
+            COM_STATE,
+            COM_TYPE,
+            COM_MID,
+            COM_CEO,
+            COMPANY.CREATED_DATE AS 'COM_CREATED_DATE',
+                COMPANY.CREATED_TIME AS 'COM_CREATED_TIME',
+                CT_TYPE
+        FROM
+            COMPANY
+                LEFT JOIN COMPANY_TYPE ON COM_IDX = CT_COM_IDX
+        WHERE
+            CT_TYPE = #{CT_TYPE}
+    </select>
+
 </mapper>

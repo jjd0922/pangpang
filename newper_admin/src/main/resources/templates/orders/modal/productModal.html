@@ -73,7 +73,7 @@
             refreshTable('#productModalTable');
         } else {
             $("#productModalTable").DataTable({
-                dom: '<"datatable-header"><"datatable-scroll"t><"datatable-footer">',
+                dom: '<"datatable-header"p><"datatable-scroll"t><"datatable-footer">',
                 ordering: false,
                 autoWidth: true,
                 select: {
@@ -95,6 +95,13 @@
                     }}
                     ,{'title':'SHOP상품코드','data':'SP_IDX','defaultContent':''}
                     ,{'title':'재고코드','data':'GS_CODE','defaultContent':''}
+                    ,{'title':'필수여부','data':'SPA_REQUIRED','defaultContent':'','render':function(data,type,full,meta){
+                            if(data==1){
+                                return '필수';
+                            }else{
+                                return '선택';
+                            }
+                        }}
                     ,{'title':'옵션1','data':'OPTION1','defaultContent':''}
                     ,{'title':'옵션2','data':'OPTION2','defaultContent':''}
                     ,{'title':'옵션3','data':'OPTION3','defaultContent':''}

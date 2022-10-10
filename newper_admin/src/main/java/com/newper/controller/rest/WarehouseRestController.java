@@ -70,8 +70,8 @@ public class WarehouseRestController {
         ReturnDatatable rd = new ReturnDatatable();
 
         paramMap.multiSelect("locType");
-        paramMap.multiSelect("locForm");
-
+//        paramMap.multiSelect("locForm");
+        System.out.println(paramMap.getMap());
         rd.setData(locationMapper.selectLocationDatatable(paramMap.getMap()));
         rd.setRecordsTotal(locationMapper.countLocationDatatable(paramMap.getMap()));
         return rd;

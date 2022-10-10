@@ -57,7 +57,10 @@
                                                             설치업체
                                                             </span>
                                                         </span>
-                                                        <input type="text" name="DN_COMPANY" class="form-control">
+                                                        <select class="form-control form-control-sm" name="COM_IDX" data-placeholder="선택" data-container-css-class="select-sm">
+                                                            <option></option>
+                                                            <option th:each="i: ${installComapny}" th:text="${i.COM_NAME}" th:value="${i.COM_IDX}"></option>
+                                                        </select>
                                                         <input type="hidden" name="idxs" class="form-control">
                                                     </div>
                                                 </div>

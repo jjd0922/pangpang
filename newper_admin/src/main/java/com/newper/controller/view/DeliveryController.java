@@ -1,6 +1,9 @@
 package com.newper.controller.view;
 
+import com.newper.constant.CtType;
 import com.newper.constant.OLocation;
+import com.newper.mapper.CompanyMapper;
+import com.newper.mapper.DeliveryMapper;
 import com.newper.mapper.OrdersMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping(value = "/delivery/")
@@ -17,6 +22,8 @@ import java.util.Map;
 public class DeliveryController {
 
     private final OrdersMapper ordersMapper;
+    private final DeliveryMapper deliveryMapper;
+    private final CompanyMapper companyMapper;
 
     /**
      * 주문관리 배송관리 페이지
@@ -70,7 +77,9 @@ public class DeliveryController {
     @GetMapping("installation")
     public ModelAndView installation() {
         ModelAndView mav = new ModelAndView("delivery/installation");
-
+        List<Map<String,Object>> list = companyMapper.selectCompanyListByCtType(CtType.SETTING.name());
+        System.out.println(list);
+        mav.addObject("installComapny", list);
         return mav;
     }
 

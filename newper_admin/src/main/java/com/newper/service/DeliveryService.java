@@ -2,11 +2,11 @@ package com.newper.service;
 
 import com.newper.component.AdminBucket;
 import com.newper.component.Common;
-import com.newper.constant.DnState;
-import com.newper.constant.OState;
+import com.newper.constant.*;
 import com.newper.dto.ParamMap;
 import com.newper.entity.*;
 import com.newper.exception.MsgException;
+import com.newper.mapper.DeliveryMapper;
 import com.newper.mapper.OrdersMapper;
 import com.newper.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +41,8 @@ public class DeliveryService {
     private final GoodsRepo goodsRepo;
     private final AfterServiceRepo afterServiceRepo;
     private final OrderGsDnRepo orderGsDnRepo;
+    private final CompanyRepo companyRepo;
+    private final DeliveryMapper deliveryMapper;
 
 
     /** 송장등록 엑셀 업로드*/
@@ -163,10 +165,17 @@ public class DeliveryService {
                 String file = "";
                 String fileName = "";
 
+                Map<String,Object> ogdnMap = new HashMap<>();
+                ogdnMap.put("OGDN_OG_IDX",orderGs.getOgIdx());
+                ogdnMap.put("OGDN_TYPE",OgdnType.DELIVERY);
+                List<Map<String,Object>> ogdnList = deliveryMapper.selectOrderGsDnListByOgdnIdxAndOgdnType(ogdnMap);
+
+
                 DeliveryNum deliveryNum = paramMap.mapParam(DeliveryNum.class);
                 if(DN_FILE.getSize()!=0){
                     file = Common.uploadFilePath(DN_FILE, "install/", AdminBucket.SECRET);
                     fileName= DN_FILE.getOriginalFilename();
+                    deliveryNum.setDnSender(DnSender.COMPANY);
                 }
 
                 JSONObject jsonObject = new JSONObject();
@@ -182,19 +191,20 @@ public class DeliveryService {
                 jsonObject.put("files",jsonArray);
                 jsonObject.put("memo",paramMap.getString("DN_MEMO"));
 
-                deliveryNum.setDnState(DnState.REQUEST);
                 deliveryNum.setDnNum("");
 
                 /** DN_COMPANY -> DN_COM_IDX */
-//                deliveryNum.setDnCompany(paramMap.getString("DN_COMPANY"));
-
+                deliveryNum.setCompany(companyRepo.findById(paramMap.getInt("COM_IDX")).get());
+                deliveryNum.setDnState(DnState.COMPLETE);
+                deliveryNum.setDnType(DnType.INSTALL);
 
                 deliveryNum.setDnJson(jsonObject);
                 deliveryNum.setDnSchedule(LocalDate.parse(paramMap.getString("DN_SCHEDULE"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 deliveryNum.setDnDate(LocalDate.parse(paramMap.getString("DN_DATE"),DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                deliveryNumRepo.save(deliveryNum);
+                deliveryNumRepo.saveAndFlush(deliveryNum);
                 
-                ordersGsRepo.save(orderGs);
+                OrderGsDn orderGsDn = OrderGsDn.builder().ogdnType(OgdnType.DELIVERY).orderGs(orderGs).deliveryNum(deliveryNum).build();
+                orderGsDnRepo.save(orderGsDn);
                 cnt++;
             }catch (Exception e){
                 continue;
@@ -217,9 +227,11 @@ public class DeliveryService {
 
     @Transactional
     public void tegether(Map<String, Object> map){
+        System.out.println(map);
         Long oIdx = null;
         for (String key : map.keySet()) {
             Long OG_IDX = Long.parseLong(key.replace("delivery_num_",""));
+
             OrderGs orderGs = ordersGsRepo.getReferenceById(OG_IDX);
 //            DeliveryNum deliveryNum = orderGs.getDeliveryNum();
 //            if(deliveryNum==null){
