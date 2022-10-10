@@ -39,10 +39,14 @@ public class Company extends BaseEntity {
     private String comCeo;
     private String comNum;
     private String comNick;
+    private String comUptae;
+    private String comJongmok;
     private String comTel;
     private String comFax;
     private String comBank;
     private String comAccount;
+    private String comOwner;
+    private String comUrl;
 
     @Embedded
     private AddressEmb address = AddressEmb.builder().build();
@@ -54,7 +58,7 @@ public class Company extends BaseEntity {
     private String comAs;
     private String comAsNum;
     private String comMemo;
-    private String comModifiedMemo;
+
 
     @Transient
     private String comNumFileOri;
@@ -134,7 +138,7 @@ public class Company extends BaseEntity {
         setAddress(address);
         setComAs(company.getComAs());
         setComAsNum(company.getComAsNum());
-        setComModifiedMemo(company.getComModifiedMemo());
+
         setCompanyEmployee(companyEmployee);
     }
 }
