@@ -198,7 +198,7 @@ public class CustomerService {
                             .cartSpo(key)
                             .build();
                 });
-                cart.addCartCnt(paramMap.getInt(key));
+                cart.setCartCnt(paramMap.getInt(key));
                 cartRepo.save(cart);
             }
         }

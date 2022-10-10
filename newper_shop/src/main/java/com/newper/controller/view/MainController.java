@@ -96,25 +96,4 @@ public class MainController {
         return mav;
     }
 
-
-    /* order 주문프로세서 - 장바구니 */
-    @GetMapping(value = "cart")
-    public ModelAndView cart(){
-        ModelAndView mav = new ModelAndView("orderProcess/cart");
-        return mav;
-    }
-
-    /* order 주문프로세서 - 주문/결제정보입력 */
-    @GetMapping(value = "orderComplete")
-    public ModelAndView orderComplete(){
-        ModelAndView mav = new ModelAndView("orderProcess/orderComplete");
-        return mav;
-    }
-
-    /* order 주문프로세서 - 주문완료 */
-    @GetMapping(value = "order")
-    public ModelAndView order(){
-        ModelAndView mav = new ModelAndView("orderProcess/order");
-        return mav;
-    }
 }

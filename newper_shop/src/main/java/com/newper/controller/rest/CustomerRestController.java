@@ -96,7 +96,7 @@ public class CustomerRestController {
         }else{
             rm.put("cart", true);
             customerService.insertCart(paramMap);
-
+            rm.setMessage("장바구니에 상품이 추가되었습니다");
         }
 
         return rm;

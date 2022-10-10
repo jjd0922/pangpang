@@ -29,8 +29,4 @@ public class Cart {
     private String cartSpo;
     private int cartCnt;
 
-    /** 장바구니 수량 plus*/
-    public void addCartCnt(int cartCnt) {
-        setCartCnt(getCartCnt() + cartCnt);
-    }
 }

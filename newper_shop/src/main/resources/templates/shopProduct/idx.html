@@ -1143,14 +1143,26 @@
                 alert('필수 옵션을 선택해주세요');
                 return;
             }
-            
+
+
             $.ajax({
               url:'/customer/cart.ajax'
               ,type:'post'
               ,data:$('#spoForm').serialize()
-            }).done(function(res){
+            }).done(function(res ){
+                //비회원 카드. localStorage에
+                if(!res.data.cart){
 
+                    var spoList = $('#spoForm input[name^=spo]');
+                    for(var i = 0 ; i < spoList.length; i++){
+                        var spoName = $(spoList[i]).attr('name');
+                        var spoVal = $(spoList[i]).val();
+                        localStorage.setItem(spoName, spoVal);
+                    }
+
+                }
             });
+
         }
     </script>
     <script>

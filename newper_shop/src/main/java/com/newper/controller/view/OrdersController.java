@@ -119,4 +119,10 @@ public class OrdersController {
         ModelAndView mav = new ModelAndView("orders/iamport");
         return mav;
     }
+    /* order 주문프로세서 - 장바구니 */
+    @GetMapping(value = "cart")
+    public ModelAndView cart(){
+        ModelAndView mav = new ModelAndView("orders/cart");
+        return mav;
+    }
 }
