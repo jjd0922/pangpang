@@ -6,7 +6,10 @@ import com.newper.component.NiceApi;
 import com.newper.component.ShopSession;
 import com.newper.constant.SaType;
 import com.newper.dto.ParamMap;
+import com.newper.entity.Address;
 import com.newper.entity.AesEncrypt;
+import com.newper.repository.AddressRepo;
+import com.newper.repository.CustomerRepo;
 import com.newper.service.CustomerService;
 import com.newper.service.SelfAuthService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,6 +38,8 @@ public class CustomerController {
     private final KakaoLogin kakaoLogin;
     private final SelfAuthService selfAuthService;
     private final CustomerService customerService;
+    private final AddressRepo addressRepo;
+    private final CustomerRepo customerRepo;
 
     /** auth - 회원가입 안내 */
     @GetMapping(value = "joinWelcome")
@@ -150,6 +156,17 @@ public class CustomerController {
         String callback = (request.isSecure()?"https://":"http://") + request.getServerName()+":"+request.getServerPort();
         Map<String, Object> res = kakaoLogin.getProfile(paramMap, callback);
         System.out.println("res = " + res);
+        return mav;
+    }
+    /** 배송지 목록 modal 리스트 load*/
+    @GetMapping("address.load")
+    public ModelAndView address(){
+        ModelAndView mav = new ModelAndView("part/modal :: addrList-modal-load");
+
+        Long cuIdx = shopSession.getIdx();
+        List<Address> addressList = addressRepo.findByCustomerOrderByAdBasicDesc(customerRepo.getReferenceById(cuIdx));
+        mav.addObject("addressList", addressList);
+
         return mav;
     }
 }

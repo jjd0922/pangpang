@@ -1,7 +1,7 @@
 package com.newper.entity;
 
 import com.newper.entity.common.AddressEmb;
-import com.newper.entity.common.BaseEntity;
+import com.newper.entity.common.BaseEntityWithoutBy;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Address extends BaseEntity {
+public class Address extends BaseEntityWithoutBy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Address extends BaseEntity {
     @JoinColumn(name = "AD_CU_IDX", referencedColumnName = "cuIdx")
     private Customer customer;
 
-    private String adBasic;
+    private boolean adBasic;
     private String adTitle;
 
     @Embedded
@@ -35,7 +35,8 @@ public class Address extends BaseEntity {
     private String adEntrance;
     private String adName;
 
-
-
-
+    /** adPhone 휴대폰 format으로 */
+    public String adPhoneFormat(){
+        return getAdPhone().replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
+    }
 }

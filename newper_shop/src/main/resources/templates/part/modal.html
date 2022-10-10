@@ -212,59 +212,8 @@
 <!--배송지목록 모달창-->
 <th:block th:fragment="addrList-modal">
     <div class="modal-wrap addrListModal-wrap">
-        <div class="modal addrListModal">
-            <h2 class="font-xxxlg semi-bold">배송지 목록</h2>
-            <!-- 배송지 테이블 제목 -->
-            <ul class="addrList-table-title font-sm">
-                <li>배송지명</li>
-                <li>주소</li>
-                <li>연락처</li>
-                <li>선택</li>
-            </ul>
-            <!-- 배송지 목록 리스트 1 -->
-            <ul class="addrList-table-cont font-md">
-                <li>
-                    <p>집</p>
-                    <p class="bold">홍길동</p>
-                    <!-- 기본배송지 아닐 경우 아래 <div>태그 삭제 -->
-                    <div class="btn-point font-xsm">기본배송지</div>
-                </li>
-                <li>
-                    <p>15205</p>
-                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
-                    <p>901호</p>
-                    <p class="mo-addr-phone pc-display-none">010-1234-1234</p>
-                </li>
-                <li class="font-sm">010-1234-1234</li>
-                <li>
-                    <div class="btn btn-white select-btn font-xsm">선택</div>
-                </li>
-            </ul>
-            <!-- 배송지 목록 리스트 1 -->
-            <ul class="addrList-table-cont font-md">
-                <li>
-                    <p>집</p>
-                    <p class="bold">홍길동</p>
-                </li>
-                <li>
-                    <p>15205</p>
-                    <p class="bold">서울특별시 송파구 법원로 11길 11</p>
-                    <p>901호</p>
-                    <p class="mo-addr-phone pc-display-none">010-1234-1234</p>
-                </li>
-                <li class="font-sm">010-1234-1234</li>
-                <li>
-                    <div class="btn btn-white select-btn font-xsm">선택</div>
-                </li>
-            </ul>
-            <!-- 팝업 하단 닫기 버튼 -->
-            <div class="order-button-group">
-                <a href="javascript:;" class="btn btn-md btn-point btn-width-md radius-xlarge addrListClose-btn">닫기</a>
-            </div>
-            <!-- 팝업 상단 닫기 버튼 -->
-            <div class="addrModal-close">
-                <img src="/image/close.png" title="모달창닫기" alt="창닫기">
-            </div>
+        <div class="modal addrListModal" id="addrListDiv">
+            배송지 loading...
         </div>
     </div>
 
@@ -272,27 +221,27 @@
         /*** 배송지목록 모달 창 ***/
         var addrListModal = $(".addrListModal-wrap");
 
-        $(".addressConfirm .btn").click(function(){
-            $('body').addClass('no-scroll');
-            addrListModal.show();
+        $(".addrListBtn").click(function(){
+            // $('body').addClass('no-scroll');
+
+            $('#addrListDiv').html('');
+            $.ajax({
+              url:'/customer/address.load'
+            }).done(function(res){
+                $('#addrListDiv').html(res);
+                addrListModal.show();
+            });
+
             return false;
         });
-        // 모달 창 닫기
-        $(".addrListClose-btn").click(function(){
-            $('body').removeClass('no-scroll');
-            addrListModal.hide();
-        });
-        $(".addrModal-close").click(function(){
-            $('body').removeClass('no-scroll');
-            addrListModal.hide();
-        });
+
         // 외부영역 클릭 시 팝업 닫기
         $(document).mouseup(function (e){
             if(addrListModal.has(e.target).length === 0){
                 addrListModal.hide();
-                $('body').removeClass('no-scroll');
+                // $('body').removeClass('no-scroll');
             } else {
-                $('body').addClass('no-scroll');
+                // $('body').addClass('no-scroll');
             }
         });
         // ESC 키 누를시 팝업 닫기
@@ -302,8 +251,54 @@
 
             if (code == 27) { // 27은 ESC 키번호
                 addrListModal.hide();
-                $('body').removeClass('no-scroll');
+                // $('body').removeClass('no-scroll');
             }
+        });
+    </script>
+</th:block>
+<th:block th:fragment="addrList-modal-load">
+    <h2 class="font-xxxlg semi-bold">배송지 목록</h2>
+    <!-- 배송지 테이블 제목 -->
+    <ul class="addrList-table-title font-sm">
+        <li>배송지명</li>
+        <li>주소</li>
+        <li>연락처</li>
+        <li>선택</li>
+    </ul>
+    <ul class="addrList-table-cont font-md" th:each="addr : ${addressList}">
+        <li>
+            <p th:text="${addr.adTitle}">주소명</p>
+            <p class="bold" th:text="${addr.adName}">배송자 이름</p>
+        </li>
+        <li>
+            <p th:text="${addr.address.post}">우편번호</p>
+            <p class="bold" th:text="${addr.address.address3()}">주소</p>
+            <p th:text="${addr.address.addr4}">상세 주소</p>
+            <p class="mo-addr-phone pc-display-none" th:text="${addr.adPhoneFormat()}">배송자 연락처(모바일화면)</p>
+        </li>
+        <li class="font-sm" th:text="${addr.adPhoneFormat()}">배송자 연락처</li>
+        <li>
+            <div class="btn btn-white select-btn font-xsm">선택</div>
+        </li>
+    </ul>
+
+    <!-- 팝업 하단 닫기 버튼 -->
+    <div class="order-button-group">
+        <a href="javascript:;" class="btn btn-md btn-point btn-width-md radius-xlarge addrListClose-btn">닫기</a>
+    </div>
+    <!-- 팝업 상단 닫기 버튼 -->
+    <div class="addrModal-close">
+        <img src="/image/close.png" title="모달창닫기" alt="창닫기">
+    </div>
+    <script>
+        // 모달 창 닫기
+        $(".addrListClose-btn").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
+        });
+        $(".addrModal-close").click(function(){
+            $('body').removeClass('no-scroll');
+            addrListModal.hide();
         });
     </script>
 </th:block>

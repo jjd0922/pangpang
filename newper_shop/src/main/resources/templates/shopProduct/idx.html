@@ -60,7 +60,7 @@
                     </div>
                     <!-- 큰 이미지 썸네일 하단 상품 브랜드 & 상품 번호 -->
                     <div class="prod-thumb-group">
-                        <div><span>삼성</span><span class="prod-num">상품번호 : 001240231</span></div>
+                        <div><span>브랜드</span><span class="prod-num">상품번호 : <th:block th:text="${sp.spIdx}"/></span></div>
                         <div class="position-relative">
                             <i class="share"></i>
                             <!-- 공유하기 툴팁 -->
@@ -321,6 +321,9 @@
                         <form id="spoForm" action="/orders/" method="post">
                         <input type="hidden" name="login">
                         <ul id="spoUl">
+
+                        </ul>
+                        <ul id="spoAddUl">
 
                         </ul>
                         </form>
@@ -1229,19 +1232,19 @@
 
                 }
 
-                addSpo(spoIdxs, spoNames, spoPrices);
+                addSpo(spoIdxs, spoNames, spoPrices, true);
 
                 $('select[spa_required=true]').val('');
 
             } else {
                 var selectedOpt = $($(obj).find('option:selected')[0]);
-                addSpo(selectedOpt.val(), selectedOpt.html(), selectedOpt.attr('spo_price'));
+                addSpo(selectedOpt.val(), selectedOpt.html(), selectedOpt.attr('spo_price'), false);
                 $(obj).val('');
             }
         }
 
         //선택된 옵션 추가
-        function addSpo(val, name, price) {
+        function addSpo(val, name, price, required) {
 
             if ($('input[name=spo' + val + ']').length > 0) {
                 alert('이미 추가된 옵션입니다');
@@ -1266,7 +1269,11 @@
             spo += '  </div>';
             spo += '</li>';
 
-            $('#spoUl').append(spo);
+            if(required){
+                $('#spoUl').append(spo);
+            }else{
+                $('#spoAddUl').append(spo);
+            }
             calSpo();
         }
 
@@ -1300,6 +1307,10 @@
         }
         //주문하기
         function orderSpo(){
+            if($('#spoUl li').length == 0 ){
+                alert('필수 옵션을 선택해주세요');
+                return;
+            }
             $.ajax({
               url:'/login/check.ajax'
               ,type:'get'

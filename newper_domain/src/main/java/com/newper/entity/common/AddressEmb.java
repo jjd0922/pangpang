@@ -17,4 +17,9 @@ public class AddressEmb {
     private String addr2;
     private String addr3;
     private String addr4;
+
+    /** 주소1,2,3 문자열*/
+    public String address3(){
+        return getAddr1() + " " + addr2 + " " + addr3;
+    }
 }
