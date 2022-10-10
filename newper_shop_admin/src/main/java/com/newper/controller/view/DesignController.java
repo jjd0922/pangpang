@@ -70,13 +70,37 @@ public class DesignController {
 
         return mav;
     }
-    /** 팝업 관리*/
+    /** 배너 신규/상세*/
+    @GetMapping(value = {"banner/{bnIdx}/{shopIdx}","banner/new/{shopIdx}"})
+    public ModelAndView bannerDetail(@PathVariable(required = false) Long bnIdx, @PathVariable("shopIdx") Integer shopIdx){
+        ModelAndView mav = new ModelAndView("design/banner_bnIdx");
+
+        if(bnIdx != null){
+
+        }
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
+        mav.addObject("shop", shop);
+        return mav;
+    }
+    /** 팝업 관리 */
     @GetMapping("popup")
     public ModelAndView popup(){
         ModelAndView mav = new ModelAndView("design/popup");
 
         mav.addObject("shopList", shopRepo.findAll());
 
+        return mav;
+    }
+    /** 팝업 싱규/상세 */
+    @GetMapping(value = {"popup/{popIdx}/{shopIdx}","popup/new/{shopIdx}"})
+    public ModelAndView popupDetail(@PathVariable(required = false) Long popIdx, @PathVariable("shopIdx") Integer shopIdx){
+        ModelAndView mav = new ModelAndView("design/popup_popIdx");
+
+        if(popIdx != null){
+
+        }
+        Shop shop = shopRepo.findById(shopIdx).orElseThrow(()-> new MsgException("존재하지 않는 분양몰입니다."));
+        mav.addObject("shop", shop);
         return mav;
     }
 

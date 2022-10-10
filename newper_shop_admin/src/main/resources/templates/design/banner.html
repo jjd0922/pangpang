@@ -55,7 +55,7 @@
                                             <div class="col-lg-12 d-flex justify-content-center align-content-end align-items-end flex-wrap">
                                                 <div class="form-group">
                                                     <label class="d-block">분양몰</label>
-                                                    <select class="form-control form-control-sm select-search" name="SHOP_IDX" data-placeholder="선택" data-container-css-class="select-sm">
+                                                    <select class="form-control form-control-sm select-search" name="shopIdx" data-placeholder="선택" data-container-css-class="select-sm">
                                                         <option th:each="shop : ${shopList}" th:text="${shop.shopName}" th:value="${shop.shopIdx}"></option>
                                                     </select>
                                                 </div>
@@ -84,7 +84,7 @@
                         <div class="card">
                             <div class="card-header bg-white header-elements-inline justify-content-start">
                                 <h6 class="card-title" th:text="${subTitle}"></h6>
-                                <a class="btn btn-sm btn-primary ml-1">신규등록</a>
+                                <a class="btn btn-sm btn-primary ml-1" onclick="bannerPop('new')">신규등록</a>
                             </div>
 
                             <table class="table" id="mainsectionTable"></table>
@@ -124,6 +124,11 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
+    function bannerPop(bnIdx){
+        var shopIdx = $('select[name="shopIdx"]').val();
+        var focusPopup = window.open('/design/banner/'+bnIdx+'/'+shopIdx, 'popupDetail', 'width=1000, height=900, scrollbars=yes, resizable=yes');
+        focusPopup.focus();
+    }
 </script>
 
 <script>
