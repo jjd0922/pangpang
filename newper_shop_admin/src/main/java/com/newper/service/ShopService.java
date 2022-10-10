@@ -63,10 +63,15 @@ public class ShopService {
             if(FbType.values()[i].name().equals("ETC")){
                 continue;
             }
+            String defaultUrl = "";
+            if(FbType.values()[i].getDefaultUrl() != null){
+                defaultUrl = FbType.values()[i].getDefaultUrl();
+            }
             FloatingBar fb = FloatingBar.builder()
                     .fbName(FbType.values()[i].getOption())
                     .fbDisplay((i + 1)*-1)
                     .fbType(FbType.values()[i])
+                    .fbUrl(defaultUrl)
                     .build();
             shop.addFloatingBar(fb);
         }

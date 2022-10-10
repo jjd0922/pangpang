@@ -70,6 +70,15 @@ public class DesignController {
 
         return mav;
     }
+    /** 팝업 관리*/
+    @GetMapping("popup")
+    public ModelAndView popup(){
+        ModelAndView mav = new ModelAndView("design/popup");
+
+        mav.addObject("shopList", shopRepo.findAll());
+
+        return mav;
+    }
 
     /** 분양몰 디자인*/
     @GetMapping(value = "pop/design/{shopIdx}")

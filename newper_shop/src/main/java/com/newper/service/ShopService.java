@@ -59,6 +59,7 @@ public class ShopService {
             //N+1 (shop갯수만큼 조회됨) vs shop 중복 조회 효율
             shop.getHeaderMenulist().size();
             shop.getHeaderOrderList().size();
+            shop.getFloatingBarList().size();
 
             // 분양몰 디자인 정보
             Map<String,Object> shopDesignMap = shopMapper.selectShopDesignJson(shop.getShopIdx());
