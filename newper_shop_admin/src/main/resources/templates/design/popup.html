@@ -60,7 +60,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="d-block">섹션명</label>
+                                                    <label class="d-block">조건</label>
                                                     <input class="form-control form-control-sm w-120px" name="MS_NAME" data-placeholder="검색">
                                                 </div>
 
@@ -82,7 +82,13 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <table class="table" id="shopTable"></table>
+                            <div class="card-header bg-white header-elements-inline justify-content-start">
+                                <h6 class="card-title" th:text="${subTitle}"></h6>
+                                <a class="btn btn-sm btn-primary ml-1">신규등록</a>
+                            </div>
+
+                            <table class="table" id="mainsectionTable"></table>
+
                         </div>
                     </div>
                 </div>
@@ -118,58 +124,9 @@
 <script th:src="@{/assets/js/common.js}"></script>
 
 <script>
-function popDesign(shopIdx){
-    var focusPopup = window.open('/design/pop/design/'+shopIdx, 'shopDesign', 'width=1000, height=800, scrollbars=yes, resizable=yes');
-    focusPopup.focus();
-}
-function popHeader(shopIdx){
-    var focusPopup = window.open('/design/pop/header/'+shopIdx, 'shopHeader', 'width=1000, height=800, scrollbars=yes, resizable=yes');
-    focusPopup.focus();
-}
-function popFloating(shopIdx){
-    var focusPopup = window.open('/design/pop/floating/'+shopIdx, 'shopHeader', 'width=1000, height=800, scrollbars=yes, resizable=yes');
-    focusPopup.focus();
-}
-function popCommonImage(shopIdx){
-    alert("준비중! + shopIdx==" + shopIdx);
-}
-
 </script>
+
 <script>
-$(function(){
-    $('#shopTable').DataTable({
-        dom: '<"datatable-header"Bip><"datatable-scroll"t>',
-        buttons: buttonsSelect(false),
-        columnDefs: [ {
-            orderable: false,
-            targets:   [0]
-        } ],
-        ordering: false,
-        serverSide: true,
-        ajax:{
-            url:'/shop/shop.dataTable',
-            type:'post'
-        },
-        "columns" : [
-            {'title':'분양몰코드','data':'SHOP_IDX', 'defaultContent':''}
-            ,{'title':'분양몰명','data':'SHOP_NAME','defaultContent':''}
-            ,{'title':'디자인','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm btn-primary" onclick="popDesign('+data+')">디자인설정</a>';
-            }}
-            ,{'title':'헤더','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm btn-primary" onclick="popHeader('+data+')">헤더설정</a>';
-            }}
-            ,{'title':'플로팅바','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm btn-primary" onclick="popFloating('+data+')">플로팅바설정</a>';
-            }}
-            ,{'title':'공통이미지','data':'SHOP_IDX', 'defaultContent':'', 'render':function(data,type,full,meta){
-                return '<a class="btn btn-sm btn-primary" onclick="popCommonImage('+data+')">공통이미지설정</a>';
-            }}
-        ]
-    });
-})
-
-
 </script>
 </body>
 </html>
