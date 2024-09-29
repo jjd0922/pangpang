@@ -1,0 +1,39 @@
+plugins {
+	id 'java'
+}
+
+group 'com.example.demo'
+version '1.0'
+
+configurations {
+	customProvidedRuntime
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	customProvidedRuntime 'org.springframework.boot:spring-boot-starter-tomcat:2.7.1'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation files('libs/httpcore-4.4.1.jar')
+	implementation files('libs/httpclient-4.4.1.jar')
+
+	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+
+	/**음력 날짜계산*/
+	implementation group: 'com.ibm.icu', name: 'icu4j', version: '4.0.1'
+	//springdoc-openapi
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.11'
+}
+
+test {
+	useJUnitPlatform()
+}
