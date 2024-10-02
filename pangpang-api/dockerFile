@@ -1,0 +1,5 @@
+FROM openjdk:11
+ARG JAR_FILE=build/libs/test-api-1.0.jar
+COPY ${JAR_FILE} pangpang-api.jar
+EXPOSE 8080/tcp
+ENTRYPOINT ["java","-jar","-Duser.timezone=GMT+09:00" ,"-Dspring.profiles.active=dev","/pangpang-api.jar"]

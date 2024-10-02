@@ -1,0 +1,160 @@
+spring:
+  profiles:
+    group:
+      window: windowinfo,common
+      dev: devinfo,common
+      prod: prodinfo,common
+    active: window
+
+---
+spring:
+  config:
+    activate:
+      on-profile: windowinfo
+
+
+  datasource:
+    master:
+      url: jdbc:mysql://localhost:3306/pangpang?useSSL=false
+      username: pangpang
+      password: pangpang12!@
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+server:
+  port: 8090
+  tomcat:
+    file-encoding: UTF-8
+  servlet:
+    #    context-path: /context
+    session:
+      #      timeout: 10800      # 60*60*3
+      timeout: 86400      # 60*60*24
+
+
+decorator:
+  datasource:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: devinfo
+
+#  datasource:
+#    #    jndi-name: null
+#    url: OX8gM7VWPhTuWFo6bJaSUGn582qhkJX4OiH+RMPoSNt+R2oVNOX/T5gXGwP9nryFg40nr1R8MDQXB4h2w/D2zoQObMPu6ZacsKBQoFXtb6ie22LNXVBc8r+WxCdHiSJW7vSPHvhSb9bQe+ETJ7uW1A==
+#    username: cW4mhrJJ24X1Vu5k9dzKEA==
+#    password: /3hwiaPoW5nn07QIbeCoSQ==
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    master:
+      url: jdbc:mysql://localhost:3306/pangpang?useSSL=false
+      username: pangpang
+      password: pangpang12!@
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+server:
+  port: 8090
+  tomcat:
+    file-encoding: UTF-8
+  servlet:
+    #    context-path: /context
+    session:
+      #      timeout: 10800      # 60*60*3
+      timeout: 86400      # 60*60*24
+    #sweettracker:
+    #  tier: testuser
+    #  key: testuser
+    #  domain: http://trace-api-dev.sweettracker.net:8102/
+    #  callback: http://localhost:9080/present/tracking/add/invoice/return
+
+decorator:
+  datasource:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prodinfo
+
+#  datasource:
+    #    jndi-name: null
+#    url: HhfzI7/+RJzLsp9JMjtOk2czuSI5k87/LtLlXnqGbmmJFEbDrKivKVvtrAZTsIk5FGSk1OGBGuRxXLkSRNi8xkuYDZbDyI6xTaYtzjxu70tfiqGkqCGWetQ02NOdvZ9Lm+QEQm5asY+p6/U/bLgFEw==
+#    username: cW4mhrJJ24X1Vu5k9dzKEA==
+#    password: /3hwiaPoW5nn07QIbeCoSQ==
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  datasource:
+    master:
+      url: jdbc:mysql://localhost:3306/pangpang?useSSL=false
+      username: pangpang
+      password: pangpang12!@
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 8090
+  tomcat:
+    file-encoding: UTF-8
+    connection-timeout: -1
+  servlet:
+    #    context-path: /context
+    session:
+      #      timeout: 10800      # 60*60*3
+      timeout: 86400      # 60*60*24
+
+    #sweettracker:
+    #  tier: testuser
+    #  key: testuser
+    #  domain: http://trace-api-dev.sweettracker.net:8102/
+    #  callback: http://localhost:9080/present/tracking/add/invoice/return
+
+
+decorator:
+  datasource:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      use-new-id-generator-mappings: false
+    database: mysql
+
+
+
+  servlet.multipart.maxFileSize: 10MB
+  servlet.multipart.maxRequestSize: 100MB
+
+  thymeleaf:
+    enabled: true
+    cache: false
+
+mybatis:
+  mapper-locations: mybatis/*.xml
+  configuration.map-underscore-to-camel-case: true
+  configuration:
+    cache-enabled: false
+    local-cache-scope: statement
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+      timeout: 10800
+
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8

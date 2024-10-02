@@ -16,7 +16,7 @@ subprojects{
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 
-	group = 'com.example.demo'
+	group = 'com.pangpang'
 	version = '1.0'
 	sourceCompatibility = '11'
 
@@ -46,4 +46,9 @@ subprojects{
 bootJar { enabled = false}
 jar {
 	enabled = false
+}
+project(':pangpang-api') {
+	dependencies {
+		implementation project(':pangpang_domain')
+	}
 }
