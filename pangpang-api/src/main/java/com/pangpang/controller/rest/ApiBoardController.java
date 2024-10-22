@@ -1,7 +1,7 @@
 package com.pangpang.controller.rest;
 
 import com.pangpang.dto.ReturnMap;
-import com.pangpang.entity.Customer;
+import com.pangpang.entity.*;
 import com.pangpang.exception.MsgException;
 import com.pangpang.mapper.BoardMapper;
 import com.pangpang.mapper.CustomerMapper;

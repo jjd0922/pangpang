@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @DynamicInsert
@@ -24,6 +26,7 @@ public class Customer {
     private Long cuIdx;
 
     private String cuName;
+    private String cuNickname;
     private String cuId;
     private String cuPw;
     private String cuMail;
@@ -32,8 +35,9 @@ public class Customer {
     private String cuState;
     private String cuBirth;
     private String cuGender;
-    private String cuJoinDate;
-    private String cuJoinTime;
+    private String cuMemo;
+    private LocalDate cuJoinDate;
+    private LocalTime cuJoinTime;
     private String cuCi;
     private String cuKaKaoId;
 

@@ -60,8 +60,8 @@ public class DataSourceConfiguration {
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class)
                 .url(url1)
-                .username("pangpang")
-                .password("pangpang12!@")
+                .username("admin")
+                .password("pangpang9864#!")
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .build();
     }
