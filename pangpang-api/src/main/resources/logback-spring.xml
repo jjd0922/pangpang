@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
+    <springProfile name="window">
+        <property name="PANGPANG_API_LOG" value="/C:/logs/pangpang"/>
+    </springProfile>
     <springProfile name="dev">
         <property name="PANGPANG_API_LOG" value="/api-pv-storage" />
     </springProfile>
@@ -23,7 +26,7 @@
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${PANGPANGR_API_LOG}/API.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${PANGPANG_API_LOG}/API.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
 
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>30MB</maxFileSize>
