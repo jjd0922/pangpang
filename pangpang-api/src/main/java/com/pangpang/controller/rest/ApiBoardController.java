@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(value = "/api/board")
+@RequestMapping(value = "/api/board/")
 @RestController
 @RequiredArgsConstructor
 public class ApiBoardController {
