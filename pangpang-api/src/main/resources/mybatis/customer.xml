@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pangpang.mapper.CustomerMapper">
+
+    <select id="selectCustomerInfo" resultType="java.util.LinkedHashMap">
+        SELECT
+            cu_idx,cu_id,cu_nickname,cu_profile,cu_gender,cu_birth,cu_memo
+        FROM
+        customer
+        <where>
+            <if test="cuIdx != null and cuIdx !=''">
+                AND CU_IDX = #{cuIdx}
+            </if>
+        </where>
+    </select>
+
+</mapper>

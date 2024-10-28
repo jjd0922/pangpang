@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pangpang.mapper.CategoryMapper">
+
+    <select id="selectCategoryList" resultType="java.util.LinkedHashMap">
+        SELECT
+            c1.CATE_IDX,c1.CATE_PARENT_IDX,c1.CATE_TYPE,c1.CATE_DEPTH,
+            IFNULL(c2.CATE_NAME,'') AS CATE_PARENT_NAME,
+            c1.CATE_NAME,c1.CATE_ORDER
+        FROM
+            category c1
+        left join category c2 on c1.cate_parent_idx = c2.cate_idx
+        <where>
+            <if test="cateIdx != null and cateIdx !=''">
+                AND  c1.cate_idx =#{cateIdx}
+            </if>
+            <if test="cateParentIdx != null and cateParentIdx !=''">
+                AND  c1.cate_parent_idx =#{cateParentIdx}
+            </if>
+            <if test="cateType != null and cateType !=''">
+                AND  c1.cate_type =#{cateType}
+            </if>
+            <if test="cateDepth != null and cateDepth !=''">
+                AND  c1.cate_depth =#{cateDepth}
+            </if>
+            <if test="cateName != null and cateName !=''">
+                AND  c1.cate_name =#{cateName}
+            </if>
+        </where>
+    </select>
+
+</mapper>

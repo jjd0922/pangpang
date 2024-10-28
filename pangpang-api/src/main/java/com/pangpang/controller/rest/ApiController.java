@@ -14,6 +14,7 @@ public class ApiController {
     @GetMapping("/health")
     public ReturnMap healthCheck(){
         ReturnMap rm = new ReturnMap();
+        rm.put("health","goods!");
         return rm;
     }
 

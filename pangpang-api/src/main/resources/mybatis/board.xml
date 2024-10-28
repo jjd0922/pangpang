@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pangpang.mapper.BoardMapper">
+
+    <select id="selectBoardList" resultType="java.util.LinkedHashMap">
+        SELECT
+        BD_IDX,BD_TITLE,BD_STATE,
+        BD_CNT,
+        count(br_bd_idx) AS BD_PART_CNT,
+        BD_RATE,BD_IMG,BD_MAP,BD_CONTENT,BD_LINK,BD_START_DATE
+        FROM
+        board
+        LEFT JOIN board_request on bd_idx = br_bd_idx
+        <where>
+            <if test="CATE_IDX != null and CATE_IDX !=''">
+                AND  bd_cate_idx =#{CATE_IDX}
+            </if>
+            <if test="CU_IDX != null and CU_IDX !=''">
+                AND  bd_cu_idx =#{CU_IDX}
+            </if>
+            <if test="BD_STATE != null and BD_STATE !=''">
+                AND  bd_state =#{BD_STATE}
+            </if>
+            <if test="BD_RATE != null and BD_RATE !=''">
+                AND  bd_rate =#{BD_RATE}
+            </if>
+            <if test="BD_START_DATE != null and BD_START_DATE !=''">
+                AND  bd_start_date =#{BD_START_DATE}
+            </if>
+        </where>
+        ORDER BY BD_IDX DESC
+        LIMIT #{PAGE}, #{LIMIT}
+    </select>
+
+    <select id="selectBoardDetail" resultType="java.util.LinkedHashMap">
+        SELECT
+        BD_IDX,BD_TITLE,BD_STATE,
+        BD_CNT,
+        count(br_bd_idx) AS BD_PART_CNT,
+        BD_RATE,BD_IMG,BD_MAP,BD_CONTENT,BD_LINK,BD_START_DATE
+        FROM
+        board
+        left join board_request on bd_idx = br_bd_idx
+        <where>
+            <if test="bdIdx != null and bdIdx !=''">
+                AND  bd_Idx =#{bdIdx}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBoardBtnState" resultType="String">
+        SELECT
+        CASE
+            when #{type} = 'leader' and bd_state = 'ING' then '모집 마감하기'
+            when #{type} = 'leader' and bd_state = 'COMPLETE' then '임장 완료하기'
+            when #{type} = 'leader' and bd_state = 'END' and r_idx is null then '후기 작성하기'
+            when #{type} = 'leader' and bd_state = 'COMPLETE' and bd_state = 'END' and r_idx is not null then '후기 작성완료'
+            when #{type} = 'participant' then '채팅방 링크 이동'
+            when #{type} = 'participant' and bd_state = 'END' and r_idx is null then '후기 작성하기'
+            when #{type} = 'participant' and bd_state = 'END' and r_idx is not null then '후기 작성완료'
+        FROM
+        board
+        left join board_request on bd_idx = br_bd_idx
+        left join review on br_cu_idx = cu_idx
+        <where>
+            <if test="bdIdx != null and bdIdx !=''">
+                AND  bd_Idx =#{bdIdx}
+            </if>
+        </where>
+    </select>
+</mapper>
