@@ -24,10 +24,10 @@ public class ApiCustomerController {
         if(map.isEmpty()){
             throw new MsgException("데이터 없음");
         }
-        Customer cu = customerRepo.findByCuCi(map.get("CU_CI").toString());
-        if(cu != null){
-            throw new MsgException("이미 회원가입한 아이디 입니다.");
-        }
+//        Customer cu = customerRepo.findByCuCi(map.get("CU_CI").toString());
+//        if(cu != null){
+//            throw new MsgException("이미 회원가입한 아이디 입니다.");
+//        }
         LocalDate now = LocalDate.now();
         LocalTime nowTime = LocalTime.now();
         Customer customer = Customer.builder()
@@ -36,7 +36,7 @@ public class ApiCustomerController {
                 .cuNickname(map.get("CU_NICKNAME").toString())
                 .cuMail(map.get("CU_MAIL").toString())
                 .cuPhone(map.get("CU_PHONE").toString())
-                .cuCi(map.get("CU_CI").toString())
+           //     .cuCi(map.get("CU_CI").toString())
                 .cuBirth(map.get("CU_BIRTH").toString())
                 .cuGender(map.get("CU_GENDER").toString())
                 .cuMemo(map.get("CU_MEMO").toString())
