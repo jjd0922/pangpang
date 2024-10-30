@@ -64,7 +64,19 @@
         left join review on br_cu_idx = cu_idx
         <where>
             <if test="bdIdx != null and bdIdx !=''">
-                AND  bd_Idx =#{bdIdx}
+                AND  bd_idx =#{bdIdx}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectReviewDetail" resultType="java.util.LinkedHashMap">
+        SELECT
+        R_IDX,R_GOOD_CONTENT,R_BAD_CONTENT
+        FROM
+        review
+        <where>
+            <if test="rIdx != null and rIdx !=''">
+                AND  r_idx =#{rIdx}
             </if>
         </where>
     </select>

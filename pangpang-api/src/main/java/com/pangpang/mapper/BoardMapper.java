@@ -23,4 +23,7 @@ public interface BoardMapper {
 
     @Transactional(readOnly = true)
     String selectBoardBtnState(@Param("bdIdx") String bdIdxm,@Param("cuIdx") String cuIdx,@Param("type") String type);
+
+    @Transactional(readOnly = true)
+    Map<String, Object> selectReviewDetail(@Param("rIdx") String rIdx);
 }

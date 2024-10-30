@@ -210,4 +210,21 @@ public class ApiBoardController {
         rm.put("r_idx",review.getRIdx());
         return rm;
     }
+
+    @GetMapping("review/detail.ajax")
+    public ReturnMap reviewDetail(@RequestParam(value = "R_IDX",required = false) String R_IDX,
+                                 @RequestParam(value = "CU_IDX",required = false) String CU_IDX
+    ){
+        ReturnMap rm = new ReturnMap();
+        if(R_IDX.equals("") || R_IDX == null){
+            throw new MsgException("리뷰 idx 입력바랍니다.");
+        }
+        if(CU_IDX.equals("") || CU_IDX == null){
+            throw new MsgException("로그인 회원 idx 입력바랍니다.");
+        }
+        Map<String, Object> map = boardMapper.selectReviewDetail(R_IDX);
+
+        rm.put("list",map);
+        return rm;
+    }
 }
