@@ -25,8 +25,12 @@ public class ApiCustomerController {
             throw new MsgException("데이터 없음");
         }
         Customer cu = customerRepo.findByCuId(map.get("CU_ID").toString());
+        Customer cu2 = customerRepo.findByCuNickname(map.get("CU_NICKNAME").toString());
         if(cu != null){
             throw new MsgException("이미 회원가입한 아이디 입니다.");
+        }
+        if(cu2 != null){
+            throw new MsgException("해당 닉네임은 사용 불가입니다.");
         }
         LocalDate now = LocalDate.now();
         LocalTime nowTime = LocalTime.now();
@@ -65,14 +69,18 @@ public class ApiCustomerController {
         if(map.isEmpty()){
             throw new MsgException("데이터 없음");
         }
-        Customer cu = customerRepo.findByCuCi(map.get("CU_CI").toString());
+        Customer cu = customerRepo.findByCuId(map.get("CU_ID").toString());
         if(cu == null){
             throw new MsgException("가입되지 않은 회원입니다.");
         }
-        if(!cu.getCuId().equals(map.get("CU_ID").toString())){
-            throw new MsgException("회원 정보가 일치하지 않습니다.");
-        }
         rm.put("cu_idx",cu.getCuIdx());
+        return rm;
+    }
+    @GetMapping("info.ajax")
+    public ReturnMap customerInfo(@RequestParam(value = "CU_IDX",required = false) String cuIdx) {
+        ReturnMap rm = new ReturnMap();
+        Customer cu = customerRepo.findById(Long.parseLong(cuIdx)).get();
+        rm.put("list",cu);
         return rm;
     }
 }
