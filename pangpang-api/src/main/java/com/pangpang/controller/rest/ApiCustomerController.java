@@ -24,7 +24,7 @@ public class ApiCustomerController {
         if(map.isEmpty()){
             throw new MsgException("데이터 없음");
         }
-        Customer cu = customerRepo.findByCuId(map.get("CU_CD").toString());
+        Customer cu = customerRepo.findByCuId(map.get("CU_ID").toString());
         if(cu != null){
             throw new MsgException("이미 회원가입한 아이디 입니다.");
         }
@@ -46,6 +46,7 @@ public class ApiCustomerController {
                 .build();
         customerRepo.save(customer);
         rm.put("cu_idx",customer.getCuIdx());
+        rm.setMessage("가입완료");
        return rm;
     }
     @GetMapping("nickName-check.ajax")

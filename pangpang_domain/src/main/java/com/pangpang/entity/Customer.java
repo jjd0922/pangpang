@@ -39,6 +39,5 @@ public class Customer {
     private LocalDate cuJoinDate;
     private LocalTime cuJoinTime;
     private String cuCi;
-    private String cuKaKaoId;
 
 }
