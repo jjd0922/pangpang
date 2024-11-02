@@ -35,14 +35,15 @@ public class ApiBoardController {
         }
         Board board = null;
         Customer customer = customerRepo.getReferenceById(Long.parseLong(map.get("CU_IDX").toString()));
-        Category category = categoryRepo.getReferenceById(Long.parseLong(map.get("location").toString()));
+        Category category = categoryRepo.getReferenceById(Long.parseLong(map.get("CATE_IDX").toString()));
         if(customer == null){
             throw new MsgException("회원정보가 없습니다.");
         }
         if(category == null){
             throw new MsgException("지역정보가 잘못 입력되었습니다.");
         }
-        LocalDate date = LocalDate.parse(map.get("BD_START_DATE").toString(), DateTimeFormatter.ISO_DATE);
+        LocalDate startDate = LocalDate.parse(map.get("BD_START_DATE").toString(), DateTimeFormatter.ISO_DATE);
+        LocalDate endDate = LocalDate.parse(map.get("BD_END_DATE").toString(), DateTimeFormatter.ISO_DATE);
         if(map.containsKey("BD_IDX")){
             if(!map.get("BD_IDX").equals("")){
                 board = boardRepo.findById(Long.parseLong(map.get("BD_IDX").toString())).get();
@@ -53,7 +54,8 @@ public class ApiBoardController {
                 board.setBdLink(map.get("BD_LINK").toString());
                 board.setCategory(category);
                 board.setBdCnt(Integer.parseInt(map.get("BD_CNT").toString()));
-                board.setBdStartDate(date);
+                board.setBdStartDate(startDate);
+                board.setBdEndDate(endDate);
                 board.setBdRate(Integer.parseInt(map.get("BD_RATE").toString()));
                 board.setBdContent(map.get("BD_CONTENT").toString());
                 boardRepo.save(board);
@@ -65,7 +67,8 @@ public class ApiBoardController {
                     .category(category)
                     .customer(customer)
                     .bdCnt(Integer.parseInt(map.get("BD_CNT").toString()))
-                    .bdStartDate(date)
+                    .bdStartDate(startDate)
+                    .bdEndDate(endDate)
                     .bdRate(Integer.parseInt(map.get("BD_RATE").toString()))
                     .bdContent(map.get("BD_CONTENT").toString())
                     .bdDisplay(true)
@@ -98,7 +101,10 @@ public class ApiBoardController {
                                     ){
         ReturnMap rm = new ReturnMap();
         int limit = Integer.parseInt(LIMIT);
-        int limit_page = Integer.parseInt(PAGE)*Integer.parseInt(LIMIT);
+        if(PAGE.equals("0")){
+            throw new MsgException("PAGE는 1 이상 숫자만 입력 가능합니다.");
+        }
+        int limit_page = (Integer.parseInt(PAGE)-1)*Integer.parseInt(LIMIT);
         List<Map<String, Object>> list = boardMapper.selectBoardList(CATE_IDX,CU_IDX,BD_STATE,BD_RATE,BD_START_DATE,limit,limit_page);
         rm.put("list",list);
         return rm;
@@ -121,7 +127,8 @@ public class ApiBoardController {
         rm.put("list",map);
         return rm;
     }
-    @GetMapping("boardBtnState.ajax")
+
+    @GetMapping("btnState.ajax")
     public ReturnMap boardBtnState(@RequestParam(value = "BD_IDX",required = false) String BD_IDX,
                                  @RequestParam(value = "CU_IDX",required = false) String CU_IDX
     ){
@@ -167,7 +174,44 @@ public class ApiBoardController {
         rm.put("btnState",btnState);
         return rm;
     }
+    @PostMapping("request.ajax")
+    public ReturnMap boardRequst(@RequestBody Map<String,Object> map){
+        ReturnMap rm = new ReturnMap();
+        if(map.get("BD_IDX").equals("") || map.get("BD_IDX") == null){
+            throw new MsgException("게시판 idx 입력바랍니다.");
+        }
+        if(map.get("CU_IDX").equals("") || map.get("CU_IDX") == null){
+            throw new MsgException("회원 idx 입력바랍니다.");
+        }
+        Board board = boardRepo.findById(Long.parseLong(map.get("BD_IDX").toString())).get();
+        Customer customer = customerRepo.findById(Long.parseLong(map.get("CU_IDX").toString())).get();
+        if(board == null){
+            throw new MsgException("게시판 정보가 없습니다.");
+        }
+        if(customer == null){
+            throw new MsgException("회원정보가 없습니다.");
+        }
+        BoardRequest boardRequest = boardRequestRepo.findByBoardAndCustomer(board,customer);
+        if(boardRequest != null){
+            throw new MsgException("이미 신청상태 입니다.");
+        }else{
+            boardRequest = BoardRequest.builder().board(board).customer(customer).brState("REQUEST").build();
+            boardRequestRepo.save(boardRequest);
+        }
+        rm.setMessage("요청완료");
+        return rm;
+    }
+    @GetMapping("request-list.ajax")
+    public ReturnMap boardRequstList(@RequestParam(value = "BD_IDX",required = false) String BD_IDX){
+        ReturnMap rm = new ReturnMap();
+        if(BD_IDX.equals("") || BD_IDX == null){
+            throw new MsgException("게시판 idx 입력바랍니다.");
+        }
+        List<Map<String, Object>> list = boardMapper.selectBoardRequestList(BD_IDX);
 
+        rm.put("USER_INFO",list);
+        return rm;
+    }
     @PostMapping("review/register.ajax")
     public ReturnMap boardReviewRegister(@RequestBody Map<String,Object> map) {
         ReturnMap rm = new ReturnMap();

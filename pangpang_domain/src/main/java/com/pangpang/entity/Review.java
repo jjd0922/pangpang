@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Review extends BaseEntity {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

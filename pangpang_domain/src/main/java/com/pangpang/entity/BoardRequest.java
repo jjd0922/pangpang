@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class BoardRequest extends BaseEntity {
+public class BoardRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

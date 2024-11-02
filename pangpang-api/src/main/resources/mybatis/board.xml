@@ -6,11 +6,10 @@
         SELECT
         BD_IDX,BD_TITLE,BD_STATE,
         BD_CNT,
-        count(br_bd_idx) AS BD_PART_CNT,
+        (SELECT count(br_bd_idx) FROM board_request WHERE bd_idx = br_bd_idx) AS BD_PART_CNT,
         BD_RATE,BD_IMG,BD_MAP,BD_CONTENT,BD_LINK,BD_START_DATE
         FROM
         board
-        LEFT JOIN board_request on bd_idx = br_bd_idx
         <where>
             <if test="CATE_IDX != null and CATE_IDX !=''">
                 AND  bd_cate_idx =#{CATE_IDX}
@@ -68,7 +67,19 @@
             </if>
         </where>
     </select>
-
+    <select id="selectBoardRequestList" resultType="java.util.LinkedHashMap">
+        SELECT
+        cu_idx,cu_id,cu_nickname,cu_profile,cu_gender,cu_birth,cu_memo,br_state
+        FROM
+        board
+        left join board_request on bd_idx = br_bd_idx
+        left join customer on br_cu_idx = cu_idx
+        <where>
+            <if test="bdIdx != null and bdIdx !=''">
+                AND  bd_Idx =#{bdIdx}
+            </if>
+        </where>
+    </select>
     <select id="selectReviewDetail" resultType="java.util.LinkedHashMap">
         SELECT
         R_IDX,R_GOOD_CONTENT,R_BAD_CONTENT
@@ -80,4 +91,5 @@
             </if>
         </where>
     </select>
+
 </mapper>

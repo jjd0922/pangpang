@@ -26,4 +26,7 @@ public interface BoardMapper {
 
     @Transactional(readOnly = true)
     Map<String, Object> selectReviewDetail(@Param("rIdx") String rIdx);
+
+    @Transactional(readOnly = true)
+    List<Map<String, Object>> selectBoardRequestList(@Param("bdIdx") String bdIdx);
 }

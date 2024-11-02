@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Board extends BaseEntity {
+public class Board  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
